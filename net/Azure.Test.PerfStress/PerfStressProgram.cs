@@ -51,10 +51,10 @@ namespace Azure.Test.PerfStress
             Console.WriteLine();
 
             using var setupStatusCts = new CancellationTokenSource();
-            var setupStatusTask = PrintStatusAsync("=== Setup ===", () => ".", newLine: false, setupStatusCts.Token);
+            var setupStatusThread = PrintStatus("=== Setup ===", () => ".", newLine: false, setupStatusCts.Token);
 
             using var cleanupStatusCts = new CancellationTokenSource();
-            Task cleanupStatusTask = null;
+            Thread cleanupStatusThread = null;
 
             var tests = new IPerfStressTest[options.Parallel];
             for (var i = 0; i < options.Parallel; i++)
@@ -70,7 +70,7 @@ namespace Azure.Test.PerfStress
                 {
                     await Task.WhenAll(tests.Select(t => t.SetupAsync()));
                     setupStatusCts.Cancel();
-                    await setupStatusTask;
+                    setupStatusThread.Join();
 
                     if (options.Warmup > 0)
                     {
@@ -91,9 +91,9 @@ namespace Azure.Test.PerfStress
                 {
                     if (!options.NoCleanup)
                     {
-                        if (cleanupStatusTask == null)
+                        if (cleanupStatusThread == null)
                         {
-                            cleanupStatusTask = PrintStatusAsync("=== Cleanup ===", () => ".", newLine: false, cleanupStatusCts.Token);
+                            cleanupStatusThread = PrintStatus("=== Cleanup ===", () => ".", newLine: false, cleanupStatusCts.Token);
                         }
 
                         await Task.WhenAll(tests.Select(t => t.CleanupAsync()));
@@ -104,9 +104,9 @@ namespace Azure.Test.PerfStress
             {
                 if (!options.NoCleanup)
                 {
-                    if (cleanupStatusTask == null)
+                    if (cleanupStatusThread == null)
                     {
-                        cleanupStatusTask = PrintStatusAsync("=== Cleanup ===", () => ".", newLine: false, cleanupStatusCts.Token);
+                        cleanupStatusThread = PrintStatus("=== Cleanup ===", () => ".", newLine: false, cleanupStatusCts.Token);
                     }
 
                     await tests[0].GlobalCleanupAsync();
@@ -114,9 +114,9 @@ namespace Azure.Test.PerfStress
             }
 
             cleanupStatusCts.Cancel();
-            if (cleanupStatusTask != null)
+            if (cleanupStatusThread != null)
             {
-                await cleanupStatusTask;
+                cleanupStatusThread.Join();
             }
         }
 
@@ -130,7 +130,7 @@ namespace Azure.Test.PerfStress
             var cancellationToken = cts.Token;
 
             var lastCompleted = 0;
-            var progressStatusTask = PrintStatusAsync(
+            var progressStatusThread = PrintStatus(
                 $"=== {title} ===" + Environment.NewLine +
                 "Current\t\tTotal",
                 () =>
@@ -163,12 +163,13 @@ namespace Azure.Test.PerfStress
                 var tasks = new Task[parallel];
                 for (var i = 0; i < parallel; i++)
                 {
-                    tasks[i] = RunLoopAsync(tests[i], cancellationToken);
+                    var j = i;
+                    tasks[j] = Task.Run(() => RunLoopAsync(tests[j], cancellationToken));
                 }
                 await Task.WhenAll(tasks);
             }
 
-            await progressStatusTask;
+            progressStatusThread.Join();
 
             Console.WriteLine("=== Results ===");
 
@@ -220,41 +221,65 @@ namespace Azure.Test.PerfStress
             }
         }
 
-        private static async Task PrintStatusAsync(string header, Func<object> status, bool newLine, CancellationToken token)
+        // Run in dedicated thread instead of using async/await in ThreadPool, to ensure this thread has priority
+        // and never fails to run to due ThreadPool starvation.
+        private static Thread PrintStatus(string header, Func<object> status, bool newLine, CancellationToken token)
         {
-            Console.WriteLine(header);
-
-            bool needsExtraNewline = false;
-
-            while (!token.IsCancellationRequested)
+            var thread = new Thread(() =>
             {
-                try
+                Console.WriteLine(header);
+
+                bool needsExtraNewline = false;
+
+                while (!token.IsCancellationRequested)
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(1), token);
-
-                    var obj = status();
-
-                    if (newLine)
+                    try
                     {
-                        Console.WriteLine(obj);
+                        Sleep(TimeSpan.FromSeconds(1), token);
+
+                        var obj = status();
+
+                        if (newLine)
+                        {
+                            Console.WriteLine(obj);
+                        }
+                        else
+                        {
+                            Console.Write(obj);
+                            needsExtraNewline = true;
+                        }
                     }
-                    else
+                    catch (OperationCanceledException)
                     {
-                        Console.Write(obj);
-                        needsExtraNewline = true;
                     }
                 }
-                catch (OperationCanceledException)
-                {
-                }
-            }
 
-            if (needsExtraNewline)
-            {
+                if (needsExtraNewline)
+                {
+                    Console.WriteLine();
+                }
+
                 Console.WriteLine();
-            }
+            });
+            
+            thread.Start();
+            
+            return thread;
+        }
 
-            Console.WriteLine();
+        private static void Sleep(TimeSpan timeout, CancellationToken token)
+        {
+            var sw = Stopwatch.StartNew();
+            while (sw.Elapsed < timeout)
+            {
+                if (token.IsCancellationRequested)
+                {
+                    // Simulate behavior of Task.Delay(TimeSpan, CancellationToken)
+                    throw new OperationCanceledException();
+                }
+
+                Thread.Sleep(TimeSpan.FromMilliseconds(10));
+            }
         }
 
         private static bool ContainsOperationCanceledException(Exception e)
