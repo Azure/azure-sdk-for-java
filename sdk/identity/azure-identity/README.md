@@ -282,7 +282,7 @@ ChainedTokenCredential credentialChain = new ChainedTokenCredentialBuilder()
 
 // the chain can be used anywhere a credential is required
 
-// The fully qualified host name for the Event Hubs namespace. This is likely to be similar to:
+// The fully qualified name for the Event Hubs namespace. This is likely to be similar to:
 // {your-namespace}.servicebus.windows.net
 String host = "<< EVENT HUBS HOST >>"
 String eventHubPath = "<< NAME OF THE EVENT HUB >>";

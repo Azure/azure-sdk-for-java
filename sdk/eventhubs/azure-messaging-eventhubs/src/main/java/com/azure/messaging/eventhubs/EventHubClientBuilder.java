@@ -55,7 +55,7 @@ import java.util.ServiceLoader;
  * <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub <i>namespace</i>
  * connection string and the Event Hub name.</li>
  * <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the
- * fully qualified domain name (FQDN), Event Hub name, and a set of credentials authorized to use the Event Hub.
+ * fully qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
  * </li>
  * </ul>
  *

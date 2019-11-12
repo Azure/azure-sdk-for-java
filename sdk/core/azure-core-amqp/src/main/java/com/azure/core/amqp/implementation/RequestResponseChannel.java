@@ -68,7 +68,7 @@ public class RequestResponseChannel implements Closeable {
      * {@code entityPath} in the message broker.
      *
      * @param connectionId Identifier of the connection.
-     * @param hostname Fully qualified domain name for the the host.
+     * @param hostname Fully qualified namespace for the the host.
      * @param linkName Name of the link.
      * @param entityPath Address in the message broker to send message to.
      * @param session Reactor session associated with this link.

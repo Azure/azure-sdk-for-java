@@ -125,9 +125,9 @@ ClientSecretCredential credential = new ClientSecretCredentialBuilder()
     .tenantId("<< DIRECTORY (TENANT) ID >>")
     .build();
 
-// The fully qualified domain name (FQDN) for the Event Hubs namespace. This is likely to be similar to:
+// The fully qualified namespace for the Event Hubs instance. This is likely to be similar to:
 // {your-namespace}.servicebus.windows.net
-String fullyQualifiedDomainName = "<< EVENT HUBS FULLY QUALIFIED DOMAIN NAME >>"
+String fullyQualifiedDomainName = "<< EVENT HUBS FULLY QUALIFIED NAMESPACE >>"
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
 EventHubProducerClient client = new EventHubClientBuilder()
     .credential(host, eventHubName, credential)
