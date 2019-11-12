@@ -13,6 +13,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.cs.textanalytics.implementation.TextAnalyticsAPIImpl;
+import com.azure.cs.textanalytics.implementation.models.LanguageBatchInput;
+import com.azure.cs.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
 import com.azure.cs.textanalytics.models.DocumentEntities;
 import com.azure.cs.textanalytics.models.DocumentKeyPhrases;
@@ -82,29 +84,6 @@ public final class TextAnalyticsAsyncClient {
 //        } catch (RuntimeException ex) {
 //            return monoError(logger, ex);
 //        }
-//            //TODO: PagedFlux example, PagedFlux<DetectedLanguage>, remove this if choose to use Mono example.
-//            final List<LanguageInput> languageInputs = new ArrayList<>();
-//            languageInputs.add(new LanguageInput().setText(text).setCountryHint(countryHint));
-//
-//            return new PagedFlux<>(() -> detectLanguagesWithResponse(new LanguageBatchInput().setDocuments(languageInputs),
-//                showStats, Context.NONE)
-//                .map(response -> {
-//                    final List<DocumentLanguage> documentLanguages = response.getValue().getDocuments();
-//                    if (documentLanguages.size() == 0) {
-//                        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-//                            response.getHeaders(),
-//                            null,
-//                            null,
-//                            null);
-//                    } else {
-//                        final List<DetectedLanguage> detectedLanguages = documentLanguages.get(0).getDetectedLanguages();
-//                        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-//                            response.getHeaders(),
-//                            detectedLanguages,
-//                            null,
-//                            null);
-//                    }
-//                }));
         return null;
     }
 
@@ -119,7 +98,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DetectedLanguage> detectLanguages(List<String> documents, String modelVersion) {
+    public PagedFlux<DetectedLanguage> detectLanguages(List<String> documents, String countryHint, String modelVersion) {
         return null;
     }
 
@@ -151,26 +130,6 @@ public final class TextAnalyticsAsyncClient {
     // (2) entities
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Entity> recognizeEntities(String text, String language, String modelVersion) {
-
-        // TODO: Mono<DocumentEntities> example, remove this if choose PagedFlux
-//        try {
-//            final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
-//            multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
-//
-//            return withContext(context -> getEntitiesWithResponse(
-//                new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), showStats, context))
-//                .flatMap(response -> {
-//                    final List<DocumentEntities> documentEntities = response.getValue().getDocuments();
-//                    if (documentEntities.size() == 0) {
-//                        return Mono.empty();
-//                    } else {
-//                        return Mono.justOrEmpty(documentEntities.get(0));
-//                    }
-//                });
-//        } catch (RuntimeException ex) {
-//            return monoError(logger, ex);
-//        }
-
         //TODO: PagedFlux example, PagedFlux<Entity>, remove this if choose to use Mono example.
         final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
         multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
@@ -195,6 +154,10 @@ public final class TextAnalyticsAsyncClient {
             }));
     }
 
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Entity> recognizeEntities(List<String> documents, String language, String modelVersion) {
+        return null;
+    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EntitiesResult> recognizeEntities(List<MultiLanguageInput> documents,
@@ -270,6 +233,11 @@ public final class TextAnalyticsAsyncClient {
             }));
     }
 
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Entity> recognizePiiEntities(List<String> documents, String language, String modelVersion) {
+        return null;
+    }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EntitiesResult> recognizePiiEntities(List<MultiLanguageInput> documents,
                                                      String modelVersion, Boolean showStats) {
@@ -341,6 +309,11 @@ public final class TextAnalyticsAsyncClient {
                         null);
                 }
             }));
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<LinkedEntity> recognizeLinkedEntities(List<String> documents, String language, String modelVersion) {
+        return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -415,6 +388,11 @@ public final class TextAnalyticsAsyncClient {
             }));
     }
 
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> extractKeyPhrases(List<String> documents, String language, String modelVersion) {
+        return null;
+    }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyPhraseResult> extractKeyPhrases(List<MultiLanguageInput> documents,
                                                    String modelVersion, Boolean showStats) {
@@ -463,8 +441,15 @@ public final class TextAnalyticsAsyncClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentSentiment>> analyzeSentimentWithResponse(String text, String language,
-                                                                    String modelVersion, Boolean showStats,
-                                                                    Context context) {
+                                                                          String modelVersion, Boolean showStats,
+                                                                          Context context) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DocumentSentiment> analyzeSentiment(List<String> documents, String language,
+                                                         String modelVersion,
+                                                         Boolean showStats) {
         return null;
     }
 
