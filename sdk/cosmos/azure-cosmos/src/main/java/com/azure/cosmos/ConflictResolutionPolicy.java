@@ -63,7 +63,6 @@ public class ConflictResolutionPolicy extends JsonSerializable {
      * Creates a LAST_WRITER_WINS {@link ConflictResolutionPolicy} with "/_ts" as the resolution path.
      *
      * In case of a conflict occurring on a document, the document with the higher integer value in the default path
-     * {@link Resource#timestamp()}, i.e., "/_ts" will be used.
      * {@link Resource#getTimestamp()}, i.e., "/_ts" will be used.
      *
      * @return ConflictResolutionPolicy.
