@@ -25,7 +25,7 @@ public enum ConflictResolutionMode {
      * The user could elect to register a user specified {@link StoredProcedure} for handling conflicting resources.
      * Should the user not register a user specified StoredProcedure, conflicts will default to being made available as {@link Conflict} resources,
      * which the user can inspect and manually resolve.
-     * See {@link ConflictResolutionPolicy#conflictResolutionProcedure()} for details on how to specify the stored procedure
+     * See {@link ConflictResolutionPolicy#getConflictResolutionProcedure()} for details on how to specify the stored procedure
      * to run for conflict resolution.
      */
     CUSTOM,
@@ -34,10 +34,10 @@ public enum ConflictResolutionMode {
      * INVALID or unknown mode.
      */
     INVALID;
-    
+
     @Override
     public String toString() {
-        return StringUtils.remove(WordUtils.capitalizeFully(this.name(), '_'), '_');     
+        return StringUtils.remove(WordUtils.capitalizeFully(this.name(), '_'), '_');
     }
 }
 
