@@ -17,16 +17,16 @@ import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 @Immutable
 public class RetryPolicyOptions {
 
-    private RetryStrategy retryStrategy;
-    private String retryAfterHeader;
-    private ChronoUnit retryAfterTimeUnit;
+    private final RetryStrategy retryStrategy;
+    private final String retryAfterHeader;
+    private final ChronoUnit retryAfterTimeUnit;
 
     /**
      * Creates a default {@link RetryPolicyOptions} used by a {@link RetryPolicy}. This will use
      * {@link ExponentialBackoff} as the {@link #getRetryStrategy retry strategy} and will ignore retry delay headers.
      */
     public RetryPolicyOptions() {
-        this.retryStrategy = new ExponentialBackoff();
+        this(new ExponentialBackoff(), null, null);
     }
 
     /**

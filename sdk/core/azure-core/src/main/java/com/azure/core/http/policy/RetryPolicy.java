@@ -34,7 +34,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * 'retry-after-ms' in {@link HttpResponse} header for calculating retry delay.
      */
     public RetryPolicy() {
-        this(new RetryPolicyOptions().setRetryAfterHeader(RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS));
+        this(new RetryPolicyOptions(RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS));
     }
 
     /**
@@ -44,7 +44,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      */
     public RetryPolicy(RetryStrategy retryStrategy) {
         Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null");
-        this.retryPolicyOptions = new RetryPolicyOptions().setRetryStrategy(retryStrategy);
+        this.retryPolicyOptions = new RetryPolicyOptions(retryStrategy);
     }
 
     /**
