@@ -5,17 +5,11 @@ package com.azure.search;
 import com.azure.search.models.Analyzer;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CharFilter;
-import com.azure.search.models.CustomAnalyzer;
-import com.azure.search.models.EdgeNGramTokenizer;
 import com.azure.search.models.Index;
-import com.azure.search.models.PatternAnalyzer;
-import com.azure.search.models.StopAnalyzer;
 import com.azure.search.models.TokenFilter;
 import com.azure.search.models.TokenInfo;
 import com.azure.search.models.Tokenizer;
-import com.azure.search.test.environment.models.ModelComparer;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,6 +21,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+
 
 public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
     private static final String NAME_PREFIX = "azsmnet";
@@ -36,7 +33,8 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
         super.beforeTest();
     }
 
-    public abstract void canSearchWithCustomAnalyzer() throws InterruptedException;
+    @Test
+    public abstract void canSearchWithCustomAnalyzer();
 
     @Test
     public abstract void canUseAllAnalyzerNamesInIndexDefinition();
@@ -53,6 +51,7 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
     @Test
     public abstract void canAddCustomAnalyzerWithIndexDowntime();
 
+    @Test
     public abstract void canCreateAllAnalysisComponents();
 
     @Test
@@ -74,42 +73,13 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
 
     protected void assertAnalysisComponentsEqual(Index expected, Index actual) {
         // Compare analysis components directly so that test failures show better comparisons.
-
         // Analyzers
         List<Analyzer> expectedAnalyzers = expected.getAnalyzers();
         List<Analyzer> actualAnalyzers = actual.getAnalyzers();
         if (expectedAnalyzers != null && actualAnalyzers != null) {
             Assert.assertEquals(expectedAnalyzers.size(), actualAnalyzers.size());
             for (int i = 0; i < expectedAnalyzers.size(); i++) {
-                Analyzer expectedAnalyzer = expectedAnalyzers.get(i);
-                Analyzer actualAnalyzer = actualAnalyzers.get(i);
-                if (expectedAnalyzer instanceof StopAnalyzer) {
-                    Assert.assertTrue(ModelComparer.collectionEquals(((StopAnalyzer) expectedAnalyzer).getStopwords(),
-                        ((StopAnalyzer) actualAnalyzer).getStopwords()));
-                } else if (expectedAnalyzer instanceof PatternAnalyzer) {
-                    PatternAnalyzer expectedPa = (PatternAnalyzer) expectedAnalyzer;
-                    PatternAnalyzer actualPa = (PatternAnalyzer) actualAnalyzer;
-                    Assert.assertEquals(expectedPa.isLowerCaseTerms(),
-                        actualPa.isLowerCaseTerms());
-                    Assert.assertEquals(expectedPa.getPattern(),
-                        actualPa.getPattern());
-                    Assert.assertEquals(expectedPa.getFlags(),
-                        actualPa.getFlags());
-                    Assert.assertTrue(ModelComparer.collectionEquals(expectedPa.getStopwords(),
-                        actualPa.getStopwords()));
-                } else if (expectedAnalyzer instanceof CustomAnalyzer) {
-                    CustomAnalyzer expectedCa = (CustomAnalyzer) expectedAnalyzer;
-                    CustomAnalyzer actualCa = (CustomAnalyzer) actualAnalyzer;
-                    Assert.assertEquals(expectedCa.getTokenizer(),
-                        actualCa.getTokenizer());
-                    Assert.assertTrue(ModelComparer.collectionEquals(expectedCa.getTokenFilters(),
-                        actualCa.getTokenFilters()));
-                    Assert.assertTrue(ModelComparer.collectionEquals(expectedCa.getCharFilters(),
-                        actualCa.getCharFilters()));
-                } else {
-                    throw new NotImplementedException("The comparison of this analyzer type "
-                        + expectedAnalyzer.getClass() + " is not implemented yet.");
-                }
+                assertAnalyzersEqual(expectedAnalyzers.get(i), actualAnalyzers.get(i));
             }
         }
 
@@ -119,16 +89,7 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
         if (expectedTokenizers != null && actualTokenizers != null) {
             Assert.assertEquals(expectedTokenizers.size(), actualTokenizers.size());
             for (int i = 0; i < expectedTokenizers.size(); i++) {
-                Tokenizer expectedTokenizer = expectedTokenizers.get(i);
-                Tokenizer actualTokenizer = actualTokenizers.get(i);
-                if (expectedTokenizer instanceof EdgeNGramTokenizer) {
-                    EdgeNGramTokenizer expectedETokenizer = (EdgeNGramTokenizer) expectedTokenizer;
-                    EdgeNGramTokenizer actualETokenizer = (EdgeNGramTokenizer) actualTokenizer;
-                    Assert.assertEquals(expectedETokenizer.getMinGram(), actualETokenizer.getMinGram());
-                    Assert.assertEquals(expectedETokenizer.getMaxGram(), actualETokenizer.getMaxGram());
-                    Assert.assertTrue(ModelComparer.collectionEquals(expectedETokenizer.getTokenChars(),
-                        actualETokenizer.getTokenChars()));
-                }
+                assertTokenizersEqual(expectedTokenizers.get(i), actualTokenizers.get(i));
             }
         }
 
@@ -138,6 +99,18 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
         if (expectedCharfilters != null && actualCharfilters != null) {
             Assert.assertEquals(expectedCharfilters.size(), actualCharfilters.size());
         }
+    }
+
+    protected void assertAnalyzersEqual(Analyzer expected, Analyzer actual) {
+        expected.setName("none");
+        actual.setName("none");
+        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
+    }
+
+    protected void assertTokenizersEqual(Tokenizer expected, Tokenizer actual) {
+        expected.setName("none");
+        actual.setName("none");
+        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
     protected String generateName() {

@@ -228,8 +228,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
             client.getSynonymMap(skillsetName);
 
             Assert.fail("Expected an exception to be thrown");
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
             Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
                 ((HttpResponseException) ex).getResponse().getStatusCode());

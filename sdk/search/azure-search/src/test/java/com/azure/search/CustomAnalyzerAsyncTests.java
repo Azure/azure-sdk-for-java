@@ -3,39 +3,71 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedFluxBase;
+import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.models.AnalyzeRequest;
 import com.azure.search.models.Analyzer;
 import com.azure.search.models.AnalyzerName;
+import com.azure.search.models.AsciiFoldingTokenFilter;
 import com.azure.search.models.CharFilterName;
 import com.azure.search.models.CjkBigramTokenFilter;
 import com.azure.search.models.CjkBigramTokenFilterScripts;
+import com.azure.search.models.ClassicTokenizer;
+import com.azure.search.models.CommonGramTokenFilter;
 import com.azure.search.models.CustomAnalyzer;
 import com.azure.search.models.DataType;
+import com.azure.search.models.DictionaryDecompounderTokenFilter;
 import com.azure.search.models.EdgeNGramTokenFilterSide;
 import com.azure.search.models.EdgeNGramTokenFilterV2;
 import com.azure.search.models.EdgeNGramTokenizer;
+import com.azure.search.models.ElisionTokenFilter;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
+import com.azure.search.models.KeepTokenFilter;
+import com.azure.search.models.KeywordMarkerTokenFilter;
+import com.azure.search.models.KeywordTokenizerV2;
+import com.azure.search.models.LengthTokenFilter;
+import com.azure.search.models.LimitTokenFilter;
+import com.azure.search.models.MappingCharFilter;
 import com.azure.search.models.MicrosoftLanguageStemmingTokenizer;
 import com.azure.search.models.MicrosoftLanguageTokenizer;
 import com.azure.search.models.MicrosoftStemmingTokenizerLanguage;
 import com.azure.search.models.MicrosoftTokenizerLanguage;
+import com.azure.search.models.NGramTokenFilterV2;
+import com.azure.search.models.NGramTokenizer;
+import com.azure.search.models.PathHierarchyTokenizerV2;
 import com.azure.search.models.PatternAnalyzer;
+import com.azure.search.models.PatternCaptureTokenFilter;
+import com.azure.search.models.PatternReplaceCharFilter;
+import com.azure.search.models.PatternReplaceTokenFilter;
+import com.azure.search.models.PatternTokenizer;
 import com.azure.search.models.PhoneticEncoder;
 import com.azure.search.models.PhoneticTokenFilter;
 import com.azure.search.models.RegexFlags;
+import com.azure.search.models.RequestOptions;
+import com.azure.search.models.SearchOptions;
+import com.azure.search.models.SearchResult;
+import com.azure.search.models.ShingleTokenFilter;
 import com.azure.search.models.SnowballTokenFilter;
 import com.azure.search.models.SnowballTokenFilterLanguage;
+import com.azure.search.models.StandardAnalyzer;
+import com.azure.search.models.StandardTokenizerV2;
+import com.azure.search.models.StemmerOverrideTokenFilter;
 import com.azure.search.models.StemmerTokenFilter;
 import com.azure.search.models.StemmerTokenFilterLanguage;
 import com.azure.search.models.StopAnalyzer;
 import com.azure.search.models.StopwordsList;
 import com.azure.search.models.StopwordsTokenFilter;
+import com.azure.search.models.SynonymTokenFilter;
 import com.azure.search.models.TokenCharacterKind;
 import com.azure.search.models.TokenFilter;
 import com.azure.search.models.TokenFilterName;
 import com.azure.search.models.Tokenizer;
 import com.azure.search.models.TokenizerName;
+import com.azure.search.models.TruncateTokenFilter;
+import com.azure.search.models.UaxUrlEmailTokenizer;
+import com.azure.search.models.UniqueTokenFilter;
+import com.azure.search.models.WordDelimiterTokenFilter;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
@@ -57,9 +89,61 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
 
     @Override
     public void canSearchWithCustomAnalyzer() {
-        // TODO: This test is blocked on not being able to create custom enum from string values.
-        // https://dev.azure.com/csee2e/Azure%20Search%20SDK/_workitems/edit/1396
-        // One possible solution is to add a an overload of the enum's constructor to take a string value.
+        final String customAnalyzerName = "my_email_analyzer";
+        final String customCharFilterName = "my_email_filter";
+
+        Index index = new Index()
+            .setName("testindex")
+            .setFields(Arrays.asList(
+                new Field()
+                    .setName("id")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(true),
+                new Field()
+                    .setName("message")
+                    .setType(DataType.EDM_STRING)
+                    .setAnalyzer(customAnalyzerName)
+                    .setSearchable(true)
+            ))
+            .setAnalyzers(Arrays.asList(
+                new CustomAnalyzer()
+                    .setTokenizer(TokenizerName.STANDARD_V2.toString())
+                    .setCharFilters(Arrays.asList(customCharFilterName))
+                    .setName(customAnalyzerName)
+            ))
+            .setCharFilters(Arrays.asList(
+                new PatternReplaceCharFilter()
+                    .setPattern("@")
+                    .setReplacement("_")
+                    .setName(customCharFilterName)
+            ));
+
+        searchServiceClient.createIndex(index).block();
+
+        SearchIndexAsyncClient searchIndexClient = searchServiceClient.getIndexClient(index.getName());
+
+        Document document1 = new Document();
+        document1.put("id", "1");
+        document1.put("message", "My email is someone@somewhere.something.");
+        Document document2 = new Document();
+        document2.put("id", "2");
+        document2.put("message", "His email is someone@nowhere.nothing.");
+        List<Document> documents = Arrays.asList(
+            document1,
+            document2
+        );
+
+        searchIndexClient.uploadDocuments(documents).block();
+        waitForIndexing();
+
+        PagedFluxBase<SearchResult, SearchPagedResponse> results =
+            searchIndexClient.search("someone@somewhere.something", new SearchOptions(), new RequestOptions());
+
+        StepVerifier.create(results.collectList())
+            .assertNext(firstPage -> {
+                Assert.assertEquals("1", firstPage.get(0).getDocument().get("id"));
+            })
+            .verifyComplete();
     }
 
     @Override
@@ -224,9 +308,420 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
 
     @Override
     public void canCreateAllAnalysisComponents() {
-        // TODO: This test is blocked on not being able to create custom enum from string values.
-        // https://dev.azure.com/csee2e/Azure%20Search%20SDK/_workitems/edit/1397
-        // One possible solution is to add a an overload of the enum's constructor to take a string value.
+        final String customTokenizerName = "my_tokenizer";
+        final String customTokenFilterName = "my_tokenfilter";
+        final String customCharFilterName = "my_charfilter";
+
+        Index index = createTestIndex()
+            .setAnalyzers(Arrays.asList(
+                new CustomAnalyzer()
+                    .setTokenizer(customTokenizerName)
+                    .setTokenFilters(Arrays.asList(customTokenFilterName))
+                    .setCharFilters(Arrays.asList(customCharFilterName))
+                    .setName(generateName()),
+                new CustomAnalyzer()
+                    .setTokenizer(TokenizerName.EDGE_NGRAM.toString())
+                    .setName(generateName()),
+                new PatternAnalyzer()
+                    .setLowerCaseTerms(false)
+                    .setPattern("abc")
+                    .setFlags(RegexFlags.DOTALL)
+                    .setStopwords(Arrays.asList("the"))
+                    .setName(generateName()),
+                new StandardAnalyzer()
+                    .setMaxTokenLength(100)
+                    .setStopwords(Arrays.asList("the"))
+                    .setName(generateName()),
+                new StopAnalyzer()
+                    .setStopwords(Arrays.asList("the"))
+                    .setName(generateName()),
+                new StopAnalyzer()
+                    .setName(generateName())
+            ))
+            .setTokenizers(Arrays.asList(
+                new EdgeNGramTokenizer()
+                    .setMinGram(1)
+                    .setMaxGram(2)
+                    .setName(customTokenizerName),
+                new EdgeNGramTokenizer()
+                    .setMinGram(2)
+                    .setMaxGram(4)
+                    .setTokenChars(Arrays.asList(TokenCharacterKind.LETTER))
+                    .setName(generateName()),
+                new NGramTokenizer()
+                    .setMinGram(2)
+                    .setMaxGram(4)
+                    .setTokenChars(Arrays.asList(TokenCharacterKind.LETTER))
+                    .setName(generateName()),
+                new ClassicTokenizer()
+                    .setMaxTokenLength(100)
+                    .setName(generateName()),
+                new KeywordTokenizerV2()
+                    .setMaxTokenLength(100)
+                    .setName(generateName()),
+                new MicrosoftLanguageStemmingTokenizer()
+                    .setMaxTokenLength(100)
+                    .setIsSearchTokenizer(true)
+                    .setLanguage(MicrosoftStemmingTokenizerLanguage.CROATIAN)
+                    .setName(generateName()),
+                new MicrosoftLanguageTokenizer()
+                    .setMaxTokenLength(100)
+                    .setIsSearchTokenizer(true)
+                    .setLanguage(MicrosoftTokenizerLanguage.THAI)
+                    .setName(generateName()),
+                new PathHierarchyTokenizerV2()
+                    .setDelimiter(":")
+                    .setReplacement("_")
+                    .setMaxTokenLength(300)
+                    .setReverseTokenOrder(true)
+                    .setNumberOfTokensToSkip(2)
+                    .setName(generateName()),
+                new PatternTokenizer()
+                    .setPattern(".*")
+                    .setFlags(RegexFlags.MULTILINE)
+                    .setGroup(0)
+                    .setName(generateName()),
+                new StandardTokenizerV2()
+                    .setMaxTokenLength(100)
+                    .setName(generateName()),
+                new UaxUrlEmailTokenizer()
+                    .setMaxTokenLength(100)
+                    .setName(generateName())
+            ))
+            .setTokenFilters(Arrays.asList(
+                new CjkBigramTokenFilter()
+                    .setName(customTokenFilterName),  // One custom token filter for CustomAnalyzer above.
+                new CjkBigramTokenFilter()
+                    .setIgnoreScripts(Arrays.asList(CjkBigramTokenFilterScripts.HAN))
+                    .setOutputUnigrams(true)
+                    .setName(generateName()),
+                new CjkBigramTokenFilter()
+                    .setName(generateName()),
+                new AsciiFoldingTokenFilter()
+                    .setPreserveOriginal(true)
+                    .setName(generateName()),
+                new AsciiFoldingTokenFilter()
+                    .setName(generateName()),
+                new CommonGramTokenFilter()
+                    .setCommonWords(Arrays.asList("hello", "goodbye"))
+                    .setIgnoreCase(true)
+                    .setUseQueryMode(true)
+                    .setName(generateName()),
+                new CommonGramTokenFilter()
+                    .setCommonWords(Arrays.asList("at"))
+                    .setName(generateName()),
+                new DictionaryDecompounderTokenFilter()
+                    .setWordList(Arrays.asList("Schadenfreude"))
+                    .setMinWordSize(10)
+                    .setMinSubwordSize(5)
+                    .setMaxSubwordSize(13)
+                    .setOnlyLongestMatch(true)
+                    .setName(generateName()),
+                new EdgeNGramTokenFilterV2()
+                    .setMinGram(2)
+                    .setMaxGram(10)
+                    .setSide(EdgeNGramTokenFilterSide.BACK)
+                    .setName(generateName()),
+                new ElisionTokenFilter()
+                    .setArticles(Arrays.asList("a"))
+                    .setName(generateName()),
+                new ElisionTokenFilter()
+                    .setName(generateName()),
+                new KeepTokenFilter()
+                    .setKeepWords(Arrays.asList("aloha"))
+                    .setName(generateName()),
+                new KeepTokenFilter()
+                    .setKeepWords(Arrays.asList("e", "komo", "mai"))
+                    .setName(generateName()),
+                new KeywordMarkerTokenFilter()
+                    .setKeywords(Arrays.asList("key", "words"))
+                    .setName(generateName()),
+                new KeywordMarkerTokenFilter()
+                    .setKeywords(Arrays.asList("essential"))
+                    .setName(generateName()),
+                new LengthTokenFilter()
+                    .setMin(5)
+                    .setMax(10)
+                    .setName(generateName()),
+                new LimitTokenFilter()
+                    .setMaxTokenCount(10)
+                    .setConsumeAllTokens(true)
+                    .setName(generateName()),
+                new NGramTokenFilterV2()
+                    .setMinGram(2)
+                    .setMaxGram(3)
+                    .setName(generateName()),
+                new PatternCaptureTokenFilter()
+                    .setPatterns(Arrays.asList(".*"))
+                    .setPreserveOriginal(false)
+                    .setName(generateName()),
+                new PatternReplaceTokenFilter()
+                    .setPattern("abc")
+                    .setReplacement("123")
+                    .setName(generateName()),
+                new PhoneticTokenFilter()
+                    .setEncoder(PhoneticEncoder.SOUNDEX)
+                    .setReplaceOriginalTokens(false)
+                    .setName(generateName()),
+                new ShingleTokenFilter()
+                    .setMaxShingleSize(10)
+                    .setMinShingleSize(5)
+                    .setOutputUnigrams(false)
+                    .setOutputUnigramsIfNoShingles(true)
+                    .setTokenSeparator(" ")
+                    .setFilterToken("|")
+                    .setName(generateName()),
+                new SnowballTokenFilter()
+                    .setLanguage(SnowballTokenFilterLanguage.ENGLISH)
+                    .setName(generateName()),
+                new StemmerOverrideTokenFilter()
+                    .setRules(Arrays.asList("ran => run"))
+                    .setName(generateName()),
+                new StemmerTokenFilter()
+                    .setLanguage(StemmerTokenFilterLanguage.FRENCH)
+                    .setName(generateName()),
+                new StopwordsTokenFilter()
+                    .setStopwords(Arrays.asList("a", "the"))
+                    .setIgnoreCase(true)
+                    .setRemoveTrailingStopWords(false)
+                    .setName(generateName()),
+                new StopwordsTokenFilter()
+                    .setStopwordsList(StopwordsList.ITALIAN)
+                    .setIgnoreCase(true)
+                    .setRemoveTrailingStopWords(false)
+                    .setName(generateName()),
+                new SynonymTokenFilter()
+                    .setSynonyms(Arrays.asList("great, good"))
+                    .setIgnoreCase(true)
+                    .setExpand(false)
+                    .setName(generateName()),
+                new TruncateTokenFilter()
+                    .setLength(10)
+                    .setName(generateName()),
+                new UniqueTokenFilter()
+                    .setOnlyOnSamePosition(true)
+                    .setName(generateName()),
+                new UniqueTokenFilter()
+                    .setName(generateName()),
+                new WordDelimiterTokenFilter()
+                    .setGenerateWordParts(false)
+                    .setGenerateNumberParts(false)
+                    .setCatenateWords(true)
+                    .setCatenateNumbers(true)
+                    .setCatenateAll(true)
+                    .setSplitOnCaseChange(false)
+                    .setPreserveOriginal(true)
+                    .setSplitOnNumerics(false)
+                    .setStemEnglishPossessive(false)
+                    .setProtectedWords(Arrays.asList("protected"))
+                    .setName(generateName())
+            ))
+            .setCharFilters(Arrays.asList(
+                new MappingCharFilter()
+                    .setMappings(Arrays.asList("a => b")) // One custom char filter for CustomeAnalyer above.
+                    .setName(customCharFilterName),
+                new MappingCharFilter()
+                    .setMappings(Arrays.asList("s => $", "S => $"))
+                    .setName(generateName()),
+                new PatternReplaceCharFilter()
+                    .setPattern("abc")
+                    .setReplacement("123")
+                    .setName(generateName())
+            ));
+
+        // We have to split up analysis components into two indexes, one where any components with optional properties
+        // have defaults that are zero or null, and another where we need to specify the default values we
+        // expect to get back from the REST API.
+
+        int i = 0;
+
+        Index indexWithSpecialDefaults = createTestIndex()
+            .setAnalyzers(Arrays.asList(
+                new PatternAnalyzer()
+                    .setName(generateSimpleName(i++)),
+                new StandardAnalyzer()
+                    .setName(generateSimpleName(i++))
+            ))
+            .setTokenizers(Arrays.asList(
+                new EdgeNGramTokenizer()
+                    .setName(generateSimpleName(i++)),
+                new NGramTokenizer()
+                    .setName(generateSimpleName(i++)),
+                new ClassicTokenizer()
+                    .setName(generateSimpleName(i++)),
+                new KeywordTokenizerV2()
+                    .setName(generateSimpleName(i++)),
+                new MicrosoftLanguageStemmingTokenizer()
+                    .setName(generateSimpleName(i++)),
+                new MicrosoftLanguageTokenizer()
+                    .setName(generateSimpleName(i++)),
+                new PathHierarchyTokenizerV2()
+                    .setName(generateSimpleName(i++)),
+                new PatternTokenizer()
+                    .setName(generateSimpleName(i++)),
+                new StandardTokenizerV2()
+                    .setName(generateSimpleName(i++)),
+                new UaxUrlEmailTokenizer()
+                    .setName(generateSimpleName(i++))
+            ))
+            .setTokenFilters(Arrays.asList(
+                new DictionaryDecompounderTokenFilter()
+                    .setWordList(Arrays.asList("Bahnhof"))
+                    .setName(generateSimpleName(i++)),
+                new EdgeNGramTokenFilterV2()
+                    .setName(generateSimpleName(i++)),
+                new LengthTokenFilter()
+                    .setName(generateSimpleName(i++)),
+                new LimitTokenFilter()
+                    .setName(generateSimpleName(i++)),
+                new NGramTokenFilterV2()
+                    .setName(generateSimpleName(i++)),
+                new PatternCaptureTokenFilter()
+                    .setPatterns(Arrays.asList("[a-z]*"))
+                    .setName(generateSimpleName(i++)),
+                new PhoneticTokenFilter()
+                    .setName(generateSimpleName(i++)),
+                new ShingleTokenFilter()
+                    .setName(generateSimpleName(i++)),
+                new StopwordsTokenFilter()
+                    .setName(generateSimpleName(i++)),
+                new SynonymTokenFilter()
+                    .setSynonyms(Arrays.asList("mutt, canine => dog"))
+                    .setName(generateSimpleName(i++)),
+                new TruncateTokenFilter()
+                    .setName(generateSimpleName(i++)),
+                new WordDelimiterTokenFilter()
+                    .setName(generateSimpleName(i++))
+            ));
+
+        i = 0;
+
+        Index expectedIndexWithSpecialDefaults = createTestIndex()
+            .setName(indexWithSpecialDefaults.getName())
+            .setAnalyzers(Arrays.asList(
+                new PatternAnalyzer()
+                    .setLowerCaseTerms(true)
+                    .setPattern("\\W+")
+                    .setName(generateSimpleName(i++)),
+                new StandardAnalyzer()
+                    .setMaxTokenLength(255)
+                    .setName(generateSimpleName(i++))
+            ))
+            .setTokenizers(Arrays.asList(
+                new EdgeNGramTokenizer()
+                    .setMinGram(1)
+                    .setMaxGram(2)
+                    .setName(generateSimpleName(i++)),
+                new NGramTokenizer()
+                    .setMinGram(1)
+                    .setMaxGram(2)
+                    .setName(generateSimpleName(i++)),
+                new ClassicTokenizer()
+                    .setMaxTokenLength(255)
+                    .setName(generateSimpleName(i++)),
+                new KeywordTokenizerV2()
+                    .setMaxTokenLength(256)
+                    .setName(generateSimpleName(i++)),
+                new MicrosoftLanguageStemmingTokenizer()
+                    .setMaxTokenLength(255)
+                    .setIsSearchTokenizer(false)
+                    .setLanguage(MicrosoftStemmingTokenizerLanguage.ENGLISH)
+                    .setName(generateSimpleName(i++)),
+                new MicrosoftLanguageTokenizer()
+                    .setMaxTokenLength(255)
+                    .setIsSearchTokenizer(false)
+                    .setLanguage(MicrosoftTokenizerLanguage.ENGLISH)
+                    .setName(generateSimpleName(i++)),
+                new PathHierarchyTokenizerV2()
+                    .setDelimiter("/")
+                    .setReplacement("/")
+                    .setMaxTokenLength(300)
+                    .setName(generateSimpleName(i++)),
+                new PatternTokenizer()
+                    .setPattern("\\W+")
+                    .setGroup(-1)
+                    .setName(generateSimpleName(i++)),
+                new StandardTokenizerV2()
+                    .setMaxTokenLength(255)
+                    .setName(generateSimpleName(i++)),
+                new UaxUrlEmailTokenizer()
+                    .setMaxTokenLength(255)
+                    .setName(generateSimpleName(i++))
+            ))
+            .setTokenFilters(Arrays.asList(
+                new DictionaryDecompounderTokenFilter()
+                    .setWordList(Arrays.asList("Bahnhof"))
+                    .setMinWordSize(5)
+                    .setMinSubwordSize(2)
+                    .setMaxSubwordSize(15)
+                    .setName(generateSimpleName(i++)),
+                new EdgeNGramTokenFilterV2()
+                    .setMinGram(1)
+                    .setMaxGram(2)
+                    .setSide(EdgeNGramTokenFilterSide.FRONT)
+                    .setName(generateSimpleName(i++)),
+                new LengthTokenFilter()
+                    .setMax(300)
+                    .setName(generateSimpleName(i++)),
+                new LimitTokenFilter()
+                    .setMaxTokenCount(1)
+                    .setName(generateSimpleName(i++)),
+                new NGramTokenFilterV2()
+                    .setMinGram(1)
+                    .setMaxGram(2)
+                    .setName(generateSimpleName(i++)),
+                new PatternCaptureTokenFilter()
+                    .setPatterns(Arrays.asList("[a-z]*"))
+                    .setPreserveOriginal(true)
+                    .setName(generateSimpleName(i++)),
+                new PhoneticTokenFilter()
+                    .setEncoder(PhoneticEncoder.METAPHONE)
+                    .setReplaceOriginalTokens(true)
+                    .setName(generateSimpleName(i++)),
+                new ShingleTokenFilter()
+                    .setMaxShingleSize(2)
+                    .setMinShingleSize(2)
+                    .setOutputUnigrams(true)
+                    .setTokenSeparator(" ")
+                    .setFilterToken("_")
+                    .setName(generateSimpleName(i++)),
+                new StopwordsTokenFilter()
+                    .setStopwordsList(StopwordsList.ENGLISH)
+                    .setRemoveTrailingStopWords(true)
+                    .setName(generateSimpleName(i++)),
+                new SynonymTokenFilter()
+                    .setExpand(true)
+                    .setSynonyms(Arrays.asList("mutt, canine => dog"))
+                    .setName(generateSimpleName(i++)),
+                new TruncateTokenFilter()
+                    .setLength(300)
+                    .setName(generateSimpleName(i++)),
+                new WordDelimiterTokenFilter()
+                    .setGenerateWordParts(true)
+                    .setGenerateNumberParts(true)
+                    .setSplitOnCaseChange(true)
+                    .setSplitOnNumerics(true)
+                    .setStemEnglishPossessive(true)
+                    .setName(generateSimpleName(i++))
+            ));
+
+        StepVerifier
+            .create(searchServiceClient.createIndex(index))
+            .assertNext(res -> assertAnalysisComponentsEqual(index, res))
+            .verifyComplete();
+        searchServiceClient.deleteIndex(index.getName()).block();
+
+        List<Index> splittedIndexWithSpecialDefaults = splitIndex(indexWithSpecialDefaults);
+        List<Index> splittedExpectedIndexWithSpecialDefaults = splitIndex(expectedIndexWithSpecialDefaults);
+        for (int j = 0; j < splittedIndexWithSpecialDefaults.size(); j++) {
+            Index expected = splittedExpectedIndexWithSpecialDefaults.get(j);
+
+            StepVerifier
+                .create(searchServiceClient.createIndex(expected))
+                .assertNext(res -> assertAnalysisComponentsEqual(expected, res))
+                .verifyComplete();
+            searchServiceClient.deleteIndex(expected.getName()).block();
+        }
     }
 
     @Override
