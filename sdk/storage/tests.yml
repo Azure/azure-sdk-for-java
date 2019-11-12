@@ -27,7 +27,7 @@ jobs:
         pwsh: |
           Write-Output "Installing Azurite"
           npm install -g azurite
-          Write-Ouptut "Azurite install complete"
+          Write-Output "Azurite install complete"
           Write-Output "Starting Azurite"
           Start-Process azurite --blobPort 11000 --queuePort 11001
           $azuriteStarted = $false
