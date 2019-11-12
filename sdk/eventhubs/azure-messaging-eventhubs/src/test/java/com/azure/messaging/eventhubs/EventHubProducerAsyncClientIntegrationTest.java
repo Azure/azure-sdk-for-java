@@ -166,4 +166,29 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             StepVerifier.create(producer.send(batch)).expectComplete().verify(TIMEOUT);
         }
     }
+
+    /**
+     * Sending with credentials.
+     */
+    @Test
+    public void sendWithCredentials() {
+        // Arrange
+        final EventData event = new EventData("body");
+        final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
+        final EventHubProducerAsyncClient client = createBuilder(true)
+            .buildAsyncProducer();
+
+        // Act & Assert
+        StepVerifier.create(client.getProperties())
+            .assertNext(properties -> {
+                Assertions.assertEquals(getEventHubName(), properties.getName());
+                Assertions.assertEquals(2, properties.getPartitionIds().length);
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        StepVerifier.create(client.send(event, options))
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
 }
