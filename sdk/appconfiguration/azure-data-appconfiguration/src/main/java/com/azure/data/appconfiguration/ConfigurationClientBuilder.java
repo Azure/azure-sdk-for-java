@@ -81,7 +81,7 @@ public final class ConfigurationClientBuilder {
     private static final String VERSION = "version";
     private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(
-        new RetryPolicyOptions(new ExponentialBackoff(),RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS));
+        new RetryPolicyOptions(new ExponentialBackoff(), RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS));
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
