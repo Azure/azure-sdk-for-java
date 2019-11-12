@@ -141,4 +141,12 @@ class APISpec extends Specification {
     static HttpClient getHttpClient() {
         return HttpClient.createDefault()
     }
+
+    def sleepIfLive(long milliseconds) {
+        if (testMode == TestMode.PLAYBACK) {
+            return;
+        }
+
+        sleep(milliseconds)
+    }
 }
