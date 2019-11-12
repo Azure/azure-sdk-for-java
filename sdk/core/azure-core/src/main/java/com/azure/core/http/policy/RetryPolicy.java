@@ -93,8 +93,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private boolean shouldRetry(HttpResponse response, int tryCount) {
-        return tryCount < retryPolicyOptions.getRetryStrategy().getMaxRetries() && retryPolicyOptions.getRetryStrategy()
-            .shouldRetry(response);
+        return tryCount < retryPolicyOptions.getRetryStrategy().getMaxRetries()
+            && retryPolicyOptions.getRetryStrategy().shouldRetry(response);
     }
 
     /**

@@ -80,6 +80,8 @@ public final class ConfigurationClientBuilder {
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(
+        new RetryPolicyOptions(new ExponentialBackoff(),RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS));
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
@@ -179,8 +181,7 @@ public final class ConfigurationClientBuilder {
         policies.add(new ConfigurationCredentialsPolicy(buildCredential));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(retryPolicy == null ? new RetryPolicy( new RetryPolicyOptions(new ExponentialBackoff(),
-            RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS)) : retryPolicy);
+        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
 
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
