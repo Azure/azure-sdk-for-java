@@ -2,24 +2,52 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.Configuration;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import org.junit.jupiter.api.BeforeAll;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+/**
+ * Unit test for construct a configuration client by using AAD token credential.
+ */
 public class AadCredentialTest extends TestBase {
+    private static ConfigurationClient client;
+    private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
+    static String connectionString;
+    static TokenCredential tokenCredential;
 
-    private ConfigurationAsyncClient client;
+    @BeforeEach
+    public void setup() throws InvalidKeyException, NoSuchAlgorithmException {
+        if (interceptorManager.isPlaybackMode()) {
+            connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
+            tokenCredential = null;
+        } else {
+            connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
+        }
 
-    @BeforeAll
-    public void setup() {
+        String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
         client = new ConfigurationClientBuilder()
-            .buildAsyncClient();
+            .credential(tokenCredential)
+            .endpoint(endpoint)
+            .buildClient();
     }
 
     @Test
-    public void addKey() {
-        ConfigurationSetting setting = client.addConfigurationSetting("shawn", null, "fang").block();
-        System.out.println(String.format("Setting: key = %s", setting.getKey()));
+    public void aadAuthenticationAzConfgClientTest() {
+        final String key = "newKey";
+        final String value = "newValue";
+
+        ConfigurationSetting addedSetting = client.setConfigurationSetting(key, null, value);
+        Assertions.assertEquals(addedSetting.getKey(), key);
+        Assertions.assertEquals(addedSetting.getValue(), value);
     }
 }

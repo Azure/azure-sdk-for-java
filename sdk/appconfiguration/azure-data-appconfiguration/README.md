@@ -135,6 +135,27 @@ ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .buildAsyncClient();
 ```
 
+You can also use `TokenCredential` to create a configuration client, such as AAD token. 
+If you using to AAD, make sure you have the endpoint of AppConfiguration service. You can find the end point from 
+connection string itself by looking for `endpoint={endpoint_value};`. You can get `TokenCredential` from other azure service
+such as [Azure Identity][azure_identity].
+
+```Java
+ConfigurationClient client = new ConfigurationClientBuilder()
+        .credential(tokenCredential)
+        .endpoint(endpoint)
+        .buildClient();
+```
+
+or
+
+```Java
+ConfigurationAsyncClient client = new ConfigurationClientBuilder()
+        .credential(tokenCredential)
+        .endpoint(endpoint)
+        .buildAsyncClient();
+```
+
 ## Key concepts
 
 ### Configuration Setting
@@ -310,6 +331,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [app_config_store]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-dotnet-core-app#create-an-app-configuration-store
 [azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
 [azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_identity]: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
