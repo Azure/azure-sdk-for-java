@@ -24,10 +24,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
-import com.azure.data.appconfiguration.implementation.ConfigurationClientSecretCredential;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -160,19 +158,19 @@ public final class ConfigurationClientBuilder {
             version != null ? version : ConfigurationServiceVersion.getLatest();
 
         // AAD token credential
-        TokenCredential tokenCredentialEnvVar = getTokenCredential(buildConfiguration);
-        if (tokenCredentialEnvVar != null) {
-            Objects.requireNonNull(endpoint);
-        }
-
+        TokenCredential tokenCredentialEnvVar = tokenCredential;
         // Connection string credential
-        ConfigurationClientCredentials configurationCredentials = getConfigurationCredentials(buildConfiguration);
+        ConfigurationClientCredentials configurationCredentials = null;
 
         // Endpoint
-        String buildEndpoint = getBuildEndpoint(configurationCredentials);
+        String buildEndpoint = endpoint;
+        if (tokenCredentialEnvVar == null) {
+            configurationCredentials = getConfigurationCredentials(buildConfiguration);
+            buildEndpoint = getBuildEndpoint(configurationCredentials);
+        }
         Objects.requireNonNull(buildEndpoint);
 
-        // pipeline
+        // Pipeline
         if (pipeline != null) {
             return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
         }
@@ -388,18 +386,6 @@ public final class ConfigurationClientBuilder {
         } catch (InvalidKeyException | NoSuchAlgorithmException ex) {
             return null;
         }
-    }
-
-    private TokenCredential getTokenCredential(Configuration configuration) {
-        final String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-        final String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
-        final String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-
-        if (CoreUtils.isNullOrEmpty(clientId) || CoreUtils.isNullOrEmpty(clientSecret)
-            || CoreUtils.isNullOrEmpty(tenantId)) {
-            return tokenCredential;
-        }
-        return new ConfigurationClientSecretCredential(tenantId, clientId, clientSecret, new IdentityClientOptions());
     }
 
     private String getBuildEndpoint(ConfigurationClientCredentials buildCredentials) {
