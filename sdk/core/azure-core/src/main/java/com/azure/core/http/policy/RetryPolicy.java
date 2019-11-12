@@ -34,7 +34,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * 'retry-after-ms' in {@link HttpResponse} header for calculating retry delay.
      */
     public RetryPolicy() {
-        this(new RetryPolicyOptions(RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS));
+        this(new RetryPolicyOptions(new ExponentialBackoff(), RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS));
     }
 
     /**
