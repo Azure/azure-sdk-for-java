@@ -156,13 +156,22 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
+    /**
+     * Sending with credentials.
+     */
     @Test
     public void sendWithCredentials() {
-        final EventHubAsyncClient client = createBuilder(true).buildAsyncClient();
+        // Arrange
+        final EventHubAsyncClient client = createBuilder(true)
+            .buildAsyncClient();
 
-        StepVerifier.create(client.getProperties()).assertNext(properties -> {
-            Assertions.assertEquals(getEventHubName(), properties.getName());
-            Assertions.assertEquals(2, properties.getPartitionIds().length);
-        }).expectComplete().verify(TIMEOUT);
+        // Act & Assert
+        StepVerifier.create(client.getProperties())
+            .assertNext(properties -> {
+                Assertions.assertEquals(getEventHubName(), properties.getName());
+                Assertions.assertEquals(2, properties.getPartitionIds().length);
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 }
