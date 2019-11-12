@@ -13,14 +13,12 @@ public class HttpLogOptionsTest {
     public void testMaxApplicationId() {
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
             () -> new HttpLogOptions().setApplicationId("AppId-0123456789012345678912345"));
-        assertEquals(thrown.getMessage(), "'applicationId' length cannot be greater than 24");
     }
 
     @Test
     public void testApplicationIdContainsSpace() {
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
             () -> new HttpLogOptions().setApplicationId("AppId 78912345"));
-        assertEquals(thrown.getMessage(), "'applicationId' must not contain a space.");
     }
 
     @Test

@@ -15,8 +15,12 @@ import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.URL;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserAgentTests {
     @Test
@@ -25,9 +29,9 @@ public class UserAgentTests {
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
-                    Assertions.assertEquals(
-                            request.getHeaders().getValue("User-Agent"),
-                            "AutoRest-Java");
+                    assertEquals(
+                        request.getHeaders().getValue("User-Agent"),
+                        "AutoRest-Java");
                     return Mono.just(new MockHttpResponse(request, 200));
                 }
             })
@@ -35,9 +39,9 @@ public class UserAgentTests {
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(
-                HttpMethod.GET, new URL("http://localhost"))).block();
+            HttpMethod.GET, new URL("http://localhost"))).block();
 
-        Assertions.assertEquals(200, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
@@ -47,7 +51,7 @@ public class UserAgentTests {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     String header = request.getHeaders().getValue("User-Agent");
-                    Assertions.assertEquals("Awesome", header);
+                    assertEquals("Awesome", header);
                     return Mono.just(new MockHttpResponse(request, 200));
                 }
             })
@@ -55,8 +59,8 @@ public class UserAgentTests {
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost"))).block();
-        Assertions.assertEquals(200, response.getStatusCode());
+            new URL("http://localhost"))).block();
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
@@ -78,9 +82,16 @@ public class UserAgentTests {
                 Configuration.NONE,
                 () -> "1.0"))
             .build();
-        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-            new URL("http://localhost"))).block();
-        Assertions.assertEquals(200, response.getStatusCode());
+
+        Mono<HttpResponse> response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost")));
+        StepVerifier.create(response)
+            .expectNextMatches(httpResponse -> {
+                assertEquals(200, httpResponse.getStatusCode());
+                assertTrue(httpResponse.getRequest().getHeaders().getValue("User-Agent").startsWith("azsdk"));
+                return true;
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -100,7 +111,7 @@ public class UserAgentTests {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     String header = request.getHeaders().getValue("User-Agent");
-                    Assertions.assertEquals(header, expectedHeader);
+                    assertEquals(header, expectedHeader);
                     return Mono.just(new MockHttpResponse(request, 200));
                 }
             })
@@ -111,8 +122,15 @@ public class UserAgentTests {
                 Configuration.NONE,
                 () -> "1.0"))
             .build();
-        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-            new URL("http://localhost"))).block();
-        Assertions.assertEquals(200, response.getStatusCode());
+
+        Mono<HttpResponse> response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost")));
+        StepVerifier.create(response)
+            .expectNextMatches(httpResponse -> {
+                assertEquals(200, httpResponse.getStatusCode());
+                assertEquals(expectedHeader, httpResponse.getRequest().getHeaders().getValue("User-Agent"));
+                return true;
+            })
+            .verifyComplete();
     }
 }
