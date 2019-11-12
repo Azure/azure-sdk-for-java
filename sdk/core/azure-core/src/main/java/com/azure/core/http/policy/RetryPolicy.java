@@ -5,15 +5,12 @@ package com.azure.core.http.policy;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
-import java.util.Objects;
-
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-
+import java.util.Objects;
 import com.azure.core.util.logging.ClientLogger;
-
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -33,6 +30,16 @@ public class RetryPolicy implements HttpPipelinePolicy {
      */
     public RetryPolicy() {
         this(new RetryPolicyOptions());
+    }
+
+    /**
+     * Creates a RetryPolicy with the provided {@link RetryStrategy}.
+     *
+     * @param retryStrategy The {@link RetryStrategy} used for retries.
+     */
+    public RetryPolicy(RetryStrategy retryStrategy) {
+        Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null");
+        this.retryPolicyOptions = new RetryPolicyOptions(retryStrategy);
     }
 
     /**
