@@ -70,9 +70,13 @@ public class ManagingDeletedCertificates {
 
         // We accidentally deleted the certificate. Let's recover it.
         // A deleted certificate can only be recovered if the key vault is soft-delete enabled.
-        KeyVaultCertificate certificate = certificateClient.beginRecoverDeletedCertificate("certificateName");
-        System.out.printf(" Recovered Deleted certificate with name %s and id %s", certificate.getProperties().getName(),
-            certificate.getProperties().getId());
+        SyncPoller<KeyVaultCertificate, Void> recoverCertPoller = certificateClient
+            .beginRecoverDeletedCertificate("certificateName");
+        // Recovered certificate is accessible as soon as polling beings
+        PollResponse<KeyVaultCertificate> recoverPollResponse = recoverCertPoller.poll();
+        System.out.printf(" Recovered Deleted certificate with name %s and id %s", recoverPollResponse.getValue()
+            .getProperties().getName(), recoverPollResponse.getValue().getProperties().getId());
+        recoverCertPoller.waitForCompletion();
 
         //To ensure certificate is recovered on server side.
         Thread.sleep(30000);
