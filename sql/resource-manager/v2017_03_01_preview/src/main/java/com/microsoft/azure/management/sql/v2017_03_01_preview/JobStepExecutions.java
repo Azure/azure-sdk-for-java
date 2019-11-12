@@ -9,8 +9,7 @@
 package com.microsoft.azure.management.sql.v2017_03_01_preview;
 
 import rx.Observable;
-
-import java.util.UUID;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.ExecutionJobJobAgentServerJobExecution;
 
 /**
  * Type representing JobStepExecutions.

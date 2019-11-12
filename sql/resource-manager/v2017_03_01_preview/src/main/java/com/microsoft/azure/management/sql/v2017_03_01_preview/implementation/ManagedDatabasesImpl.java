@@ -55,10 +55,14 @@ class ManagedDatabasesImpl extends WrapperImpl<ManagedDatabasesInner> implements
     public Observable<ManagedDatabase> getAsync(String resourceGroupName, String managedInstanceName, String databaseName) {
         ManagedDatabasesInner client = this.inner();
         return client.getAsync(resourceGroupName, managedInstanceName, databaseName)
-        .map(new Func1<ManagedDatabaseInner, ManagedDatabase>() {
+        .flatMap(new Func1<ManagedDatabaseInner, Observable<ManagedDatabase>>() {
             @Override
-            public ManagedDatabase call(ManagedDatabaseInner inner) {
-                return wrapManagedDatabaseModel(inner);
+            public Observable<ManagedDatabase> call(ManagedDatabaseInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ManagedDatabase)wrapManagedDatabaseModel(inner));
+                }
             }
        });
     }

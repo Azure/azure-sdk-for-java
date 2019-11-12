@@ -16,8 +16,6 @@ import rx.functions.Func1;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ExecutionJobJobAgentServerJobExecution;
 import com.microsoft.azure.Page;
 
-import java.util.UUID;
-
 class JobStepExecutionsImpl extends WrapperImpl<JobStepExecutionsInner> implements JobStepExecutions {
     private final SqlManager manager;
 
@@ -39,7 +37,7 @@ class JobStepExecutionsImpl extends WrapperImpl<JobStepExecutionsInner> implemen
         String serverName = IdParsingUtils.getValueFromIdByName(id, "servers");
         String jobAgentName = IdParsingUtils.getValueFromIdByName(id, "jobAgents");
         String jobName = IdParsingUtils.getValueFromIdByName(id, "jobs");
-        UUID jobExecutionId = UUID.fromString(IdParsingUtils.getValueFromIdByName(id, "executions"));
+        String jobExecutionId = UUID.fromString(IdParsingUtils.getValueFromIdByName(id, "executions"));
         String stepName = IdParsingUtils.getValueFromIdByName(id, "steps");
         JobStepExecutionsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, stepName);
@@ -49,10 +47,14 @@ class JobStepExecutionsImpl extends WrapperImpl<JobStepExecutionsInner> implemen
     public Observable<ExecutionJobJobAgentServerJobExecution> getAsync(String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId, String stepName) {
         JobStepExecutionsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, stepName)
-        .map(new Func1<JobExecutionInner, ExecutionJobJobAgentServerJobExecution>() {
+        .flatMap(new Func1<JobExecutionInner, Observable<ExecutionJobJobAgentServerJobExecution>>() {
             @Override
-            public ExecutionJobJobAgentServerJobExecution call(JobExecutionInner inner) {
-                return wrapExecutionJobJobAgentServerJobExecutionModel(inner);
+            public Observable<ExecutionJobJobAgentServerJobExecution> call(JobExecutionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ExecutionJobJobAgentServerJobExecution)wrapExecutionJobJobAgentServerJobExecutionModel(inner));
+                }
             }
        });
     }

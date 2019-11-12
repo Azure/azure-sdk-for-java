@@ -64,10 +64,14 @@ class JobCredentialsImpl extends WrapperImpl<JobCredentialsInner> implements Job
     public Observable<JobCredential> getAsync(String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
         JobCredentialsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, jobAgentName, credentialName)
-        .map(new Func1<JobCredentialInner, JobCredential>() {
+        .flatMap(new Func1<JobCredentialInner, Observable<JobCredential>>() {
             @Override
-            public JobCredential call(JobCredentialInner inner) {
-                return wrapModel(inner);
+            public Observable<JobCredential> call(JobCredentialInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((JobCredential)wrapModel(inner));
+                }
             }
        });
     }

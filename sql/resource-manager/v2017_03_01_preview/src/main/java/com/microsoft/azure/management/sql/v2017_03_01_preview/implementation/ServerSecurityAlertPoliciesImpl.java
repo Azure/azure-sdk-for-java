@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ServerSecurityAlertPolicies;
 import rx.Observable;
 import rx.functions.Func1;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ServerSecurityAlertPolicy;
 
 class ServerSecurityAlertPoliciesImpl extends WrapperImpl<ServerSecurityAlertPoliciesInner> implements ServerSecurityAlertPolicies {
@@ -41,13 +42,35 @@ class ServerSecurityAlertPoliciesImpl extends WrapperImpl<ServerSecurityAlertPol
     }
 
     @Override
-    public Observable<ServerSecurityAlertPolicy> getAsync(String resourceGroupName, String serverName) {
+    public Observable<ServerSecurityAlertPolicy> listByServerAsync(final String resourceGroupName, final String serverName) {
         ServerSecurityAlertPoliciesInner client = this.inner();
-        return client.getAsync(resourceGroupName, serverName)
+        return client.listByServerAsync(resourceGroupName, serverName)
+        .flatMapIterable(new Func1<Page<ServerSecurityAlertPolicyInner>, Iterable<ServerSecurityAlertPolicyInner>>() {
+            @Override
+            public Iterable<ServerSecurityAlertPolicyInner> call(Page<ServerSecurityAlertPolicyInner> page) {
+                return page.items();
+            }
+        })
         .map(new Func1<ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicy>() {
             @Override
             public ServerSecurityAlertPolicy call(ServerSecurityAlertPolicyInner inner) {
                 return wrapModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Observable<ServerSecurityAlertPolicy> getAsync(String resourceGroupName, String serverName) {
+        ServerSecurityAlertPoliciesInner client = this.inner();
+        return client.getAsync(resourceGroupName, serverName)
+        .flatMap(new Func1<ServerSecurityAlertPolicyInner, Observable<ServerSecurityAlertPolicy>>() {
+            @Override
+            public Observable<ServerSecurityAlertPolicy> call(ServerSecurityAlertPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerSecurityAlertPolicy)wrapModel(inner));
+                }
             }
        });
     }

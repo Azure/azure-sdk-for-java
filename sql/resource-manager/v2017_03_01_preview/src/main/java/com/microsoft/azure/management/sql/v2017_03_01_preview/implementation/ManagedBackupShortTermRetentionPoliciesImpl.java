@@ -14,7 +14,7 @@ import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedBackupShort
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedBackupShortTermRetentionPolicy;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy;
 
 class ManagedBackupShortTermRetentionPoliciesImpl extends WrapperImpl<ManagedBackupShortTermRetentionPoliciesInner> implements ManagedBackupShortTermRetentionPolicies {
     private final SqlManager manager;
@@ -29,20 +29,20 @@ class ManagedBackupShortTermRetentionPoliciesImpl extends WrapperImpl<ManagedBac
     }
 
     @Override
-    public ManagedBackupShortTermRetentionPolicyImpl define(String name) {
+    public DatabasisManagedInstanceManagedBackupShortTermRetentionPolicyImpl define(String name) {
         return wrapModel(name);
     }
 
-    private ManagedBackupShortTermRetentionPolicyImpl wrapModel(ManagedBackupShortTermRetentionPolicyInner inner) {
-        return  new ManagedBackupShortTermRetentionPolicyImpl(inner, manager());
+    private DatabasisManagedInstanceManagedBackupShortTermRetentionPolicyImpl wrapModel(ManagedBackupShortTermRetentionPolicyInner inner) {
+        return  new DatabasisManagedInstanceManagedBackupShortTermRetentionPolicyImpl(inner, manager());
     }
 
-    private ManagedBackupShortTermRetentionPolicyImpl wrapModel(String name) {
-        return new ManagedBackupShortTermRetentionPolicyImpl(name, this.manager());
+    private DatabasisManagedInstanceManagedBackupShortTermRetentionPolicyImpl wrapModel(String name) {
+        return new DatabasisManagedInstanceManagedBackupShortTermRetentionPolicyImpl(name, this.manager());
     }
 
     @Override
-    public Observable<ManagedBackupShortTermRetentionPolicy> listByDatabaseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName) {
+    public Observable<DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy> listByDatabaseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName) {
         ManagedBackupShortTermRetentionPoliciesInner client = this.inner();
         return client.listByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName)
         .flatMapIterable(new Func1<Page<ManagedBackupShortTermRetentionPolicyInner>, Iterable<ManagedBackupShortTermRetentionPolicyInner>>() {
@@ -51,22 +51,26 @@ class ManagedBackupShortTermRetentionPoliciesImpl extends WrapperImpl<ManagedBac
                 return page.items();
             }
         })
-        .map(new Func1<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicy>() {
+        .map(new Func1<ManagedBackupShortTermRetentionPolicyInner, DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy>() {
             @Override
-            public ManagedBackupShortTermRetentionPolicy call(ManagedBackupShortTermRetentionPolicyInner inner) {
+            public DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy call(ManagedBackupShortTermRetentionPolicyInner inner) {
                 return wrapModel(inner);
             }
         });
     }
 
     @Override
-    public Observable<ManagedBackupShortTermRetentionPolicy> getAsync(String resourceGroupName, String managedInstanceName, String databaseName) {
+    public Observable<DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy> getAsync(String resourceGroupName, String managedInstanceName, String databaseName) {
         ManagedBackupShortTermRetentionPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, managedInstanceName, databaseName)
-        .map(new Func1<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicy>() {
+        .flatMap(new Func1<ManagedBackupShortTermRetentionPolicyInner, Observable<DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy>>() {
             @Override
-            public ManagedBackupShortTermRetentionPolicy call(ManagedBackupShortTermRetentionPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy> call(ManagedBackupShortTermRetentionPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy)wrapModel(inner));
+                }
             }
        });
     }
