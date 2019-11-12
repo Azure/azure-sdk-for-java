@@ -43,8 +43,9 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
      */
     @Override
     public TokenManager getTokenManager(Mono<CBSNode> cbsNodeMono, String resource) {
-        final String audience = getResourceString(resource);
-        return new ActiveClientTokenManager(cbsNodeMono, audience);
+        final String scopes = getResourceString(resource);
+        final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, host, resource);
+        return new ActiveClientTokenManager(cbsNodeMono, tokenAudience, scopes);
     }
 
     /**
