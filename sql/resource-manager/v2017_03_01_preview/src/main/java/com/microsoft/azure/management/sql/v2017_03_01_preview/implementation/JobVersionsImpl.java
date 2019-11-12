@@ -54,10 +54,14 @@ class JobVersionsImpl extends WrapperImpl<JobVersionsInner> implements JobVersio
     public Observable<JobVersion> getAsync(String resourceGroupName, String serverName, String jobAgentName, String jobName, int jobVersion) {
         JobVersionsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion)
-        .map(new Func1<JobVersionInner, JobVersion>() {
+        .flatMap(new Func1<JobVersionInner, Observable<JobVersion>>() {
             @Override
-            public JobVersion call(JobVersionInner inner) {
-                return wrapModel(inner);
+            public Observable<JobVersion> call(JobVersionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((JobVersion)wrapModel(inner));
+                }
             }
        });
     }

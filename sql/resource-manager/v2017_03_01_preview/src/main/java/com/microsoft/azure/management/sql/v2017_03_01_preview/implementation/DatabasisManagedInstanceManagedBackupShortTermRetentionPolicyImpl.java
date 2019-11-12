@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.management.sql.v2017_03_01_preview.implementation;
 
-import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedBackupShortTermRetentionPolicy;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
-class ManagedBackupShortTermRetentionPolicyImpl extends CreatableUpdatableImpl<ManagedBackupShortTermRetentionPolicy, ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyImpl> implements ManagedBackupShortTermRetentionPolicy, ManagedBackupShortTermRetentionPolicy.Definition, ManagedBackupShortTermRetentionPolicy.Update {
+class DatabasisManagedInstanceManagedBackupShortTermRetentionPolicyImpl extends CreatableUpdatableImpl<DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy, ManagedBackupShortTermRetentionPolicyInner, DatabasisManagedInstanceManagedBackupShortTermRetentionPolicyImpl> implements DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy, DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy.Definition, DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy.Update {
     private final SqlManager manager;
     private String resourceGroupName;
     private String managedInstanceName;
@@ -20,7 +20,7 @@ class ManagedBackupShortTermRetentionPolicyImpl extends CreatableUpdatableImpl<M
     private Integer cretentionDays;
     private Integer uretentionDays;
 
-    ManagedBackupShortTermRetentionPolicyImpl(String name, SqlManager manager) {
+    DatabasisManagedInstanceManagedBackupShortTermRetentionPolicyImpl(String name, SqlManager manager) {
         super(name, new ManagedBackupShortTermRetentionPolicyInner());
         this.manager = manager;
         // Set resource name
@@ -28,7 +28,7 @@ class ManagedBackupShortTermRetentionPolicyImpl extends CreatableUpdatableImpl<M
         //
     }
 
-    ManagedBackupShortTermRetentionPolicyImpl(ManagedBackupShortTermRetentionPolicyInner inner, SqlManager manager) {
+    DatabasisManagedInstanceManagedBackupShortTermRetentionPolicyImpl(ManagedBackupShortTermRetentionPolicyInner inner, SqlManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -46,14 +46,14 @@ class ManagedBackupShortTermRetentionPolicyImpl extends CreatableUpdatableImpl<M
     }
 
     @Override
-    public Observable<ManagedBackupShortTermRetentionPolicy> createResourceAsync() {
+    public Observable<DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy> createResourceAsync() {
         ManagedBackupShortTermRetentionPoliciesInner client = this.manager().inner().managedBackupShortTermRetentionPolicies();
         return client.createOrUpdateAsync(this.resourceGroupName, this.managedInstanceName, this.databaseName, this.cretentionDays)
             .map(innerToFluentMap(this));
     }
 
     @Override
-    public Observable<ManagedBackupShortTermRetentionPolicy> updateResourceAsync() {
+    public Observable<DatabasisManagedInstanceManagedBackupShortTermRetentionPolicy> updateResourceAsync() {
         ManagedBackupShortTermRetentionPoliciesInner client = this.manager().inner().managedBackupShortTermRetentionPolicies();
         return client.updateAsync(this.resourceGroupName, this.managedInstanceName, this.databaseName, this.uretentionDays)
             .map(innerToFluentMap(this));
@@ -92,7 +92,7 @@ class ManagedBackupShortTermRetentionPolicyImpl extends CreatableUpdatableImpl<M
     }
 
     @Override
-    public ManagedBackupShortTermRetentionPolicyImpl withExistingDatabasis(String resourceGroupName, String managedInstanceName, String databaseName) {
+    public DatabasisManagedInstanceManagedBackupShortTermRetentionPolicyImpl withExistingDatabasis(String resourceGroupName, String managedInstanceName, String databaseName) {
         this.resourceGroupName = resourceGroupName;
         this.managedInstanceName = managedInstanceName;
         this.databaseName = databaseName;
@@ -100,7 +100,7 @@ class ManagedBackupShortTermRetentionPolicyImpl extends CreatableUpdatableImpl<M
     }
 
     @Override
-    public ManagedBackupShortTermRetentionPolicyImpl withRetentionDays(Integer retentionDays) {
+    public DatabasisManagedInstanceManagedBackupShortTermRetentionPolicyImpl withRetentionDays(Integer retentionDays) {
         if (isInCreateMode()) {
             this.cretentionDays = retentionDays;
         } else {

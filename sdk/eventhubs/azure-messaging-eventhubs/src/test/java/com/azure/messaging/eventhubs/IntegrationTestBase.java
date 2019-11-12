@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.implementation;
+package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
@@ -13,11 +13,8 @@ import com.azure.core.implementation.TestBase;
 import com.azure.core.implementation.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.messaging.eventhubs.EventHubProducerClient;
-import com.azure.messaging.eventhubs.TestUtils;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
@@ -49,7 +46,9 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
-    private static final String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
+
+    private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
+    private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
 
     private ConnectionStringProperties properties;
     private Scheduler scheduler;
@@ -92,11 +91,11 @@ public abstract class IntegrationTestBase extends TestBase {
             return TestMode.PLAYBACK;
         }
 
-        return CoreUtils.isNullOrEmpty(CONNECTION_STRING) ? TestMode.PLAYBACK : TestMode.RECORD;
+        return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
     }
 
     protected String getConnectionString() {
-        return CONNECTION_STRING;
+        return System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
     }
 
     /**
@@ -137,16 +136,51 @@ public abstract class IntegrationTestBase extends TestBase {
         return new ProxyConfiguration(authenticationType, proxy, username, password);
     }
 
+    public String getFullyQualifiedDomainName() {
+        return System.getenv(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME);
+    }
+
+    public String getEventHubName() {
+        return System.getenv(AZURE_EVENTHUBS_EVENT_HUB_NAME);
+    }
+
     /**
-     * Creates a new instance of {@link EventHubClientBuilder} with the default integration test settings.
+     * Creates a new instance of {@link EventHubClientBuilder} with the default integration test settings and uses a
+     * connection string to authenticate.
      */
     protected EventHubClientBuilder createBuilder() {
-        return new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+        return createBuilder(false);
+    }
+
+    /**
+     * Creates a new instance of {@link EventHubClientBuilder} with the default integration test settings and uses a
+     * connection string to authenticate if {@code useCredentials} is false. Otherwise, uses a service principal through
+     * {@link com.azure.identity.ClientSecretCredential}.
+     */
+    protected EventHubClientBuilder createBuilder(boolean useCredentials) {
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
             .proxyConfiguration(ProxyConfiguration.SYSTEM_DEFAULTS)
             .scheduler(scheduler)
             .retry(RETRY_OPTIONS)
             .transportType(TransportType.AMQP);
+
+        if (useCredentials) {
+            final String fqdn = getFullyQualifiedDomainName();
+            final String eventHubName = getEventHubName();
+
+            Assumptions.assumeTrue(fqdn != null && !fqdn.isEmpty(), AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME + " variable needs to be set when using credentials.");
+            Assumptions.assumeTrue(eventHubName != null && !eventHubName.isEmpty(), AZURE_EVENTHUBS_EVENT_HUB_NAME + " variable needs to be set when using credentials.");
+
+            final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
+                .clientId(System.getenv("AZURE_CLIENT_ID"))
+                .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
+                .tenantId(System.getenv("AZURE_TENANT_ID"))
+                .build();
+
+            return builder.credential(fqdn, eventHubName, clientSecretCredential);
+        } else {
+            return builder.connectionString(getConnectionString());
+        }
     }
 
     protected ConnectionStringProperties getConnectionStringProperties() {

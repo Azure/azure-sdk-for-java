@@ -14,7 +14,7 @@ import java.util.Objects;
  * Generates the correct resource scope to access Azure messaging resources given the authorization type.
  */
 public class AzureTokenManagerProvider implements TokenManagerProvider {
-    private static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
+    static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
 
     private final ClientLogger logger = new ClientLogger(AzureTokenManagerProvider.class);
     private final CBSAuthorizationType authorizationType;
@@ -43,8 +43,9 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
      */
     @Override
     public TokenManager getTokenManager(Mono<CBSNode> cbsNodeMono, String resource) {
-        final String audience = getResourceString(resource);
-        return new ActiveClientTokenManager(cbsNodeMono, audience);
+        final String scopes = getResourceString(resource);
+        final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, host, resource);
+        return new ActiveClientTokenManager(cbsNodeMono, tokenAudience, scopes);
     }
 
     /**

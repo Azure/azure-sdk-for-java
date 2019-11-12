@@ -23,6 +23,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
+import com.azure.messaging.eventhubs.IntegrationTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -101,7 +102,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEntityPath());
 
         // Act & Assert
-        StepVerifier.create(cbsChannel.authorize(tokenAudience))
+        StepVerifier.create(cbsChannel.authorize(tokenAudience, tokenAudience))
             .assertNext(expiration -> OffsetDateTime.now().isBefore(expiration))
             .verifyComplete();
     }
@@ -125,7 +126,7 @@ public class CBSChannelTest extends IntegrationTestBase {
             new RetryOptions().setTryTimeout(Duration.ofMinutes(5)));
 
         // Act & Assert
-        StepVerifier.create(node.authorize(tokenAudience))
+        StepVerifier.create(node.authorize(tokenAudience, tokenAudience))
             .expectErrorSatisfies(error -> {
                 Assertions.assertTrue(error instanceof AmqpException);
 
