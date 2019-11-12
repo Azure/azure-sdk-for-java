@@ -107,6 +107,10 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
         );
     }
 
+    protected DataSource createTestDataSource() {
+        return createTestSqlDataSource(null, null);
+    }
+
     protected DataSource createTestTableStorageDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
         return DataSources.azureTableStorage(
             "azs-java-test-tablestorage",

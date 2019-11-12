@@ -6,13 +6,14 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.search.models.DataContainer;
 import com.azure.search.models.DataSource;
-import com.azure.search.models.DataSourceCredentials;
-import com.azure.search.models.DataSourceType;
 import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
-import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.models.SqlIntegratedChangeTrackingPolicy;
+import com.azure.search.models.DataSourceCredentials;
+import com.azure.search.models.DataSourceType;
+import com.azure.search.models.RequestOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -84,17 +85,24 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
     @Override
     public void canUpdateDataSource() {
-        DataSource initial = createTestBlobDataSource(null);
+        DataSource initial = createTestDataSource();
 
         // Create the data source
         client.createOrUpdateDataSource(initial).block();
 
-        DataSource expected = updateDatasource(initial);
-        DataSource actual = client.createOrUpdateDataSource(expected).block();
+        DataSource updatedExpected = createTestDataSource()
+            .setName(initial.getName())
+            .setContainer(new DataContainer().setName("somethingdifferent"))
+            .setDescription("somethingdifferent")
+            .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("rowversion"))
+            .setDataDeletionDetectionPolicy(new SoftDeleteColumnDeletionDetectionPolicy().setSoftDeleteColumnName("isDeleted"));
 
-        removeConnectionString(expected);
-
-        assertDataSourcesEqual(expected, actual);
+        StepVerifier.create(client.createOrUpdateDataSource(updatedExpected))
+            .assertNext(updatedActual -> {
+                updatedExpected.getCredentials().setConnectionString(null); // Create doesn't return connection strings.
+                assertDataSourcesEqual(updatedExpected, updatedActual);
+            })
+            .verifyComplete();
     }
 
     @Override

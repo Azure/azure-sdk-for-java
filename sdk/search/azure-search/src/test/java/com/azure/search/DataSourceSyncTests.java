@@ -8,13 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.search.models.DataContainer;
 import com.azure.search.models.DataSource;
-import com.azure.search.models.DataSourceCredentials;
-import com.azure.search.models.DataSourceType;
 import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
-import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.models.SqlIntegratedChangeTrackingPolicy;
+import com.azure.search.models.DataSourceCredentials;
+import com.azure.search.models.DataSourceType;
+import com.azure.search.models.RequestOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -100,17 +101,22 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
     @Override
     public void canUpdateDataSource() {
-        DataSource initial = createTestBlobDataSource(null);
+        DataSource initial = createTestDataSource();
 
         // Create the data source
         client.createOrUpdateDataSource(initial);
 
-        DataSource expected = updateDatasource(initial);
-        DataSource actual = client.createOrUpdateDataSource(expected);
+        DataSource updatedExpected = createTestDataSource()
+            .setName(initial.getName())
+            .setContainer(new DataContainer().setName("somethingdifferent"))
+            .setDescription("somethingdifferent")
+            .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("rowversion"))
+            .setDataDeletionDetectionPolicy(new SoftDeleteColumnDeletionDetectionPolicy().setSoftDeleteColumnName("isDeleted"));
 
-        removeConnectionString(expected);
+        DataSource updatedActual = client.createOrUpdateDataSource(updatedExpected);
 
-        assertDataSourcesEqual(expected, actual);
+        updatedExpected.getCredentials().setConnectionString(null); // Create doesn't return connection strings.
+        assertDataSourcesEqual(updatedExpected, updatedActual);
     }
 
     @Override
