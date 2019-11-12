@@ -21,10 +21,10 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.qpid.proton.message.Message;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -82,7 +82,7 @@ public class EventHubConsumerClientTest {
     private EventHubConsumerClient consumer;
     private EventHubConnection linkProvider;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
@@ -107,7 +107,7 @@ public class EventHubConsumerClientTest {
         consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
         consumer.close();
@@ -133,10 +133,10 @@ public class EventHubConsumerClientTest {
         final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, numberToReceive);
 
         // Assert
-        Assert.assertNotNull(receive);
+        Assertions.assertNotNull(receive);
 
         for (PartitionEvent event : receive) {
-            Assert.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties());
+            Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties());
         }
     }
 
@@ -159,15 +159,15 @@ public class EventHubConsumerClientTest {
         final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, numberOfEvents);
 
         // Assert
-        Assert.assertNotNull(receive);
+        Assertions.assertNotNull(receive);
 
         for (PartitionEvent event : receive) {
             final LastEnqueuedEventProperties properties = event.getPartitionContext().getLastEnqueuedEventProperties();
-            Assert.assertNotNull(properties);
-            Assert.assertNull(properties.getOffset());
-            Assert.assertNull(properties.getSequenceNumber());
-            Assert.assertNull(properties.getRetrievalTime());
-            Assert.assertNull(properties.getEnqueuedTime());
+            Assertions.assertNotNull(properties);
+            Assertions.assertNull(properties.getOffset());
+            Assertions.assertNull(properties.getSequenceNumber());
+            Assertions.assertNull(properties.getRetrievalTime());
+            Assertions.assertNull(properties.getEnqueuedTime());
         }
     }
 
@@ -195,7 +195,7 @@ public class EventHubConsumerClientTest {
         // Assert
         semaphore.acquire();
         final IterableStream<PartitionEvent> receive = received.get();
-        Assert.assertNotNull(receive);
+        Assertions.assertNotNull(receive);
 
         final Map<Integer, PartitionEvent> actual = receive.stream()
             .collect(Collectors.toMap(e -> {
@@ -203,10 +203,10 @@ public class EventHubConsumerClientTest {
                 return Integer.valueOf(value);
             }, Function.identity()));
 
-        Assert.assertEquals(numberToReceive, actual.size());
+        Assertions.assertEquals(numberToReceive, actual.size());
 
         IntStream.range(0, numberToReceive).forEachOrdered(number -> {
-            Assert.assertTrue(actual.containsKey(number));
+            Assertions.assertTrue(actual.containsKey(number));
         });
     }
 
@@ -232,16 +232,16 @@ public class EventHubConsumerClientTest {
         final Map<Integer, PartitionEvent> secondActual = receive2.stream()
             .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
 
-        Assert.assertEquals(firstReceive, firstActual.size());
-        Assert.assertEquals(secondReceive, secondActual.size());
+        Assertions.assertEquals(firstReceive, firstActual.size());
+        Assertions.assertEquals(secondReceive, secondActual.size());
 
         int startingIndex = 0;
         int endIndex = firstReceive;
-        IntStream.range(startingIndex, endIndex).forEachOrdered(number -> Assert.assertTrue(firstActual.containsKey(number)));
+        IntStream.range(startingIndex, endIndex).forEachOrdered(number -> Assertions.assertTrue(firstActual.containsKey(number)));
 
         startingIndex += firstReceive;
         endIndex += secondReceive;
-        IntStream.range(startingIndex, endIndex).forEachOrdered(number -> Assert.assertTrue(secondActual.containsKey(number)));
+        IntStream.range(startingIndex, endIndex).forEachOrdered(number -> Assertions.assertTrue(secondActual.containsKey(number)));
     }
 
     /**
@@ -263,9 +263,9 @@ public class EventHubConsumerClientTest {
         final Map<Integer, PartitionEvent> firstActual = receive.stream()
             .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
 
-        Assert.assertEquals(numberOfEvents, firstActual.size());
+        Assertions.assertEquals(numberOfEvents, firstActual.size());
         IntStream.range(0, numberOfEvents)
-            .forEachOrdered(number -> Assert.assertTrue(firstActual.containsKey(number)));
+            .forEachOrdered(number -> Assertions.assertTrue(firstActual.containsKey(number)));
     }
 
     @Test
@@ -284,10 +284,10 @@ public class EventHubConsumerClientTest {
             .consumerOptions(options)
             .buildConsumer();
 
-        Assert.assertEquals("dummy-event-hub", consumer.getEventHubName());
-        Assert.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
-        Assert.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
-        Assert.assertSame(position, consumer.getStartingPosition());
+        Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
+        Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
+        Assertions.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
+        Assertions.assertSame(position, consumer.getStartingPosition());
     }
 
     private static Integer getPositionId(PartitionEvent partitionEvent) {

@@ -1142,7 +1142,7 @@ class BlockBlobAPITest extends APISpec {
         bac.upload(defaultFlux, defaultDataSize).block()
         match = setupBlobMatchCondition(bac, match)
         leaseID = setupBlobLeaseCondition(bac, leaseID)
-        def accessConditions = new BlobRequestConditions()
+        def requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
@@ -1151,7 +1151,7 @@ class BlockBlobAPITest extends APISpec {
 
         expect:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, null, null)
-        blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, accessConditions).block().getStatusCode() == 201
+        blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, requestConditions).block().getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1171,7 +1171,7 @@ class BlockBlobAPITest extends APISpec {
         bac.upload(defaultFlux, defaultDataSize).block()
         noneMatch = setupBlobMatchCondition(bac, noneMatch)
         leaseID = setupBlobLeaseCondition(bac, leaseID)
-        def accessConditions = new BlobRequestConditions()
+        def requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
@@ -1180,7 +1180,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, null, null)
-        blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, accessConditions).block()
+        blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, requestConditions).block()
 
         then:
         def e = thrown(BlobStorageException)
@@ -1204,13 +1204,13 @@ class BlockBlobAPITest extends APISpec {
         setup:
         bac.upload(defaultFlux, defaultDataSize).block()
         def leaseID = setupBlobLeaseCondition(bac, garbageLeaseID)
-        def accessConditions = new BlobRequestConditions().setLeaseId(leaseID)
+        def requestConditions = new BlobRequestConditions().setLeaseId(leaseID)
 
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize as int,
             numBuffers as int, null)
         blobac.uploadWithResponse(Flux.just(getRandomData(dataLength as int)), parallelTransferOptions, null, null,
-            null, accessConditions).block()
+            null, requestConditions).block()
 
         then:
         thrown(BlobStorageException)

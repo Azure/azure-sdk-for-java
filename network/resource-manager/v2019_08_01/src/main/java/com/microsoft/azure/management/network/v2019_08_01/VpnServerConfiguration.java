@@ -46,9 +46,19 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
     String provisioningState();
 
     /**
+     * @return the radiusClientRootCertificates value.
+     */
+    List<VpnServerConfigRadiusClientRootCertificate> radiusClientRootCertificates();
+
+    /**
      * @return the radiusServerAddress value.
      */
     String radiusServerAddress();
+
+    /**
+     * @return the radiusServerRootCertificates value.
+     */
+    List<VpnServerConfigRadiusServerRootCertificate> radiusServerRootCertificates();
 
     /**
      * @return the radiusServerSecret value.
@@ -66,19 +76,19 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
     List<IpsecPolicy> vpnClientIpsecPolicies();
 
     /**
+     * @return the vpnClientRevokedCertificates value.
+     */
+    List<VpnServerConfigVpnClientRevokedCertificate> vpnClientRevokedCertificates();
+
+    /**
+     * @return the vpnClientRootCertificates value.
+     */
+    List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates();
+
+    /**
      * @return the vpnProtocols value.
      */
     List<VpnGatewayTunnelingProtocol> vpnProtocols();
-
-    /**
-     * @return the vpnServerConfigRadiusClientRootCertificates value.
-     */
-    List<VpnServerConfigRadiusClientRootCertificate> vpnServerConfigRadiusClientRootCertificates();
-
-    /**
-     * @return the vpnServerConfigRadiusServerRootCertificates value.
-     */
-    List<VpnServerConfigRadiusServerRootCertificate> vpnServerConfigRadiusServerRootCertificates();
 
     /**
      * @return the vpnServerConfigurationName value.
@@ -89,16 +99,6 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
      * @return the vpnServerConfigurationPropertiesEtag value.
      */
     String vpnServerConfigurationPropertiesEtag();
-
-    /**
-     * @return the vpnServerConfigVpnClientRevokedCertificates value.
-     */
-    List<VpnServerConfigVpnClientRevokedCertificate> vpnServerConfigVpnClientRevokedCertificates();
-
-    /**
-     * @return the vpnServerConfigVpnClientRootCertificates value.
-     */
-    List<VpnServerConfigVpnClientRootCertificate> vpnServerConfigVpnClientRootCertificates();
 
     /**
      * The entirety of the VpnServerConfiguration definition.
@@ -135,6 +135,18 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
         }
 
         /**
+         * The stage of the vpnserverconfiguration definition allowing to specify RadiusClientRootCertificates.
+         */
+        interface WithRadiusClientRootCertificates {
+            /**
+             * Specifies radiusClientRootCertificates.
+             * @param radiusClientRootCertificates Radius client root certificate of VpnServerConfiguration
+             * @return the next definition stage
+             */
+            WithCreate withRadiusClientRootCertificates(List<VpnServerConfigRadiusClientRootCertificate> radiusClientRootCertificates);
+        }
+
+        /**
          * The stage of the vpnserverconfiguration definition allowing to specify RadiusServerAddress.
          */
         interface WithRadiusServerAddress {
@@ -144,6 +156,18 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
              * @return the next definition stage
              */
             WithCreate withRadiusServerAddress(String radiusServerAddress);
+        }
+
+        /**
+         * The stage of the vpnserverconfiguration definition allowing to specify RadiusServerRootCertificates.
+         */
+        interface WithRadiusServerRootCertificates {
+            /**
+             * Specifies radiusServerRootCertificates.
+             * @param radiusServerRootCertificates Radius Server root certificate of VpnServerConfiguration
+             * @return the next definition stage
+             */
+            WithCreate withRadiusServerRootCertificates(List<VpnServerConfigRadiusServerRootCertificate> radiusServerRootCertificates);
         }
 
         /**
@@ -183,6 +207,30 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
         }
 
         /**
+         * The stage of the vpnserverconfiguration definition allowing to specify VpnClientRevokedCertificates.
+         */
+        interface WithVpnClientRevokedCertificates {
+            /**
+             * Specifies vpnClientRevokedCertificates.
+             * @param vpnClientRevokedCertificates VPN client revoked certificate of VpnServerConfiguration
+             * @return the next definition stage
+             */
+            WithCreate withVpnClientRevokedCertificates(List<VpnServerConfigVpnClientRevokedCertificate> vpnClientRevokedCertificates);
+        }
+
+        /**
+         * The stage of the vpnserverconfiguration definition allowing to specify VpnClientRootCertificates.
+         */
+        interface WithVpnClientRootCertificates {
+            /**
+             * Specifies vpnClientRootCertificates.
+             * @param vpnClientRootCertificates VPN client root certificate of VpnServerConfiguration
+             * @return the next definition stage
+             */
+            WithCreate withVpnClientRootCertificates(List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates);
+        }
+
+        /**
          * The stage of the vpnserverconfiguration definition allowing to specify VpnProtocols.
          */
         interface WithVpnProtocols {
@@ -192,30 +240,6 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
              * @return the next definition stage
              */
             WithCreate withVpnProtocols(List<VpnGatewayTunnelingProtocol> vpnProtocols);
-        }
-
-        /**
-         * The stage of the vpnserverconfiguration definition allowing to specify VpnServerConfigRadiusClientRootCertificates.
-         */
-        interface WithVpnServerConfigRadiusClientRootCertificates {
-            /**
-             * Specifies vpnServerConfigRadiusClientRootCertificates.
-             * @param vpnServerConfigRadiusClientRootCertificates Radius client root certificate of VpnServerConfiguration
-             * @return the next definition stage
-             */
-            WithCreate withVpnServerConfigRadiusClientRootCertificates(List<VpnServerConfigRadiusClientRootCertificate> vpnServerConfigRadiusClientRootCertificates);
-        }
-
-        /**
-         * The stage of the vpnserverconfiguration definition allowing to specify VpnServerConfigRadiusServerRootCertificates.
-         */
-        interface WithVpnServerConfigRadiusServerRootCertificates {
-            /**
-             * Specifies vpnServerConfigRadiusServerRootCertificates.
-             * @param vpnServerConfigRadiusServerRootCertificates Radius Server root certificate of VpnServerConfiguration
-             * @return the next definition stage
-             */
-            WithCreate withVpnServerConfigRadiusServerRootCertificates(List<VpnServerConfigRadiusServerRootCertificate> vpnServerConfigRadiusServerRootCertificates);
         }
 
         /**
@@ -243,41 +267,17 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
         }
 
         /**
-         * The stage of the vpnserverconfiguration definition allowing to specify VpnServerConfigVpnClientRevokedCertificates.
-         */
-        interface WithVpnServerConfigVpnClientRevokedCertificates {
-            /**
-             * Specifies vpnServerConfigVpnClientRevokedCertificates.
-             * @param vpnServerConfigVpnClientRevokedCertificates VPN client revoked certificate of VpnServerConfiguration
-             * @return the next definition stage
-             */
-            WithCreate withVpnServerConfigVpnClientRevokedCertificates(List<VpnServerConfigVpnClientRevokedCertificate> vpnServerConfigVpnClientRevokedCertificates);
-        }
-
-        /**
-         * The stage of the vpnserverconfiguration definition allowing to specify VpnServerConfigVpnClientRootCertificates.
-         */
-        interface WithVpnServerConfigVpnClientRootCertificates {
-            /**
-             * Specifies vpnServerConfigVpnClientRootCertificates.
-             * @param vpnServerConfigVpnClientRootCertificates VPN client root certificate of VpnServerConfiguration
-             * @return the next definition stage
-             */
-            WithCreate withVpnServerConfigVpnClientRootCertificates(List<VpnServerConfigVpnClientRootCertificate> vpnServerConfigVpnClientRootCertificates);
-        }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<VpnServerConfiguration>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAadAuthenticationParameters, DefinitionStages.WithRadiusServerAddress, DefinitionStages.WithRadiusServerSecret, DefinitionStages.WithVpnAuthenticationTypes, DefinitionStages.WithVpnClientIpsecPolicies, DefinitionStages.WithVpnProtocols, DefinitionStages.WithVpnServerConfigRadiusClientRootCertificates, DefinitionStages.WithVpnServerConfigRadiusServerRootCertificates, DefinitionStages.WithVpnServerConfigurationName, DefinitionStages.WithVpnServerConfigurationPropertiesEtag, DefinitionStages.WithVpnServerConfigVpnClientRevokedCertificates, DefinitionStages.WithVpnServerConfigVpnClientRootCertificates {
+        interface WithCreate extends Creatable<VpnServerConfiguration>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAadAuthenticationParameters, DefinitionStages.WithRadiusClientRootCertificates, DefinitionStages.WithRadiusServerAddress, DefinitionStages.WithRadiusServerRootCertificates, DefinitionStages.WithRadiusServerSecret, DefinitionStages.WithVpnAuthenticationTypes, DefinitionStages.WithVpnClientIpsecPolicies, DefinitionStages.WithVpnClientRevokedCertificates, DefinitionStages.WithVpnClientRootCertificates, DefinitionStages.WithVpnProtocols, DefinitionStages.WithVpnServerConfigurationName, DefinitionStages.WithVpnServerConfigurationPropertiesEtag {
         }
     }
     /**
      * The template for a VpnServerConfiguration update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<VpnServerConfiguration>, Resource.UpdateWithTags<Update>, UpdateStages.WithAadAuthenticationParameters, UpdateStages.WithRadiusServerAddress, UpdateStages.WithRadiusServerSecret, UpdateStages.WithVpnAuthenticationTypes, UpdateStages.WithVpnClientIpsecPolicies, UpdateStages.WithVpnProtocols, UpdateStages.WithVpnServerConfigRadiusClientRootCertificates, UpdateStages.WithVpnServerConfigRadiusServerRootCertificates, UpdateStages.WithVpnServerConfigurationName, UpdateStages.WithVpnServerConfigurationPropertiesEtag, UpdateStages.WithVpnServerConfigVpnClientRevokedCertificates, UpdateStages.WithVpnServerConfigVpnClientRootCertificates {
+    interface Update extends Appliable<VpnServerConfiguration>, Resource.UpdateWithTags<Update>, UpdateStages.WithAadAuthenticationParameters, UpdateStages.WithRadiusClientRootCertificates, UpdateStages.WithRadiusServerAddress, UpdateStages.WithRadiusServerRootCertificates, UpdateStages.WithRadiusServerSecret, UpdateStages.WithVpnAuthenticationTypes, UpdateStages.WithVpnClientIpsecPolicies, UpdateStages.WithVpnClientRevokedCertificates, UpdateStages.WithVpnClientRootCertificates, UpdateStages.WithVpnProtocols, UpdateStages.WithVpnServerConfigurationName, UpdateStages.WithVpnServerConfigurationPropertiesEtag {
     }
 
     /**
@@ -297,6 +297,18 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
         }
 
         /**
+         * The stage of the vpnserverconfiguration update allowing to specify RadiusClientRootCertificates.
+         */
+        interface WithRadiusClientRootCertificates {
+            /**
+             * Specifies radiusClientRootCertificates.
+             * @param radiusClientRootCertificates Radius client root certificate of VpnServerConfiguration
+             * @return the next update stage
+             */
+            Update withRadiusClientRootCertificates(List<VpnServerConfigRadiusClientRootCertificate> radiusClientRootCertificates);
+        }
+
+        /**
          * The stage of the vpnserverconfiguration update allowing to specify RadiusServerAddress.
          */
         interface WithRadiusServerAddress {
@@ -306,6 +318,18 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
              * @return the next update stage
              */
             Update withRadiusServerAddress(String radiusServerAddress);
+        }
+
+        /**
+         * The stage of the vpnserverconfiguration update allowing to specify RadiusServerRootCertificates.
+         */
+        interface WithRadiusServerRootCertificates {
+            /**
+             * Specifies radiusServerRootCertificates.
+             * @param radiusServerRootCertificates Radius Server root certificate of VpnServerConfiguration
+             * @return the next update stage
+             */
+            Update withRadiusServerRootCertificates(List<VpnServerConfigRadiusServerRootCertificate> radiusServerRootCertificates);
         }
 
         /**
@@ -345,6 +369,30 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
         }
 
         /**
+         * The stage of the vpnserverconfiguration update allowing to specify VpnClientRevokedCertificates.
+         */
+        interface WithVpnClientRevokedCertificates {
+            /**
+             * Specifies vpnClientRevokedCertificates.
+             * @param vpnClientRevokedCertificates VPN client revoked certificate of VpnServerConfiguration
+             * @return the next update stage
+             */
+            Update withVpnClientRevokedCertificates(List<VpnServerConfigVpnClientRevokedCertificate> vpnClientRevokedCertificates);
+        }
+
+        /**
+         * The stage of the vpnserverconfiguration update allowing to specify VpnClientRootCertificates.
+         */
+        interface WithVpnClientRootCertificates {
+            /**
+             * Specifies vpnClientRootCertificates.
+             * @param vpnClientRootCertificates VPN client root certificate of VpnServerConfiguration
+             * @return the next update stage
+             */
+            Update withVpnClientRootCertificates(List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates);
+        }
+
+        /**
          * The stage of the vpnserverconfiguration update allowing to specify VpnProtocols.
          */
         interface WithVpnProtocols {
@@ -354,30 +402,6 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
              * @return the next update stage
              */
             Update withVpnProtocols(List<VpnGatewayTunnelingProtocol> vpnProtocols);
-        }
-
-        /**
-         * The stage of the vpnserverconfiguration update allowing to specify VpnServerConfigRadiusClientRootCertificates.
-         */
-        interface WithVpnServerConfigRadiusClientRootCertificates {
-            /**
-             * Specifies vpnServerConfigRadiusClientRootCertificates.
-             * @param vpnServerConfigRadiusClientRootCertificates Radius client root certificate of VpnServerConfiguration
-             * @return the next update stage
-             */
-            Update withVpnServerConfigRadiusClientRootCertificates(List<VpnServerConfigRadiusClientRootCertificate> vpnServerConfigRadiusClientRootCertificates);
-        }
-
-        /**
-         * The stage of the vpnserverconfiguration update allowing to specify VpnServerConfigRadiusServerRootCertificates.
-         */
-        interface WithVpnServerConfigRadiusServerRootCertificates {
-            /**
-             * Specifies vpnServerConfigRadiusServerRootCertificates.
-             * @param vpnServerConfigRadiusServerRootCertificates Radius Server root certificate of VpnServerConfiguration
-             * @return the next update stage
-             */
-            Update withVpnServerConfigRadiusServerRootCertificates(List<VpnServerConfigRadiusServerRootCertificate> vpnServerConfigRadiusServerRootCertificates);
         }
 
         /**
@@ -402,30 +426,6 @@ public interface VpnServerConfiguration extends HasInner<VpnServerConfigurationI
              * @return the next update stage
              */
             Update withVpnServerConfigurationPropertiesEtag(String vpnServerConfigurationPropertiesEtag);
-        }
-
-        /**
-         * The stage of the vpnserverconfiguration update allowing to specify VpnServerConfigVpnClientRevokedCertificates.
-         */
-        interface WithVpnServerConfigVpnClientRevokedCertificates {
-            /**
-             * Specifies vpnServerConfigVpnClientRevokedCertificates.
-             * @param vpnServerConfigVpnClientRevokedCertificates VPN client revoked certificate of VpnServerConfiguration
-             * @return the next update stage
-             */
-            Update withVpnServerConfigVpnClientRevokedCertificates(List<VpnServerConfigVpnClientRevokedCertificate> vpnServerConfigVpnClientRevokedCertificates);
-        }
-
-        /**
-         * The stage of the vpnserverconfiguration update allowing to specify VpnServerConfigVpnClientRootCertificates.
-         */
-        interface WithVpnServerConfigVpnClientRootCertificates {
-            /**
-             * Specifies vpnServerConfigVpnClientRootCertificates.
-             * @param vpnServerConfigVpnClientRootCertificates VPN client root certificate of VpnServerConfiguration
-             * @return the next update stage
-             */
-            Update withVpnServerConfigVpnClientRootCertificates(List<VpnServerConfigVpnClientRootCertificate> vpnServerConfigVpnClientRootCertificates);
         }
 
     }

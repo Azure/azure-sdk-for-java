@@ -94,11 +94,11 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
      */
     public void delete2() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteWithResponse#DataLakeRequestConditions
-        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions()
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.deleteWithResponse(accessConditions).subscribe(response ->
+        client.deleteWithResponse(requestConditions).subscribe(response ->
             System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteWithResponse#DataLakeRequestConditions
     }
@@ -148,11 +148,11 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
     public void setMetadata2() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadataWithResponse#Map-DataLakeRequestConditions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions()
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.setMetadataWithResponse(metadata, accessConditions).subscribe(response ->
+        client.setMetadataWithResponse(metadata, requestConditions).subscribe(response ->
             System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadataWithResponse#Map-DataLakeRequestConditions
     }

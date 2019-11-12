@@ -87,7 +87,7 @@ public final class BlobLeaseClient {
      * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -95,10 +95,10 @@ public final class BlobLeaseClient {
      * @return The lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> acquireLeaseWithResponse(int duration, RequestConditions modifiedAccessConditions,
+    public Response<String> acquireLeaseWithResponse(int duration, RequestConditions modifiedRequestConditions,
         Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(this.client
-            .acquireLeaseWithResponse(duration, modifiedAccessConditions, context), timeout);
+            .acquireLeaseWithResponse(duration, modifiedRequestConditions, context), timeout);
     }
 
     /**
@@ -122,7 +122,7 @@ public final class BlobLeaseClient {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context}
      *
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -130,10 +130,10 @@ public final class BlobLeaseClient {
      * @return The renewed lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> renewLeaseWithResponse(RequestConditions modifiedAccessConditions, Duration timeout,
+    public Response<String> renewLeaseWithResponse(RequestConditions modifiedRequestConditions, Duration timeout,
         Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(this.client
-            .renewLeaseWithResponse(modifiedAccessConditions, context), timeout);
+            .renewLeaseWithResponse(modifiedRequestConditions, context), timeout);
     }
 
     /**
@@ -155,7 +155,7 @@ public final class BlobLeaseClient {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context}
      *
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -163,10 +163,10 @@ public final class BlobLeaseClient {
      * @return A response containing status code and HTTP headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> releaseLeaseWithResponse(RequestConditions modifiedAccessConditions, Duration timeout,
+    public Response<Void> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions, Duration timeout,
         Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(this.client
-            .releaseLeaseWithResponse(modifiedAccessConditions, context), timeout);
+            .releaseLeaseWithResponse(modifiedRequestConditions, context), timeout);
     }
 
     /**
@@ -197,7 +197,7 @@ public final class BlobLeaseClient {
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
      * is used. A new lease will not be available before the break period has expired, but the lease may be held for
      * longer than the break period.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -206,9 +206,9 @@ public final class BlobLeaseClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Integer> breakLeaseWithResponse(Integer breakPeriodInSeconds,
-        RequestConditions modifiedAccessConditions, Duration timeout, Context context) {
+        RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(this.client
-            .breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context), timeout);
+            .breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions, context), timeout);
     }
 
     /**
@@ -234,7 +234,7 @@ public final class BlobLeaseClient {
      * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context}
      *
      * @param proposedId A new lease ID in a valid GUID format.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -243,9 +243,9 @@ public final class BlobLeaseClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> changeLeaseWithResponse(String proposedId,
-        RequestConditions modifiedAccessConditions, Duration timeout, Context context) {
+        RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(this.client
-            .changeLeaseWithResponse(proposedId, modifiedAccessConditions, context), timeout);
+            .changeLeaseWithResponse(proposedId, modifiedRequestConditions, context), timeout);
     }
 
     /**

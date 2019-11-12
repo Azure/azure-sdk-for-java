@@ -149,13 +149,13 @@ public class DataLakeServiceClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystemWithResponse#String-DataLakeRequestConditions-Context}
      *
      * @param fileSystemName Name of the file system to delete
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> deleteFileSystemWithResponse(String fileSystemName,
-        DataLakeRequestConditions accessConditions, Context context) {
-        return getFileSystemClient(fileSystemName).deleteWithResponse(accessConditions, null, context);
+        DataLakeRequestConditions requestConditions, Context context) {
+        return getFileSystemClient(fileSystemName).deleteWithResponse(requestConditions, null, context);
     }
 
     /**

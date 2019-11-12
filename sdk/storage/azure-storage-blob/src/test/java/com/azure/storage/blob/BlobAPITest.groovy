@@ -1203,10 +1203,10 @@ class BlobAPITest extends APISpec {
         bu2.upload(defaultInputStream.get(), defaultDataSize)
 
         def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
-        def blobAccessConditions = new BlobRequestConditions().setLeaseId(leaseId)
+        def blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId)
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccessConditions, Duration.ofMillis(500))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobRequestConditions, Duration.ofMillis(500))
         def response = poller.poll()
 
         assert response.getStatus() != LongRunningOperationStatus.FAILED

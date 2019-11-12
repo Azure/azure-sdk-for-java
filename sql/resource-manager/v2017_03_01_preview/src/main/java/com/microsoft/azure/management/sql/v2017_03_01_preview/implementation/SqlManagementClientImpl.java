@@ -419,6 +419,32 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner object to access its operations.
+     */
+    private ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies;
+
+    /**
+     * Gets the ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner object to access its operations.
+     * @return the ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner object.
+     */
+    public ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies() {
+        return this.managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies;
+    }
+
+    /**
+     * The RestorableDroppedManagedDatabasesInner object to access its operations.
+     */
+    private RestorableDroppedManagedDatabasesInner restorableDroppedManagedDatabases;
+
+    /**
+     * Gets the RestorableDroppedManagedDatabasesInner object to access its operations.
+     * @return the RestorableDroppedManagedDatabasesInner object.
+     */
+    public RestorableDroppedManagedDatabasesInner restorableDroppedManagedDatabases() {
+        return this.restorableDroppedManagedDatabases;
+    }
+
+    /**
      * The RestorePointsInner object to access its operations.
      */
     private RestorePointsInner restorePoints;
@@ -468,6 +494,71 @@ public class SqlManagementClientImpl extends AzureServiceClient {
      */
     public ServerSecurityAlertPoliciesInner serverSecurityAlertPolicies() {
         return this.serverSecurityAlertPolicies;
+    }
+
+    /**
+     * The ManagedDatabaseSecurityAlertPoliciesInner object to access its operations.
+     */
+    private ManagedDatabaseSecurityAlertPoliciesInner managedDatabaseSecurityAlertPolicies;
+
+    /**
+     * Gets the ManagedDatabaseSecurityAlertPoliciesInner object to access its operations.
+     * @return the ManagedDatabaseSecurityAlertPoliciesInner object.
+     */
+    public ManagedDatabaseSecurityAlertPoliciesInner managedDatabaseSecurityAlertPolicies() {
+        return this.managedDatabaseSecurityAlertPolicies;
+    }
+
+    /**
+     * The ManagedServerSecurityAlertPoliciesInner object to access its operations.
+     */
+    private ManagedServerSecurityAlertPoliciesInner managedServerSecurityAlertPolicies;
+
+    /**
+     * Gets the ManagedServerSecurityAlertPoliciesInner object to access its operations.
+     * @return the ManagedServerSecurityAlertPoliciesInner object.
+     */
+    public ManagedServerSecurityAlertPoliciesInner managedServerSecurityAlertPolicies() {
+        return this.managedServerSecurityAlertPolicies;
+    }
+
+    /**
+     * The SensitivityLabelsInner object to access its operations.
+     */
+    private SensitivityLabelsInner sensitivityLabels;
+
+    /**
+     * Gets the SensitivityLabelsInner object to access its operations.
+     * @return the SensitivityLabelsInner object.
+     */
+    public SensitivityLabelsInner sensitivityLabels() {
+        return this.sensitivityLabels;
+    }
+
+    /**
+     * The RecommendedSensitivityLabelsInner object to access its operations.
+     */
+    private RecommendedSensitivityLabelsInner recommendedSensitivityLabels;
+
+    /**
+     * Gets the RecommendedSensitivityLabelsInner object to access its operations.
+     * @return the RecommendedSensitivityLabelsInner object.
+     */
+    public RecommendedSensitivityLabelsInner recommendedSensitivityLabels() {
+        return this.recommendedSensitivityLabels;
+    }
+
+    /**
+     * The ManagedInstanceAdministratorsInner object to access its operations.
+     */
+    private ManagedInstanceAdministratorsInner managedInstanceAdministrators;
+
+    /**
+     * Gets the ManagedInstanceAdministratorsInner object to access its operations.
+     * @return the ManagedInstanceAdministratorsInner object.
+     */
+    public ManagedInstanceAdministratorsInner managedInstanceAdministrators() {
+        return this.managedInstanceAdministrators;
     }
 
     /**
@@ -527,10 +618,17 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.backupLongTermRetentionPolicies = new BackupLongTermRetentionPoliciesInner(restClient().retrofit(), this);
         this.managedBackupShortTermRetentionPolicies = new ManagedBackupShortTermRetentionPoliciesInner(restClient().retrofit(), this);
         this.managedDatabases = new ManagedDatabasesInner(restClient().retrofit(), this);
+        this.managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies = new ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner(restClient().retrofit(), this);
+        this.restorableDroppedManagedDatabases = new RestorableDroppedManagedDatabasesInner(restClient().retrofit(), this);
         this.restorePoints = new RestorePointsInner(restClient().retrofit(), this);
         this.serverAutomaticTunings = new ServerAutomaticTuningsInner(restClient().retrofit(), this);
         this.serverDnsAliases = new ServerDnsAliasesInner(restClient().retrofit(), this);
         this.serverSecurityAlertPolicies = new ServerSecurityAlertPoliciesInner(restClient().retrofit(), this);
+        this.managedDatabaseSecurityAlertPolicies = new ManagedDatabaseSecurityAlertPoliciesInner(restClient().retrofit(), this);
+        this.managedServerSecurityAlertPolicies = new ManagedServerSecurityAlertPoliciesInner(restClient().retrofit(), this);
+        this.sensitivityLabels = new SensitivityLabelsInner(restClient().retrofit(), this);
+        this.recommendedSensitivityLabels = new RecommendedSensitivityLabelsInner(restClient().retrofit(), this);
+        this.managedInstanceAdministrators = new ManagedInstanceAdministratorsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

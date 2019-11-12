@@ -64,10 +64,14 @@ class JobTargetGroupsImpl extends WrapperImpl<JobTargetGroupsInner> implements J
     public Observable<JobTargetGroup> getAsync(String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
         JobTargetGroupsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, jobAgentName, targetGroupName)
-        .map(new Func1<JobTargetGroupInner, JobTargetGroup>() {
+        .flatMap(new Func1<JobTargetGroupInner, Observable<JobTargetGroup>>() {
             @Override
-            public JobTargetGroup call(JobTargetGroupInner inner) {
-                return wrapModel(inner);
+            public Observable<JobTargetGroup> call(JobTargetGroupInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((JobTargetGroup)wrapModel(inner));
+                }
             }
        });
     }

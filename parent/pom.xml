@@ -116,9 +116,10 @@
     <reactor-core.version>3.3.0.RELEASE</reactor-core.version>
     <reactor-netty.version>0.9.0.RELEASE</reactor-netty.version>
     <netty.version>4.1.42.Final</netty.version>
+    <netty-tcnative-boringssl-static.version>2.0.26.Final</netty-tcnative-boringssl-static.version>
     <okhttp.version>4.2.2</okhttp.version>
     <async-http-client.version>2.10.4</async-http-client.version>
-    <opencensus.version>0.20.0</opencensus.version>
+    <opencensus.version>0.24.0</opencensus.version>
     <rxjava.version>1.2.4</rxjava.version>
     <guava.version>24.1.1-jre</guava.version>
     <azure-annotations.version>1.7.0</azure-annotations.version>
@@ -164,7 +165,7 @@
     <testng.version>6.14.3</testng.version>
     <assertj.version>3.11.1</assertj.version>
     <hamcrest.version>1.3</hamcrest.version>
-    <hamcrest-libary.version>2.2</hamcrest-libary.version>
+    <hamcrest-library.version>2.2</hamcrest-library.version>
 
     <!-- Maven Tool Versions -->
     <maven-build-tools.version>1.0.2</maven-build-tools.version>
@@ -375,6 +376,12 @@
       </dependency>
 
       <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-tcnative-boringssl-static</artifactId>
+        <version>${netty-tcnative-boringssl-static.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>org.nanohttpd</groupId>
         <artifactId>nanohttpd</artifactId>
         <version>${nanohttpd.version}</version>
@@ -408,7 +415,7 @@
       <dependency>
         <groupId>org.hamcrest</groupId>
         <artifactId>hamcrest-library</artifactId>
-        <version>${hamcrest-libary.version}</version>
+        <version>${hamcrest-library.version}</version>
         <scope>test</scope>
       </dependency>
 

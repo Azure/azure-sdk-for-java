@@ -12,6 +12,7 @@ import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
 import com.azure.data.cosmos.internal.changefeed.Lease;
 import com.azure.data.cosmos.internal.changefeed.ServiceItemLease;
 import com.azure.data.cosmos.internal.changefeed.ServiceItemLeaseUpdater;
+import com.azure.data.cosmos.internal.changefeed.exceptions.LeaseConflictException;
 import com.azure.data.cosmos.internal.changefeed.exceptions.LeaseLostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,21 +79,39 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         CosmosItemProperties document = cosmosItemResponse.properties();
                         ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
                         logger.info(
-                            "Partition {} update failed because the lease with token '{}' was updated by host '{}' with token '{}'.",
+                            "Partition {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
                             arrayLease[0].getLeaseToken(),
                             arrayLease[0].getConcurrencyToken(),
                             serverLease.getOwner(),
                             serverLease.getConcurrencyToken());
                         arrayLease[0] = serverLease;
 
-                        throw new RuntimeException("Partition update failed");
+                        throw new LeaseConflictException(arrayLease[0], "Partition update failed");
                     });
             })
             .retry(RETRY_COUNT_ON_CONFLICT, throwable -> {
-                if (throwable instanceof RuntimeException) {
-                    return throwable instanceof LeaseLostException;
+                if (throwable instanceof LeaseConflictException) {
+                    logger.info(
+                        "Partition {} for the lease with token '{}' failed to update for owner '{}'; will retry.",
+                        arrayLease[0].getLeaseToken(),
+                        arrayLease[0].getConcurrencyToken(),
+                        arrayLease[0].getOwner());
+                    return true;
                 }
                 return false;
+            })
+            .onErrorResume(throwable -> {
+                if (throwable instanceof LeaseConflictException) {
+                    logger.warn(
+                        "Partition {} for the lease with token '{}' failed to update for owner '{}'; current continuation token '{}'.",
+                        arrayLease[0].getLeaseToken(),
+                        arrayLease[0].getConcurrencyToken(),
+                        arrayLease[0].getOwner(),
+                        arrayLease[0].getContinuationToken(), throwable);
+
+                    return Mono.just(arrayLease[0]);
+                }
+                return Mono.error(throwable);
             });
     }
 

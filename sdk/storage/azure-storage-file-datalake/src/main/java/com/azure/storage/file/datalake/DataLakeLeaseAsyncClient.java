@@ -90,15 +90,15 @@ public final class DataLakeLeaseAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.acquireLeaseWithResponse#int-RequestConditions}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response containing the lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> acquireLeaseWithResponse(int duration,
-        RequestConditions modifiedAccessConditions) {
-        return this.blobLeaseAsyncClient.acquireLeaseWithResponse(duration, modifiedAccessConditions);
+        RequestConditions modifiedRequestConditions) {
+        return this.blobLeaseAsyncClient.acquireLeaseWithResponse(duration, modifiedRequestConditions);
     }
 
     /**
@@ -122,14 +122,14 @@ public final class DataLakeLeaseAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.renewLeaseWithResponse#RequestConditions}
      *
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response containing the renewed lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedAccessConditions) {
-        return blobLeaseAsyncClient.renewLeaseWithResponse(modifiedAccessConditions);
+    public Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedRequestConditions) {
+        return blobLeaseAsyncClient.renewLeaseWithResponse(modifiedRequestConditions);
     }
 
     /**
@@ -153,14 +153,14 @@ public final class DataLakeLeaseAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.releaseLeaseWithResponse#RequestConditions}
      *
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedAccessConditions) {
-        return blobLeaseAsyncClient.releaseLeaseWithResponse(modifiedAccessConditions);
+    public Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions) {
+        return blobLeaseAsyncClient.releaseLeaseWithResponse(modifiedRequestConditions);
     }
 
     /**
@@ -191,15 +191,15 @@ public final class DataLakeLeaseAsyncClient {
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
      * is used. A new lease will not be available before the break period has expired, but the lease may be held for
      * longer than the break period.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response containing the remaining time in the broken lease in seconds.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
-        RequestConditions modifiedAccessConditions) {
-        return blobLeaseAsyncClient.breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions);
+        RequestConditions modifiedRequestConditions) {
+        return blobLeaseAsyncClient.breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions);
     }
 
     /**
@@ -225,15 +225,15 @@ public final class DataLakeLeaseAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeLeaseAsyncClient.changeLeaseWithResponse#String-RequestConditions}
      *
      * @param proposedId A new lease ID in a valid GUID format.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response containing the new lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> changeLeaseWithResponse(String proposedId,
-        RequestConditions modifiedAccessConditions) {
-        return blobLeaseAsyncClient.changeLeaseWithResponse(proposedId, modifiedAccessConditions);
+        RequestConditions modifiedRequestConditions) {
+        return blobLeaseAsyncClient.changeLeaseWithResponse(proposedId, modifiedRequestConditions);
     }
 
     /**
