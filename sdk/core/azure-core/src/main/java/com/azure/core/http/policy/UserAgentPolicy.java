@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
  * Pipeline policy that adds "User-Agent" header to a request.
  *
  * The format for the "User-Agent" string is outlined in
- * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy>Azure Core: Telemetry policy</a>.
+ * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>.
  */
 public class UserAgentPolicy implements HttpPipelinePolicy {
     private static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
