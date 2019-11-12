@@ -164,6 +164,8 @@ namespace Azure.Test.PerfStress
                 for (var i = 0; i < parallel; i++)
                 {
                     var j = i;
+                    // Call Task.Run() instead of directly calling RunLoopAsync(), to ensure the requested
+                    // level of parallelism is achieved even if the test RunAsync() completes synchronously.
                     tasks[j] = Task.Run(() => RunLoopAsync(tests[j], cancellationToken));
                 }
                 await Task.WhenAll(tasks);
