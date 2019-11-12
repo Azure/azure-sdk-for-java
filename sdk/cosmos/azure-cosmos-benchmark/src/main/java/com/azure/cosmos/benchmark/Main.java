@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         org.apache.log4j.Logger.getLogger("io.netty").setLevel(org.apache.log4j.Level.OFF);
-
+        AsyncBenchmark benchmark = null;
         try {
             LOGGER.debug("Parsing the arguments ...");
             Configuration cfg = new Configuration();
@@ -27,7 +27,6 @@ public class Main {
                 return;
             }
 
-            AsyncBenchmark benchmark;
             switch (cfg.getOperationType()) {
             case WriteThroughput:
             case WriteLatency:
@@ -65,14 +64,18 @@ public class Main {
                 throw new RuntimeException(cfg.getOperationType() + " is not supported");
             }
 
+            LOGGER.info("Starting {}", cfg.getOperationType());
             benchmark.run();
-            benchmark.shutdown();
 
         } catch (ParameterException e) {
             // if any error in parsing the cmd-line options print out the usage help
             System.err.println("INVALID Usage: " + e.getMessage());
             System.err.println("Try '-help' for more information.");
             throw e;
+        } finally {
+            if (benchmark != null) {
+                benchmark.shutdown();
+            }
         }
     }
 }

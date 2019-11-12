@@ -3,10 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.User;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.User;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.User;
 
 public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties> {
     private CosmosAsyncUser user;

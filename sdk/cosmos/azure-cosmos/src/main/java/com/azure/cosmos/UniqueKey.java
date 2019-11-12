@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.Constants;
+import com.azure.cosmos.implementation.Constants;
 
 import java.util.ArrayList;
 import java.util.Collection;

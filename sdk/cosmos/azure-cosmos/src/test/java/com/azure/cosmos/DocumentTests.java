@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Document;
+import com.azure.cosmos.implementation.Document;
 import org.testng.annotations.Test;
 
 import java.time.OffsetDateTime;

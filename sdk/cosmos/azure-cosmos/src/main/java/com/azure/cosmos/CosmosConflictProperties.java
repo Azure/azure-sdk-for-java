@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Conflict;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.Strings;
-import com.azure.cosmos.internal.Conflict;
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.Strings;
+import com.azure.cosmos.implementation.Conflict;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Strings;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;

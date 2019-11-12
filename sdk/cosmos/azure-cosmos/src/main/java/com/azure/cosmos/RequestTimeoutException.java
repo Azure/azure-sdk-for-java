@@ -3,16 +3,11 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.internal.RMResources;
-import com.azure.cosmos.internal.Strings;
-import com.azure.cosmos.internal.directconnectivity.HttpUtils;
-import com.azure.cosmos.internal.http.HttpHeaders;
-import com.azure.cosmos.internal.HttpConstants;
-import com.azure.cosmos.internal.RMResources;
-import com.azure.cosmos.internal.Strings;
-import com.azure.cosmos.internal.directconnectivity.HttpUtils;
-import com.azure.cosmos.internal.http.HttpHeaders;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.RMResources;
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 
 import java.net.URI;
 import java.util.Map;

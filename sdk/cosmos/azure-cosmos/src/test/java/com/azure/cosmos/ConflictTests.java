@@ -3,8 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Conflict;
-import com.azure.cosmos.internal.Document;
+import com.azure.cosmos.implementation.Conflict;
+import com.azure.cosmos.implementation.Document;
 import org.apache.commons.io.IOUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

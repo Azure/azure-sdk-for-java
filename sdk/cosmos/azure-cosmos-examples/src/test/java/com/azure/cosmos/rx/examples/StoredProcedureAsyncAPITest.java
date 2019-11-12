@@ -3,23 +3,23 @@
 
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DataType;
-import com.azure.cosmos.internal.Database;
+import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.internal.DocumentCollection;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.IncludedPath;
 import com.azure.cosmos.Index;
 import com.azure.cosmos.IndexingPolicy;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.internal.RequestOptions;
-import com.azure.cosmos.internal.StoredProcedure;
-import com.azure.cosmos.internal.HttpConstants;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.StoredProcedure;
+import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

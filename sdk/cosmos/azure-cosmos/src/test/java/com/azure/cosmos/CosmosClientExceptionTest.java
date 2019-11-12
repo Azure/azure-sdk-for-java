@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.google.common.collect.ImmutableMap;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -12,21 +12,21 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.BADREQUEST;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.CONFLICT;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.FORBIDDEN;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.GONE;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.LOCKED;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.METHOD_NOT_ALLOWED;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.NOTFOUND;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.PRECONDITION_FAILED;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.REQUEST_TIMEOUT;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.RETRY_WITH;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.TOO_MANY_REQUESTS;
-import static com.azure.cosmos.internal.HttpConstants.StatusCodes.UNAUTHORIZED;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.BADREQUEST;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.CONFLICT;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.FORBIDDEN;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.GONE;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.LOCKED;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.METHOD_NOT_ALLOWED;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.NOTFOUND;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.PRECONDITION_FAILED;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.REQUEST_TIMEOUT;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.RETRY_WITH;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.TOO_MANY_REQUESTS;
+import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.UNAUTHORIZED;
 import static com.google.common.base.Strings.lenientFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
