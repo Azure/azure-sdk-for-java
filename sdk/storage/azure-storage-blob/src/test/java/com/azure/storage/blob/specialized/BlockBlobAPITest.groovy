@@ -642,6 +642,7 @@ class BlockBlobAPITest extends APISpec {
 
         cleanup:
         Files.delete(Paths.get(outFile))
+        file.delete()
 
         where:
         fileSize                                       | blockSize       || commitedBlockCount
@@ -667,6 +668,9 @@ class BlockBlobAPITest extends APISpec {
         metadata == bc.getProperties().getMetadata()
         bc.download(outStream)
         outStream.toByteArray() == Files.readAllBytes(file.toPath())
+
+        cleanup:
+        file.delete()
     }
 
     def "Upload min"() {
@@ -1360,6 +1364,9 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+
+        cleanup:
+        file.delete()
     }
 
     @Requires({ liveMode() })
@@ -1375,6 +1382,9 @@ class BlockBlobAPITest extends APISpec {
         def outputStream = new ByteArrayOutputStream()
         blobClient.download(outputStream)
         outputStream.toByteArray() == Files.readAllBytes(file.toPath())
+
+        cleanup:
+        file.delete()
     }
 
     def "Upload overwrite false"() {

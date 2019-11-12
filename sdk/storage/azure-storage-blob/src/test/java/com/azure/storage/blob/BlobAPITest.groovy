@@ -307,6 +307,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
 
         where:
         fileSize             | _
@@ -336,6 +337,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
 
         /*
         The last case is to test a range much much larger than the size of the file to ensure we don't accidentally
@@ -374,6 +376,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
     }
 
     @Requires({ liveMode() })
@@ -394,6 +397,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
     }
 
     @Requires({ liveMode() })
@@ -421,6 +425,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -456,6 +461,10 @@ class BlobAPITest extends APISpec {
         def e = thrown(BlobStorageException)
         e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
             e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        cleanup:
+        outFile.delete()
+        file.delete()
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -503,6 +512,10 @@ class BlobAPITest extends APISpec {
         then:
         etagConflict
         !outFile.exists() // We should delete the file we tried to create
+
+        cleanup:
+        file.delete()
+        outFile.delete()
     }
 
     @Requires({ liveMode() })

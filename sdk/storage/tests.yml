@@ -27,5 +27,9 @@ jobs:
         pwsh: |
           npm install -g azurite
           Start-Process azurite
+          $azuriteStarted = $false
+          Do {
+            $azuriteStarted = (Test-NetConnection -ComputerName 127.0.0.1 -Port 10000).TcpTestSucceeded
+          } Until ($azuriteStarted -eq $true)
         displayName: 'Install and Start Azurite'
       TimeoutInMinutes: 120

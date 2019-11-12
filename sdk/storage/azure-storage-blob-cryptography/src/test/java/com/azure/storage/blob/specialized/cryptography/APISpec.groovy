@@ -9,17 +9,16 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.util.FluxUtil
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
+import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
-
-import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
@@ -94,7 +93,7 @@ class APISpec extends Specification {
 
     static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map{buffer -> buffer.duplicate()}
 
-    public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
+    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
 
     @Shared
     protected KB = 1024
