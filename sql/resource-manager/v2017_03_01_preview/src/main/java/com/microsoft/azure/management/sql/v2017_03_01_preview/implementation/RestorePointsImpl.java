@@ -55,10 +55,14 @@ class RestorePointsImpl extends WrapperImpl<RestorePointsInner> implements Resto
     public Observable<RestorePoint> getAsync(String resourceGroupName, String serverName, String databaseName, String restorePointName) {
         RestorePointsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName, restorePointName)
-        .map(new Func1<RestorePointInner, RestorePoint>() {
+        .flatMap(new Func1<RestorePointInner, Observable<RestorePoint>>() {
             @Override
-            public RestorePoint call(RestorePointInner inner) {
-                return wrapModel(inner);
+            public Observable<RestorePoint> call(RestorePointInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RestorePoint)wrapModel(inner));
+                }
             }
        });
     }

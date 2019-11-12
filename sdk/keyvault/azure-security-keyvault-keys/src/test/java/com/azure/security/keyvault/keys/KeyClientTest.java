@@ -17,10 +17,11 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyClientTest extends KeyClientTestBase {
 
@@ -46,6 +47,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a key can be created in the key vault.
      */
+    @Test
     public void setKey() {
         setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
     }
@@ -53,6 +55,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to create a key with empty string name throws an error.
      */
+    @Test
     public void setKeyEmptyName() {
         assertRestException(() -> client.createKey("", KeyType.RSA), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
     }
@@ -60,6 +63,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that we cannot create keys when key type is null.
      */
+    @Test
     public void setKeyNullType() {
         setKeyEmptyValueRunner((key) -> {
             assertRestException(() -> client.createKey(key.getName(), key.getKeyType()), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
@@ -69,6 +73,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Verifies that an exception is thrown when null key object is passed for creation.
      */
+    @Test
     public void setKeyNull() {
         assertRunnableThrowsException(() -> client.createKey(null), NullPointerException.class);
         assertRunnableThrowsException(() -> client.createKey(null), NullPointerException.class);
@@ -77,6 +82,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a key is able to be updated when it exists.
      */
+    @Test
     public void updateKey() {
         updateKeyRunner((original, updated) -> {
             assertKeyEquals(original, client.createKey(original));
@@ -89,6 +95,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a key is able to be updated when it is disabled.
      */
+    @Test
     public void updateDisabledKey() {
         updateDisabledKeyRunner((original, updated) -> {
             assertKeyEquals(original, client.createKey(original));
@@ -101,6 +108,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an existing key can be retrieved.
      */
+    @Test
     public void getKey() {
         getKeyRunner((original) -> {
             client.createKey(original);
@@ -111,6 +119,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a specific version of the key can be retrieved.
      */
+    @Test
     public void getKeySpecificVersion() {
         getKeySpecificVersionRunner((key, keyWithNewVal) -> {
             KeyVaultKey keyVersionOne = client.createKey(key);
@@ -123,6 +132,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to get a non-existing key throws an error.
      */
+    @Test
     public void getKeyNotFound() {
         assertRestException(() -> client.getKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
@@ -130,6 +140,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an existing key can be deleted.
      */
+    @Test
     public void deleteKey() {
         deleteKeyRunner((keyToDelete) -> {
             assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
@@ -154,6 +165,7 @@ public class KeyClientTest extends KeyClientTestBase {
         });
     }
 
+    @Test
     public void deleteKeyNotFound() {
         assertRestException(() -> client.beginDeleteKey("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
@@ -161,6 +173,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to retrieve a non existing deleted key throws an error on a soft-delete enabled vault.
      */
+    @Test
     public void getDeletedKeyNotFound() {
         assertRestException(() -> client.getDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
@@ -169,6 +182,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a deleted key can be recovered on a soft-delete enabled vault.
      */
+    @Test
     public void recoverDeletedKey() {
         recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
             assertKeyEquals(keyToDeleteAndRecover, client.createKey(keyToDeleteAndRecover));
@@ -200,6 +214,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete enabled vault.
      */
+    @Test
     public void recoverDeletedKeyNotFound() {
         assertRestException(() -> client.beginRecoverDeletedKey("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
@@ -207,6 +222,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a key can be backed up in the key vault.
      */
+    @Test
     public void backupKey() {
         backupKeyRunner((keyToBackup) -> {
             assertKeyEquals(keyToBackup, client.createKey(keyToBackup));
@@ -219,6 +235,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to backup a non existing key throws an error.
      */
+    @Test
     public void backupKeyNotFound() {
         assertRestException(() -> client.backupKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
@@ -226,6 +243,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a key can be backed up in the key vault.
      */
+    @Test
     public void restoreKey() {
         restoreKeyRunner((keyToBackupAndRestore) -> {
             assertKeyEquals(keyToBackupAndRestore, client.createKey(keyToBackupAndRestore));
@@ -253,6 +271,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to restore a key from malformed backup bytes throws an error.
      */
+    @Test
     public void restoreKeyFromMalformedBackup() {
         byte[] keyBackupBytes = "non-existing".getBytes();
         assertRestException(() -> client.restoreKeyBackup(keyBackupBytes), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
@@ -261,6 +280,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that keys can be listed in the key vault.
      */
+    @Test
     public void listKeys() {
         listKeysRunner((keys) -> {
             HashMap<String, CreateKeyOptions> keysToList = keys;
@@ -284,6 +304,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a deleted key can be retrieved on a soft-delete enabled vault.
      */
+    @Test
     public void getDeletedKey() {
         getDeletedKeyRunner((keyToDeleteAndGet) -> {
             assertKeyEquals(keyToDeleteAndGet, client.createKey(keyToDeleteAndGet));
@@ -309,7 +330,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that deleted keys can be listed in the key vault.
      */
-    @Override
+    @Test
     public void listDeletedKeys() {
         listDeletedKeysRunner((keys) -> {
             HashMap<String, CreateKeyOptions> keysToDelete = keys;
@@ -348,7 +369,7 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that key versions can be listed in the key vault.
      */
-    @Override
+    @Test
     public void listKeyVersions() {
         listKeyVersionsRunner((keys) -> {
             List<CreateKeyOptions> keyVersions = keys;

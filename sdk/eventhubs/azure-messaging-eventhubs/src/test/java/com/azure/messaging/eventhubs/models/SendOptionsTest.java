@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class SendOptionsTest {
 
@@ -17,8 +17,8 @@ public class SendOptionsTest {
         SendOptions options = new SendOptions();
 
         // Act & Assert
-        Assert.assertNull(options.getPartitionKey());
-        Assert.assertNull(options.getPartitionId());
+        Assertions.assertNull(options.getPartitionKey());
+        Assertions.assertNull(options.getPartitionId());
     }
 
     /**
@@ -34,7 +34,7 @@ public class SendOptionsTest {
         options.setPartitionKey(partitionKey);
 
         // Assert
-        Assert.assertEquals(partitionKey, options.getPartitionKey());
+        Assertions.assertEquals(partitionKey, options.getPartitionKey());
     }
 
     /**
@@ -50,7 +50,7 @@ public class SendOptionsTest {
         options.setPartitionId(partitionId);
 
         // Assert
-        Assert.assertEquals(partitionId, options.getPartitionId());
+        Assertions.assertEquals(partitionId, options.getPartitionId());
     }
 
     /**
@@ -69,13 +69,13 @@ public class SendOptionsTest {
         SendOptions clone = options.clone();
 
         // Assert
-        Assert.assertNotSame(clone, options);
+        Assertions.assertNotSame(clone, options);
 
-        Assert.assertEquals(partitionId, options.getPartitionId());
-        Assert.assertEquals(partitionId, clone.getPartitionId());
+        Assertions.assertEquals(partitionId, options.getPartitionId());
+        Assertions.assertEquals(partitionId, clone.getPartitionId());
 
-        Assert.assertEquals(partitionKey, options.getPartitionKey());
-        Assert.assertEquals(partitionKey, clone.getPartitionKey());
+        Assertions.assertEquals(partitionKey, options.getPartitionKey());
+        Assertions.assertEquals(partitionKey, clone.getPartitionKey());
     }
 
     /**
@@ -99,10 +99,10 @@ public class SendOptionsTest {
         clone.setPartitionId(partitionId);
 
         // Assert
-        Assert.assertEquals(partitionKey, clone.getPartitionKey());
-        Assert.assertEquals(originalPartitionKey, options.getPartitionKey());
+        Assertions.assertEquals(partitionKey, clone.getPartitionKey());
+        Assertions.assertEquals(originalPartitionKey, options.getPartitionKey());
 
-        Assert.assertEquals(partitionId, clone.getPartitionId());
-        Assert.assertEquals(originalPartitionId, options.getPartitionId());
+        Assertions.assertEquals(partitionId, clone.getPartitionId());
+        Assertions.assertEquals(originalPartitionId, options.getPartitionId());
     }
 }

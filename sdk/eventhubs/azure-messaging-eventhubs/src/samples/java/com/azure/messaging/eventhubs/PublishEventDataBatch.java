@@ -61,7 +61,7 @@ public class PublishEventDataBatch {
                     producer.send(batch).block();
                 }
 
-                // Disposing of our producer and client.
+                // Disposing of our producer.
                 producer.close();
             });
     }

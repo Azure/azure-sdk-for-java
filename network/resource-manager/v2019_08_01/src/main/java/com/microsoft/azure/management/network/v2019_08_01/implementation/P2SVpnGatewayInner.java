@@ -33,8 +33,8 @@ public class P2SVpnGatewayInner extends Resource {
     /**
      * List of all p2s connection configurations of the gateway.
      */
-    @JsonProperty(value = "properties.p2sConnectionConfigurations")
-    private List<P2SConnectionConfiguration> p2sConnectionConfigurations;
+    @JsonProperty(value = "properties.p2SConnectionConfigurations")
+    private List<P2SConnectionConfiguration> p2SConnectionConfigurations;
 
     /**
      * The provisioning state of the P2S VPN gateway resource. Possible values
@@ -53,7 +53,7 @@ public class P2SVpnGatewayInner extends Resource {
      * The VpnServerConfiguration to which the p2sVpnGateway is attached to.
      */
     @JsonProperty(value = "properties.vpnServerConfiguration")
-    private VpnServerConfigurationInner vpnServerConfiguration;
+    private SubResource vpnServerConfiguration;
 
     /**
      * All P2S VPN clients' connection health status.
@@ -96,20 +96,20 @@ public class P2SVpnGatewayInner extends Resource {
     /**
      * Get list of all p2s connection configurations of the gateway.
      *
-     * @return the p2sConnectionConfigurations value
+     * @return the p2SConnectionConfigurations value
      */
-    public List<P2SConnectionConfiguration> p2sConnectionConfigurations() {
-        return this.p2sConnectionConfigurations;
+    public List<P2SConnectionConfiguration> p2SConnectionConfigurations() {
+        return this.p2SConnectionConfigurations;
     }
 
     /**
      * Set list of all p2s connection configurations of the gateway.
      *
-     * @param p2sConnectionConfigurations the p2sConnectionConfigurations value to set
+     * @param p2SConnectionConfigurations the p2SConnectionConfigurations value to set
      * @return the P2SVpnGatewayInner object itself.
      */
-    public P2SVpnGatewayInner withP2sConnectionConfigurations(List<P2SConnectionConfiguration> p2sConnectionConfigurations) {
-        this.p2sConnectionConfigurations = p2sConnectionConfigurations;
+    public P2SVpnGatewayInner withP2SConnectionConfigurations(List<P2SConnectionConfiguration> p2SConnectionConfigurations) {
+        this.p2SConnectionConfigurations = p2SConnectionConfigurations;
         return this;
     }
 
@@ -158,7 +158,7 @@ public class P2SVpnGatewayInner extends Resource {
      *
      * @return the vpnServerConfiguration value
      */
-    public VpnServerConfigurationInner vpnServerConfiguration() {
+    public SubResource vpnServerConfiguration() {
         return this.vpnServerConfiguration;
     }
 
@@ -168,7 +168,7 @@ public class P2SVpnGatewayInner extends Resource {
      * @param vpnServerConfiguration the vpnServerConfiguration value to set
      * @return the P2SVpnGatewayInner object itself.
      */
-    public P2SVpnGatewayInner withVpnServerConfiguration(VpnServerConfigurationInner vpnServerConfiguration) {
+    public P2SVpnGatewayInner withVpnServerConfiguration(SubResource vpnServerConfiguration) {
         this.vpnServerConfiguration = vpnServerConfiguration;
         return this;
     }

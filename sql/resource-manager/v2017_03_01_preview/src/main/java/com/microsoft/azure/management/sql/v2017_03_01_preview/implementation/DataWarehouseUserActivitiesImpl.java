@@ -35,10 +35,14 @@ class DataWarehouseUserActivitiesImpl extends WrapperImpl<DataWarehouseUserActiv
     public Observable<DataWarehouseUserActivity> getAsync(String resourceGroupName, String serverName, String databaseName) {
         DataWarehouseUserActivitiesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName)
-        .map(new Func1<DataWarehouseUserActivityInner, DataWarehouseUserActivity>() {
+        .flatMap(new Func1<DataWarehouseUserActivityInner, Observable<DataWarehouseUserActivity>>() {
             @Override
-            public DataWarehouseUserActivity call(DataWarehouseUserActivityInner inner) {
-                return wrapModel(inner);
+            public Observable<DataWarehouseUserActivity> call(DataWarehouseUserActivityInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DataWarehouseUserActivity)wrapModel(inner));
+                }
             }
        });
     }

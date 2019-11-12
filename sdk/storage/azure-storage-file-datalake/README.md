@@ -19,12 +19,13 @@ efficient data access.
 ### Adding the package to your product
 
 Add a dependency on Azure Storage Blob
+
 [//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.1.0-preview.1</version>
+    <version>12.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -43,7 +44,7 @@ Netty and include the OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.0.0-preview.5</version>
+    <version>12.0.0-preview.6</version>
     <exclusions>
         <exclusion>
             <groupId>com.azure</groupId>
@@ -59,7 +60,7 @@ Netty and include the OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.1.0-preview.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -68,6 +69,9 @@ Netty and include the OkHTTP client in your pom.xml.
 When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-datalakeserviceclient) unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this by allowing users to provide custom (or customized) `com.azure.core.http.HttpClient` instances.
 
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ```java
 HttpClient client = new NettyAsyncHttpClientBuilder()
@@ -146,17 +150,35 @@ b. Use the connection string.
 
 ## Key concepts
 
-This preview package for Java includes ADLS Gen2 specific API support made available in Blob SDK. This includes:
-1. New directory level operations (Create, Rename/Move, Delete) for both hierarchical namespace enabled (HNS) storage accounts and HNS disabled storage accounts. For HNS enabled accounts, the rename/move operations are atomic.
-2. Permission related operations (Get/Set ACLs) for hierarchical namespace enabled (HNS) accounts. 
+DataLake Storage Gen2 was designed to:
+- Service multiple petabytes of information while sustaining hundreds of gigabits of throughput
+- Allow you to easily manage massive amounts of data
 
-HNS enabled accounts in ADLS Gen2 can also now leverage all of the operations available in Blob SDK. Support for File level semantics for ADLS Gen2 is planned to be made available in Blob SDK in a later release. In the meantime, please find below mapping for ADLS Gen2 terminology to Blob terminology
+Key Features of DataLake Storage Gen2 include:
+- Hadoop compatible access
+- A superset of POSIX permissions
+- Cost effective in terms of low-cost storage capacity and transactions
+- Optimized driver for big data analytics
 
-|ADLS Gen2 	 | Blob       |
-| ---------- | ---------- |
-|Filesystem	 | Container  | 
-|Folder	   	 | Directory  |
-|File		 | Blob       |
+A fundamental part of Data Lake Storage Gen2 is the addition of a hierarchical namespace to Blob storage. The hierarchical namespace organizes objects/files into a hierarchy of directories for efficient data access.
+
+In the past, cloud-based analytics had to compromise in areas of performance, management, and security. Data Lake Storage Gen2 addresses each of these aspects in the following ways:
+- Performance is optimized because you do not need to copy or transform data as a prerequisite for analysis. The hierarchical namespace greatly improves the performance of directory management operations, which improves overall job performance.
+- Management is easier because you can organize and manipulate files through directories and subdirectories.
+- Security is enforceable because you can define POSIX permissions on directories or individual files.
+- Cost effectiveness is made possible as Data Lake Storage Gen2 is built on top of the low-cost Azure Blob storage. The additional features further lower the total cost of ownership for running big data analytics on Azure.
+
+Data Lake Storage Gen2 offers two types of resources:
+
+- The _filesystem used via 'DataLakeFileSystemClient'
+- The _path used via 'DataLakeFileClient' or 'DataLakeDirectoryClient'
+
+|ADLS Gen2                     | Blob       |
+| --------------------------| ---------- |
+|Filesystem                 | Container  | 
+|Path (File or Directory)   | Blob       |
+
+Note: This client library does not support hierarchical namespace (HNS) disabled storage accounts.
 
 ## Examples
 
@@ -165,6 +187,7 @@ The following sections provide several code snippets covering some of the most c
 - [Create a `DataLakeServiceClient`](#create-a-datalakeserviceclient)
 - [Create a `DataLakeFileSystemClient`](#create-a-filesystemclient)
 - [Create a `DataLakeFileClient`](#create-a-fileclient)
+- [Create a `DataLakeDirectoryClient`](#create-a-directoryclient)
 - [Create a file system](#create-a-filesystem)
 - [Upload a file from a stream](#upload-a-file-from-a-stream)
 - [Read a file to a stream](#read-a-file-to-a-stream)
@@ -223,6 +246,27 @@ DataLakeFileClient fileClient = new DataLakePathClientBuilder()
         .buildClient();
 ```
 
+### Create a `DataLakeDirectoryClient`
+
+Get a `DataLakeDirectoryClient` using a `DataLakeFileSystemClient`.
+
+```java
+DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("mydir");
+```
+
+or
+
+Create a `DirectoryClient` from the builder [`sasToken`](#get-credentials) generated above.
+
+```java
+DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
+        .endpoint("<your-storage-dfs-url>")
+        .sasToken("<your-sasToken>")
+        .fileSystemName("myfilesystem")
+        .pathName("mydir")
+        .buildClient();
+```
+
 ### Create a file system
 
 Create a file system using a `DataLakeServiceClient`.
@@ -233,7 +277,7 @@ dataLakeServiceClient.createFileSystem("myfilesystem");
 
 or
 
-Create a container using a `DataLakeFileSystemClient`.
+Create a file system using a `DataLakeFileSystemClient`.
 
 ```java
 dataLakeFileSystemClient.create();
@@ -272,6 +316,46 @@ dataLakeFileSystemClient.listPaths()
         .forEach(
             pathItem -> System.out.println("This is the path name: " + pathItem.getName())
         );
+```
+
+### Rename a file
+
+Rename a file using a `DataLakeFileClient`.
+
+```java
+DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
+fileClient.create();
+fileClient.rename("new-file-name")
+```
+
+### Rename a directory
+
+Rename a directory using a `DataLakeDirectoryClient`.
+
+```java
+DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("mydir");
+directoryClient.create();
+directoryClient.rename("new-directory-name")
+```
+
+### Get file properties
+
+Get properties from a file using a `DataLakeFileClient`.
+
+```java
+DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
+fileClient.create();
+PathProperties properties = fileClient.getProperties();
+```
+
+### Get directory properties
+
+Get properties from a directory using a `DataLakeDirectoryClient`.
+
+```java
+DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("mydir");
+directoryClient.create();
+PathProperties properties = directoryClient.getProperties();
 ```
 
 ### Authenticate with Azure Identity
@@ -317,9 +401,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
 [samples]: src/samples
+[error_codes]: https://docs.microsoft.com/en-us/rest/api/storageservices/data-lake-storage-gen2
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-file-data-lake/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-datalake%2FREADME.png)

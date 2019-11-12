@@ -147,3 +147,7 @@ directive:
     $.ContentType["x-ms-parameter-grouping"].name = "path-http-headers";
     $.TransactionalContentMD5["x-ms-parameter-grouping"].name = "path-http-headers";
 ```
+
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-datalake%2Fswagger%2FREADME.png)
+

@@ -144,9 +144,9 @@ jobs:
           publishJUnitResults: false
           goals: 'install'
 
-      # Run SpotBugs and CheckStyle tools to ensure high code quality - these will fail the build if issues are found
+      # Run SpotBugs, CheckStyle and JavaDoc tools to ensure high code quality - these will fail the build if issues are found
       - task: Maven@3
-        displayName: 'Run SpotBugs and CheckStyle'
+        displayName: 'Run SpotBugs, CheckStyle, and JavaDoc'
         inputs:
           mavenPomFile: pom.client.xml
           options: '-DskipTests -Dgpg.skip'
@@ -155,26 +155,11 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'spotbugs:check checkstyle:checkstyle-aggregate'
+          goals: 'spotbugs:check checkstyle:checkstyle-aggregate javadoc:aggregate'
 
-      # Generate the Maven site report, including SpotBugs, JavaDoc, CheckStyle, Jacoco, etc only when we are not
-      # running as a PR check.
+      # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module
       - task: Maven@3
-        displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install site:site site:stage'
-
-      # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module in the
-      # previous step.
-      - task: Maven@3
-        displayName: 'Run SpotBugs'
+        displayName: 'Run SpotBugs aggregate analysis'
         inputs:
           mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
           options: '--batch-mode -DskipTests -Dgpg.skip'
@@ -185,13 +170,30 @@ jobs:
           publishJUnitResults: false
           goals: 'install'
 
+      # Generate the Maven site report, including SpotBugs, JavaDoc, CheckStyle, Jacoco, etc only when we are not
+      # running as a PR check.
+      - task: Maven@3
+        displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
+        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
+        inputs:
+          mavenPomFile: pom.client.xml
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'install site:site site:stage'
+
       - script: |
           git clone https://github.com/JonathanGiles/DependencyChecker.git
           mkdir input && cp dependencies.json input/
         displayName: 'Download dependency checker'
+        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
 
       - task: Maven@3
         displayName: 'Analyze dependencies'
+        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
         inputs:
           mavenPomFile: 'DependencyChecker/pom.xml'
           options: '-Dexec.args="-showall -dependencymanagement"'

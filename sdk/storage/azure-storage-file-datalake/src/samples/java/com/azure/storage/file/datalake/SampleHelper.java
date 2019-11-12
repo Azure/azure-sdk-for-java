@@ -10,10 +10,10 @@ import com.azure.core.util.Configuration;
  */
 class SampleHelper {
     static String getAccountName() {
-        return Configuration.getGlobalConfiguration().get("DATA_LAKE_STORAGE_ACCOUNT_NAME");
+        return Configuration.getGlobalConfiguration().get("STORAGE_DATA_LAKE_ACCOUNT_NAME");
     }
 
     static String getAccountKey() {
-        return Configuration.getGlobalConfiguration().get("DATA_LAKE_STORAGE_ACCOUNT_KEY");
+        return Configuration.getGlobalConfiguration().get("STORAGE_DATA_LAKE_ACCOUNT_KEY");
     }
 }

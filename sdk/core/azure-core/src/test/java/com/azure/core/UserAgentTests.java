@@ -11,8 +11,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.http.policy.UserAgentPolicy;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -24,7 +24,7 @@ public class UserAgentTests {
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
-                    Assert.assertEquals(
+                    Assertions.assertEquals(
                             request.getHeaders().getValue("User-Agent"),
                             "AutoRest-Java");
                     return Mono.just(new MockHttpResponse(request, 200));
@@ -36,7 +36,7 @@ public class UserAgentTests {
         HttpResponse response = pipeline.send(new HttpRequest(
                 HttpMethod.GET, new URL("http://localhost"))).block();
 
-        Assert.assertEquals(200, response.getStatusCode());
+        Assertions.assertEquals(200, response.getStatusCode());
     }
 
     @Test
@@ -46,7 +46,7 @@ public class UserAgentTests {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     String header = request.getHeaders().getValue("User-Agent");
-                    Assert.assertEquals("Awesome", header);
+                    Assertions.assertEquals("Awesome", header);
                     return Mono.just(new MockHttpResponse(request, 200));
                 }
             })
@@ -55,6 +55,6 @@ public class UserAgentTests {
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
                 new URL("http://localhost"))).block();
-        Assert.assertEquals(200, response.getStatusCode());
+        Assertions.assertEquals(200, response.getStatusCode());
     }
 }

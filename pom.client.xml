@@ -644,6 +644,12 @@
         <maven.compiler.target>8</maven.compiler.target>
       </properties>
       <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
         <plugins>
           <!-- Don't compile module-info.java, see java 9+ profile -->
           <plugin>
@@ -719,6 +725,12 @@
         <jdk>[11,)</jdk>
       </activation>
       <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -888,6 +900,9 @@
         <property>
           <name>generate-overview</name>
         </property>
+        <file>
+          <exists>../../../eng/pipelines/scripts/generate_overview_from_readme.py</exists>
+        </file>
       </activation>
       <build>
         <plugins>
@@ -912,7 +927,7 @@
                       <argument>${project.basedir}/README.md</argument>
                       <argument>--v</argument>
                       <argument>${project.version}</argument>
-                </arguments>    
+                </arguments>
               </configuration>
           </plugin>
           <!-- Add the overview argument to the javadoc args -->
@@ -938,6 +953,7 @@
     <module>sdk/core/azure-core-http-okhttp</module>
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opencensus</module>
+    <module>sdk/core/azure-core-tracing-opentelemetry</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
     <module>sdk/identity/azure-identity</module>

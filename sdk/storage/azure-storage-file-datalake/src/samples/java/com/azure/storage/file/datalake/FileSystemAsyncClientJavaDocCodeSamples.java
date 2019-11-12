@@ -94,11 +94,11 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
      */
     public void delete2() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteWithResponse#DataLakeRequestConditions
-        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions()
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.deleteWithResponse(accessConditions).subscribe(response ->
+        client.deleteWithResponse(requestConditions).subscribe(response ->
             System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteWithResponse#DataLakeRequestConditions
     }
@@ -148,25 +148,25 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
     public void setMetadata2() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadataWithResponse#Map-DataLakeRequestConditions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions()
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.setMetadataWithResponse(metadata, accessConditions).subscribe(response ->
+        client.setMetadataWithResponse(metadata, requestConditions).subscribe(response ->
             System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadataWithResponse#Map-DataLakeRequestConditions
     }
 
     /**
      * Code snippets for {@link DataLakeFileSystemAsyncClient#createFile(String)} and
-     * {@link DataLakeFileSystemAsyncClient#createFileWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String)}
+     * {@link DataLakeFileSystemAsyncClient#createFileWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String
         Mono<DataLakeFileAsyncClient> fileClient = client.createFile(fileName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -174,9 +174,9 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        Mono<Response<DataLakeFileAsyncClient>> newFileClient = client.createFileWithResponse(fileName, httpHeaders,
-            Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask);
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
+        Mono<Response<DataLakeFileAsyncClient>> newFileClient = client.createFileWithResponse(fileName, permissions,
+            umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
     }
 
     /**
@@ -200,14 +200,14 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakeFileSystemAsyncClient#createDirectory(String)} and
-     * {@link DataLakeFileSystemAsyncClient#createDirectoryWithResponse(String, PathHttpHeaders, Map, DataLakeRequestConditions, String, String)}
+     * {@link DataLakeFileSystemAsyncClient#createDirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createDirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String
         Mono<DataLakeDirectoryAsyncClient> directoryClient = client.createDirectory(fileName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -216,8 +216,8 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
         String permissions = "permissions";
         String umask = "umask";
         Mono<Response<DataLakeDirectoryAsyncClient>> newDirectoryClient = client.createDirectoryWithResponse(fileName,
-            httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, permissions, umask);
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String
+            permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
     }
 
     /**

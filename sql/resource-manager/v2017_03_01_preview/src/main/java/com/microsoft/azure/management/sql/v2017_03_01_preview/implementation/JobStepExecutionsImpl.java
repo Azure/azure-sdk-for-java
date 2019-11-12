@@ -49,10 +49,14 @@ class JobStepExecutionsImpl extends WrapperImpl<JobStepExecutionsInner> implemen
     public Observable<ExecutionJobJobAgentServerJobExecution> getAsync(String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId, String stepName) {
         JobStepExecutionsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, stepName)
-        .map(new Func1<JobExecutionInner, ExecutionJobJobAgentServerJobExecution>() {
+        .flatMap(new Func1<JobExecutionInner, Observable<ExecutionJobJobAgentServerJobExecution>>() {
             @Override
-            public ExecutionJobJobAgentServerJobExecution call(JobExecutionInner inner) {
-                return wrapExecutionJobJobAgentServerJobExecutionModel(inner);
+            public Observable<ExecutionJobJobAgentServerJobExecution> call(JobExecutionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ExecutionJobJobAgentServerJobExecution)wrapExecutionJobJobAgentServerJobExecutionModel(inner));
+                }
             }
        });
     }

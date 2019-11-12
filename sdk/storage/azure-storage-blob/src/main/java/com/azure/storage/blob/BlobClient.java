@@ -153,15 +153,15 @@ public class BlobClient extends BlobClientBase {
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the uploaded blob
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions accessConditions,
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) {
         Mono<Void> upload = this.client.uploadFromFile(
-            filePath, parallelTransferOptions, headers, metadata, tier, accessConditions);
+            filePath, parallelTransferOptions, headers, metadata, tier, requestConditions);
 
         try {
             StorageImplUtils.blockWithOptionalTimeout(upload, timeout);

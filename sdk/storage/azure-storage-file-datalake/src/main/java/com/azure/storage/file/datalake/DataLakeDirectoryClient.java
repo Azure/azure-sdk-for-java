@@ -6,11 +6,9 @@ package com.azure.storage.file.datalake;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
@@ -18,6 +16,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class provides a client that contains directory operations for Azure Storage Data Lake. Operations provided by
@@ -77,53 +76,6 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     }
 
     /**
-     * Creates a directory.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.create}
-     *
-     * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
-     * Docs</a></p>
-     *
-     * @return Information about the created directory.
-     */
-    public PathInfo create() {
-        return createWithResponse(null, null, null, null, null, null, Context.NONE).getValue();
-    }
-
-    /**
-     * Creates a directory.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createWithResponse#PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
-     *
-     * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
-     * Docs</a></p>
-     *
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
-     * @param accessConditions {@link DataLakeRequestConditions}
-     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
-     * @param umask Restricts permissions of the file to be created.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
-     * @return A response containing information about the created directory.
-     */
-    public Response<PathInfo> createWithResponse(PathHttpHeaders headers, Map<String, String> metadata,
-        DataLakeRequestConditions accessConditions, String permissions, String umask, Duration timeout,
-        Context context) {
-        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(PathResourceType.DIRECTORY,
-            headers, metadata, accessConditions, permissions, umask, context);
-
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
-    }
-
-    /**
      * Deletes a directory.
      *
      * <p><strong>Code Samples</strong></p>
@@ -150,16 +102,16 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * Docs</a></p>
      *
      * @param recursive Whether or not to delete all paths beneath the directory.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A reactive response signalling completion.
      */
-    public Response<Void> deleteWithResponse(boolean recursive, DataLakeRequestConditions accessConditions,
+    public Response<Void> deleteWithResponse(boolean recursive, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
-        Mono<Response<Void>> response = dataLakePathAsyncClient.deleteWithResponse(recursive, accessConditions,
+        Mono<Response<Void>> response = dataLakePathAsyncClient.deleteWithResponse(recursive, requestConditions,
             context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -179,9 +131,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * directory.
      */
     public DataLakeFileClient getFileClient(String fileName) {
-        if (CoreUtils.isNullOrEmpty(fileName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'fileName' can not be set to null"));
-        }
+        Objects.requireNonNull(fileName, "'fileName' can not be set to null");
+
         return new DataLakeFileClient(dataLakeDirectoryAsyncClient.getFileAsyncClient(fileName),
             dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(fileName).buildBlockBlobClient());
     }
@@ -209,26 +160,26 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context}
      *
      * @param fileName Name of the file to create.
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the file.
-     * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the file.
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileClient} used
      * to interact with the file created.
      */
-    public Response<DataLakeFileClient> createFileWithResponse(String fileName, PathHttpHeaders headers,
-        Map<String, String> metadata, DataLakeRequestConditions accessConditions, String permissions, String umask,
+    public Response<DataLakeFileClient> createFileWithResponse(String fileName, String permissions, String umask,
+        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
-        Response<PathInfo> response = dataLakeFileClient.createWithResponse(headers, metadata, accessConditions,
-            permissions, umask, timeout, context);
+        Response<PathInfo> response = dataLakeFileClient.createWithResponse(permissions, umask, headers, metadata,
+            requestConditions, timeout, context);
         return new SimpleResponse<>(response, dataLakeFileClient);
     }
 
@@ -257,14 +208,14 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteFileWithResponse#String-DataLakeRequestConditions-Duration-Context}
      *
      * @param fileName Name of the file to delete.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> deleteFileWithResponse(String fileName, DataLakeRequestConditions accessConditions,
+    public Response<Void> deleteFileWithResponse(String fileName, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
-        return getFileClient(fileName).deleteWithResponse(accessConditions, timeout, context);
+        return getFileClient(fileName).deleteWithResponse(requestConditions, timeout, context);
     }
 
     /**
@@ -282,9 +233,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * in this directory
      */
     public DataLakeDirectoryClient getSubDirectoryClient(String subDirectoryName) {
-        if (CoreUtils.isNullOrEmpty(subDirectoryName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'subDirectoryName' can not be set to null"));
-        }
+        Objects.requireNonNull(subDirectoryName, "'subDirectoryName' can not be set to null");
+
         return new DataLakeDirectoryClient(dataLakeDirectoryAsyncClient.getSubDirectoryAsyncClient(subDirectoryName),
             dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(subDirectoryName).buildBlockBlobClient());
     }
@@ -312,15 +262,15 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectoryWithResponse#String-PathHttpHeaders-Map-DataLakeRequestConditions-String-String-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context}
      *
      * @param subDirectoryName Name of the sub-directory to create.
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the sub-directory.
-     * @param accessConditions {@link DataLakeRequestConditions}
      * @param permissions POSIX access permissions for the sub-directory owner, the sub-directory owning group, and
      * others.
      * @param umask Restricts permissions of the sub-directory to be created.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the sub-directory.
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -328,11 +278,11 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * used to interact with the sub-directory created.
      */
     public Response<DataLakeDirectoryClient> createSubDirectoryWithResponse(String subDirectoryName,
-        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions accessConditions,
-        String permissions, String umask, Duration timeout, Context context) {
+        String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
+        DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getSubDirectoryClient(subDirectoryName);
-        Response<PathInfo> response = dataLakeDirectoryClient.createWithResponse(headers, metadata, accessConditions,
-            permissions, umask, timeout, context);
+        Response<PathInfo> response = dataLakeDirectoryClient.createWithResponse(permissions, umask, headers, metadata,
+            requestConditions, timeout, context);
         return new SimpleResponse<>(response, dataLakeDirectoryClient);
     }
 
@@ -364,15 +314,15 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * @param subDirectoryName Name of the sub-directory to delete.
      * @param recursive Whether or not to delete all paths beneath the sub-directory.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> deleteSubDirectoryWithResponse(String subDirectoryName, boolean recursive,
-        DataLakeRequestConditions accessConditions, Duration timeout, Context context) {
+        DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getSubDirectoryClient(subDirectoryName);
-        return dataLakeDirectoryClient.deleteWithResponse(recursive, accessConditions, timeout, context);
+        return dataLakeDirectoryClient.deleteWithResponse(recursive, requestConditions, timeout, context);
     }
 
     /**
@@ -406,8 +356,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
      * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
      * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
-     * @param sourceAccessConditions {@link DataLakeRequestConditions} against the source.
-     * @param destAccessConditions {@link DataLakeRequestConditions} against the destination.
+     * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
+     * @param destRequestConditions {@link DataLakeRequestConditions} against the destination.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -415,11 +365,11 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
     public Response<DataLakeDirectoryClient> renameWithResponse(String destinationPath,
-        DataLakeRequestConditions sourceAccessConditions, DataLakeRequestConditions destAccessConditions,
+        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destRequestConditions,
         Duration timeout, Context context) {
 
-        Mono<Response<DataLakePathClient>> response = renameWithResponse(destinationPath, sourceAccessConditions,
-            destAccessConditions, context);
+        Mono<Response<DataLakePathClient>> response = renameWithResponse(destinationPath, sourceRequestConditions,
+            destRequestConditions, context);
 
         Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeDirectoryClient(resp.getValue()));
