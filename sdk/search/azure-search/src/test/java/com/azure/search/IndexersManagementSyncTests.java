@@ -17,6 +17,13 @@ import java.util.stream.Collectors;
 public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     private SearchServiceClient client;
 
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
+        client = getSearchServiceClientBuilder().buildClient();
+    }
+
+
     protected DataSource createDatasource(DataSource ds) {
         return client.createOrUpdateDataSource(ds);
     }
@@ -31,7 +38,6 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void createIndexerReturnsCorrectDefinition() {
-        client = getSearchServiceClientBuilder().buildClient();
         Indexer expectedIndexer =
             createTestIndexer("indexer")
                 .setIsDisabled(true)
@@ -54,7 +60,6 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canCreateAndListIndexers() {
-        client = getSearchServiceClientBuilder().buildClient();
 
         // Create the data source, note it a valid DS with actual
         // connection string
@@ -85,7 +90,6 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void createIndexerFailsWithUsefulMessageOnUserError() {
-        client = getSearchServiceClientBuilder().buildClient();
         Indexer indexer = createTestIndexer("indexer");
         indexer.setDataSourceName("thisdatasourcedoesnotexist");
 
@@ -97,8 +101,6 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canUpdateIndexer() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Indexer updatedExpected = changeIndexerBasic();
 
         createUpdateValidateIndexer(updatedExpected);
@@ -106,8 +108,6 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canUpdateIndexerFieldMapping() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Indexer updatedExpected = changeIndexerFieldMapping();
 
         createUpdateValidateIndexer(updatedExpected);
@@ -115,8 +115,6 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canUpdateIndexerDisabled() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Indexer updatedExpected = changeIndexerDisabled();
 
         createUpdateValidateIndexer(updatedExpected);
@@ -124,9 +122,14 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canUpdateIndexerSchedule() {
-        client = getSearchServiceClientBuilder().buildClient();
-
         Indexer updatedExpected = changeIndexerSchedule();
+
+        createUpdateValidateIndexer(updatedExpected);
+    }
+
+    @Override
+    public void canUpdateIndexerBatchSizeMaxFailedItems() {
+        Indexer updatedExpected = changeIndexerBatchSizeMaxFailedItems();
 
         createUpdateValidateIndexer(updatedExpected);
     }

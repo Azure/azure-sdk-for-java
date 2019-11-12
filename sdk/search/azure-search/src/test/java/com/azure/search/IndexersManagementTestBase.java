@@ -8,6 +8,7 @@ import com.azure.search.models.Field;
 import com.azure.search.models.FieldMapping;
 import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
+import com.azure.search.models.IndexingParameters;
 import com.azure.search.models.IndexingSchedule;
 import org.junit.Assert;
 import org.junit.Test;
@@ -42,6 +43,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void canUpdateIndexerSchedule();
+
+    @Test
+    public abstract void canUpdateIndexerBatchSizeMaxFailedItems();
 
     protected void assertIndexersEqual(Indexer expected, Indexer actual) {
         expected.setETag("none");
@@ -196,14 +200,27 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         Indexer updatedExpected =
             createTestIndexer("indexer");
 
-        IndexingSchedule is2 = updatedExpected.getSchedule();
-
         IndexingSchedule is = new IndexingSchedule();
-        //is.setStartTime(OffsetDateTime.parse("2020-12-30T11:22:33+02:00"));
         is.setInterval(Duration.ofMinutes(10));
 
         // modify it
         updatedExpected.setSchedule(is);
+
+        return updatedExpected;
+    }
+
+    protected Indexer changeIndexerBatchSizeMaxFailedItems() {
+        // create another indexer object
+        Indexer updatedExpected =
+            createTestIndexer("indexer");
+
+        IndexingParameters ip = new IndexingParameters();
+        ip.setMaxFailedItems(121);
+        ip.setMaxFailedItemsPerBatch(11);
+
+        ip.setBatchSize(20);
+        // modify it
+        updatedExpected.setParameters(ip);
 
         return updatedExpected;
     }
