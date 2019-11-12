@@ -3,9 +3,12 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.rest.Page;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
@@ -84,6 +87,8 @@ public final class ConfigurationClientBuilder {
     private final String clientVersion;
 
     private ConfigurationClientCredentials credential;
+    private TokenCredential tokenCredentiall;
+
     private String endpoint;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
@@ -172,7 +177,13 @@ public final class ConfigurationClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
-        policies.add(new ConfigurationCredentialsPolicy(buildCredential));
+
+        if (tokenCredentiall != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredentiall));
+        } else if (buildConfiguration != null) {
+            policies.add(new ConfigurationCredentialsPolicy(buildCredential));
+        }
+
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
@@ -346,6 +357,22 @@ public final class ConfigurationClientBuilder {
             return new ConfigurationClientCredentials(connectionString);
         } catch (InvalidKeyException | NoSuchAlgorithmException ex) {
             return null;
+        }
+    }
+
+    private TokenCredential getTokenCredential(Configuration configuration) {
+        final String clientID = configuration.get("AZURE_CLIENT_ID");
+        final String secret = configuration.get("AZURE_CLIENT_SECRET");
+        final String tenantID = configuration.get("AZURE_TENANT_ID");
+
+        if (CoreUtils.isNullOrEmpty(clientID) || CoreUtils.isNullOrEmpty(secret) || CoreUtils.isNullOrEmpty(tenantID)) {
+            return tokenCredentiall;
+        }
+
+        try {
+            return new
+        } catch () {
+
         }
     }
 
