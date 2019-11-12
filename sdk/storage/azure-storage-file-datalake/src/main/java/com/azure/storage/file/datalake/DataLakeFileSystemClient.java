@@ -9,7 +9,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerProperties;
@@ -22,6 +21,7 @@ import com.azure.storage.file.datalake.models.PublicAccessType;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Client to a file system. It may only be instantiated through a {@link DataLakeFileSystemClientBuilder} or via the
@@ -78,9 +78,8 @@ public class DataLakeFileSystemClient {
      * system.
      */
     public DataLakeFileClient getFileClient(String fileName) {
-        if (CoreUtils.isNullOrEmpty(fileName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'fileName' can not be set to null"));
-        }
+        Objects.requireNonNull(fileName, "'fileName' can not be set to null");
+
         return new DataLakeFileClient(dataLakeFileSystemAsyncClient.getFileAsyncClient(fileName),
             blobContainerClient.getBlobClient(fileName).getBlockBlobClient());
     }
@@ -100,6 +99,8 @@ public class DataLakeFileSystemClient {
      * this file system.
      */
     public DataLakeDirectoryClient getDirectoryClient(String directoryName) {
+        Objects.requireNonNull(directoryName, "'directoryName' can not be set to null");
+
         return new DataLakeDirectoryClient(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
             blobContainerClient.getBlobClient(directoryName).getBlockBlobClient());
     }

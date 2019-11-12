@@ -273,7 +273,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
-    public Mono<Void> send(EventData event) {
+    Mono<Void> send(EventData event) {
         if (event == null) {
             return monoError(logger, new NullPointerException("'event' cannot be null."));
         }
@@ -296,7 +296,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
-    public Mono<Void> send(EventData event, SendOptions options) {
+    Mono<Void> send(EventData event, SendOptions options) {
         if (event == null) {
             return monoError(logger, new NullPointerException("'event' cannot be null."));
         } else if (options == null) {
@@ -315,7 +315,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Iterable<EventData> events) {
+    Mono<Void> send(Iterable<EventData> events) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         }
@@ -333,7 +333,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
+    Mono<Void> send(Iterable<EventData> events, SendOptions options) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         } else if (options == null) {
@@ -352,7 +352,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Flux<EventData> events) {
+    Mono<Void> send(Flux<EventData> events) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         }
@@ -370,7 +370,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
-    public Mono<Void> send(Flux<EventData> events, SendOptions options) {
+    Mono<Void> send(Flux<EventData> events, SendOptions options) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         } else if (options == null) {

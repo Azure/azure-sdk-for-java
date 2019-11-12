@@ -64,10 +64,14 @@ class JobAgentsImpl extends WrapperImpl<JobAgentsInner> implements JobAgents {
     public Observable<JobAgent> getAsync(String resourceGroupName, String serverName, String jobAgentName) {
         JobAgentsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, jobAgentName)
-        .map(new Func1<JobAgentInner, JobAgent>() {
+        .flatMap(new Func1<JobAgentInner, Observable<JobAgent>>() {
             @Override
-            public JobAgent call(JobAgentInner inner) {
-                return wrapModel(inner);
+            public Observable<JobAgent> call(JobAgentInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((JobAgent)wrapModel(inner));
+                }
             }
        });
     }
