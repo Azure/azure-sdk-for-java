@@ -23,20 +23,4 @@ jobs:
         AZURE_STORAGE_QUEUE_ENDPOINT: $(java-storage-test-queue-endpoint)
         AZURE_STORAGE_QUEUE_CONNECTION_STRING: $(java-storage-test-queue-connection-string)
         AZURE_STORAGE_BLOB_CONNECTION_STRING: $(java-storage-test-blob-connection-string)
-        AZURE_STORAGE_BLOB_AZURITE_PORT: 11000
-        AZURE_STORAGE_QUEUE_AZURITE_PORT: 11001
-      PreRunSteps:
-        pwsh: |
-          Write-Output "Installing Azurite"
-          npm install -g azurite
-          Write-Ouptut "Azurite install complete"
-          Write-Output "Starting Azurite"
-          Start-Process azurite --blobPort ${{ parameters.EnvVars.AZURE_STORAGE_BLOB_AZURITE_PORT }} --queuePort ${{ parameters.EnvVars.AZURE_STORAGE_QUEUE_AZURITE_PORT }}
-          $azuriteStarted = $false
-          Do {
-            Write-Output "Checking if Azurite started"
-            $azuriteStarted = (Test-NetConnection -ComputerName 127.0.0.1 -Port 11000).TcpTestSucceeded
-          } Until ($azuriteStarted -eq $true)
-          Write-Output "Azurite start complete"
-        displayName: 'Install and Start Azurite'
       TimeoutInMinutes: 120
