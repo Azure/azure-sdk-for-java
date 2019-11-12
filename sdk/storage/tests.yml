@@ -29,7 +29,7 @@ jobs:
           npm install -g azurite
           Write-Output "Azurite install complete"
           Write-Output "Starting Azurite"
-          Start-Process azurite --blobPort 11000 --queuePort 11001
+          Start-Process azurite -ArgumentList "--blobPort 11000 --queuePort 11001"
           $azuriteStarted = $false
           Do {
             Write-Output "Checking if Azurite started"
