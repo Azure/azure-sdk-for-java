@@ -135,9 +135,9 @@ public class EventHubConsumerClient implements Closeable {
      * @param maximumMessageCount The maximum number of messages to receive in this batch.
      * @param partitionId Identifier of the partition to read events from.
      *
-     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to {@code
-     *     maximumMessageCount} events. If a stream for the events was opened before, the same position within that
-     *     partition is returned. Otherwise, events are read starting from {@link #getStartingPosition()}.
+     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
+     *     {@code maximumMessageCount} events. If a stream for the events was opened before, the same position within
+     *     that partition is returned. Otherwise, events are read starting from {@link #getStartingPosition()}.
      *
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1.
      */
@@ -153,8 +153,8 @@ public class EventHubConsumerClient implements Closeable {
      * @param maximumWaitTime The maximum amount of time to wait to build up the requested message count for the
      *     batch; if not specified, the default wait time specified when the consumer was created will be used.
      *
-     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to {@code
-     *     maximumMessageCount} events.
+     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
+     *     {@code maximumMessageCount} events.
      *
      * @throws NullPointerException if {@code maximumWaitTime} is null.
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
@@ -184,9 +184,9 @@ public class EventHubConsumerClient implements Closeable {
     }
 
     /**
-     * Receives a batch of {@link PartitionEvent events} from all partitions. The batch is returned after {@code
-     * maximumMessageCount} events are received or after the {@link RetryOptions#getTryTimeout() operation timeout} has
-     * elapsed.
+     * Receives a batch of {@link PartitionEvent events} from all partitions. The batch is returned after
+     * {@code maximumMessageCount} events are received or after the
+     * {@link RetryOptions#getTryTimeout() operation timeout} has elapsed.
      *
      * @param maximumMessageCount The maximum number of messages to receive in this batch.
      *
@@ -200,15 +200,15 @@ public class EventHubConsumerClient implements Closeable {
     }
 
     /**
-     * Receives a batch of {@link PartitionEvent events} from all partitions. The batch is returned after {@code
-     * maximumMessageCount} events are received or after {@code maximumWaitTime} has elapsed.
+     * Receives a batch of {@link PartitionEvent events} from all partitions. The batch is returned after
+     * {@code maximumMessageCount} events are received or after {@code maximumWaitTime} has elapsed.
      *
      * @param maximumMessageCount The maximum number of messages to receive in this batch.
      * @param maximumWaitTime The maximum amount of time to wait to build up the requested message count for the
      *     batch; if not specified, the default wait time specified when the consumer was created will be used.
      *
-     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to {@code
-     *     maximumMessageCount} events.
+     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
+     *     {@code maximumMessageCount} events.
      *
      * @throws NullPointerException if {@code maximumWaitTime} is null.
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
