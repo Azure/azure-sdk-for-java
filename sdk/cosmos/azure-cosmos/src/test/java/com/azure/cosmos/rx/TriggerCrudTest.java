@@ -76,8 +76,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    //FIXME test is flaky
-    @Ignore
+    // TODO (DANOBLE) test is flaky
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteTrigger() throws Exception {
         // create a trigger

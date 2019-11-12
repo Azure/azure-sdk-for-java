@@ -17,8 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-//FIXME beforeClass times out inconsistently.
-@Ignore
+// TODO (DANOBLE) beforeClass times out inconsistently.
 public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
 
     private CosmosAsyncContainer createdCollection;
@@ -53,7 +52,7 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
                 .notNullEtag()
                 .build();
         validateSuccess(readObservable, validatorForRead);
-        
+
         //update udf
         readBackUdf.setBody("function() {var x = 11;}");
 
@@ -65,7 +64,7 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
                 .withUserDefinedFunctionBody("function() {var x = 11;}")
                 .notNullEtag()
                 .build();
-        validateSuccess(replaceObservable, validatorForReplace);   
+        validateSuccess(replaceObservable, validatorForReplace);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

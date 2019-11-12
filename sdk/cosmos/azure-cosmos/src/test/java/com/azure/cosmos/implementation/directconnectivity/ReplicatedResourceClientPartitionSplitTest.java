@@ -44,8 +44,7 @@ public class ReplicatedResourceClientPartitionSplitTest {
         };
     }
 
-    //FIXME test times out inconsistently
-    @Ignore
+    // TODO (DANOBLE) test times out inconsistently
     @Test(groups = { "unit" }, dataProvider = "partitionIsSplittingArgProvider", timeOut = TIMEOUT)
     public void partitionSplit_RefreshCache_Read(ConsistencyLevel consistencyLevel, int partitionIsSplitting) {
         URI secondary1AddressBeforeMove = URI.create("secondary");

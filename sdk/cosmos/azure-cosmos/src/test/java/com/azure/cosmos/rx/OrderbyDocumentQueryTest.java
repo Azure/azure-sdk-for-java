@@ -50,8 +50,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//FIXME beforeClass times out inconsistently.
-@Ignore
+// TODO (DANOBLE) beforeClass times out inconsistently.
 public class OrderbyDocumentQueryTest extends TestSuiteBase {
     private final double minQueryRequestChargePerPartition = 2.0;
 
@@ -67,8 +66,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    //FIXME test times out inconsistently
-    @Ignore
+    // TODO (DANOBLE) test times out inconsistently
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsValidateContent(boolean qmEnabled) throws Exception {
         CosmosItemProperties expectedDocument = createdDocuments.get(0);
@@ -219,7 +217,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
 
-        List<String> expectedResourceIds = 
+        List<String> expectedResourceIds =
                 sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator)
                 .stream().limit(topValue).collect(Collectors.toList());
 
@@ -297,10 +295,10 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
                 .requestChargeGreaterThanOrEqualTo(1.0).build())
             .build();
-        
+
         validateQuerySuccess(queryObservable, validator);
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
 	public void orderByContinuationTokenRoundTrip() throws Exception {
         {
@@ -314,7 +312,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                     false);
             String serialized = orderByContinuationToken.toString();
             ValueHolder<OrderByContinuationToken> outOrderByContinuationToken = new ValueHolder<OrderByContinuationToken>();
-            
+
             assertThat(OrderByContinuationToken.tryParse(serialized, outOrderByContinuationToken)).isTrue();
             OrderByContinuationToken deserialized = outOrderByContinuationToken.v;
             CompositeContinuationToken compositeContinuationToken = deserialized.getCompositeContinuationToken();
@@ -325,19 +323,19 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             assertThat(range.getMax()).isEqualTo("D");
             assertThat(range.isMinInclusive()).isEqualTo(false);
             assertThat(range.isMaxInclusive()).isEqualTo(true);
-            
+
             QueryItem[] orderByItems = deserialized.getOrderByItems();
             assertThat(orderByItems).isNotNull();
             assertThat(orderByItems.length).isEqualTo(1);
             assertThat(orderByItems[0].getItem()).isEqualTo(42);
-            
+
             String rid = deserialized.getRid();
             assertThat(rid).isEqualTo("rid");
-            
+
             boolean inclusive = deserialized.getInclusive();
             assertThat(inclusive).isEqualTo(false);
         }
-        
+
         {
         	// Negative
         	ValueHolder<OrderByContinuationToken> outOrderByContinuationToken = new ValueHolder<OrderByContinuationToken>();
@@ -353,20 +351,20 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         // Get Expected
         Comparator<Integer> order = sortOrder.equals("ASC")?Comparator.naturalOrder():Comparator.reverseOrder();
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(order);
-        
+
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator);
         this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10, 100}, expectedResourceIds);
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
     public void queryDocumentsWithOrderByContinuationTokensString(String sortOrder) throws Exception {
         // Get Actual
         String query = String.format("SELECT * FROM c ORDER BY c.id %s", sortOrder);
-        
+
         // Get Expected
         Comparator<String> order = sortOrder.equals("ASC")?Comparator.naturalOrder():Comparator.reverseOrder();
         Comparator<String> validatorComparator = Comparator.nullsFirst(order);
-            
+
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("id", d -> d.getString("id"), validatorComparator);
         this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
     }
@@ -455,7 +453,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     public void afterClass() {
         safeClose(client);
     }
-    
+
     private void assertInvalidContinuationToken(String query, int[] pageSize, List<String> expectedIds) {
         String requestContinuation = null;
         do {
@@ -481,7 +479,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             testSubscriber.assertError(CosmosClientException.class);
         } while (requestContinuation != null);
     }
-    
+
     private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, List<String> expectedIds) {
         for (int pageSize : pageSizes) {
             List<CosmosItemProperties> receivedDocuments = this.queryWithContinuationTokens(query, pageSize);

@@ -50,7 +50,7 @@ public class DocumentCrudTest extends TestSuiteBase {
             { "+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~" },
         };
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void createDocument(String documentId) throws InterruptedException {
 
@@ -159,8 +159,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    //FIXME test is flaky
-    @Ignore
+    // TODO (DANOBLE) test is flaky
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void timestamp(String documentId) throws Exception {
         OffsetDateTime before = OffsetDateTime.now();
@@ -277,7 +276,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         options.setPartitionKey(new PartitionKey(docDefinition.get("mypk")));
         // replace document
         Mono<CosmosAsyncItemResponse> replaceObservable = document.replace(docDefinition, options);
-        
+
         // validate
         CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
                 .withProperty("newProp", newPropValue).build();

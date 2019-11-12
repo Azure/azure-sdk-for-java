@@ -28,8 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
 
-//FIXME: beforeClass method times out.
-@Ignore
+// TODO (DANOBLE) beforeClass method times out.
 public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
     private final static int TIMEOUT = 60000;

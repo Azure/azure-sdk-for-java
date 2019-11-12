@@ -25,8 +25,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//FIXME: beforeClass times out inconsistently
-@Ignore
+// TODO (DANOBLE) beforeClass times out inconsistently
 public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     private CosmosAsyncDatabase createdDatabase;

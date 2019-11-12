@@ -67,8 +67,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         validateSuccess(replaceObservable, validatorForReplace);
     }
 
-    // FIXME test times out inconsistently
-    @Ignore
+    // TODO (DANOBLE) test times out inconsistently
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void executeStoredProcedure() throws Exception {
         // create a stored procedure

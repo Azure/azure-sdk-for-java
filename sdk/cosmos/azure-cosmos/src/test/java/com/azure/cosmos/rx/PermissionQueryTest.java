@@ -30,9 +30,8 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//TODO: change to use external TestSuiteBase
-//FIXME beforeClass times out inconsistently
-@Ignore
+// TODO: change to use external TestSuiteBase
+// TODO (DANOBLE) beforeClass times out inconsistently
 public class PermissionQueryTest extends TestSuiteBase {
 
     public final String databaseId = DatabaseForTest.generateId();
@@ -163,12 +162,12 @@ public class PermissionQueryTest extends TestSuiteBase {
     public Permission createPermissions(AsyncDocumentClient client, int index) {
         DocumentCollection collection = new DocumentCollection();
         collection.setId(UUID.randomUUID().toString());
-        
+
         Permission permission = new Permission();
         permission.setId(UUID.randomUUID().toString());
         permission.setPermissionMode(PermissionMode.READ);
         permission.setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgT" + Integer.toString(index) + "=");
-        
+
         return client.createPermission(getUserLink(), permission, null).single().block().getResource();
     }
 

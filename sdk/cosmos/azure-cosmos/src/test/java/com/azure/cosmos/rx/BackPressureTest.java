@@ -34,8 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-// FIXME: beforeClass method times out inconsistently
-@Ignore
+// TODO (DANOBLE) beforeClass method times out inconsistently
 public class BackPressureTest extends TestSuiteBase {
 
     private static final int TIMEOUT = 200000;

@@ -41,8 +41,7 @@ import static org.hamcrest.Matchers.notNullValue;
  * transform a flux to CompletableFuture. Please see
  * {@link #transformObservableToCompletableFuture()}
  */
-// FIXME: setup method times out inconsistently
-@Ignore
+// TODO (DANOBLE) setup method times out inconsistently
 public class ConflictAPITest extends DocumentClientTest {
     private final static int TIMEOUT = 60000;
 

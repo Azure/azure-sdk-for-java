@@ -519,8 +519,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         assertThat(clientWrapper.capturedRequests).asList().hasSize(0);
     }
 
-    //FIXME times out inconsistently
-    @Ignore
+    // TODO (DANOBLE) times out inconsistently
     @Test(groups = { "direct" }, timeOut = TIMEOUT)
     public void tryGetAddresses_ForMasterPartition_ForceRefresh() throws Exception {
         Configs configs = new Configs();
