@@ -24,6 +24,7 @@ import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -191,7 +192,7 @@ public class ReplicatedResourceClientPartitionSplitTest {
         testSubscriber.assertNotComplete();
         testSubscriber.assertTerminated();
         Assertions.assertThat(testSubscriber.errorCount()).isEqualTo(1);
-        validator.validate(testSubscriber.errors().get(0));
+        validator.validate(Exceptions.unwrap(testSubscriber.errors().get(0)));
     }
 
     private PartitionKeyRange partitionKeyRangeWithId(String id) {
