@@ -26,7 +26,11 @@ jobs:
       PreRunSteps:
         pwsh: |
           Write-Output "Installing Azurite"
-          npm install -g azurite
+          git init
+          git clone https://github.com/Azure/Azurite.git
+          npm install
+          npm run build
+          npm install -g
           Write-Output "Azurite install complete"
           Write-Output "Starting Azurite"
           Start-Process azurite -ArgumentList "--blobPort 11000 --queuePort 11001"
