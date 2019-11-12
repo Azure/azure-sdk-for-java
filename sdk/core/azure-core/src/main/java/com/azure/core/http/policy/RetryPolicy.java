@@ -26,7 +26,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final RetryPolicyOptions retryPolicyOptions;
 
     /**
-     * Creates a default {@link RetryPolicy} with default {@link RetryPolicyOptions} for retry policy.
+     * Creates a default {@link RetryPolicy} with default {@link RetryPolicyOptions}.
      */
     public RetryPolicy() {
         this(new RetryPolicyOptions());
@@ -39,7 +39,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      */
     public RetryPolicy(RetryStrategy retryStrategy) {
         Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null");
-        this.retryPolicyOptions = new RetryPolicyOptions(retryStrategy);
+        this.retryPolicyOptions = new RetryPolicyOptions().setRetryStrategy(retryStrategy);
     }
 
     /**
