@@ -233,17 +233,22 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
         try {
-            Mono<BlockBlobItem> uploadTask = uploadWithResponse(data, parallelTransferOptions, null,
-                null, null, null).flatMap(FluxUtil::toMono);
+            Mono<Void> overwriteCheck;
+            BlobRequestConditions requestConditions;
 
             if (overwrite) {
-                return uploadTask;
+                overwriteCheck = Mono.empty();
+                requestConditions = null;
             } else {
-                return exists()
-                    .flatMap(exists -> exists
-                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                        : uploadTask);
+                overwriteCheck = exists().flatMap(exists -> exists
+                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                    : Mono.empty());
+                requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
             }
+
+            return overwriteCheck
+                .then(uploadWithResponse(data, parallelTransferOptions, null, null, null,
+                    requestConditions)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -479,16 +484,20 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
         try {
-            Mono<Void> uploadTask = uploadFromFile(filePath, null, null, null, null, null);
+            Mono<Void> overwriteCheck;
+            BlobRequestConditions requestConditions;
 
             if (overwrite) {
-                return uploadTask;
+                overwriteCheck = Mono.empty();
+                requestConditions = null;
             } else {
-                return exists()
-                    .flatMap(exists -> exists
-                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                        : uploadTask);
+                overwriteCheck = exists().flatMap(exists -> exists
+                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                    : Mono.empty());
+                requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
             }
+
+            return overwriteCheck.then(uploadFromFile(filePath, null, null, null, null, requestConditions));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -548,7 +557,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
         final BlobRequestConditions finalRequestConditions = (requestConditions == null)
             ? new BlobRequestConditions() : requestConditions;
-
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();

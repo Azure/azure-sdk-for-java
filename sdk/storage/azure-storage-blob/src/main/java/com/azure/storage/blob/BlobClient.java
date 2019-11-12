@@ -134,10 +134,14 @@ public class BlobClient extends BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath, boolean overwrite) {
-        if (!overwrite && exists()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+        BlobRequestConditions requestConditions = null;
+        if (!overwrite) {
+            if (exists()) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+            }
+            requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        uploadFromFile(filePath, null, null, null, null, null, null);
+        uploadFromFile(filePath, null, null, null, null, requestConditions, null);
     }
 
     /**

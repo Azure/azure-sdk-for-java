@@ -379,6 +379,10 @@ class BlockBlobAPITest extends APISpec {
         bc.commitBlockList(ids) != null
     }
 
+    def "Commit block list no overwrite"() {
+        expect
+    }
+
     def "Commit block list null"() {
         expect:
         bc.commitBlockListWithResponse(null, null, null, null, null, null, null).getStatusCode() == 201
