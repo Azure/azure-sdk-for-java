@@ -262,39 +262,16 @@ public class CertificateClient {
      * <p>Deletes the certificate in the Azure Key Vault. Prints out the
      * deleted certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.deleteCertificate#string}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.begindeleteCertificate#string}
      *
      * @param name The name of the certificate to be deleted.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return The {@link DeletedCertificate deleted certificate}.
+     * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedCertificate deleted certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedCertificate deleteCertificate(String name) {
-        return deleteCertificateWithResponse(name, Context.NONE).getValue();
-    }
-
-    /**
-     * Deletes a certificate from a specified key vault. All the versions of the certificate along with its associated policy
-     * get deleted. If soft-delete is enabled on the key vault then the certificate is placed in the deleted state and requires to be
-     * purged for permanent deletion else the certificate is permanently deleted. The delete operation applies to any certificate stored in
-     * Azure Key Vault but it cannot be applied to an individual version of a certificate. This operation requires the certificates/delete permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Deletes the certificate in the Azure Key Vault. Prints out the
-     * deleted certificate details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.deleteCertificateWithResponse#String-Context}
-     *
-     * @param name The name of the certificate to be deleted.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DeletedCertificate deleted certificate}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedCertificate> deleteCertificateWithResponse(String name, Context context) {
-        return client.deleteCertificateWithResponse(name, context).block();
+    public SyncPoller<DeletedCertificate, Void> beginDeleteCertificate(String name) {
+        return client.beginDeleteCertificate(name).getSyncPoller();
     }
 
     /**
@@ -389,38 +366,16 @@ public class CertificateClient {
      * <p>Recovers the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * recovered certificate details when a response has been received.</p>
 
-     * {@codesnippet com.azure.security.certificatevault.certificates.CertificateClient.recoverDeletedCertificate#string}
+     * {@codesnippet com.azure.security.certificatevault.certificates.CertificateClient.beginrecoverDeletedCertificate#string}
      *
      * @param name The name of the deleted certificate to be recovered.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the certificate vault.
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return The {@link KeyVaultCertificate recovered certificate}.
+     * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultCertificate recovered certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultCertificate recoverDeletedCertificate(String name) {
-        return recoverDeletedCertificateWithResponse(name, Context.NONE).getValue();
-    }
-
-    /**
-     * Recovers the deleted certificate back to its current version under /certificates and can only be performed on a soft-delete enabled vault.
-     * The RecoverDeletedCertificate operation performs the reversal of the Delete operation and must be issued during the retention interval
-     * (available in the deleted certificate's attributes). This operation requires the certificates/recover permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted certificate from the key vault enabled for soft-delete. Prints out the
-     * recovered certificate details when a response has been received.</p>
-
-     * {@codesnippet com.azure.security.certificatevault.certificates.CertificateClient.recoverDeletedCertificateWithResponse#String-Context}
-     *
-     * @param name The name of the deleted certificate to be recovered.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the certificate vault.
-     * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificate recovered certificate}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificate> recoverDeletedCertificateWithResponse(String name, Context context) {
-        return client.recoverDeletedCertificateWithResponse(name, context).block();
+    public SyncPoller<KeyVaultCertificate, Void> beginRecoverDeletedCertificate(String name) {
+        return client.beginRecoverDeletedCertificate(name).getSyncPoller();
     }
 
     /**
@@ -812,7 +767,7 @@ public class CertificateClient {
      * Gets information about the certificate issuer which represents the {@link IssuerProperties} from the key vault. This operation
      * requires the certificates/manageissuers/getissuers permission.
      *
-     * <p>The list operations {@link CertificateClient#listIssuers()} return the {@link PagedIterable} containing
+     * <p>The list operations {@link CertificateClient#listPropertiesOfIssuers()} return the {@link PagedIterable} containing
      * {@link IssuerProperties issuerProperties} as output excluding the properties like accountId and organization details of the certificate issuer.
      * This operation can then be used to get the full certificate issuer with its properties from {@code issuerProperties}.</p>
      *
@@ -832,7 +787,7 @@ public class CertificateClient {
      * Gets information about the certificate issuer which represents the {@link IssuerProperties} from the key vault. This operation
      * requires the certificates/manageissuers/getissuers permission.
      *
-     * <p>The list operations {@link CertificateClient#listIssuers()} return the {@link PagedIterable} containing
+     * <p>The list operations {@link CertificateClient#listPropertiesOfIssuers()} return the {@link PagedIterable} containing
      * {@link IssuerProperties issuerProperties} as output excluding the properties like accountId and organization details of the certificate issuer.
      * This operation can then be used to get the full certificate issuer with its properties from {@code issuerProperties}.</p>
      *
@@ -904,8 +859,8 @@ public class CertificateClient {
      * @return A {@link PagedIterable} containing all of the {@link IssuerProperties certificate issuers} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IssuerProperties> listIssuers() {
-        return listIssuers(Context.NONE);
+    public PagedIterable<IssuerProperties> listPropertiesOfIssuers() {
+        return listPropertiesOfIssuers(Context.NONE);
     }
 
     /**
@@ -923,8 +878,8 @@ public class CertificateClient {
      * @return A {@link PagedIterable} containing all of the {@link IssuerProperties certificate issuers} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IssuerProperties> listIssuers(Context context) {
-        return new PagedIterable<>(client.listIssuers(context));
+    public PagedIterable<IssuerProperties> listPropertiesOfIssuers(Context context) {
+        return new PagedIterable<>(client.listPropertiesOfIssuers(context));
     }
 
     /**

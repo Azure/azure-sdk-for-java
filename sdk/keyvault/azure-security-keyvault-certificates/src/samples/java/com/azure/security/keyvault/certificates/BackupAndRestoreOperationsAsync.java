@@ -71,10 +71,12 @@ public class BackupAndRestoreOperationsAsync {
         Thread.sleep(7000);
 
         // The certificate is no longer in use, so you delete it.
-        certificateAsyncClient.deleteCertificate("certificateName")
-            .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
-
+        certificateAsyncClient.beginDeleteCertificate("certificateName")
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
+                System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
         //To ensure certificate is deleted on server side.
         Thread.sleep(30000);
 

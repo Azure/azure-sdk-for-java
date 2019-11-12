@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -90,11 +91,21 @@ public class HelloWorld {
             myCert.getSecretId());
 
         // The certificates and issuers are no longer needed, need to delete it from the key vault.
-        DeletedCertificate deletedCertificate = certificateClient.deleteCertificate("certificateName");
-        System.out.printf("Certificate is deleted with name %s and its recovery id is %s \n", deletedCertificate.getName(), deletedCertificate.getRecoveryId());
+        SyncPoller<DeletedCertificate, Void> deletedCertificatePoller =
+            certificateClient.beginDeleteCertificate("certificateName");
+        // Deleted Certificate is accessible as soon as polling beings.
+        PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
+        System.out.printf("Deleted certitifcate with name %s and recovery id %s", pollResponse.getValue().getName(),
+            pollResponse.getValue().getRecoveryId());
+        deletedCertificatePoller.waitForCompletion();
 
-        deletedCertificate = certificateClient.deleteCertificate("myCertificate");
-        System.out.printf("Certificate is deleted with name %s and its recovery id is %s \n", deletedCertificate.getName(), deletedCertificate.getRecoveryId());
+        SyncPoller<DeletedCertificate, Void> deletedCertPoller =
+            certificateClient.beginDeleteCertificate("myCertificate");
+        // Deleted Certificate is accessible as soon as polling beings.
+        PollResponse<DeletedCertificate> deletePollResponse = deletedCertPoller.poll();
+        System.out.printf("Deleted certitifcate with name %s and recovery id %s", deletePollResponse.getValue().getName(),
+            deletePollResponse.getValue().getRecoveryId());
+        deletedCertificatePoller.waitForCompletion();
 
         CertificateIssuer deleteCertificateIssuer = certificateClient.deleteIssuer("myIssuer");
         System.out.printf("Certificate issuer is permanently deleted with name %s and provider is %s \n", deleteCertificateIssuer.getName(), deleteCertificateIssuer.getProperties().getProvider());

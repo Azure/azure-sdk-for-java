@@ -89,7 +89,7 @@ public class ListOperationsAsync {
         Thread.sleep(5000);
 
         //Let's list all certificate issuers in the key vault.
-        certificateAsyncClient.listIssuers()
+        certificateAsyncClient.listPropertiesOfIssuers()
             .subscribe(issuerBase -> certificateAsyncClient.getIssuer(issuerBase)
                 .subscribe(issuerResponse -> System.out.printf("Received issuer with name %s and provider %s\n",
                     issuerResponse.getName(), issuerResponse.getProperties().getProvider())));

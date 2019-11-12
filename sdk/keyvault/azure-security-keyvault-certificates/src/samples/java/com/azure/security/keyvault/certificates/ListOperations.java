@@ -75,7 +75,7 @@ public class ListOperations {
         }
 
         //Let's list all certificate issuers in the key vault.
-        for (IssuerProperties certIssuer : certificateClient.listIssuers()) {
+        for (IssuerProperties certIssuer : certificateClient.listPropertiesOfIssuers()) {
             CertificateIssuer retrievedIssuer = certificateClient.getIssuer(certIssuer);
             System.out.printf("Received issuer with name %s and provider %s", retrievedIssuer.getName(),
                 retrievedIssuer.getProperties().getProvider());

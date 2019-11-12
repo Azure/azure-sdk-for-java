@@ -383,24 +383,18 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#deleteCertificate(String)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#beginDeleteCertificate(String)}
      */
     public void deleteCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificate#string
-        certificateAsyncClient.deleteCertificate("certificateName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificate#string
-
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateWithResponse#string
-        certificateAsyncClient.deleteCertificateWithResponse("certificateName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n",
-                    deletedSecretResponse.getValue().getRecoveryId()));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateWithResponse#string
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.begindeleteCertificate#string
+        certificateAsyncClient.beginDeleteCertificate("certificateName")
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
+                System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.begindeleteCertificate#string
     }
 
     /**
@@ -470,25 +464,18 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#recoverDeletedCertificate(String)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#beginRecoverDeletedCertificate(String)}
      */
     public void recoverDeletedCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.certificatevault.certificates.CertificateAsyncClient.recoverDeletedCertificate#string
-        certificateAsyncClient.recoverDeletedCertificate("deletedCertificateName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(recoveredSecretResponse ->
-                System.out.printf("Recovered Certificate with name %s %n",
-                    recoveredSecretResponse.getProperties().getName()));
-        // END: com.azure.security.certificatevault.certificates.CertificateAsyncClient.recoverDeletedCertificate#string
-
-        // BEGIN: com.azure.security.certificatevault.certificates.CertificateAsyncClient.recoverDeletedCertificateWithResponse#string
-        certificateAsyncClient.recoverDeletedCertificateWithResponse("deletedCertificateName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(recoveredSecretResponse ->
-                System.out.printf("Recovered Certificate with name %s %n",
-                    recoveredSecretResponse.getValue().getProperties().getName()));
-        // END: com.azure.security.certificatevault.certificates.CertificateAsyncClient.recoverDeletedCertificateWithResponse#string
+        // BEGIN: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginrecoverDeletedCertificate#string
+        certificateAsyncClient.beginRecoverDeletedCertificate("deletedCertificateName")
+            .subscribe(pollResponse -> {
+                System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
+                System.out.println("Recover Certificate Name: " + pollResponse.getValue().getName());
+                System.out.println("Recover Certificate Id: " + pollResponse.getValue().getId());
+            });
+        // END: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginrecoverDeletedCertificate#string
     }
 
     /**
@@ -549,12 +536,12 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#listIssuers()}
+     * Method to insert code snippets for {@link CertificateAsyncClient#listPropertiesOfIssuers()}
      */
     public void listCertificateIssuersCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.listIssuers
-        certificateAsyncClient.listIssuers()
+        certificateAsyncClient.listPropertiesOfIssuers()
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerBase -> certificateAsyncClient.getIssuer(issuerBase)
                 .subscribe(issuerResponse -> System.out.printf("Received issuer with name %s and provider %s",

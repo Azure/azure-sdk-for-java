@@ -108,6 +108,18 @@ interface CertificateService {
                                                        Context context);
 
     @Get("certificates/{certificate-name}/{certificate-version}")
+    @ExpectedResponses({200, 404})
+    @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Mono<Response<KeyVaultCertificate>> getCertificatePoller(@HostParam("url") String url,
+                                                       @PathParam("certificate-name") String certificateName,
+                                                       @PathParam("certificate-version") String certificateVersion,
+                                                       @QueryParam("api-version") String apiVersion,
+                                                       @HeaderParam("accept-language") String acceptLanguage,
+                                                       @HeaderParam("Content-Type") String type,
+                                                       Context context);
+
+    @Get("certificates/{certificate-name}/{certificate-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
@@ -180,6 +192,16 @@ interface CertificateService {
                                                    @HeaderParam("accept-language") String acceptLanguage,
                                                    @HeaderParam("Content-Type") String type,
                                                    Context context);
+
+    @Get("deletedcertificates/{certificate-name}")
+    @ExpectedResponses({200, 404})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Mono<Response<DeletedCertificate>> getDeletedCertificatePoller(@HostParam("url") String url,
+                                                             @PathParam("certificate-name") String certificateName,
+                                                             @QueryParam("api-version") String apiVersion,
+                                                             @HeaderParam("accept-language") String acceptLanguage,
+                                                             @HeaderParam("Content-Type") String type,
+                                                             Context context);
 
     @Delete("deletedcertificates/{certificate-name}")
     @ExpectedResponses({204})

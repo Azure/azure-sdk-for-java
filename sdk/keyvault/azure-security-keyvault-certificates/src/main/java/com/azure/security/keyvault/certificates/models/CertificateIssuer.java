@@ -35,7 +35,7 @@ public final class CertificateIssuer {
     /**
      * The administrators.
      */
-    private List<Administrator> administrators;
+    private List<AdministratorContact> administratorContacts;
 
     /**
      * The Issuer properties
@@ -154,17 +154,17 @@ public final class CertificateIssuer {
      * Get the administrators of the isssuer.
      * @return the administrators
      */
-    public List<Administrator> getAdministrators() {
-        return administrators;
+    public List<AdministratorContact> getAdministratorContacts() {
+        return administratorContacts;
     }
 
     /**
      * Set the administrators of the isssuer.
-     * @param administrators the administrators to set.
+     * @param administratorContacts the administrators to set.
      * @return the Issuer object itself.
      */
-    public CertificateIssuer setAdministrators(List<Administrator> administrators) {
-        this.administrators = administrators;
+    public CertificateIssuer setAdministratorContacts(List<AdministratorContact> administratorContacts) {
+        this.administratorContacts = administratorContacts;
         return this;
     }
 
@@ -211,13 +211,13 @@ public final class CertificateIssuer {
     @JsonProperty(value = "org_details")
     @SuppressWarnings("unchecked")
     private void unpacOrganizationalDetails(Map<String, Object> orgDetails) {
-        this.administrators =  orgDetails.containsKey("admin_details") ? parseAdministrators((List<Object>) orgDetails.get("admin_details")) : null;
+        this.administratorContacts =  orgDetails.containsKey("admin_details") ? parseAdministrators((List<Object>) orgDetails.get("admin_details")) : null;
         this.organizationId = (String) orgDetails.get("id");
     }
 
     @SuppressWarnings("unchecked")
-    private List<Administrator> parseAdministrators(List<Object> admins) {
-        List<Administrator> output = new ArrayList<>();
+    private List<AdministratorContact> parseAdministrators(List<Object> admins) {
+        List<AdministratorContact> output = new ArrayList<>();
 
         for (Object admin : admins) {
             LinkedHashMap<String, String> map = (LinkedHashMap<String, String>) admin;
@@ -225,7 +225,7 @@ public final class CertificateIssuer {
             String lastName = map.containsKey("last_name") ? map.get("last_name") : "";
             String email = map.containsKey("email") ? map.get("email") : "";
             String phone = map.containsKey("phone") ? map.get("phone") : "";
-            output.add(new Administrator(firstName, lastName, email, phone));
+            output.add(new AdministratorContact(firstName, lastName, email, phone));
         }
         return  output;
     }

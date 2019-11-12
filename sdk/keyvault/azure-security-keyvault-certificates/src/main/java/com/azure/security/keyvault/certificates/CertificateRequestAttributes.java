@@ -25,8 +25,8 @@ class CertificateRequestAttributes {
         if (certificateProperties.getNotBefore() != null) {
             this.notBefore = certificateProperties.getNotBefore().toEpochSecond();
         }
-        if (certificateProperties.getExpires() != null) {
-            this.expires = certificateProperties.getExpires().toEpochSecond();
+        if (certificateProperties.getExpiresOn() != null) {
+            this.expires = certificateProperties.getExpiresOn().toEpochSecond();
         }
         this.enabled = certificateProperties.isEnabled();
     }
