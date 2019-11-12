@@ -14,7 +14,7 @@ import java.util.Objects;
  * Generates the correct resource scope to access Azure messaging resources given the authorization type.
  */
 public class AzureTokenManagerProvider implements TokenManagerProvider {
-    private static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
+    static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
 
     private final ClientLogger logger = new ClientLogger(AzureTokenManagerProvider.class);
     private final CBSAuthorizationType authorizationType;

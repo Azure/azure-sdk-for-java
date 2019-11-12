@@ -60,6 +60,9 @@ public class CBSChannelTest {
         tokenCredential = null;
     }
 
+    /**
+     * Tests that the proper token type is used for SAS token.
+     */
     @Test
     public void authorizesSasToken() {
         // Arrange
@@ -91,7 +94,9 @@ public class CBSChannelTest {
         Assertions.assertEquals("servicebus.windows.net:sastoken", properties.get(PUT_TOKEN_TYPE));
     }
 
-
+    /**
+     * Tests that the proper token type is used for AAD.
+     */
     @Test
     public void authorizesJwt() {
         // Arrange
