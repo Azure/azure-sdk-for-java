@@ -225,16 +225,11 @@ public class EventHubConsumerClient implements Closeable {
                 new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
-
         final Flux<PartitionEvent> events = Flux.create(emitter -> {
             queueWork(RECEIVE_ALL_KEY, maximumMessageCount, maximumWaitTime, emitter);
         });
 
-        final Flux<PartitionEvent> map = events.collectList().map(x -> {
-            logger.info("Number of events received: {}", x.size());
-            return Flux.fromIterable(x);
-        }).block();
-        return new IterableStream<>(map);
+        return new IterableStream<>(events);
     }
 
     /**
