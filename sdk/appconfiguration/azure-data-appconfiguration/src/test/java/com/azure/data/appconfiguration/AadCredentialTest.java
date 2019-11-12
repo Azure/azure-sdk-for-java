@@ -4,6 +4,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -29,20 +30,28 @@ public class AadCredentialTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
             tokenCredential = null;
+
+            String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
+            client = new ConfigurationClientBuilder()
+                .credential(tokenCredential)
+                .endpoint(endpoint)
+                .httpClient(interceptorManager.getPlaybackClient())
+                .buildClient();
         } else {
             connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-        }
 
-        String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
-        client = new ConfigurationClientBuilder()
-            .credential(tokenCredential)
-            .endpoint(endpoint)
-            .buildClient();
+            String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
+            client = new ConfigurationClientBuilder()
+                .credential(tokenCredential)
+                .endpoint(endpoint)
+                .addPolicy(interceptorManager.getRecordPolicy()) // Record
+                .buildClient();
+        }
     }
 
     @Test
-    public void aadAuthenticationAzConfgClientTest() {
+    public void aadAuthenticationAzConfigClient() {
         final String key = "newKey";
         final String value = "newValue";
 
