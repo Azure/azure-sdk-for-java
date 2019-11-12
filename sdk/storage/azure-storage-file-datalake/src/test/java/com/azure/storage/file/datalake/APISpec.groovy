@@ -6,9 +6,9 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.test.InterceptorManager
-import com.azure.core.test.TestMode
-import com.azure.core.test.utils.TestResourceNamer
+import com.azure.core.implementation.InterceptorManager
+import com.azure.core.implementation.TestMode
+import com.azure.core.implementation.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger

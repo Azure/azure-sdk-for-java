@@ -31,7 +31,6 @@
 | [`azure-core-http-netty`]( sdk/core/azure-core-http-netty/pom.xml )| `com.azure` | [Readme](sdk/core/azure-core-http-netty/README.md) | [Maven]( https://search.maven.org/artifact/com.azure/azure-core-http-netty ) |
 | [`azure-core-http-okhttp`]( sdk/core/azure-core-http-okhttp/pom.xml )| `com.azure` | [Readme](sdk/core/azure-core-http-okhttp/README.md) | [Maven]( https://search.maven.org/artifact/com.azure/azure-core-http-okhttp ) |
 | [`azure-core-management`]( sdk/core/azure-core-management/pom.xml )| `com.azure` |  N/A  |  N/A  |
-| [`azure-core-test`]( sdk/core/azure-core-test/pom.xml )| `com.azure` | [Readme](sdk/core/azure-core-test/README.md) | [Maven]( https://search.maven.org/artifact/com.azure/azure-core-test ) |
 | [`azure-cosmos`]( sdk/cosmos/microsoft-azure-cosmos/pom.xml )| `com.microsoft.azure` |  N/A  |  N/A  |
 | [`azure-eventgrid`]( sdk/eventgrid/microsoft-azure-eventgrid/pom.xml )| `com.microsoft.azure` | [Readme](sdk/eventgrid/microsoft-azure-eventgrid/README.md) |  N/A  |
 | [`azure-keyvault`]( sdk/keyvault/microsoft-azure-keyvault/pom.xml )| `com.microsoft.azure` |  N/A  |  N/A  |

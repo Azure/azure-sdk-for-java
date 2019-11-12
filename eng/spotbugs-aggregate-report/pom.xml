@@ -44,7 +44,6 @@
                 <source>..\..\sdk\core\azure-core-http-okhttp\src\main\java\com</source>
                 <source>..\..\sdk\core\azure-core-http-okhttp\src\samples\java\com</source>
                 <!-- <source>..\..\sdk\core\azure-core-management\src\main\java\com</source> -->
-                <source>..\..\sdk\core\azure-core-test\src\main\java\com</source>
                 <source>..\..\sdk\core\azure-core-tracing-opencensus\src\main\java\com</source>
                 <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\main\java\com</source>
                 <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\samples\java\com</source>
@@ -163,11 +162,6 @@
           <artifactId>azure-core-management</artifactId>
           <version>1.0.0-beta.8</version> {x-version-update;com.azure:azure-core-management;current}
         </dependency> -->
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-test</artifactId>
-          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
-        </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-tracing-opencensus</artifactId>

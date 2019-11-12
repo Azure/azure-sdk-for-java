@@ -40,8 +40,9 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-test</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <artifactId>azure-core</artifactId>
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -75,11 +76,6 @@
       <version>1.2.2</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-cryptography;dependency} -->
       <scope>test</scope>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>io.projectreactor</groupId>-->
-<!--      <artifactId>reactor-test</artifactId>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
   </dependencies>
 
   <profiles>

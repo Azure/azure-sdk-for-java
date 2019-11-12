@@ -4,9 +4,9 @@
 package com.azure.storage.queue
 
 import com.azure.core.http.HttpClient
-import com.azure.core.test.InterceptorManager
-import com.azure.core.test.TestMode
-import com.azure.core.test.utils.TestResourceNamer
+import com.azure.core.implementation.InterceptorManager
+import com.azure.core.implementation.TestMode
+import com.azure.core.implementation.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.Context
 import com.azure.core.util.logging.ClientLogger

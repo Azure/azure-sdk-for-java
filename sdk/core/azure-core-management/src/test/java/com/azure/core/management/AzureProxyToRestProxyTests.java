@@ -29,8 +29,8 @@ import com.azure.core.implementation.exception.InvalidReturnTypeException;
 import com.azure.core.http.ContentType;
 
 import com.azure.core.management.implementation.AzureProxy;
-import com.azure.core.test.implementation.entities.HttpBinJSON;
-import com.azure.core.test.MyAzureException;
+import com.azure.core.implementation.entities.HttpBinJSON;
+import com.azure.core.MyAzureException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -621,7 +621,7 @@ public abstract class AzureProxyToRestProxyTests {
             service.get();
             fail("Expected exception.");
         } catch (InvalidReturnTypeException e) {
-            assertContains(e.getMessage(), "reactor.core.publisher.Flux<com.azure.core.test.implementation.entities.HttpBinJSON>");
+            assertContains(e.getMessage(), "reactor.core.publisher.Flux<com.azure.core.implementation.entities.HttpBinJSON>");
             assertContains(e.getMessage(), "AzureProxyToRestProxyTests$Service15.get()");
         }
     }

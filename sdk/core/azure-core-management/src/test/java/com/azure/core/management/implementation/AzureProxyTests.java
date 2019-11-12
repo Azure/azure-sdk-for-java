@@ -20,7 +20,7 @@ import com.azure.core.http.swagger.OperationDescription;
 import com.azure.core.implementation.exception.InvalidReturnTypeException;
 import com.azure.core.management.MockResource;
 import com.azure.core.management.http.MockAzureHttpClient;
-import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.http.MockHttpResponse;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;

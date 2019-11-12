@@ -22,7 +22,6 @@ Azure Core is split into a number of sub-components:
 * [azure-core](azure-core) is the primary library, used by all client libraries to offer the functionality outlined above.
 * [azure-core-amqp](azure-core-amqp) provides functionality related to AMQP (Advanced Message Queuing Protocol).
 * [azure-core-management](azure-core-management) provides APIs used by the Azure management libraries, but which are redundant to client libraries.
-* [azure-core-test](azure-core-test) provides utilities and API to make writing tests for Azure Core simpler and consistent.
 
 For documentation on using Azure Core, refer to the [azure-core readme](azure-core).
 

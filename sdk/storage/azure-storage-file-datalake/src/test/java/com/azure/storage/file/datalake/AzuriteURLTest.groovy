@@ -9,7 +9,7 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.test.TestMode
+import com.azure.core.implementation.TestMode
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.StorageSharedKeyCredential

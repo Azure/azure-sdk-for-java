@@ -172,21 +172,6 @@
           <classpathScope>test</classpathScope>
         </configuration>
       </plugin>
-
-      <!-- RestProxyTests is inherited by tests in azure-core-http-netty -->
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>${maven-jar-plugin.version}</version>
-        <executions>
-          <execution>
-            <id>test-jar</id>
-            <phase>test-compile</phase>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 </project>

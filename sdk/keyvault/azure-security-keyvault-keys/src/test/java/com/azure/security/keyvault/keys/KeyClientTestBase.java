@@ -17,7 +17,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.*;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.test.TestBase;
+import com.azure.core.implementation.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;

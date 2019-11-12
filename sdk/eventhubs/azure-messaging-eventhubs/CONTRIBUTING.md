@@ -91,5 +91,5 @@ Log messages can be seen in the output window by:
 [maven]: https://maven.apache.org/
 [slf4j]: https://www.slf4j.org/
 [slf4j-implementations]: https://www.slf4j.org/manual.html#swapping
-[test-mode]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-test/src/main/java/com/azure/core/test/TestMode.java
-[test-mode-record]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-test/src/main/java/com/azure/core/test/TestMode.java#L12
+[test-mode]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core/src/test/java/com/azure/core/implementation/TestMode.java
+[test-mode-record]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core/src/test/java/com/azure/core/implementation/TestMode.java#L12
