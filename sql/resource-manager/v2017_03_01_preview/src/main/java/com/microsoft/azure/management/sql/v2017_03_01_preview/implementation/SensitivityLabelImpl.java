@@ -10,6 +10,7 @@ package com.microsoft.azure.management.sql.v2017_03_01_preview.implementation;
 
 import com.microsoft.azure.management.sql.v2017_03_01_preview.SensitivityLabel;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.SensitivityLabelSource;
 import rx.Observable;
 
 class SensitivityLabelImpl extends CreatableUpdatableImpl<SensitivityLabel, SensitivityLabelInner, SensitivityLabelImpl> implements SensitivityLabel, SensitivityLabel.Definition, SensitivityLabel.Update {
@@ -66,7 +67,7 @@ class SensitivityLabelImpl extends CreatableUpdatableImpl<SensitivityLabel, Sens
     @Override
     protected Observable<SensitivityLabelInner> getInnerAsync() {
         SensitivityLabelsInner client = this.manager().inner().sensitivityLabels();
-        return client.getAsync(this.resourceGroupName, this.serverName, this.databaseName, this.schemaName, this.tableName, this.columnName);
+        return client.getAsync(this.resourceGroupName, this.serverName, this.databaseName, this.schemaName, this.tableName, this.columnName, SensitivityLabelSource.CURRENT);
     }
 
     @Override
