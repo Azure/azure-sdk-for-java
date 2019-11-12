@@ -95,7 +95,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
         final String tokenAudience = provider.getResourceString(getConnectionStringProperties().getEntityPath());
 
         // Act & Assert
-        StepVerifier.create(connection.getCBSNode().flatMap(node -> node.authorize(tokenAudience)))
+        StepVerifier.create(connection.getCBSNode().flatMap(node -> node.authorize(tokenAudience, tokenAudience)))
             .assertNext(expiration -> OffsetDateTime.now(ZoneOffset.UTC).isBefore(expiration))
             .verifyComplete();
     }

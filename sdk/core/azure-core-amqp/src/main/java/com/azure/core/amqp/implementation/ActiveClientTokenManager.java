@@ -29,6 +29,7 @@ public class ActiveClientTokenManager implements TokenManager {
     private final AtomicBoolean hasDisposed = new AtomicBoolean();
     private final Mono<CBSNode> cbsNode;
     private final String tokenAudience;
+    private final String scopes;
     private final Timer timer;
     private final Flux<AmqpResponseCode> authorizationResults;
     private FluxSink<AmqpResponseCode> sink;
@@ -36,10 +37,11 @@ public class ActiveClientTokenManager implements TokenManager {
     // last refresh interval in milliseconds.
     private AtomicLong lastRefreshInterval = new AtomicLong();
 
-    public ActiveClientTokenManager(Mono<CBSNode> cbsNode, String tokenAudience) {
+    public ActiveClientTokenManager(Mono<CBSNode> cbsNode, String tokenAudience, String scopes) {
         this.timer = new Timer(tokenAudience + "-tokenManager");
         this.cbsNode = cbsNode;
         this.tokenAudience = tokenAudience;
+        this.scopes = scopes;
         this.authorizationResults = Flux.create(sink -> {
             if (hasDisposed.get()) {
                 sink.complete();
@@ -74,7 +76,7 @@ public class ActiveClientTokenManager implements TokenManager {
                 "Cannot authorize with CBS node when this token manager has been disposed of."));
         }
 
-        return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience))
+        return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience, scopes))
             .map(expiresOn -> {
                 final Duration between = Duration.between(OffsetDateTime.now(ZoneOffset.UTC), expiresOn);
 
