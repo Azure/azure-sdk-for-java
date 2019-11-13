@@ -60,11 +60,11 @@ This section lists **main** how-to guides for the most commonly used APIs and mo
 
 #### Azure.Storage.Queue
 - [How to **Create, list and delete** queues](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue/QueueServiceSamples.java)
-- [How to **CRUD Operations on message** queues](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue/MessageSamples.java)
+- [How to **CRUD Operations on message in** queues](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue/MessageSamples.java)
 - [How to **Handle the exceptions** queues](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue/QueueExceptionSamples.java)
 - [How to **Async Sample** queues](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue/AsyncSamples.java)
 
 #### Azure.Storage.Blobs.Batch
 
-- [How to **Creat Blob Client** blob batch](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob-batch/src/samples/java/com/azure/storage/blob/batch/ReadmeCodeSamples.java)
-- [How to **Bulk Deleting** blob batch](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob-batch/src/samples/java/com/azure/storage/blob/batch/ReadmeCodeSamples.java)
+- [How to **Create Blob Client**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob-batch/src/samples/java/com/azure/storage/blob/batch/ReadmeCodeSamples.java)
+- [How to **Bulk Deleting**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob-batch/src/samples/java/com/azure/storage/blob/batch/ReadmeCodeSamples.java)
