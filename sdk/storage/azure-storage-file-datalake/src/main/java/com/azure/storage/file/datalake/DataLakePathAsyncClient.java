@@ -568,8 +568,8 @@ public class DataLakePathAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
      *
-     * @param returnUserPrincipalName When true, user identity values returned as User Principal Names. When false, user identity
-     * values returned as Azure Active Directory Object IDs. Default value is false.
+     * @param returnUserPrincipalName When true, user identity values returned as User Principal Names. When false,
+     * user identity values returned as Azure Active Directory Object IDs. Default value is false.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource access control.
      */

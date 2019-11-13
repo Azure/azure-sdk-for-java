@@ -55,7 +55,7 @@ public class ListPathsOptions {
      *
      * @return the returnUserPrincipalName value.
      */
-    public boolean returnsUserPrincipalName() {
+    public boolean isReturnUserPrincipalName() {
         return returnUserPrincipalName;
     }
 

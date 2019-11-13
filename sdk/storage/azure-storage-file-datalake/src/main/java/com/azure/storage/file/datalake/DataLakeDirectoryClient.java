@@ -223,7 +223,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * DataLakeDirectoryClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
      * DataLakeDirectoryClient.
      *
-     * @param subDirectoryName A {@code String} representing the name of the sub-directory.
+     * @param subdirectoryName A {@code String} representing the name of the sub-directory.
      *
      * <p><strong>Code Samples</strong></p>
      *
