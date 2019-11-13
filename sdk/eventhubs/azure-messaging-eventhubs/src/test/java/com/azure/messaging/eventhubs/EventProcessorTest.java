@@ -438,7 +438,7 @@ public class EventProcessorTest {
 
         @Override
         public Mono<Void> processEvent(PartitionEvent partitionEvent) {
-            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
+            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData());
         }
     }
 

@@ -129,7 +129,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
                 consumers.add(consumer);
                 consumer.receive(id).subscribe(partitionEvent -> {
-                    EventData event = partitionEvent.getEventData();
+                    EventData event = partitionEvent.getData();
                     if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
                         return;
                     }
