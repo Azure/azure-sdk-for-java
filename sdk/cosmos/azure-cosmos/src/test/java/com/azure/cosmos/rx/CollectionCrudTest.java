@@ -35,6 +35,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -83,7 +84,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void createCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Mono<CosmosAsyncContainerResponse> createObservable = database
                 .createContainer(collectionDefinition);
 
@@ -146,14 +147,12 @@ public class CollectionCrudTest extends TestSuiteBase {
         };
         List<SpatialSpec> spatialIndexes = new ArrayList<SpatialSpec>();
         for (int index = 0; index < 2; index++) {
-            List<SpatialType> collectionOfSpatialTypes = new ArrayList<SpatialType>();
 
             SpatialSpec spec = new SpatialSpec();
             spec.setPath("/path" + index + "/*");
 
-            for (int i = index; i < index + 3; i++) {
-                collectionOfSpatialTypes.add(spatialTypes[i]);
-            }
+            List<SpatialType> collectionOfSpatialTypes =
+                new ArrayList<SpatialType>(Arrays.asList(spatialTypes).subList(0, index + 3));
             spec.setSpatialTypes(collectionOfSpatialTypes);
             spatialIndexes.add(spec);
         }
@@ -161,7 +160,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         indexingPolicy.setSpatialIndexes(spatialIndexes);
 
         collection.setIndexingPolicy(indexingPolicy);
-        
+
         Mono<CosmosAsyncContainerResponse> createObservable = database
                 .createContainer(collection, new CosmosContainerRequestOptions());
 
@@ -178,7 +177,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosAsyncContainer collection = createObservable.block().getContainer();
 
@@ -203,7 +202,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void deleteCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosAsyncContainer collection = createObservable.block().getContainer();
 
@@ -223,13 +222,13 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosContainerProperties collectionSettings = collection.read().block().getProperties();
         // sanity check
         assertThat(collectionSettings.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
-        
+
         // replace indexing getMode
         IndexingPolicy indexingMode = new IndexingPolicy();
         indexingMode.setIndexingMode(IndexingMode.LAZY);
         collectionSettings.setIndexingPolicy(indexingMode);
         Mono<CosmosAsyncContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
-        
+
         // validate
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
                         .indexingMode(IndexingMode.LAZY).build();
