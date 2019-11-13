@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataContainer;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
@@ -15,14 +16,12 @@ import com.azure.search.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.models.SqlIntegratedChangeTrackingPolicy;
 import com.azure.search.models.DataSourceCredentials;
 import com.azure.search.models.DataSourceType;
-import com.azure.search.models.RequestOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class DataSourceSyncTests extends DataSourceTestBase {
@@ -49,13 +48,10 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         Assert.assertEquals(dataSource1.getName(), resultList.get(0).getName());
         Assert.assertEquals(dataSource2.getName(), resultList.get(1).getName());
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
-
         Context context = new Context("key", "value");
 
         PagedResponse<DataSource> listResponse = client.listDataSourcesWithResponse("name",
-            requestOptions, context);
+            generateRequestOptions(), context);
         resultList = listResponse.getItems();
 
         Assert.assertEquals(2, resultList.size());
@@ -65,21 +61,25 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
     @Override
     public void deleteDataSourceIsIdempotent() {
-        DataSource dataSource1 = createTestBlobDataSource(null);
+        DataSource dataSource = createTestBlobDataSource(null);
 
+        Context context = new Context("key", "value");
         // Try to delete before the data source exists, expect a NOT FOUND return status code
-        Response<Void> res = client.deleteDataSourceWithResponse(dataSource1.getName());
-        Assert.assertTrue(res.getStatusCode() == HttpStatus.SC_NOT_FOUND);
+        Response<Void> result = client.deleteDataSourceWithResponse(dataSource.getName(),
+            new AccessCondition(), generateRequestOptions(), context);
+        Assert.assertTrue(result.getStatusCode() == HttpStatus.SC_NOT_FOUND);
 
         // Create the data source
-        client.createOrUpdateDataSource(dataSource1);
+        client.createOrUpdateDataSource(dataSource);
 
         // Delete twice, expect the first to succeed (with NO CONTENT status code) and the second to return NOT FOUND
-        res = client.deleteDataSourceWithResponse(dataSource1.getName());
-        Assert.assertTrue(res.getStatusCode() == HttpStatus.SC_NO_CONTENT);
+        result = client.deleteDataSourceWithResponse(dataSource.getName(),
+            new AccessCondition(), generateRequestOptions(), context);
+        Assert.assertTrue(result.getStatusCode() == HttpStatus.SC_NO_CONTENT);
         // Again, expect to fail
-        res = client.deleteDataSourceWithResponse(dataSource1.getName());
-        Assert.assertTrue(res.getStatusCode() == HttpStatus.SC_NOT_FOUND);
+        result = client.deleteDataSourceWithResponse(dataSource.getName(),
+            new AccessCondition(), generateRequestOptions(), context);
+        Assert.assertTrue(result.getStatusCode() == HttpStatus.SC_NOT_FOUND);
     }
 
     @Override
@@ -129,11 +129,8 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         DataSource another = createTestBlobDataSource(null);
 
         assertException(
-            () -> client.createOrUpdateDataSource(
-                another,
-                null,
-                generateIfNotExistsAccessCondition(),
-                null),
+            () -> client.createOrUpdateDataSource(another,
+                generateIfNotExistsAccessCondition(), generateRequestOptions()),
             HttpResponseException.class,
             "The precondition given in one of the request headers evaluated to false");
     }
@@ -143,11 +140,8 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         // Create a data source
         DataSource dataSource = createTestBlobDataSource(null);
 
-        DataSource result = client.createOrUpdateDataSource(
-            dataSource,
-            null,
-            generateIfNotExistsAccessCondition(),
-            null);
+        DataSource result = client.createOrUpdateDataSource(dataSource,
+            generateIfNotExistsAccessCondition(), generateRequestOptions());
 
         Assert.assertTrue(StringUtils.isNoneBlank(result.getETag()));
     }
@@ -161,18 +155,12 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         String dataSourceName = dataSource.getName();
 
         // Delete the data source
-        client.deleteDataSource(
-            dataSourceName,
-            null,
-            generateIfExistsAccessCondition()
-        );
+        client.deleteDataSource(dataSourceName, generateIfExistsAccessCondition(), generateRequestOptions());
 
         // Try to delete the data source again and verify the exception:
         assertException(
             () -> client.deleteDataSource(
-                dataSourceName,
-                null,
-                generateIfExistsAccessCondition()),
+                dataSourceName, generateIfExistsAccessCondition(), generateRequestOptions()),
             HttpResponseException.class,
             "The precondition given in one of the request headers evaluated to false");
     }
@@ -192,24 +180,21 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
         // Try to delete the data source with the original eTag, and verify the exception
         assertException(
-            () -> client.deleteDataSource(dataSourceName, null, generateIfMatchAccessCondition(eTagOrig)),
+            () -> client.deleteDataSource(dataSourceName,
+                generateIfMatchAccessCondition(eTagOrig), generateRequestOptions()),
             HttpResponseException.class,
             "The precondition given in one of the request headers evaluated to false");
 
         // Delete the data source with the updated eTag:
-        client.deleteDataSource(dataSourceName, null, generateIfMatchAccessCondition(eTagUpdate));
+        client.deleteDataSource(dataSourceName, generateIfMatchAccessCondition(eTagUpdate), generateRequestOptions());
     }
 
     @Override
     public void updateDataSourceIfExistsFailsOnNoResource() {
         DataSource dataSource = createTestBlobDataSource(null);
         assertException(
-            () -> client.createOrUpdateDataSource(
-                dataSource,
-                null,
-                generateIfExistsAccessCondition(),
-                null
-            ),
+            () -> client.createOrUpdateDataSource(dataSource,
+                generateIfExistsAccessCondition(), generateRequestOptions()),
             HttpResponseException.class,
             "The precondition given in one of the request headers evaluated to false");
     }
@@ -224,10 +209,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
         createdDataSource.setDescription("edited description");
         DataSource editedDataSource = client.createOrUpdateDataSource(
-            createdDataSource,
-            null,
-            generateIfExistsAccessCondition(),
-            null);
+            createdDataSource, generateIfExistsAccessCondition(), generateRequestOptions());
 
         Assert.assertTrue(StringUtils.isNotEmpty(editedDataSource.getETag()));
         Assert.assertNotEquals(editedDataSource.getETag(), createdETag);
@@ -251,10 +233,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
         assertException(
             () -> client.createOrUpdateDataSource(
-                updatedDataSource,
-                null,
-                generateIfMatchAccessCondition(createdETag),
-                null),
+                updatedDataSource, generateIfMatchAccessCondition(createdETag), generateRequestOptions()),
             HttpResponseException.class,
             "The precondition given in one of the request headers evaluated to false"
         );
@@ -267,15 +246,12 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
         Assert.assertNotNull(createdDataSource);
         String createdETag = createdDataSource.getETag();
-        Assert.assertTrue(StringUtils.isNotBlank(createdETag));
 
         createdDataSource.setDescription("edited description");
-        DataSource updatedDataSource = client.createOrUpdateDataSource(
-            createdDataSource,
-            null,
-            generateIfMatchAccessCondition(createdETag),
-            null);
+        DataSource updatedDataSource = client.createOrUpdateDataSource(createdDataSource,
+            generateIfMatchAccessCondition(createdETag), generateRequestOptions());
 
+        Assert.assertTrue(StringUtils.isNotBlank(createdETag));
         Assert.assertTrue(StringUtils.isNoneBlank(updatedDataSource.getETag()));
         Assert.assertNotEquals(createdETag, updatedDataSource.getETag());
     }

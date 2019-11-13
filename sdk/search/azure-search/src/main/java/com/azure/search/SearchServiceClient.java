@@ -73,53 +73,49 @@ public class SearchServiceClient {
         return this.asyncClient.getEndpoint();
     }
 
-    /**
-     * @param dataSource the name of the datasource to be created
-     * @return the created DataSource.
-     * @throws NotImplementedException not implemented
+     /**
+     * Creates a new Azure Cognitive Search datasource or updates a datasource if it already exists
+     *
+     * @param dataSource The definition of the datasource to create or update.
+     * @return the datasource that was created or updated.
      */
     public DataSource createOrUpdateDataSource(DataSource dataSource) {
         return asyncClient.createOrUpdateDataSource(dataSource).block();
     }
 
     /**
-     * Creates a new Azure Search datasource or updates a datasource if it already exists
+     * Creates a new Azure Cognitive Search datasource or updates a datasource if it already exists.
      *
-     * @param dataSource The definition of the datasource to create or update.
-     * @param requestOptions Request options
-     * @param accessCondition Access conditions
-     * @param context Context
-     * @return a datasource response
+     * @param dataSource the definition of the datasource to create or update
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the datasource that was created or updated.
      */
-    public DataSource createOrUpdateDataSource(
-        DataSource dataSource,
-        RequestOptions requestOptions,
-        AccessCondition accessCondition,
-        Context context) {
-        return asyncClient.createOrUpdateDataSource(dataSource,
-            requestOptions,
-            accessCondition,
-            context).block();
+    public DataSource createOrUpdateDataSource(DataSource dataSource,
+                                               AccessCondition accessCondition,
+                                               RequestOptions requestOptions) {
+        return asyncClient.createOrUpdateDataSource(dataSource, accessCondition, requestOptions).block();
     }
 
     /**
-     * Creates a new Azure Search datasource or updates a datasource if it already exists
+     * Creates a new Azure Cognitive Search datasource or updates a datasource if it already exists.
      *
-     * @param dataSource The definition of the datasource to create or update.
-     * @param requestOptions Request options
-     * @param accessCondition Access conditions
-     * @param context Context
-     * @return a datasource response
+     * @param dataSource the definition of the datasource to create or update
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response containing datasource that was created or updated.
      */
-    public Response<DataSource> createOrUpdateDataSourceWithResponse(
-        DataSource dataSource,
-        RequestOptions requestOptions,
-        AccessCondition accessCondition,
-        Context context) {
+    public Response<DataSource> createOrUpdateDataSourceWithResponse(DataSource dataSource,
+                                                                     AccessCondition accessCondition,
+                                                                     RequestOptions requestOptions,
+                                                                     Context context) {
         return asyncClient.createOrUpdateDataSourceWithResponse(dataSource,
-            requestOptions,
-            accessCondition,
-            context).block();
+            accessCondition, requestOptions, context).block();
     }
 
     /**
@@ -174,39 +170,12 @@ public class SearchServiceClient {
      * @param select Selects which top-level properties of DataSource definitions to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties.
      * The default is all properties.
-     * @return a list of DataSources
-     */
-    public PagedIterable<DataSource> listDataSources(String select) {
-        return new PagedIterable<>(asyncClient.listDataSources(select));
-    }
-
-    /**
-     * List all DataSources from an Azure Cognitive Search service.
-     *
-     * @param select Selects which top-level properties of DataSource definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
      * @param requestOptions Additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging.
      * @return a list of DataSources
      */
     public PagedIterable<DataSource> listDataSources(String select, RequestOptions requestOptions) {
         return new PagedIterable<>(asyncClient.listDataSources(select, requestOptions));
-    }
-
-    /**
-     * List all DataSources from an Azure Cognitive Search service.
-     *
-     * @param select Selects which top-level properties of DataSource definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
-     * @param requestOptions Additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return a list of DataSources
-     */
-    public PagedIterable<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listDataSources(select, requestOptions, context));
     }
 
     /**
@@ -226,22 +195,6 @@ public class SearchServiceClient {
     }
 
     /**
-     * @return the updated DataSource.
-     * @throws NotImplementedException not implemented
-     */
-    public DataSource createOrUpdateDataSource() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
-    }
-
-    /**
-     * @return a response containing the updated DataSource.
-     * @throws NotImplementedException not implemented
-     */
-    public Response<DataSource> createOrUpdateDataSourceWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
-    }
-
-    /**
      * Delete a DataSource
      *
      * @param dataSourceName the name of the datasource to be deleted
@@ -253,27 +206,35 @@ public class SearchServiceClient {
     /**
      * Deletes an Azure Search datasource.
      *
-     * @param dataSourceName The name of the datasource to delete.
-     * @param requestOptions Additional parameters for the operation.
-     * @param accessCondition Additional parameters for the operation.
+     * @param dataSourceName The name of the datasource to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
      */
     public void deleteDataSource(String dataSourceName,
-                                 RequestOptions requestOptions,
-                                 AccessCondition accessCondition) {
-        asyncClient.deleteDataSource(
-            dataSourceName,
-            requestOptions,
-            accessCondition).block();
+                                 AccessCondition accessCondition,
+                                 RequestOptions requestOptions) {
+        asyncClient.deleteDataSource(dataSourceName, accessCondition, requestOptions).block();
     }
 
     /**
      * Delete a DataSource with Response
      *
      * @param dataSourceName the name of the datasource to be deleted
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return an empty response
      */
-    public Response<Void> deleteDataSourceWithResponse(String dataSourceName) {
-        return asyncClient.deleteDataSourceWithResponse(dataSourceName, null, null).block();
+    public Response<Void> deleteDataSourceWithResponse(String dataSourceName,
+                                                       AccessCondition accessCondition,
+                                                       RequestOptions requestOptions,
+                                                       Context context) {
+        return asyncClient.deleteDataSourceWithResponse(dataSourceName,
+            accessCondition, requestOptions, context).block();
     }
 
     /**

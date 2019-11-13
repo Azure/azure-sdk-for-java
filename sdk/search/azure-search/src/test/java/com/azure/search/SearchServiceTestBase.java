@@ -28,6 +28,7 @@ import com.azure.search.models.FreshnessScoringParameters;
 import com.azure.search.models.Index;
 import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.MagnitudeScoringParameters;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ScoringFunction;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
@@ -59,6 +60,7 @@ import java.util.Locale;
 import java.util.Map;
 import static com.azure.search.DataSourceTestBase.azureSql;
 import java.util.Objects;
+import java.util.UUID;
 
 public abstract class SearchServiceTestBase extends TestBase {
 
@@ -731,6 +733,15 @@ public abstract class SearchServiceTestBase extends TestBase {
     protected AccessCondition generateIfExistsAccessCondition() {
         // Setting this access condition modifies the request to include the HTTP If-Match conditional header set to "*"
         return new AccessCondition().setIfMatch("*");
+    }
+
+    /**
+     * Constructs a request options object with client request Id.
+     * @return a RequestOptions object with ClientRequestId.
+     */
+    protected RequestOptions generateRequestOptions() {
+        return new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
     }
 
     void assertException(

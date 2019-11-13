@@ -116,10 +116,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         StepVerifier
             .create(client.createOrUpdateDataSource(
-                another,
-                null,
-                generateIfNotExistsAccessCondition(),
-                null))
+                another, generateIfNotExistsAccessCondition(), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(
@@ -137,10 +134,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         StepVerifier
             .create(client.createOrUpdateDataSource(
-                dataSource,
-                null,
-                generateIfNotExistsAccessCondition(),
-                null))
+                dataSource, generateIfNotExistsAccessCondition(), generateRequestOptions()))
             .assertNext(r -> Assert.assertTrue(StringUtils.isNotBlank(r.getETag())))
             .verifyComplete();
     }
@@ -155,14 +149,13 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         // Delete the data source
         client.deleteDataSource(
-            dataSourceName,
-            null,
-            generateIfExistsAccessCondition())
-            .block();
+            dataSourceName, generateIfExistsAccessCondition(), generateRequestOptions())
+                .block();
 
         // Try to delete the data source again, and verify the exception
         StepVerifier
-            .create(client.deleteDataSource(dataSourceName, null, generateIfExistsAccessCondition()))
+            .create(client.deleteDataSource(dataSourceName,
+                generateIfExistsAccessCondition(), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(
@@ -190,7 +183,8 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         // Try to delete the data source with the original eTag, and verify the exception
         StepVerifier
             .create(
-                client.deleteDataSource(dataSourceName, null, generateIfMatchAccessCondition(eTagOrig))
+                client.deleteDataSource(dataSourceName,
+                    generateIfMatchAccessCondition(eTagOrig), generateRequestOptions())
             ).verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(
@@ -201,20 +195,16 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             });
 
         // Delete the data source with the updated eTag:
-        client.deleteDataSource(dataSourceName, null, generateIfMatchAccessCondition(eTagUpdate)).block();
+        client.deleteDataSource(dataSourceName, generateIfMatchAccessCondition(eTagUpdate), generateRequestOptions())
+            .block();
     }
 
     @Override
     public void updateDataSourceIfExistsFailsOnNoResource() {
         DataSource dataSource = createTestBlobDataSource(null);
         StepVerifier
-            .create(
-                client.createOrUpdateDataSource(
-                    dataSource,
-                    null,
-                    generateIfExistsAccessCondition(),
-                    null
-                    )
+            .create(client.createOrUpdateDataSource(
+                dataSource, generateIfExistsAccessCondition(), generateRequestOptions())
             ).verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(
@@ -236,13 +226,9 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         createdDataSource.setDescription("edited description");
         StepVerifier
-            .create(
-                client.createOrUpdateDataSource(
-                    dataSource,
-                    null,
-                    generateIfExistsAccessCondition(),
-                    null)
-            ).assertNext(r -> {
+            .create(client.createOrUpdateDataSource(
+                dataSource, generateIfExistsAccessCondition(), generateRequestOptions()))
+            .assertNext(r -> {
                 Assert.assertTrue(StringUtils.isNotBlank(r.getETag()));
                 Assert.assertNotEquals(createdETag, r.getETag());
             });
@@ -266,13 +252,9 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         Assert.assertNotEquals(createdETag, updatedDataSource.getETag());
 
         StepVerifier
-            .create(
-                client.createOrUpdateDataSource(
-                    updatedDataSource,
-                    null,
-                    generateIfMatchAccessCondition(createdETag),
-                    null)
-            ).verifyErrorSatisfies(error -> {
+            .create(client.createOrUpdateDataSource(
+                updatedDataSource, generateIfMatchAccessCondition(createdETag), generateRequestOptions()))
+            .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(
                     HttpResponseStatus.PRECONDITION_FAILED.code(),
@@ -292,13 +274,9 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         createdDataSource.setDescription("edited description");
         StepVerifier
-            .create(
-                client.createOrUpdateDataSource(
-                    createdDataSource,
-                    null,
-                    generateIfMatchAccessCondition(createdETag),
-                    null)
-            ).assertNext(r -> {
+            .create(client.createOrUpdateDataSource(createdDataSource,
+                generateIfMatchAccessCondition(createdETag), generateRequestOptions()))
+            .assertNext(r -> {
                 Assert.assertTrue(StringUtils.isNotBlank(createdETag));
                 Assert.assertTrue(StringUtils.isNoneBlank(r.getETag()));
                 Assert.assertNotEquals(createdETag, r.getETag());

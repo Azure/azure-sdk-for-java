@@ -134,53 +134,58 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * Creates a new Azure Search datasource or updates a datasource if it already exists
+     * Creates a new Azure Search datasource or updates a datasource if it already exists.
      *
-     * @param dataSource The definition of the datasource to create or update.
-     * @return The datasource that was created or updated.
+     * @param dataSource the definition of the datasource to create or update
+     * @return the datasource that was created or updated.
      */
     public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource) {
-        return withContext(context ->
-            createOrUpdateDataSource(dataSource, null, null, context));
-    }
-
-    /**
-     * Creates a new Azure Search datasource or updates a datasource if it already exists
-     *
-     * @param dataSource The definition of the datasource to create or update.
-     * @param requestOptions Request options
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param context Context
-     * @return The newly created datasource
-     */
-    Mono<DataSource> createOrUpdateDataSource(
-        DataSource dataSource,
-        RequestOptions requestOptions,
-        AccessCondition accessCondition,
-        Context context) {
-        return createOrUpdateDataSourceWithResponse(dataSource, requestOptions, accessCondition, context)
+        return this.createOrUpdateDataSourceWithResponse(dataSource, null, null)
             .map(Response::getValue);
     }
 
     /**
-     * Creates a new Azure Search datasource or updates a datasource if it already exists
+     * Creates a new Azure Search datasource or updates a datasource if it already exists.
      *
-     * @param dataSource The definition of the datasource to create or update.
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     * @param dataSource the definition of the datasource to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
-     * @param context Context
-     * @return a datasource response
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the datasource that was created or updated.
      */
-    Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(
-        DataSource dataSource,
-        RequestOptions requestOptions,
-        AccessCondition accessCondition,
-        Context context) {
-        return restClient.dataSources().createOrUpdateWithRestResponseAsync(
-            dataSource.getName(), dataSource, requestOptions, accessCondition, context)
+    public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource,
+                                                     AccessCondition accessCondition,
+                                                     RequestOptions requestOptions) {
+        return this.createOrUpdateDataSourceWithResponse(dataSource, accessCondition, requestOptions)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Search datasource or updates a datasource if it already exists.
+     *
+     * @param dataSource The definition of the datasource to create or update.
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a datasource response.
+     */
+    public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
+                                                                           AccessCondition accessCondition,
+                                                                           RequestOptions requestOptions) {
+        return withContext(context -> this.createOrUpdateDataSourceWithResponse(dataSource,
+            accessCondition, requestOptions, context));
+    }
+
+    Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
+                                                                    AccessCondition accessCondition,
+                                                                    RequestOptions requestOptions,
+                                                                    Context context) {
+        return restClient
+            .dataSources()
+            .createOrUpdateWithRestResponseAsync(dataSource.getName(),
+                dataSource, requestOptions, accessCondition, context)
             .map(Function.identity());
     }
 
@@ -191,7 +196,7 @@ public class SearchServiceAsyncClient {
      * @return the DataSource.
      */
     public Mono<DataSource> getDataSource(String dataSourceName) {
-        return this.getDataSourceWithResponse(dataSourceName, null, Context.NONE)
+        return this.getDataSourceWithResponse(dataSourceName, null)
             .map(Response::getValue);
     }
 
@@ -204,7 +209,7 @@ public class SearchServiceAsyncClient {
      * @return the DataSource.
      */
     public Mono<DataSource> getDataSource(String dataSourceName, RequestOptions requestOptions) {
-        return this.getDataSourceWithResponse(dataSourceName, requestOptions, Context.NONE)
+        return this.getDataSourceWithResponse(dataSourceName, requestOptions)
             .map(Response::getValue);
     }
 
@@ -214,12 +219,16 @@ public class SearchServiceAsyncClient {
      * @param dataSourceName the name of the data source to retrieve
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging.
-     * @param context Context
      * @return a response containing the DataSource.
      */
     public Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName,
-                                                                RequestOptions requestOptions,
-                                                                Context context) {
+                                                                RequestOptions requestOptions) {
+        return withContext(context -> this.getDataSourceWithResponse(dataSourceName, requestOptions, context));
+    }
+
+    Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName,
+                                                         RequestOptions requestOptions,
+                                                         Context context) {
         return restClient
             .dataSources()
             .getWithRestResponseAsync(dataSourceName, requestOptions, context)
@@ -241,18 +250,6 @@ public class SearchServiceAsyncClient {
      * @param select Selects which top-level properties of DataSource definitions to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties.
      * The default is all properties.
-     * @return a list of DataSources
-     */
-    public PagedFlux<DataSource> listDataSources(String select) {
-        return this.listDataSources(select, null);
-    }
-
-    /**
-     * List all DataSources from an Azure Cognitive Search service.
-     *
-     * @param select Selects which top-level properties of DataSource definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
      * @param requestOptions Additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging.
      * @return a list of DataSources
@@ -260,12 +257,6 @@ public class SearchServiceAsyncClient {
     public PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
             () -> this.listDataSourcesWithResponse(select, requestOptions),
-            nextLink -> Mono.empty());
-    }
-
-    PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
-        return new PagedFlux<>(
-            () -> this.listDataSourcesWithResponse(select, requestOptions, context),
             nextLink -> Mono.empty());
     }
 
@@ -303,61 +294,48 @@ public class SearchServiceAsyncClient {
      * @param dataSourceName the name of the data source for deletion
      * @return a void Mono
      */
-    public Mono<Response<Void>> deleteDataSource(String dataSourceName) {
-        return withContext(context ->
-            deleteDataSourceWithResponse(dataSourceName, null, null, context)
-        );
+    public Mono<Void> deleteDataSource(String dataSourceName) {
+        return this.deleteDataSourceWithResponse(dataSourceName, null, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
      * Deletes an Azure Search datasource.
      *
      * @param dataSourceName The name of the datasource to delete.
-     * @param requestOptions Additional parameters for the operation.
-     * @param accessCondition Additional parameters for the operation.
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a valid Mono
      */
-    public Mono<Response<Void>> deleteDataSource(String dataSourceName,
-                                                 RequestOptions requestOptions,
-                                                 AccessCondition accessCondition) {
-        return withContext(context ->
-            deleteDataSourceWithResponse(
-                dataSourceName,
-                requestOptions,
-                accessCondition,
-                context));
+    public Mono<Void> deleteDataSource(String dataSourceName,
+                                       AccessCondition accessCondition,
+                                       RequestOptions requestOptions) {
+        return this.deleteDataSourceWithResponse(dataSourceName, accessCondition, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
      * Deletes an Azure Search datasource.
      *
      * @param dataSourceName The name of the datasource to delete.
-     * @param requestOptions Additional parameters for the operation.
-     * @param accessCondition Additional parameters for the operation.
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a mono response
      */
     public Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName,
-                                                             RequestOptions requestOptions,
-                                                             AccessCondition accessCondition) {
-        return withContext(context ->
-            deleteDataSourceWithResponse(
-                dataSourceName,
-                requestOptions,
-                accessCondition,
-                context));
+                                                             AccessCondition accessCondition,
+                                                             RequestOptions requestOptions) {
+        return withContext(context -> this.deleteDataSourceWithResponse(dataSourceName,
+            accessCondition, requestOptions, context));
     }
 
-    /**
-     * Deletes an Azure Search datasource.
-     *
-     * @param dataSourceName The name of the datasource to delete.
-     * @param requestOptions Additional parameters for the operation.
-     * @param accessCondition Additional parameters for the operation.
-     * @return a mono response
-     */
     Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName,
-                                                      RequestOptions requestOptions,
                                                       AccessCondition accessCondition,
+                                                      RequestOptions requestOptions,
                                                       Context context) {
         return restClient.dataSources()
             .deleteWithRestResponseAsync(
