@@ -63,7 +63,7 @@ public class ConflictResolutionPolicy extends JsonSerializable {
      * Creates a LAST_WRITER_WINS {@link ConflictResolutionPolicy} with "/_ts" as the resolution path.
      *
      * In case of a conflict occurring on a document, the document with the higher integer value in the default path
-     * {@link Resource#getTimestamp()}, i.e., "/_ts" will be used.
+     * {@link Resource#getTimestamp}, i.e., "/_ts" will be used.
      *
      * @return ConflictResolutionPolicy.
      */
@@ -103,7 +103,7 @@ public class ConflictResolutionPolicy extends JsonSerializable {
      * <ul>
      * <li>In case the stored procedure fails or throws an exception,
      * the conflict resolution will default to registering conflicts in the conflicts feed</li>
-     * <li>The user can provide the stored procedure @see {@link Resource#id()}</li>
+     * <li>The user can provide the stored procedure @see {@link Resource#getId()}</li>
      * </ul>
      * @param conflictResolutionSprocName stored procedure to perform conflict resolution.
      * @return ConflictResolutionPolicy.
@@ -177,7 +177,7 @@ public class ConflictResolutionPolicy extends JsonSerializable {
      * Gets the path which is present in each document in the Azure Cosmos DB service for last writer wins conflict-resolution.
      * This path must be present in each document and must be an integer value.
      * In case of a conflict occurring on a document, the document with the higher integer value in the specified path will be picked.
-     * If the path is unspecified, by default the {@link Resource#timestamp()} path will be used.
+     * If the path is unspecified, by default the {@link Resource#getTimestamp()} path will be used.
      *
      * This value should only be set when using {@link ConflictResolutionMode#LAST_WRITER_WINS}
      *
@@ -212,7 +212,7 @@ public class ConflictResolutionPolicy extends JsonSerializable {
      * <li>This value should only be set when using {@link ConflictResolutionMode#CUSTOM}</li>
      * <li>In case the stored procedure fails or throws an exception,
      * the conflict resolution will default to registering conflicts in the conflicts feed</li>
-     * <li>The user can provide the stored procedure @see {@link Resource#id()}</li>
+     * <li>The user can provide the stored procedure @see {@link Resource#getId}</li>
      * </ul>
      **
      * @return the stored procedure to perform conflict resolution.]
