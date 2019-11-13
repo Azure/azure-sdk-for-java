@@ -92,11 +92,17 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be included
      * in the user agent.
      *
+     * @deprecated This method is deprecated as it does not set the custom application id sent by user on the
+     * "User-Agent" header when sending a request.
+     * <p> Use {@link UserAgentPolicy#UserAgentPolicy(String, String, String, com.azure.core.util.Configuration,
+     * com.azure.core.util.ServiceVersion)} instead.
+     *
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
      * @param version {@link ServiceVersion} of the service to be used when making requests.
      * @param configuration Configuration store that will be checked for the AZURE_TELEMETRY_DISABLED.
      */
+    @Deprecated
     public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration, ServiceVersion version) {
         boolean telemetryDisabled = configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
         if (telemetryDisabled) {
