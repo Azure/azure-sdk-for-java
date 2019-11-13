@@ -479,15 +479,21 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     private EventData setSpanContext(EventData event, Context parentContext) {
-        // Starting the span makes the sampling decision (nothing is logged at this time)
-        Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.MESSAGE);
-        if (eventSpanContext != null) {
-            Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+        Optional<Object> eventContextData = event.getContext().getData(SPAN_CONTEXT_KEY);
+        if (eventContextData.isPresent()) {
+            // if message has context (in case of retries), don't start a message span or add a new context
+            return event;
+        } else {
+            // Starting the span makes the sampling decision (nothing is logged at this time)
+            Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.MESSAGE);
+            if (eventSpanContext != null) {
+                Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
 
-            if (eventDiagnosticIdOptional.isPresent()) {
-                event.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
-                tracerProvider.endSpan(eventSpanContext, Signal.complete());
-                event.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
+                if (eventDiagnosticIdOptional.isPresent()) {
+                    event.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
+                    tracerProvider.endSpan(eventSpanContext, Signal.complete());
+                    event.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
+                }
             }
         }
         return event;
