@@ -10,7 +10,7 @@ and
 - Fixed a race condition that would sometimes result in a RuntimeException with a message related to unexpected header value of client-request-id.
 - Fixed a bug in the RetryPolicy that would apply the delay of a fixed retry policy to the first try.
 - Fixed a bug that could cause the overwrite flag to not be honored in cases where data was uploaded by another source after a parallel operation has already started.
-- Added overloads to accept an overwrite flag to commitBlockList and getBlobOutputStream. 
+- Added overloads to accept an overwrite flag to commitBlockList and getBlobOutputStream. Note that this changes the default behavior of the min overload and these methods will now fail if they are attempting to overwrite data.
 
 ## Version 12.0.0 (2019-10-31)
 

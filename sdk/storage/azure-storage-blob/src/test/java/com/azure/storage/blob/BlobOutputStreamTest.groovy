@@ -1,5 +1,7 @@
 package com.azure.storage.blob
 
+import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
@@ -21,6 +23,32 @@ class BlobOutputStreamTest extends APISpec {
         then:
         blockBlobClient.getProperties().getBlobSize() == data.length
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
+    }
+
+    @Requires({ liveMode() })
+    def "BlockBlob output stream default no overwrite"() {
+        setup:
+        def data = getRandomByteArray(10 * Constants.MB)
+        def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        def outputStream = blockBlobClient.getBlobOutputStream()
+        outputStream.write(data)
+        outputStream.close()
+
+        and:
+        outputStream = blockBlobClient.getBlobOutputStream()
+        outputStream.write(data)
+        outputStream.close()
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
+    }
+
+    @Requires({ liveMode() })
+    def "BlockBlob output stream default no overwrite interrupted"() {
+
     }
 
     @Requires({ liveMode() })

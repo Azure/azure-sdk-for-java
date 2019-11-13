@@ -55,7 +55,7 @@ class BlockBlobAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultDataSize)
         blobac = ccAsync.getBlobAsyncClient(generateBlobName())
         bac = blobac.getBlockBlobAsyncClient()
-        bac.upload(defaultFlux, defaultDataSize)
+        bac.upload(defaultFlux, defaultDataSize).block()
     }
 
     def "Stage block"() {
@@ -371,6 +371,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Commit block list min"() {
         setup:
+        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         def blockID = getBlockID()
         bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
         def ids = [blockID] as List
@@ -379,8 +380,20 @@ class BlockBlobAPITest extends APISpec {
         bc.commitBlockList(ids) != null
     }
 
-    def "Commit block list no overwrite"() {
-        expect
+    def "Commit block list min no overwrite"() {
+        when:
+        bc.commitBlockList([])
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Commit block list overwrite"() {
+        when:
+        bc.commitBlockList([], true)
+
+        then:
+        notThrown(BlobStorageException)
     }
 
     def "Commit block list null"() {
