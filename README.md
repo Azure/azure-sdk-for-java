@@ -19,13 +19,6 @@ For tutorials, samples, quick starts and other documentation, visit [Azure for J
 ### Prerequisites
 Java 8 or later is required to use the November 2019 client libraries, otherwise Java 7 or later is required.
 
-## Release branches (Release tagging)
-
-### Master branch
-The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [below](#Client-GA-November-2019-Releases) for latest **GA** release.<br/>
-For each package we release there will be a unique git tag created that contains the name and the version of the package to mark the commit of the code that produced the package. This tag will be used for servicing via hotfix branches as well as debugging the code for a particular preview or stable release version.
-Format of the release tags are \<package-name\>_\<package-version\>. For more information please [see](https://github.com/Azure/azure-sdk/blob/master/docs/policies/repobranching.md#release-tagging)
-
 ## Latest Release
 Each service might have a number of libraries available from each of the following categories:
 
@@ -33,7 +26,7 @@ Each service might have a number of libraries available from each of the followi
 - [Client - Previous Versions](#Client-Previous-Versions)
 - [Management](#Management)
 
-### [Client: GA November 2019 Releases]
+### Client: GA November 2019 Releases
 New wave of packages that were released in November 2019 client library as General Availability (GA) and several others that were released in **preview**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](sdk/core/README.md). 
 
 These libraries can be easily identified by sdk/ folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
@@ -70,8 +63,15 @@ Libraries which enable you to provision specific resources. They are responsible
 * File an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose).
 * Check [previous questions](https://stackoverflow.com/questions/tagged/azure-java-sdk) or ask new ones on StackOverflow using `azure-java-sdk` tag.
 
-### Contributing Guide
+## Navigating the repository
+### Master branch
+The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-GA-November-2019-Releases) for latest **GA** release.<br/>
 
+### Release branches (Release tagging)
+For each package we release there will be a unique git tag created that contains the name and the version of the package to mark the commit of the code that produced the package. This tag will be used for servicing via hotfix branches as well as debugging the code for a particular preview or stable release version.
+Format of the release tags are `<package-name>_<package-version>`. For more information please see [our branching strategy](https://github.com/Azure/azure-sdk/blob/master/docs/policies/repobranching.md#release-tagging).
+
+## Contributing Guide
 We welcome contributions and suggestions!  Many people all over the world have helped make this project better.  You'll want to check out:
 
 * [What are some good first issues for new contributors to the repo?](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3A%22up+for+grabs%22)
@@ -94,7 +94,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 Security issues and bugs should be reported privately, via email, to the Microsoft Security Response Center (MSRC) <secure@microsoft.com>. You should receive a response within 24 hours. If for some reason you do not, please follow up via email to ensure we received your original message. Further information, including the MSRC PGP key, can be found in the [Security TechCenter](https://www.microsoft.com/msrc/faqs-report-an-issue).
 
-## License
+### License
 
 Azure SDK for Java is licensed under the [MIT](LICENSE.txt) license.
 
