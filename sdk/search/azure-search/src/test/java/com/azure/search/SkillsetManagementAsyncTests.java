@@ -3,7 +3,6 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
-
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.models.EntityCategory;
 import com.azure.search.models.KeyPhraseExtractionSkillLanguage;
@@ -20,6 +19,7 @@ import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     private SearchServiceAsyncClient client;
@@ -352,6 +352,36 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     }
 
     @Override
+    public void createOrUpdateCreatesWhenSkillsetDoesNotExist() {
+        Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED, false);
+
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        StepVerifier
+            .create(client.createOrUpdateSkillsetWithResponse(skillset, requestOptions))
+            .assertNext(res -> Assert.assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Override
+    public void createOrUpdateUpdatesWhenSkillsetExists() {
+        Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN, false);
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+        StepVerifier
+            .create(client.createOrUpdateSkillsetWithResponse(skillset, requestOptions))
+            .assertNext(res -> Assert.assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode()))
+            .verifyComplete();
+
+        skillset = createTestOcrSkillSet(2, TextExtractionAlgorithm.PRINTED, false);
+        StepVerifier
+            .create(client.createOrUpdateSkillsetWithResponse(skillset, requestOptions))
+            .assertNext(res -> Assert.assertEquals(HttpResponseStatus.OK.code(), res.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Override
     public void existsReturnsFalseForNonExistingSkillset() {
         StepVerifier
             .create(client.skillsetExists("nonexistent"))
@@ -362,6 +392,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     @Override
     public void existsReturnsTrueForExistingSkillset() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+
         client.createSkillset(skillset).block();
 
         StepVerifier

@@ -5,6 +5,7 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.search.models.EntityCategory;
 import com.azure.search.models.KeyPhraseExtractionSkillLanguage;
 import com.azure.search.models.OcrSkillLanguage;
@@ -19,6 +20,7 @@ import org.junit.Assert;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
@@ -289,6 +291,37 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     }
 
     @Override
+    public void createOrUpdateCreatesWhenSkillsetDoesNotExist() {
+        Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN, false);
+
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        Response<Skillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset,
+            requestOptions,
+            Context.NONE);
+
+        Assert.assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
+    }
+
+    @Override
+    public void createOrUpdateUpdatesWhenSkillsetExists() {
+        Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN, false);
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+        Response<Skillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset,
+            requestOptions,
+            Context.NONE);
+        Assert.assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
+
+        skillset = createTestOcrSkillSet(2, TextExtractionAlgorithm.PRINTED, false);
+        createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset,
+            requestOptions,
+            Context.NONE);
+        Assert.assertEquals(HttpResponseStatus.OK.code(), createOrUpdateResponse.getStatusCode());
+    }
+
+    @Override
     public void existsReturnsFalseForNonExistingSkillset() {
         Assert.assertFalse(client.skillsetExists("nonexistent"));
     }
@@ -296,6 +329,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     @Override
     public void existsReturnsTrueForExistingSkillset() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        
         client.createSkillset(skillset);
 
         Assert.assertTrue(client.skillsetExists(skillset.getName()));

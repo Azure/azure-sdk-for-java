@@ -1020,19 +1020,45 @@ public class SearchServiceClient {
     }
 
     /**
-     * @return the updated Skillset.
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     *
+     * @param skillset the definition of the skillset to create or update
+     * @return the skillset that was created or updated.
      */
-    public Skillset createOrUpdateSkillset() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Skillset createOrUpdateSkillset(Skillset skillset) {
+        return asyncClient.createOrUpdateSkillset(skillset).block();
     }
 
     /**
-     * @return a response containing the updated Skillset.
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     *
+     * @param skillset the definition of the skillset to create or update
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the skillset that was created or updated.
      */
-    public Response<Skillset> createOrUpdateSkillsetWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Skillset createOrUpdateSkillset(Skillset skillset,
+                                           RequestOptions requestOptions) {
+
+
+        return asyncClient.createOrUpdateSkillset(skillset, requestOptions).block();
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     *
+     * @param skillset the definition of the skillset to create or update
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response containing the skillset that was created or updated.
+     */
+    public Response<Skillset> createOrUpdateSkillsetWithResponse(Skillset skillset,
+                                                                 RequestOptions requestOptions,
+                                                                 Context context) {
+        return asyncClient.createOrUpdateSkillsetWithResponse(skillset,
+            requestOptions,
+            context).block();
     }
 
     /**

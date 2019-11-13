@@ -108,11 +108,16 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     public abstract void deleteSkillsetIsIdempotent();
 
     @Test
+    public abstract void createOrUpdateCreatesWhenSkillsetDoesNotExist();
+
+    @Test
+    public abstract void createOrUpdateUpdatesWhenSkillsetExists();
+
+    @Test
     public abstract void existsReturnsFalseForNonExistingSkillset();
 
     @Test
     public abstract void existsReturnsTrueForExistingSkillset();
-
 
     protected void assertSkillsetsEqual(Skillset expected, Skillset actual) {
         expected.setETag("none");
@@ -499,6 +504,41 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
         return new Skillset()
             .setName("ocr-split-text-skillset")
             .setDescription("Skillset for testing")
+            .setSkills(skills);
+    }
+
+    protected Skillset createTestOcrSkillSet(int repeat, TextExtractionAlgorithm algorithm, boolean shouldDetectOrientation) {
+        List<Skill> skills = new ArrayList<>();
+
+        List<InputFieldMappingEntry> inputs = Arrays.asList(
+            new InputFieldMappingEntry()
+                .setName("url")
+                .setSource("/document/url"),
+            new InputFieldMappingEntry().setName("queryString")
+                .setSource("/document/queryString")
+        );
+
+        for (int i = 0; i < repeat; i++) {
+            List<OutputFieldMappingEntry> outputs = Collections.singletonList(
+                new OutputFieldMappingEntry()
+                    .setName("text")
+                    .setTargetName("mytext" + i)
+            );
+
+            skills.add(new OcrSkill()
+                .setDefaultLanguageCode(OcrSkillLanguage.EN)
+                .setTextExtractionAlgorithm(algorithm)
+                .setShouldDetectOrientation(shouldDetectOrientation)
+                .setName("myocr-" + i)
+                .setDescription("Tested OCR skill")
+                .setContext(CONTEXT_VALUE)
+                .setInputs(inputs)
+                .setOutputs(outputs));
+        }
+
+        return new Skillset()
+            .setName("testskillset")
+            .setDescription("Skillset for testing OCR")
             .setSkills(skills);
     }
 

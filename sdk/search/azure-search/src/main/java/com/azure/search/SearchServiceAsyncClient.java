@@ -1150,19 +1150,55 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return the updated Skillset.
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     *
+     * @param skillset the definition of the skillset to create or update
+     * @return the skillset that was created or updated.
      */
-    public Mono<Skillset> createOrUpdateSkillset() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Skillset> createOrUpdateSkillset(Skillset skillset) {
+        return this.createOrUpdateSkillsetWithResponse(skillset, null, null)
+            .map(Response::getValue);
     }
 
     /**
-     * @return a response containing the updated Skillset.
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     *
+     * @param skillset the definition of the skillset to create or update
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the skillset that was created or updated.
      */
-    public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Skillset> createOrUpdateSkillset(Skillset skillset,
+                                                 RequestOptions requestOptions) {
+        return this.createOrUpdateSkillsetWithResponse(skillset, requestOptions)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     *
+     * @param skillset the definition of the skillset to create or update
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response containing the skillset that was created or updated.
+     */
+    public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
+                                                                       RequestOptions requestOptions) {
+        return withContext(context -> this.createOrUpdateSkillsetWithResponse(skillset,
+            requestOptions,
+            context));
+    }
+
+    Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
+                                                                RequestOptions requestOptions,
+                                                                Context context) {
+        return restClient
+            .skillsets()
+            .createOrUpdateWithRestResponseAsync(skillset.getName(),
+                skillset,
+                requestOptions,
+                context)
+            .map(Function.identity());
     }
 
     /**
