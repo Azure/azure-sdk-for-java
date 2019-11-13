@@ -10,8 +10,8 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
-import com.azure.core.util.FluxUtil
 import com.azure.core.util.Context
+import com.azure.core.util.FluxUtil
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
@@ -863,33 +863,27 @@ class BlockBlobAPITest extends APISpec {
 
     @Requires({ liveMode() })
     def "Async buffered upload empty"() {
-        when:
-        def emptyUploadVerifier = StepVerifier.create(blobac.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null))
+        expect:
+        StepVerifier.create(blobac.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null))
+            .assertNext({ assert it.getETag() != null })
+            .verifyComplete()
 
-        then:
-        emptyUploadVerifier.assertNext({
-            assert it.getETag() != null
-        }).verifyComplete()
-
-        StepVerifier.create(blobac.download()).assertNext({
-            assert it.remaining() == 0
-        }).verifyComplete()
+        StepVerifier.create(blobac.download())
+            .assertNext({ assert it.remaining() == 0 })
+            .verifyComplete()
     }
 
     @Unroll
     @Requires({ liveMode() })
     def "Async buffered upload empty buffers"() {
-        when:
-        def uploadVerifier = StepVerifier.create(blobac.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), null, true))
+        expect:
+        StepVerifier.create(blobac.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), null, true))
+            .assertNext({ assert it.getETag() != null })
+            .verifyComplete()
 
-        then:
-        uploadVerifier.assertNext({
-            assert it.getETag() != null
-        }).verifyComplete()
-
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobac.download())).assertNext({
-            assert it == expectedDownload
-        }).verifyComplete()
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobac.download()))
+            .assertNext({ assert it == expectedDownload })
+            .verifyComplete()
 
         where:
         buffer1                                                   | buffer2                                               | buffer3                                                    || expectedDownload
@@ -906,7 +900,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         def data = getRandomData(dataSize)
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize, numBuffs, null)
-        blobac.upload(Flux.just(data), parallelTransferOptions).block()
+        blobac.upload(Flux.just(data), parallelTransferOptions, true).block()
         data.position(0)
 
         then:
@@ -1291,7 +1285,6 @@ class BlockBlobAPITest extends APISpec {
          buffering properly to allow for retries even given this source behavior.
          */
         bac.upload(Flux.just(defaultData), defaultDataSize).block()
-        def nonReplayableFlux = bac.download()
 
         // Mock a response that will always be retried.
         def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
@@ -1320,7 +1313,7 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         // A second subscription to a download stream will
-        StepVerifier.create(blobac.upload(nonReplayableFlux, parallelTransferOptions, true))
+        StepVerifier.create(blobac.upload(bac.download(), parallelTransferOptions, true))
             .verifyErrorSatisfies({
                 assert it instanceof BlobStorageException
                 assert it.getStatusCode() == 500
@@ -1358,8 +1351,8 @@ class BlockBlobAPITest extends APISpec {
     def "BlobClient overwrite false"() {
         setup:
         def file = getRandomFile(Constants.KB)
-
         when:
+
         blobClient.uploadFromFile(file.getPath())
 
         then:
