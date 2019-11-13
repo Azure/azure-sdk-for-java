@@ -4,18 +4,19 @@
 package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.SearchServiceUrlParser.SearchServiceUrlParts;
-import com.azure.search.common.AutoCompletePagedResponse;
 import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.common.SuggestOptionsHandler;
@@ -42,6 +43,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
@@ -471,51 +473,81 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
+     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @return auto complete result
+     * @return auto complete result.
      */
     public PagedFlux<AutocompleteItem> autocomplete(String searchText, String suggesterName) {
-        return autocomplete(searchText, suggesterName, null, null);
+        return this.autocomplete(searchText, suggesterName, null, null);
     }
 
     /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
+     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
      * @param searchText search text
      * @param suggesterName suggester name
      * @param autocompleteOptions autocomplete options
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return auto complete result
+     * @return auto complete result.
      */
-    public PagedFlux<AutocompleteItem> autocomplete(
-        String searchText,
-        String suggesterName,
-        AutocompleteOptions autocompleteOptions,
-        RequestOptions requestOptions) {
-        AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
-            suggesterName,
-            autocompleteOptions);
+    public PagedFlux<AutocompleteItem> autocomplete(String searchText,
+                                        String suggesterName,
+                                        AutocompleteOptions autocompleteOptions,
+                                        RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> withContext(context -> autocompleteFirst(autocompleteRequest, requestOptions, context)),
+            () -> this.autocompleteWithResponse(searchText, suggesterName, autocompleteOptions, requestOptions),
             nextLink -> Mono.empty());
     }
 
-    PagedFlux<AutocompleteItem> autocomplete(
-        String searchText,
-        String suggesterName,
-        AutocompleteOptions autocompleteOptions,
-        RequestOptions requestOptions,
-        Context context) {
-        AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
-            suggesterName,
-            autocompleteOptions);
+    PagedFlux<AutocompleteItem> autocomplete(String searchText,
+                                             String suggesterName,
+                                             AutocompleteOptions autocompleteOptions,
+                                             RequestOptions requestOptions,
+                                             Context context) {
         return new PagedFlux<>(
-            () -> autocompleteFirst(autocompleteRequest, requestOptions, context),
+            () -> this.autocompleteWithResponse(searchText,
+                suggesterName, autocompleteOptions, requestOptions, context),
             nextLink -> Mono.empty());
+    }
+
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
+     *
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @param autocompleteOptions autocomplete options
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response containing auto complete result.
+     */
+    public Mono<PagedResponse<AutocompleteItem>> autocompleteWithResponse(String searchText,
+                                                                          String suggesterName,
+                                                                          AutocompleteOptions autocompleteOptions,
+                                                                          RequestOptions requestOptions) {
+        return withContext(context -> this.autocompleteWithResponse(searchText,
+            suggesterName, autocompleteOptions, requestOptions, context));
+    }
+
+    Mono<PagedResponse<AutocompleteItem>> autocompleteWithResponse(String searchText,
+                                                                   String suggesterName,
+                                                                   AutocompleteOptions autocompleteOptions,
+                                                                   RequestOptions requestOptions,
+                                                                   Context context) {
+        AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
+            suggesterName, autocompleteOptions);
+        return restClient.documents()
+            .autocompletePostWithRestResponseAsync(autocompleteRequest, requestOptions, context)
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue().getResults(),
+                null,
+                deserializeHeaders(response.getHeaders()))
+            );
     }
 
     /**
@@ -560,15 +592,6 @@ public class SearchIndexAsyncClient {
         return restClient.documents()
             .searchPostWithRestResponseAsync(searchRequest.setSkip(skipValue), requestOptions, context)
             .map(SearchPagedResponse::new);
-    }
-
-    private Mono<PagedResponse<AutocompleteItem>> autocompleteFirst(
-        AutocompleteRequest autocompleteRequest,
-        RequestOptions requestOptions,
-        Context context) {
-        return restClient.documents()
-            .autocompletePostWithRestResponseAsync(autocompleteRequest, requestOptions, context)
-            .map(AutoCompletePagedResponse::new);
     }
 
     private Mono<SuggestPagedResponse> suggestFirst(
@@ -714,5 +737,11 @@ public class SearchIndexAsyncClient {
             .setActionType(actionType)
             .setDocument(d)));
         return batch;
+    }
+
+    private static String deserializeHeaders(HttpHeaders headers) {
+        return headers.toMap().entrySet().stream().map((entry) ->
+            entry.getKey() + "," + entry.getValue()
+        ).collect(Collectors.joining(","));
     }
 }

@@ -5,10 +5,10 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedIterableBase;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.common.SearchPagedResponse;
@@ -372,62 +372,53 @@ public class SearchIndexClient {
     }
 
     /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
+     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @return auto complete result
+     * @return auto complete result.
      */
     public PagedIterable<AutocompleteItem> autocomplete(String searchText, String suggesterName) {
-        return this.autocomplete(searchText,
-            suggesterName,
-            null,
-            null,
-            Context.NONE);
+        return new PagedIterable<>(asyncClient.autocomplete(searchText, suggesterName));
     }
 
     /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
+     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
      * @param searchText search text
      * @param suggesterName suggester name
      * @param autocompleteOptions autocomplete options
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return auto complete result
-     */
-    public PagedIterable<AutocompleteItem> autocomplete(String searchText,
-                                                        String suggesterName,
-                                                        AutocompleteOptions autocompleteOptions,
-                                                        RequestOptions requestOptions) {
-        return this.autocomplete(searchText,
-            suggesterName,
-            autocompleteOptions,
-            requestOptions,
-            Context.NONE);
-    }
-
-    /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
-     *
-     * @param searchText search text
-     * @param suggesterName suggester name
-     * @param autocompleteOptions autocomplete options
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the Http pipeline during the service call
-     * @return auto complete result
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return auto complete result.
      */
     public PagedIterable<AutocompleteItem> autocomplete(String searchText,
                                                         String suggesterName,
                                                         AutocompleteOptions autocompleteOptions,
                                                         RequestOptions requestOptions,
                                                         Context context) {
-        PagedFlux<AutocompleteItem> result = asyncClient.autocomplete(searchText,
-            suggesterName,
-            autocompleteOptions,
-            requestOptions,
-            context);
-        return new PagedIterable<>(result);
+        return new PagedIterable<>(asyncClient.autocomplete(searchText,
+            suggesterName, autocompleteOptions, requestOptions, context));
+    }
+
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
+     *
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @param autocompleteOptions autocomplete options
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response containing auto complete result.
+     */
+    public PagedResponse<AutocompleteItem> autocompleteWithResponse(String searchText,
+                                                                    String suggesterName,
+                                                                    AutocompleteOptions autocompleteOptions,
+                                                                    RequestOptions requestOptions,
+                                                                    Context context) {
+        return asyncClient.autocompleteWithResponse(searchText,
+            suggesterName, autocompleteOptions, requestOptions, context).block();
     }
 }

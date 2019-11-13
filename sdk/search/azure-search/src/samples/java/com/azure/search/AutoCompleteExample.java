@@ -6,11 +6,14 @@ package com.azure.search;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
+import com.azure.search.models.RequestOptions;
 
 import java.util.Iterator;
+import java.util.UUID;
 
 /**
  * This sample is based on the hotels-sample index available to install from the portal.
@@ -43,8 +46,13 @@ public class AutoCompleteExample {
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(
             AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        Context context = new Context("key", "value");
+
         PagedIterable<AutocompleteItem> results = searchClient.autocomplete("coffee m",
-            "sg", params, null);
+            "sg", params, requestOptions, context);
 
         Iterator<PagedResponse<AutocompleteItem>> iterator = results.iterableByPage().iterator();
 
@@ -68,7 +76,13 @@ public class AutoCompleteExample {
             .setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>");
 
-        PagedIterable<AutocompleteItem> results = searchClient.autocomplete("co", "sg", params, null);
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        Context context = new Context("key", "value");
+
+        PagedIterable<AutocompleteItem> results = searchClient.autocomplete("co", "sg", params,
+            requestOptions, context);
 
         Iterator<PagedResponse<AutocompleteItem>> iterator = results.iterableByPage().iterator();
 
@@ -91,7 +105,13 @@ public class AutoCompleteExample {
             .setUseFuzzyMatching(true)
             .setFilter("HotelId ne '6' and Category eq 'Budget'");
 
-        PagedIterable<AutocompleteItem> results = searchClient.autocomplete("su", "sg", params, null);
+        RequestOptions requestOptions = new RequestOptions()
+            .setClientRequestId(UUID.randomUUID());
+
+        Context context = new Context("key", "value");
+
+        PagedIterable<AutocompleteItem> results = searchClient.autocomplete("su", "sg", params,
+            requestOptions, context);
 
         Iterator<PagedResponse<AutocompleteItem>> iterator = results.iterableByPage().iterator();
 
