@@ -18,7 +18,6 @@ import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.Skillset;
-import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
 
 import com.azure.search.models.TokenInfo;
@@ -981,19 +980,43 @@ public class SearchServiceClient {
     }
 
     /**
-     * @return all Skillsets in the Search service.
-     * @throws NotImplementedException not implemented
+     * Lists all skillsets available for an Azure Cognitive Search service.
+     *
+     * @return the list of skillsets.
      */
-    public SkillsetListResult listSkillsets() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedIterable<Skillset> listSkillsets() {
+        return new PagedIterable<>(asyncClient.listSkillsets());
     }
 
     /**
-     * @return a response containing all Skillsets in the Search service.
-     * @throws NotImplementedException not implemented
+     * Lists all skillsets available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the skillset definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the list of skillsets.
      */
-    public Response<SkillsetListResult> listSkillsetsWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedIterable<Skillset> listSkillsets(String select, RequestOptions requestOptions) {
+        return new PagedIterable<>(asyncClient.listSkillsets(select, requestOptions));
+    }
+
+    /**
+     * Lists all skillsets available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the skillset definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @return a response emitting the list of skillsets.
+     */
+    public PagedResponse<Skillset> listSkillsetsWithResponse(String select,
+                                                             RequestOptions requestOptions,
+                                                             Context context) {
+        return asyncClient.listSkillsetsWithResponse(select, requestOptions, context).block();
     }
 
     /**

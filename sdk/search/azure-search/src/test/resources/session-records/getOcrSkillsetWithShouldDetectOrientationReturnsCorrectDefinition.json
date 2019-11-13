@@ -1,47 +1,47 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk457268183b92.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk94918137846a.search.windows.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "dea10dbc-3da7-49a6-8398-00e910e07a51",
+      "request-id" : "eb82c3ef-cb08-4bf8-8748-acdf72fbbc45",
       "StatusCode" : "201",
-      "Date" : "Mon, 11 Nov 2019 19:21:13 GMT",
+      "Date" : "Tue, 12 Nov 2019 00:20:48 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D766DC518DFFE0\"",
+      "ETag" : "W/\"0x8D767062AC3259A\"",
       "elapsed-time" : "65",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "696",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk457268183b92.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D766DC518DFFE0\\\"\",\"name\":\"testskillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":true,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk94918137846a.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D767062AC3259A\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":true,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk457268183b92.search.windows.net/skillsets('testskillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk94918137846a.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk457268183b92.search.windows.net/skillsets('testskillset')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk94918137846a.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "f1003a2f-187c-4d28-a12d-c2facfdec05d",
+      "request-id" : "d1045617-3022-4d42-b729-c6d5518ff29f",
       "StatusCode" : "200",
-      "Date" : "Mon, 11 Nov 2019 19:21:13 GMT",
+      "Date" : "Tue, 12 Nov 2019 00:20:48 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D766DC518DFFE0\"",
-      "elapsed-time" : "122",
+      "ETag" : "W/\"0x8D767062AC3259A\"",
+      "elapsed-time" : "19",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "699",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk457268183b92.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D766DC518DFFE0\\\"\",\"name\":\"testskillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":\"Space\",\"defaultLanguageCode\":\"en\",\"detectOrientation\":true,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk94918137846a.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D767062AC3259A\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":\"Space\",\"defaultLanguageCode\":\"en\",\"detectOrientation\":true,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

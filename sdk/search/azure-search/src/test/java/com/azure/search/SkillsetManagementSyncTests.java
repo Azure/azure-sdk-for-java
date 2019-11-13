@@ -3,10 +3,12 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.search.models.EntityCategory;
 import com.azure.search.models.KeyPhraseExtractionSkillLanguage;
 import com.azure.search.models.OcrSkillLanguage;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SentimentSkillLanguage;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SplitSkillLanguage;
@@ -17,6 +19,7 @@ import org.junit.Assert;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     private SearchServiceClient client;
@@ -233,6 +236,39 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
             Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
                 ((HttpResponseException) ex).getResponse().getStatusCode());
         }
+    }
+
+    @Override
+    public void canCreateAndListSkillsets() {
+        Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
+        Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
+
+        client.createSkillset(skillset1);
+        client.createSkillset(skillset2);
+
+        PagedIterable<Skillset> actual = client.listSkillsets();
+        List<Skillset> result = actual.stream().collect(Collectors.toList());
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals(skillset1.getName(), result.get(0).getName());
+        Assert.assertEquals(skillset2.getName(), result.get(1).getName());
+    }
+
+    @Override
+    public void canListSkillsetsWithSelectedField() {
+        Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
+        Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
+
+        client.createSkillset(skillset1);
+        client.createSkillset(skillset2);
+
+        PagedIterable<Skillset> selectedFieldListResponse = client.listSkillsets("name",
+            new RequestOptions());
+        List<Skillset> result = selectedFieldListResponse.stream().collect(Collectors.toList());
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals(result.get(0).getName(), skillset1.getName());
+        Assert.assertEquals(result.get(1).getName(), skillset2.getName());
     }
 
     @Override

@@ -1,0 +1,75 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdkbd106366072d.search.windows.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "313b07aa-d765-48b2-9e03-12fbeacd27a7",
+      "StatusCode" : "201",
+      "Date" : "Wed, 13 Nov 2019 17:28:05 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7685ED7CBCB18\"",
+      "elapsed-time" : "98",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "779",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkbd106366072d.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7685ED7CBCB18\\\"\",\"name\":\"cognitive-services-key-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":{\"@odata.type\":\"#Microsoft.Azure.Search.DefaultCognitiveServices\",\"description\":null}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdkbd106366072d.search.windows.net/skillsets('cognitive-services-key-skillset')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdkbd106366072d.search.windows.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "96c30658-a2e2-4fda-be7f-d4b45ea1fdb7",
+      "StatusCode" : "201",
+      "Date" : "Wed, 13 Nov 2019 17:28:05 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7685ED7EB41BE\"",
+      "elapsed-time" : "62",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "661",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkbd106366072d.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7685ED7EB41BE\\\"\",\"name\":\"entity-recognition-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.EntityRecognitionSkill\",\"name\":\"myentity\",\"description\":\"Tested Entity Recognition skill\",\"context\":\"/document\",\"categories\":[],\"defaultLanguageCode\":null,\"minimumPrecision\":null,\"includeTypelessEntities\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"entities\",\"targetName\":\"myEntities\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdkbd106366072d.search.windows.net/skillsets('entity-recognition-skillset')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdkbd106366072d.search.windows.net/skillsets?$select=name&api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "6b4f2d47-a1e1-4f0b-9966-2f02180dd41d",
+      "StatusCode" : "200",
+      "Date" : "Wed, 13 Nov 2019 17:28:05 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "32",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "185",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkbd106366072d.search.windows.net/$metadata#skillsets(name)\",\"value\":[{\"name\":\"cognitive-services-key-skillset\"},{\"name\":\"entity-recognition-skillset\"}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

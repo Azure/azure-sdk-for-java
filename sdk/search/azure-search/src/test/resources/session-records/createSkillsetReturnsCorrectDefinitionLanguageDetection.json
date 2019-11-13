@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk1cc239083554.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdka6670062a96b.search.windows.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "13b1e8aa-e8bf-41d5-be7e-48918e7a479c",
+      "request-id" : "6a17c794-11be-4981-a389-49c8ab177cad",
       "StatusCode" : "201",
-      "Date" : "Mon, 11 Nov 2019 19:20:42 GMT",
+      "Date" : "Tue, 12 Nov 2019 00:20:05 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D766DC3E5D4C21\"",
-      "elapsed-time" : "105",
+      "ETag" : "W/\"0x8D76706113CC6AB\"",
+      "elapsed-time" : "65",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "534",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk1cc239083554.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D766DC3E5D4C21\\\"\",\"name\":\"testskillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.LanguageDetectionSkill\",\"name\":\"mylanguage\",\"description\":\"Tested Language Detection skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"languageCode\",\"targetName\":\"myLanguageCode\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "549",
+      "Body" : "{\"@odata.context\":\"https://azs-sdka6670062a96b.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D76706113CC6AB\\\"\",\"name\":\"language-detection-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.LanguageDetectionSkill\",\"name\":\"mylanguage\",\"description\":\"Tested Language Detection skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"languageCode\",\"targetName\":\"myLanguageCode\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk1cc239083554.search.windows.net/skillsets('testskillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdka6670062a96b.search.windows.net/skillsets('language-detection-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

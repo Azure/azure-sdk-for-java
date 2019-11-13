@@ -3,9 +3,12 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.models.EntityCategory;
 import com.azure.search.models.KeyPhraseExtractionSkillLanguage;
 import com.azure.search.models.OcrSkillLanguage;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SentimentSkillLanguage;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SplitSkillLanguage;
@@ -278,6 +281,46 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
                 Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
                     ((HttpResponseException) error).getResponse().getStatusCode());
             });
+    }
+
+    @Override
+    public void canCreateAndListSkillsets() {
+        Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
+        Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
+
+        client.createSkillset(skillset1).block();
+        client.createSkillset(skillset2).block();
+
+        PagedFlux<Skillset> listResponse = client.listSkillsets();
+
+        StepVerifier
+            .create(listResponse.collectList())
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.size());
+                Assert.assertEquals(skillset1.getName(), result.get(0).getName());
+                Assert.assertEquals(skillset2.getName(), result.get(1).getName());
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void canListSkillsetsWithSelectedField() {
+        Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
+        Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
+
+        client.createSkillset(skillset1).block();
+        client.createSkillset(skillset2).block();
+
+        PagedFlux<Skillset> listResponse = client.listSkillsets("name", new RequestOptions());
+
+        StepVerifier
+            .create(listResponse.collectList())
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.size());
+                Assert.assertEquals(skillset1.getName(), result.get(0).getName());
+                Assert.assertEquals(skillset2.getName(), result.get(1).getName());
+            })
+            .verifyComplete();
     }
 
     @Override

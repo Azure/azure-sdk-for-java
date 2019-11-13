@@ -27,7 +27,6 @@ import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.Skillset;
-import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.TokenInfo;
 import org.apache.commons.lang3.NotImplementedException;
@@ -1097,19 +1096,57 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return all Skillsets in the Search service.
-     * @throws NotImplementedException not implemented
+     * Lists all skillsets available for an Azure Cognitive Search service.
+     *
+     * @return a reactive response emitting the list of skillsets.
      */
-    public Mono<SkillsetListResult> listSkillsets() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedFlux<Skillset> listSkillsets() {
+        return this.listSkillsets(null, null);
     }
 
     /**
-     * @return a response containing all Skillsets in the Search service.
-     * @throws NotImplementedException not implemented
+     * Lists all skillsets available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the skillset definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return a reactive response emitting the list of skillsets.
      */
-    public Mono<Response<SkillsetListResult>> listSkillsetsWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public PagedFlux<Skillset> listSkillsets(String select, RequestOptions requestOptions) {
+        return new PagedFlux<>(
+            () -> this.listSkillsetsWithResponse(select, requestOptions),
+            nextLink -> Mono.empty());
+    }
+
+    /**
+     * Lists all skillsets available for an Azure Cognitive Search service.
+     *
+     * @param select selects which top-level properties of the skillset definitions to retrieve.
+     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     *               The default is all properties
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @return a response emitting the list of skillsets.
+     */
+    public Mono<PagedResponse<Skillset>> listSkillsetsWithResponse(String select, RequestOptions requestOptions) {
+        return withContext(context -> this.listSkillsetsWithResponse(select, requestOptions, context));
+    }
+
+    Mono<PagedResponse<Skillset>> listSkillsetsWithResponse(String select,
+                                                            RequestOptions requestOptions,
+                                                            Context context) {
+        return this.restClient.skillsets()
+            .listWithRestResponseAsync(select, requestOptions, context)
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue().getSkillsets(),
+                null,
+                deserializeHeaders(response.getHeaders()))
+            );
     }
 
     /**

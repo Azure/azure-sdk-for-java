@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk7a5959920804.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkdbc930157242.search.windows.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d6f3becc-5939-4311-8922-27f1a43bb63d",
+      "request-id" : "16fc458c-a32d-47ed-9f98-913b0d27c585",
       "StatusCode" : "201",
-      "Date" : "Mon, 11 Nov 2019 19:20:55 GMT",
+      "Date" : "Tue, 12 Nov 2019 00:20:25 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D766DC465AF8B4\"",
-      "elapsed-time" : "73",
+      "ETag" : "W/\"0x8D767061D93EDB7\"",
+      "elapsed-time" : "60",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "741",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk7a5959920804.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D766DC465AF8B4\\\"\",\"name\":\"testskillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.MergeSkill\",\"name\":\"mymerge\",\"description\":\"Tested Merged Text skill\",\"context\":\"/document\",\"insertPreTag\":null,\"insertPostTag\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"itemsToInsert\",\"source\":\"/document/textitems\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"offsets\",\"source\":\"/document/offsets\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"mergedText\",\"targetName\":\"myMergedText\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "743",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkdbc930157242.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D767061D93EDB7\\\"\",\"name\":\"merge-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.MergeSkill\",\"name\":\"mymerge\",\"description\":\"Tested Merged Text skill\",\"context\":\"/document\",\"insertPreTag\":null,\"insertPostTag\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"itemsToInsert\",\"source\":\"/document/textitems\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"offsets\",\"source\":\"/document/offsets\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"mergedText\",\"targetName\":\"myMergedText\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk7a5959920804.search.windows.net/skillsets('testskillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkdbc930157242.search.windows.net/skillsets('merge-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

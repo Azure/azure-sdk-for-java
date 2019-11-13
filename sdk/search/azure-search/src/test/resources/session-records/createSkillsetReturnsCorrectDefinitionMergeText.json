@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdke2f1375699f9.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk56380340909e.search.windows.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "5e2d1673-be05-43da-a138-55c00c0506d1",
+      "request-id" : "b73bca57-c065-4b10-8c65-1f4e25a99fe6",
       "StatusCode" : "201",
-      "Date" : "Mon, 11 Nov 2019 19:20:51 GMT",
+      "Date" : "Tue, 12 Nov 2019 00:20:15 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D766DC43A67E2E\"",
-      "elapsed-time" : "68",
+      "ETag" : "W/\"0x8D76706173CC1BD\"",
+      "elapsed-time" : "59",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "720",
-      "Body" : "{\"@odata.context\":\"https://azs-sdke2f1375699f9.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D766DC43A67E2E\\\"\",\"name\":\"testskillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.MergeSkill\",\"name\":\"mymerge\",\"description\":\"Tested Merged Text skill\",\"context\":\"/document\",\"insertPreTag\":\"__\",\"insertPostTag\":\"__e\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"itemsToInsert\",\"source\":\"/document/textitems\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"offsets\",\"source\":\"/document/offsets\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"mergedText\",\"targetName\":\"myMergedText\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "727",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk56380340909e.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D76706173CC1BD\\\"\",\"name\":\"merge-text-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.MergeSkill\",\"name\":\"mymerge\",\"description\":\"Tested Merged Text skill\",\"context\":\"/document\",\"insertPreTag\":\"__\",\"insertPostTag\":\"__e\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"itemsToInsert\",\"source\":\"/document/textitems\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"offsets\",\"source\":\"/document/offsets\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"mergedText\",\"targetName\":\"myMergedText\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdke2f1375699f9.search.windows.net/skillsets('testskillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk56380340909e.search.windows.net/skillsets('merge-text-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

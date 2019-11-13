@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdka21321521dc5.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdke0123501311a.search.windows.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "38bf13df-08ad-4855-8c27-19c5598315de",
+      "request-id" : "282270c3-52b1-48a2-83e4-37577cf6e17e",
       "StatusCode" : "201",
-      "Date" : "Mon, 11 Nov 2019 19:20:22 GMT",
+      "Date" : "Tue, 12 Nov 2019 00:19:35 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D766DC334A2EDF\"",
-      "elapsed-time" : "121",
+      "ETag" : "W/\"0x8D76705FF2DB77F\"",
+      "elapsed-time" : "62",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "646",
-      "Body" : "{\"@odata.context\":\"https://azs-sdka21321521dc5.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D766DC334A2EDF\\\"\",\"name\":\"testskillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.EntityRecognitionSkill\",\"name\":\"myentity\",\"description\":\"Tested Entity Recognition skill\",\"context\":\"/document\",\"categories\":[],\"defaultLanguageCode\":null,\"minimumPrecision\":null,\"includeTypelessEntities\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"entities\",\"targetName\":\"myEntities\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "661",
+      "Body" : "{\"@odata.context\":\"https://azs-sdke0123501311a.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D76705FF2DB77F\\\"\",\"name\":\"entity-recognition-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.EntityRecognitionSkill\",\"name\":\"myentity\",\"description\":\"Tested Entity Recognition skill\",\"context\":\"/document\",\"categories\":[],\"defaultLanguageCode\":null,\"minimumPrecision\":null,\"includeTypelessEntities\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"entities\",\"targetName\":\"myEntities\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdka21321521dc5.search.windows.net/skillsets('testskillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdke0123501311a.search.windows.net/skillsets('entity-recognition-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

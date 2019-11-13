@@ -39,6 +39,8 @@ import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAU
 
 public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
 
+    static final String CONTEXT_VALUE = "/document";
+
     @Test
     public abstract void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhrase();
 
@@ -97,6 +99,12 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     public abstract void getSkillsetThrowsOnNotFound();
 
     @Test
+    public abstract void canCreateAndListSkillsets();
+
+    @Test
+    public abstract void canListSkillsetsWithSelectedField();
+
+    @Test
     public abstract void deleteSkillsetIsIdempotent();
 
     @Test
@@ -111,8 +119,6 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
         actual.setETag("none");
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
-
-    static final String CONTEXT_VALUE = "/document";
 
     protected Skillset createTestSkillsetImageAnalysisKeyPhrase() {
         List<Skill> skills = new ArrayList<>();
@@ -157,7 +163,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setOutputs(outputs));
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("image-analysis-key-phrase-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
@@ -184,7 +190,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
                 .setOutputs(outputs));
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("language-detection-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
@@ -219,7 +225,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
                 .setOutputs(outputs));
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("merge-text-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
@@ -265,7 +271,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setOutputs(outputs));
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("ocr-shaper-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
@@ -297,7 +303,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
         );
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("cognitive-services-key-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills)
             .setCognitiveServices(new DefaultCognitiveServices());
@@ -349,7 +355,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
         );
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("ocr-entity-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
@@ -396,7 +402,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setOutputs(outputs));
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("ocr-sentiment-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
@@ -443,7 +449,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setOutputs(outputs));
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("ocr-key-phrase-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
@@ -491,7 +497,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setOutputs(outputs));
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("ocr-split-text-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills);
     }
@@ -522,7 +528,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
         );
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("ocr-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
@@ -552,7 +558,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
         );
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("image-analysis-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
@@ -580,7 +586,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
         );
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("key-phrase-extraction-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
@@ -614,7 +620,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
         );
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("merge-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
@@ -642,7 +648,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
         );
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("sentiment-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
@@ -670,7 +676,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
         );
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("entity-recognition-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }
@@ -699,7 +705,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
         );
 
         return new Skillset()
-            .setName("testskillset")
+            .setName("split-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
     }

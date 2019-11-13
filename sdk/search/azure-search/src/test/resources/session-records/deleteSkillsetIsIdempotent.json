@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk6d17200650c0.search.windows.net/skillsets('testskillset')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk2b5757929492.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "620fbbc5-1ff9-4f5d-94af-63a13f99a607",
+      "request-id" : "7e59b5ec-fb66-4890-b97a-ace79654521a",
       "StatusCode" : "404",
-      "Date" : "Mon, 11 Nov 2019 19:20:31 GMT",
+      "Date" : "Tue, 12 Nov 2019 00:22:44 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
       "elapsed-time" : "33",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "126",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'testskillset' was found in a service named 'azs-sdk6d17200650c0'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in a service named 'azs-sdk2b5757929492'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
@@ -23,62 +23,62 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk6d17200650c0.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk2b5757929492.search.windows.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "33e196b5-4e37-4f9a-96f7-2776f51a9ecb",
+      "request-id" : "4a927425-ce34-424a-881d-f3dc544e1cc6",
       "StatusCode" : "201",
-      "Date" : "Mon, 11 Nov 2019 19:20:31 GMT",
+      "Date" : "Tue, 12 Nov 2019 00:22:44 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D766DC38986AE2\"",
-      "elapsed-time" : "86",
+      "ETag" : "W/\"0x8D767067030C379\"",
+      "elapsed-time" : "44",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "697",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk6d17200650c0.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D766DC38986AE2\\\"\",\"name\":\"testskillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk2b5757929492.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D767067030C379\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk6d17200650c0.search.windows.net/skillsets('testskillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk2b5757929492.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk6d17200650c0.search.windows.net/skillsets('testskillset')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk2b5757929492.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "50",
+      "elapsed-time" : "36",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "6035439a-1ca1-4734-8d51-dbc405f97b03",
+      "request-id" : "1c46ef79-bc31-453d-a141-d60d6d1b6a24",
       "StatusCode" : "204",
-      "Date" : "Mon, 11 Nov 2019 19:20:31 GMT"
+      "Date" : "Tue, 12 Nov 2019 00:22:44 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk6d17200650c0.search.windows.net/skillsets('testskillset')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk2b5757929492.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "7b9b9244-3eb8-457f-b3e1-31ceddaa9033",
+      "request-id" : "0ddf610d-e36b-4300-b8c5-d613bd497a7d",
       "StatusCode" : "404",
-      "Date" : "Mon, 11 Nov 2019 19:20:31 GMT",
+      "Date" : "Tue, 12 Nov 2019 00:22:44 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "12",
+      "elapsed-time" : "11",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "126",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'testskillset' was found in a service named 'azs-sdk6d17200650c0'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in a service named 'azs-sdk2b5757929492'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

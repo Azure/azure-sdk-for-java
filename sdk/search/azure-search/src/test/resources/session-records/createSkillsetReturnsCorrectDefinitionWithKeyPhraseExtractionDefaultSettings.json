@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdkbd72142905a8.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk9d978808a7ad.search.windows.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "94db5909-f67d-4169-a408-6df8e7422e9b",
+      "request-id" : "23fa1c18-7f62-4068-bb83-acdb5cd678a2",
       "StatusCode" : "201",
-      "Date" : "Mon, 11 Nov 2019 19:20:27 GMT",
+      "Date" : "Tue, 12 Nov 2019 00:22:29 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D766DC35D10143\"",
-      "elapsed-time" : "66",
+      "ETag" : "W/\"0x8D7670667586E36\"",
+      "elapsed-time" : "67",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "602",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkbd72142905a8.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D766DC35D10143\\\"\",\"name\":\"testskillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"maxKeyPhraseCount\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/myText\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "620",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk9d978808a7ad.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7670667586E36\\\"\",\"name\":\"key-phrase-extraction-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"maxKeyPhraseCount\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/myText\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdkbd72142905a8.search.windows.net/skillsets('testskillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk9d978808a7ad.search.windows.net/skillsets('key-phrase-extraction-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],
