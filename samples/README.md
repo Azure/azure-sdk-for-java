@@ -7,7 +7,7 @@ The Azure SDK repository is organized in the following folder structure, with th
 
 `/samples` (this folder)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;`README.md` (this file)<br>
-`/sdk` (folder containing sources for all SDK packages)<br>
+`/sdk` (folder containing sources, samples, test for all SDK packages)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;`/<service>` (e.g. storage)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`/<package>` (e.g. azure-storage-blob)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**`README.md`** (package READMEs contain hello world samples)<br>
@@ -26,7 +26,7 @@ Sometimes we want to illustrate how several APIs or even packages work together 
 [https://docs.microsoft.com/samples/](https://docs.microsoft.com/samples/).
 
 ## How-To Guide List
-This section lists **main** how-to guides for the most commonly used APIs and most common scenarios, i.e. this section does not attempt to be a complete directory of guides contained in this repository. 
+This section lists how-to guides for the most commonly used APIs and most common scenarios, i.e. this section does not attempt to be a complete directory of guides contained in this repository. 
 
 #### General How-To Guides
 - [How to create **Netty Http Client**](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-http-netty#examples)
@@ -35,7 +35,7 @@ This section lists **main** how-to guides for the most commonly used APIs and mo
 - [How to use **Azure Core Tracing Opentelemetry**](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-tracing-opentelemetry#examples)
 - How to configure, access, and analyze **logging** information (TODO)
 
-#### Azure.Security.KeyVault
+#### Azure.Security.KeyVault.Keys
 - [How to **get, set,update and delete Keys Synchronously**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/HelloWorld.java)
 - [How to **get, set,update and delete Keys Asynchronously**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/HelloWorldAsync.java)
 - [How to **list, recover and purge deleted Keys Synchronously**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/ManagingDeletedKeys.java) 
@@ -43,7 +43,7 @@ This section lists **main** how-to guides for the most commonly used APIs and mo
 - [How to **backup and restore Keys Synchronously**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/BackupAndRestoreOperations.java)
 - [How to **backup and restore Keys Asynchronously**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/ManagingDeletedKeysAsync.java)
 
-#### Azure.Security.Secret
+#### Azure.Security.KeyVault.Secret
 - [How to **get, set,update and delete Secrets Synchronously**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/HelloWorld.java)
 - [How to **get, set,update and delete Secrets Asynchronously**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/HelloWorldAsync.java)
 - [How to **Managing Deleted Secrets Synchronously**](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java) 
