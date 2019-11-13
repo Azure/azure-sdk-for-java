@@ -34,7 +34,7 @@ The APIs documented in this section provide access to operations on search data,
 
 * You will need to provide `index name`and the `search service name` which is the URL of the Azure Search service you provisioned: `https://<yourService>.search.windows.net`.
 
-## This library is built using:
+## This library is built using
 
 * JDK / JRE 1.8
 * Microsoft Azure - adal4j 1.3.0
@@ -42,26 +42,36 @@ The APIs documented in this section provide access to operations on search data,
 
 ## Building the SDK
 
-1. Clone this repo 
+1. Clone this repo
 2. In [IntelliJ](https://www.jetbrains.com/idea/), import the project by opening the client pom - [pom.client.xml](../../../pom.client.xml) it will open all the SDKs, including the search one and will make sure all dependencies are met. For contributing to Search specifically, select `...\azure-sdk-for-java-pr\sdk\search\pom.service.xml`.
    * Check "Search for projects recursively" and "Import Maven projects automatically" checkboxes if they are not checked by default.
    * In JDK for importer, select 1.8. Make sure to have JDK 1.8 installed and included in project settings.
-   * For profiles, check "javadoc-doclet-compatibility". 
+   * For profiles, check "javadoc-doclet-compatibility".
    * For Maven projects to import, check com.azure:azure-search-service-parent:1.0.0.
-   * For project SDK, select Java SDK 1.8. 
+   * For project SDK, select Java SDK 1.8.
 3. Build module azure-search, and run the samples
+
 ## Samples
 
-* [A simple search index example](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchIndexClientExample.java).
-* [Handle a generic document search results](/sdk/search/azure-search/src/samples/java/com/azure/search/GenericDocumentSearchExample.java).
-* [Get a single generic document](/sdk/search/azure-search/src/samples/java/com/azure/search/GenericSingleDocumentGetExample.java).
-* [Using suggestions](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchSuggestionExample.java).
+* [Using autocomplete to expand a query from index contents](/sdk/search/azure-search/src/samples/java/com/azure/search/AutoCompleteExample.java)
+* [Creating a new index](/sdk/search/azure-search/src/samples/java/com/azure/search/CreateIndexExample.java)
+* [Creating, listind, and deleting data sources](/sdk/search/azure-search/src/samples/java/com/azure/search/DataSourceExample.java)
+* [Retrieving a document by key](/sdk/search/azure-search/src/samples/java/com/azure/search/GetSingleDocumentExample.java)
+* [How to handle HttpREsponseException errors](/sdk/search/azure-search/src/samples/java/com/azure/search/HttpResponseExceptionExample.java)
+* [Using IndexClient configuration options](/sdk/search/azure-search/src/samples/java/com/azure/search/IndexClientConfigurationExample.java)
+* [Uploading, merging, and deleting documents in indexes](/sdk/search/azure-search/src/samples/java/com/azure/search/IndexContentManagementExample.java)
+* [Search for documents of unknown type](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchForDynamicDocumentsExample.java)
+* [Using count, coverage, and facets](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchOptionsExample.java)
+* [Using suggestions](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchSuggestionExample.java)
+* [Searching for documents of known type](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchWithFullyTypedDocumentsExample.java)
+* [Creating a synonym map for an index](/sdk/search/azure-search/src/samples/java/com/azure/search/SynonymMapsCreateExample.java)
 
 ## How to provide feedback
 
 See our [Contribution Guidelines](./.github/CONTRIBUTING.md).
 
 ## How to get support
+
 See our [Support Guidelines](./.github/SUPPORT.md)
 
 ## Known issues
@@ -75,6 +85,7 @@ TBD
 Please see the [Test Framework documentation](/sdk/search/azure-search/src/test)
 
 ## Contributing
+
 If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 
 1. Fork it
@@ -84,7 +95,8 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 ## Run style check locally
-Style check runs as part of Continuous Integration (CI) pipeline. Running it locally allows you to verify the style rules in an isolated way and quickly iterate on them, rather than having to wait for a build agent to free up to run all the steps. 
+
+Style check runs as part of Continuous Integration (CI) pipeline. Running it locally allows you to verify the style rules in an isolated way and quickly iterate on them, rather than having to wait for a build agent to free up to run all the steps.
 Navigate to `..\azure-sdk-for-java-pr`, run:
 
 `mvn -f pom.client.xml -DskipTests -Dgpg.skip spotbugs:check checkstyle:checkstyle-aggregate --projects com.azure.search:azure-search-data,com.azure:azure-client-sdk-parent --also-make`
