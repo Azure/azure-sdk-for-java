@@ -268,7 +268,7 @@ public final class ConfigurationClientBuilder {
         Objects.requireNonNull(tokenCredential);
         this.tokenCredential = tokenCredential;
 
-        // Make sure only use AAD token
+        // Clear connection string based credential in favor of TokenCredential
         this.credential = null;
         return this;
     }
