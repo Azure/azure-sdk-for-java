@@ -93,6 +93,22 @@ public class TracerJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link Tracer#addLink(Context)}
+     */
+    public void addLink() {
+        // BEGIN: com.azure.core.util.tracing.addLink#context
+        // use the parent context containing the current tracing span to start a child span
+        Context parentContext = new Context(PARENT_SPAN_KEY, "<user-current-span>");
+        // use the returned span context information of the current tracing span to link
+        Context spanContext = tracer.start("test.method", parentContext, ProcessKind.MESSAGE);
+
+        // Adds a link between multiple span's using the span context information of the Span
+        // For each event processed, add a link with the created spanContext
+        tracer.addLink(spanContext);
+        // END: com.azure.core.util.tracing.addLink#context
+    }
+
+    /**
      * Code snippet for {@link Tracer#extractContext(String, Context)}
      */
     public void extractContext() {
@@ -134,6 +150,11 @@ public class TracerJavaDocCodeSnippets {
         @Override
         public Context setSpanName(String spanName, Context context) {
             return null;
+        }
+
+        @Override
+        public void addLink(Context context) {
+
         }
 
         @Override

@@ -171,6 +171,22 @@ public interface Tracer {
     Context setSpanName(String spanName, Context context);
 
     /**
+     * Provides a way to link multiple tracing spans.
+     * Used in batching operations to relate multiple requests under a single batch.
+     * @deprecated This method is no longer acceptable to to link multiple tracing spans with openTelemetry API.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Link multiple spans using their span context information</p>
+     * {@codesnippet com.azure.core.util.tracing.addLink#context}
+     *
+     * @param context Additional metadata that is passed through the call stack.
+     * @throws NullPointerException if {@code context} is {@code null}.
+     */
+    @Deprecated
+    void addLink(Context context);
+
+    /**
      * Extracts the span's context as {@link Context} from upstream.
      *
      * <p><strong>Code samples</strong></p>
