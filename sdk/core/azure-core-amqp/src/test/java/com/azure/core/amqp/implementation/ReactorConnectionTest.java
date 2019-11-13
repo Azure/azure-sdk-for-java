@@ -289,7 +289,7 @@ public class ReactorConnectionTest {
         RetryOptions retryOptions = new RetryOptions()
             .setMaxRetries(2)
             .setDelay(Duration.ofMillis(200))
-            .setRetryMode(RetryMode.FIXED)
+            .setMode(RetryMode.FIXED)
             .setTryTimeout(timeout);
         ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             CREDENTIAL_INFO.getEntityPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,

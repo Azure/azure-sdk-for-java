@@ -22,7 +22,7 @@ public class FixedRetryPolicyTest {
         .setDelay(minBackoff)
         .setMaxDelay(maxBackoff)
         .setMaxRetries(retryAttempts)
-        .setRetryMode(RetryMode.FIXED);
+        .setMode(RetryMode.FIXED);
 
     /**
      * Verifies that when the service is busy and we retry an exception multiple times, the retry duration gets longer.
@@ -82,7 +82,7 @@ public class FixedRetryPolicyTest {
             .setDelay(minBackoff)
             .setMaxDelay(maxBackoff)
             .setMaxRetries(retryAttempts)
-            .setRetryMode(RetryMode.FIXED);
+            .setMode(RetryMode.FIXED);
         final FixedRetryPolicy otherPolicy = new FixedRetryPolicy(otherOptions);
 
         // Assert
