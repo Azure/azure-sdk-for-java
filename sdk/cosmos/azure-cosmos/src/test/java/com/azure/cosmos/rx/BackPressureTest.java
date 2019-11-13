@@ -60,7 +60,7 @@ public class BackPressureTest extends TestSuiteBase {
         return collectionDefinition;
     }
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirectHttps")
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public BackPressureTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

@@ -643,7 +643,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             }
         }
     }
-    
+
     static protected void safeDeleteAllCollections(CosmosAsyncDatabase database) {
         if (database != null) {
             List<CosmosContainerProperties> collections = database.readAllContainers()
@@ -838,10 +838,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return simpleClientBuildersWithDirect(toArray(protocols));
     }
 
-    @DataProvider
-    public static Object[][] simpleClientBuildersWithDirectHttps() {
-        return simpleClientBuildersWithDirect(Protocol.HTTPS);
-    }
+    // TODO (DANOBLE) uncomment this DataProvider
+    //    @DataProvider
+    //    public static Object[][] simpleClientBuildersWithDirectHttps() {
+    //        return simpleClientBuildersWithDirect(Protocol.HTTPS);
+    //    }
 
     private static Object[][] simpleClientBuildersWithDirect(Protocol... protocols) {
         logger.info("Max test consistency to use is [{}]", accountConsistency);
@@ -852,10 +853,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         List<CosmosClientBuilder> cosmosConfigurations = new ArrayList<>();
 
         for (Protocol protocol : protocols) {
-            testConsistencies.forEach(consistencyLevel -> cosmosConfigurations.add(createDirectRxDocumentClient(consistencyLevel,
-                                                                                                    protocol,
-                                                                                                    isMultiMasterEnabled,
-                                                                                                    preferredLocations)));
+            testConsistencies.forEach(consistencyLevel -> cosmosConfigurations.add(createDirectRxDocumentClient(
+                consistencyLevel,
+                protocol,
+                isMultiMasterEnabled,
+                preferredLocations)));
         }
 
         cosmosConfigurations.forEach(c -> logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",

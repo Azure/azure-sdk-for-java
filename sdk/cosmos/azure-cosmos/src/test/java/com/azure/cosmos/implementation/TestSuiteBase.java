@@ -783,15 +783,16 @@ public class TestSuiteBase extends DocumentClientTest {
         return simpleClientBuildersWithDirect(toArray(protocols));
     }
 
-    @DataProvider
-    public static Object[][] simpleClientBuildersWithDirectHttps() {
-        return simpleClientBuildersWithDirect(Protocol.HTTPS);
-    }
+    // TODO (DANOBLE) uncomment this DataProvider
+    //    @DataProvider
+    //    public static Object[][] simpleClientBuildersWithDirectHttps() {
+    //        return simpleClientBuildersWithDirect(Protocol.HTTPS);
+    //    }
 
     private static Object[][] simpleClientBuildersWithDirect(Protocol... protocols) {
         logger.info("Max test consistency to use is [{}]", accountConsistency);
         List<ConsistencyLevel> testConsistencies = ImmutableList.of(ConsistencyLevel.EVENTUAL);
-        
+
         boolean isMultiMasterEnabled = preferredLocations != null && accountConsistency == ConsistencyLevel.SESSION;
 
         List<Builder> builders = new ArrayList<>();

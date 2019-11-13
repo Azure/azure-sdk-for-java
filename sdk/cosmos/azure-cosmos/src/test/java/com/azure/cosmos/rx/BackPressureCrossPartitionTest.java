@@ -89,7 +89,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         return collectionDefinition;
     }
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirectHttps")
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public BackPressureCrossPartitionTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
