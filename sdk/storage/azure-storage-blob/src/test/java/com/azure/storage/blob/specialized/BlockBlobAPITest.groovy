@@ -15,6 +15,7 @@ import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.BlobClientBuilder
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
@@ -385,7 +386,8 @@ class BlockBlobAPITest extends APISpec {
         bc.commitBlockList([])
 
         then:
-        thrown(BlobStorageException)
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
     }
 
     def "Commit block list overwrite"() {
@@ -648,7 +650,8 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         def outFile = file.getPath().toString() + "result"
-        def outChannel = AsynchronousFileChannel.open(Paths.get(outFile), StandardOpenOption.CREATE, StandardOpenOption.WRITE)
+        def outChannel = AsynchronousFileChannel.open(Paths.get(outFile), StandardOpenOption.CREATE,
+            StandardOpenOption.WRITE)
         FluxUtil.writeFile(blobac.download(), outChannel).block() == null
 
         compareFiles(file, new File(outFile), 0, fileSize)
@@ -682,6 +685,55 @@ class BlockBlobAPITest extends APISpec {
         metadata == bc.getProperties().getMetadata()
         bc.download(outStream)
         outStream.toByteArray() == new Scanner(file).useDelimiter("\\z").next().getBytes(StandardCharsets.UTF_8)
+    }
+
+    @Requires({ liveMode() })
+    def "Upload from file default no overwrite"() {
+        setup:
+        def file = getRandomFile(1 * 1024 * 1024)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        /*
+         Set up a large download in small chunks so it makes a lot of requests. This will give us time to cut in an
+         operation that will change the etag.
+         */
+        def etagConflict = false
+        def bac = new BlobClientBuilder().pipeline(bc.getHttpPipeline()).endpoint(bc.getBlobUrl()).buildAsyncClient()
+            .getBlockBlobAsyncClient()
+        bac.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(1024, null, null), null, null, false)
+            .subscribe({ etagConflict = false }, {
+            if (it instanceof BlobStorageException && ((BlobStorageException) it).getStatusCode() == 412) {
+                etagConflict = true
+                return
+            }
+            etagConflict = false
+            throw it
+        })
+
+        sleep(500) // Give some time for the download request to start.
+        bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
+
+        sleep(1000) // Allow time for the upload operation
+
+        then:
+        etagConflict
+        !outFile.exists() // We should delete the file we tried to create
+    }
+
+    @Requires({ liveMode() })
+    def "Upload from file no overwrite interrupted"() {
+
+    }
+
+    @Requires({ liveMode() })
+    def "Upload from file overwrite"() {
+
     }
 
     def "Upload min"() {
@@ -1312,6 +1364,55 @@ class BlockBlobAPITest extends APISpec {
         // A second subscription to a download stream will
         def e = thrown(BlobStorageException)
         e.getStatusCode() == 500
+    }
+
+    @Requires({ liveMode() })
+    def "Buffere upload default no overwrite"() {
+        setup:
+        def file = getRandomFile(1 * 1024 * 1024)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        /*
+         Set up a large download in small chunks so it makes a lot of requests. This will give us time to cut in an
+         operation that will change the etag.
+         */
+        def etagConflict = false
+        def bac = new BlobClientBuilder().pipeline(bc.getHttpPipeline()).endpoint(bc.getBlobUrl()).buildAsyncClient()
+            .getBlockBlobAsyncClient()
+        bac.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(1024, null, null), null, null, false)
+            .subscribe({ etagConflict = false }, {
+            if (it instanceof BlobStorageException && ((BlobStorageException) it).getStatusCode() == 412) {
+                etagConflict = true
+                return
+            }
+            etagConflict = false
+            throw it
+        })
+
+        sleep(500) // Give some time for the download request to start.
+        bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
+
+        sleep(1000) // Allow time for the upload operation
+
+        then:
+        etagConflict
+        !outFile.exists() // We should delete the file we tried to create
+    }
+
+    @Requires({ liveMode() })
+    def "Buffered upload no overwrite interrupted"() {
+
+    }
+
+    @Requires({ liveMode() })
+    def "Buffered upload overwrite"() {
+
     }
 
     def "Get Container Name"() {
