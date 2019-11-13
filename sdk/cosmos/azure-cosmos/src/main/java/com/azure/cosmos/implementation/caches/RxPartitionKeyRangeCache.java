@@ -80,8 +80,8 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
      * @see IPartitionKeyRangeCache#tryGetOverlappingRangesAsync(java.lang.STRING, com.azure.cosmos.internal.routing.RANGE, boolean)
      */
     @Override
-    public Mono<List<PartitionKeyRange>> tryGetOverlappingRangesAsync(String collectionRid, Range<String> range, boolean forceRefresh,
-                                                                      Map<String, Object> properties) {
+    public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(String collectionRid, Range<String> range, boolean forceRefresh,
+                                                                                         Map<String, Object> properties) {
 
         Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = tryLookupAsync(collectionRid, null, properties);
 
@@ -96,10 +96,10 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             if (routingMapValueHolder.v != null) {
                 // TODO: the routingMap.getOverlappingRanges(range) returns Collection
                 // maybe we should consider changing to ArrayList to avoid conversion
-                return new ArrayList<>(routingMapValueHolder.v.getOverlappingRanges(range));
+                return new Utils.ValueHolder<>(new ArrayList<>(routingMapValueHolder.v.getOverlappingRanges(range)));
             } else {
                 logger.debug("Routing Map Null for collection: {} for range: {}, forceRefresh:{}", collectionRid, range.toString(), forceRefresh);
-                return null;
+                return new Utils.ValueHolder<>(null);
             }
         });
     }
@@ -124,7 +124,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 return new Utils.ValueHolder<>(routingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId));
             } else {
                 logger.debug("Routing Map Null for collection: {}, PartitionKeyRangeId: {}, forceRefresh:{}", collectionResourceId, partitionKeyRangeId, forceRefresh);
-                return null;
+                return new Utils.ValueHolder<>(null);
             }
         });
     }

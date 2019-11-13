@@ -26,7 +26,7 @@ import java.util.function.Function;
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
- * 
+ *
  * This class is used as a proxy to wrap the
  * DefaultDocumentQueryExecutionContext which is needed for sending the query to
  * GATEWAY first and then uses PipelinedDocumentQueryExecutionContext after it
@@ -83,7 +83,7 @@ public class ProxyDocumentQueryExecutionContext<T extends Resource> implements I
                 logger.error("Unexpected failure", unwrappedException);
                 return Flux.error(unwrappedException);
             }
-            
+
             if (!isCrossPartitionQuery((Exception) unwrappedException)) {
                 // If this is not a cross partition query then propagate error
                 logger.debug("Failure from gateway", unwrappedException);
@@ -104,11 +104,11 @@ public class ProxyDocumentQueryExecutionContext<T extends Resource> implements I
             DefaultDocumentQueryExecutionContext<T> queryExecutionContext =
                     (DefaultDocumentQueryExecutionContext<T>) this.innerExecutionContext;
 
-            Mono<List<PartitionKeyRange>> partitionKeyRanges = queryExecutionContext.getTargetPartitionKeyRanges(collection.getResourceId(),
+            Mono<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRanges = queryExecutionContext.getTargetPartitionKeyRanges(collection.getResourceId(),
                     partitionedQueryExecutionInfo.getQueryRanges());
 
             Flux<IDocumentQueryExecutionContext<T>> exContext = partitionKeyRanges.flux()
-                    .flatMap(pkranges -> DocumentQueryExecutionContextFactory.createSpecializedDocumentQueryExecutionContextAsync(
+                    .flatMap(pkrangesValueHolder -> DocumentQueryExecutionContextFactory.createSpecializedDocumentQueryExecutionContextAsync(
                             this.client,
                             this.resourceTypeEnum,
                             this.resourceType,
@@ -117,7 +117,7 @@ public class ProxyDocumentQueryExecutionContext<T extends Resource> implements I
                             this.resourceLink,
                             isContinuationExpected,
                             partitionedQueryExecutionInfo,
-                            pkranges,
+                            pkrangesValueHolder.v,
                             this.collection.getResourceId(),
                             this.correlatedActivityId));
 
@@ -163,6 +163,6 @@ public class ProxyDocumentQueryExecutionContext<T extends Resource> implements I
                 resourceLink,
                 collection,
                 isContinuationExpected,
-                correlatedActivityId));        
+                correlatedActivityId));
     }
 }

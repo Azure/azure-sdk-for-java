@@ -161,9 +161,9 @@ class DocumentProducer<T extends Resource> {
                 .getPaginatedQueryResultAsObservable(
                         feedOptions.requestContinuation(),
                         sourcePartitionCreateRequestFunc,
-                        executeRequestFuncWithRetries, 
-                        resourceType, 
-                        top, 
+                        executeRequestFuncWithRetries,
+                        resourceType,
+                        top,
                         pageSize)
                 .map(rsp -> {
                     lastResponseContinuationToken = rsp.getContinuationToken();
@@ -186,7 +186,7 @@ class DocumentProducer<T extends Resource> {
 
             // we are dealing with Split
             logger.info("DocumentProducer handling a partition split in [{}], detail:[{}]", targetRange, dce);
-            Mono<List<PartitionKeyRange>> replacementRangesObs = getReplacementRanges(targetRange.toRange());
+            Mono<Utils.ValueHolder<List<PartitionKeyRange>>> replacementRangesObs = getReplacementRanges(targetRange.toRange());
 
             // Since new DocumentProducers are instantiated for the new replacement ranges, if for the new
             // replacement partitions split happens the corresponding DocumentProducer can recursively handle splits.
@@ -197,11 +197,11 @@ class DocumentProducer<T extends Resource> {
                             logger.info("Cross Partition Query Execution detected partition [{}] split into [{}] partitions,"
                                     + " last continuation token is [{}].",
                                     targetRange.toJson(),
-                                    partitionKeyRanges.stream()
+                                    partitionKeyRanges.v.stream()
                                             .map(JsonSerializable::toJson).collect(Collectors.joining(", ")),
                                     lastResponseContinuationToken);
                         }
-                        return Flux.fromIterable(createReplacingDocumentProducersOnSplit(partitionKeyRanges));
+                        return Flux.fromIterable(createReplacingDocumentProducersOnSplit(partitionKeyRanges.v));
                     });
 
             return produceOnSplit(replacementProducers);
@@ -220,7 +220,7 @@ class DocumentProducer<T extends Resource> {
         }
         return replacingDocumentProducers;
     }
-    
+
     protected DocumentProducer<T> createChildDocumentProducerOnSplit(
             PartitionKeyRange targetRange,
             String initialContinuationToken) {
@@ -241,7 +241,7 @@ class DocumentProducer<T extends Resource> {
                 top);
     }
 
-    private Mono<List<PartitionKeyRange>> getReplacementRanges(Range<String> range) {
+    private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range) {
         return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(collectionRid, range, true, feedOptions.properties());
     }
 

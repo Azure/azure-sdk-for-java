@@ -54,7 +54,7 @@ public class DocumentQueryExecutionContextFactory {
             UUID correlatedActivityId) {
 
         // return proxy
-        Flux<Utils.ValueHolder<DocumentCollection>> collectionObs = Flux.empty();
+        Flux<Utils.ValueHolder<DocumentCollection>> collectionObs = Flux.just(new Utils.ValueHolder<>(null));
 
         if (resourceTypeEnum.isCollectionChild()) {
             collectionObs = resolveCollection(client, query, resourceTypeEnum, resourceLink).flux();
