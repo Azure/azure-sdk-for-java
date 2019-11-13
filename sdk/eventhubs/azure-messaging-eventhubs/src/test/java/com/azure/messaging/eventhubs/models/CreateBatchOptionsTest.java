@@ -6,13 +6,13 @@ package com.azure.messaging.eventhubs.models;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class BatchOptionsTest {
+public class CreateBatchOptionsTest {
     /**
      * Verifies that the default values are correctly set when creating an instance.
      */
     @Test
     public void createDefault() {
-        BatchOptions options = new BatchOptions();
+        CreateBatchOptions options = new CreateBatchOptions();
         Assertions.assertNull(options.getPartitionKey());
         Assertions.assertNull(options.getPartitionId());
     }
@@ -23,7 +23,7 @@ public class BatchOptionsTest {
     @Test
     public void setMaximumSize() {
         int size = 1024;
-        BatchOptions options = new BatchOptions();
+        CreateBatchOptions options = new CreateBatchOptions();
 
         options.setMaximumSizeInBytes(size);
 
@@ -38,7 +38,7 @@ public class BatchOptionsTest {
     public void setPartitionId() {
         // Arrange
         String partitionId = "partition-id-9";
-        BatchOptions options = new BatchOptions();
+        CreateBatchOptions options = new CreateBatchOptions();
 
         // Act
         options.setPartitionId(partitionId);
@@ -57,13 +57,13 @@ public class BatchOptionsTest {
         String partitionId = "partition-id";
 
         int size = 800;
-        BatchOptions options = new BatchOptions()
+        CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionKey(partitionKey)
             .setMaximumSizeInBytes(size)
             .setPartitionId(partitionId);
 
         // Act
-        BatchOptions clone = options.clone();
+        CreateBatchOptions clone = options.clone();
 
         // Assert
         Assertions.assertNotSame(clone, options);
@@ -91,11 +91,11 @@ public class BatchOptionsTest {
         String partitionId = "new-id";
         int size = 24;
 
-        BatchOptions options = new BatchOptions()
+        CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionKey(originalPartitionKey)
             .setMaximumSizeInBytes(originalSize)
             .setPartitionId(originalPartitionId);
-        BatchOptions clone = options.clone();
+        CreateBatchOptions clone = options.clone();
 
         // Act
         clone.setPartitionKey(partitionKey)

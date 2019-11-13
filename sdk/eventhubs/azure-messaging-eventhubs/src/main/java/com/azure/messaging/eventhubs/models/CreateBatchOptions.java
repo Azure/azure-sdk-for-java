@@ -10,10 +10,10 @@ import com.azure.messaging.eventhubs.EventHubProducerClient;
 /**
  * The set of options that can be specified when creating an {@link EventDataBatch}.
  *
- * @see EventHubProducerClient#createBatch(BatchOptions)
- * @see EventHubProducerAsyncClient#createBatch(BatchOptions)
+ * @see EventHubProducerClient#createBatch(CreateBatchOptions)
+ * @see EventHubProducerAsyncClient#createBatch(CreateBatchOptions)
  */
-public class BatchOptions implements Cloneable {
+public class CreateBatchOptions implements Cloneable {
     private int maximumSizeInBytes;
     private String partitionKey;
     private String partitionId;
@@ -23,9 +23,9 @@ public class BatchOptions implements Cloneable {
      *
      * @param maximumSizeInBytes The maximum size to allow for the {@link EventDataBatch batch of events}.
      *
-     * @return The updated {@link BatchOptions} object.
+     * @return The updated {@link CreateBatchOptions} object.
      */
-    public BatchOptions setMaximumSizeInBytes(int maximumSizeInBytes) {
+    public CreateBatchOptions setMaximumSizeInBytes(int maximumSizeInBytes) {
         this.maximumSizeInBytes = maximumSizeInBytes;
         return this;
     }
@@ -45,9 +45,9 @@ public class BatchOptions implements Cloneable {
      *
      * @param partitionKey The partition hashing key to associate with the event or batch of events.
      *
-     * @return The updated {@link BatchOptions} object.
+     * @return The updated {@link CreateBatchOptions} object.
      */
-    public BatchOptions setPartitionKey(String partitionKey) {
+    public CreateBatchOptions setPartitionKey(String partitionKey) {
         this.partitionKey = partitionKey;
         return this;
     }
@@ -82,9 +82,9 @@ public class BatchOptions implements Cloneable {
      * @param partitionId The identifier of the Event Hub partition that the {@link EventDataBatch batch's} events
      *     will be sent to. {@code null} or an empty string if Event Hubs service is responsible for routing events.
      *
-     * @return The updated {@link BatchOptions} object.
+     * @return The updated {@link CreateBatchOptions} object.
      */
-    public BatchOptions setPartitionId(String partitionId) {
+    public CreateBatchOptions setPartitionId(String partitionId) {
         this.partitionId = partitionId;
         return this;
     }
@@ -95,12 +95,12 @@ public class BatchOptions implements Cloneable {
      * @return A shallow clone of this object.
      */
     @Override
-    public BatchOptions clone() {
-        BatchOptions clone;
+    public CreateBatchOptions clone() {
+        CreateBatchOptions clone;
         try {
-            clone = (BatchOptions) super.clone();
+            clone = (CreateBatchOptions) super.clone();
         } catch (CloneNotSupportedException e) {
-            clone = new BatchOptions();
+            clone = new CreateBatchOptions();
         }
 
         return clone.setPartitionKey(partitionKey)
