@@ -267,42 +267,34 @@ public class SearchServiceClient {
      * Creates a new Azure Search indexer or updates an indexer if it already exists.
      *
      * @param indexer The definition of the indexer to create or update.
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Indexer.
      */
     public Indexer createOrUpdateIndexer(Indexer indexer,
-                                         RequestOptions requestOptions,
-                                         AccessCondition accessCondition) {
-        return asyncClient.createOrUpdateIndexer(
-            indexer,
-            requestOptions,
-            accessCondition).block();
+                                         AccessCondition accessCondition,
+                                         RequestOptions requestOptions) {
+        return asyncClient.createOrUpdateIndexer(indexer, accessCondition, requestOptions).block();
     }
 
     /**
      * Creates a new Azure Search indexer or updates an indexer if it already exists.
      *
      * @param indexer The definition of the indexer to create or update.
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
      * @param context Context
      * @return A response object containing the Indexer.
      */
     public Response<Indexer> createOrUpdateIndexerWithResponse(Indexer indexer,
-                                                               RequestOptions requestOptions,
                                                                AccessCondition accessCondition,
+                                                               RequestOptions requestOptions,
                                                                Context context) {
-        return asyncClient.createOrUpdateIndexerWithResponse(
-            indexer,
-            requestOptions,
-            accessCondition,
-            context)
-            .block();
+        return asyncClient.createOrUpdateIndexerWithResponse(indexer, accessCondition, requestOptions, context).block();
     }
 
     /**
@@ -319,11 +311,10 @@ public class SearchServiceClient {
      * Specified as a comma-separated list of JSON property names, or '*' for all properties.
      * The default is all properties.
      * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
      * @return all Indexers from the Search service.
      */
-    public PagedIterable<Indexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listIndexers(select, requestOptions, context));
+    public PagedIterable<Indexer> listIndexers(String select, RequestOptions requestOptions) {
+        return new PagedIterable<>(asyncClient.listIndexers(select, requestOptions));
     }
 
     /**
@@ -407,7 +398,7 @@ public class SearchServiceClient {
      * @return the Indexer execution information.
      * @throws NotImplementedException not implemented
      */
-    public IndexerExecutionInfo deleteIndexerStatus() {
+    public IndexerExecutionInfo getIndexerStatus() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -415,7 +406,7 @@ public class SearchServiceClient {
      * @return a response containing the Indexer execution information.
      * @throws NotImplementedException not implemented
      */
-    public Response<IndexerExecutionInfo> deleteIndexerStatusWithResponse() {
+    public Response<IndexerExecutionInfo> getIndexerStatusWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 

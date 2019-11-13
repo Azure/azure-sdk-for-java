@@ -359,63 +359,43 @@ public class SearchServiceAsyncClient {
      * Creates a new Azure Search indexer or updates an indexer if it already exists.
      *
      * @param indexer The definition of the indexer to create or update.
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Indexer.
      */
     public Mono<Indexer> createOrUpdateIndexer(Indexer indexer,
-                                               RequestOptions requestOptions,
-                                               AccessCondition accessCondition) {
-        return createOrUpdateIndexerWithResponse(
-            indexer,
-            requestOptions,
-            accessCondition)
+                                               AccessCondition accessCondition,
+                                               RequestOptions requestOptions) {
+        return this.createOrUpdateIndexerWithResponse(indexer, accessCondition, requestOptions)
             .map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Search indexer or updates an indexer if it already exists.
      *
-     * @param indexer The definition of the indexer to create or update.
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
+     * @param indexer the definition of the indexer to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
+     * @param requestOptions additional parameters for the operation
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Indexer.
      */
     public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer,
-                                                                     RequestOptions requestOptions,
-                                                                     AccessCondition accessCondition) {
-        return withContext(context -> createOrUpdateIndexerWithResponse(
-            indexer,
-            requestOptions,
-            accessCondition,
-            context));
+                                                                     AccessCondition accessCondition,
+                                                                     RequestOptions requestOptions) {
+        return withContext(context -> this.createOrUpdateIndexerWithResponse(indexer,
+            accessCondition, requestOptions, context));
     }
 
-    /**
-     * Creates a new Azure Search indexer or updates an indexer if it already exists.
-     *
-     * @param indexer The definition of the indexer to create or update.
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param context Context
-     * @return A response object containing the Indexer.
-     */
     Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer,
-                                                              RequestOptions requestOptions,
                                                               AccessCondition accessCondition,
+                                                              RequestOptions requestOptions,
                                                               Context context) {
-        return restClient.indexers().createOrUpdateWithRestResponseAsync(
-            indexer.getName(),
-            indexer,
-            requestOptions,
-            accessCondition,
-            context)
+        return restClient
+            .indexers()
+            .createOrUpdateWithRestResponseAsync(indexer.getName(), indexer, requestOptions, accessCondition, context)
             .map(Function.identity());
     }
 
@@ -442,7 +422,7 @@ public class SearchServiceAsyncClient {
      */
     public PagedFlux<Indexer> listIndexers() {
         return new PagedFlux<>(
-            () -> listIndexersWithResponse(null, null),
+            () -> this.listIndexersWithResponse(null, null),
             nextLink -> Mono.empty());
     }
 
@@ -457,23 +437,7 @@ public class SearchServiceAsyncClient {
      */
     public PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> listIndexersWithResponse(select, requestOptions),
-            nextLink -> Mono.empty());
-    }
-
-    /**
-     * Lists all indexers available for an Azure Search service.
-     *
-     * @param select Selects which top-level properties of the indexers to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @return a response containing all Indexers from the Search service.
-     */
-    PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
-        return new PagedFlux<>(
-            () -> listIndexersWithResponse(select, requestOptions, context),
+            () -> this.listIndexersWithResponse(select, requestOptions),
             nextLink -> Mono.empty());
     }
 
@@ -487,19 +451,9 @@ public class SearchServiceAsyncClient {
      * @return a response containing all Indexers from the Search service.
      */
     public Mono<PagedResponse<Indexer>> listIndexersWithResponse(String select, RequestOptions requestOptions) {
-        return withContext(context -> listIndexersWithResponse(select, requestOptions, context));
+        return withContext(context -> this.listIndexersWithResponse(select, requestOptions, context));
     }
 
-    /**
-     * Lists all indexers available for an Azure Search service.
-     *
-     * @param select Selects which top-level properties of the indexers to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @return a response containing all Indexers from the Search service.
-     */
     Mono<PagedResponse<Indexer>> listIndexersWithResponse(String select,
                                                           RequestOptions requestOptions,
                                                           Context context) {
@@ -568,7 +522,7 @@ public class SearchServiceAsyncClient {
      * @return the Indexer execution information.
      * @throws NotImplementedException not implemented
      */
-    public Mono<IndexerExecutionInfo> deleteIndexerStatus() {
+    public Mono<IndexerExecutionInfo> getIndexerStatus() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -576,7 +530,7 @@ public class SearchServiceAsyncClient {
      * @return a response containing the Indexer execution information.
      * @throws NotImplementedException not implemented
      */
-    public Mono<Response<IndexerExecutionInfo>> deleteIndexerStatusWithResponse() {
+    public Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
