@@ -26,12 +26,6 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
     private volatile Subscription subscription;
 
     /**
-     * Creates an instance with an initial receive work item.
-     */
-    public SynchronousEventSubscriber() {
-    }
-
-    /**
      * Adds a new receive work item to the queue.
      *
      * @param work Synchronous receive work to add to the queue.
@@ -81,7 +75,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
     protected void hookOnNext(PartitionEvent value) {
         SynchronousReceiveWork currentItem = getOrUpdateNextWork();
         if (currentItem == null) {
-            logger.warning("EventData received when there is no pending work. Skipping.");
+            logger.warning("PartitionEvent received when there is no pending work. Skipping.");
             return;
         }
 
