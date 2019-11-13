@@ -46,7 +46,8 @@ public class RetryPolicyOptions {
      * @param retryStrategy The {@link RetryStrategy} used for retries. It will default to {@link ExponentialBackoff}
      * if provided value is {@code null}.
      * @param retryAfterHeader The HTTP header, such as 'Retry-After' or 'x-ms-retry-after-ms', to lookup for the
-     * retry delay.The value {@code null} is valid.
+     * retry delay. If the value is {@code null}, {@link RetryPolicy} will use the retry strategy to compute the delay
+     * and ignore the delay provided in response header.
      * @param retryAfterTimeUnit The time unit to use when applying the retry delay. {@code null} is valid if, and only
      * if, {@code retryAfterHeader} is {@code null}.
      * @throws NullPointerException When {@code retryAfterTimeUnit} is {@code null} and {@code retryAfterHeader} is
