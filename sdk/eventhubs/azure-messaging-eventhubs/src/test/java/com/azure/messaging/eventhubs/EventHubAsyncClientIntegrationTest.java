@@ -160,7 +160,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
      * Sending with credentials.
      */
     @Test
-    public void sendWithCredentials() {
+    public void getPropertiesWithCredentials() {
         // Arrange
         final EventHubAsyncClient client = createBuilder(true)
             .buildAsyncClient();
