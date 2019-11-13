@@ -88,7 +88,7 @@ For more extensive documentation on Azure Key Vault, see the [API reference docu
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[[KEYS_SDK_README]: ../../README.md
+[KEYS_SDK_README]: ../../README.md
 [SDK_README_CONTRIBUTING]: ../../README.md#contributing
 [SDK_README_GETTING_STARTED]: ../../README.md#getting-started
 [SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
