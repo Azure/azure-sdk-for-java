@@ -17,7 +17,6 @@ import com.azure.cosmos.SqlParameterList;
 import com.azure.cosmos.SqlQuerySpec;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.GroupedFlux;

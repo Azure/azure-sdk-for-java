@@ -98,7 +98,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers));
         httpRequest.withBody(request.getContent());
         String body = httpClient.send(httpRequest).block().bodyAsString().block();
-        assertThat(body).contains("\"getId\":\"" + NON_PARTITIONED_CONTAINER_ID + "\"");
+        assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_ID + "\"");
 
         // CREATE a document in the non partitioned collection using the rest API and older getVersion
         resourceId = Paths.DATABASES_PATH_SEGMENT + "/" + createdDatabase.getId() + "/" + Paths.COLLECTIONS_PATH_SEGMENT + "/" + collection.getId();
