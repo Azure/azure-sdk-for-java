@@ -270,8 +270,8 @@ public class ClientLogger {
      * @return Flag indicating if the environment and logger are configured to support logging at the given log level.
      */
     private boolean canLogAtLevel(int logLevel, int environmentLoggingLevel) {
-        // Attempting to log at a level not supported by the environment or logger is null.
-        if (logLevel < environmentLoggingLevel || logger == null) {
+        // Attempting to log at a level not supported by the environment.
+        if (logLevel < environmentLoggingLevel) {
             return false;
         }
 
