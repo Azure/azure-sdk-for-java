@@ -81,14 +81,15 @@ public final class BlobServiceClientBuilder {
 
     /**
      * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
+     * @throws IllegalArgumentException If no credentials are provided.
      */
     public BlobServiceAsyncClient buildAsyncClient() {
         BuilderHelper.validateCpk(customerProvidedKey, endpoint);
 
-        if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential) &&
-            Objects.isNull(sasTokenCredential)) {
-            throw new IllegalArgumentException("Blob Service Client cannot be accessed anonymously. Please provide" +
-                "a form of authentication");
+        if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)
+            && Objects.isNull(sasTokenCredential)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Blob Service Client cannot be accessed "
+                + "anonymously. Please provide a form of authentication"));
         }
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
