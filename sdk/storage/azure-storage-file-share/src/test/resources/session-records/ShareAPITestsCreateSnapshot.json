@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshot700259a2123e5ee974d?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "058debaa-ebc7-4d8a-a7ed-48f07b13363a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE397D3926",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:24 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5e12-401a-00df-13c7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:07:23 GMT",
+      "x-ms-client-request-id" : "058debaa-ebc7-4d8a-a7ed-48f07b13363a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshot700259a2123e5ee974d?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "60a6f34a-8189-4fde-a2c7-1b3375d98ab3"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-11-13T02:07:24.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE397D3926",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:24 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5e14-401a-00df-14c7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:07:23 GMT",
+      "x-ms-client-request-id" : "60a6f34a-8189-4fde-a2c7-1b3375d98ab3"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestscreatesnapshot700259a2123e5ee974d", "shareapitestscreatesnapshot28639273e03a406bf4c" ]
+}

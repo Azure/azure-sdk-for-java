@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsgetpropertieserror86365bffc1e6384?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "7b467141-2a72-43e0-876a-3ccb87a058d5"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE10D8C7F4",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:15 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "983acef5-101a-00a1-27c6-99feed000000",
+      "Date" : "Wed, 13 Nov 2019 02:06:15 GMT",
+      "x-ms-client-request-id" : "7b467141-2a72-43e0-876a-3ccb87a058d5"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsgetpropertieserror86365bffc1e6384/directoryapitestsgetpropertieserror9717996dce67d93?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "9f9cbf9c-3c61-4f4f-8ff3-c5ab56a3fd79"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "983acef7-101a-00a1-28c6-99feed000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:983acef7-101a-00a1-28c6-99feed000000\nTime:2019-11-13T02:06:15.9848152Z</Message></Error>",
+      "Date" : "Wed, 13 Nov 2019 02:06:15 GMT",
+      "x-ms-client-request-id" : "9f9cbf9c-3c61-4f4f-8ff3-c5ab56a3fd79",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestsgetpropertieserror86365bffc1e6384", "directoryapitestsgetpropertieserror9717996dce67d93" ]
+}

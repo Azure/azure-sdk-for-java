@@ -4,6 +4,7 @@
 package com.azure.storage.file.share
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
@@ -32,6 +33,7 @@ class ShareAPITests extends APISpec {
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
     }
 
+    @DoNotRecord
     def "Get share URL"() {
         given:
         def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
@@ -60,6 +62,7 @@ class ShareAPITests extends APISpec {
         expectURL == shareURL
     }
 
+    @DoNotRecord
     def "Get root directory client"() {
         given:
         def directoryClient = primaryShareClient.getRootDirectoryClient()
@@ -68,6 +71,7 @@ class ShareAPITests extends APISpec {
         directoryClient instanceof ShareDirectoryClient
     }
 
+    @DoNotRecord
     def "Get file client does not create a file"() {
         given:
         def fileClient = primaryShareClient.getFileClient("testFile")
@@ -474,6 +478,7 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.INVALID_HEADER_VALUE)
     }
 
+    @DoNotRecord
     def "Get snapshot id"() {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
@@ -486,6 +491,7 @@ class ShareAPITests extends APISpec {
         snapshot == shareSnapshotClient.getSnapshotId()
     }
 
+    @DoNotRecord
     def "Get Share Name"() {
         expect:
         shareName == primaryShareClient.getShareName()

@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatepermission587294cf570a4d2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "7481534c-dbf9-48b3-ac83-6f5d31605e51"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE40120688",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:35 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5f94-401a-00df-36c7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:07:34 GMT",
+      "x-ms-client-request-id" : "7481534c-dbf9-48b3-ac83-6f5d31605e51"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatepermission587294cf570a4d2?restype=share&comp=filepermission",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "efb109be-50bc-4fa3-a82c-cbdc3317e979",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "1226745640258142193*13168958551941065216",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5f96-401a-00df-37c7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:07:34 GMT",
+      "x-ms-client-request-id" : "efb109be-50bc-4fa3-a82c-cbdc3317e979"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareasyncapitestscreatepermission587294cf570a4d2" ]
+}

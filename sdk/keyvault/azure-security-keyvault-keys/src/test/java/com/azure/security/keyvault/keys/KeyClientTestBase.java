@@ -7,7 +7,6 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.DoNotRecord;
@@ -31,7 +30,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class KeyClientTestBase extends TestBase {
@@ -277,31 +275,6 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to verify that the Response matches what was expected. This method assumes a response status of
-     * 200.
-     *
-     * @param expected Key expected to be returned by the service
-     * @param response Response returned by the service, the body should contain a Key
-     */
-    static void assertKeyEquals(CreateKeyOptions expected, Response<KeyVaultKey> response) {
-        assertKeyEquals(expected, response, 200);
-    }
-
-    /**
-     * Helper method to verify that the RestResponse matches what was expected.
-     *
-     * @param expected ConfigurationSetting expected to be returned by the service
-     * @param response RestResponse returned from the service, the body should contain a ConfigurationSetting
-     * @param expectedStatusCode Expected HTTP status code returned by the service
-     */
-    static void assertKeyEquals(CreateKeyOptions expected, Response<KeyVaultKey> response, final int expectedStatusCode) {
-        assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
-
-        assertKeyEquals(expected, response.getValue());
-    }
-
-    /**
      * Helper method to verify that the returned ConfigurationSetting matches what was expected.
      *
      * @param expected ConfigurationSetting expected to be returned by the service
@@ -322,10 +295,6 @@ public abstract class KeyClientTestBase extends TestBase {
         return endpoint;
     }
 
-    static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
-        assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
-    }
-
     static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         try {
             exceptionThrower.run();
@@ -333,16 +302,6 @@ public abstract class KeyClientTestBase extends TestBase {
         } catch (Throwable ex) {
             assertRestException(ex, expectedExceptionType, expectedStatusCode);
         }
-    }
-
-    /**
-     * Helper method to verify the error was a HttpRequestException and it has a specific HTTP response code.
-     *
-     * @param exception Expected error thrown during the test
-     * @param expectedStatusCode Expected HTTP status code contained in the error response
-     */
-    static void assertRestException(Throwable exception, int expectedStatusCode) {
-        assertRestException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
@@ -361,25 +320,6 @@ public abstract class KeyClientTestBase extends TestBase {
             fail();
         } catch (Exception ex) {
             assertEquals(exception, ex.getClass());
-        }
-    }
-
-    public void sleepInRecordMode(long millis) {
-        if (interceptorManager.isPlaybackMode()) {
-            return;
-        }
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }

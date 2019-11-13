@@ -146,16 +146,16 @@ public abstract class TestBase implements BeforeEachCallback {
     /**
      * Sleeps the test for the given amount of milliseconds if {@link TestMode} isn't {@link TestMode#PLAYBACK}.
      *
-     * @param milliseconds Number of milliseconds to sleep the test.
+     * @param millis Number of milliseconds to sleep the test.
      * @throws IllegalStateException If the sleep is interrupted.
      */
-    protected void sleepIfRunningAgainstService(long milliseconds) {
+    protected void sleepIfRunningAgainstService(long millis) {
         if (testMode == TestMode.PLAYBACK) {
             return;
         }
 
         try {
-            Thread.sleep(milliseconds);
+            Thread.sleep(millis);
         } catch (InterruptedException ex) {
             throw logger.logExceptionAsWarning(new IllegalStateException(ex));
         }

@@ -135,7 +135,7 @@ public class SecretClientTest extends SecretClientTestBase {
 
             PollResponse<DeletedSecret> pollResponse = poller.poll();
             while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
                 pollResponse = poller.poll();
             }
 
@@ -164,7 +164,7 @@ public class SecretClientTest extends SecretClientTestBase {
             SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretToDeleteAndGet.getName());
             PollResponse<DeletedSecret> pollResponse = poller.poll();
             while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
                 pollResponse = poller.poll();
             }
             DeletedSecret deletedSecret = client.getDeletedSecret(secretToDeleteAndGet.getName());
@@ -174,7 +174,7 @@ public class SecretClientTest extends SecretClientTestBase {
             assertEquals(secretToDeleteAndGet.getName(), deletedSecret.getName());
             client.purgeDeletedSecret(secretToDeleteAndGet.getName());
             pollOnSecretPurge(secretToDeleteAndGet.getName());
-            sleepInRecordMode(10000);
+            sleepIfRunningAgainstService(10000);
         });
     }
 
@@ -197,13 +197,13 @@ public class SecretClientTest extends SecretClientTestBase {
             SyncPoller<DeletedSecret, Void> delPoller = client.beginDeleteSecret(secretToDeleteAndRecover.getName());
             PollResponse<DeletedSecret> pollResponse = delPoller.poll();
             while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
                 pollResponse = delPoller.poll();
             }
             SyncPoller<KeyVaultSecret, Void> poller = client.beginRecoverDeletedSecret(secretToDeleteAndRecover.getName());
             PollResponse<KeyVaultSecret> response = poller.poll();
             while (!response.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
                 response = poller.poll();
             }
             KeyVaultSecret recoveredSecret = response.getValue();
@@ -255,12 +255,12 @@ public class SecretClientTest extends SecretClientTestBase {
             SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretToBackupAndRestore.getName());
             PollResponse<DeletedSecret> pollResponse = poller.poll();
             while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
                 pollResponse = poller.poll();
             }
             client.purgeDeletedSecret(secretToBackupAndRestore.getName());
             pollOnSecretPurge(secretToBackupAndRestore.getName());
-            sleepInRecordMode(60000);
+            sleepIfRunningAgainstService(60000);
             KeyVaultSecret restoredSecret = client.restoreSecretBackup(backupBytes);
             assertEquals(secretToBackupAndRestore.getName(), restoredSecret.getName());
             assertEquals(secretToBackupAndRestore.getProperties().getExpiresOn(), restoredSecret.getProperties().getExpiresOn());
@@ -313,12 +313,12 @@ public class SecretClientTest extends SecretClientTestBase {
                 SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret(secret.getName());
                 PollResponse<DeletedSecret> pollResponse = poller.poll();
                 while (!pollResponse.getStatus().isComplete()) {
-                    sleepInRecordMode(1000);
+                    sleepIfRunningAgainstService(1000);
                     pollResponse = poller.poll();
                 }
             }
 
-            sleepInRecordMode(60000);
+            sleepIfRunningAgainstService(60000);
             Iterable<DeletedSecret> deletedSecrets = client.listDeletedSecrets();
             for (DeletedSecret actualSecret : deletedSecrets) {
                 if (secrets.containsKey(actualSecret.getName())) {
@@ -334,7 +334,7 @@ public class SecretClientTest extends SecretClientTestBase {
                 client.purgeDeletedSecret(deletedSecret.getName());
                 pollOnSecretPurge(deletedSecret.getName());
             }
-            sleepInRecordMode(10000);
+            sleepIfRunningAgainstService(10000);
         });
     }
 
@@ -359,7 +359,7 @@ public class SecretClientTest extends SecretClientTestBase {
             SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretName);
             PollResponse<DeletedSecret> pollResponse = poller.poll();
             while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
                 pollResponse = poller.poll();
             }
 
@@ -378,7 +378,7 @@ public class SecretClientTest extends SecretClientTestBase {
             } catch (ResourceNotFoundException ignored) {
             }
             if (deletedSecret == null) {
-                sleepInRecordMode(2000);
+                sleepIfRunningAgainstService(2000);
                 pendingPollCount += 1;
             } else {
                 return;
@@ -396,7 +396,7 @@ public class SecretClientTest extends SecretClientTestBase {
             } catch (ResourceNotFoundException ignored) {
             }
             if (deletedSecret != null) {
-                sleepInRecordMode(2000);
+                sleepIfRunningAgainstService(2000);
                 pendingPollCount += 1;
             } else {
                 return;

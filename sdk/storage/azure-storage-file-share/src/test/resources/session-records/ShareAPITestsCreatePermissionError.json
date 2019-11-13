@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatepermissionerror4775819d8270c21?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "7fcdc187-0c11-4f65-a701-100a8cd6f070"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE3C8FCCE2",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:29 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5eba-401a-00df-14c7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:07:28 GMT",
+      "x-ms-client-request-id" : "7fcdc187-0c11-4f65-a701-100a8cd6f070"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatepermissionerror4775819d8270c21?restype=share&comp=filepermission",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "c6f8d06c-4a4a-4dab-946d-ad795eb65378",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "FileInvalidPermission",
+      "retry-after" : "0",
+      "Content-Length" : "233",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "f77c5ebc-401a-00df-15c7-996122000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>FileInvalidPermission</Code><Message>The specified file permission is not valid.\nRequestId:f77c5ebc-401a-00df-15c7-996122000000\nTime:2019-11-13T02:07:29.3042577Z</Message></Error>",
+      "Date" : "Wed, 13 Nov 2019 02:07:28 GMT",
+      "x-ms-client-request-id" : "c6f8d06c-4a4a-4dab-946d-ad795eb65378",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestscreatepermissionerror4775819d8270c21" ]
+}

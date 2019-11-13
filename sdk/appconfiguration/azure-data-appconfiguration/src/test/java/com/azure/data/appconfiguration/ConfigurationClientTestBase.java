@@ -66,9 +66,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             .connectionString(connectionString)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if (testMode == TestMode.PLAYBACK) {
+        if (testMode == TestMode.PLAYBACK && !testRunVerifier.doNotRecordTest()) {
             clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (testMode == TestMode.RECORD) {
+        } else if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                 .addPolicy(interceptorManager.getRecordPolicy());
         }

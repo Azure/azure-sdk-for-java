@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshotmetadata6524843a1d4e?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "06781037-07ca-498c-9731-de78eef0b27c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE3D764667",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:30 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5ef1-401a-00df-3cc7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:07:30 GMT",
+      "x-ms-client-request-id" : "06781037-07ca-498c-9731-de78eef0b27c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshotmetadata6524843a1d4e?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "63e3845e-3a86-489b-9780-a4c8b6d7bae5"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-11-13T02:07:30.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE3CFF9D00",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:30 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5ef3-401a-00df-3dc7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:07:30 GMT",
+      "x-ms-client-request-id" : "63e3845e-3a86-489b-9780-a4c8b6d7bae5"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareasyncapitestscreatesnapshotmetadata6524843a1d4e", "shareasyncapitestscreatesnapshotmetadata003691281e49" ]
+}

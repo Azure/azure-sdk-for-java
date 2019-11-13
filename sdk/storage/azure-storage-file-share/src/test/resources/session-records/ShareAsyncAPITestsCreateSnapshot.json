@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshot54460634a2868b6f?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "f248264f-456e-4bc3-9182-69aeae434f98"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE3D51C58E",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:30 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5ee4-401a-00df-36c7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:07:29 GMT",
+      "x-ms-client-request-id" : "f248264f-456e-4bc3-9182-69aeae434f98"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesnapshot54460634a2868b6f?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "865d35ed-d0eb-496e-9f24-d3a6c18fa269"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-11-13T02:07:30.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE3D51C58E",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:30 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5ee6-401a-00df-37c7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:07:29 GMT",
+      "x-ms-client-request-id" : "865d35ed-d0eb-496e-9f24-d3a6c18fa269"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareasyncapitestscreatesnapshot54460634a2868b6f", "shareasyncapitestscreatesnapshot6049663281915c76" ]
+}

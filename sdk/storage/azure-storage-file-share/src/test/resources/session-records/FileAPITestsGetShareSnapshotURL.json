@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsgetsharesnapshoturl79236b5df12d3bc9d?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "62998ac8-1eb1-443c-aa03-4b6eafdc50ab"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE1EE29F9D",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:39 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "983ad199-101a-00a1-4ec6-99feed000000",
+      "Date" : "Wed, 13 Nov 2019 02:06:39 GMT",
+      "x-ms-client-request-id" : "62998ac8-1eb1-443c-aa03-4b6eafdc50ab"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsgetsharesnapshoturl79236b5df12d3bc9d?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "20cdd412-3163-4cfe-845c-08df8e6f137c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-11-13T02:06:39.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE1EE29F9D",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:39 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "983ad19b-101a-00a1-4fc6-99feed000000",
+      "Date" : "Wed, 13 Nov 2019 02:06:39 GMT",
+      "x-ms-client-request-id" : "20cdd412-3163-4cfe-845c-08df8e6f137c"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileapitestsgetsharesnapshoturl79236b5df12d3bc9d", "fileapitestsgetsharesnapshoturl60316700a82050f38" ]
+}

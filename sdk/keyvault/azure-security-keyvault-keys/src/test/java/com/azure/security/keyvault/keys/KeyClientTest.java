@@ -143,7 +143,7 @@ public class KeyClientTest extends KeyClientTestBase {
 
             // Key is being deleted on server.
             while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(2000);
+                sleepIfRunningAgainstService(2000);
                 pollResponse = deletedKeyPoller.poll();
             }
 
@@ -180,7 +180,7 @@ public class KeyClientTest extends KeyClientTestBase {
             SyncPoller<DeletedKey, Void> poller = client.beginDeleteKey(keyToDeleteAndRecover.getName());
             PollResponse<DeletedKey> pollResponse = poller.poll();
             while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
                 pollResponse = poller.poll();
             }
             assertNotNull(pollResponse.getValue());
@@ -192,7 +192,7 @@ public class KeyClientTest extends KeyClientTestBase {
             //
             recoverPollResponse = recoverPoller.poll();
             while (!recoverPollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
                 recoverPollResponse = recoverPoller.poll();
             }
 
@@ -246,13 +246,13 @@ public class KeyClientTest extends KeyClientTestBase {
             PollResponse<DeletedKey> pollResponse = poller.poll();
 
             while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
                 pollResponse = poller.poll();
             }
 
             client.purgeDeletedKey(keyToBackupAndRestore.getName());
             pollOnKeyPurge(keyToBackupAndRestore.getName());
-            sleepInRecordMode(60000);
+            sleepIfRunningAgainstService(60000);
             KeyVaultKey restoredKey = client.restoreKeyBackup(backupBytes);
             assertEquals(keyToBackupAndRestore.getName(), restoredKey.getName());
             assertEquals(keyToBackupAndRestore.getExpiresOn(), restoredKey.getProperties().getExpiresOn());
@@ -277,7 +277,7 @@ public class KeyClientTest extends KeyClientTestBase {
             HashMap<String, CreateKeyOptions> keysToList = keys;
             for (CreateKeyOptions key : keysToList.values()) {
                 assertKeyEquals(key, client.createKey(key));
-                sleepInRecordMode(5000);
+                sleepIfRunningAgainstService(5000);
             }
 
             for (KeyProperties actualKey : client.listPropertiesOfKeys()) {
@@ -302,10 +302,10 @@ public class KeyClientTest extends KeyClientTestBase {
             SyncPoller<DeletedKey, Void> poller = client.beginDeleteKey(keyToDeleteAndGet.getName());
             PollResponse<DeletedKey> pollResponse = poller.poll();
             while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
                 pollResponse = poller.poll();
             }
-            sleepInRecordMode(30000);
+            sleepIfRunningAgainstService(30000);
             DeletedKey deletedKey = client.getDeletedKey(keyToDeleteAndGet.getName());
             assertNotNull(deletedKey.getDeletedOn());
             assertNotNull(deletedKey.getRecoveryId());
@@ -313,7 +313,7 @@ public class KeyClientTest extends KeyClientTestBase {
             assertEquals(keyToDeleteAndGet.getName(), deletedKey.getName());
             client.purgeDeletedKey(keyToDeleteAndGet.getName());
             pollOnKeyPurge(keyToDeleteAndGet.getName());
-            sleepInRecordMode(10000);
+            sleepIfRunningAgainstService(10000);
         });
     }
 
@@ -333,11 +333,11 @@ public class KeyClientTest extends KeyClientTestBase {
                 SyncPoller<DeletedKey, Void> poller = client.beginDeleteKey(key.getName());
                 PollResponse<DeletedKey> pollResponse = poller.poll();
                 while (!pollResponse.getStatus().isComplete()) {
-                    sleepInRecordMode(1000);
+                    sleepIfRunningAgainstService(1000);
                     pollResponse = poller.poll();
                 }
             }
-            sleepInRecordMode(60000);
+            sleepIfRunningAgainstService(60000);
             Iterable<DeletedKey> deletedKeys = client.listDeletedKeys();
             for (DeletedKey actualKey : deletedKeys) {
                 if (keysToDelete.containsKey(actualKey.getName())) {
@@ -353,7 +353,7 @@ public class KeyClientTest extends KeyClientTestBase {
                 client.purgeDeletedKey(deletedKey.getName());
                 pollOnKeyPurge(deletedKey.getName());
             }
-            sleepInRecordMode(10000);
+            sleepIfRunningAgainstService(10000);
         });
     }
 
@@ -378,7 +378,7 @@ public class KeyClientTest extends KeyClientTestBase {
             SyncPoller<DeletedKey, Void> poller = client.beginDeleteKey(keyName);
             PollResponse<DeletedKey> pollResponse = poller.poll();
             while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
                 pollResponse = poller.poll();
             }
             client.purgeDeletedKey(keyName);
@@ -395,7 +395,7 @@ public class KeyClientTest extends KeyClientTestBase {
             } catch (ResourceNotFoundException e) {
             }
             if (deletedKey == null) {
-                sleepInRecordMode(2000);
+                sleepIfRunningAgainstService(2000);
                 pendingPollCount += 1;
                 continue;
             } else {
@@ -415,7 +415,7 @@ public class KeyClientTest extends KeyClientTestBase {
             } catch (ResourceNotFoundException e) {
             }
             if (deletedKey != null) {
-                sleepInRecordMode(2000);
+                sleepIfRunningAgainstService(2000);
                 pendingPollCount += 1;
                 continue;
             } else {

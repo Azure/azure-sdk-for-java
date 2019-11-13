@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsgetproperties7669813c3629314f24e?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "45c4296b-4568-4b22-8dd6-d4159df41850"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE39ED0630",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:24 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5e2d-401a-00df-24c7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:07:24 GMT",
+      "x-ms-client-request-id" : "45c4296b-4568-4b22-8dd6-d4159df41850"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsgetproperties7669813c3629314f24e?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "0b3b8221-9ae2-4f75-852c-5dd3c95c8b09"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:24 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 13 Nov 2019 02:07:24 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "x-ms-share-quota" : "1",
+      "ETag" : "0x8D767DE39ED0630",
+      "x-ms-has-immutability-policy" : "false",
+      "x-ms-meta-testmetadata" : "value",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "f77c5e2f-401a-00df-25c7-996122000000",
+      "x-ms-client-request-id" : "0b3b8221-9ae2-4f75-852c-5dd3c95c8b09"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestsgetproperties7669813c3629314f24e" ]
+}

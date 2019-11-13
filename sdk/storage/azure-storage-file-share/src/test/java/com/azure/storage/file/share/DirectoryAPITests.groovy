@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -29,12 +30,15 @@ class DirectoryAPITests extends APISpec {
         shareName = resourceNamer.randomName(methodName, 60)
         directoryPath = resourceNamer.randomName(methodName, 60)
         shareClient = shareBuilderHelper(shareName).buildClient()
-        shareClient.create()
+        if (!testRunVerifier.doNotRecordTest()) {
+            shareClient.create()
+        }
         primaryDirectoryClient = directoryBuilderHelper(shareName, directoryPath).buildDirectoryClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
     }
 
+    @DoNotRecord
     def "Get directory URL"() {
         given:
         def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
@@ -63,6 +67,7 @@ class DirectoryAPITests extends APISpec {
         expectURL == directoryURL
     }
 
+    @DoNotRecord
     def "Get sub directory client"() {
         given:
         def subDirectoryClient = primaryDirectoryClient.getSubDirectoryClient("testSubDirectory")
@@ -71,6 +76,7 @@ class DirectoryAPITests extends APISpec {
         subDirectoryClient instanceof ShareDirectoryClient
     }
 
+    @DoNotRecord
     def "Get file client"() {
         given:
         def fileClient = primaryDirectoryClient.getFileClient("testFile")
@@ -580,6 +586,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
+    @DoNotRecord
     def "Get snapshot id"() {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
@@ -592,11 +599,13 @@ class DirectoryAPITests extends APISpec {
         snapshot == shareSnapshotClient.getShareSnapshotId()
     }
 
+    @DoNotRecord
     def "Get Share Name"() {
         expect:
         shareName == primaryDirectoryClient.getShareName()
     }
 
+    @DoNotRecord
     def "Get Directory Path"() {
         expect:
         directoryPath == primaryDirectoryClient.getDirectoryPath()

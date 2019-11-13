@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestsgetproperties1504193048e81ccbc?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "6739a3dd-31d7-4ecf-8c3d-6794f83c0623"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE3DB55A9D",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:31 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5f04-401a-00df-4bc7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:07:30 GMT",
+      "x-ms-client-request-id" : "6739a3dd-31d7-4ecf-8c3d-6794f83c0623"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestsgetproperties1504193048e81ccbc?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "9394c406-3256-444b-b91a-af16e51e9760"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 13 Nov 2019 02:07:30 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "x-ms-share-quota" : "1",
+      "ETag" : "0x8D767DE3DB55A9D",
+      "x-ms-has-immutability-policy" : "false",
+      "x-ms-meta-testmetadata" : "value",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "f77c5f08-401a-00df-4ec7-996122000000",
+      "x-ms-client-request-id" : "9394c406-3256-444b-b91a-af16e51e9760"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareasyncapitestsgetproperties1504193048e81ccbc" ]
+}

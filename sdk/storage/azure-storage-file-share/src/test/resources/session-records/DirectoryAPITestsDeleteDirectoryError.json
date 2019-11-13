@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsdeletedirectoryerror36086fc5cbf650?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "3bd87eb5-249f-4e4f-9d52-e4364486976d"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE1056316C",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:15 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "983aceea-101a-00a1-1ec6-99feed000000",
+      "Date" : "Wed, 13 Nov 2019 02:06:14 GMT",
+      "x-ms-client-request-id" : "3bd87eb5-249f-4e4f-9d52-e4364486976d"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsdeletedirectoryerror36086fc5cbf650/directoryapitestsdeletedirectoryerror956867c1d81232?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "b57b31f0-7ae6-4d9d-b56f-e9f14f78c516"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "983aceec-101a-00a1-1fc6-99feed000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:983aceec-101a-00a1-1fc6-99feed000000\nTime:2019-11-13T02:06:15.5043541Z</Message></Error>",
+      "Date" : "Wed, 13 Nov 2019 02:06:15 GMT",
+      "x-ms-client-request-id" : "b57b31f0-7ae6-4d9d-b56f-e9f14f78c516",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestsdeletedirectoryerror36086fc5cbf650", "directoryapitestsdeletedirectoryerror956867c1d81232" ]
+}

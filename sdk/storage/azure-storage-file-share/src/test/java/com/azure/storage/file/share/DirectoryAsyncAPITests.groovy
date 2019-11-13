@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -29,12 +30,15 @@ class DirectoryAsyncAPITests extends APISpec {
         shareName = resourceNamer.randomName(methodName, 60)
         directoryPath = resourceNamer.randomName(methodName, 60)
         shareClient = shareBuilderHelper(shareName).buildClient()
-        shareClient.create()
+        if (!testRunVerifier.doNotRecordTest()) {
+            shareClient.create()
+        }
         primaryDirectoryAsyncClient = directoryBuilderHelper(shareName, directoryPath).buildDirectoryAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
     }
 
+    @DoNotRecord
     def "Get directory URL"() {
         given:
         def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
@@ -45,6 +49,7 @@ class DirectoryAsyncAPITests extends APISpec {
         expectURL == directoryURL
     }
 
+    @DoNotRecord
     def "Get sub directory client"() {
         given:
         def subDirectoryClient = primaryDirectoryAsyncClient.getSubDirectoryClient("testSubDirectory")
@@ -52,6 +57,7 @@ class DirectoryAsyncAPITests extends APISpec {
         subDirectoryClient instanceof ShareDirectoryAsyncClient
     }
 
+    @DoNotRecord
     def "Get file client"() {
         given:
         def fileClient = primaryDirectoryAsyncClient.getFileClient("testFile")
@@ -565,6 +571,7 @@ class DirectoryAsyncAPITests extends APISpec {
         }
     }
 
+    @DoNotRecord
     def "Get snapshot id"() {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
@@ -575,11 +582,13 @@ class DirectoryAsyncAPITests extends APISpec {
         snapshot == shareSnapshotClient.getShareSnapshotId()
     }
 
+    @DoNotRecord
     def "Get Share Name"() {
         expect:
         shareName == primaryDirectoryAsyncClient.getShareName()
     }
 
+    @DoNotRecord
     def "Get Directory Path"() {
         expect:
         directoryPath == primaryDirectoryAsyncClient.getDirectoryPath()

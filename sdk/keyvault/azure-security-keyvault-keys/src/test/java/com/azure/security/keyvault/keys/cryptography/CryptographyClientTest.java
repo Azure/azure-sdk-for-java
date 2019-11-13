@@ -212,7 +212,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             } catch (ResourceNotFoundException ignored) {
             }
             if (deletedKey == null) {
-                sleepInRecordMode(2000);
+                sleepIfRunningAgainstService(2000);
                 pendingPollCount += 1;
             } else {
                 return;
@@ -230,7 +230,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             } catch (ResourceNotFoundException ignored) {
             }
             if (deletedKey != null) {
-                sleepInRecordMode(2000);
+                sleepIfRunningAgainstService(2000);
                 pendingPollCount += 1;
             } else {
                 return;

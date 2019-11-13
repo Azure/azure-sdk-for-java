@@ -1,5 +1,6 @@
 package com.azure.storage.file.share
 
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.AccountSasPermission
@@ -34,6 +35,7 @@ class FileSASTests extends APISpec {
         primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
     }
 
+    @DoNotRecord
     @Unroll
     def "FileSASPermissions toString"() {
         setup:
@@ -55,6 +57,7 @@ class FileSASTests extends APISpec {
         true  | true  | true   | true   || "rcwd"
     }
 
+    @DoNotRecord
     @Unroll
     def "FileSASPermissions parse"() {
         when:
@@ -76,6 +79,7 @@ class FileSASTests extends APISpec {
         "dcwr"     || true  | true  | true   | true
     }
 
+    @DoNotRecord
     def "FileSASPermissions parse IA"() {
         when:
         ShareFileSasPermission.parse("rwaq")
@@ -84,6 +88,7 @@ class FileSASTests extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @DoNotRecord
     @Unroll
     def "ShareSASPermissions toString"() {
         setup:
@@ -107,6 +112,7 @@ class FileSASTests extends APISpec {
         true  | true  | true   | true   | true  || "rcwdl"
     }
 
+    @DoNotRecord
     @Unroll
     def "ShareSASPermissions parse"() {
         when:
@@ -130,6 +136,7 @@ class FileSASTests extends APISpec {
         "dcwrl"    || true  | true  | true   | true   | true
     }
 
+    @DoNotRecord
     def "ShareSASPermissions parse IA"() {
         when:
         ShareSasPermission.parse("rwaq")

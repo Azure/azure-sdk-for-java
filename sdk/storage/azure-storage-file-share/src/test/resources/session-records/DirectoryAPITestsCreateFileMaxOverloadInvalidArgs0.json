@@ -1,0 +1,76 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatefilemaxoverloadinvalidargs044168bc?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "28213164-206b-46d5-ba23-76cdd6154e37"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE1655059A",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:25 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "983acfd6-101a-00a1-61c6-99feed000000",
+      "Date" : "Wed, 13 Nov 2019 02:06:24 GMT",
+      "x-ms-client-request-id" : "28213164-206b-46d5-ba23-76cdd6154e37"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatefilemaxoverloadinvalidargs044168bc/directoryapitestscreatefilemaxoverloadinvalidargs08222668?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "f0d38a49-bfe7-49a0-a6b3-0c8408ded5b0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-11-13T02:06:25.1780029Z",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:25 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 13 Nov 2019 02:06:25 GMT",
+      "ETag" : "0x8D767DE165C8FBD",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2019-11-13T02:06:25.1780029Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "983acfd8-101a-00a1-62c6-99feed000000",
+      "x-ms-client-request-id" : "f0d38a49-bfe7-49a0-a6b3-0c8408ded5b0",
+      "x-ms-file-last-write-time" : "2019-11-13T02:06:25.1780029Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatefilemaxoverloadinvalidargs044168bc/directoryapitestscreatefilemaxoverloadinvalidargs08222668%2ftestfile:",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "63fa7091-8b3d-46bf-b84b-d93ca20807bc"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidResourceName",
+      "retry-after" : "0",
+      "Content-Length" : "243",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "983acfd9-101a-00a1-63c6-99feed000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:983acfd9-101a-00a1-63c6-99feed000000\nTime:2019-11-13T02:06:25.2206798Z</Message></Error>",
+      "Date" : "Wed, 13 Nov 2019 02:06:25 GMT",
+      "x-ms-client-request-id" : "63fa7091-8b3d-46bf-b84b-d93ca20807bc",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestscreatefilemaxoverloadinvalidargs044168bc", "directoryapitestscreatefilemaxoverloadinvalidargs08222668" ]
+}

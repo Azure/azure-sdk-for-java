@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesnapshotmetadataerror86156fbd7f0b?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "5e0c4498-702b-466d-bd3c-84c116211a07"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "Content-Length" : "278",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "f77c5e25-401a-00df-1dc7-996122000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:f77c5e25-401a-00df-1dc7-996122000000\nTime:2019-11-13T02:07:24.5987745Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Wed, 13 Nov 2019 02:07:23 GMT",
+      "x-ms-client-request-id" : "5e0c4498-702b-466d-bd3c-84c116211a07",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestscreatesnapshotmetadataerror86156fbd7f0b" ]
+}

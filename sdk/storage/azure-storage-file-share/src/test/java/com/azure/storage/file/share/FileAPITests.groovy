@@ -5,6 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.util.Context
 import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
@@ -45,7 +46,9 @@ class FileAPITests extends APISpec {
         shareName = resourceNamer.randomName(methodName, 60)
         filePath = resourceNamer.randomName(methodName, 60)
         shareClient = shareBuilderHelper(shareName).buildClient()
-        shareClient.create()
+        if (!testRunVerifier.doNotRecordTest()) {
+            shareClient.create()
+        }
         primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
         httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en")
@@ -53,6 +56,7 @@ class FileAPITests extends APISpec {
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
     }
 
+    @DoNotRecord
     def "Get file URL"() {
         given:
         def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
@@ -662,6 +666,7 @@ class FileAPITests extends APISpec {
         numberOfHandlesClosed == 0
     }
 
+    @DoNotRecord
     def "Get snapshot id"() {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
@@ -674,11 +679,13 @@ class FileAPITests extends APISpec {
         snapshot == shareSnapshotClient.getShareSnapshotId()
     }
 
+    @DoNotRecord
     def "Get Share Name"() {
         expect:
         shareName == primaryFileClient.getShareName()
     }
 
+    @DoNotRecord
     def "Get File Path"() {
         expect:
         filePath == primaryFileClient.getFilePath()

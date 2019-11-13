@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsdownloaddataerror317230a8a1917f0?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "92dbb712-8e63-4b5e-b98c-a33714820fc4"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE2A3D5B69",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:58 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5be6-401a-00df-5fc7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:06:57 GMT",
+      "x-ms-client-request-id" : "92dbb712-8e63-4b5e-b98c-a33714820fc4"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsdownloaddataerror317230a8a1917f0/fileasyncapitestsdownloaddataerror40077c9706410e6",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "1150f314-cb62-41bc-a80f-65fcc370b39a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "f77c5be8-401a-00df-60c7-996122000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:f77c5be8-401a-00df-60c7-996122000000\nTime:2019-11-13T02:06:58.5689730Z</Message></Error>",
+      "Date" : "Wed, 13 Nov 2019 02:06:57 GMT",
+      "x-ms-client-request-id" : "1150f314-cb62-41bc-a80f-65fcc370b39a",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileasyncapitestsdownloaddataerror317230a8a1917f0", "fileasyncapitestsdownloaddataerror40077c9706410e6" ]
+}

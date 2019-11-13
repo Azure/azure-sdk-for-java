@@ -1,0 +1,83 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatefilemaxoverload53967f60674?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "841a99e3-73aa-4f7a-9e57-0559f7924003"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE1DA6C4BD",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:37 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "983ad158-101a-00a1-1ec6-99feed000000",
+      "Date" : "Wed, 13 Nov 2019 02:06:37 GMT",
+      "x-ms-client-request-id" : "841a99e3-73aa-4f7a-9e57-0559f7924003"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatefilemaxoverload53967f60674/directoryasyncapitestscreatefilemaxoverload74420c174d7?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "f79d7047-9284-4880-847f-65254584f3a6"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-11-13T02:06:37.4536253Z",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:37 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 13 Nov 2019 02:06:37 GMT",
+      "ETag" : "0x8D767DE1DADAC3D",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2019-11-13T02:06:37.4536253Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "983ad15a-101a-00a1-1fc6-99feed000000",
+      "x-ms-client-request-id" : "f79d7047-9284-4880-847f-65254584f3a6",
+      "x-ms-file-last-write-time" : "2019-11-13T02:06:37.4536253Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatefilemaxoverload53967f60674/directoryasyncapitestscreatefilemaxoverload74420c174d7%2ftestCreateFile",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "d52cc3d3-1837-42e5-a349-4b6a98f90e9b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "6119292009901620917*13168958551941065216",
+      "x-ms-file-id" : "11529285414812647424",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-11-13T02:06:37.4880262Z",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:37 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 13 Nov 2019 02:06:37 GMT",
+      "ETag" : "0x8D767DE1DB2EC06",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2019-11-13T02:06:37.4880262Z",
+      "x-ms-file-parent-id" : "13835128424026341376",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "983ad15b-101a-00a1-20c6-99feed000000",
+      "x-ms-client-request-id" : "d52cc3d3-1837-42e5-a349-4b6a98f90e9b",
+      "x-ms-file-last-write-time" : "2019-11-13T02:06:37.4880262Z"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryasyncapitestscreatefilemaxoverload53967f60674", "directoryasyncapitestscreatefilemaxoverload74420c174d7", "2019-11-13T02:06:37.488026200Z", "2019-11-13T02:06:37.488026200Z" ]
+}

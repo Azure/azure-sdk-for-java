@@ -189,7 +189,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 .assertNext(voidResponse -> {
                     assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                 }).verifyComplete();
-            sleepInRecordMode(15000);
+            sleepIfRunningAgainstService(15000);
         });
     }
 
@@ -294,7 +294,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 }).verifyComplete();
             pollOnKeyPurge(keyToBackupAndRestore.getName());
 
-            sleepInRecordMode(60000);
+            sleepIfRunningAgainstService(60000);
 
             StepVerifier.create(client.restoreKeyBackup(backup))
                 .assertNext(response -> {
@@ -344,7 +344,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                     assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                 }).verifyComplete();
             pollOnKeyPurge(keyToDeleteAndGet.getName());
-            sleepInRecordMode(15000);
+            sleepIfRunningAgainstService(15000);
         });
     }
 //
@@ -361,7 +361,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 StepVerifier.create(client.createKey(key))
                     .assertNext(keyResponse -> assertKeyEquals(key, keyResponse)).verifyComplete();
             }
-            sleepInRecordMode(10000);
+            sleepIfRunningAgainstService(10000);
 
             for (CreateKeyOptions key : keys.values()) {
                 PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(key.getName());
@@ -370,9 +370,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 assertNotNull(response.getValue());
             }
 
-            sleepInRecordMode(60000);
+            sleepIfRunningAgainstService(60000);
             client.listDeletedKeys().subscribe(deletedKeys::add);
-            sleepInRecordMode(30000);
+            sleepIfRunningAgainstService(30000);
 
             for (DeletedKey actualKey : deletedKeys) {
                 if (keys.containsKey(actualKey.getName())) {
@@ -405,11 +405,11 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             for (CreateKeyOptions key : keys) {
                 keyName = key.getName();
                 client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse));
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
             }
-            sleepInRecordMode(30000);
+            sleepIfRunningAgainstService(30000);
             client.listPropertiesOfKeyVersions(keyName).subscribe(output::add);
-            sleepInRecordMode(30000);
+            sleepIfRunningAgainstService(30000);
 
             assertEquals(keys.size(), output.size());
 
@@ -435,11 +435,11 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             List<KeyProperties> output = new ArrayList<>();
             for (CreateKeyOptions key : keys.values()) {
                 client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse));
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
             }
-            sleepInRecordMode(30000);
+            sleepIfRunningAgainstService(30000);
             client.listPropertiesOfKeys().subscribe(output::add);
-            sleepInRecordMode(30000);
+            sleepIfRunningAgainstService(30000);
 
             for (KeyProperties actualKey : output) {
                 if (keys.containsKey(actualKey.getName())) {
@@ -462,7 +462,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             } catch (ResourceNotFoundException ignored) {
             }
             if (deletedKey == null) {
-                sleepInRecordMode(2000);
+                sleepIfRunningAgainstService(2000);
                 pendingPollCount += 1;
             } else {
                 return;
@@ -480,7 +480,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             } catch (ResourceNotFoundException ignored) {
             }
             if (deletedKey != null) {
-                sleepInRecordMode(2000);
+                sleepIfRunningAgainstService(2000);
                 pendingPollCount += 1;
             } else {
                 return;

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatedirectoryerror94917f87e25?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "3b8d9b31-d59e-4d9a-9079-45ac07bfdb0a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE17F1197A",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:27 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "983ad04f-101a-00a1-4ac6-99feed000000",
+      "Date" : "Wed, 13 Nov 2019 02:06:27 GMT",
+      "x-ms-client-request-id" : "3b8d9b31-d59e-4d9a-9079-45ac07bfdb0a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestscreatedirectoryerror619164693f1/directoryasyncapitestscreatedirectoryerror1199750dfd0?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "09ccd61a-61b9-4929-9053-f9aababc6b53"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "983ad051-101a-00a1-4bc6-99feed000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:983ad051-101a-00a1-4bc6-99feed000000\nTime:2019-11-13T02:06:27.8862384Z</Message></Error>",
+      "Date" : "Wed, 13 Nov 2019 02:06:27 GMT",
+      "x-ms-client-request-id" : "09ccd61a-61b9-4929-9053-f9aababc6b53",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryasyncapitestscreatedirectoryerror94917f87e25", "directoryasyncapitestscreatedirectoryerror1199750dfd0", "directoryasyncapitestscreatedirectoryerror619164693f1" ]
+}

@@ -188,7 +188,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                 .assertNext(voidResponse -> {
                     assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                 }).verifyComplete();
-            sleepInRecordMode(15000);
+            sleepIfRunningAgainstService(15000);
         });
     }
 
@@ -226,7 +226,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                     assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                 }).verifyComplete();
             pollOnSecretPurge(secretToDeleteAndGet.getName());
-            sleepInRecordMode(10000);
+            sleepIfRunningAgainstService(10000);
         });
     }
 
@@ -326,7 +326,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                 }).verifyComplete();
             pollOnSecretPurge(secretToBackupAndRestore.getName());
 
-            sleepInRecordMode(60000);
+            sleepIfRunningAgainstService(60000);
 
             StepVerifier.create(client.restoreSecretBackup(backup))
                 .assertNext(response -> {
@@ -361,7 +361,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                         assertSecretEquals(secret, secretResponse);
                     }).verifyComplete();
             }
-            sleepInRecordMode(10000);
+            sleepIfRunningAgainstService(10000);
 
             for (KeyVaultSecret secret : secrets.values()) {
                 PollerFlux<DeletedSecret, Void> poller = client.beginDeleteSecret(secret.getName());
@@ -369,9 +369,9 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                     .blockLast();
             }
 
-            sleepInRecordMode(35000);
+            sleepIfRunningAgainstService(35000);
             client.listDeletedSecrets().subscribe(deletedSecrets::add);
-            sleepInRecordMode(30000);
+            sleepIfRunningAgainstService(30000);
 
             for (DeletedSecret actualSecret : deletedSecrets) {
                 if (secrets.containsKey(actualSecret.getName())) {
@@ -404,11 +404,11 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             for (KeyVaultSecret secret : secrets) {
                 secretName = secret.getName();
                 client.setSecret(secret).subscribe(secretResponse -> assertSecretEquals(secret, secretResponse));
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
             }
-            sleepInRecordMode(30000);
+            sleepIfRunningAgainstService(30000);
             client.listPropertiesOfSecretVersions(secretName).subscribe(output::add);
-            sleepInRecordMode(30000);
+            sleepIfRunningAgainstService(30000);
 
             assertEquals(secrets.size(), output.size());
 
@@ -433,11 +433,11 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             List<SecretProperties> output = new ArrayList<>();
             for (KeyVaultSecret secret : secretsToList.values()) {
                 client.setSecret(secret).subscribe(secretResponse -> assertSecretEquals(secret, secretResponse));
-                sleepInRecordMode(1000);
+                sleepIfRunningAgainstService(1000);
             }
-            sleepInRecordMode(30000);
+            sleepIfRunningAgainstService(30000);
             client.listPropertiesOfSecrets().subscribe(output::add);
-            sleepInRecordMode(30000);
+            sleepIfRunningAgainstService(30000);
 
             for (SecretProperties actualSecret : output) {
                 if (secretsToList.containsKey(actualSecret.getName())) {
@@ -460,7 +460,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             } catch (ResourceNotFoundException ignored) {
             }
             if (deletedSecret != null) {
-                sleepInRecordMode(2000);
+                sleepIfRunningAgainstService(2000);
                 pendingPollCount += 1;
             } else {
                 return;

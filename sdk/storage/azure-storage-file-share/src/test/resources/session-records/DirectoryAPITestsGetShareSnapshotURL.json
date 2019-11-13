@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsgetsharesnapshoturl1871277e238ec6?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "51330aaa-d98a-48cf-8957-41066e1f723b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE0E316B08",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:11 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "983ace92-101a-00a1-56c6-99feed000000",
+      "Date" : "Wed, 13 Nov 2019 02:06:11 GMT",
+      "x-ms-client-request-id" : "51330aaa-d98a-48cf-8957-41066e1f723b"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsgetsharesnapshoturl1871277e238ec6?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "d1de3bd7-8930-4e32-a988-ba095532e9c0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-snapshot" : "2019-11-13T02:06:12.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE0E316B08",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:06:11 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "983ace99-101a-00a1-5cc6-99feed000000",
+      "Date" : "Wed, 13 Nov 2019 02:06:12 GMT",
+      "x-ms-client-request-id" : "d1de3bd7-8930-4e32-a988-ba095532e9c0"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestsgetsharesnapshoturl1871277e238ec6", "directoryapitestsgetsharesnapshoturl87192b0b112c42" ]
+}

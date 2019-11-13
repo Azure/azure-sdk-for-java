@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsdeletedirectoryerror64659eadd31f31da?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "ac832425-45be-4ff2-b414-aa497451b2e8"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D767DE3C1D18FA",
+      "Last-Modified" : "Wed, 13 Nov 2019 02:07:28 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f77c5ea5-401a-00df-03c7-996122000000",
+      "Date" : "Wed, 13 Nov 2019 02:07:27 GMT",
+      "x-ms-client-request-id" : "ac832425-45be-4ff2-b414-aa497451b2e8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsdeletedirectoryerror64659eadd31f31da/testdirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "250cffa5-48a2-4cd6-8d77-c852d029eb04"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "f77c5ea7-401a-00df-04c7-996122000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:f77c5ea7-401a-00df-04c7-996122000000\nTime:2019-11-13T02:07:28.5605498Z</Message></Error>",
+      "Date" : "Wed, 13 Nov 2019 02:07:27 GMT",
+      "x-ms-client-request-id" : "250cffa5-48a2-4cd6-8d77-c852d029eb04",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestsdeletedirectoryerror64659eadd31f31da" ]
+}

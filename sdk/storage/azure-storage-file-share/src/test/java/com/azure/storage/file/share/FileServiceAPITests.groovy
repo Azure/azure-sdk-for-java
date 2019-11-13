@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ListSharesOptions
@@ -34,6 +35,7 @@ class FileServiceAPITests extends APISpec {
         }
     }
 
+    @DoNotRecord
     def "Get file service URL"() {
         given:
         def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
@@ -45,6 +47,7 @@ class FileServiceAPITests extends APISpec {
         expectURL == fileServiceURL
     }
 
+    @DoNotRecord
     def "Get share does not create a share"() {
         given:
         def shareClient = primaryFileServiceClient.getShareClient(shareName)
