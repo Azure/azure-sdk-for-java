@@ -157,20 +157,15 @@ public final class ConfigurationClientBuilder {
         ConfigurationServiceVersion serviceVersion =
             version != null ? version : ConfigurationServiceVersion.getLatest();
 
-        // AAD token credential
-        TokenCredential tokenCredentialEnvVar = tokenCredential;
-        // Connection string credential
-        ConfigurationClientCredentials configurationCredentials = null;
-
         // Endpoint
         String buildEndpoint = endpoint;
-        if (tokenCredentialEnvVar == null) {
-            configurationCredentials = getConfigurationCredentials(buildConfiguration);
-            buildEndpoint = getBuildEndpoint(configurationCredentials);
+        if (tokenCredential == null) {
+            buildEndpoint = getBuildEndpoint();
         }
+        // endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(buildEndpoint);
 
-        // Pipeline
+        // if http pipeline is already defined
         if (pipeline != null) {
             return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
         }
@@ -183,17 +178,11 @@ public final class ConfigurationClientBuilder {
         policies.add(new AddDatePolicy());
 
         // add connection string credential if the AAD is not exist
-        if (tokenCredentialEnvVar == null) {
-            ConfigurationClientCredentials buildCredential =
-                (credential == null) ? configurationCredentials : credential;
-            if (buildCredential == null) {
-                throw logger.logExceptionAsWarning(new IllegalStateException("'credential' is required."));
-            }
-            policies.add(new ConfigurationCredentialsPolicy(buildCredential));
+        if (tokenCredential == null) {
+            policies.add(new ConfigurationCredentialsPolicy(credential));
         } else {
-            TokenCredential buildTokenCredential = tokenCredential == null ?  tokenCredentialEnvVar : tokenCredential;
             policies.add(
-                new BearerTokenAuthenticationPolicy(buildTokenCredential, String.format("%s/.default", buildEndpoint)));
+                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", buildEndpoint)));
         }
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -202,6 +191,7 @@ public final class ConfigurationClientBuilder {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
+        // customized pipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
@@ -265,6 +255,7 @@ public final class ConfigurationClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public ConfigurationClientBuilder credential(TokenCredential tokenCredential) {
+        // token credential can not be null value
         Objects.requireNonNull(tokenCredential);
         this.tokenCredential = tokenCredential;
 
@@ -375,24 +366,11 @@ public final class ConfigurationClientBuilder {
         return this;
     }
 
-    private ConfigurationClientCredentials getConfigurationCredentials(Configuration configuration) {
-        String connectionString = configuration.get("AZURE_APPCONFIG_CONNECTION_STRING");
-        if (CoreUtils.isNullOrEmpty(connectionString)) {
-            return credential;
-        }
-
-        try {
-            return new ConfigurationClientCredentials(connectionString);
-        } catch (InvalidKeyException | NoSuchAlgorithmException ex) {
-            return null;
-        }
-    }
-
-    private String getBuildEndpoint(ConfigurationClientCredentials buildCredentials) {
+    private String getBuildEndpoint() {
         if (endpoint != null) {
             return endpoint;
-        } else if (buildCredentials != null) {
-            return buildCredentials.getBaseUri();
+        } else if (credential != null) {
+            return credential.getBaseUri();
         } else {
             return null;
         }

@@ -4,7 +4,6 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;

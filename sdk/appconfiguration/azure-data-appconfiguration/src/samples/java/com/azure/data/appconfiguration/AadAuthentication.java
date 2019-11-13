@@ -16,10 +16,8 @@ public class AadAuthentication {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        // The endpoint value can be obtained from connection string. Connection String has string format
-        // "endpoint={endpoint_value};id={id_value};secret={secret_value}" where the endpoint is what it is.
-        // The connection string can be obtained by going to your App Configuration instance in the Azure portal
-        // and navigating to "Access Keys" page under the "Settings" section.
+        // The endpoint can be obtained by going to your App Configuration instance in the Azure portal
+        // and navigating to "Overview" page. Looking for the "Endpoint" keyword.
         String endpoint = "{endpoint_value}";
 
         // Token Credential could be an AAD token which you can get from Identity
