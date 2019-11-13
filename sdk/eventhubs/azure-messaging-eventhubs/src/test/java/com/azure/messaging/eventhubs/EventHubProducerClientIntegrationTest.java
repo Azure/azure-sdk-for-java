@@ -129,4 +129,17 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
         producer.send(events, new SendOptions().setPartitionId("0"));
         producer.send(events, new SendOptions().setPartitionKey("sandwiches"));
     }
+
+    @Test
+    public void sendAllPartitions() {
+        for (String partitionId : producer.getPartitionIds()) {
+            final EventDataBatch batch = producer.createBatch(new BatchOptions().setPartitionId(partitionId));
+            Assertions.assertNotNull(batch);
+
+            Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid", Integer.parseInt(partitionId))));
+
+            // Act & Assert
+            producer.send(batch);
+        }
+    }
 }

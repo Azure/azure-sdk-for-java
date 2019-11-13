@@ -149,4 +149,46 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
         StepVerifier.create(onComplete)
             .verifyComplete();
     }
+
+    @Test
+    public void sendAllPartitions() {
+        final List<String> partitionIds = producer.getPartitionIds().collectList().block(TIMEOUT);
+
+        Assertions.assertNotNull(partitionIds);
+
+        for (String partitionId : partitionIds) {
+            final EventDataBatch batch = producer.createBatch(new BatchOptions().setPartitionId(partitionId)).block(TIMEOUT);
+            Assertions.assertNotNull(batch);
+
+            Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid", Integer.parseInt(partitionId))));
+
+            // Act & Assert
+            StepVerifier.create(producer.send(batch)).expectComplete().verify(TIMEOUT);
+        }
+    }
+
+    /**
+     * Sending with credentials.
+     */
+    @Test
+    public void sendWithCredentials() {
+        // Arrange
+        final EventData event = new EventData("body");
+        final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
+        final EventHubProducerAsyncClient client = createBuilder(true)
+            .buildAsyncProducer();
+
+        // Act & Assert
+        StepVerifier.create(client.getProperties())
+            .assertNext(properties -> {
+                Assertions.assertEquals(getEventHubName(), properties.getName());
+                Assertions.assertEquals(2, properties.getPartitionIds().length);
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        StepVerifier.create(client.send(event, options))
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
 }

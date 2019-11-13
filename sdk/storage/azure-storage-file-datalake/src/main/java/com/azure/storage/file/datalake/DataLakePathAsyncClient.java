@@ -83,7 +83,7 @@ public class DataLakePathAsyncClient {
 
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
-        this.pathName = pathName;
+        this.pathName = Utility.urlEncode(Utility.urlDecode(pathName));
         this.pathResourceType = pathResourceType;
         this.blockBlobAsyncClient = blockBlobAsyncClient;
     }

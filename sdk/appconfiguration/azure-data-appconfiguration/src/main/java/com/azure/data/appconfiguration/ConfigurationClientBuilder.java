@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -19,6 +20,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.RetryPolicyOptions;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -31,6 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +81,9 @@ public final class ConfigurationClientBuilder {
     private static final String APP_CONFIG_PROPERTIES = "azure-appconfig.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
+    private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(
+        new RetryPolicyOptions(new ExponentialBackoff(), RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS));
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
@@ -186,7 +192,9 @@ public final class ConfigurationClientBuilder {
         }
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+
+        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
+
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
