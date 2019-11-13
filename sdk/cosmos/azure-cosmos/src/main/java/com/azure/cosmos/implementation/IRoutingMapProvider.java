@@ -25,6 +25,6 @@ public interface IRoutingMapProvider {
         Mono<List<PartitionKeyRange>> tryGetOverlappingRangesAsync(String collectionResourceId, Range<String> range,
                                                                    boolean forceRefresh /* = false */, Map<String, Object> properties);
 
-        Mono<PartitionKeyRange> tryGetPartitionKeyRangeByIdAsync(String collectionResourceId, String partitionKeyRangeId,
+        Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetPartitionKeyRangeByIdAsync(String collectionResourceId, String partitionKeyRangeId,
                                                                    boolean forceRefresh /* = false */, Map<String, Object> properties);
 }
