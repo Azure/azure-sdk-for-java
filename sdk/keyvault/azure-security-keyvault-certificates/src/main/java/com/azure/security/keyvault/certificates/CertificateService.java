@@ -255,6 +255,7 @@ interface CertificateService {
     @ReturnValueWireType(DeletedCertificatePage.class)
     Mono<PagedResponse<DeletedCertificate>> getDeletedCertificates(@HostParam("url") String url,
                                                          @QueryParam("maxresults") Integer maxresults,
+                                                         @QueryParam("includePending") Boolean includePending,
                                                          @QueryParam("api-version") String apiVersion,
                                                          @HeaderParam("accept-language") String acceptLanguage,
                                                          @HeaderParam("Content-Type") String type,

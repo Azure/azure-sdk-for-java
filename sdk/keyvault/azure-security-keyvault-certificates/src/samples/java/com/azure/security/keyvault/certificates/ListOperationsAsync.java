@@ -74,7 +74,8 @@ public class ListOperationsAsync {
 
         // Let's list all the certificates in the key vault.
         certificateAsyncClient.listPropertiesOfCertificates()
-            .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
+            .subscribe(certificateProeprties -> certificateAsyncClient
+                .getCertificateVersion(certificateProeprties.getName(), certificateProeprties.getVersion())
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s \n",
                     certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
 
@@ -82,7 +83,8 @@ public class ListOperationsAsync {
 
         // Let's list all certificate versions of the certificate.
         certificateAsyncClient.listPropertiesOfCertificateVersions("myCertificate")
-            .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
+            .subscribe(certificateProeprties -> certificateAsyncClient
+                .getCertificateVersion(certificateProeprties.getName(), certificateProeprties.getVersion())
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s\n",
                     certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
 

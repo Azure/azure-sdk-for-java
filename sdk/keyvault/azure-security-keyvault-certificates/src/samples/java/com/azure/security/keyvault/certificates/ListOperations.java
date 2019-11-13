@@ -52,7 +52,8 @@ public class ListOperations {
         //Let's create a certificate issuer.
         CertificateIssuer issuer = new CertificateIssuer("myIssuer", "Test");
         CertificateIssuer myIssuer = certificateClient.createIssuer(issuer);
-        System.out.printf("Issuer created with name %s and provider %s", myIssuer.getName(), myIssuer.getProperties().getProvider());
+        System.out.printf("Issuer created with name %s and provider %s", myIssuer.getName(),
+            myIssuer.getProperties().getProvider());
 
         //Let's create a certificate signed by our issuer.
         certificateClient.beginCreateCertificate("myCertificate",
@@ -62,15 +63,19 @@ public class ListOperations {
 
         // Let's list all the certificates in the key vault.
         for (CertificateProperties certificate : certificateClient.listPropertiesOfCertificates()) {
-            KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificate);
-            System.out.printf("Received certificate with name %s and secret id %s", certificateWithAllProperties.getProperties().getName(),
+            KeyVaultCertificate certificateWithAllProperties = certificateClient
+                .getCertificateVersion(certificate.getName(), certificate.getVersion());
+            System.out.printf("Received certificate with name %s and secret id %s", certificateWithAllProperties
+                    .getProperties().getName(),
                 certificateWithAllProperties.getSecretId());
         }
 
         // Let's list all certificate versions of the certificate.
         for (CertificateProperties certificate : certificateClient.listPropertiesOfCertificateVersions("myCertificate")) {
-            KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificate);
-            System.out.printf("Received certificate with name %s and version %s", certificateWithAllProperties.getProperties().getName(),
+            KeyVaultCertificate certificateWithAllProperties = certificateClient
+                .getCertificateVersion(certificate.getName(), certificate.getVersion());
+            System.out.printf("Received certificate with name %s and version %s", certificateWithAllProperties
+                    .getProperties().getName(),
                 certificateWithAllProperties.getProperties().getVersion());
         }
 

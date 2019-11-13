@@ -151,7 +151,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#CertificateProperties
         certificateAsyncClient.getCertificate("certificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(certificate -> certificateAsyncClient.getCertificate(certificate.getProperties())
+            .subscribe(certificate -> certificateAsyncClient.getCertificateVersion(certificate.getName(),
+                certificate.getProperties().getVersion())
             .subscribe(certificateResponse ->
                 System.out.printf("Certificate is returned with name %s and secretId %s %n",
                     certificateResponse.getProperties().getName(), certificateResponse.getSecretId())));
@@ -529,7 +530,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificates
         certificateAsyncClient.listPropertiesOfCertificates()
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
+            .subscribe(certificate -> certificateAsyncClient.getCertificateVersion(certificate.getName(),
+                certificate.getVersion())
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s",
                     certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificates
@@ -570,7 +572,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificateVersions
         certificateAsyncClient.listPropertiesOfCertificateVersions("certificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
+            .subscribe(certificate -> certificateAsyncClient.getCertificateVersion(certificate.getName(),
+                certificate.getVersion())
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s",
                     certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificateVersions
@@ -602,23 +605,11 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#cancelCertificateOperation(String)} and
-     * {@link CertificateAsyncClient#cancelCertificateOperationWithResponse(String)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#deleteCertificateOperation(String)} and
+     * {@link CertificateAsyncClient#deleteCertificateOperationWithResponse(String, com.azure.core.util.Context)}
      */
     public void certificateOperationCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperation#string
-        certificateAsyncClient.cancelCertificateOperation("certificateName")
-            .subscribe(certificateOperation -> System.out.printf("Certificate operation status %s",
-                certificateOperation.getStatus()));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperation#string
-
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperationWithResponse#string
-        certificateAsyncClient.cancelCertificateOperationWithResponse("certificateName")
-            .subscribe(certificateOperationResponse -> System.out.printf("Certificate operation status %s",
-                certificateOperationResponse.getValue().getStatus()));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperationWithResponse#string
-
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperationWithResponse#string
         certificateAsyncClient.deleteCertificateOperationWithResponse("certificateName")
             .subscribe(certificateOperationResponse -> System.out.printf("Deleted Certificate operation's last"
@@ -634,24 +625,9 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
 
     /**
      * Method to insert code snippets for {@link CertificateAsyncClient#mergeCertificate(MergeCertificateOptions)}
-     * and {@link CertificateAsyncClient#mergeCertificate(String, List)}
      */
     public void mergeCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificate#String-List
-        List<byte[]> x509Certs = new ArrayList<>();
-        certificateAsyncClient.mergeCertificate("certificateName", x509Certs)
-            .subscribe(certificate -> System.out.printf("Received Certificate with name %s and key id %s",
-                certificate.getProperties().getName(), certificate.getKeyId()));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificate#String-List
-
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificateWithResponse#String-List
-        List<byte[]> x509Certificates = new ArrayList<>();
-        certificateAsyncClient.mergeCertificateWithResponse("certificateName", x509Certificates)
-            .subscribe(certificateResponse -> System.out.printf("Received Certificate with name %s and key id %s",
-                certificateResponse.getValue().getProperties().getName(), certificateResponse.getValue().getKeyId()));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificateWithResponse#String-List
-
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificate#config
         List<byte[]> x509CertificatesToMerge = new ArrayList<>();
         MergeCertificateOptions config =

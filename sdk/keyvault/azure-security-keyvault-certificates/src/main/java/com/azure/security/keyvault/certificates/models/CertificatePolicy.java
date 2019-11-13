@@ -20,8 +20,6 @@ import java.util.Map;
  */
 public final class CertificatePolicy {
 
-    public static final CertificatePolicy DEFAULT = new CertificatePolicy("Self", "CN=DefaultPolicy");
-
     /**
      * The subject name. Should be a valid X509 distinguished Name.
      */
@@ -489,6 +487,14 @@ public final class CertificatePolicy {
      */
     public List<LifeTimeAction> getLifeTimeActions() {
         return this.lifeTimeActions;
+    }
+
+    /**
+     * Get the default certificate policy.
+     * @return the default certificate policy.
+     */
+    public static CertificatePolicy getDefaultPolicy() {
+        return  new CertificatePolicy("Self", "CN=DefaultPolicy");
     }
 
 

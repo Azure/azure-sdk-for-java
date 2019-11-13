@@ -107,7 +107,8 @@ public final class CertificateClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getCertificate#CertificateProperties
         for (CertificateProperties certificateProperties : certificateClient.listPropertiesOfCertificates()) {
-            KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificateProperties);
+            KeyVaultCertificate certificateWithAllProperties = certificateClient
+                .getCertificateVersion(certificateProperties.getName(), certificateProperties.getVersion());
             System.out.printf("Received certificate with name %s and secret id %s",
                 certificateWithAllProperties.getProperties().getName(), certificateWithAllProperties.getSecretId());
         }
@@ -432,7 +433,8 @@ public final class CertificateClientJavaDocCodeSnippets {
         CertificateClient certificateClient = getCertificateClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.listCertificates
         for (CertificateProperties certificateProperties : certificateClient.listPropertiesOfCertificates()) {
-            KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificateProperties);
+            KeyVaultCertificate certificateWithAllProperties = certificateClient
+                .getCertificateVersion(certificateProperties.getName(), certificateProperties.getVersion());
             System.out.printf("Received certificate with name %s and secret id %s",
                 certificateWithAllProperties.getProperties().getName(),
                 certificateWithAllProperties.getSecretId());
@@ -442,7 +444,8 @@ public final class CertificateClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.listCertificates#context
         for (CertificateProperties certificateProperties : certificateClient
             .listPropertiesOfCertificates(true, new Context(key1, value1))) {
-            KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificateProperties);
+            KeyVaultCertificate certificateWithAllProperties = certificateClient
+                .getCertificateVersion(certificateProperties.getName(), certificateProperties.getVersion());
             System.out.printf("Received certificate with name %s and secret id %s",
                 certificateWithAllProperties.getProperties().getName(),
                 certificateWithAllProperties.getSecretId());
@@ -485,7 +488,7 @@ public final class CertificateClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.listDeletedCertificates#context
         for (DeletedCertificate deletedCertificate : certificateClient
-            .listDeletedCertificates(new Context(key1, value1))) {
+            .listDeletedCertificates(true, new Context(key1, value1))) {
             System.out.printf("Deleted certificate's recovery Id %s", deletedCertificate.getRecoveryId());
         }
         // END: com.azure.security.keyvault.certificates.CertificateClient.listDeletedCertificates#context
@@ -499,7 +502,8 @@ public final class CertificateClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.listCertificateVersions
         for (CertificateProperties certificateProperties : certificateClient
             .listPropertiesOfCertificateVersions("certificateName")) {
-            KeyVaultCertificate certificateWithAllProperites  = certificateClient.getCertificate(certificateProperties);
+            KeyVaultCertificate certificateWithAllProperites  = certificateClient
+                .getCertificateVersion(certificateProperties.getName(), certificateProperties.getVersion());
             System.out.printf("Received certificate's version with name %s, version %s and secret id %s",
                 certificateWithAllProperites.getProperties().getName(),
                 certificateWithAllProperites.getProperties().getVersion(), certificateWithAllProperites.getSecretId());
@@ -509,7 +513,8 @@ public final class CertificateClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.listCertificateVersions#context
         for (CertificateProperties certificateProperties : certificateClient
             .listPropertiesOfCertificateVersions("certificateName")) {
-            KeyVaultCertificate certificateWithAllProperites  = certificateClient.getCertificate(certificateProperties);
+            KeyVaultCertificate certificateWithAllProperites  = certificateClient
+                .getCertificateVersion(certificateProperties.getName(), certificateProperties.getVersion());
             System.out.printf("Received certificate's version with name %s, version %s and secret id %s",
                 certificateWithAllProperites.getProperties().getName(),
                 certificateWithAllProperites.getProperties().getVersion(), certificateWithAllProperites.getSecretId());
@@ -569,23 +574,11 @@ public final class CertificateClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateClient#cancelCertificateOperation(String)} and
-     * {@link CertificateClient#cancelCertificateOperationWithResponse(String, Context)} (String)}
+     * Method to insert code snippets for {@link CertificateClient#deleteCertificateOperation(String)} (String)} and
+     * {@link CertificateClient#deleteCertificateOperationWithResponse(String, Context)}
      */
     public void certificateOperationCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#string
-        CertificateOperation certificateOperation = certificateClient
-            .cancelCertificateOperation("certificateName");
-        System.out.printf("Certificate Operation status %s", certificateOperation.getStatus());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#string
-
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperationWithResponse#string
-        Response<CertificateOperation> certificateOperationWithResponse = certificateClient
-            .cancelCertificateOperationWithResponse("certificateName", new Context(key1, value1));
-        System.out.printf("Certificate Operation status %s", certificateOperationWithResponse.getValue().getStatus());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperationWithResponse#string
-
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.deleteCertificateOperationWithResponse#string
         CertificateOperation deletedCertificateOperation = certificateClient
             .deleteCertificateOperation("certificateName");
@@ -602,26 +595,9 @@ public final class CertificateClientJavaDocCodeSnippets {
 
     /**
      * Method to insert code snippets for {@link CertificateAsyncClient#mergeCertificate(MergeCertificateOptions)}
-     * and {@link CertificateAsyncClient#mergeCertificate(String, List)}
      */
     public void mergeCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.mergeCertificate#String-List
-        List<byte[]> x509Certs = new ArrayList<>();
-        KeyVaultCertificate certificate = certificateClient.mergeCertificate("certificateName", x509Certs);
-        System.out.printf("Received Certificate with name %s and key id %s",
-            certificate.getProperties().getName(), certificate.getKeyId());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.mergeCertificate#String-List
-
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.mergeCertificateWithResponse#String-List-Context
-        List<byte[]> x509Certificates = new ArrayList<>();
-        Response<KeyVaultCertificate> certificateResponse =
-            certificateClient.mergeCertificateWithResponse("certificateName", x509Certs,
-                new Context(key1, value1));
-        System.out.printf("Received Certificate with name %s and key id %s",
-            certificateResponse.getValue().getProperties().getName(), certificateResponse.getValue().getKeyId());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.mergeCertificateWithResponse#String-List-Context
-
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.mergeCertificate#config
         List<byte[]> x509CertificatesToMerge = new ArrayList<>();
         MergeCertificateOptions config =
