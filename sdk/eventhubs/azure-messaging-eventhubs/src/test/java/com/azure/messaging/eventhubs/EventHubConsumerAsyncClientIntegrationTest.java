@@ -11,6 +11,7 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -20,6 +21,8 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -41,13 +44,10 @@ import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUM
  * @see EventPositionIntegrationTest
  */
 public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestBase {
-    private static final String PARTITION_ID = "0";
     private static final String PARTITION_ID_HEADER = "SENT_PARTITION_ID";
 
     private final String[] expectedPartitionIds = new String[]{"0", "1"};
 
-    // The maximum number of receivers on a partition + consumer group is 5.
-    private static final int MAX_NUMBER_OF_CONSUMERS = 5;
     private static final String MESSAGE_TRACKING_ID = UUID.randomUUID().toString();
 
     private EventHubAsyncClient client;

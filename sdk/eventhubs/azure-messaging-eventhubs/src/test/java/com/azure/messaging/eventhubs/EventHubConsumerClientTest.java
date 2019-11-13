@@ -321,7 +321,6 @@ public class EventHubConsumerClientTest {
             .thenReturn(Mono.just(new EventHubProperties(EVENT_HUB_NAME, Instant.EPOCH, partitions)));
 
         EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setIdentifier("an-identifier")
             .setPrefetchCount(PREFETCH);
 
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
