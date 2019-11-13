@@ -127,10 +127,10 @@ ClientSecretCredential credential = new ClientSecretCredentialBuilder()
 
 // The fully qualified namespace for the Event Hubs instance. This is likely to be similar to:
 // {your-namespace}.servicebus.windows.net
-String fullyQualifiedDomainName = "<< EVENT HUBS FULLY QUALIFIED NAMESPACE >>"
+String fullyQualifiedNamespace = "<< EVENT HUBS FULLY QUALIFIED NAMESPACE >>"
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
 EventHubProducerClient client = new EventHubClientBuilder()
-    .credential(host, eventHubName, credential)
+    .credential(fullyQualifiedNamespace, eventHubName, credential)
     .buildProducer();
 ```
 

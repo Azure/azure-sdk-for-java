@@ -47,7 +47,7 @@ class EventHubAsyncClient implements Closeable {
      * @return The fully qualified namespace of this Event Hub.
      */
     String getFullyQualifiedNamespace() {
-        return connection.getFullyQualifiedDomainName();
+        return connection.getFullyQualifiedNamespace();
     }
 
     /**
@@ -95,7 +95,7 @@ class EventHubAsyncClient implements Closeable {
      * @return A new {@link EventHubProducerAsyncClient}.
      */
     EventHubProducerAsyncClient createProducer() {
-        return new EventHubProducerAsyncClient(connection.getFullyQualifiedDomainName(), getEventHubName(), connection,
+        return new EventHubProducerAsyncClient(connection.getFullyQualifiedNamespace(), getEventHubName(), connection,
             connection.getRetryOptions(), tracerProvider, messageSerializer, isSharedConnection);
     }
 
@@ -162,7 +162,7 @@ class EventHubAsyncClient implements Closeable {
 
         final EventHubConsumerOptions clonedOptions = options.clone();
 
-        return new EventHubConsumerAsyncClient(connection.getFullyQualifiedDomainName(), getEventHubName(),
+        return new EventHubConsumerAsyncClient(connection.getFullyQualifiedNamespace(), getEventHubName(),
             connection, messageSerializer, consumerGroup, eventPosition, clonedOptions, isSharedConnection);
     }
 

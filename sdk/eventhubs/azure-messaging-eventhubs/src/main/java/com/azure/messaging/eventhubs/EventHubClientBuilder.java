@@ -514,7 +514,7 @@ public class EventHubClientBuilder {
     private EventHubConnection buildConnection(MessageSerializer messageSerializer) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-            connectionOptions.getAuthorizationType(), connectionOptions.getHostname(),
+            connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
             ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);

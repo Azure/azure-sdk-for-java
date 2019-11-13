@@ -33,7 +33,8 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
                                      String activeDirectoryScope) {
         this.activeDirectoryScope = Objects.requireNonNull(activeDirectoryScope,
             "'activeDirectoryScope' cannot be null.");
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'hostname' cannot be null.");
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
         this.authorizationType = Objects.requireNonNull(authorizationType,
             "'authorizationType' cannot be null.");
     }
