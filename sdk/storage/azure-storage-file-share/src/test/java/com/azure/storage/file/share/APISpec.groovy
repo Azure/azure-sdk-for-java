@@ -104,6 +104,10 @@ class APISpec extends Specification {
         return TestMode.PLAYBACK
     }
 
+    static def isLiveMode() {
+        return testMode != TestMode.PLAYBACK
+    }
+
     def fileServiceBuilderHelper() {
         def builder = new ShareServiceClientBuilder()
             .connectionString(connectionString)

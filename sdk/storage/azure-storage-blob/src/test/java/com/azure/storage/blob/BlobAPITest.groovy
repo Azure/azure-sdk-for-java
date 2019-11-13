@@ -29,6 +29,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import reactor.test.StepVerifier
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -289,7 +290,8 @@ class BlobAPITest extends APISpec {
         testFile.delete()
     }
 
-    @DoNotRecord(skipInPlayback = true)
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     @Unroll
     def "Download file"() {
         setup:
@@ -320,7 +322,8 @@ class BlobAPITest extends APISpec {
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
-    @DoNotRecord(skipInPlayback = true)
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     @Unroll
     def "Download file range"() {
         setup:
@@ -356,7 +359,8 @@ class BlobAPITest extends APISpec {
     /*
     This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
      */
-    @DoNotRecord(skipInPlayback = true)
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     @Unroll
     def "Download file range fail"() {
         setup:
@@ -378,7 +382,8 @@ class BlobAPITest extends APISpec {
         outFile.delete()
     }
 
-    @DoNotRecord(skipInPlayback = true)
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     def "Download file count null"() {
         setup:
         def file = getRandomFile(defaultDataSize)
@@ -398,7 +403,8 @@ class BlobAPITest extends APISpec {
         outFile.delete()
     }
 
-    @DoNotRecord(skipInPlayback = true)
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     @Unroll
     def "Download file AC"() {
         setup:
@@ -434,7 +440,8 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    @DoNotRecord(skipInPlayback = true)
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     @Unroll
     def "Download file AC fail"() {
         setup:
@@ -468,7 +475,8 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    @DoNotRecord(skipInPlayback = true)
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     def "Download file etag lock"() {
         setup:
         def file = getRandomFile(1 * 1024 * 1024)
@@ -507,7 +515,8 @@ class BlobAPITest extends APISpec {
         !outFile.exists() // We should delete the file we tried to create
     }
 
-    @DoNotRecord(skipInPlayback = true)
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     @Unroll
     def "Download file progress receiver"() {
         def file = getRandomFile(fileSize)
@@ -1202,10 +1211,10 @@ class BlobAPITest extends APISpec {
         bu2.upload(defaultInputStream.get(), defaultDataSize)
 
         def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
-        def blobAccessConditions = new BlobRequestConditions().setLeaseId(leaseId)
+        def blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId)
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccessConditions, Duration.ofMillis(500))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobRequestConditions, Duration.ofMillis(500))
         def response = poller.poll()
 
         assert response.getStatus() != LongRunningOperationStatus.FAILED

@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ServerBlobAuditingPolicies;
 import rx.Observable;
 import rx.functions.Func1;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ServerBlobAuditingPolicy;
 
 class ServerBlobAuditingPoliciesImpl extends WrapperImpl<ServerBlobAuditingPoliciesInner> implements ServerBlobAuditingPolicies {
@@ -41,13 +42,35 @@ class ServerBlobAuditingPoliciesImpl extends WrapperImpl<ServerBlobAuditingPolic
     }
 
     @Override
-    public Observable<ServerBlobAuditingPolicy> getAsync(String resourceGroupName, String serverName) {
+    public Observable<ServerBlobAuditingPolicy> listByServerAsync(final String resourceGroupName, final String serverName) {
         ServerBlobAuditingPoliciesInner client = this.inner();
-        return client.getAsync(resourceGroupName, serverName)
+        return client.listByServerAsync(resourceGroupName, serverName)
+        .flatMapIterable(new Func1<Page<ServerBlobAuditingPolicyInner>, Iterable<ServerBlobAuditingPolicyInner>>() {
+            @Override
+            public Iterable<ServerBlobAuditingPolicyInner> call(Page<ServerBlobAuditingPolicyInner> page) {
+                return page.items();
+            }
+        })
         .map(new Func1<ServerBlobAuditingPolicyInner, ServerBlobAuditingPolicy>() {
             @Override
             public ServerBlobAuditingPolicy call(ServerBlobAuditingPolicyInner inner) {
                 return wrapModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Observable<ServerBlobAuditingPolicy> getAsync(String resourceGroupName, String serverName) {
+        ServerBlobAuditingPoliciesInner client = this.inner();
+        return client.getAsync(resourceGroupName, serverName)
+        .flatMap(new Func1<ServerBlobAuditingPolicyInner, Observable<ServerBlobAuditingPolicy>>() {
+            @Override
+            public Observable<ServerBlobAuditingPolicy> call(ServerBlobAuditingPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerBlobAuditingPolicy)wrapModel(inner));
+                }
             }
        });
     }

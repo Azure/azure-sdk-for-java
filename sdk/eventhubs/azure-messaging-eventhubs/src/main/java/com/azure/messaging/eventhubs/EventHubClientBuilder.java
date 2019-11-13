@@ -20,8 +20,8 @@ import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
@@ -460,6 +460,14 @@ public class EventHubClientBuilder {
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     EventHubAsyncClient buildAsyncClient() {
+        if (retryOptions == null) {
+            retryOptions = DEFAULT_RETRY;
+        }
+
+        if (scheduler == null) {
+            scheduler = Schedulers.elastic();
+        }
+
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final boolean isSharedConnection = eventHubConnection != null;
@@ -537,10 +545,6 @@ public class EventHubClientBuilder {
             connectionString(connectionString);
         }
 
-        if (retryOptions == null) {
-            retryOptions = DEFAULT_RETRY;
-        }
-
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
         // is not AMQP_WEB_SOCKETS.
         if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()
@@ -551,10 +555,6 @@ public class EventHubClientBuilder {
 
         if (proxyConfiguration == null) {
             proxyConfiguration = getDefaultProxyConfiguration(configuration);
-        }
-
-        if (scheduler == null) {
-            scheduler = Schedulers.elastic();
         }
 
         final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedAccessKeyCredential

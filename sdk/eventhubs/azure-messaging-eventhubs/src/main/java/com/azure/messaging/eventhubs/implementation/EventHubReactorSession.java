@@ -14,7 +14,6 @@ import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.util.CoreUtils;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -91,9 +90,6 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         final Map<Symbol, Object> properties = new HashMap<>();
         if (options.getOwnerLevel() != null) {
             properties.put(EPOCH, options.getOwnerLevel());
-        }
-        if (!CoreUtils.isNullOrEmpty(options.getIdentifier())) {
-            properties.put(RECEIVER_IDENTIFIER_NAME, options.getIdentifier());
         }
 
         final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventProperties()

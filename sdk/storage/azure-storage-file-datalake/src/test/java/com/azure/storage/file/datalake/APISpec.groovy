@@ -1,6 +1,11 @@
 package com.azure.storage.file.datalake
 
-import com.azure.core.http.*
+import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
@@ -8,16 +13,20 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
+import com.azure.core.test.TestRunVerifier
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.models.FileSystemItem
+import com.azure.storage.file.datalake.models.LeaseStateType
+import com.azure.storage.file.datalake.models.ListFileSystemsOptions
+import com.azure.storage.file.datalake.models.PathAccessControlEntry
+import com.azure.storage.file.datalake.models.PathProperties
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -91,7 +100,7 @@ class APISpec extends Specification {
     public static final String defaultEndpointTemplate = "https://%s.dfs.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
-    static def DATA_LAKE_STORAGE = "DATA_LAKE_STORAGE"
+    static def DATA_LAKE_STORAGE = "STORAGE_DATA_LAKE_"
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential alternateCredential
@@ -106,7 +115,7 @@ class APISpec extends Specification {
     DataLakeServiceClient premiumDataLakeServiceClient
 
     InterceptorManager interceptorManager
-    boolean recordLiveMode
+    TestRunVerifier testRunVerifier
     private TestResourceNamer resourceNamer
     protected String testName
     def fileSystemName
@@ -122,11 +131,11 @@ class APISpec extends Specification {
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
-        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
 
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
+        testRunVerifier = new TestRunVerifier(specificationContext.getCurrentFeature().getFeatureMethod().getReflection())
+
+        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode, testRunVerifier.doNotRecordTest())
+        this.resourceNamer = new TestResourceNamer(className + testName, testMode, testRunVerifier.doNotRecordTest(), interceptorManager.getRecordedData())
 
         primaryDataLakeServiceClient = setClient(primaryCredential)
         primaryDataLakeServiceAsyncClient = getServiceAsyncClient(primaryCredential)
@@ -174,15 +183,11 @@ class APISpec extends Specification {
         return TestMode.PLAYBACK
     }
 
-    static boolean liveMode() {
-        return setupTestMode() == TestMode.RECORD
-    }
-
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -212,15 +217,16 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD) {
-            if (recordLiveMode) {
-                builder.addPolicy(interceptorManager.getRecordPolicy())
-            }
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
-        } else {
+        if (testMode == TestMode.PLAYBACK) {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
             return builder.credential(primaryCredential).buildClient()
+        } else {
+            if (!testRunVerifier.doNotRecordTest()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy())
+            }
+
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
         }
     }
 
@@ -261,7 +267,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -273,18 +279,18 @@ class APISpec extends Specification {
     }
 
     HttpClient getHttpClient() {
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode == TestMode.RECORD) {
-            builder.wiretap(true)
-
-            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            }
-
-            return builder.build()
-        } else {
+        if (testMode == TestMode.PLAYBACK && !testRunVerifier.doNotRecordTest()) {
             return interceptorManager.getPlaybackClient()
         }
+
+        def httpClientBuilder = new NettyAsyncHttpClientBuilder()
+        if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+            httpClientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+        }
+
+        return (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest())
+            ? httpClientBuilder.wiretap(true).build()
+            : httpClientBuilder.build()
     }
 
     static DataLakeLeaseClient createLeaseClient(DataLakePathClient pathClient) {
@@ -319,7 +325,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -333,7 +339,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -347,7 +353,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -360,7 +366,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -476,7 +482,7 @@ class APISpec extends Specification {
     }
 
     /**
-     * This helper method will acquire a lease on a path to prepare for testing leaseAccessConditions. We want to test
+     * This helper method will acquire a lease on a path to prepare for testing lease id. We want to test
      * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
      * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
      * with other AC tests.
@@ -486,7 +492,7 @@ class APISpec extends Specification {
      * @param leaseID
      *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
      * @return
-     * The actual leaseAccessConditions of the path if recievedLeaseID is passed, otherwise whatever was passed will be
+     * The actual lease id of the path if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
     def setupPathLeaseCondition(DataLakePathClient pc, String leaseID) {
@@ -536,7 +542,6 @@ class APISpec extends Specification {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
      */
-
     class MockDownloadHttpResponse extends HttpResponse {
         private final int statusCode
         private final HttpHeaders headers

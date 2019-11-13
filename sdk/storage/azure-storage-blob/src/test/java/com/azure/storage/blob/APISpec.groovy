@@ -16,13 +16,13 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.util.FluxUtil
-import com.azure.core.util.CoreUtils
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.annotation.DoNotRecord
+import com.azure.core.test.TestRunVerifier
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
+import com.azure.core.util.CoreUtils
+import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobContainerItem
@@ -50,8 +50,6 @@ import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Supplier
-
-import static org.junit.Assume.assumeTrue
 
 class APISpec extends Specification {
     @Shared
@@ -134,11 +132,10 @@ class APISpec extends Specification {
     BlobServiceClient premiumBlobServiceClient
 
     InterceptorManager interceptorManager
-    boolean recordLiveMode
-    boolean testRan
     protected TestResourceNamer resourceNamer
     protected String testName
     String containerName
+    TestRunVerifier testRunVerifier
 
     def setupSpec() {
         testMode = setupTestMode()
@@ -155,19 +152,10 @@ class APISpec extends Specification {
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
 
-        def doNotRecordAnnotation = specificationContext.getCurrentIteration().getDescription().getAnnotation(DoNotRecord.class)
+        testRunVerifier = new TestRunVerifier(specificationContext.getCurrentFeature().getFeatureMethod().getReflection())
 
-        if (doNotRecordAnnotation != null) {
-            recordLiveMode = false
-            testRan = !(doNotRecordAnnotation.skipInPlayback() && setupTestMode() == TestMode.PLAYBACK)
-            assumeTrue("Test does not allow playback and was ran in 'TestMode.PLAYBACK'.", testRan)
-        } else {
-            recordLiveMode = true
-            testRan = true
-        }
-
-        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode, !recordLiveMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, testMode, !recordLiveMode, interceptorManager.getRecordedData())
+        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode, testRunVerifier.doNotRecordTest())
+        this.resourceNamer = new TestResourceNamer(className + testName, testMode, testRunVerifier.doNotRecordTest(), interceptorManager.getRecordedData())
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
@@ -182,20 +170,18 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        if (testRan) {
-            def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
-            for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
-                BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
+        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
+        for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
+            BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 
-                if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                    createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
-                }
-
-                containerClient.delete()
+            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
             }
 
-            interceptorManager.close()
+            containerClient.delete()
         }
+
+        interceptorManager.close()
     }
 
     //TODO: Should this go in core.
@@ -215,6 +201,10 @@ class APISpec extends Specification {
         }
 
         return TestMode.PLAYBACK
+    }
+
+    static def isLiveMode() {
+        return testMode != TestMode.PLAYBACK
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
@@ -253,7 +243,7 @@ class APISpec extends Specification {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (testMode == TestMode.RECORD) {
-            if (recordLiveMode) {
+            if (!testRunVerifier.doNotRecordTest()) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -301,7 +291,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -318,7 +308,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -332,7 +322,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -351,7 +341,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -368,7 +358,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -382,7 +372,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -399,7 +389,7 @@ class APISpec extends Specification {
             builder.sasToken(sasToken)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -407,20 +397,18 @@ class APISpec extends Specification {
     }
 
     HttpClient getHttpClient() {
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode == TestMode.RECORD) {
-            builder.wiretap(true)
-
-            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            }
-
-            return builder.build()
-        } else if (testMode == TestMode.LIVE) {
-            return builder.build()
-        } else {
+        if (testMode == TestMode.PLAYBACK && !testRunVerifier.doNotRecordTest()) {
             return interceptorManager.getPlaybackClient()
         }
+
+        def httpClientBuilder = new NettyAsyncHttpClientBuilder()
+        if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+            httpClientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+        }
+
+        return (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest())
+            ? httpClientBuilder.wiretap(true).build()
+            : httpClientBuilder.build()
     }
 
     static BlobLeaseClient createLeaseClient(BlobClientBase blobClient) {
@@ -484,6 +472,7 @@ class APISpec extends Specification {
     /*
      Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
+
     ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }
@@ -491,6 +480,7 @@ class APISpec extends Specification {
     /*
     We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
      */
+
     File getRandomFile(int size) {
         File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
         file.deleteOnExit()
@@ -567,7 +557,7 @@ class APISpec extends Specification {
     }
 
     /**
-     * This helper method will acquire a lease on a blob to prepare for testing leaseAccessConditions. We want to test
+     * This helper method will acquire a lease on a blob to prepare for testing lease Id. We want to test
      * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
      * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
      * with other AC tests.
@@ -577,7 +567,7 @@ class APISpec extends Specification {
      * @param leaseID
      *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
      * @return
-     * The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
+     * The actual lease Id of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
     def setupBlobLeaseCondition(BlobClientBase bc, String leaseID) {

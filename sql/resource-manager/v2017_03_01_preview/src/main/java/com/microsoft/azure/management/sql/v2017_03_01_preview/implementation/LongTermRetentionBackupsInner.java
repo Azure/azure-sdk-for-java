@@ -59,6 +59,30 @@ public class LongTermRetentionBackupsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface LongTermRetentionBackupsService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.LongTermRetentionBackups getByResourceGroup" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("locationName") String locationName, @Path("longTermRetentionServerName") String longTermRetentionServerName, @Path("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @Path("backupName") String backupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.LongTermRetentionBackups deleteByResourceGroup" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("locationName") String locationName, @Path("longTermRetentionServerName") String longTermRetentionServerName, @Path("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @Path("backupName") String backupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.LongTermRetentionBackups beginDeleteByResourceGroup" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("locationName") String locationName, @Path("longTermRetentionServerName") String longTermRetentionServerName, @Path("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @Path("backupName") String backupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.LongTermRetentionBackups listByResourceGroupDatabase" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups")
+        Observable<Response<ResponseBody>> listByResourceGroupDatabase(@Path("resourceGroupName") String resourceGroupName, @Path("locationName") String locationName, @Path("longTermRetentionServerName") String longTermRetentionServerName, @Path("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @Path("subscriptionId") String subscriptionId, @Query("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase, @Query("databaseState") LongTermRetentionDatabaseState databaseState, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.LongTermRetentionBackups listByResourceGroupLocation" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups")
+        Observable<Response<ResponseBody>> listByResourceGroupLocation(@Path("resourceGroupName") String resourceGroupName, @Path("locationName") String locationName, @Path("subscriptionId") String subscriptionId, @Query("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase, @Query("databaseState") LongTermRetentionDatabaseState databaseState, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.LongTermRetentionBackups listByResourceGroupServer" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
+        Observable<Response<ResponseBody>> listByResourceGroupServer(@Path("resourceGroupName") String resourceGroupName, @Path("locationName") String locationName, @Path("longTermRetentionServerName") String longTermRetentionServerName, @Path("subscriptionId") String subscriptionId, @Query("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase, @Query("databaseState") LongTermRetentionDatabaseState databaseState, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.LongTermRetentionBackups get" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         Observable<Response<ResponseBody>> get(@Path("locationName") String locationName, @Path("longTermRetentionServerName") String longTermRetentionServerName, @Path("longTermRetentionDatabaseName") String longTermRetentionDatabaseName, @Path("backupName") String backupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -83,6 +107,18 @@ public class LongTermRetentionBackupsInner {
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
         Observable<Response<ResponseBody>> listByServer(@Path("locationName") String locationName, @Path("longTermRetentionServerName") String longTermRetentionServerName, @Path("subscriptionId") String subscriptionId, @Query("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase, @Query("databaseState") LongTermRetentionDatabaseState databaseState, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.LongTermRetentionBackups listByResourceGroupDatabaseNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupDatabaseNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.LongTermRetentionBackups listByResourceGroupLocationNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupLocationNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.LongTermRetentionBackups listByResourceGroupServerNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupServerNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.LongTermRetentionBackups listByDatabaseNext" })
         @GET
         Observable<Response<ResponseBody>> listByDatabaseNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -100,9 +136,1113 @@ public class LongTermRetentionBackupsInner {
     /**
      * Gets a long term retention backup.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the LongTermRetentionBackupInner object if successful.
+     */
+    public LongTermRetentionBackupInner getByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<LongTermRetentionBackupInner> getByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, final ServiceCallback<LongTermRetentionBackupInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName), serviceCallback);
+    }
+
+    /**
+     * Gets a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LongTermRetentionBackupInner object
+     */
+    public Observable<LongTermRetentionBackupInner> getByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).map(new Func1<ServiceResponse<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>() {
+            @Override
+            public LongTermRetentionBackupInner call(ServiceResponse<LongTermRetentionBackupInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LongTermRetentionBackupInner object
+     */
+    public Observable<ServiceResponse<LongTermRetentionBackupInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (locationName == null) {
+            throw new IllegalArgumentException("Parameter locationName is required and cannot be null.");
+        }
+        if (longTermRetentionServerName == null) {
+            throw new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null.");
+        }
+        if (longTermRetentionDatabaseName == null) {
+            throw new IllegalArgumentException("Parameter longTermRetentionDatabaseName is required and cannot be null.");
+        }
+        if (backupName == null) {
+            throw new IllegalArgumentException("Parameter backupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getByResourceGroup(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LongTermRetentionBackupInner>>>() {
+                @Override
+                public Observable<ServiceResponse<LongTermRetentionBackupInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<LongTermRetentionBackupInner> clientResponse = getByResourceGroupDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<LongTermRetentionBackupInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<LongTermRetentionBackupInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<LongTermRetentionBackupInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        deleteByResourceGroupWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteByResourceGroupWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName), serviceCallback);
+    }
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return deleteByResourceGroupWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteByResourceGroupWithServiceResponseAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (locationName == null) {
+            throw new IllegalArgumentException("Parameter locationName is required and cannot be null.");
+        }
+        if (longTermRetentionServerName == null) {
+            throw new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null.");
+        }
+        if (longTermRetentionDatabaseName == null) {
+            throw new IllegalArgumentException("Parameter longTermRetentionDatabaseName is required and cannot be null.");
+        }
+        if (backupName == null) {
+            throw new IllegalArgumentException("Parameter backupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.deleteByResourceGroup(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        beginDeleteByResourceGroupWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteByResourceGroupWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName), serviceCallback);
+    }
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        return beginDeleteByResourceGroupWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteByResourceGroupWithServiceResponseAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (locationName == null) {
+            throw new IllegalArgumentException("Parameter locationName is required and cannot be null.");
+        }
+        if (longTermRetentionServerName == null) {
+            throw new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null.");
+        }
+        if (longTermRetentionDatabaseName == null) {
+            throw new IllegalArgumentException("Parameter longTermRetentionDatabaseName is required and cannot be null.");
+        }
+        if (backupName == null) {
+            throw new IllegalArgumentException("Parameter backupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDeleteByResourceGroup(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteByResourceGroupDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object if successful.
+     */
+    public PagedList<LongTermRetentionBackupInner> listByResourceGroupDatabase(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName) {
+        ServiceResponse<Page<LongTermRetentionBackupInner>> response = listByResourceGroupDatabaseSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName).toBlocking().single();
+        return new PagedList<LongTermRetentionBackupInner>(response.body()) {
+            @Override
+            public Page<LongTermRetentionBackupInner> nextPage(String nextPageLink) {
+                return listByResourceGroupDatabaseNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<LongTermRetentionBackupInner>> listByResourceGroupDatabaseAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName, final ListOperationCallback<LongTermRetentionBackupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupDatabaseSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName),
+            new Func1<String, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(String nextPageLink) {
+                    return listByResourceGroupDatabaseNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<Page<LongTermRetentionBackupInner>> listByResourceGroupDatabaseAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName) {
+        return listByResourceGroupDatabaseWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName)
+            .map(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Page<LongTermRetentionBackupInner>>() {
+                @Override
+                public Page<LongTermRetentionBackupInner> call(ServiceResponse<Page<LongTermRetentionBackupInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupDatabaseWithServiceResponseAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName) {
+        return listByResourceGroupDatabaseSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName)
+            .concatMap(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(ServiceResponse<Page<LongTermRetentionBackupInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupDatabaseNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupDatabaseSinglePageAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (locationName == null) {
+            throw new IllegalArgumentException("Parameter locationName is required and cannot be null.");
+        }
+        if (longTermRetentionServerName == null) {
+            throw new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null.");
+        }
+        if (longTermRetentionDatabaseName == null) {
+            throw new IllegalArgumentException("Parameter longTermRetentionDatabaseName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Boolean onlyLatestPerDatabase = null;
+        final LongTermRetentionDatabaseState databaseState = null;
+        return service.listByResourceGroupDatabase(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, this.client.subscriptionId(), onlyLatestPerDatabase, databaseState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<LongTermRetentionBackupInner>> result = listByResourceGroupDatabaseDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<LongTermRetentionBackupInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object if successful.
+     */
+    public PagedList<LongTermRetentionBackupInner> listByResourceGroupDatabase(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState) {
+        ServiceResponse<Page<LongTermRetentionBackupInner>> response = listByResourceGroupDatabaseSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState).toBlocking().single();
+        return new PagedList<LongTermRetentionBackupInner>(response.body()) {
+            @Override
+            public Page<LongTermRetentionBackupInner> nextPage(String nextPageLink) {
+                return listByResourceGroupDatabaseNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<LongTermRetentionBackupInner>> listByResourceGroupDatabaseAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState, final ListOperationCallback<LongTermRetentionBackupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupDatabaseSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState),
+            new Func1<String, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(String nextPageLink) {
+                    return listByResourceGroupDatabaseNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<Page<LongTermRetentionBackupInner>> listByResourceGroupDatabaseAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState) {
+        return listByResourceGroupDatabaseWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState)
+            .map(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Page<LongTermRetentionBackupInner>>() {
+                @Override
+                public Page<LongTermRetentionBackupInner> call(ServiceResponse<Page<LongTermRetentionBackupInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupDatabaseWithServiceResponseAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState) {
+        return listByResourceGroupDatabaseSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState)
+            .concatMap(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(ServiceResponse<Page<LongTermRetentionBackupInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupDatabaseNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param locationName The location of the database
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionServerName The name of the server
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionDatabaseName The name of the database
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupDatabaseSinglePageAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (locationName == null) {
+            throw new IllegalArgumentException("Parameter locationName is required and cannot be null.");
+        }
+        if (longTermRetentionServerName == null) {
+            throw new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null.");
+        }
+        if (longTermRetentionDatabaseName == null) {
+            throw new IllegalArgumentException("Parameter longTermRetentionDatabaseName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByResourceGroupDatabase(resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, this.client.subscriptionId(), onlyLatestPerDatabase, databaseState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<LongTermRetentionBackupInner>> result = listByResourceGroupDatabaseDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<LongTermRetentionBackupInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<LongTermRetentionBackupInner>> listByResourceGroupDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<LongTermRetentionBackupInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<LongTermRetentionBackupInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object if successful.
+     */
+    public PagedList<LongTermRetentionBackupInner> listByResourceGroupLocation(final String resourceGroupName, final String locationName) {
+        ServiceResponse<Page<LongTermRetentionBackupInner>> response = listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName).toBlocking().single();
+        return new PagedList<LongTermRetentionBackupInner>(response.body()) {
+            @Override
+            public Page<LongTermRetentionBackupInner> nextPage(String nextPageLink) {
+                return listByResourceGroupLocationNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<LongTermRetentionBackupInner>> listByResourceGroupLocationAsync(final String resourceGroupName, final String locationName, final ListOperationCallback<LongTermRetentionBackupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName),
+            new Func1<String, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(String nextPageLink) {
+                    return listByResourceGroupLocationNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<Page<LongTermRetentionBackupInner>> listByResourceGroupLocationAsync(final String resourceGroupName, final String locationName) {
+        return listByResourceGroupLocationWithServiceResponseAsync(resourceGroupName, locationName)
+            .map(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Page<LongTermRetentionBackupInner>>() {
+                @Override
+                public Page<LongTermRetentionBackupInner> call(ServiceResponse<Page<LongTermRetentionBackupInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupLocationWithServiceResponseAsync(final String resourceGroupName, final String locationName) {
+        return listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName)
+            .concatMap(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(ServiceResponse<Page<LongTermRetentionBackupInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupLocationNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupLocationSinglePageAsync(final String resourceGroupName, final String locationName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (locationName == null) {
+            throw new IllegalArgumentException("Parameter locationName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Boolean onlyLatestPerDatabase = null;
+        final LongTermRetentionDatabaseState databaseState = null;
+        return service.listByResourceGroupLocation(resourceGroupName, locationName, this.client.subscriptionId(), onlyLatestPerDatabase, databaseState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<LongTermRetentionBackupInner>> result = listByResourceGroupLocationDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<LongTermRetentionBackupInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object if successful.
+     */
+    public PagedList<LongTermRetentionBackupInner> listByResourceGroupLocation(final String resourceGroupName, final String locationName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState) {
+        ServiceResponse<Page<LongTermRetentionBackupInner>> response = listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState).toBlocking().single();
+        return new PagedList<LongTermRetentionBackupInner>(response.body()) {
+            @Override
+            public Page<LongTermRetentionBackupInner> nextPage(String nextPageLink) {
+                return listByResourceGroupLocationNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<LongTermRetentionBackupInner>> listByResourceGroupLocationAsync(final String resourceGroupName, final String locationName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState, final ListOperationCallback<LongTermRetentionBackupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState),
+            new Func1<String, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(String nextPageLink) {
+                    return listByResourceGroupLocationNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<Page<LongTermRetentionBackupInner>> listByResourceGroupLocationAsync(final String resourceGroupName, final String locationName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState) {
+        return listByResourceGroupLocationWithServiceResponseAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState)
+            .map(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Page<LongTermRetentionBackupInner>>() {
+                @Override
+                public Page<LongTermRetentionBackupInner> call(ServiceResponse<Page<LongTermRetentionBackupInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupLocationWithServiceResponseAsync(final String resourceGroupName, final String locationName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState) {
+        return listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState)
+            .concatMap(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(ServiceResponse<Page<LongTermRetentionBackupInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupLocationNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param locationName The location of the database
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupLocationSinglePageAsync(final String resourceGroupName, final String locationName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (locationName == null) {
+            throw new IllegalArgumentException("Parameter locationName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByResourceGroupLocation(resourceGroupName, locationName, this.client.subscriptionId(), onlyLatestPerDatabase, databaseState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<LongTermRetentionBackupInner>> result = listByResourceGroupLocationDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<LongTermRetentionBackupInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<LongTermRetentionBackupInner>> listByResourceGroupLocationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<LongTermRetentionBackupInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<LongTermRetentionBackupInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object if successful.
+     */
+    public PagedList<LongTermRetentionBackupInner> listByResourceGroupServer(final String resourceGroupName, final String locationName, final String longTermRetentionServerName) {
+        ServiceResponse<Page<LongTermRetentionBackupInner>> response = listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName).toBlocking().single();
+        return new PagedList<LongTermRetentionBackupInner>(response.body()) {
+            @Override
+            public Page<LongTermRetentionBackupInner> nextPage(String nextPageLink) {
+                return listByResourceGroupServerNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<LongTermRetentionBackupInner>> listByResourceGroupServerAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final ListOperationCallback<LongTermRetentionBackupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName),
+            new Func1<String, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(String nextPageLink) {
+                    return listByResourceGroupServerNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<Page<LongTermRetentionBackupInner>> listByResourceGroupServerAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName) {
+        return listByResourceGroupServerWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName)
+            .map(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Page<LongTermRetentionBackupInner>>() {
+                @Override
+                public Page<LongTermRetentionBackupInner> call(ServiceResponse<Page<LongTermRetentionBackupInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupServerWithServiceResponseAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName) {
+        return listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName)
+            .concatMap(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(ServiceResponse<Page<LongTermRetentionBackupInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupServerNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupServerSinglePageAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (locationName == null) {
+            throw new IllegalArgumentException("Parameter locationName is required and cannot be null.");
+        }
+        if (longTermRetentionServerName == null) {
+            throw new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Boolean onlyLatestPerDatabase = null;
+        final LongTermRetentionDatabaseState databaseState = null;
+        return service.listByResourceGroupServer(resourceGroupName, locationName, longTermRetentionServerName, this.client.subscriptionId(), onlyLatestPerDatabase, databaseState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<LongTermRetentionBackupInner>> result = listByResourceGroupServerDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<LongTermRetentionBackupInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object if successful.
+     */
+    public PagedList<LongTermRetentionBackupInner> listByResourceGroupServer(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState) {
+        ServiceResponse<Page<LongTermRetentionBackupInner>> response = listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState).toBlocking().single();
+        return new PagedList<LongTermRetentionBackupInner>(response.body()) {
+            @Override
+            public Page<LongTermRetentionBackupInner> nextPage(String nextPageLink) {
+                return listByResourceGroupServerNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<LongTermRetentionBackupInner>> listByResourceGroupServerAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState, final ListOperationCallback<LongTermRetentionBackupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState),
+            new Func1<String, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(String nextPageLink) {
+                    return listByResourceGroupServerNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<Page<LongTermRetentionBackupInner>> listByResourceGroupServerAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState) {
+        return listByResourceGroupServerWithServiceResponseAsync(resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState)
+            .map(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Page<LongTermRetentionBackupInner>>() {
+                @Override
+                public Page<LongTermRetentionBackupInner> call(ServiceResponse<Page<LongTermRetentionBackupInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupServerWithServiceResponseAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState) {
+        return listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState)
+            .concatMap(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(ServiceResponse<Page<LongTermRetentionBackupInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupServerNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param locationName The location of the database
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionServerName The name of the server
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupServerSinglePageAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final Boolean onlyLatestPerDatabase, final LongTermRetentionDatabaseState databaseState) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (locationName == null) {
+            throw new IllegalArgumentException("Parameter locationName is required and cannot be null.");
+        }
+        if (longTermRetentionServerName == null) {
+            throw new IllegalArgumentException("Parameter longTermRetentionServerName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByResourceGroupServer(resourceGroupName, locationName, longTermRetentionServerName, this.client.subscriptionId(), onlyLatestPerDatabase, databaseState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<LongTermRetentionBackupInner>> result = listByResourceGroupServerDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<LongTermRetentionBackupInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<LongTermRetentionBackupInner>> listByResourceGroupServerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<LongTermRetentionBackupInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<LongTermRetentionBackupInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -117,8 +1257,8 @@ public class LongTermRetentionBackupsInner {
      * Gets a long term retention backup.
      *
      * @param locationName The location of the database.
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -132,8 +1272,8 @@ public class LongTermRetentionBackupsInner {
      * Gets a long term retention backup.
      *
      * @param locationName The location of the database.
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LongTermRetentionBackupInner object
@@ -151,8 +1291,8 @@ public class LongTermRetentionBackupsInner {
      * Gets a long term retention backup.
      *
      * @param locationName The location of the database.
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LongTermRetentionBackupInner object
@@ -201,8 +1341,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -216,8 +1356,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -231,8 +1371,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -250,8 +1390,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -283,8 +1423,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -298,8 +1438,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -313,8 +1453,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -332,8 +1472,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -383,8 +1523,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -404,8 +1544,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -426,8 +1566,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
      */
@@ -445,8 +1585,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
      */
@@ -468,8 +1608,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -509,8 +1649,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -532,8 +1672,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -556,8 +1696,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -577,8 +1717,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -602,8 +1742,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
     ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param locationName The location of the database
-    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionServerName the String value
-    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionDatabaseName the String value
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionServerName The name of the server
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionDatabaseName The name of the database
     ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
     ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -885,7 +2025,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -905,7 +2045,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -926,7 +2066,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
      */
@@ -944,7 +2084,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
      */
@@ -966,7 +2106,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -1003,7 +2143,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1025,7 +2165,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1048,7 +2188,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1068,7 +2208,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1092,7 +2232,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
     ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param locationName The location of the database
-    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionServerName the String value
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionServerName The name of the server
     ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
     ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1126,6 +2266,339 @@ public class LongTermRetentionBackupsInner {
     }
 
     private ServiceResponse<PageImpl<LongTermRetentionBackupInner>> listByServerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<LongTermRetentionBackupInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<LongTermRetentionBackupInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object if successful.
+     */
+    public PagedList<LongTermRetentionBackupInner> listByResourceGroupDatabaseNext(final String nextPageLink) {
+        ServiceResponse<Page<LongTermRetentionBackupInner>> response = listByResourceGroupDatabaseNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<LongTermRetentionBackupInner>(response.body()) {
+            @Override
+            public Page<LongTermRetentionBackupInner> nextPage(String nextPageLink) {
+                return listByResourceGroupDatabaseNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<LongTermRetentionBackupInner>> listByResourceGroupDatabaseNextAsync(final String nextPageLink, final ServiceFuture<List<LongTermRetentionBackupInner>> serviceFuture, final ListOperationCallback<LongTermRetentionBackupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupDatabaseNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(String nextPageLink) {
+                    return listByResourceGroupDatabaseNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<Page<LongTermRetentionBackupInner>> listByResourceGroupDatabaseNextAsync(final String nextPageLink) {
+        return listByResourceGroupDatabaseNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Page<LongTermRetentionBackupInner>>() {
+                @Override
+                public Page<LongTermRetentionBackupInner> call(ServiceResponse<Page<LongTermRetentionBackupInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupDatabaseNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupDatabaseNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(ServiceResponse<Page<LongTermRetentionBackupInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupDatabaseNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupDatabaseNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupDatabaseNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<LongTermRetentionBackupInner>> result = listByResourceGroupDatabaseNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<LongTermRetentionBackupInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<LongTermRetentionBackupInner>> listByResourceGroupDatabaseNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<LongTermRetentionBackupInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<LongTermRetentionBackupInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object if successful.
+     */
+    public PagedList<LongTermRetentionBackupInner> listByResourceGroupLocationNext(final String nextPageLink) {
+        ServiceResponse<Page<LongTermRetentionBackupInner>> response = listByResourceGroupLocationNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<LongTermRetentionBackupInner>(response.body()) {
+            @Override
+            public Page<LongTermRetentionBackupInner> nextPage(String nextPageLink) {
+                return listByResourceGroupLocationNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<LongTermRetentionBackupInner>> listByResourceGroupLocationNextAsync(final String nextPageLink, final ServiceFuture<List<LongTermRetentionBackupInner>> serviceFuture, final ListOperationCallback<LongTermRetentionBackupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupLocationNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(String nextPageLink) {
+                    return listByResourceGroupLocationNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<Page<LongTermRetentionBackupInner>> listByResourceGroupLocationNextAsync(final String nextPageLink) {
+        return listByResourceGroupLocationNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Page<LongTermRetentionBackupInner>>() {
+                @Override
+                public Page<LongTermRetentionBackupInner> call(ServiceResponse<Page<LongTermRetentionBackupInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupLocationNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupLocationNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(ServiceResponse<Page<LongTermRetentionBackupInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupLocationNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupLocationNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupLocationNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<LongTermRetentionBackupInner>> result = listByResourceGroupLocationNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<LongTermRetentionBackupInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<LongTermRetentionBackupInner>> listByResourceGroupLocationNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<LongTermRetentionBackupInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<LongTermRetentionBackupInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object if successful.
+     */
+    public PagedList<LongTermRetentionBackupInner> listByResourceGroupServerNext(final String nextPageLink) {
+        ServiceResponse<Page<LongTermRetentionBackupInner>> response = listByResourceGroupServerNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<LongTermRetentionBackupInner>(response.body()) {
+            @Override
+            public Page<LongTermRetentionBackupInner> nextPage(String nextPageLink) {
+                return listByResourceGroupServerNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<LongTermRetentionBackupInner>> listByResourceGroupServerNextAsync(final String nextPageLink, final ServiceFuture<List<LongTermRetentionBackupInner>> serviceFuture, final ListOperationCallback<LongTermRetentionBackupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupServerNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(String nextPageLink) {
+                    return listByResourceGroupServerNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<Page<LongTermRetentionBackupInner>> listByResourceGroupServerNextAsync(final String nextPageLink) {
+        return listByResourceGroupServerNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Page<LongTermRetentionBackupInner>>() {
+                @Override
+                public Page<LongTermRetentionBackupInner> call(ServiceResponse<Page<LongTermRetentionBackupInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupServerNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupServerNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<LongTermRetentionBackupInner>>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(ServiceResponse<Page<LongTermRetentionBackupInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupServerNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> listByResourceGroupServerNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupServerNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LongTermRetentionBackupInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<LongTermRetentionBackupInner>> result = listByResourceGroupServerNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<LongTermRetentionBackupInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<LongTermRetentionBackupInner>> listByResourceGroupServerNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<LongTermRetentionBackupInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<LongTermRetentionBackupInner>>() { }.getType())
                 .registerError(CloudException.class)

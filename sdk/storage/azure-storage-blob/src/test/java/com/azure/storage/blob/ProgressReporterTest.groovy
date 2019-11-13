@@ -6,6 +6,7 @@ package com.azure.storage.blob
 import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import reactor.core.publisher.Flux
+import spock.lang.Requires
 
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicLong
@@ -35,7 +36,8 @@ class ProgressReporterTest extends APISpec {
         0 * mockReceiver.reportProgress({ it > 30 })
     }
 
-    @DoNotRecord(skipInPlayback = true)
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     def "Report progress sequential network test"() {
         setup:
         ProgressReceiver mockReceiver = Mock(ProgressReceiver)

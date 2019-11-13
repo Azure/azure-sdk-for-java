@@ -5,6 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.core.test.annotation.DoNotRecord
 import com.azure.storage.common.implementation.Constants
+import spock.lang.Requires
 
 class StorageFileInputOutputStreamTests extends APISpec {
     def fileClient
@@ -18,7 +19,8 @@ class StorageFileInputOutputStreamTests extends APISpec {
         fileClient = shareClient.getFileClient(filePath)
     }
 
-    @DoNotRecord(skipInPlayback = true)
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     def "Upload download"() {
         when:
         length = 30 * Constants.MB
@@ -45,7 +47,8 @@ class StorageFileInputOutputStreamTests extends APISpec {
     }
 
 
-    @DoNotRecord(skipInPlayback = true)
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     def "Stream with offset"() {
         when:
         length = 7 * Constants.MB

@@ -44,10 +44,14 @@ class ExtendedServerBlobAuditingPoliciesImpl extends WrapperImpl<ExtendedServerB
     public Observable<ExtendedServerBlobAuditingPolicy> getAsync(String resourceGroupName, String serverName) {
         ExtendedServerBlobAuditingPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName)
-        .map(new Func1<ExtendedServerBlobAuditingPolicyInner, ExtendedServerBlobAuditingPolicy>() {
+        .flatMap(new Func1<ExtendedServerBlobAuditingPolicyInner, Observable<ExtendedServerBlobAuditingPolicy>>() {
             @Override
-            public ExtendedServerBlobAuditingPolicy call(ExtendedServerBlobAuditingPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<ExtendedServerBlobAuditingPolicy> call(ExtendedServerBlobAuditingPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ExtendedServerBlobAuditingPolicy)wrapModel(inner));
+                }
             }
        });
     }

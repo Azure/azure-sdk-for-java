@@ -9,12 +9,12 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.util.FluxUtil
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.annotation.DoNotRecord
+import com.azure.core.test.TestRunVerifier
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
+import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
@@ -31,8 +31,6 @@ import spock.lang.Specification
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
-
-import static org.junit.Assume.assumeTrue
 
 class APISpec extends Specification {
 
@@ -75,7 +73,7 @@ class APISpec extends Specification {
     static String connectionString
     static TestMode testMode
     private boolean recordLiveMode
-    boolean testRan
+    private TestRunVerifier testRunVerifier
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
@@ -94,7 +92,7 @@ class APISpec extends Specification {
 
     static int defaultDataSize = defaultData.remaining()
 
-    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map{buffer -> buffer.duplicate()}
+    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
 
     public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
 
@@ -116,21 +114,14 @@ class APISpec extends Specification {
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
 
-        def doNotRecordAnnotation = specificationContext.getCurrentIteration().getDescription().getAnnotation(DoNotRecord.class)
+        testRunVerifier = new TestRunVerifier(specificationContext.getCurrentFeature().getFeatureMethod().getReflection())
 
-        if (doNotRecordAnnotation != null) {
-            recordLiveMode = false
-            testRan = !(doNotRecordAnnotation.skipInPlayback() && setupTestMode() == TestMode.PLAYBACK)
-            assumeTrue("Test does not allow playback and was ran in 'TestMode.PLAYBACK'.", testRan)
-        } else {
-            recordLiveMode = true
-            testRan = true
-        }
+        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode, testRunVerifier.doNotRecordTest())
+        this.resourceNamer = new TestResourceNamer(className + testName, testMode, testRunVerifier.doNotRecordTest(), interceptorManager.getRecordedData())
 
-        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode, !recordLiveMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, testMode, !recordLiveMode, interceptorManager.getRecordedData())
-
-        connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
+        connectionString = (testMode == TestMode.PLAYBACK)
+            ? "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
+            : Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
     }
 
     static TestMode setupTestMode() {
@@ -151,15 +142,15 @@ class APISpec extends Specification {
         interceptorManager.close()
     }
 
-    static boolean liveMode() {
-        return setupTestMode() == TestMode.RECORD
+    static boolean isLiveMode() {
+        return testMode != TestMode.PLAYBACK
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -178,6 +169,7 @@ class APISpec extends Specification {
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
     */
+
     ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }
@@ -193,6 +185,7 @@ class APISpec extends Specification {
     /*
     We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
      */
+
     File getRandomFile(int size) {
         File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
         file.deleteOnExit()
@@ -207,24 +200,24 @@ class APISpec extends Specification {
     }
 
     HttpClient getHttpClient() {
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode == TestMode.RECORD) {
-            builder.wiretap(true)
-
-            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            }
-
-            return builder.build()
-        } else {
+        if (testMode == TestMode.PLAYBACK && !testRunVerifier.doNotRecordTest()) {
             return interceptorManager.getPlaybackClient()
         }
+
+        def httpClientBuilder = new NettyAsyncHttpClientBuilder()
+        if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+            httpClientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+        }
+
+        return (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest())
+            ? httpClientBuilder.wiretap(true).build()
+            : httpClientBuilder.build()
     }
 
     EncryptedBlobClientBuilder getEncryptedClientBuilder(AsyncKeyEncryptionKey key,
-                                                         AsyncKeyEncryptionKeyResolver keyResolver,
-                                                         StorageSharedKeyCredential credential, String endpoint,
-                                                         HttpPipelinePolicy... policies) {
+        AsyncKeyEncryptionKeyResolver keyResolver,
+        StorageSharedKeyCredential credential, String endpoint,
+        HttpPipelinePolicy... policies) {
         EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder()
             .key(key, "keyWrapAlgorithm")
             .keyResolver(keyResolver)
@@ -248,7 +241,7 @@ class APISpec extends Specification {
     }
 
     BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
-                                                     HttpPipelinePolicy... policies) {
+        HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -282,7 +275,7 @@ class APISpec extends Specification {
     }
 
     def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,
-                               String contentLanguage, byte[] contentMD5, String contentType, boolean checkContentMD5) {
+        String contentLanguage, byte[] contentMD5, String contentType, boolean checkContentMD5) {
 
         def propertiesEqual = response.getValue().getCacheControl() == cacheControl &&
             response.getValue().getContentDisposition() == contentDisposition &&

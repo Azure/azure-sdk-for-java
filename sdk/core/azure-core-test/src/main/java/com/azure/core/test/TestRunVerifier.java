@@ -17,6 +17,11 @@ public class TestRunVerifier {
     private volatile boolean skipInPlayback;
     private volatile boolean testRan;
 
+    /**
+     * Constructs a {@link TestRunVerifier} based on the test method.
+     *
+     * @param testMethod Test method being ran.
+     */
     public TestRunVerifier(Method testMethod) {
         DoNotRecord doNotRecordAnnotation = testMethod.getAnnotation(DoNotRecord.class);
         if (doNotRecordAnnotation != null) {

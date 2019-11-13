@@ -19,9 +19,9 @@ import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -55,7 +55,7 @@ public class EventHubConnectionTest {
 
     private EventHubConnection provider;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         ConnectionOptions connectionOptions = new ConnectionOptions(HOST_NAME, "event-hub-path", tokenCredential,
@@ -105,8 +105,7 @@ public class EventHubConnectionTest {
     public void getReceiveLink() {
         // Arrange
         final AmqpReceiveLink receiveLink = mock(AmqpReceiveLink.class);
-        final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setIdentifier("foo");
+        final EventHubConsumerOptions options = new EventHubConsumerOptions();
 
         final EventPosition position = EventPosition.fromOffset(10L);
         final String linkName = "some-link-name";
@@ -145,7 +144,7 @@ public class EventHubConnectionTest {
         verify(connection, times(1)).close();
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
     }

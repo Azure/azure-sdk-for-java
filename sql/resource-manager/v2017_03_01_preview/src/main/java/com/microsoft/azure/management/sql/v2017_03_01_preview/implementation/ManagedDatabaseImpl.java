@@ -147,6 +147,16 @@ class ManagedDatabaseImpl extends CreatableUpdatableImpl<ManagedDatabase, Manage
     }
 
     @Override
+    public String recoverableDatabaseId() {
+        return this.inner().recoverableDatabaseId();
+    }
+
+    @Override
+    public String restorableDroppedDatabaseId() {
+        return this.inner().restorableDroppedDatabaseId();
+    }
+
+    @Override
     public DateTime restorePointInTime() {
         return this.inner().restorePointInTime();
     }
@@ -220,6 +230,26 @@ class ManagedDatabaseImpl extends CreatableUpdatableImpl<ManagedDatabase, Manage
             this.inner().withCreateMode(createMode);
         } else {
             this.updateParameter.withCreateMode(createMode);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedDatabaseImpl withRecoverableDatabaseId(String recoverableDatabaseId) {
+        if (isInCreateMode()) {
+            this.inner().withRecoverableDatabaseId(recoverableDatabaseId);
+        } else {
+            this.updateParameter.withRecoverableDatabaseId(recoverableDatabaseId);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedDatabaseImpl withRestorableDroppedDatabaseId(String restorableDroppedDatabaseId) {
+        if (isInCreateMode()) {
+            this.inner().withRestorableDroppedDatabaseId(restorableDroppedDatabaseId);
+        } else {
+            this.updateParameter.withRestorableDroppedDatabaseId(restorableDroppedDatabaseId);
         }
         return this;
     }
