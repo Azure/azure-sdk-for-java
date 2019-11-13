@@ -227,6 +227,14 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     }
 
     @Override
+    public void createCustomSkillsetReturnsCorrectDefinition() {
+        Skillset expected = createSkillsetWithCustomSkills();
+        Skillset actual = client.createSkillset(expected);
+
+        assertSkillsetsEqual(expected, actual);
+    }
+
+    @Override
     public void getSkillsetThrowsOnNotFound() {
         try {
             String skillsetName = "thisdoesnotexist";

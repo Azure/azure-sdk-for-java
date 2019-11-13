@@ -272,6 +272,16 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     }
 
     @Override
+    public void createCustomSkillsetReturnsCorrectDefinition() {
+        Skillset expected = createSkillsetWithCustomSkills();
+
+        StepVerifier
+            .create(client.createSkillset(expected))
+            .assertNext(actual -> assertSkillsetsEqual(expected, actual))
+            .verifyComplete();
+    }
+
+    @Override
     public void getSkillsetThrowsOnNotFound() {
         String skillsetName = "thisdoesnotexist";
         StepVerifier

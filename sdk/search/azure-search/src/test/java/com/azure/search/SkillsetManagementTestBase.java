@@ -27,11 +27,13 @@ import com.azure.search.models.SplitSkillLanguage;
 import com.azure.search.models.TextExtractionAlgorithm;
 import com.azure.search.models.TextSplitMode;
 import com.azure.search.models.VisualFeature;
+import com.azure.search.models.WebApiSkill;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
@@ -118,6 +120,9 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void existsReturnsTrueForExistingSkillset();
+
+    @Test
+    public abstract void createCustomSkillsetReturnsCorrectDefinition();
 
     protected void assertSkillsetsEqual(Skillset expected, Skillset actual) {
         expected.setETag("none");
@@ -748,5 +753,36 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setName("split-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
+    }
+
+    protected Skillset createSkillsetWithCustomSkills() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Ocp-Apim-Subscription-Key", "foobar");
+
+        List<InputFieldMappingEntry> inputs = Collections.singletonList(
+            new InputFieldMappingEntry()
+                .setName("text")
+                .setSource("/document/mytext")
+        );
+
+        List<OutputFieldMappingEntry> outputs = Collections.singletonList(
+            new OutputFieldMappingEntry()
+                .setName("textItems")
+                .setTargetName("myTextItems")
+        );
+
+        Skill webApiSkill = new WebApiSkill()
+            .setUri("https://indexer-e2e-webskill.azurewebsites.net/api/InvokeTextAnalyticsV3?code=foo")
+            .setHttpMethod("POST")
+            .setHttpHeaders(headers)
+            .setInputs(inputs)
+            .setOutputs(outputs)
+            .setName("webapi-skill")
+            .setDescription("Calls an Azure function, which in turn calls Bing Entity Search");
+
+        return new Skillset()
+            .setName("custom-skillset")
+            .setDescription("Skillset for testing custom skillsets")
+            .setSkills(Collections.singletonList(webApiSkill));
     }
 }
