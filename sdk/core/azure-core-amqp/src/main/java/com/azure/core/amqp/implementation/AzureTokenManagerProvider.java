@@ -18,22 +18,23 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
 
     private final ClientLogger logger = new ClientLogger(AzureTokenManagerProvider.class);
     private final CBSAuthorizationType authorizationType;
-    private final String host;
+    private final String fullyQualifiedNamespace;
     private final String activeDirectoryScope;
 
     /**
-     * Creates an instance that provides {@link TokenManager} for the given {@code hostname} with the {@code
-     * authorizationType}.
+     * Creates an instance that provides {@link TokenManager} for the given {@code hostname} with the
+     * {@code authorizationType}.
      *
      * @param authorizationType Method to authorize against Azure messaging service.
-     * @param hostname Fully-qualified domain name (FQDN) of the message broker.
+     * @param fullyQualifiedNamespace Fully-qualified namespace of the message broker.
      * @param activeDirectoryScope Scope used to access AD resources for the Azure service.
      */
-    public AzureTokenManagerProvider(CBSAuthorizationType authorizationType, String hostname,
+    public AzureTokenManagerProvider(CBSAuthorizationType authorizationType, String fullyQualifiedNamespace,
                                      String activeDirectoryScope) {
         this.activeDirectoryScope = Objects.requireNonNull(activeDirectoryScope,
             "'activeDirectoryScope' cannot be null.");
-        this.host = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
         this.authorizationType = Objects.requireNonNull(authorizationType,
             "'authorizationType' cannot be null.");
     }
@@ -44,7 +45,7 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
     @Override
     public TokenManager getTokenManager(Mono<CBSNode> cbsNodeMono, String resource) {
         final String scopes = getResourceString(resource);
-        final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, host, resource);
+        final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
         return new ActiveClientTokenManager(cbsNodeMono, tokenAudience, scopes);
     }
 
@@ -57,7 +58,7 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
             case JSON_WEB_TOKEN:
                 return activeDirectoryScope;
             case SHARED_ACCESS_SIGNATURE:
-                return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, host, resource);
+                return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                     "'%s' is not supported authorization type for token audience.", authorizationType)));
