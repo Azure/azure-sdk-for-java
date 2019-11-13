@@ -6,10 +6,12 @@ package com.azure.cs.textanalytics;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
+import com.azure.cs.textanalytics.models.DocumentEntities;
 import com.azure.cs.textanalytics.models.DocumentSentiment;
 import com.azure.cs.textanalytics.models.EntitiesResult;
 import com.azure.cs.textanalytics.models.Entity;
@@ -19,6 +21,7 @@ import com.azure.cs.textanalytics.models.LanguageInput;
 import com.azure.cs.textanalytics.models.LanguageResult;
 import com.azure.cs.textanalytics.models.LinkedEntity;
 import com.azure.cs.textanalytics.models.MultiLanguageInput;
+import com.azure.cs.textanalytics.models.SentenceSentiment;
 import com.azure.cs.textanalytics.models.SentimentResponse;
 
 import java.util.List;
@@ -32,23 +35,24 @@ public final class TextAnalyticsClient {
     }
 
     // (1) language
+    // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectedLanguage detectLanguage(String text, String countryHint, String modelVersion) {
+    public DetectedLanguage detectLanguage(String text, String countryHint) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DetectedLanguage> detectLanguageWithResponse(String text, String countryHint,
-                                                                 String modelVersion,
-                                                                 Context context) {
+    public Response<DetectedLanguage> detectLanguageWithResponse(String text, String countryHint, Context context) {
         return null;
     }
 
+    // hackathon user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DetectedLanguage> detectLanguages(List<String> documents, String modelVersion) {
+    public PagedIterable<DetectedLanguage> detectLanguages(List<String> documents, String countryHint) {
         return null;
     }
 
+    // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LanguageResult detectLanguages(List<LanguageInput> documents, String modelVersion, Boolean showStats) {
         return null;
@@ -62,11 +66,19 @@ public final class TextAnalyticsClient {
     }
 
     // (2) entities
+    // new user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Entity> recognizeEntities(String text, String language, String modelVersion) {
+    public PagedIterable<Entity> recognizeEntities(String text, String language) {
         return null;
     }
 
+    // hackathon user
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<List<Entity>> recognizeEntities(List<String> documents, String language) {
+        return null;
+    }
+
+    // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EntitiesResult recognizeEntities(List<MultiLanguageInput> documents,
                                             String modelVersion, Boolean showStats) {
@@ -81,11 +93,19 @@ public final class TextAnalyticsClient {
     }
 
     // (3) PII entities
+    // new user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Entity> recognizePiiEntities(String text, String language, String modelVersion) {
+    public PagedIterable<Entity> recognizePiiEntities(String text, String language) {
         return null;
     }
 
+    // hackathon user
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<List<Entity>> recognizePiiEntities(List<String> documents, String language) {
+        return null;
+    }
+
+    // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EntitiesResult recognizePiiEntities(
         List<MultiLanguageInput> documents, String modelVersion, Boolean showStats) {
@@ -99,11 +119,19 @@ public final class TextAnalyticsClient {
     }
 
     // (4) Link entities
+    // new user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LinkedEntity> recognizeLinkedEntities(String text, String language, String modelVersion) {
+    public PagedIterable<LinkedEntity> recognizeLinkedEntities(String text, String language) {
         return null;
     }
 
+    // hackathon user
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<List<LinkedEntity>> recognizeLinkedEntities(List<String> documents, String language) {
+        return null;
+    }
+
+    // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EntityLinkingResult recognizeLinkedEntities(List<MultiLanguageInput> documents,
                                                        String modelVersion, Boolean showStats) {
@@ -118,11 +146,19 @@ public final class TextAnalyticsClient {
     }
 
     // (5) key phrase
+    // new user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> extractKeyPhrases(String text, String language, String modelVersion) {
+    public PagedIterable<String> extractKeyPhrases(String text, String language) {
         return null;
     }
 
+    // hackathon user
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<List<String>> extractKeyPhrases(List<String> documents, String language) {
+        return null;
+    }
+
+    // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyPhraseResult extractKeyPhrases(List<MultiLanguageInput> documents,
                                              String modelVersion, Boolean showStats) {
@@ -138,17 +174,18 @@ public final class TextAnalyticsClient {
 
     // (6) sentiment
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentSentiment analyzeSentiment(String text, String language, String modelVersion, Boolean showStats) {
+    // new user,
+    public PagedIterable<SentenceSentiment> analyzeSentiment(String text, String language) {
         return null;
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentSentiment> analyzeSentimentWithResponse(String text, String language,
-                                                                    String modelVersion, Boolean showStats,
-                                                                    Context context) {
+    // hackathon user
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<List<SentenceSentiment>> analyzeSentiments(List<String> documents, String language) {
         return null;
     }
 
+    // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SentimentResponse analyzeSentiment(List<MultiLanguageInput> documents,
                                               String modelVersion, Boolean showStats) {
