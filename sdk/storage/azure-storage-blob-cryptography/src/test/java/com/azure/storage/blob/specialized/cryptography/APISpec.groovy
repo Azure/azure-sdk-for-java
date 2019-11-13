@@ -312,7 +312,7 @@ class APISpec extends Specification {
     }
 
     /**
-     * This helper method will acquire a lease on a blob to prepare for testing leaseAccessConditions. We want to test
+     * This helper method will acquire a lease on a blob to prepare for testing leaseId. We want to test
      * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
      * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
      * with other AC tests.
@@ -322,7 +322,7 @@ class APISpec extends Specification {
      * @param leaseID
      *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
      * @return
-     * The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
+     * The actual leaseId of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
     def setupBlobLeaseCondition(BlobClient bc, String leaseID) {

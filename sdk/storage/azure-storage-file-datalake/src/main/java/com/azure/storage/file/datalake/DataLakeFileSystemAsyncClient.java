@@ -421,7 +421,7 @@ public class DataLakeFileSystemAsyncClient {
 
         return StorageImplUtils.applyOptionalTimeout(
             this.azureDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
-                options.isRecursive(), marker, options.getPath(), options.getMaxResults(), options.isReturnUpn(), null,
+                options.isRecursive(), marker, options.getPath(), options.getMaxResults(), options.returnsUserPrincipalName(), null,
                 null, Context.NONE), timeout);
     }
 
