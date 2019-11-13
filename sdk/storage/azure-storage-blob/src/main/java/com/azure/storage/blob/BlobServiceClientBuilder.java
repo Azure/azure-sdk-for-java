@@ -85,6 +85,12 @@ public final class BlobServiceClientBuilder {
     public BlobServiceAsyncClient buildAsyncClient() {
         BuilderHelper.validateCpk(customerProvidedKey, endpoint);
 
+        if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential) &&
+            Objects.isNull(sasTokenCredential)) {
+            throw new IllegalArgumentException("Blob Service Client cannot be accessed anonymously. Please provide" +
+                "a form of authentication");
+        }
+
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,

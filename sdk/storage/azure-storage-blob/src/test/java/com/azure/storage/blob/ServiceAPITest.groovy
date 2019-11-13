@@ -385,12 +385,13 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        BlobServiceClient serviceURL = getServiceClient((StorageSharedKeyCredential) null, primaryBlobServiceClient.getAccountUrl())
+        BlobServiceClient serviceURL = getServiceClient((StorageSharedKeyCredential) null,
+            primaryBlobServiceClient.getAccountUrl())
 
         serviceURL.getAccountInfo()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(BlobStorageException)
     }
 
 

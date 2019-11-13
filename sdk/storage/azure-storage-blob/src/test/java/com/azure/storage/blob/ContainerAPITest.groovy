@@ -1358,7 +1358,7 @@ class ContainerAPITest extends APISpec {
         serviceURL.getBlobContainerClient(generateContainerName()).getAccountInfo(null)
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(BlobStorageException)
     }
 
     def "Get Container Name"() {
