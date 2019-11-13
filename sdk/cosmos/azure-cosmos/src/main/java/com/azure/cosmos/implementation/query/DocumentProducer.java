@@ -192,16 +192,16 @@ class DocumentProducer<T extends Resource> {
             // replacement partitions split happens the corresponding DocumentProducer can recursively handle splits.
             // so this is resilient to split on splits.
             Flux<DocumentProducer<T>> replacementProducers = replacementRangesObs.flux().flatMap(
-                    partitionKeyRanges ->  {
+                    partitionKeyRangesValueHolder ->  {
                         if (logger.isDebugEnabled()) {
                             logger.info("Cross Partition Query Execution detected partition [{}] split into [{}] partitions,"
                                     + " last continuation token is [{}].",
                                     targetRange.toJson(),
-                                    partitionKeyRanges.v.stream()
+                                    partitionKeyRangesValueHolder.v.stream()
                                             .map(JsonSerializable::toJson).collect(Collectors.joining(", ")),
                                     lastResponseContinuationToken);
                         }
-                        return Flux.fromIterable(createReplacingDocumentProducersOnSplit(partitionKeyRanges.v));
+                        return Flux.fromIterable(createReplacingDocumentProducersOnSplit(partitionKeyRangesValueHolder.v));
                     });
 
             return produceOnSplit(replacementProducers);
