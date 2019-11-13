@@ -6,6 +6,7 @@ omitted_paths:
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
   - eng/*
+  - samples/*
 language: java
 root_check_enabled: True
 required_readme_sections:
@@ -55,7 +56,6 @@ known_presence_issues:
 known_content_issues:
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['README.md', '#3113']
-  - ['samples/README.md', 'Does not need to follow standard structure.']
   - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/README.md', '#3113']
   - ['sdk/batch/microsoft-azure-batch/README.md', '#3113']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']
