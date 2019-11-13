@@ -3,14 +3,12 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -20,7 +18,6 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -28,9 +25,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
-import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEEDED;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 
 /**
@@ -228,53 +223,6 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
         Assertions.assertTrue(comparedSequenceNumber <= 0, String.format("Expected offset previous '%s' to be before or equal to current '%s'",
             previous.getRetrievalTime(), current.getRetrievalTime()));
-    }
-
-    /**
-     * Verify that if we set the identifier in the consumer, it shows up in the quota error.
-     */
-    @Disabled("Investigate. The sixth receiver is not causing an exception to be thrown.")
-    @Test
-    public void consumerIdentifierShowsUpInQuotaErrors() {
-        // Arrange
-        final String prefix = UUID.randomUUID().toString();
-        final Consumer<AmqpException> validateException = error -> {
-            Assertions.assertEquals(RESOURCE_LIMIT_EXCEEDED, error.getErrorCondition());
-
-            final String errorMsg = error.getMessage();
-            for (int i = 0; i < MAX_NUMBER_OF_CONSUMERS; i++) {
-                Assertions.assertTrue(errorMsg.contains(prefix + ":" + i));
-            }
-        };
-
-        final List<EventHubConsumerAsyncClient> consumers = new ArrayList<>();
-        final Disposable.Composite subscriptions = Disposables.composite();
-        EventHubConsumerAsyncClient exceededConsumer = null;
-        try {
-            for (int i = 0; i < MAX_NUMBER_OF_CONSUMERS; i++) {
-                final EventHubConsumerOptions options = new EventHubConsumerOptions().setIdentifier(prefix + ":" + i);
-                final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, EventPosition.earliest(), options);
-                consumers.add(consumer);
-                subscriptions.add(consumer.receive(PARTITION_ID).take(TIMEOUT).subscribe(eventData -> {
-                    // Received an event. We don't need to log it though.
-                }));
-            }
-
-            // Act & Verify
-            exceededConsumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, EventPosition.earliest());
-            StepVerifier.create(exceededConsumer.receive(PARTITION_ID))
-                .expectErrorSatisfies(exception -> {
-                    Assertions.assertTrue(exception instanceof AmqpException);
-                    validateException.accept((AmqpException) exception);
-                })
-                .verify();
-        } catch (AmqpException e) {
-            validateException.accept(e);
-        } finally {
-            subscriptions.dispose();
-            dispose(exceededConsumer);
-            dispose(consumers.toArray(new EventHubConsumerAsyncClient[0]));
-        }
     }
 
     /**
