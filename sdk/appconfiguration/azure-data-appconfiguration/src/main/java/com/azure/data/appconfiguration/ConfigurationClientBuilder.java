@@ -260,7 +260,7 @@ public final class ConfigurationClientBuilder {
     /**
      * Sets the AAD credential to use when authenticating HTTP requests.
      *
-     * @param tokenCredential AAD token
+     * @param tokenCredential TokenCredential used to authenticate HTTP requests.
      * @return The updated ConfigurationClientBuilder object.
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
