@@ -71,8 +71,7 @@ class APISpec extends Specification {
     static StorageSharedKeyCredential blobCredential
     static StorageSharedKeyCredential premiumCredential
     static String connectionString
-    static TestMode testMode
-    private boolean recordLiveMode
+    static TestMode testMode = setupTestMode()
     private TestRunVerifier testRunVerifier
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
@@ -94,13 +93,12 @@ class APISpec extends Specification {
 
     static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
 
-    public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
+    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
 
     @Shared
     protected KB = 1024
 
     def setupSpec() {
-        testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)
@@ -229,7 +227,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -251,7 +249,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 

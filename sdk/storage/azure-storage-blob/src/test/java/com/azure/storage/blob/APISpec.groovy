@@ -123,7 +123,7 @@ class APISpec extends Specification {
     static StorageSharedKeyCredential alternateCredential
     static StorageSharedKeyCredential blobCredential
     static StorageSharedKeyCredential premiumCredential
-    static TestMode testMode
+    static TestMode testMode = setupTestMode()
 
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
@@ -138,7 +138,6 @@ class APISpec extends Specification {
     TestRunVerifier testRunVerifier
 
     def setupSpec() {
-        testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)

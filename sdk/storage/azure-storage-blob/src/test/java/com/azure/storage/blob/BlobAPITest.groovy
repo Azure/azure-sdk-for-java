@@ -496,14 +496,8 @@ class BlobAPITest extends APISpec {
             .getBlockBlobAsyncClient()
         bac.downloadToFileWithResponse(outFile.toPath().toString(), null,
             new ParallelTransferOptions(1024, null, null), null, null, false)
-            .subscribe({ etagConflict = false }, {
-                if (it instanceof BlobStorageException && ((BlobStorageException) it).getStatusCode() == 412) {
-                    etagConflict = true
-                    return
-                }
-                etagConflict = false
-                throw it
-            })
+            .doOnError(BlobStorageException.class, { etagConflict = it.getStatusCode() == 412 })
+            .subscribe()
 
         sleep(500) // Give some time for the download request to start.
         bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
