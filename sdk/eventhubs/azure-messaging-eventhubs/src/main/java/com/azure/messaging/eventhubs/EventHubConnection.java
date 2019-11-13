@@ -43,11 +43,21 @@ public class EventHubConnection implements Closeable {
             .cache();
     }
 
-    String getFullyQualifiedNamespace() {
+    /**
+     * Gets the fully qualified namespace for the connection.
+     *
+     * @return The fully qualified namespace this is connection.
+     */
+    public String getFullyQualifiedNamespace() {
         return connectionOptions.getFullyQualifiedNamespace();
     }
 
-    String getEventHubName() {
+    /**
+     * Gets the name of the Event Hub.
+     *
+     * @return The name of the Event Hub.
+     */
+    public String getEventHubName() {
         return connectionOptions.getEntityPath();
     }
 
