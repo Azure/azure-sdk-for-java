@@ -176,11 +176,7 @@ public class EventHubConsumerClient implements Closeable {
             queueWork(partitionId, maximumMessageCount, maximumWaitTime, emitter);
         });
 
-        final Flux<PartitionEvent> map = events.collectList().map(x -> {
-            logger.info("Number of events received: {}", x.size());
-            return Flux.fromIterable(x);
-        }).block();
-        return new IterableStream<>(map);
+        return new IterableStream<>(events);
     }
 
     /**
