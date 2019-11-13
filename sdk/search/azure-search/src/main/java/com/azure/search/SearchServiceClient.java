@@ -1058,6 +1058,45 @@ public class SearchServiceClient {
     }
 
     /**
+     * Determines whether or not the given skillset exists.
+     *
+     * @param skillsetName the name of the skillset
+     * @return true if the skillset exists; false otherwise.
+     */
+    public Boolean skillsetExists(String skillsetName) {
+        return asyncClient.skillsetExists(skillsetName).block();
+    }
+
+    /**
+     * Determines whether or not the given skillset exists.
+     *
+     * @param skillsetName the name of the skillset
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return true if the skillset exists; false otherwise.
+     */
+    public Boolean skillsetExists(String skillsetName, RequestOptions requestOptions) {
+        return asyncClient.skillsetExists(skillsetName, requestOptions).block();
+    }
+
+    /**
+     * Determines whether or not the given skillset exists.
+     *
+     * @param skillsetName the name of the skillset
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return true if the skillset exists; false otherwise.
+     */
+    public Response<Boolean> skillsetExistsWithResponse(String skillsetName,
+                                                        RequestOptions requestOptions,
+                                                        Context context) {
+        return asyncClient
+            .skillsetExistsWithResponse(skillsetName, requestOptions, context)
+            .block();
+    }
+
+    /**
      * Creates a new Azure Cognitive Search synonym map.
      *
      * @param synonymMap the definition of the synonym map to create
@@ -1415,7 +1454,7 @@ public class SearchServiceClient {
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return true if the index exists; false otherwise.
+     * @return true if the synonym map exists; false otherwise.
      */
     public Boolean synonymMapExists(String synonymMapName, RequestOptions requestOptions, Context context) {
         return this.synonymMapExistsWithResponse(synonymMapName, requestOptions, context)
@@ -1429,7 +1468,7 @@ public class SearchServiceClient {
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return true if the index exists; false otherwise.
+     * @return true if the synonym map exists; false otherwise.
      */
     public Response<Boolean> synonymMapExistsWithResponse(String synonymMapName,
                                                           RequestOptions requestOptions,

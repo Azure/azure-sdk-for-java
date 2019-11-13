@@ -99,6 +99,13 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void deleteSkillsetIsIdempotent();
 
+    @Test
+    public abstract void existsReturnsFalseForNonExistingSkillset();
+
+    @Test
+    public abstract void existsReturnsTrueForExistingSkillset();
+
+
     protected void assertSkillsetsEqual(Skillset expected, Skillset actual) {
         expected.setETag("none");
         actual.setETag("none");

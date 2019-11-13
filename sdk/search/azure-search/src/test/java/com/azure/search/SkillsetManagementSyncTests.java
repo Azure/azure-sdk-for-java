@@ -252,4 +252,16 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
+    @Override
+    public void existsReturnsFalseForNonExistingSkillset() {
+        Assert.assertFalse(client.skillsetExists("nonexistent"));
+    }
+
+    @Override
+    public void existsReturnsTrueForExistingSkillset() {
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        client.createSkillset(skillset);
+
+        Assert.assertTrue(client.skillsetExists(skillset.getName()));
+    }
 }

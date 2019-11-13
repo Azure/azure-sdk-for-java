@@ -3,7 +3,6 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
-
 import com.azure.search.models.EntityCategory;
 import com.azure.search.models.KeyPhraseExtractionSkillLanguage;
 import com.azure.search.models.OcrSkillLanguage;
@@ -306,6 +305,25 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .assertNext(deleteResponse -> {
                 Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
             })
+            .verifyComplete();
+    }
+
+    @Override
+    public void existsReturnsFalseForNonExistingSkillset() {
+        StepVerifier
+            .create(client.skillsetExists("nonexistent"))
+            .assertNext(res -> Assert.assertFalse(res))
+            .verifyComplete();
+    }
+
+    @Override
+    public void existsReturnsTrueForExistingSkillset() {
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        client.createSkillset(skillset).block();
+
+        StepVerifier
+            .create(client.skillsetExists(skillset.getName()))
+            .assertNext(res -> Assert.assertTrue(res))
             .verifyComplete();
     }
 }

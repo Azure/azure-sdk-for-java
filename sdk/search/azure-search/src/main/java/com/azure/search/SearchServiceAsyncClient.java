@@ -1220,6 +1220,47 @@ public class SearchServiceAsyncClient {
     }
 
     /**
+     * Determines whether or not the given skillset exists.
+     *
+     * @param skillsetName the name of the skillset
+     * @return true if the skillset exists; false otherwise.
+     */
+    public Mono<Boolean> skillsetExists(String skillsetName) {
+        return this.skillsetExistsWithResponse(skillsetName, null).map(Response::getValue);
+    }
+
+    /**
+     * Determines whether or not the given skillset exists.
+     *
+     * @param skillsetName the name of the skillset
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return true if the skillset exists; false otherwise.
+     */
+    public Mono<Boolean> skillsetExists(String skillsetName, RequestOptions requestOptions) {
+        return this.skillsetExistsWithResponse(skillsetName, requestOptions).map(Response::getValue);
+    }
+
+    /**
+     * Determines whether or not the given skillset exists.
+     *
+     * @param skillsetName the name of the skillset
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return true if the skillset exists; false otherwise.
+     */
+    public Mono<Response<Boolean>> skillsetExistsWithResponse(String skillsetName, RequestOptions requestOptions) {
+        return withContext(context -> this.skillsetExistsWithResponse(skillsetName, requestOptions, context));
+    }
+
+    Mono<Response<Boolean>> skillsetExistsWithResponse(String skillsetName,
+                                                       RequestOptions requestOptions,
+                                                       Context context) {
+        return resourceExistsWithResponse(() ->
+            this.getSkillsetWithResponse(skillsetName, requestOptions, context));
+    }
+
+    /**
      * Creates a new Azure Cognitive Search synonym map.
      *
      * @param synonymMap the definition of the synonym map to create
