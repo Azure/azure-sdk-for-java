@@ -226,9 +226,9 @@ public class PathClientJavaDocCodeSamples {
     public void getAccessControlWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions-Duration-Context
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
-        boolean returnUserPrincipalName = false;
+        boolean userPrincipalNameReturned = false;
 
-        Response<PathAccessControl> response = client.getAccessControlWithResponse(returnUserPrincipalName,
+        Response<PathAccessControl> response = client.getAccessControlWithResponse(userPrincipalNameReturned,
             requestConditions, timeout, new Context(key1, value1));
 
         PathAccessControl pac = response.getValue();

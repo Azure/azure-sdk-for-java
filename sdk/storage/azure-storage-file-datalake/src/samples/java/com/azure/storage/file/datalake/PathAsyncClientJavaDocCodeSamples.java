@@ -209,9 +209,9 @@ public class PathAsyncClientJavaDocCodeSamples {
     public void getAccessControlWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
-        boolean returnUserPrincipalName = false;
+        boolean userPrincipalNameReturned = false;
 
-        client.getAccessControlWithResponse(returnUserPrincipalName, requestConditions).subscribe(
+        client.getAccessControlWithResponse(userPrincipalNameReturned, requestConditions).subscribe(
             response -> System.out.printf("Access Control List: %s, Group: %s, Owner: %s, Permissions: %s",
                 PathAccessControlEntry.serializeList(response.getValue().getAccessControlList()),
                 response.getValue().getGroup(), response.getValue().getOwner(), response.getValue().getPermissions()));

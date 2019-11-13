@@ -17,7 +17,7 @@ public class ListPathsOptions {
 
     private String path;
     private boolean recursive;
-    private boolean returnUserPrincipalName;
+    private boolean userPrincipalNameReturned;
     private Integer maxResults;
 
     /**
@@ -53,10 +53,10 @@ public class ListPathsOptions {
      * The default value is false. Note that group and application Object IDs are not translated because they do not
      * have unique friendly names.
      *
-     * @return the returnUserPrincipalName value.
+     * @return the userPrincipalNameReturned value.
      */
-    public boolean isReturnUserPrincipalName() {
-        return returnUserPrincipalName;
+    public boolean isUserPrincipalNameReturned() {
+        return userPrincipalNameReturned;
     }
 
     /**
@@ -89,11 +89,11 @@ public class ListPathsOptions {
      * The default value is false. Note that group and application Object IDs are not translated because they do not
      * have unique friendly names.
      *
-     * @param returnUserPrincipalName The returnUserPrincipalName value
+     * @param userPrincipalNameReturned The userPrincipalNameReturned value
      * @return the updated ListPathsOptions object
      */
-    public ListPathsOptions setReturnUserPrincipalName(boolean returnUserPrincipalName) {
-        this.returnUserPrincipalName = returnUserPrincipalName;
+    public ListPathsOptions setUserPrincipalNameReturned(boolean userPrincipalNameReturned) {
+        this.userPrincipalNameReturned = userPrincipalNameReturned;
         return this;
     }
 

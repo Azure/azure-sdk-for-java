@@ -568,22 +568,22 @@ public class DataLakePathAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
      *
-     * @param returnUserPrincipalName When true, user identity values returned as User Principal Names. When false,
+     * @param userPrincipalNameReturned When true, user identity values returned as User Principal Names. When false,
      * user identity values returned as Azure Active Directory Object IDs. Default value is false.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource access control.
      */
-    public Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean returnUserPrincipalName,
+    public Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean userPrincipalNameReturned,
         DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> getAccessControlWithResponse(returnUserPrincipalName, requestConditions,
+            return withContext(context -> getAccessControlWithResponse(userPrincipalNameReturned, requestConditions,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean returnUserPrincipalName,
+    Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean userPrincipalNameReturned,
         DataLakeRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
 
@@ -595,7 +595,7 @@ public class DataLakePathAsyncClient {
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         return this.dataLakeStorage.paths().getPropertiesWithRestResponseAsync(
-            PathGetPropertiesAction.GET_ACCESS_CONTROL, returnUserPrincipalName, null, null, lac, mac, context)
+            PathGetPropertiesAction.GET_ACCESS_CONTROL, userPrincipalNameReturned, null, null, lac, mac, context)
             .map(response -> new SimpleResponse<>(response, new PathAccessControl(
                 PathAccessControlEntry.parseList(response.getDeserializedHeaders().getAcl()),
                 PathPermissions.parseSymbolic(response.getDeserializedHeaders().getPermissions()),

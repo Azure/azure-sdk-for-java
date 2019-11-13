@@ -348,17 +348,17 @@ public class DataLakePathClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
      *
-     * @param returnUserPrincipalName When true, user identity values returned as User Principal Names. When false,
+     * @param userPrincipalNameReturned When true, user identity values returned as User Principal Names. When false,
      * user identity values returned as Azure Active Directory Object IDs. Default value is false.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the resource access control.
      */
-    public Response<PathAccessControl> getAccessControlWithResponse(boolean returnUserPrincipalName,
+    public Response<PathAccessControl> getAccessControlWithResponse(boolean userPrincipalNameReturned,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<PathAccessControl>> response = dataLakePathAsyncClient.getAccessControlWithResponse(
-            returnUserPrincipalName, requestConditions, context);
+            userPrincipalNameReturned, requestConditions, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
