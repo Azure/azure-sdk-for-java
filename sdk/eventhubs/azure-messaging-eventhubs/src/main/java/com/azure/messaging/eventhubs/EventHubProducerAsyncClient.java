@@ -99,8 +99,8 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  *
  * <p><strong>Publish events using an {@link EventDataBatch}.</strong></p>
  * Developers can create an {@link EventDataBatch}, add the events they want into it, and publish these
- * events together. When creating a {@link EventDataBatch batch}, developers can specify a set of {@link CreateBatchOptions
- * options} to configure this batch.
+ * events together. When creating a {@link EventDataBatch batch}, developers can specify a set of
+ * {@link CreateBatchOptions options} to configure this batch.
  * <p>
  * In the scenario below, the developer is creating a networked video game. They want to receive telemetry about their
  * users' gaming systems, but do not want to slow down the network with telemetry. So they limit the size of their
@@ -134,8 +134,8 @@ public class EventHubProducerAsyncClient implements Closeable {
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
-     * when {@link CreateBatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to load
-     * balance the messages amongst available partitions.
+     * when {@link CreateBatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to
+     * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
         RetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
@@ -581,7 +581,8 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         private volatile EventDataBatch currentBatch;
 
-        EventDataCollector(CreateBatchOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider) {
+        EventDataCollector(CreateBatchOptions options, Integer maxNumberOfBatches,
+            ErrorContextProvider contextProvider) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
                 ? options.getMaximumSizeInBytes()
