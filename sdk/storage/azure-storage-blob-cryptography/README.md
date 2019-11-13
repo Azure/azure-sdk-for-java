@@ -66,6 +66,9 @@ When an HTTP client is included on the classpath, as shown above, it is not nece
 
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
 
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning](https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning) section of the wiki.
+
 ```java
 HttpClient client = new NettyAsyncHttpClientBuilder()
     .port(8080)

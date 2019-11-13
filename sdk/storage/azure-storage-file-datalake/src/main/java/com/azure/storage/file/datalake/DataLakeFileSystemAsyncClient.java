@@ -11,7 +11,6 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -32,6 +31,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -115,9 +115,8 @@ public class DataLakeFileSystemAsyncClient {
      * file system.
      */
     public DataLakeFileAsyncClient getFileAsyncClient(String fileName) {
-        if (CoreUtils.isNullOrEmpty(fileName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'fileName' can not be set to null"));
-        }
+        Objects.requireNonNull(fileName, "'fileName' can not be set to null");
+
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(fileName,
             null).getBlockBlobAsyncClient();
 
@@ -141,9 +140,8 @@ public class DataLakeFileSystemAsyncClient {
      * in this file system.
      */
     public DataLakeDirectoryAsyncClient getDirectoryAsyncClient(String directoryName) {
-        if (CoreUtils.isNullOrEmpty(directoryName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'directoryName' can not be set to null"));
-        }
+        Objects.requireNonNull(directoryName, "'directoryName' can not be set to null");
+
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(directoryName,
             null).getBlockBlobAsyncClient();
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(),

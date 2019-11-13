@@ -1386,4 +1386,21 @@ class FileAPITest extends APISpec {
         thrown(StorageErrorException)
     }
 
+    def "Get File Name and Build Client"() {
+        when:
+        DataLakeFileClient client = fsc.getFileClient(originalFileName)
+
+        then:
+        // Note : Here I use Path because there is a test that tests the use of a /
+        client.getFilePath() == finalFileName
+
+        where:
+        originalFileName       | finalFileName
+        "file"                 | "file"
+        "path/to]a file"       | "path/to]a file"
+        "path%2Fto%5Da%20file" | "path/to]a file"
+        "斑點"                   | "斑點"
+        "%E6%96%91%E9%BB%9E"   | "斑點"
+    }
+
 }

@@ -6,13 +6,12 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Test;
 
 public class EventHubClientIntegrationTest extends IntegrationTestBase {
     private EventHubClient client;

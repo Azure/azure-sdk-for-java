@@ -10,6 +10,7 @@ package com.microsoft.azure.management.sql.v2017_03_01_preview.implementation;
 
 import com.microsoft.azure.management.sql.v2017_03_01_preview.SecurityAlertPolicyState;
 import java.util.List;
+import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
@@ -20,8 +21,9 @@ import com.microsoft.azure.ProxyResource;
 @JsonFlatten
 public class ServerSecurityAlertPolicyInner extends ProxyResource {
     /**
-     * Specifies the state of the policy, whether it is enabled or disabled.
-     * Possible values include: 'New', 'Enabled', 'Disabled'.
+     * Specifies the state of the policy, whether it is enabled or disabled or
+     * a policy has not been applied yet on the specific database. Possible
+     * values include: 'New', 'Enabled', 'Disabled'.
      */
     @JsonProperty(value = "properties.state", required = true)
     private SecurityAlertPolicyState state;
@@ -68,7 +70,13 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
     private Integer retentionDays;
 
     /**
-     * Get specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'New', 'Enabled', 'Disabled'.
+     * Specifies the UTC creation time of the policy.
+     */
+    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime creationTime;
+
+    /**
+     * Get specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. Possible values include: 'New', 'Enabled', 'Disabled'.
      *
      * @return the state value
      */
@@ -77,7 +85,7 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'New', 'Enabled', 'Disabled'.
+     * Set specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. Possible values include: 'New', 'Enabled', 'Disabled'.
      *
      * @param state the state value to set
      * @return the ServerSecurityAlertPolicyInner object itself.
@@ -205,6 +213,15 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
     public ServerSecurityAlertPolicyInner withRetentionDays(Integer retentionDays) {
         this.retentionDays = retentionDays;
         return this;
+    }
+
+    /**
+     * Get specifies the UTC creation time of the policy.
+     *
+     * @return the creationTime value
+     */
+    public DateTime creationTime() {
+        return this.creationTime;
     }
 
 }

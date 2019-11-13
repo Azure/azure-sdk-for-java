@@ -19,9 +19,9 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.implementation.SqlManager;
 
 /**
- * Type representing ManagedBackupShortTermRetentionPolicy.
+ * Type representing RestorableDroppedDatabasisManagedInstanceManagedBackupShortTermRetentionPolicy.
  */
-public interface ManagedBackupShortTermRetentionPolicy extends HasInner<ManagedBackupShortTermRetentionPolicyInner>, Indexable, Refreshable<ManagedBackupShortTermRetentionPolicy>, Updatable<ManagedBackupShortTermRetentionPolicy.Update>, HasManager<SqlManager> {
+public interface RestorableDroppedDatabasisManagedInstanceManagedBackupShortTermRetentionPolicy extends HasInner<ManagedBackupShortTermRetentionPolicyInner>, Indexable, Refreshable<RestorableDroppedDatabasisManagedInstanceManagedBackupShortTermRetentionPolicy>, Updatable<RestorableDroppedDatabasisManagedInstanceManagedBackupShortTermRetentionPolicy.Update>, HasManager<SqlManager> {
     /**
      * @return the id value.
      */
@@ -43,37 +43,37 @@ public interface ManagedBackupShortTermRetentionPolicy extends HasInner<ManagedB
     String type();
 
     /**
-     * The entirety of the ManagedBackupShortTermRetentionPolicy definition.
+     * The entirety of the RestorableDroppedDatabasisManagedInstanceManagedBackupShortTermRetentionPolicy definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithDatabasis, DefinitionStages.WithRetentionDays, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRestorableDroppedDatabasis, DefinitionStages.WithRetentionDays, DefinitionStages.WithCreate {
     }
 
     /**
-     * Grouping of ManagedBackupShortTermRetentionPolicy definition stages.
+     * Grouping of RestorableDroppedDatabasisManagedInstanceManagedBackupShortTermRetentionPolicy definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a ManagedBackupShortTermRetentionPolicy definition.
+         * The first stage of a RestorableDroppedDatabasisManagedInstanceManagedBackupShortTermRetentionPolicy definition.
          */
-        interface Blank extends WithDatabasis {
+        interface Blank extends WithRestorableDroppedDatabasis {
         }
 
         /**
-         * The stage of the managedbackupshorttermretentionpolicy definition allowing to specify Databasis.
+         * The stage of the restorabledroppeddatabasismanagedinstancemanagedbackupshorttermretentionpolicy definition allowing to specify RestorableDroppedDatabasis.
          */
-        interface WithDatabasis {
+        interface WithRestorableDroppedDatabasis {
            /**
-            * Specifies resourceGroupName, managedInstanceName, databaseName.
+            * Specifies resourceGroupName, managedInstanceName, restorableDroppedDatabaseId.
             * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
             * @param managedInstanceName The name of the managed instance
-            * @param databaseName The name of the database
+            * @param restorableDroppedDatabaseId the restorableDroppedDatabaseId parameter value
             * @return the next definition stage
             */
-            WithRetentionDays withExistingDatabasis(String resourceGroupName, String managedInstanceName, String databaseName);
+            WithRetentionDays withExistingRestorableDroppedDatabasis(String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId);
         }
 
         /**
-         * The stage of the managedbackupshorttermretentionpolicy definition allowing to specify RetentionDays.
+         * The stage of the restorabledroppeddatabasismanagedinstancemanagedbackupshorttermretentionpolicy definition allowing to specify RetentionDays.
          */
         interface WithRetentionDays {
            /**
@@ -89,21 +89,21 @@ public interface ManagedBackupShortTermRetentionPolicy extends HasInner<ManagedB
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ManagedBackupShortTermRetentionPolicy> {
+        interface WithCreate extends Creatable<RestorableDroppedDatabasisManagedInstanceManagedBackupShortTermRetentionPolicy> {
         }
     }
     /**
-     * The template for a ManagedBackupShortTermRetentionPolicy update operation, containing all the settings that can be modified.
+     * The template for a RestorableDroppedDatabasisManagedInstanceManagedBackupShortTermRetentionPolicy update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ManagedBackupShortTermRetentionPolicy>, UpdateStages.WithRetentionDays {
+    interface Update extends Appliable<RestorableDroppedDatabasisManagedInstanceManagedBackupShortTermRetentionPolicy>, UpdateStages.WithRetentionDays {
     }
 
     /**
-     * Grouping of ManagedBackupShortTermRetentionPolicy update stages.
+     * Grouping of RestorableDroppedDatabasisManagedInstanceManagedBackupShortTermRetentionPolicy update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of the managedbackupshorttermretentionpolicy update allowing to specify RetentionDays.
+         * The stage of the restorabledroppeddatabasismanagedinstancemanagedbackupshorttermretentionpolicy update allowing to specify RetentionDays.
          */
         interface WithRetentionDays {
             /**
