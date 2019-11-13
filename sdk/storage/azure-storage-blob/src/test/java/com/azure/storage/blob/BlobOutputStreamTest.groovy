@@ -32,23 +32,38 @@ class BlobOutputStreamTest extends APISpec {
         def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        def outputStream = blockBlobClient.getBlobOutputStream()
-        outputStream.write(data)
-        outputStream.close()
+        def outputStream1 = blockBlobClient.getBlobOutputStream()
+        outputStream1.write(data)
+        outputStream1.close()
 
         and:
-        outputStream = blockBlobClient.getBlobOutputStream()
-        outputStream.write(data)
-        outputStream.close()
+        blockBlobClient.getBlobOutputStream()
+
 
         then:
-        def e = thrown(BlobStorageException)
-        e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
+        thrown(IllegalArgumentException)
     }
 
     @Requires({ liveMode() })
     def "BlockBlob output stream default no overwrite interrupted"() {
+        setup:
+        def data = getRandomByteArray(10 * Constants.MB)
+        def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
+        when:
+        def outputStream1 = blockBlobClient.getBlobOutputStream()
+        def outputStream2 = blockBlobClient.getBlobOutputStream()
+        outputStream2.write(data)
+        outputStream2.close()
+
+        and:
+        outputStream1.write(data)
+        outputStream1.close()
+
+        then:
+        def e = thrown(IOException)
+        e.getCause() instanceof BlobStorageException
+        ((BlobStorageException) e.getCause()).getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
     }
 
     @Requires({ liveMode() })
