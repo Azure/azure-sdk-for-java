@@ -3,13 +3,10 @@
 
 package com.azure.security.keyvault.secrets;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -23,6 +20,10 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SecretAsyncClientTest extends SecretClientTestBase {
 
@@ -74,6 +75,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
      * Verifies that an exception is thrown when null secret object is passed for creation.
      */
     @Test
+    @DoNotRecord
     public void setSecretNull() {
         StepVerifier.create(client.setSecret(null))
             .verifyError(NullPointerException.class);

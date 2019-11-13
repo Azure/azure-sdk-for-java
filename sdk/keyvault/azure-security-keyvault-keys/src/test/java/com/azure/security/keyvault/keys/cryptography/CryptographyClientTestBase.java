@@ -80,7 +80,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
         policies.add(new RetryPolicy());
         policies.add(new BearerTokenAuthenticationPolicy(credential, CryptographyAsyncClient.KEY_VAULT_SCOPE));
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
@@ -89,9 +89,9 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
         HttpClient httpClient;
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
-        } else if (testMode == TestMode.PLAYBACK) {
+        } else if (testMode == TestMode.PLAYBACK && !testRunVerifier.doNotRecordTest()) {
             httpClient = interceptorManager.getPlaybackClient();
         } else {
             httpClient = new NettyAsyncHttpClientBuilder().build();

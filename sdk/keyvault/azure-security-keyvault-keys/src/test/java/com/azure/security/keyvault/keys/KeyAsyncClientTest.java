@@ -5,6 +5,7 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -70,6 +71,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      * Verifies that an exception is thrown when null key object is passed for creation.
      */
     @Test
+    @DoNotRecord
     public void setKeyNull() {
         StepVerifier.create(client.createKey(null))
             .verifyError(NullPointerException.class);

@@ -242,7 +242,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             if (!testRunVerifier.doNotRecordTest()) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
@@ -724,9 +724,11 @@ class APISpec extends Specification {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (testMode == TestMode.RECORD) {
-            sleep(milliseconds)
+        if (testMode == TestMode.PLAYBACK) {
+            return
         }
+
+        sleep(milliseconds)
     }
 
     class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {

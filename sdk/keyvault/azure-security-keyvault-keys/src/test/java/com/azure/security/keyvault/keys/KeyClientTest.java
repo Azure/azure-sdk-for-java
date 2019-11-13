@@ -5,6 +5,7 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
@@ -63,6 +64,7 @@ public class KeyClientTest extends KeyClientTestBase {
      * Verifies that an exception is thrown when null key object is passed for creation.
      */
     @Test
+    @DoNotRecord
     public void setKeyNull() {
         assertRunnableThrowsException(() -> client.createKey(null), NullPointerException.class);
         assertRunnableThrowsException(() -> client.createKey(null), NullPointerException.class);

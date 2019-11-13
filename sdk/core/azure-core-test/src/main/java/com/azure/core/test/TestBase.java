@@ -142,4 +142,22 @@ public abstract class TestBase implements BeforeEachCallback {
         logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
         return TestMode.PLAYBACK;
     }
+
+    /**
+     * Sleeps the test for the given amount of milliseconds if {@link TestMode} isn't {@link TestMode#PLAYBACK}.
+     *
+     * @param milliseconds Number of milliseconds to sleep the test.
+     * @throws IllegalStateException If the sleep is interrupted.
+     */
+    protected void sleepIfRunningAgainstService(long milliseconds) {
+        if (testMode == TestMode.PLAYBACK) {
+            return;
+        }
+
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException ex) {
+            throw logger.logExceptionAsWarning(new IllegalStateException(ex));
+        }
+    }
 }

@@ -10,6 +10,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -64,9 +65,9 @@ public abstract class SecretClientTestBase extends TestBase {
             .vaultUrl(endpoint)
             .credential(credential);
 
-        if (testMode == TestMode.PLAYBACK) {
+        if (testMode == TestMode.PLAYBACK && !testRunVerifier.doNotRecordTest()) {
             clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (testMode == TestMode.RECORD) {
+        } else if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build());
         }
@@ -102,6 +103,7 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     @Test
+    @DoNotRecord
     public abstract void setSecretNull();
 
 

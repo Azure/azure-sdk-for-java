@@ -13,6 +13,7 @@ import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.common.implementation.Constants
 
+import java.security.SecureRandom
 import java.time.OffsetDateTime
 
 class CPKTest extends APISpec {
@@ -33,7 +34,7 @@ class CPKTest extends APISpec {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(primaryCredential)
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -51,10 +52,8 @@ class CPKTest extends APISpec {
      * Insecurely and quickly generates a random AES256 key for the purpose of unit tests. No one should ever make a
      * real key this way.
      */
-    def getRandomKey(long seed = new Random().nextLong()) {
-        def key = new byte[32] // 256 bit key
-        new Random(seed).nextBytes(key)
-        return key
+    def getRandomKey() {
+        return new SecureRandom().generateSeed(32) // 256 bit key
     }
 
     def "Put blob with CPK"() {

@@ -5,6 +5,7 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
@@ -62,6 +63,7 @@ public class SecretClientTest extends SecretClientTestBase {
      * Verifies that an exception is thrown when null secret object is passed for creation.
      */
     @Test
+    @DoNotRecord
     public void setSecretNull() {
         assertRunnableThrowsException(() -> client.setSecret(null), NullPointerException.class);
     }

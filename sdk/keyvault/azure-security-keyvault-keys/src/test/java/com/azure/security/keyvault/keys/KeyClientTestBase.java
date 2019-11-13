@@ -10,6 +10,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
@@ -69,10 +70,10 @@ public abstract class KeyClientTestBase extends TestBase {
             .vaultUrl(endpoint)
             .credential(credential);
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && !testRunVerifier.doNotRecordTest()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build());
-        } else if (testMode == TestMode.PLAYBACK) {
+        } else if (testMode == TestMode.PLAYBACK && !testRunVerifier.doNotRecordTest()) {
             clientBuilder.httpClient(interceptorManager.getPlaybackClient());
         }
     }
@@ -105,6 +106,7 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
+    @DoNotRecord
     public abstract void setKeyNull();
 
 

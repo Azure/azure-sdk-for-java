@@ -3,29 +3,59 @@
     "Method" : "POST",
     "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/javaKeyTemp/create?api-version=7.0",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.1.0-beta.1 11.0.4; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Mon, 24 Jun 2019 08:09:48 GMT",
-      "content-length" : "108",
-      "server" : "Microsoft-IIS/10.0",
-      "expires" : "-1",
-      "x-aspnet-version" : "4.0.30319",
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "WWW-Authenticate" : "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\", resource=\"https://vault.azure.net\"",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "401",
+      "Date" : "Wed, 13 Nov 2019 19:48:20 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=131.107.160.216;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "87",
+      "x-ms-request-id" : "bf7fe2a9-ac6b-4b00-8716-c9a03df33abb",
+      "x-ms-keyvault-service-version" : "1.1.0.882",
+      "Body" : "{\"error\":{\"code\":\"Unauthorized\",\"message\":\"Request is missing a Bearer or PoP token.\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/javaKeyTemp/create?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000;includeSubDomains",
-      "x-content-type-options" : "nosniff",
-      "x-powered-by" : "ASP.NET",
-      "content-type" : "application/json; charset=utf-8",
+      "Date" : "Wed, 13 Nov 2019 19:48:20 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
       "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "9cebd2c8-90d7-46e6-88c9-62a3dfec7a0e",
-      "x-ms-keyvault-service-version" : "1.1.0.866",
-      "Body" : "{\"error\":{\"code\":\"BadParameter\",\"message\":\"Property  has invalid value\\r\\nProperty  has invalid value\\r\\n\"}}"
-    }
+      "x-ms-keyvault-network-info" : "addr=131.107.160.216;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "108",
+      "x-ms-request-id" : "f6bde09b-4b13-4668-8520-fafdbef696d3",
+      "x-ms-keyvault-service-version" : "1.1.0.882",
+      "Body" : "{\"error\":{\"code\":\"BadParameter\",\"message\":\"Property  has invalid value\\r\\nProperty  has invalid value\\r\\n\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
   } ],
   "variables" : [ ]
 }
