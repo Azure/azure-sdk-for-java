@@ -15,6 +15,7 @@ import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
+import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.DownloadRetryOptions
 import com.azure.storage.blob.models.LeaseStateType
@@ -1869,4 +1870,20 @@ class BlobAPITest extends APISpec {
         "斑點"                   | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
+
+    def "Builder cpk validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(bc.getBlobUrl()).setScheme("http").toUrl()
+        def builder = new BlobClientBuilder()
+            .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+
 }
