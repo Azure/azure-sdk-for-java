@@ -63,12 +63,14 @@ Libraries which enable you to provision specific resources. They are responsible
 * File an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose).
 * Check [previous questions](https://stackoverflow.com/questions/tagged/azure-java-sdk) or ask new ones on StackOverflow using `azure-java-sdk` tag.
 
-## Release branches (Release tagging)
-
+## Navigating the repository
 ### Master branch
-The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [below](#Client-GA-November-2019-Releases) for latest **GA** release.<br/>
+The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-GA-November-2019-Releases) for latest **GA** release.<br/>
+
+
+### Release branches (Release tagging)
 For each package we release there will be a unique git tag created that contains the name and the version of the package to mark the commit of the code that produced the package. This tag will be used for servicing via hotfix branches as well as debugging the code for a particular preview or stable release version.
-Format of the release tags are \<package-name\>_\<package-version\>. For more information please see [our branching strategy](https://github.com/Azure/azure-sdk/blob/master/docs/policies/repobranching.md#release-tagging).
+Format of the release tags are `<package-name>_<package-version>`. For more information please see [our branching strategy](https://github.com/Azure/azure-sdk/blob/master/docs/policies/repobranching.md#release-tagging).
 
 ## Contributing
 For details on contributing to this repository, see the [contributing guide](CONTRIBUTING.md).
