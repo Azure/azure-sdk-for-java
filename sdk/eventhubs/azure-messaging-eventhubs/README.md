@@ -196,14 +196,15 @@ EventHubProducerClient producer = new EventHubClientBuilder()
     .buildProducer();
 EventDataBatch eventDataBatch = producer.createBatch();
 for (EventData eventData : eventDataList) {
-  if (!eventDataBatch.tryAdd(eventData)) {
-    producer.send(eventDataBatch);
-    eventDataBatch = producer.createBatch();
-  }
+    if (!eventDataBatch.tryAdd(eventData)) {
+        producer.send(eventDataBatch);
+        eventDataBatch = producer.createBatch();
+    }
 }
+
 // send the last batch of remaining events
 if (eventDataBatch.getSize() > 0) {
-  producer.send(eventDataBatch);
+    producer.send(eventDataBatch);
 }
 ```
 
