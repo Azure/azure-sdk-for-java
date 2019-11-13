@@ -175,13 +175,13 @@ public final class TextAnalyticsClient {
     // (6) sentiment
     @ServiceMethod(returns = ReturnType.SINGLE)
     // new user,
-    public PagedIterable<SentenceSentiment> analyzeSentiment(String text, String language) {
+    public PagedIterable<DocumentSentiment> analyzeSentiment(String text, String language) {
         return null;
     }
 
     // hackathon user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<List<SentenceSentiment>> analyzeSentiments(List<String> documents, String language) {
+    public PagedIterable<DocumentSentiment> analyzeSentiments(List<String> documents, String language) {
         return null;
     }
 

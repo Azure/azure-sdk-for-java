@@ -436,9 +436,9 @@ public final class TextAnalyticsAsyncClient {
     }
 
     // (6) sentiment
-    @ServiceMethod(returns = ReturnType.SINGLE)
     // new user,
-    public PagedFlux<SentenceSentiment> analyzeSentiment(String text, String language) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DocumentSentiment> analyzeSentiment(String text, String language) {
 //        try {
 //            final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
 //            multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
@@ -459,9 +459,14 @@ public final class TextAnalyticsAsyncClient {
         return null;
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DocumentSentiment>> analyzeSentimentWithResponse(String text, String language) {
+        return null;
+    }
+
     // hackathon user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<List<SentenceSentiment>> analyzeSentiments(List<String> documents, String language) {
+    public PagedFlux<DocumentSentiment> analyzeSentiments(List<String> documents, String language) {
         return null;
     }
 
