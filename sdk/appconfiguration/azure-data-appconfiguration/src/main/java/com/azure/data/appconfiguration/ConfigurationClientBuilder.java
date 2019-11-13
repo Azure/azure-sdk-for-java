@@ -252,7 +252,7 @@ public final class ConfigurationClientBuilder {
 
         this.endpoint = credential.getBaseUri();
 
-        // Make sure only use connection string
+        // Clear TokenCredential in favor of connection string credential
         this.tokenCredential = null;
         return this;
     }
