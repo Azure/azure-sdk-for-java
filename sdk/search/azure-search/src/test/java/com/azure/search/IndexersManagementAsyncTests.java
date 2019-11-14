@@ -98,36 +98,50 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canUpdateIndexer() {
-        Indexer updatedExpected = changeIndexerBasic();
+        Indexer updatedExpected = createIndexerWithDifferentDescription();
 
-        createUpdateValidateIndexer(updatedExpected);
+        createUpdateAndValidateIndexer(updatedExpected);
     }
 
     @Override
     public void canUpdateIndexerFieldMapping() {
-        Indexer updatedExpected = changeIndexerFieldMapping();
+        Indexer updatedExpected = createIndexerWithDifferentFieldMapping();
 
-        createUpdateValidateIndexer(updatedExpected);
+        createUpdateAndValidateIndexer(updatedExpected);
     }
 
     @Override
     public void canUpdateIndexerDisabled() {
-        Indexer updatedExpected = changeIndexerDisabled();
+        Indexer updatedExpected = createDisabledIndexer();
 
-        createUpdateValidateIndexer(updatedExpected);
+        createUpdateAndValidateIndexer(updatedExpected);
     }
 
     @Override
     public void canUpdateIndexerSchedule() {
-        Indexer updatedExpected = changeIndexerSchedule();
+        Indexer updatedExpected = createIndexerWithDifferentSchedule();
 
-        createUpdateValidateIndexer(updatedExpected);
+        createUpdateAndValidateIndexer(updatedExpected);
+    }
+
+    @Override
+    public void canCreateIndexerWithSchedule() {
+        Indexer indexer = createIndexerWithDifferentSchedule();
+
+        createAndValidateIndexer(indexer);
     }
 
     @Override
     public void canUpdateIndexerBatchSizeMaxFailedItems() {
-        Indexer updatedExpected = changeIndexerBatchSizeMaxFailedItems();
+        Indexer updatedExpected = createIndexerWithDifferentIndexingParameters();
 
-        createUpdateValidateIndexer(updatedExpected);
+        createUpdateAndValidateIndexer(updatedExpected);
+    }
+
+    @Override
+    public void canCreateIndexerWithBatchSizeMaxFailedItems() {
+        Indexer indexer = createIndexerWithDifferentIndexingParameters();
+
+        createAndValidateIndexer(indexer);
     }
 }

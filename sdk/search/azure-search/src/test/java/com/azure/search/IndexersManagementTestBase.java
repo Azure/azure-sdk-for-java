@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
@@ -45,7 +45,13 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public abstract void canUpdateIndexerSchedule();
 
     @Test
+    public abstract void canCreateIndexerWithSchedule();
+
+    @Test
     public abstract void canUpdateIndexerBatchSizeMaxFailedItems();
+
+    @Test
+    public abstract void canCreateIndexerWithBatchSizeMaxFailedItems();
 
     protected void assertIndexersEqual(Indexer expected, Indexer actual) {
         expected.setETag("none");
@@ -112,9 +118,8 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      * Creates the index and indexer in the search service and then update the indexer
      * @param updatedIndexer the indexer to be updated
      */
-    protected void createUpdateValidateIndexer(Indexer updatedIndexer) {
-        // Create the data source, note it's a valid DS with actual
-        // connection string
+    void createUpdateAndValidateIndexer(Indexer updatedIndexer) {
+        // Create the data source, note it's a valid DS with actual connection string
         DataSource datasource = createTestSqlDataSource();
         createDatasource(datasource);
 
@@ -138,93 +143,104 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         assertIndexersEqual(updatedIndexer, updatedResponse);
     }
 
-    /**
-     * Change a basic property of an indexer and return it
-     * @return the updated indexer
-     */
-    protected Indexer changeIndexerBasic() {
-        // create another indexer object
-        Indexer updatedExpected =
-            createTestIndexer("indexer");
+    void createAndValidateIndexer(Indexer indexer) {
+        // Create the data source, note it's a valid DS with actual connection string
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
 
-        // modify it
-        updatedExpected.setDescription("somethingdifferent");
+        // Create an index
+        Index index = createTestIndexForLiveDatasource();
+        createIndex(index);
 
-        return updatedExpected;
+        // create this indexer in the service
+        Indexer indexerResponse = createIndexer(indexer);
+
+        // verify the returned indexer is as expected
+        assertIndexersEqual(indexer, indexerResponse);
     }
 
     /**
-     * Change the field mappings property of an indexer and return it
-     * @return the updated indexer
+     * Create a new indexer and change its description property
+     * @return the created indexer
      */
-    protected Indexer changeIndexerFieldMapping() {
-        // Check field mappings can be changed
-        List<FieldMapping> lst = new LinkedList<>();
-        FieldMapping fm = new FieldMapping();
-        fm.setSourceFieldName("state_alpha");
-        fm.setTargetFieldName("state");
-        lst.add(fm);
-
-
-        // create another indexer object
-        Indexer updatedExpected =
-            createTestIndexer("indexer");
+    Indexer createIndexerWithDifferentDescription() {
+        // create a new indexer object
+        Indexer indexer = createTestIndexer("indexer");
 
         // modify it
-        updatedExpected.setFieldMappings(lst);
+        indexer.setDescription("somethingdifferent");
 
-        return updatedExpected;
+        return indexer;
     }
 
     /**
-     * Change the Disabled property of an indexer and return it
-     * @return the updated indexer
+     * Create a new indexer and change its field mappings property
+     * @return the created indexer
      */
-    protected Indexer changeIndexerDisabled() {
-        // create another indexer object
-        Indexer updatedExpected =
-            createTestIndexer("indexer");
+    Indexer createIndexerWithDifferentFieldMapping() {
+        // create a new indexer object
+        Indexer indexer = createTestIndexer("indexer");
 
-        // modify it
-        updatedExpected.setIsDisabled(false);
+        // Create field mappings
+        List<FieldMapping> fieldMappings = Collections.singletonList(new FieldMapping()
+            .setSourceFieldName("state_alpha")
+            .setTargetFieldName("state"));
 
-        return updatedExpected;
+        // modify the indexer
+        indexer.setFieldMappings(fieldMappings);
+
+        return indexer;
     }
 
     /**
-     * Change the schedule property of an indexer and return it
-     * @return the updated indexer
+     * Create a new indexer and set the Disabled property to true
+     * @return the created indexer
      */
-    protected Indexer changeIndexerSchedule() {
-        // create another indexer object
-        Indexer updatedExpected =
-            createTestIndexer("indexer");
-
-        IndexingSchedule is = new IndexingSchedule();
-        is.setInterval(Duration.ofMinutes(10));
+    Indexer createDisabledIndexer() {
+        // create a new indexer object
+        Indexer indexer = createTestIndexer("indexer");
 
         // modify it
-        updatedExpected.setSchedule(is);
+        indexer.setIsDisabled(false);
 
-        return updatedExpected;
+        return indexer;
     }
 
-    protected Indexer changeIndexerBatchSizeMaxFailedItems() {
-        // create another indexer object
-        Indexer updatedExpected =
-            createTestIndexer("indexer");
+    /**
+     * Create a new indexer and change its schedule property
+     * @return the created indexer
+     */
+    Indexer createIndexerWithDifferentSchedule() {
+        // create a new indexer object
+        Indexer indexer = createTestIndexer("indexer");
 
-        IndexingParameters ip = new IndexingParameters();
-        ip.setMaxFailedItems(121);
-        ip.setMaxFailedItemsPerBatch(11);
+        IndexingSchedule is = new IndexingSchedule()
+            .setInterval(Duration.ofMinutes(10));
 
-        ip.setBatchSize(20);
-        // modify it
-        updatedExpected.setParameters(ip);
+        // modify the indexer
+        indexer.setSchedule(is);
 
-        return updatedExpected;
+        return indexer;
     }
 
+    /**
+     * Create a new indexer and change its indexing parameters
+     * @return the created indexer
+     */
+    Indexer createIndexerWithDifferentIndexingParameters() {
+        // create a new indexer object
+        Indexer indexer = createTestIndexer("indexer");
+
+        IndexingParameters ip = new IndexingParameters()
+            .setMaxFailedItems(121)
+            .setMaxFailedItemsPerBatch(11)
+            .setBatchSize(20);
+
+        // modify the indexer
+        indexer.setParameters(ip);
+
+        return indexer;
+    }
 
     protected abstract Index createIndex(Index index);
 
