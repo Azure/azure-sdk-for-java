@@ -217,7 +217,7 @@ public class PathPermissions {
      *
      * @return the {@link RolePermissions} for the owner of the resource.
      */
-    public RolePermissions owner() {
+    public RolePermissions getOwner() {
         return owner;
     }
 
@@ -226,7 +226,7 @@ public class PathPermissions {
      *
      * @return the {@link RolePermissions} for the owning group of the resource.
      */
-    public RolePermissions group() {
+    public RolePermissions getGroup() {
         return group;
     }
 
@@ -235,7 +235,7 @@ public class PathPermissions {
      *
      * @return the {@link RolePermissions} for the other users.
      */
-    public RolePermissions other() {
+    public RolePermissions getOther() {
         return other;
     }
 
@@ -245,7 +245,7 @@ public class PathPermissions {
      * @param owner The {@link RolePermissions} that specify what permissions the owner should have.
      * @return The updated PathPermissions object.
      */
-    public PathPermissions owner(RolePermissions owner) {
+    public PathPermissions setOwner(RolePermissions owner) {
         this.owner = owner;
         return this;
     }
@@ -256,7 +256,7 @@ public class PathPermissions {
      * @param group The {@link RolePermissions} that specify what permissions the owning group should have.
      * @return The updated PathPermissions object.
      */
-    public PathPermissions group(RolePermissions group) {
+    public PathPermissions setGroup(RolePermissions group) {
         this.group = group;
         return this;
     }
@@ -267,7 +267,7 @@ public class PathPermissions {
      * @param other The {@link RolePermissions} that specify what permissions other users should have.
      * @return The updated PathPermissions object.
      */
-    public PathPermissions other(RolePermissions other) {
+    public PathPermissions setOther(RolePermissions other) {
         this.other = other;
         return this;
     }
@@ -278,7 +278,7 @@ public class PathPermissions {
      *
      * @return {@code true} if the sticky bit is set and {@code false} otherwise.
      */
-    public boolean stickyBit() {
+    public boolean hasStickyBit() {
         return stickyBit;
     }
 
@@ -286,11 +286,11 @@ public class PathPermissions {
      * Sets the value of the sticky bit. The sticky bit may be set on directories, the files in that
      * directory may only be renamed or deleted by the file's owner, the directory's owner, or the root user.
      *
-     * @param stickyBit {@code True} to set the sticky bit and {@code false} to clear it.
+     * @param setStickyBit {@code True} to set the sticky bit and {@code false} to clear it.
      * @return The updated PathPermissions object.
      */
-    public PathPermissions stickyBit(boolean stickyBit) {
-        this.stickyBit = stickyBit;
+    public PathPermissions setStickyBit(boolean setStickyBit) {
+        this.stickyBit = setStickyBit;
         return this;
     }
 
