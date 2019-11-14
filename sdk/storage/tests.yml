@@ -25,12 +25,4 @@ jobs:
         AZURE_STORAGE_BLOB_CONNECTION_STRING: $(java-storage-test-blob-connection-string)
         STORAGE_DATA_LAKE_ACCOUNT_NAME: $(java-storage-data-lake-account-name)
         STORAGE_DATA_LAKE_ACCOUNT_KEY: $(java-storage-data-lake-account-key)
-<<<<<<< HEAD
-      PreRunSteps:
-        pwsh: |
-          npm install -g azurite
-          Start-Process azurite
-        displayName: 'Install and Start Azurite'
-=======
->>>>>>> 87fd59d39d86c9476301c680aa6cbb8f982ff341
       TimeoutInMinutes: 120
