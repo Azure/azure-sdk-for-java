@@ -8,12 +8,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.search.models.AccessCondition;
-import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SynonymMap;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 
-import java.util.UUID;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,18 +55,15 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
 
         client.createSynonymMap(expected);
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
-
         Context context = new Context("key", "value");
 
         SynonymMap actual = client.getSynonymMap(expected.getName());
         assertSynonymMapsEqual(expected, actual);
 
-        actual = client.getSynonymMap(expected.getName(), requestOptions);
+        actual = client.getSynonymMap(expected.getName(), generateRequestOptions());
         assertSynonymMapsEqual(expected, actual);
 
-        actual = client.getSynonymMapWithResponse(expected.getName(), requestOptions, context)
+        actual = client.getSynonymMapWithResponse(expected.getName(), generateRequestOptions(), context)
             .getValue();
         assertSynonymMapsEqual(expected, actual);
 
@@ -79,17 +74,12 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     public void getSynonymMapThrowsOnNotFound() {
         final String synonymMapName = "thisSynonymMapDoesNotExist";
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
-
         Context context = new Context("key", "value");
 
         validateSynonymMapNotFoundThrowsException(synonymMapName, () -> client.getSynonymMap(synonymMapName));
-        validateSynonymMapNotFoundThrowsException(synonymMapName, () -> client.getSynonymMap(synonymMapName, requestOptions));
-        validateSynonymMapNotFoundThrowsException(synonymMapName, () -> client.getSynonymMap(synonymMapName,
-            requestOptions, context));
+        validateSynonymMapNotFoundThrowsException(synonymMapName, () -> client.getSynonymMap(synonymMapName, generateRequestOptions()));
         validateSynonymMapNotFoundThrowsException(synonymMapName, () -> client.getSynonymMapWithResponse(synonymMapName,
-            requestOptions, context));
+            generateRequestOptions(), context));
     }
 
     @Override
@@ -112,22 +102,18 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     @Override
     public void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExist() {
         SynonymMap expected = createTestSynonymMap();
-
-        RequestOptions requestOptions = new RequestOptions()
-                .setClientRequestId(UUID.randomUUID());
-
         Context context = new Context("key", "value");
 
         SynonymMap actual = client.createOrUpdateSynonymMap(expected);
         assertSynonymMapsEqual(expected, actual);
 
         actual = client.createOrUpdateSynonymMap(expected.setName("test-synonym1"),
-            new AccessCondition(), requestOptions);
+            new AccessCondition(), generateRequestOptions());
         assertSynonymMapsEqual(expected, actual);
 
         Response<SynonymMap> createOrUpdateResponse = client.createOrUpdateSynonymMapWithResponse(
             expected.setName("test-synonym2"),
-            new AccessCondition(), requestOptions, context);
+            new AccessCondition(), generateRequestOptions(), context);
         Assert.assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
         assertSynonymMapsEqual(expected, createOrUpdateResponse.getValue());
     }
@@ -137,12 +123,10 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         SynonymMap synonymMap = createTestSynonymMap();
         SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap);
         SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
         Context context = new Context("key", "value");
 
         try {
-            client.createOrUpdateSynonymMap(mutatedResource, generateIfNotExistsAccessCondition());
+            client.createOrUpdateSynonymMap(mutatedResource, generateIfNotExistsAccessCondition(), generateRequestOptions());
             Assert.fail("createOrUpdateSynonymMap did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -150,23 +134,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         }
 
         try {
-            client.createOrUpdateSynonymMap(mutatedResource, generateIfNotExistsAccessCondition(), requestOptions);
-            Assert.fail("createOrUpdateSynonymMap did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
-
-        try {
-            client.createOrUpdateSynonymMap(mutatedResource, generateIfNotExistsAccessCondition(), requestOptions, context);
-            Assert.fail("createOrUpdateSynonymMap did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
-
-        try {
-            client.createOrUpdateSynonymMapWithResponse(mutatedResource, generateIfNotExistsAccessCondition(), requestOptions, context);
+            client.createOrUpdateSynonymMapWithResponse(mutatedResource, generateIfNotExistsAccessCondition(), generateRequestOptions(), context);
             Assert.fail("createOrUpdateSynonymMap did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -177,22 +145,17 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     @Override
     public void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResource() {
         SynonymMap resource = createTestSynonymMap();
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
         Context context = new Context("key", "value");
 
-        SynonymMap updatedResource = client.createOrUpdateSynonymMap(resource, generateIfNotExistsAccessCondition());
+        SynonymMap updatedResource = client.createOrUpdateSynonymMap(resource, generateIfNotExistsAccessCondition(), generateRequestOptions());
         Assert.assertFalse(updatedResource.getETag().isEmpty());
 
         updatedResource = client.createOrUpdateSynonymMap(resource.setName("test-synonym1"),
-            generateIfNotExistsAccessCondition(),
-            requestOptions);
+            generateIfNotExistsAccessCondition(), generateRequestOptions());
         Assert.assertFalse(updatedResource.getETag().isEmpty());
 
         Response<SynonymMap> updatedResponse = client.createOrUpdateSynonymMapWithResponse(resource.setName("test-synonym2"),
-            generateIfNotExistsAccessCondition(),
-            requestOptions,
-            context);
+            generateIfNotExistsAccessCondition(), generateRequestOptions(), context);
         Assert.assertFalse(updatedResponse.getValue().getETag().isEmpty());
     }
 
@@ -201,7 +164,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         SynonymMap synonymMap = createTestSynonymMap();
         SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap);
         SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
-        SynonymMap updatedResource = client.createOrUpdateSynonymMap(mutatedResource, generateIfExistsAccessCondition());
+        SynonymMap updatedResource = client.createOrUpdateSynonymMap(mutatedResource, generateIfExistsAccessCondition(), generateRequestOptions());
 
         Assert.assertFalse(updatedResource.getETag().isEmpty());
         Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
@@ -212,7 +175,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         SynonymMap resource = createTestSynonymMap();
 
         try {
-            client.createOrUpdateSynonymMap(resource, generateIfExistsAccessCondition());
+            client.createOrUpdateSynonymMap(resource, generateIfExistsAccessCondition(), generateRequestOptions());
             Assert.fail("createOrUpdateSynonymMap did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -227,7 +190,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         SynonymMap synonymMap = createTestSynonymMap();
         SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap);
         SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
-        SynonymMap updatedResource = client.createOrUpdateSynonymMap(mutatedResource, generateIfMatchAccessCondition(createdResource.getETag()));
+        SynonymMap updatedResource = client.createOrUpdateSynonymMap(mutatedResource, generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions());
 
         Assert.assertFalse(createdResource.getETag().isEmpty());
         Assert.assertFalse(updatedResource.getETag().isEmpty());
@@ -242,7 +205,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         SynonymMap updatedResource = client.createOrUpdateSynonymMap(mutatedResource);
 
         try {
-            client.createOrUpdateSynonymMap(updatedResource, generateIfMatchAccessCondition(createdResource.getETag()));
+            client.createOrUpdateSynonymMap(updatedResource, generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions());
             Assert.fail("createOrUpdateSynonymMap did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -260,7 +223,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         SynonymMap currentResource = client.createOrUpdateSynonymMap(staleResource.setSynonyms("updatedword1,updatedword2"));
 
         try {
-            client.deleteSynonymMap(synonymMap.getName(), generateIfMatchAccessCondition(staleResource.getETag()));
+            client.deleteSynonymMap(synonymMap.getName(), generateIfMatchAccessCondition(staleResource.getETag()), generateRequestOptions());
             Assert.fail("deleteSynonym did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -279,9 +242,9 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         SynonymMap synonymMap = createTestSynonymMap();
         client.createSynonymMap(synonymMap);
 
-        client.deleteSynonymMap(synonymMap.getName(), generateIfExistsAccessCondition());
+        client.deleteSynonymMap(synonymMap.getName(), generateIfExistsAccessCondition(), generateRequestOptions());
         try {
-            client.deleteSynonymMap(synonymMap.getName(), generateIfExistsAccessCondition());
+            client.deleteSynonymMap(synonymMap.getName(), generateIfExistsAccessCondition(), generateRequestOptions());
             Assert.fail("deleteSynonymMap did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -320,10 +283,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         Assert.assertEquals(synonymMap1.getName(), result.get(0).getName());
         Assert.assertEquals(synonymMap2.getName(), result.get(1).getName());
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
-
-        actual = client.listSynonymMaps("name", requestOptions);
+        actual = client.listSynonymMaps("name", generateRequestOptions());
         result = actual.stream().collect(Collectors.toList());
 
         Assert.assertEquals(2, result.size());
@@ -332,7 +292,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
 
         Context context = new Context("key", "value");
         PagedResponse<SynonymMap> listResponse = client.listSynonymMapsWithResponse("name",
-            requestOptions, context);
+            generateRequestOptions(), context);
         result = listResponse.getItems();
 
         Assert.assertEquals(2, result.size());
@@ -348,7 +308,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         client.createSynonymMap(synonymMap1);
         client.createSynonymMap(synonymMap2);
 
-        PagedIterable<SynonymMap> listResponse = client.listSynonymMaps("name");
+        PagedIterable<SynonymMap> listResponse = client.listSynonymMaps("name", generateRequestOptions());
         List<SynonymMap> result = listResponse.stream().collect(Collectors.toList());
 
         result.forEach(res -> {
@@ -365,34 +325,24 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     @Override
     public void existsReturnsTrueForExistingSynonymMap() {
         SynonymMap synonymMap = createTestSynonymMap();
-
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
         Context context = new Context("key", "value");
 
         client.createSynonymMap(synonymMap);
 
         Assert.assertTrue(client.synonymMapExists(synonymMap.getName()));
-        Assert.assertTrue(client.synonymMapExists(synonymMap.getName(), requestOptions));
-        Assert.assertTrue(client.synonymMapExistsWithResponse(synonymMap.getName(),
-            requestOptions,
-            context)
+        Assert.assertTrue(client.synonymMapExists(synonymMap.getName(), generateRequestOptions()));
+        Assert.assertTrue(client.synonymMapExistsWithResponse(synonymMap.getName(), generateRequestOptions(), context)
             .getValue());
     }
 
     @Override
     public void existsReturnsFalseForNonExistingSynonymMap() {
         String synonymMapName = "thisSynonymMapDoesNotExist";
-
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
         Context context = new Context("key", "value");
 
         Assert.assertFalse(client.synonymMapExists(synonymMapName));
-        Assert.assertFalse(client.synonymMapExists(synonymMapName, requestOptions));
-        Assert.assertFalse(client.synonymMapExistsWithResponse(synonymMapName,
-            requestOptions,
-            context)
+        Assert.assertFalse(client.synonymMapExists(synonymMapName, generateRequestOptions()));
+        Assert.assertFalse(client.synonymMapExistsWithResponse(synonymMapName, generateRequestOptions(), context)
             .getValue());
     }
 

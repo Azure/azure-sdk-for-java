@@ -1,68 +1,68 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk478589375d56.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk813906376e62.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b1ef6ab6-e5b2-4e94-843d-9d2b5ab59ed1",
+      "request-id" : "b9a89c2a-a326-4d54-a76c-b78cbfba421e",
       "StatusCode" : "201",
-      "Date" : "Wed, 30 Oct 2019 18:42:44 GMT",
+      "Date" : "Wed, 13 Nov 2019 19:55:33 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D75D68F3D62A2C\"",
-      "elapsed-time" : "511",
+      "ETag" : "W/\"0x8D7687371B7E295\"",
+      "elapsed-time" : "44",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "198",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk478589375d56.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D75D68F3D62A2C\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\"}",
+      "Content-Length" : "210",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk813906376e62.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7687371B7E295\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\"}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk478589375d56.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk813906376e62.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk478589375d56.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk813906376e62.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "531b7362-262d-4a7a-89b5-dc678666fcec",
+      "request-id" : "237c1ffd-68b0-4bfa-b835-b91ab0ab54a8",
       "StatusCode" : "200",
-      "Date" : "Wed, 30 Oct 2019 18:42:44 GMT",
+      "Date" : "Wed, 13 Nov 2019 19:55:33 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D75D68F42743D3\"",
-      "elapsed-time" : "71",
+      "ETag" : "W/\"0x8D7687371CAF977\"",
+      "elapsed-time" : "27",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "205",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk478589375d56.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D75D68F42743D3\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"mutated1, mutated2\"}",
+      "Content-Length" : "217",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk813906376e62.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7687371CAF977\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"mutated1, mutated2\"}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk478589375d56.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk813906376e62.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "fd9f9100-4be3-4064-97c1-14c57565ca99",
+      "request-id" : "c0d87c47-bfb1-4230-907a-cb1a7c45e7a0",
       "StatusCode" : "412",
-      "Date" : "Wed, 30 Oct 2019 18:42:45 GMT",
+      "Date" : "Wed, 13 Nov 2019 19:55:33 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "9",
+      "elapsed-time" : "6",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "160",

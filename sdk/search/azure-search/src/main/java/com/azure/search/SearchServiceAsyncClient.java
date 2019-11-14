@@ -1294,7 +1294,8 @@ public class SearchServiceAsyncClient {
      * @return the created {@link SynonymMap}.
      */
     public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap) {
-        return this.createSynonymMapWithResponse(synonymMap, null).map(Response::getValue);
+        return this.createSynonymMapWithResponse(synonymMap, null)
+            .map(Response::getValue);
     }
 
     /**
@@ -1306,7 +1307,8 @@ public class SearchServiceAsyncClient {
      * @return the created {@link SynonymMap}.
      */
     public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap, RequestOptions requestOptions) {
-        return this.createSynonymMapWithResponse(synonymMap, requestOptions).map(Response::getValue);
+        return this.createSynonymMapWithResponse(synonymMap, requestOptions)
+            .map(Response::getValue);
     }
 
     /**
@@ -1319,7 +1321,7 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
                                                                    RequestOptions requestOptions) {
-        return withContext(context -> createSynonymMapWithResponse(synonymMap,
+        return withContext(context -> this.createSynonymMapWithResponse(synonymMap,
             requestOptions,
             context));
     }
@@ -1367,7 +1369,7 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName,
                                                                 RequestOptions requestOptions) {
-        return withContext(context -> getSynonymMapWithResponse(synonymMapName, requestOptions, context));
+        return withContext(context -> this.getSynonymMapWithResponse(synonymMapName, requestOptions, context));
     }
 
     Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName,
@@ -1394,18 +1396,6 @@ public class SearchServiceAsyncClient {
      * @param select selects which top-level properties of the synonym maps to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties.
      * The default is all properties
-     * @return a reactive response emitting the list of synonym maps.
-     */
-    public PagedFlux<SynonymMap> listSynonymMaps(String select) {
-        return this.listSynonymMaps(select, null);
-    }
-
-    /**
-     * Lists all synonym maps available for an Azure Cognitive Search service.
-     *
-     * @param select selects which top-level properties of the synonym maps to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of synonym maps.
@@ -1413,12 +1403,6 @@ public class SearchServiceAsyncClient {
     public PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
             () -> this.listSynonymMapsWithResponse(select, requestOptions),
-            nextLink -> Mono.empty());
-    }
-
-    PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions, Context context) {
-        return new PagedFlux<>(
-            () -> this.listSynonymMapsWithResponse(select, requestOptions, context),
             nextLink -> Mono.empty());
     }
 
@@ -1469,19 +1453,6 @@ public class SearchServiceAsyncClient {
      * @param synonymMap the definition of the synonym map to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
-     * @return the synonym map that was created or updated.
-     */
-    public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap, AccessCondition accessCondition) {
-        return this.createOrUpdateSynonymMapWithResponse(synonymMap, accessCondition, null)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
-     *
-     * @param synonymMap the definition of the synonym map to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return the synonym map that was created or updated.
@@ -1506,10 +1477,8 @@ public class SearchServiceAsyncClient {
     public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
                                                                            AccessCondition accessCondition,
                                                                            RequestOptions requestOptions) {
-        return withContext(context -> createOrUpdateSynonymMapWithResponse(synonymMap,
-            accessCondition,
-            requestOptions,
-            context));
+        return withContext(context -> this.createOrUpdateSynonymMapWithResponse(synonymMap,
+            accessCondition, requestOptions, context));
     }
 
     Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
@@ -1534,18 +1503,6 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Void> deleteSynonymMap(String synonymMapName) {
         return this.deleteSynonymMap(synonymMapName, null, null);
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search synonym map.
-     *
-     * @param synonymMapName the name of the synonym map to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @return a response signalling completion.
-     */
-    public Mono<Void> deleteSynonymMap(String synonymMapName, AccessCondition accessCondition) {
-        return this.deleteSynonymMap(synonymMapName, accessCondition, null);
     }
 
     /**

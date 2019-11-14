@@ -1165,27 +1165,12 @@ public class SearchServiceClient {
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return the created {@link SynonymMap}.
-     */
-    public SynonymMap createSynonymMap(SynonymMap synonymMap, RequestOptions requestOptions, Context context) {
-        return this.createSynonymMapWithResponse(synonymMap, requestOptions, context).getValue();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search synonym map.
-     *
-     * @param synonymMap the definition of the synonym map to create
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created SynonymMap.
      */
     public Response<SynonymMap> createSynonymMapWithResponse(SynonymMap synonymMap,
                                                              RequestOptions requestOptions,
                                                              Context context) {
-        return asyncClient.createSynonymMapWithResponse(synonymMap,
-            requestOptions,
-            context).block();
+        return asyncClient.createSynonymMapWithResponse(synonymMap, requestOptions, context).block();
     }
 
     /**
@@ -1208,21 +1193,6 @@ public class SearchServiceClient {
      */
     public SynonymMap getSynonymMap(String synonymMapName, RequestOptions requestOptions) {
         return asyncClient.getSynonymMap(synonymMapName, requestOptions).block();
-    }
-
-    /**
-     * Retrieves a synonym map definition.
-     *
-     * @param synonymMapName name of the synonym map to retrieve
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context a context that is passed through the HTTP pipeline during the service call
-     * @return the {@link SynonymMap} definition.
-     */
-    public SynonymMap getSynonymMap(String synonymMapName,
-                                    RequestOptions requestOptions,
-                                    Context context) {
-        return this.getSynonymMapWithResponse(synonymMapName, requestOptions, context).getValue();
     }
 
     /**
@@ -1255,39 +1225,12 @@ public class SearchServiceClient {
      * @param select selects which top-level properties of the index definitions to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties.
      * The default is all properties
-     * @return the list of synonym maps.
-     */
-    public PagedIterable<SynonymMap> listSynonymMaps(String select) {
-        return new PagedIterable<>(asyncClient.listSynonymMaps(select));
-    }
-
-    /**
-     * Lists all synonym maps available for an Azure Cognitive Search service.
-     *
-     * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return the list of synonym maps.
      */
     public PagedIterable<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions) {
         return new PagedIterable<>(asyncClient.listSynonymMaps(select, requestOptions));
-    }
-
-    /**
-     * Lists all synonym maps available for an Azure Cognitive Search service.
-     *
-     * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return the list of synonym maps.
-     */
-    public PagedIterable<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listSynonymMaps(select, requestOptions, context));
     }
 
     /**
@@ -1322,18 +1265,6 @@ public class SearchServiceClient {
      * @param synonymMap the definition of the synonym map to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
-     * @return the synonym map that was created or updated.
-     */
-    public SynonymMap createOrUpdateSynonymMap(SynonymMap synonymMap, AccessCondition accessCondition) {
-        return asyncClient.createOrUpdateSynonymMap(synonymMap, accessCondition).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
-     *
-     * @param synonymMap the definition of the synonym map to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return the synonym map that was created or updated.
@@ -1341,30 +1272,7 @@ public class SearchServiceClient {
     public SynonymMap createOrUpdateSynonymMap(SynonymMap synonymMap,
                                                AccessCondition accessCondition,
                                                RequestOptions requestOptions) {
-        return asyncClient.createOrUpdateSynonymMap(synonymMap,
-            accessCondition,
-            requestOptions).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
-     *
-     * @param synonymMap the definition of the synonym map to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return the synonym map that was created or updated.
-     */
-    public SynonymMap createOrUpdateSynonymMap(SynonymMap synonymMap,
-                                               AccessCondition accessCondition,
-                                               RequestOptions requestOptions,
-                                               Context context) {
-        return this.createOrUpdateSynonymMapWithResponse(synonymMap,
-            accessCondition,
-            requestOptions,
-            context).getValue();
+        return asyncClient.createOrUpdateSynonymMap(synonymMap, accessCondition, requestOptions).block();
     }
 
     /**
@@ -1383,9 +1291,7 @@ public class SearchServiceClient {
                                                                      RequestOptions requestOptions,
                                                                      Context context) {
         return asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap,
-            accessCondition,
-            requestOptions,
-            context).block();
+            accessCondition, requestOptions, context).block();
     }
 
     /**
@@ -1395,17 +1301,6 @@ public class SearchServiceClient {
      */
     public void deleteSynonymMap(String synonymMapName) {
         asyncClient.deleteSynonymMap(synonymMapName).block();
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search synonym map.
-     *
-     * @param synonymMapName the name of the synonym map to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     */
-    public void deleteSynonymMap(String synonymMapName, AccessCondition accessCondition) {
-        asyncClient.deleteSynonymMap(synonymMapName, accessCondition).block();
     }
 
     /**
@@ -1432,27 +1327,6 @@ public class SearchServiceClient {
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
-     * Contains the tracking ID sent with the request to help with debugging
-     */
-    public void deleteSynonymMap(String synonymMapName,
-                                 AccessCondition accessCondition,
-                                 RequestOptions requestOptions,
-                                 Context context) {
-        this.deleteSynonymMapWithResponse(synonymMapName,
-            accessCondition,
-            requestOptions,
-            context);
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search synonym map.
-     *
-     * @param synonymMapName the name of the synonym map to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
     public Response<Void> deleteSynonymMapWithResponse(String synonymMapName,
@@ -1460,9 +1334,7 @@ public class SearchServiceClient {
                                                        RequestOptions requestOptions,
                                                        Context context) {
         return asyncClient.deleteSynonymMapWithResponse(synonymMapName,
-            accessCondition,
-            requestOptions,
-            context).block();
+            accessCondition, requestOptions, context).block();
     }
 
     /**
@@ -1496,25 +1368,10 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the synonym map exists; false otherwise.
      */
-    public Boolean synonymMapExists(String synonymMapName, RequestOptions requestOptions, Context context) {
-        return this.synonymMapExistsWithResponse(synonymMapName, requestOptions, context)
-            .getValue();
-    }
-
-    /**
-     * Determines whether or not the given synonym map exists.
-     *
-     * @param synonymMapName the name of the synonym map
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return true if the synonym map exists; false otherwise.
-     */
     public Response<Boolean> synonymMapExistsWithResponse(String synonymMapName,
                                                           RequestOptions requestOptions,
                                                           Context context) {
         return asyncClient
-            .synonymMapExistsWithResponse(synonymMapName, requestOptions, context)
-            .block();
+            .synonymMapExistsWithResponse(synonymMapName, requestOptions, context).block();
     }
 }
