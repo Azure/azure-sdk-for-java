@@ -58,13 +58,15 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        //
-        Optional<Object> data = context.getData("caller-method");
-        String callerMethod = (String) data.orElse("");
-        //
-        final ClientLogger logger = new ClientLogger(callerMethod);
-        final long startNs = System.nanoTime();
-        if (httpLogOptions != null) {
+        // HttpLogOptions are null or the HttpLogDetailLevel is NONE perform a no-op.
+        if (httpLogOptions == null || httpLogOptions.getLogLevel() == HttpLogDetailLevel.NONE) {
+            return next.process();
+        } else {
+            Optional<Object> data = context.getData("caller-method");
+            String callerMethod = (String) data.orElse("");
+            //
+            final ClientLogger logger = new ClientLogger(callerMethod);
+            final long startNs = System.nanoTime();
             Mono<Void> logRequest = logRequest(logger, context.getHttpRequest());
             Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate =
                 logResponseDelegate(logger, context.getHttpRequest().getUrl(), startNs);
@@ -72,7 +74,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return logRequest.then(next.process()).flatMap(logResponseDelegate)
                 .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
         }
-        return Mono.empty();
     }
 
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
