@@ -65,6 +65,7 @@ The APIs documented in this section provide access to operations on search data,
 * [Using suggestions](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchSuggestionExample.java)
 * [Searching for documents of known type](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchWithFullyTypedDocumentsExample.java)
 * [Creating a synonym map for an index](/sdk/search/azure-search/src/samples/java/com/azure/search/SynonymMapsCreateExample.java)
+* [Creating skillsets](/sdk/search/azure-search/src/samples/java/com/azure/search/CreateSkillsetExample.java)
 
 ## How to provide feedback
 
