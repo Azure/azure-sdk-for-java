@@ -301,11 +301,11 @@ public class PathPermissions {
      *
      * @return {@code true} if there is more information in the ACL. {@code false} otherwise.
      */
-    public boolean extendedInfoInAcl() {
+    public boolean hasExtendedInfoInAcl() {
         return this.extendedInfoInAcl;
     }
 
-    PathPermissions extendedInfoInAcl(boolean extendedInfoInAcl) {
+    PathPermissions setExtendedInfoInAcl(boolean extendedInfoInAcl) {
         this.extendedInfoInAcl = extendedInfoInAcl;
         return this;
     }

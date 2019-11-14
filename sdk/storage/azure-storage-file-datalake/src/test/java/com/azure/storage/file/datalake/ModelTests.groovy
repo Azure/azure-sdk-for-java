@@ -61,7 +61,7 @@ class ModelTests extends APISpec{
         permissions.getGroup() == group
         permissions.getOther() == other
         permissions.hasStickyBit()
-        permissions.extendedInfoInAcl()
+        permissions.hasExtendedInfoInAcl()
     }
 
     def "PathPermissions create"() {
@@ -77,7 +77,7 @@ class ModelTests extends APISpec{
         otherPermission.getGroup() == group
         otherPermission.getOther() == other
         otherPermission.hasStickyBit()
-        otherPermission.extendedInfoInAcl()
+        otherPermission.hasExtendedInfoInAcl()
         permissions.equals(otherPermission)
     }
 
@@ -91,7 +91,7 @@ class ModelTests extends APISpec{
         permissions.getOther().hasReadPermission() == read
         permissions.getOther().hasWritePermission() == write
         permissions.hasStickyBit() == stickyBit
-        permissions.extendedInfoInAcl() == extendedInfoInAcl
+        permissions.hasExtendedInfoInAcl() == extendedInfoInAcl
 
         where:
         // These test the value of other
