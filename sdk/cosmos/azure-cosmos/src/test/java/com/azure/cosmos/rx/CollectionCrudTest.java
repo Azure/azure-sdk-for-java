@@ -83,7 +83,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void createCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-
+        
         Mono<CosmosAsyncContainerResponse> createObservable = database
                 .createContainer(collectionDefinition);
 
@@ -161,7 +161,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         indexingPolicy.setSpatialIndexes(spatialIndexes);
 
         collection.setIndexingPolicy(indexingPolicy);
-
+        
         Mono<CosmosAsyncContainerResponse> createObservable = database
                 .createContainer(collection, new CosmosContainerRequestOptions());
 
@@ -178,7 +178,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-
+        
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosAsyncContainer collection = createObservable.block().getContainer();
 
@@ -203,7 +203,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void deleteCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-
+        
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosAsyncContainer collection = createObservable.block().getContainer();
 
@@ -223,13 +223,13 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosContainerProperties collectionSettings = collection.read().block().getProperties();
         // sanity check
         assertThat(collectionSettings.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
-
+        
         // replace indexing getMode
         IndexingPolicy indexingMode = new IndexingPolicy();
         indexingMode.setIndexingMode(IndexingMode.LAZY);
         collectionSettings.setIndexingPolicy(indexingMode);
         Mono<CosmosAsyncContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
-
+        
         // validate
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
                         .indexingMode(IndexingMode.LAZY).build();
