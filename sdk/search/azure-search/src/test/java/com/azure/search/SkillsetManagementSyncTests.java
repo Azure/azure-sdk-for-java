@@ -13,7 +13,6 @@ import com.azure.search.models.KeyPhraseExtractionSkill;
 import com.azure.search.models.KeyPhraseExtractionSkillLanguage;
 import com.azure.search.models.OcrSkillLanguage;
 import com.azure.search.models.OutputFieldMappingEntry;
-import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SentimentSkillLanguage;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SplitSkillLanguage;
@@ -25,7 +24,6 @@ import org.junit.Assert;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
@@ -277,8 +275,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         client.createSkillset(skillset1);
         client.createSkillset(skillset2);
 
-        PagedIterable<Skillset> selectedFieldListResponse = client.listSkillsets("name",
-            new RequestOptions());
+        PagedIterable<Skillset> selectedFieldListResponse = client.listSkillsets("name", generateRequestOptions());
         List<Skillset> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
         Assert.assertEquals(2, result.size());
@@ -307,12 +304,8 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     public void createOrUpdateCreatesWhenSkillsetDoesNotExist() {
         Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN, false);
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
-
         Response<Skillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset,
-            requestOptions,
-            Context.NONE);
+            generateRequestOptions(), Context.NONE);
 
         Assert.assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
@@ -320,17 +313,14 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     @Override
     public void createOrUpdateUpdatesWhenSkillsetExists() {
         Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN, false);
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
+
         Response<Skillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset,
-            requestOptions,
-            Context.NONE);
+            generateRequestOptions(), Context.NONE);
         Assert.assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
 
         skillset = createTestOcrSkillSet(2, TextExtractionAlgorithm.PRINTED, false);
         createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset,
-            requestOptions,
-            Context.NONE);
+            generateRequestOptions(), Context.NONE);
         Assert.assertEquals(HttpResponseStatus.OK.code(), createOrUpdateResponse.getStatusCode());
     }
 

@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdkaa4219419cc5.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk4c4036965132.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "a6d779a0-c134-41c5-a2a2-43a0d02c8898",
+      "request-id" : "ead2c0e4-a2c4-4348-b095-a5a6493cdf85",
       "StatusCode" : "201",
-      "Date" : "Tue, 12 Nov 2019 00:19:29 GMT",
+      "Date" : "Thu, 14 Nov 2019 00:50:43 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D76705FC59C772\"",
-      "elapsed-time" : "63",
+      "ETag" : "W/\"0x8D7689CAD74D506\"",
+      "elapsed-time" : "95",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "602",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkaa4219419cc5.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D76705FC59C772\\\"\",\"name\":\"split-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"textSplitMode\":\"pages\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "614",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk4c4036965132.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7689CAD74D506\\\"\",\"name\":\"split-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"textSplitMode\":\"pages\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdkaa4219419cc5.search.windows.net/skillsets('split-skillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk4c4036965132.search-dogfood.windows-int.net/skillsets('split-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

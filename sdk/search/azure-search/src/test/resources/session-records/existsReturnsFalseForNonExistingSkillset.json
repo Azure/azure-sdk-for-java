@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdkd7609461c092.search.windows.net/skillsets('nonexistent')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk62488899da57.search-dogfood.windows-int.net/skillsets('nonexistent')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d4d01599-7953-4250-a8ed-6e587193066c",
+      "request-id" : "3fe97eec-b17b-4003-abd8-be0030eee82c",
       "StatusCode" : "404",
-      "Date" : "Wed, 13 Nov 2019 18:24:42 GMT",
+      "Date" : "Thu, 14 Nov 2019 00:51:20 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "35",
+      "elapsed-time" : "33",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "117",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'nonexistent' was found in service 'azs-sdkd7609461c092'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'nonexistent' was found in service 'azs-sdk62488899da57'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

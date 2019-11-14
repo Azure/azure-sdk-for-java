@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk297757889ded.search.windows.net/synonymmaps('thisdoesnotexist')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk6314332831fe.search-dogfood.windows-int.net/synonymmaps('thisdoesnotexist')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d0844b4a-1b6e-4e3e-8930-2643237fe006",
+      "request-id" : "affbdcd1-ff9d-4a92-8dfa-6329896778f4",
       "StatusCode" : "404",
-      "Date" : "Tue, 12 Nov 2019 00:19:13 GMT",
+      "Date" : "Thu, 14 Nov 2019 00:50:18 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "42",
+      "elapsed-time" : "24",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "125",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisdoesnotexist' was found in service 'azs-sdk297757889ded'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisdoesnotexist' was found in service 'azs-sdk6314332831fe'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

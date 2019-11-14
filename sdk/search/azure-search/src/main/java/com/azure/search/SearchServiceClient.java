@@ -793,19 +793,6 @@ public class SearchServiceClient {
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return the created Skillset.
-     */
-    public Skillset createSkillset(Skillset skillset, RequestOptions requestOptions, Context context) {
-        return this.createSkillsetWithResponse(skillset, requestOptions, context).getValue();
-    }
-
-    /**
-     * Creates a new skillset in an Azure Cognitive Search service.
-     *
-     * @param skillset definition of the skillset containing one or more cognitive skills
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Skillset.
      */
     public Response<Skillset> createSkillsetWithResponse(Skillset skillset,
@@ -830,11 +817,10 @@ public class SearchServiceClient {
      * @param skillsetName the name of the skillset to retrieve
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the Skillset.
      */
-    public Skillset getSkillset(String skillsetName, RequestOptions requestOptions, Context context) {
-        return this.getSkillsetWithResponse(skillsetName, requestOptions, context).getValue();
+    public Skillset getSkillset(String skillsetName, RequestOptions requestOptions) {
+        return asyncClient.getSkillset(skillsetName, requestOptions).block();
     }
 
     /**
@@ -910,10 +896,7 @@ public class SearchServiceClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return the skillset that was created or updated.
      */
-    public Skillset createOrUpdateSkillset(Skillset skillset,
-                                           RequestOptions requestOptions) {
-
-
+    public Skillset createOrUpdateSkillset(Skillset skillset, RequestOptions requestOptions) {
         return asyncClient.createOrUpdateSkillset(skillset, requestOptions).block();
     }
 
@@ -949,10 +932,9 @@ public class SearchServiceClient {
      * @param skillsetName the name of the skillset to delete
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
      */
-    public void deleteSkillset(String skillsetName, RequestOptions requestOptions, Context context) {
-        this.deleteSkillsetWithResponse(skillsetName, requestOptions, context);
+    public void deleteSkillset(String skillsetName, RequestOptions requestOptions) {
+        asyncClient.deleteSkillsetWithResponse(skillsetName, requestOptions).block();
     }
 
     /**
