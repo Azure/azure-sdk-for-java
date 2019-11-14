@@ -5,12 +5,13 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 /**
  * Defines the basic operations of cryptographic transformations.
- *
  */
 interface ICryptoTransform {
 
@@ -22,4 +23,15 @@ interface ICryptoTransform {
      */
     byte[] doFinal(byte[] input)
         throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException;
+
+
+    /**
+     * Factory Strategy for <code>ICryptoTransform</code> instances
+     *
+     * @param <T>
+     */
+    interface Factory<T> {
+
+        ICryptoTransform create(T context) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
+    }
 }
