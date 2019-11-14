@@ -55,7 +55,7 @@ public class ProxyHostTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_ProxyHostTest() throws Exception {
         client = clientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
@@ -142,7 +142,7 @@ public class ProxyHostTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "simple"})
-    public void before_ProxyHostTest() {
+    public void beforeMethod() {
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }

@@ -300,7 +300,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_CollectionCrudTest() {
         client = clientBuilder().buildAsyncClient();
         database = createDatabase(client, databaseId);
     }

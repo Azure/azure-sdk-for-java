@@ -45,7 +45,7 @@ public class LogLevelTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_LogLevelTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
@@ -260,7 +260,7 @@ public class LogLevelTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "simple" })
-    public void before_LogLevelTest(Method method) {
+    public void beforeMethod(Method method) {
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }

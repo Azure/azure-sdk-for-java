@@ -144,7 +144,7 @@ public class BackPressureTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "long" }, timeOut = 2 * SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_BackPressureTest() throws Exception {
 
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         client = new ClientUnderTestBuilder(clientBuilder()).buildAsyncClient();

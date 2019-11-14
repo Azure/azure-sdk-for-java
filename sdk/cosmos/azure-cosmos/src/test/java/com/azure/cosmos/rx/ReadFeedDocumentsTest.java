@@ -75,7 +75,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
-    public void beforeClass() {
+    public void before_ReadFeedDocumentsTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);

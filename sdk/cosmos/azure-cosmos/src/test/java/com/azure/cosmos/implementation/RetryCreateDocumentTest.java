@@ -143,12 +143,12 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "simple" })
-    public void before_RetryCreateDocumentTest(Method method) {
+    public void beforeMethod(Method method) {
         Mockito.reset(client.getSpyGatewayStoreModel());
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_RetryCreateDocumentTest() {
         // set up the client
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(clientBuilder());
 

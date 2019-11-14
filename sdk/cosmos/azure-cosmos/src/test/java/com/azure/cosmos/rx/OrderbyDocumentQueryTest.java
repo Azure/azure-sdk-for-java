@@ -404,13 +404,13 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "simple" })
-    public void before_OrderbyDocumentQueryTest() throws Exception {
+    public void beforeMethod() throws Exception {
         // add a cool off time
         TimeUnit.SECONDS.sleep(10);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_OrderbyDocumentQueryTest() throws Exception {
         client = clientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);

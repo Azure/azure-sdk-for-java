@@ -30,7 +30,7 @@ public class CosmosUserTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_CosmosUserTest() {
         client = clientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
@@ -43,13 +43,13 @@ public class CosmosUserTest extends TestSuiteBase {
         }
         safeCloseSyncClient(client);
     }
-    
+
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createUser() throws Exception {
         CosmosUserProperties user = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(user);
-        
+
         validateResponse(user, response);
     }
 
@@ -80,7 +80,7 @@ public class CosmosUserTest extends TestSuiteBase {
 
     }
 
-   
+
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readAllUsers() throws Exception{
@@ -112,7 +112,7 @@ public class CosmosUserTest extends TestSuiteBase {
         Iterator<FeedResponse<CosmosUserProperties>> feedResponseIterator2 =
                 createdDatabase.queryUsers(query, feedOptions);
         assertThat(feedResponseIterator2.hasNext()).isTrue();
-  
+
     }
 
     private void validateResponse(CosmosUserProperties properties,

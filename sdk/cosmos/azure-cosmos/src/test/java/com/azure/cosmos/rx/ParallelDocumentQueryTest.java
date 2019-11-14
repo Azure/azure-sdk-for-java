@@ -268,7 +268,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 2 * SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_ParallelDocumentQueryTest() {
         client = clientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);

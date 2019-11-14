@@ -133,7 +133,7 @@ public class PermissionQueryTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_PermissionQueryTest() {
         client = clientBuilder().build();
         Database d = new Database();
         d.setId(databaseId);

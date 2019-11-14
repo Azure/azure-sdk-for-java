@@ -322,7 +322,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_DocumentCrudTest() {
         assertThat(this.client).isNull();
         this.client = this.clientBuilder().buildAsyncClient();
         this.container = getSharedMultiPartitionCosmosContainer(this.client);

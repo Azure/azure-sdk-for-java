@@ -813,7 +813,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "direct" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_GatewayAddressCacheTest() {
         client = clientBuilder().build();
         createdDatabase = SHARED_DATABASE;
 

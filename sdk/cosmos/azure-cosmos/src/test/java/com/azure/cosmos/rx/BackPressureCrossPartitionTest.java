@@ -164,7 +164,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_BackPressureCrossPartitionTest() {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         client = new ClientUnderTestBuilder(clientBuilder()).buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);

@@ -77,9 +77,9 @@ public class OfferQueryTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT * 100)
     public void queryOffersFilterMorePages() throws Exception {
-        
+
         List<String> collectionResourceIds = createdCollections.stream().map(c -> c.getResourceId()).collect(Collectors.toList());
-        String query = String.format("SELECT * from c where c.offerResourceId in (%s)", 
+        String query = String.format("SELECT * from c where c.offerResourceId in (%s)",
                 Strings.join(collectionResourceIds.stream().map(s -> "'" + s + "'").collect(Collectors.toList())).with(","));
 
         FeedOptions options = new FeedOptions();
@@ -124,7 +124,7 @@ public class OfferQueryTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_OfferQueryTest() throws Exception {
         client = clientBuilder().build();
 
         Database d1 = new Database();
@@ -134,15 +134,15 @@ public class OfferQueryTest extends TestSuiteBase {
         for(int i = 0; i < 3; i++) {
             DocumentCollection collection = new DocumentCollection();
             collection.setId(UUID.randomUUID().toString());
-            
+
             PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
             ArrayList<String> paths = new ArrayList<String>();
             paths.add("/mypk");
             partitionKeyDef.setPaths(paths);
             collection.setPartitionKey(partitionKeyDef);
-            
+
             createdCollections.add(createCollection(client, databaseId, collection));
-        }        
+        }
     }
 
     @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

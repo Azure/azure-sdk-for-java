@@ -15,7 +15,7 @@ public class TimeTokenTest {
     private Locale defaultLocale;
 
     @BeforeTest(groups = { "unit" })
-    public void before_TimeTokenTest() {
+    public void beforeTest() {
         defaultLocale = Locale.getDefault();
     }
 

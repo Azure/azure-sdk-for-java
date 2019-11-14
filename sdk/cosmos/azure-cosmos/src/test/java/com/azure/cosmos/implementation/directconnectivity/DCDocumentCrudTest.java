@@ -285,7 +285,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "direct" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_DCDocumentCrudTest() {
 
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(10100);
@@ -302,7 +302,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "direct" })
-    public void before_DCDocumentCrudTest(Method method) {
+    public void beforeMethod(Method method) {
         client.getCapturedRequests().clear();
     }
 

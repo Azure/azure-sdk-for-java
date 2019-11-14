@@ -181,7 +181,7 @@ public class AggregateQueryTests extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT * 2)
-    public void beforeClass() throws Exception {
+    public void before_AggregateQueryTests() throws Exception {
         client = this.clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
