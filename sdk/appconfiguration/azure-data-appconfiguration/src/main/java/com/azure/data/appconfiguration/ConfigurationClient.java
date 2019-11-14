@@ -303,39 +303,47 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Set the {@link ConfigurationSetting} to read-only with a matching {@code key}, optional {@code label}
-     * combination.
+     * Set the {@link ConfigurationSetting} to read-only or not read-only with a matching {@code key},
+     * optional {@code label} combination. If the {@code isReadOnly} is true or null, the setting will be set to
+     * read-only. If false, the setting will not be read-only.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-Boolean}
      *
-     * @param key The key of configuration setting to set to read-only.
+     * @param key The key of configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
      * @param label The label of configuration setting to set to read-only, or optionally, null if a setting with label
      * is desired.
+     * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
+     * If it is true or null, set the setting to read-only. If false, the setting won't set to read-only.
      * @return The {@link ConfigurationSetting} that is read-only, or {@code null} is also returned if a key collision
      * occurs or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting setReadOnly(String key, String label) {
-        return setReadOnlyWithResponse(new ConfigurationSetting().setKey(key).setLabel(label), Context.NONE).getValue();
+    public ConfigurationSetting setReadOnly(String key, String label, Boolean isReadOnly) {
+        return setReadOnlyWithResponse(new ConfigurationSetting().setKey(key).setLabel(label), isReadOnly, Context.NONE)
+            .getValue();
     }
 
     /**
-     * Set the {@link ConfigurationSetting} to read-only with a matching {@link ConfigurationSetting#getKey() key}, and
-     * optional {@link ConfigurationSetting#getLabel() label} combination.
+     * Set the {@link ConfigurationSetting} to read-only or not read-only with a matching
+     * {@link ConfigurationSetting#getKey() key}, and optional {@link ConfigurationSetting#getLabel() label}
+     * combination. If the {@code isReadOnly} is true or null, the setting will be set to read-only.
+     * If false, the setting will not be read-only.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Context}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context}
      *
      * @param setting The setting to set to read-only based on its key and optional label combination.
+     * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
+     * If it is true or null, set the setting to read-only. If false, the setting won't set to read-only.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the read-only ConfigurationSetting or {@code null} if didn't exist.
      * {@code null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value. (which will
@@ -344,55 +352,9 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> setReadOnlyWithResponse(ConfigurationSetting setting, Context context) {
-        return client.setReadOnly(setting, context).block();
-    }
-
-    /**
-     * Clear read-only of the {@link ConfigurationSetting} with a matching {@code key}, optional {@code label}
-     * combination.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
-     *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.clearReadOnly#string-string}
-     *
-     * @param key The key of configuration setting to clear read-only.
-     * @param label The label of configuration setting to clear read-only, or optionally, null if a setting with
-     * label is desired.
-     * @return The {@link ConfigurationSetting} that read-only is cleared, or {@code null} is also returned if a key
-     * collision occurs or the key is an invalid value (which will also throw HttpResponseException described below).
-     * @throws IllegalArgumentException If {@code key} is {@code null}.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting clearReadOnly(String key, String label) {
-        return clearReadOnlyWithResponse(new ConfigurationSetting().setKey(key).setLabel(label), Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Clear read-only of the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key},
-     * and optional {@link ConfigurationSetting#getLabel() label} combination.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
-     *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.clearReadOnlyWithResponse#ConfigurationSetting-Context}
-     *
-     * @param setting The setting to clear read-only based on its key and optional label combination.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containing the cleared read-only ConfigurationSetting, or {@code null} if didn't exist.
-     * {@code null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value. (which will
-     * also throw HttpResponseException described below).
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> clearReadOnlyWithResponse(ConfigurationSetting setting, Context context) {
-        return client.clearReadOnly(setting, context).block();
+    public Response<ConfigurationSetting> setReadOnlyWithResponse(ConfigurationSetting setting, Boolean isReadOnly,
+                                                                  Context context) {
+        return client.setReadOnly(setting, isReadOnly, context).block();
     }
 
     /**
