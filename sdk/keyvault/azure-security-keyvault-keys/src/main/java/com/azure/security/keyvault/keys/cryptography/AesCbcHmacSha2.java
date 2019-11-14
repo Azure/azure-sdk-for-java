@@ -152,7 +152,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
     }
 
-    static class AesCbcHmacSha2Encryptor extends AbstractAesCbcHmacSha2CryptoTransform implements IAuthenticatedCryptoTransform {
+    static class AesCbcHmacSha2Encryptor extends AbstractAesCbcHmacSha2CryptoTransform {
 
         AesCbcHmacSha2Encryptor(String name, byte[] key, byte[] iv, byte[] authenticationData, Provider provider)
             throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
