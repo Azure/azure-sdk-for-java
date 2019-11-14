@@ -393,7 +393,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean}
      *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.

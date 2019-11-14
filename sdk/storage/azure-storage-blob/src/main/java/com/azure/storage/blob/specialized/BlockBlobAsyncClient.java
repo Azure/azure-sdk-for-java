@@ -447,7 +447,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List-boolean}
      *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.

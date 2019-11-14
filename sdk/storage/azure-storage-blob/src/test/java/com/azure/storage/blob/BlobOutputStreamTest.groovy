@@ -67,6 +67,23 @@ class BlobOutputStreamTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    def "BlockBlob output stream overwrite"() {
+        setup:
+        def data = getRandomByteArray(10 * Constants.MB)
+        def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        def outputStream = blockBlobClient.getBlobOutputStream(true)
+        outputStream.write(data)
+        outputStream.close()
+
+        then:
+        blockBlobClient.getProperties().getBlobSize() == data.length
+        convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
+    }
+
+    @Requires({ liveMode() })
     def "PageBlob output stream"() {
         setup:
         def data = getRandomByteArray(16 * Constants.MB - 512)
