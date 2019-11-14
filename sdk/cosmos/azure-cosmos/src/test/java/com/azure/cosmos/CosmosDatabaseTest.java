@@ -172,16 +172,15 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
         String query = String.format("SELECT * from c where c.getId = '%s'", createdDatabase.getId());
-        FeedOptions feedOptions = new FeedOptions();
 
-        Iterator<FeedResponse<CosmosDatabaseProperties>> queryIterator = client.queryDatabases(query, options);
+        IterableStream<CosmosDatabaseProperties> queryIterator = client.queryDatabases(query, options);
         // Basic validation
-        assertThat(queryIterator.hasNext()).isTrue();
+        assertThat(queryIterator.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        Iterator<FeedResponse<CosmosDatabaseProperties>> queryIterator1 = client.queryDatabases(querySpec, options);
+        IterableStream<CosmosDatabaseProperties> queryIterator1 = client.queryDatabases(querySpec, options);
         // Basic validation
-        assertThat(queryIterator1.hasNext()).isTrue();
+        assertThat(queryIterator1.iterator().hasNext()).isTrue();
     }
 
 

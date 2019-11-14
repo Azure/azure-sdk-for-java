@@ -44,7 +44,7 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
         options.maxItemCount(2);
 
         Flux<FeedResponse<CosmosStoredProcedureProperties>> feedObservable = createdCollection.getScripts()
-                .readAllStoredProcedures(options);
+                .readAllStoredProcedures(options).byPage();
 
         int expectedPageSize = (createdStoredProcedures.size() + options.maxItemCount() - 1) / options.maxItemCount();
 

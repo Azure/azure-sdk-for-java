@@ -32,19 +32,19 @@ public class DatabaseQueryTest extends TestSuiteBase {
     private List<CosmosAsyncDatabase> createdDatabases = new ArrayList<>();
 
     private CosmosAsyncClient client;
-    
+
     @Factory(dataProvider = "clientBuilders")
     public DatabaseQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDatabaseWithFilter() throws Exception {
         String query = String.format("SELECT * from c where c.id = '%s'", databaseId1);
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
-        Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options);
+        Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options).byPage();
 
         List<CosmosDatabaseProperties> expectedDatabases = createdDatabases.stream()
                                                                            .filter(d -> StringUtils.equals(databaseId1, d.getId()) ).map(d -> d.read().block().getProperties()).collect(Collectors.toList());
@@ -73,7 +73,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
-        Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options);
+        Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options).byPage();
 
         List<CosmosDatabaseProperties> expectedDatabases = createdDatabases.stream().map(d -> d.read().block().getProperties()).collect(Collectors.toList());
 
@@ -98,7 +98,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options);
+        Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options).byPage();
 
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
                 .containsExactly(new ArrayList<>())

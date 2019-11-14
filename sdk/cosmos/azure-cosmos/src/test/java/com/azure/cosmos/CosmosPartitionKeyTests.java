@@ -169,7 +169,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         expectedIds.add(NON_PARTITIONED_CONTAINER_DOCUEMNT_ID);
         expectedIds.add(replacedItemId);
         expectedIds.add(upsertedItemId);
-        Flux<FeedResponse<CosmosItemProperties>> queryFlux = createdContainer.queryItems("SELECT * from c", feedOptions);
+        Flux<FeedResponse<CosmosItemProperties>> queryFlux = createdContainer.queryItems("SELECT * from c", feedOptions).byPage();
         FeedResponseListValidator<CosmosItemProperties> queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(3)
                 .numberOfPages(1)
@@ -177,7 +177,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .build();
         validateQuerySuccess(queryFlux, queryValidator);
 
-        queryFlux = createdContainer.readAllItems(feedOptions);
+        queryFlux = createdContainer.readAllItems(feedOptions).byPage();
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(3)
                 .numberOfPages(1)
@@ -210,7 +210,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
 
         // 3 previous items + 1 created from the sproc
         expectedIds.add(documentCreatedBySprocId);
-        queryFlux = createdContainer.readAllItems(feedOptions);
+        queryFlux = createdContainer.readAllItems(feedOptions).byPage();
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(4)
                 .numberOfPages(1)
@@ -238,7 +238,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .nullResource().build();
         validateSuccess(deleteMono, validator);
 
-        queryFlux = createdContainer.readAllItems(feedOptions);
+        queryFlux = createdContainer.readAllItems(feedOptions).byPage();
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(0)
                 .numberOfPages(1)

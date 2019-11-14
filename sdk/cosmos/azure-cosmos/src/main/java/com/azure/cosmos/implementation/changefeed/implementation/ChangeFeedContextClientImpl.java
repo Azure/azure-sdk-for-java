@@ -79,7 +79,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
     @Override
     public Flux<FeedResponse<CosmosItemProperties>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink, ChangeFeedOptions feedOptions) {
-        return collectionLink.queryChangeFeedItems(feedOptions)
+        return collectionLink.queryChangeFeedItems(feedOptions).byPage()
             .publishOn(this.rxScheduler);
     }
 
@@ -126,7 +126,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
     @Override
     public Flux<FeedResponse<CosmosItemProperties>> queryItems(CosmosAsyncContainer containerLink, SqlQuerySpec querySpec, FeedOptions options) {
-        return containerLink.queryItems(querySpec, options)
+        return containerLink.queryItems(querySpec, options).byPage()
             .publishOn(this.rxScheduler);
     }
 

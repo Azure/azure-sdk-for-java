@@ -41,7 +41,7 @@ public class ReadFeedUsersTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosUserProperties>> feedObservable = createdDatabase.readAllUsers(options);
+        Flux<FeedResponse<CosmosUserProperties>> feedObservable = createdDatabase.readAllUsers(options).byPage();
 
         int expectedPageSize = (createdUsers.size() + options.maxItemCount() - 1) / options.maxItemCount();
 

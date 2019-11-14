@@ -173,10 +173,8 @@ public class CosmosClient implements AutoCloseable {
      * @param options {@link FeedOptions}the feed options.
      * @return the iterator for feed response with the obtained databases.
      */
-    public Iterator<FeedResponse<CosmosDatabaseProperties>> queryDatabases(String query, FeedOptions options) {
-        return asyncClientWrapper.queryDatabases(query, options)
-                       .toIterable()
-                       .iterator();
+    public IterableStream<CosmosDatabaseProperties> queryDatabases(String query, FeedOptions options) {
+        return new IterableStream<>(asyncClientWrapper.queryDatabases(query, options));
     }
 
     /**
@@ -186,10 +184,8 @@ public class CosmosClient implements AutoCloseable {
      * @param options the query
      * @return the iterator for feed response with the obtained databases.
      */
-    public Iterator<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
-        return asyncClientWrapper.queryDatabases(querySpec, options)
-                       .toIterable()
-                       .iterator();
+    public IterableStream<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
+        return new IterableStream<>(asyncClientWrapper.queryDatabases(querySpec, options));
     }
 
     /**

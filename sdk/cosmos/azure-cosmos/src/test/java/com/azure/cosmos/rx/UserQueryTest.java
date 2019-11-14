@@ -45,13 +45,13 @@ public class UserQueryTest extends TestSuiteBase {
     @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryUsersWithFilter() throws Exception {
-        
+
         String filterUserId = createdUsers.get(0).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterUserId);
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        Flux<FeedResponse<CosmosUserProperties>> queryObservable = createdDatabase.queryUsers(query, options);
+        Flux<FeedResponse<CosmosUserProperties>> queryObservable = createdDatabase.queryUsers(query, options).byPage();
 
         List<CosmosUserProperties> expectedUsers = createdUsers.stream()
                                                                .filter(c -> StringUtils.equals(filterUserId, c.getId()) ).collect(Collectors.toList());
@@ -79,7 +79,7 @@ public class UserQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
         String databaseLink = TestUtils.getDatabaseNameLink(databaseId);
-        Flux<FeedResponse<CosmosUserProperties>> queryObservable = createdDatabase.queryUsers(query, options);
+        Flux<FeedResponse<CosmosUserProperties>> queryObservable = createdDatabase.queryUsers(query, options).byPage();
 
         List<CosmosUserProperties> expectedUsers = createdUsers;
 
@@ -103,7 +103,7 @@ public class UserQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        Flux<FeedResponse<CosmosUserProperties>> queryObservable = createdDatabase.queryUsers(query, options);
+        Flux<FeedResponse<CosmosUserProperties>> queryObservable = createdDatabase.queryUsers(query, options).byPage();
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .containsExactly(new ArrayList<>())

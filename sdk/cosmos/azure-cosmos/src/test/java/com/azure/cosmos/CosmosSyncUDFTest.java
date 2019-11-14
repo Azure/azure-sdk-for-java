@@ -3,14 +3,13 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.core.util.IterableStream;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.util.Iterator;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -105,9 +104,9 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
 
         FeedOptions feedOptions = new FeedOptions();
         feedOptions.setEnableCrossPartitionQuery(true);
-        Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> feedResponseIterator3 =
+        IterableStream<CosmosUserDefinedFunctionProperties> feedResponseIterator3 =
                 container.getScripts().readAllUserDefinedFunctions(feedOptions);
-        assertThat(feedResponseIterator3.hasNext()).isTrue();
+        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -119,14 +118,14 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         FeedOptions feedOptions = new FeedOptions();
         feedOptions.setEnableCrossPartitionQuery(true);
 
-        Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> feedResponseIterator1 =
+        IterableStream<CosmosUserDefinedFunctionProperties> feedResponseIterator1 =
                 container.getScripts().queryUserDefinedFunctions(query, feedOptions);
-        assertThat(feedResponseIterator1.hasNext()).isTrue();
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> feedResponseIterator2 =
+        IterableStream<CosmosUserDefinedFunctionProperties> feedResponseIterator2 =
                 container.getScripts().queryUserDefinedFunctions(query, feedOptions);
-        assertThat(feedResponseIterator2.hasNext()).isTrue();
+        assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }
 
     private void validateResponse(CosmosUserDefinedFunctionProperties properties,

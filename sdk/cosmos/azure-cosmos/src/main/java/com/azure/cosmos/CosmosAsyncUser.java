@@ -117,16 +117,28 @@ public class CosmosAsyncUser {
      * Reads all permissions.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the read permissions.
-     * In case of failure the {@link Flux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read permissions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read permissions or an error.
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an error.
      */
-    public Flux<FeedResponse<CosmosPermissionProperties>> readAllPermissions(FeedOptions options) {
+    public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {
+        if (options == null) {
+            options = new FeedOptions();
+        }
+        FeedOptions feedOptions = options;
+        Flux<FeedResponse<CosmosPermissionProperties>> feedResponseFlux = readAllPermissionsInternal(feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return readAllPermissionsInternal(feedOptions).next();
+        });
+    }
+
+    private Flux<FeedResponse<CosmosPermissionProperties>> readAllPermissionsInternal(FeedOptions options) {
         return getDatabase().getDocClientWrapper()
-                        .readPermissions(getLink(), options)
-                        .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionProperties.getFromV2Results(response.getResults()),
+                            .readPermissions(getLink(), options)
+                            .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionProperties.getFromV2Results(response.getResults()),
                                 response.getResponseHeaders()));
     }
 
@@ -134,31 +146,43 @@ public class CosmosAsyncUser {
      * Query for permissions.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the obtained permissions.
-     * In case of failure the {@link Flux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained permissions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query          the query.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of the obtained permissions or an error.
      */
-    public Flux<FeedResponse<CosmosPermissionProperties>> queryPermissions(String query) {
-        return queryPermissions(query);
+    public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query) {
+        return queryPermissions(query, new FeedOptions());
     }
 
     /**
      * Query for permissions.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the obtained permissions.
-     * In case of failure the {@link Flux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained permissions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query          the query.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of the obtained permissions or an error.
      */
-    public Flux<FeedResponse<CosmosPermissionProperties>> queryPermissions(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, FeedOptions options) {
+        if (options == null) {
+            options = new FeedOptions();
+        }
+        FeedOptions feedOptions = options;
+        Flux<FeedResponse<CosmosPermissionProperties>> feedResponseFlux = queryPermissionsInternal(query, feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return queryPermissionsInternal(query, feedOptions).next();
+        });
+    }
+
+    private Flux<FeedResponse<CosmosPermissionProperties>> queryPermissionsInternal(String query, FeedOptions options) {
         return getDatabase().getDocClientWrapper()
-                        .queryPermissions(getLink(), query, options)
-                        .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionProperties.getFromV2Results(response.getResults()),
+                            .queryPermissions(getLink(), query, options)
+                            .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionProperties.getFromV2Results(response.getResults()),
                                 response.getResponseHeaders()));
     }
 

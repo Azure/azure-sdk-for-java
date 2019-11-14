@@ -323,96 +323,120 @@ public class CosmosAsyncDatabase {
     /**
      * Reads all cosmos containers.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read containers. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param options {@link FeedOptions}
-     * @return a {@link Flux} containing one or several feed response pages of read
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read
      *         containers or an error.
      */
-    public Flux<FeedResponse<CosmosContainerProperties>> readAllContainers(FeedOptions options) {
-        return getDocClientWrapper().readCollections(getLink(), options)
-                .map(response -> BridgeInternal.createFeedResponse(
-                        CosmosContainerProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
+    public CosmosPagedFlux<CosmosContainerProperties> readAllContainers(FeedOptions options) {
+        if (options == null) {
+            options = new FeedOptions();
+        }
+        FeedOptions feedOptions = options;
+        Flux<FeedResponse<CosmosContainerProperties>> feedResponseFlux = readAllContainersInternal(feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return readAllContainersInternal(feedOptions).next();
+        });
     }
 
     /**
      * Reads all cosmos containers.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read containers. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
-     * @return a {@link Flux} containing one or several feed response pages of read
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read
      *         containers or an error.
      */
-    public Flux<FeedResponse<CosmosContainerProperties>> readAllContainers() {
+    public CosmosPagedFlux<CosmosContainerProperties> readAllContainers() {
         return readAllContainers(new FeedOptions());
+    }
+
+    private Flux<FeedResponse<CosmosContainerProperties>> readAllContainersInternal(FeedOptions options) {
+        return getDocClientWrapper().readCollections(getLink(), options)
+                                    .map(response -> BridgeInternal.createFeedResponse(
+                                        CosmosContainerProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
     }
 
     /**
      * Query for cosmos containers in a cosmos database.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param query   the query
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained containers or an error.
      */
-    public Flux<FeedResponse<CosmosContainerProperties>> queryContainers(String query) {
+    public CosmosPagedFlux<CosmosContainerProperties> queryContainers(String query) {
         return queryContainers(new SqlQuerySpec(query));
     }
 
     /**
      * Query for cosmos containers in a cosmos database.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param query   the query.
      * @param options the feed options.
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained containers or an error.
      */
-    public Flux<FeedResponse<CosmosContainerProperties>> queryContainers(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosContainerProperties> queryContainers(String query, FeedOptions options) {
         return queryContainers(new SqlQuerySpec(query), options);
     }
 
     /**
      * Query for cosmos containers in a cosmos database.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained containers or an error.
      */
-    public Flux<FeedResponse<CosmosContainerProperties>> queryContainers(SqlQuerySpec querySpec) {
-        return queryContainers(querySpec, null);
+    public CosmosPagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec) {
+        return queryContainers(querySpec, new FeedOptions());
     }
 
     /**
      * Query for cosmos containers in a cosmos database.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options   the feed options.
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained containers or an error.
      */
-    public Flux<FeedResponse<CosmosContainerProperties>> queryContainers(SqlQuerySpec querySpec, FeedOptions options) {
+    public CosmosPagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec, FeedOptions options) {
+        if (options == null) {
+            options = new FeedOptions();
+        }
+        FeedOptions feedOptions = options;
+        Flux<FeedResponse<CosmosContainerProperties>> feedResponseFlux = queryContainersInternal(querySpec, feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return queryContainersInternal(querySpec, feedOptions).next();
+        });
+    }
+
+    private Flux<FeedResponse<CosmosContainerProperties>> queryContainersInternal(SqlQuerySpec querySpec, FeedOptions options) {
         return getDocClientWrapper().queryCollections(getLink(), querySpec, options)
-                .map(response -> BridgeInternal.createFeedResponse(
-                        CosmosContainerProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
+                                    .map(response -> BridgeInternal.createFeedResponse(
+                                        CosmosContainerProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
     }
 
     /**
@@ -462,96 +486,120 @@ public class CosmosAsyncDatabase {
     /**
      * Reads all cosmos users in a database.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos users. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
-     * @return an {@link Flux} containing one or several feed response pages of the
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         read cosmos users or an error.
      */
-    public Flux<FeedResponse<CosmosUserProperties>> readAllUsers() {
+    public CosmosPagedFlux<CosmosUserProperties> readAllUsers() {
         return readAllUsers(new FeedOptions());
     }
 
     /**
      * Reads all cosmos users in a database.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos users. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         read cosmos users or an error.
      */
-    public Flux<FeedResponse<CosmosUserProperties>> readAllUsers(FeedOptions options) {
+    public CosmosPagedFlux<CosmosUserProperties> readAllUsers(FeedOptions options) {
+        if (options == null) {
+            options = new FeedOptions();
+        }
+        FeedOptions feedOptions = options;
+        Flux<FeedResponse<CosmosUserProperties>> feedResponseFlux = readAllUsersInternal(feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return readAllUsersInternal(feedOptions).next();
+        });
+    }
+
+    public Flux<FeedResponse<CosmosUserProperties>> readAllUsersInternal(FeedOptions options) {
         return getDocClientWrapper().readUsers(getLink(), options).map(response -> BridgeInternal.createFeedResponse(
-                CosmosUserProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
+            CosmosUserProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
     }
 
     /**
      * Query for cosmos users in a database.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained users. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param query query as string
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      *      obtained users or an error.
      */
-    public Flux<FeedResponse<CosmosUserProperties>> queryUsers(String query) {
-        return queryUsers(query, null);
+    public CosmosPagedFlux<CosmosUserProperties> queryUsers(String query) {
+        return queryUsers(query, new FeedOptions());
     }
 
     /**
      * Query for cosmos users in a database.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained users. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param query query as string
      * @param options the feed options
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      *      obtained users or an error.
      */
-    public Flux<FeedResponse<CosmosUserProperties>> queryUsers(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosUserProperties> queryUsers(String query, FeedOptions options) {
         return queryUsers(new SqlQuerySpec(query), options);
     }
 
     /**
      * Query for cosmos users in a database.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained users. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained users or an error.
      */
-    public Flux<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec) {
-        return queryUsers(querySpec, null);
+    public CosmosPagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec) {
+        return queryUsers(querySpec, new FeedOptions());
     }
 
     /**
      * Query for cosmos users in a database.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained users. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options   the feed options.
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained users or an error.
      */
-    public Flux<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+    public CosmosPagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+        if (options == null) {
+            options = new FeedOptions();
+        }
+        FeedOptions feedOptions = options;
+        Flux<FeedResponse<CosmosUserProperties>> feedResponseFlux = queryUsersInternal(querySpec, feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return queryUsersInternal(querySpec, feedOptions).next();
+        });
+    }
+
+    private Flux<FeedResponse<CosmosUserProperties>> queryUsersInternal(SqlQuerySpec querySpec, FeedOptions options) {
         return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
-                .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
-                        CosmosUserProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
-                        response.queryMetrics()));
+                                    .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
+                                        CosmosUserProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
+                                        response.queryMetrics()));
     }
 
     public CosmosAsyncUser getUser(String id) {

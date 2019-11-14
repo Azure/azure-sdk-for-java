@@ -3,11 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.IterableStream;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Iterator;
 
 /**
  * Perform read and delete databases, update database throughput, and perform operations on child resources in
@@ -247,10 +245,8 @@ public class CosmosDatabase {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> readAllContainers(FeedOptions options) {
-        return databaseWrapper.readAllContainers(options)
-                       .toIterable()
-                       .iterator();
+    public IterableStream<CosmosContainerProperties> readAllContainers(FeedOptions options) {
+        return new IterableStream<>(databaseWrapper.readAllContainers(options));
     }
 
     /**
@@ -258,10 +254,8 @@ public class CosmosDatabase {
      *
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> readAllContainers() {
-        return databaseWrapper.readAllContainers()
-                       .toIterable()
-                       .iterator();
+    public IterableStream<CosmosContainerProperties> readAllContainers() {
+        return new IterableStream<>(databaseWrapper.readAllContainers());
     }
 
     /**
@@ -270,10 +264,8 @@ public class CosmosDatabase {
      * @param query the query
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(String query) {
-        return databaseWrapper.queryContainers(query)
-                       .toIterable()
-                       .iterator();
+    public IterableStream<CosmosContainerProperties> queryContainers(String query) {
+        return new IterableStream<>(databaseWrapper.queryContainers(query));
     }
 
     /**
@@ -283,10 +275,8 @@ public class CosmosDatabase {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(String query, FeedOptions options) {
-        return databaseWrapper.queryContainers(query, options)
-                       .toIterable()
-                       .iterator();
+    public IterableStream<CosmosContainerProperties> queryContainers(String query, FeedOptions options) {
+        return new IterableStream<>(databaseWrapper.queryContainers(query, options));
     }
 
     /**
@@ -295,10 +285,8 @@ public class CosmosDatabase {
      * @param querySpec the query spec
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(SqlQuerySpec querySpec) {
-        return databaseWrapper.queryContainers(querySpec)
-                       .toIterable()
-                       .iterator();
+    public IterableStream<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec) {
+        return new IterableStream<>(databaseWrapper.queryContainers(querySpec));
     }
 
     /**
@@ -308,10 +296,8 @@ public class CosmosDatabase {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(SqlQuerySpec querySpec, FeedOptions options) {
-        return databaseWrapper.queryContainers(querySpec, options)
-                       .toIterable()
-                       .iterator();
+    public IterableStream<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec, FeedOptions options) {
+        return new IterableStream<>(databaseWrapper.queryContainers(querySpec, options));
     }
 
     /**
@@ -363,8 +349,8 @@ public class CosmosDatabase {
      *
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosUserProperties>> readAllUsers() {
-        return getFeedIterator(databaseWrapper.readAllUsers());
+    public IterableStream<CosmosUserProperties> readAllUsers() {
+        return getIterableStream(databaseWrapper.readAllUsers());
     }
 
     /**
@@ -373,8 +359,8 @@ public class CosmosDatabase {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosUserProperties>> readAllUsers(FeedOptions options) {
-        return getFeedIterator(databaseWrapper.readAllUsers(options));
+    public IterableStream<CosmosUserProperties> readAllUsers(FeedOptions options) {
+        return getIterableStream(databaseWrapper.readAllUsers(options));
     }
 
     /**
@@ -383,8 +369,8 @@ public class CosmosDatabase {
      * @param query the query
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosUserProperties>> queryUsers(String query) {
-        return getFeedIterator(databaseWrapper.queryUsers(query));
+    public IterableStream<CosmosUserProperties> queryUsers(String query) {
+        return getIterableStream(databaseWrapper.queryUsers(query));
     }
 
     /**
@@ -394,8 +380,8 @@ public class CosmosDatabase {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosUserProperties>> queryUsers(String query, FeedOptions options) {
-        return getFeedIterator(databaseWrapper.queryUsers(query, options));
+    public IterableStream<CosmosUserProperties> queryUsers(String query, FeedOptions options) {
+        return getIterableStream(databaseWrapper.queryUsers(query, options));
     }
 
     /**
@@ -404,8 +390,8 @@ public class CosmosDatabase {
      * @param querySpec the query spec
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec) {
-        return getFeedIterator(databaseWrapper.queryUsers(querySpec));
+    public IterableStream<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec) {
+        return getIterableStream(databaseWrapper.queryUsers(querySpec));
     }
 
     /**
@@ -415,8 +401,8 @@ public class CosmosDatabase {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosUserProperties>> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
-        return getFeedIterator(databaseWrapper.queryUsers(querySpec, options));
+    public IterableStream<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+        return getIterableStream(databaseWrapper.queryUsers(querySpec, options));
     }
 
     /**
@@ -481,8 +467,8 @@ public class CosmosDatabase {
         }
     }
 
-    private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {
-        return itemFlux.toIterable(1).iterator();
+    private <T> IterableStream<T> getIterableStream(CosmosPagedFlux<T> cosmosPagedFlux) {
+        return new IterableStream<>(cosmosPagedFlux);
     }
 
 }

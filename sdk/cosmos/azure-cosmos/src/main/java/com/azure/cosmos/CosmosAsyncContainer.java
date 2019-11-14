@@ -28,7 +28,7 @@ public class CosmosAsyncContainer {
 
     /**
      * Get the id of the {@link CosmosAsyncContainer}
-     * 
+     *
      * @return the id of the {@link CosmosAsyncContainer}
      */
     public String getId() {
@@ -37,7 +37,7 @@ public class CosmosAsyncContainer {
 
     /**
      * Set the id of the {@link CosmosAsyncContainer}
-     * 
+     *
      * @param id the id of the {@link CosmosAsyncContainer}
      * @return the same {@link CosmosAsyncContainer} that had the id set
      */
@@ -232,114 +232,150 @@ public class CosmosAsyncContainer {
     /**
      * Reads all cosmos items in the container.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
-     * @return an {@link Flux} containing one or several feed response pages of the
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         read cosmos items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> readAllItems() {
+    public CosmosPagedFlux<CosmosItemProperties> readAllItems() {
         return readAllItems(new FeedOptions());
     }
 
     /**
      * Reads all cosmos items in a container.
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         read cosmos items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> readAllItems(FeedOptions options) {
+    public CosmosPagedFlux<CosmosItemProperties> readAllItems(FeedOptions options) {
+        if (options == null) {
+            options = new FeedOptions();
+        }
+        FeedOptions feedOptions = options;
+        Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux = readAllItemsInternal(feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return readAllItemsInternal(feedOptions).next();
+        });
+    }
+
+    private Flux<FeedResponse<CosmosItemProperties>> readAllItemsInternal(FeedOptions options) {
         return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
-                response -> BridgeInternal.createFeedResponse(CosmosItemProperties.getFromV2Results(response.getResults()),
-                        response.getResponseHeaders()));
+            response -> BridgeInternal.createFeedResponse(CosmosItemProperties.getFromV2Results(response.getResults()),
+                response.getResponseHeaders()));
     }
 
     /**
      * Query for documents in a items in a container
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param query   the query.
-     * @return an {@link Flux} containing one or several feed response pages of the
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> queryItems(String query) {
+    public CosmosPagedFlux<CosmosItemProperties> queryItems(String query) {
         return queryItems(new SqlQuerySpec(query), null);
     }
 
     /**
      * Query for documents in a items in a container
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param query   the query.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> queryItems(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosItemProperties> queryItems(String query, FeedOptions options) {
         return queryItems(new SqlQuerySpec(query), options);
     }
 
     /**
      * Query for documents in a items in a container
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @return an {@link Flux} containing one or several feed response pages of the
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> queryItems(SqlQuerySpec querySpec) {
+    public CosmosPagedFlux<CosmosItemProperties> queryItems(SqlQuerySpec querySpec) {
         return queryItems(querySpec, null);
     }
 
     /**
      * Query for documents in a items in a container
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options   the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> queryItems(SqlQuerySpec querySpec, FeedOptions options) {
+    public CosmosPagedFlux<CosmosItemProperties> queryItems(SqlQuerySpec querySpec, FeedOptions options) {
+        if (options == null) {
+            options = new FeedOptions();
+        }
+        FeedOptions feedOptions = options;
+        Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux = queryItemsInternal(querySpec, feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return queryItemsInternal(querySpec, feedOptions).next();
+        });
+    }
+
+    private Flux<FeedResponse<CosmosItemProperties>> queryItemsInternal(SqlQuerySpec querySpec, FeedOptions options) {
         return getDatabase().getDocClientWrapper().queryDocuments(getLink(), querySpec, options)
-                .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
-                        CosmosItemProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
-                        response.queryMetrics()));
+                            .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
+                                CosmosItemProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
+                                response.queryMetrics()));
     }
 
     /**
      * Query for documents in a items in a container
      *
-     * After subscription the operation will be performed. The {@link Flux} will
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
-     * failure the {@link Flux} will error.
+     * failure the {@link CosmosPagedFlux} will error.
      *
      * @param changeFeedOptions the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> queryChangeFeedItems(ChangeFeedOptions changeFeedOptions) {
+    public CosmosPagedFlux<CosmosItemProperties> queryChangeFeedItems(ChangeFeedOptions changeFeedOptions) {
+        if (changeFeedOptions == null) {
+            changeFeedOptions = new ChangeFeedOptions();
+        }
+        ChangeFeedOptions feedOptions = changeFeedOptions;
+        Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux = queryChangeFeedItemsInternal(feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return queryChangeFeedItemsInternal(feedOptions).next();
+        });
+    }
+
+    private Flux<FeedResponse<CosmosItemProperties>> queryChangeFeedItemsInternal(ChangeFeedOptions changeFeedOptions) {
         return getDatabase().getDocClientWrapper().queryDocumentChangeFeed(getLink(), changeFeedOptions)
-                .map(response -> new FeedResponse<CosmosItemProperties>(
-                        CosmosItemProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(), false));
+                            .map(response -> new FeedResponse<>(CosmosItemProperties
+                                .getFromV2Results(response.getResults()), response.getResponseHeaders(), false));
     }
 
     /**
@@ -364,23 +400,35 @@ public class CosmosAsyncContainer {
      * Lists all the conflicts in the container
      *
      * @param options the feed options
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained conflicts or an error.
      */
-    public Flux<FeedResponse<CosmosConflictProperties>> readAllConflicts(FeedOptions options) {
+    public CosmosPagedFlux<CosmosConflictProperties> readAllConflicts(FeedOptions options) {
+        if (options == null) {
+            options = new FeedOptions();
+        }
+        FeedOptions feedOptions = options;
+        Flux<FeedResponse<CosmosConflictProperties>> feedResponseFlux = readAllConflictsInternal(feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return readAllConflictsInternal(feedOptions).next();
+        });
+    }
+
+    private Flux<FeedResponse<CosmosConflictProperties>> readAllConflictsInternal(FeedOptions options) {
         return database.getDocClientWrapper().readConflicts(getLink(), options)
-                .map(response -> BridgeInternal.createFeedResponse(
-                        CosmosConflictProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
+                       .map(response -> BridgeInternal.createFeedResponse(
+                           CosmosConflictProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
     }
 
     /**
      * Queries all the conflicts in the container
      *
      * @param query   the query
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained conflicts or an error.
      */
-    public Flux<FeedResponse<CosmosConflictProperties>> queryConflicts(String query) {
+    public CosmosPagedFlux<CosmosConflictProperties> queryConflicts(String query) {
         return queryConflicts(query, null);
     }
 
@@ -389,18 +437,30 @@ public class CosmosAsyncContainer {
      *
      * @param query   the query
      * @param options the feed options
-     * @return a {@link Flux} containing one or several feed response pages of the
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      *         obtained conflicts or an error.
      */
-    public Flux<FeedResponse<CosmosConflictProperties>> queryConflicts(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosConflictProperties> queryConflicts(String query, FeedOptions options) {
+        if (options == null) {
+            options = new FeedOptions();
+        }
+        FeedOptions feedOptions = options;
+        Flux<FeedResponse<CosmosConflictProperties>> feedResponseFlux = queryConflictsInternal(query, feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return queryConflictsInternal(query, feedOptions).next();
+        });
+    }
+
+    private Flux<FeedResponse<CosmosConflictProperties>> queryConflictsInternal(String query, FeedOptions options) {
         return database.getDocClientWrapper().queryConflicts(getLink(), query, options)
-                .map(response -> BridgeInternal.createFeedResponse(
-                        CosmosConflictProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
+                       .map(response -> BridgeInternal.createFeedResponse(
+                           CosmosConflictProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
     }
 
     /**
      * Gets a CosmosAsyncConflict object without making a service call
-     * 
+     *
      * @param id id of the cosmos conflict
      * @return a cosmos conflict
      */

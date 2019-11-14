@@ -170,7 +170,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         @Override
         public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec query) {
-            return client.queryDatabases(query, null);
+            return client.queryDatabases(query, null).byPage();
         }
 
         @Override
@@ -223,6 +223,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
 
         cosmosContainer.queryItems("SELECT * FROM root", options)
+                       .byPage()
                        .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                         .flatMap(doc -> {
@@ -241,6 +242,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryTriggers("SELECT * FROM root", options)
+                       .byPage()
                        .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(trigger -> {
@@ -257,6 +259,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} storedProcedures ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryStoredProcedures("SELECT * FROM root", options)
+                       .byPage()
                        .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(storedProcedure -> {
@@ -274,6 +277,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} udfs ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryUserDefinedFunctions("SELECT * FROM root", options)
+                       .byPage()
                        .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(udf -> {
@@ -528,7 +532,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static void deleteCollectionIfExists(CosmosAsyncClient client, String databaseId, String collectionId) {
         CosmosAsyncDatabase database = client.getDatabase(databaseId).read().block().getDatabase();
-        List<CosmosContainerProperties> res = database.queryContainers(String.format("SELECT * FROM root r where r.id = '%s'", collectionId), null)
+        List<CosmosContainerProperties> res = database.queryContainers(String.format("SELECT * FROM root r where r.id = '%s'", collectionId), null).byPage()
                                                       .flatMap(page -> Flux.fromIterable(page.getResults()))
                                                       .collectList()
                                                       .block();
@@ -551,7 +555,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         options.partitionKey(new PartitionKey(docId));
         CosmosAsyncContainer cosmosContainer = client.getDatabase(databaseId).read().block().getDatabase().getContainer(collectionId).read().block().getContainer();
         List<CosmosItemProperties> res = cosmosContainer
-                .queryItems(String.format("SELECT * FROM root r where r.id = '%s'", docId), options)
+                .queryItems(String.format("SELECT * FROM root r where r.id = '%s'", docId), options).byPage()
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .collectList().block();
 
@@ -580,7 +584,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public static void deleteUserIfExists(CosmosAsyncClient client, String databaseId, String userId) {
         CosmosAsyncDatabase database = client.getDatabase(databaseId).read().block().getDatabase();
         List<CosmosUserProperties> res = database
-                .queryUsers(String.format("SELECT * FROM root r where r.id = '%s'", userId), null)
+                .queryUsers(String.format("SELECT * FROM root r where r.id = '%s'", userId), null).byPage()
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .collectList().block();
         if (!res.isEmpty()) {
@@ -613,7 +617,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static protected CosmosAsyncDatabase createDatabaseIfNotExists(CosmosAsyncClient client, String databaseId) {
-        List<CosmosDatabaseProperties> res = client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null)
+        List<CosmosDatabaseProperties> res = client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null).byPage()
                                                    .flatMap(p -> Flux.fromIterable(p.getResults()))
                                                    .collectList()
                                                    .block();
@@ -643,10 +647,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             }
         }
     }
-    
+
     static protected void safeDeleteAllCollections(CosmosAsyncDatabase database) {
         if (database != null) {
-            List<CosmosContainerProperties> collections = database.readAllContainers()
+            List<CosmosContainerProperties> collections = database.readAllContainers().byPage()
                                                                   .flatMap(p -> Flux.fromIterable(p.getResults()))
                                                                   .collectList()
                                                                   .block();

@@ -3,7 +3,6 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
@@ -304,22 +303,21 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Reads all databases.
      *
      * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link Flux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options {@link FeedOptions}
-     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public PagedFluxBase<CosmosDatabaseProperties, FeedResponse<CosmosDatabaseProperties>> readAllDatabases(FeedOptions options) {
-        Flux<FeedResponse<CosmosDatabaseProperties>> cosmosDatabasePropertiesFlux =
-            getDocClientWrapper().readDatabases(options).map(feedResponse -> BridgeInternal.createFeedResponse(CosmosDatabaseProperties
-            .getFromV2Results(feedResponse.getResults()), feedResponse.getResponseHeaders()));
-        return new PagedFluxBase<>(cosmosDatabasePropertiesFlux::next, (continuationToken) -> {
-            options.setRequestContinuation(continuationToken);
-            Flux<FeedResponse<CosmosDatabaseProperties>> feedResponseFlux = getDocClientWrapper()
-                .readDatabases(options).map(feedResponse -> BridgeInternal.createFeedResponse(CosmosDatabaseProperties
-                .getFromV2Results(feedResponse.getResults()), feedResponse.getResponseHeaders()));
-            return feedResponseFlux.next();
+    public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
+        if (options == null) {
+            options = new FeedOptions();
+        }
+        FeedOptions feedOptions = options;
+        Flux<FeedResponse<CosmosDatabaseProperties>> feedResponseFlux = readAllDatabasesInternal(feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return readAllDatabasesInternal(feedOptions).next();
         });
     }
 
@@ -327,47 +325,64 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Reads all databases.
      *
      * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link Flux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public PagedFluxBase<CosmosDatabaseProperties, FeedResponse<CosmosDatabaseProperties>> readAllDatabases() {
+    public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases() {
         return readAllDatabases(new FeedOptions());
     }
 
+    private Flux<FeedResponse<CosmosDatabaseProperties>> readAllDatabasesInternal(FeedOptions options) {
+        return getDocClientWrapper().readDatabases(options).map(feedResponse -> BridgeInternal.createFeedResponse(CosmosDatabaseProperties
+            .getFromV2Results(feedResponse.getResults()), feedResponse.getResponseHeaders()));
+    }
+
 
     /**
      * Query for databases.
      *
      * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link Flux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query   the query.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(String query, FeedOptions options){
-        return queryDatabases(new SqlQuerySpec(query), options);
+    public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(String query, FeedOptions options){
+        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query);
+        return queryDatabases(sqlQuerySpec, options);
     }
 
     /**
      * Query for databases.
      *
      * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link Flux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec     the SQL query specification.
      * @param options       the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return an {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options){
-        return getDocClientWrapper().queryDatabases(querySpec, options)
-                                    .map(response-> BridgeInternal.createFeedResponse(
-                        CosmosDatabaseProperties.getFromV2Results(response.getResults()),
-                        response.getResponseHeaders()));
+    public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options){
+        if (options == null) {
+            options = new FeedOptions();
+        }
+        FeedOptions feedOptions = options;
+        Flux<FeedResponse<CosmosDatabaseProperties>> feedResponseFlux = queryDatabasesInternal(querySpec, feedOptions);
+        return new CosmosPagedFlux<>(feedResponseFlux::next, (continuationToken) -> {
+            feedOptions.setRequestContinuation(continuationToken);
+            return queryDatabasesInternal(querySpec, feedOptions).next();
+        });
+    }
+
+    private Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabasesInternal(SqlQuerySpec sqlQuerySpec, FeedOptions options) {
+        return getDocClientWrapper().queryDatabases(sqlQuerySpec, options)
+                                    .map(response -> BridgeInternal.createFeedResponse(CosmosDatabaseProperties
+                                        .getFromV2Results(response.getResults()), response.getResponseHeaders()));
     }
 
     public Mono<DatabaseAccount> readDatabaseAccount() {

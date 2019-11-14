@@ -44,7 +44,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosTriggerProperties>> feedObservable = createdCollection.getScripts().readAllTriggers(options);
+        Flux<FeedResponse<CosmosTriggerProperties>> feedObservable = createdCollection.getScripts().readAllTriggers(options).byPage();
 
         int expectedPageSize = (createdTriggers.size() + options.maxItemCount() - 1) / options.maxItemCount();
 

@@ -81,7 +81,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
         options.populateQueryMetrics(qmEnabled);
 
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options).byPage();
 
         List<String> expectedResourceIds = new ArrayList<>();
         expectedResourceIds.add(expectedDocument.getResourceId());
@@ -108,7 +108,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2' ORDER BY r.propInt";
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options).byPage();
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
             .containsExactly(new ArrayList<>())
@@ -133,7 +133,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
         int pageSize = 3;
         options.maxItemCount(pageSize);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options).byPage();
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
 
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator);
@@ -161,7 +161,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
         int pageSize = 3;
         options.maxItemCount(pageSize);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options).byPage();
 
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator);
@@ -185,7 +185,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
         int pageSize = 3;
         options.maxItemCount(pageSize);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options).byPage();
 
         Comparator<String> validatorComparator = Comparator.nullsFirst(Comparator.<String>naturalOrder());
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propStr", d -> d.getString("propStr"), validatorComparator);
@@ -215,7 +215,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
         int pageSize = 3;
         options.maxItemCount(pageSize);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options).byPage();
 
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
 
@@ -247,7 +247,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     public void crossPartitionQueryNotEnabled() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.propInt";
         FeedOptions options = new FeedOptions();
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options).byPage();
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(CosmosClientException.class)
@@ -262,7 +262,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.partitionKey(new PartitionKey("duplicateParitionKeyValue"));
         options.maxItemCount(3);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options).byPage();
 
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<>();
         queryObservable.take(1).subscribe(subscriber);
@@ -278,7 +278,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
 
         options.setRequestContinuation(page.getContinuationToken());
-        queryObservable = createdCollection.queryItems(query, options);
+        queryObservable = createdCollection.queryItems(query, options).byPage();
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream()
             .filter(d -> (StringUtils.equals("duplicateParitionKeyValue", d.getString("mypk"))))
@@ -472,7 +472,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                     false);
             options.setRequestContinuation(orderByContinuationToken.toString());
             Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query,
-                    options);
+                    options).byPage();
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();
@@ -505,7 +505,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             options.setMaxDegreeOfParallelism(2);
             options.setRequestContinuation(requestContinuation);
             Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query,
-                    options);
+                    options).byPage();
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();

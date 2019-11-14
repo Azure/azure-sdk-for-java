@@ -3,11 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.IterableStream;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Iterator;
 
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
@@ -207,8 +205,8 @@ public class CosmosContainer {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosItemProperties>> readAllItems(FeedOptions options) {
-        return getFeedIterator(this.containerWrapper.readAllItems(options));
+    public IterableStream<CosmosItemProperties> readAllItems(FeedOptions options) {
+        return getIterableStream(this.containerWrapper.readAllItems(options));
     }
 
     /**
@@ -218,8 +216,8 @@ public class CosmosContainer {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosItemProperties>> queryItems(String query, FeedOptions options) {
-        return getFeedIterator(this.containerWrapper.queryItems(query, options));
+    public IterableStream<CosmosItemProperties> queryItems(String query, FeedOptions options) {
+        return getIterableStream(this.containerWrapper.queryItems(query, options));
     }
 
     /**
@@ -229,8 +227,8 @@ public class CosmosContainer {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosItemProperties>> queryItems(SqlQuerySpec querySpec, FeedOptions options) {
-        return getFeedIterator(this.containerWrapper.queryItems(querySpec, options));
+    public IterableStream<CosmosItemProperties> queryItems(SqlQuerySpec querySpec, FeedOptions options) {
+        return getIterableStream(this.containerWrapper.queryItems(querySpec, options));
     }
 
     /**
@@ -239,8 +237,8 @@ public class CosmosContainer {
      * @param changeFeedOptions the change feed options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosItemProperties>> queryChangeFeedItems(ChangeFeedOptions changeFeedOptions) {
-        return getFeedIterator(this.containerWrapper.queryChangeFeedItems(changeFeedOptions));
+    public IterableStream<CosmosItemProperties> queryChangeFeedItems(ChangeFeedOptions changeFeedOptions) {
+        return getIterableStream(this.containerWrapper.queryChangeFeedItems(changeFeedOptions));
     }
 
     /**
@@ -280,8 +278,8 @@ public class CosmosContainer {
         return new CosmosItemResponse(response, null, this);
     }
 
-    private Iterator<FeedResponse<CosmosItemProperties>> getFeedIterator(Flux<FeedResponse<CosmosItemProperties>> itemFlux) {
-        return itemFlux.toIterable(1).iterator();
+    private IterableStream<CosmosItemProperties> getIterableStream(CosmosPagedFlux<CosmosItemProperties> cosmosItemPropertiesCosmosPagedFlux) {
+        return new IterableStream<>(cosmosItemPropertiesCosmosPagedFlux);
     }
 
 }

@@ -49,7 +49,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
         Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
-                .queryStoredProcedures(query, options);
+                .queryStoredProcedures(query, options).byPage();
 
         List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs.stream()
                 .filter(sp -> filterId.equals(sp.getId())).collect(Collectors.toList());
@@ -75,7 +75,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
-                .queryStoredProcedures(query, options);
+                .queryStoredProcedures(query, options).byPage();
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .containsExactly(new ArrayList<>()).numberOfPages(1)
@@ -93,7 +93,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         options.maxItemCount(3);
         options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
-                .queryStoredProcedures(query, options);
+                .queryStoredProcedures(query, options).byPage();
 
         List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs;
 
@@ -115,7 +115,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
-                .queryStoredProcedures(query, options);
+                .queryStoredProcedures(query, options).byPage();
 
         FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosClientException.class)
                 .statusCode(400).notNullActivityId().build();

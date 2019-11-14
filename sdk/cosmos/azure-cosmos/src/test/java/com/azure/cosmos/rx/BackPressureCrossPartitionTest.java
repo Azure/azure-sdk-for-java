@@ -123,7 +123,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(maxItemCount);
         options.setMaxDegreeOfParallelism(2);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options).byPage();
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();

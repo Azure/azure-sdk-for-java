@@ -42,13 +42,13 @@ public class CollectionQueryTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryCollectionsWithFilter() throws Exception {
-        
+
         String filterCollectionId = createdCollections.get(0).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterCollectionId);
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
-        Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options);
+        Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options).byPage();
 
         List<CosmosAsyncContainer> expectedCollections = createdCollections.stream()
                 .filter(c -> StringUtils.equals(filterCollectionId, c.getId()) ).collect(Collectors.toList());
@@ -75,7 +75,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
-        Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options);
+        Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options).byPage();
 
         List<CosmosAsyncContainer> expectedCollections = createdCollections;
 
@@ -100,7 +100,7 @@ public class CollectionQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options);
+        Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options).byPage();
 
         FeedResponseListValidator<CosmosContainerProperties> validator = new FeedResponseListValidator.Builder<CosmosContainerProperties>()
                 .containsExactly(new ArrayList<>())
@@ -110,7 +110,7 @@ public class CollectionQueryTest extends TestSuiteBase {
                 .build();
         validateQuerySuccess(queryObservable, validator);
     }
-    
+
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder().buildAsyncClient();

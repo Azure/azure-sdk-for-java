@@ -38,7 +38,7 @@ public class CosmosAsyncConflictTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
 
-        Flux<FeedResponse<CosmosConflictProperties>> conflictReadFeedFlux = createdCollection.readAllConflicts(options);
+        Flux<FeedResponse<CosmosConflictProperties>> conflictReadFeedFlux = createdCollection.readAllConflicts(options).byPage();
 
         Iterator<FeedResponse<CosmosConflictProperties>> it = conflictReadFeedFlux.toIterable().iterator();
 

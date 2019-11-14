@@ -2,21 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseProperties;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.FeedResponse;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
-import org.reactivestreams.Subscription;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -48,7 +45,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
                                                                     .mergeWith(Flux.fromIterable(frps));
 
         final CosmosAsyncClient mockClient = Mockito.spy(client);
-        Mockito.when(mockClient.readAllDatabases(null)).thenReturn(new PagedFluxBase<>(response::next));
+        Mockito.when(mockClient.readAllDatabases(null)).thenReturn(new CosmosPagedFlux<>(response::next));
         TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<>();
         mockClient.readAllDatabases(null).byPage().subscribe(subscriber);
         assertThat(subscriber.valueCount()).isEqualTo(2);

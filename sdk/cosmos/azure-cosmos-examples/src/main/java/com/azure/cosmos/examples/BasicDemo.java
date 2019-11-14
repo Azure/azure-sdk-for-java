@@ -10,9 +10,9 @@ import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosItemProperties;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -113,18 +113,19 @@ public class BasicDemo {
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         options.setMaxDegreeOfParallelism(2);
-        Flux<FeedResponse<CosmosItemProperties>> queryFlux = container.queryItems(query, options);
+        CosmosPagedFlux<CosmosItemProperties> queryFlux = container.queryItems(query, options);
 
         queryFlux.publishOn(Schedulers.elastic()).subscribe(cosmosItemFeedResponse -> {},
                             throwable -> {},
                             () -> {});
 
-        queryFlux.publishOn(Schedulers.elastic())
-                .toIterable()
-                .forEach(cosmosItemFeedResponse ->
-                         {
-                             log(cosmosItemFeedResponse.getResults());
-                         });
+        queryFlux.byPage()
+                 .publishOn(Schedulers.elastic())
+                 .toIterable()
+                 .forEach(cosmosItemFeedResponse ->
+                 {
+                     log(cosmosItemFeedResponse.getResults());
+                 });
 
     }
 
@@ -138,8 +139,8 @@ public class BasicDemo {
         String continuation = null;
         do{
             options.setRequestContinuation(continuation);
-            Flux<FeedResponse<CosmosItemProperties>> queryFlux = container.queryItems(query, options);
-            FeedResponse<CosmosItemProperties> page = queryFlux.blockFirst();
+            CosmosPagedFlux<CosmosItemProperties> queryFlux = container.queryItems(query, options);
+            FeedResponse<CosmosItemProperties> page = queryFlux.byPage().blockFirst();
             assert page != null;
             log(page.getResults());
             continuation = page.getContinuationToken();
