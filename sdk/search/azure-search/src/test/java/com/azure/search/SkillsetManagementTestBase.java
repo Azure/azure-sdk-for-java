@@ -124,6 +124,12 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void createCustomSkillsetReturnsCorrectDefinition();
 
+    @Test
+    public abstract void createOrUpdateUpdatesSkills();
+
+    @Test
+    public abstract void createOrUpdateUpdatesCognitiveService();
+    
     protected void assertSkillsetsEqual(Skillset expected, Skillset actual) {
         expected.setETag("none");
         actual.setETag("none");
