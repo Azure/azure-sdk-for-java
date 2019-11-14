@@ -1834,16 +1834,6 @@ class BlobAPITest extends APISpec {
         bc.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
-    def "Get account info error"() {
-        when:
-        def serviceURL = getServiceClient(primaryBlobServiceClient.getAccountUrl())
-
-        serviceURL.getBlobContainerClient(generateContainerName()).getBlobClient(generateBlobName()).getAccountInfo()
-
-        then:
-        thrown(BlobStorageException)
-    }
-
     def "Get Container Name"() {
         expect:
         containerName == bc.getContainerName()
@@ -1867,7 +1857,7 @@ class BlobAPITest extends APISpec {
         "blob"                 | "blob"
         "path/to]a blob"       | "path/to]a blob"
         "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                   | "斑點"
+        "斑點"                 | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 

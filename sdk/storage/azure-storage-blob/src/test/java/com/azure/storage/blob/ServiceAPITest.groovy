@@ -383,18 +383,6 @@ class ServiceAPITest extends APISpec {
         primaryBlobServiceClient.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
-    def "Get account info error"() {
-        when:
-        BlobServiceClient serviceURL = getServiceClient((StorageSharedKeyCredential) null,
-            primaryBlobServiceClient.getAccountUrl())
-
-        serviceURL.getAccountInfo()
-
-        then:
-        thrown(BlobStorageException)
-    }
-
-
     // This test validates a fix for a bug that caused NPE to be thrown when the account did not exist.
     def "Invalid account name"() {
         setup:

@@ -1351,16 +1351,6 @@ class ContainerAPITest extends APISpec {
         primaryBlobServiceClient.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
-    def "Get account info error"() {
-        when:
-        def serviceURL = getServiceClient(primaryBlobServiceClient.getAccountUrl())
-
-        serviceURL.getBlobContainerClient(generateContainerName()).getAccountInfo(null)
-
-        then:
-        thrown(BlobStorageException)
-    }
-
     def "Get Container Name"() {
         given:
         def containerName = generateContainerName()
