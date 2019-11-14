@@ -357,13 +357,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listRevisionsWithRange();
-
-    @Test
-    @Disabled
-    public abstract void listRevisionsInvalidRange();
-
-    @Test
     public abstract void listRevisionsAcceptDateTime();
 
     @Test

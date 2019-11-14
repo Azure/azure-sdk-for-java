@@ -6,7 +6,6 @@ package com.azure.data.appconfiguration.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.core.util.CoreUtils;
-import com.azure.data.appconfiguration.ConfigurationClient;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -37,7 +36,6 @@ public class SettingSelector {
     private String[] labels;
     private SettingFields[] fields;
     private String acceptDatetime;
-    private Range range;
 
     /**
      * Creates a setting selector that will populate responses with all of the {@link ConfigurationSetting
@@ -180,29 +178,6 @@ public class SettingSelector {
         return this;
     }
 
-    /**
-     * Gets the {@link Range} used to select a specific range of revisions with {@code listRevisions}. If
-     * {@code null}, the service returns all revisions.
-     *
-     * @return The {@link Range} used to select a range of revisions.
-     * @see ConfigurationAsyncClient#listRevisions(SettingSelector)
-     * @see ConfigurationClient#listRevisions(SettingSelector)
-     */
-    public Range getRange() {
-        return range;
-    }
-
-    /**
-     * Sets the {@link Range} used to select a specific range of revisions. If null, the service returns all revisions.
-     *
-     * @param range The range of revisions to select.
-     * @return The updated SettingSelector object.
-     */
-    public SettingSelector setRange(Range range) {
-        this.range = range;
-        return this;
-    }
-
     @Override
     public String toString() {
         String fields;
@@ -216,7 +191,6 @@ public class SettingSelector {
             CoreUtils.arrayToString(this.keys, key -> key),
             CoreUtils.arrayToString(this.labels, label -> label),
             this.acceptDatetime,
-            fields,
-            this.range);
+            fields);
     }
 }

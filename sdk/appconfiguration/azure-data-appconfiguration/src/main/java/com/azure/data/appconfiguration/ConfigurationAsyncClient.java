@@ -54,7 +54,6 @@ public final class ConfigurationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
 
     private static final String ETAG_ANY = "*";
-    private static final String RANGE_QUERY = "items=%s";
 
     private final String serviceEndpoint;
     private final ConfigurationService service;
@@ -685,10 +684,9 @@ public final class ConfigurationAsyncClient {
                 String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
                 String keys = CoreUtils.arrayToString(selector.getKeys(), key -> key);
                 String labels = CoreUtils.arrayToString(selector.getLabels(), label -> label);
-                String range = selector.getRange() != null ? String.format(RANGE_QUERY, selector.getRange()) : null;
 
                 result = service.listKeyValueRevisions(
-                    serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), range, context)
+                    serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), null, context)
                     .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
                     .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
                     .doOnError(error ->
