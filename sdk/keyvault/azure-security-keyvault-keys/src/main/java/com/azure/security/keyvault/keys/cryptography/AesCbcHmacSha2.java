@@ -18,7 +18,7 @@ import java.security.Provider;
 
 abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
     private static final long BYTE_TO_BITS = 8L;
-    private static final ClientLogger logger = new ClientLogger(AesCbcHmacSha2.class);
+    private final ClientLogger logger = new ClientLogger(AesCbcHmacSha2.class);
 
     abstract static class AbstractAesCbcHmacSha2CryptoTransform implements IAuthenticatedCryptoTransform {
         byte[] tag;
@@ -117,6 +117,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
     }
 
     static class AesCbcHmacSha2Decryptor extends AbstractAesCbcHmacSha2CryptoTransform {
+        final ClientLogger logger = new ClientLogger(AesCbcHmacSha2Decryptor.class);
 
         AesCbcHmacSha2Decryptor(String name, byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag,
                                 Provider provider)

@@ -32,6 +32,15 @@ interface ICryptoTransform {
      */
     interface Factory<T> {
 
+        /**
+         *
+         * @param context The context required for the creation of a new ICryptoTransform instance
+         * @return The new instance.
+         * @throws InvalidKeyException
+         * @throws NoSuchAlgorithmException
+         * @throws NoSuchPaddingException
+         * @throws InvalidAlgorithmParameterException
+         */
         ICryptoTransform create(T context) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
     }
 }
