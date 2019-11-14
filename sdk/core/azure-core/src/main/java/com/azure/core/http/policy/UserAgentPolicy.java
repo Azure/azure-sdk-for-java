@@ -10,6 +10,8 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 /**
  * Pipeline policy that adds "User-Agent" header to a request.
  *
@@ -68,9 +70,11 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * @param sdkVersion Version of the client library.
      * @param version {@link ServiceVersion} of the service to be used when making requests.
      * @param configuration Configuration store that will be checked for the AZURE_TELEMETRY_DISABLED.
+     * @throws NullPointerException if {@code configuration} is {@code null}.
      */
     public UserAgentPolicy(String applicationId, String sdkName, String sdkVersion, Configuration configuration,
                            ServiceVersion version) {
+        Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         boolean telemetryDisabled = configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
         if (telemetryDisabled) {
             this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion,
@@ -96,8 +100,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * @param sdkVersion Version of the client library.
      * @param version {@link ServiceVersion} of the service to be used when making requests.
      * @param configuration Configuration store that will be checked for the AZURE_TELEMETRY_DISABLED.
+     * @throws NullPointerException if {@code configuration} is {@code null}.
      */
     public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration, ServiceVersion version) {
+        Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         boolean telemetryDisabled = configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
         if (telemetryDisabled) {
             this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion,
