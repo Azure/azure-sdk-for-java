@@ -5,20 +5,26 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.UUID;
+
+import static com.google.common.base.Strings.lenientFormat;
 
 public class AggregateQueryTests extends TestSuiteBase {
 
@@ -181,14 +187,22 @@ public class AggregateQueryTests extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT * 2)
-    public void before_AggregateQueryTests() throws Exception {
+    public void before_AggregateQueryTests() throws Throwable {
         client = this.clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
-
+        try {
+            truncateCollection(createdCollection);
+        } catch (Throwable throwable) {
+            throwable = Exceptions.unwrap(throwable);
+            if (!(throwable instanceof CosmosClientException)) {
+                throw new AssertionError(lenientFormat("stopping test due to collection %s truncation failure: ",
+                    createdCollection,
+                    throwable));
+            }
+            logger.error("ignored: collection {} truncation failure: ", createdCollection, throwable);
+        }
         bulkInsert();
         generateTestConfigs();
-
         waitIfNeededForReplicasToCatchUp(this.clientBuilder());
     }
 }
