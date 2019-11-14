@@ -34,6 +34,7 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
+import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -277,13 +278,9 @@ class BlobAPITest extends APISpec {
 
         when:
         bc.downloadToFile(testFile.getPath())
-        def fileInputStream = new FileInputStream(testFile)
-        def fileData = new byte[testFile.size()]
-        fileInputStream.read(fileData)
-        fileInputStream.close()
 
         then:
-        new String(fileData, StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
 
         cleanup:
         testFile.delete()
@@ -310,6 +307,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
 
         where:
         fileSize             | _
@@ -339,18 +337,19 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
 
         /*
         The last case is to test a range much much larger than the size of the file to ensure we don't accidentally
         send off parallel requests with invalid ranges.
          */
         where:
-        range                                 | _
-        new BlobRange(0, defaultDataSize)     | _ // Exact count
-        new BlobRange(1, defaultDataSize - 1) | _ // Offset and exact count
-        new BlobRange(3, 2)                   | _ // Narrow range in middle
-        new BlobRange(0, defaultDataSize - 1) | _ // Count that is less than total
-        new BlobRange(0, 10 * 1024)           | _ // Count much larger than remaining data
+        range                                         | _
+        new BlobRange(0, defaultDataSize)             | _ // Exact count
+        new BlobRange(1, defaultDataSize - 1 as Long) | _ // Offset and exact count
+        new BlobRange(3, 2)                           | _ // Narrow range in middle
+        new BlobRange(0, defaultDataSize - 1 as Long) | _ // Count that is less than total
+        new BlobRange(0, 10 * 1024)                   | _ // Count much larger than remaining data
     }
 
     /*
@@ -377,6 +376,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
     }
 
     @Requires({ liveMode() })
@@ -397,6 +397,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
     }
 
     @Requires({ liveMode() })
@@ -424,6 +425,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -459,6 +461,10 @@ class BlobAPITest extends APISpec {
         def e = thrown(BlobStorageException)
         e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
             e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        cleanup:
+        outFile.delete()
+        file.delete()
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -506,6 +512,10 @@ class BlobAPITest extends APISpec {
         then:
         etagConflict
         !outFile.exists() // We should delete the file we tried to create
+
+        cleanup:
+        file.delete()
+        outFile.delete()
     }
 
     @Requires({ liveMode() })
