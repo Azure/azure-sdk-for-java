@@ -372,18 +372,39 @@ public class SearchServiceClient {
     }
 
     /**
-     * @return the Indexer.
-     * @throws NotImplementedException not implemented
+     * Retrieves an indexer definition.
+     *
+     * @param indexerName the name of the indexer to retrieve
+     * @return the indexer.
      */
-    public Indexer getIndexer() {
+    public Indexer getIndexer(String indexerName) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return a response containing the Indexer.
-     * @throws NotImplementedException not implemented
+     * Retrieves an indexer definition.
+     *
+     * @param indexerName the name of the indexer to retrieve
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the indexer.
      */
-    public Response<Indexer> getIndexerWithResponse() {
+    public Indexer getIndexer(String indexerName, RequestOptions requestOptions) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    /**
+     * Retrieves an indexer definition.
+     *
+     * @param indexerName the name of the indexer to retrieve
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response containing the indexer.
+     */
+    public Response<Indexer> getIndexerWithResponse(String indexerName,
+                                                    RequestOptions requestOptions,
+                                                    Context context) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -403,48 +424,107 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Resets the change tracking state associated with an indexer.
+     *
+     * @param indexerName the name of the indexer to reset
      */
-    public void resetIndexer() {
+    public void resetIndexer(String indexerName) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return a response signalling completion
-     * @throws NotImplementedException not implemented
+     * Resets the change tracking state associated with an indexer.
+     *
+     * @param indexerName the name of the indexer to reset
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
      */
-    public Response<Response<Void>> resetIndexerWithResponse() {
+    public void resetIndexer(String indexerName, RequestOptions requestOptions) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Resets the change tracking state associated with an indexer.
+     *
+     * @param indexerName the name of the indexer to reset
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response signalling completion.
      */
-    public void runIndexer() {
+    public Response<Void> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return a response signalling completion
-     * @throws NotImplementedException not implemented
+     * Runs an indexer on-demand.
+     *
+     * @param indexerName the name of the indexer to run
      */
-    public Response<Response<Void>> runIndexerWithResponse() {
+    public void runIndexer(String indexerName) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return the Indexer execution information.
-     * @throws NotImplementedException not implemented
+     * Runs an indexer on-demand.
+     *
+     * @param indexerName the name of the indexer to run
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
      */
-    public IndexerExecutionInfo getIndexerStatus() {
+    public void runIndexer(String indexerName, RequestOptions requestOptions) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return a response containing the Indexer execution information.
-     * @throws NotImplementedException not implemented
+     * Runs an indexer on-demand.
+     *
+     * @param indexerName the name of the indexer to run
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response signalling completion.
      */
-    public Response<IndexerExecutionInfo> getIndexerStatusWithResponse() {
+    public Response<Void> runIndexerWithResponse(String indexerName,
+                                                 RequestOptions requestOptions,
+                                                 Context context) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    /**
+     * Returns the current status and execution history of an indexer.
+     *
+     * @param indexerName the name of the indexer for which to retrieve status
+     * @return a response with the indexer execution info.
+     */
+    public IndexerExecutionInfo getIndexerStatus(String indexerName) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    /**
+     * Returns the current status and execution history of an indexer.
+     *
+     * @param indexerName the name of the indexer for which to retrieve status
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response with the indexer execution info.
+     */
+    public IndexerExecutionInfo getIndexerStatus(String indexerName, RequestOptions requestOptions) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    /**
+     * Returns the current status and execution history of an indexer.
+     *
+     * @param indexerName the name of the indexer for which to retrieve status
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response with the indexer execution info.
+     */
+    public Response<IndexerExecutionInfo> getIndexerStatusWithResponse(String indexerName,
+                                                                       RequestOptions requestOptions,
+                                                                       Context context) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -560,18 +640,39 @@ public class SearchServiceClient {
     }
 
     /**
-     * @return the Index statistics.
-     * @throws NotImplementedException not implemented
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param indexName the name of the index for which to retrieve statistics
+     * @return the index statistics result.
      */
-    public IndexGetStatisticsResult getIndexStatistics() {
+    public IndexGetStatisticsResult getIndexStatistics(String indexName) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return a response containing the Index statistics.
-     * @throws NotImplementedException not implemented
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param indexName the name of the index for which to retrieve statistics
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the index statistics result.
      */
-    public Response<IndexGetStatisticsResult> getIndexStatisticsWithResponse() {
+    public IndexGetStatisticsResult getIndexStatistics(String indexName, RequestOptions requestOptions) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    /**
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param indexName the name of the index for which to retrieve statistics
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response containing the index statistics result.
+     */
+    public Response<IndexGetStatisticsResult> getIndexStatisticsWithResponse(String indexName,
+                                                                             RequestOptions requestOptions,
+                                                                             Context context) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 

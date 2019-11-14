@@ -441,19 +441,43 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return the Indexer.
-     * @throws NotImplementedException not implemented
+     * Retrieves an indexer definition.
+     *
+     * @param indexerName the name of the indexer to retrieve
+     * @return the indexer.
      */
-    public Mono<Indexer> getIndexer() {
+    public Mono<Indexer> getIndexer(String indexerName) {
         throw logger.logExceptionAsError(
             new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return a response containing the Indexer.
-     * @throws NotImplementedException not implemented
+     * Retrieves an indexer definition.
+     *
+     * @param indexerName the name of the indexer to retrieve
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the indexer.
      */
-    public Mono<Response<Indexer>> getIndexerWithResponse() {
+    public Mono<Indexer> getIndexer(String indexerName, RequestOptions requestOptions) {
+        throw logger.logExceptionAsError(
+                new NotImplementedException("not implemented."));
+    }
+
+    /**
+     * Retrieves an indexer definition.
+     *
+     * @param indexerName the name of the indexer to retrieve
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response containing the indexer.
+     */
+    public Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
+        throw logger.logExceptionAsError(
+                new NotImplementedException("not implemented."));
+    }
+
+    Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         throw logger.logExceptionAsError(
             new NotImplementedException("not implemented."));
     }
@@ -528,50 +552,123 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return a reactive response signalling completion.
-     * @throws NotImplementedException not implemented
+     * Resets the change tracking state associated with an indexer.
+     *
+     * @param indexerName the name of the indexer to reset
+     * @return a response signalling completion.
      */
-    public Mono<Void> resetIndexer() {
+    public Mono<Void> resetIndexer(String indexerName) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return a reactive response signalling completion.
-     * @throws NotImplementedException not implemented
+     * Resets the change tracking state associated with an indexer.
+     *
+     * @param indexerName the name of the indexer to reset
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response signalling completion.
      */
-    public Mono<Response<Response<Void>>> resetIndexerWithResponse() {
+    public Mono<Void> resetIndexer(String indexerName, RequestOptions requestOptions) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return a reactive response signalling completion.
-     * @throws NotImplementedException not implemented
+     * Resets the change tracking state associated with an indexer.
+     *
+     * @param indexerName the name of the indexer to reset
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response signalling completion.
      */
-    public Mono<Void> runIndexer() {
+    public Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    Mono<Response<Void>> resetIndexerWithResponse(String indexerName,
+                                                  RequestOptions requestOptions,
+                                                  Context context) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return a reactive response signalling completion.
-     * @throws NotImplementedException not implemented
+     * Runs an indexer on-demand.
+     *
+     * @param indexerName the name of the indexer to run
+     * @return a response signalling completion.
      */
-    public Mono<Response<Response<Void>>> runIndexerWithResponse() {
+    public Mono<Void> runIndexer(String indexerName) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return the Indexer execution information.
-     * @throws NotImplementedException not implemented
+     * Runs an indexer on-demand.
+     *
+     * @param indexerName the name of the indexer to run
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response signalling completion.
      */
-    public Mono<IndexerExecutionInfo> getIndexerStatus() {
+    public Mono<Void> runIndexer(String indexerName, RequestOptions requestOptions) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return a response containing the Indexer execution information.
-     * @throws NotImplementedException not implemented
+     * Runs an indexer on-demand.
+     *
+     * @param indexerName the name of the indexer to run
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response signalling completion.
      */
-    public Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse() {
+    public Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    Mono<Response<Void>> runIndexerWithResponse(String indexerName,
+                                                RequestOptions requestOptions,
+                                                Context context) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    /**
+     * Returns the current status and execution history of an indexer.
+     *
+     * @param indexerName the name of the indexer for which to retrieve status
+     * @return the indexer execution info.
+     */
+    public Mono<IndexerExecutionInfo> getIndexerStatus(String indexerName) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    /**
+     * Returns the current status and execution history of an indexer.
+     *
+     * @param indexerName the name of the indexer for which to retrieve status
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the indexer execution info.
+     */
+    public Mono<IndexerExecutionInfo> getIndexerStatus(String indexerName, RequestOptions requestOptions) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    /**
+     * Returns the current status and execution history of an indexer.
+     *
+     * @param indexerName the name of the indexer for which to retrieve status
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response with the indexer execution info.
+     */
+    public Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName,
+                                                                             RequestOptions requestOptions) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName,
+                                                                      RequestOptions requestOptions,
+                                                                      Context context) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -704,18 +801,43 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return the Index statistics.
-     * @throws NotImplementedException not implemented
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param indexName the name of the index for which to retrieve statistics
+     * @return the index statistics result.
      */
-    public Mono<IndexGetStatisticsResult> getIndexStatistics() {
+    public Mono<IndexGetStatisticsResult> getIndexStatistics(String indexName) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
     /**
-     * @return a response containing the Index statistics.
-     * @throws NotImplementedException not implemented
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param indexName the name of the index for which to retrieve statistics
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the index statistics result.
      */
-    public Mono<Response<IndexGetStatisticsResult>> getIndexStatisticsWithResponse() {
+    public Mono<IndexGetStatisticsResult> getIndexStatistics(String indexName, RequestOptions requestOptions) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    /**
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param indexName the name of the index for which to retrieve statistics
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response containing the index statistics result.
+     */
+    public Mono<Response<IndexGetStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
+                                                                                   RequestOptions requestOptions) {
+        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    }
+
+    Mono<Response<IndexGetStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
+                                                                            RequestOptions requestOptions,
+                                                                            Context context) {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
