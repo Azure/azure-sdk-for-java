@@ -484,16 +484,17 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
         try {
-            Mono<Void> overwriteCheck;
-            BlobRequestConditions requestConditions;
+            Mono<Void> overwriteCheck = Mono.empty();
+            BlobRequestConditions requestConditions = null;
 
-            if (overwrite) {
-                overwriteCheck = Mono.empty();
-                requestConditions = null;
-            } else {
-                overwriteCheck = exists().flatMap(exists -> exists
-                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                    : Mono.empty());
+            // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
+            if (!overwrite) {
+                if (uploadInBlocks(filePath)) {
+                    overwriteCheck = exists().flatMap(exists -> exists
+                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                        : Mono.empty());
+                }
+
                 requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
             }
 
@@ -532,7 +533,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         long fileSize = channel.size();
 
                         // If the file is larger than 256MB chunk it and stage it as blocks.
-                        if (fileSize > 256 * Constants.MB) {
+                        if (uploadInBlocks(filePath)) {
                             return uploadBlocks(fileSize, parallelTransferOptions, headers, metadata, tier,
                                 requestConditions, channel, blockBlobAsyncClient);
                         } else {
@@ -548,6 +549,20 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    boolean uploadInBlocks(String filePath) {
+        AsynchronousFileChannel channel = uploadFileResourceSupplier(filePath);
+        boolean retVal;
+        try {
+            retVal = channel.size() > 256 * Constants.MB;
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
+        } finally {
+            uploadFileCleanup(channel);
+        }
+
+        return retVal;
     }
 
     private Mono<Void> uploadBlocks(long fileSize, ParallelTransferOptions parallelTransferOptions,

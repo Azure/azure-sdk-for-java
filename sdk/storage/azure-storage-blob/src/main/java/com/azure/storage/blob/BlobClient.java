@@ -135,8 +135,10 @@ public class BlobClient extends BlobClientBase {
      */
     public void uploadFromFile(String filePath, boolean overwrite) {
         BlobRequestConditions requestConditions = null;
+
         if (!overwrite) {
-            if (exists()) {
+            // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
+            if (client.uploadInBlocks(filePath) && exists()) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
