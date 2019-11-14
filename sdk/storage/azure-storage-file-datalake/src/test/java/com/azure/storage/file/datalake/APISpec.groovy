@@ -221,7 +221,7 @@ class APISpec extends Specification {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
             return builder.credential(primaryCredential).buildClient()
         } else {
-            if (!testRunVerifier.doNotRecordTest()) {
+            if (!testRunVerifier.doNotRecordTest() && testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
 
@@ -592,9 +592,11 @@ class APISpec extends Specification {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (testMode == TestMode.RECORD) {
-            sleep(milliseconds)
+        if (testMode == TestMode.PLAYBACK) {
+            return
         }
+
+        sleep(milliseconds)
     }
 
     def compareACL(List<PathAccessControlEntry> expected, List<PathAccessControlEntry> actual) {
