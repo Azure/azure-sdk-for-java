@@ -15,7 +15,9 @@ import com.azure.core.util.FluxUtil
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.BlobClientBuilder
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobErrorCode
@@ -24,6 +26,7 @@ import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
+import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.common.implementation.Constants
@@ -1394,5 +1397,19 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         notThrown(Throwable)
+    }
+
+    def "Builder cpk validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(bc.getBlobUrl()).setScheme("http").toUrl()
+        def builder = new SpecializedBlobClientBuilder()
+            .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
+            .endpoint(endpoint)
+
+        when:
+        builder.buildBlockBlobClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }
