@@ -13,5 +13,6 @@
     <module>azure-mgmt-mediaservices/v2018_03_30_preview</module>
     <module>azure-mgmt-mediaservices/v2018_06_01_preview</module>
     <module>azure-mgmt-mediaservices/v2018_07_01</module>
+    <module>azure-mgmt-mediaservices/v2019_05_01_preview</module>
   </modules>
 </project>
