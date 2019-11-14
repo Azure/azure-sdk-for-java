@@ -18,11 +18,17 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.implementation.SqlManager;
 import java.util.List;
+import org.joda.time.DateTime;
 
 /**
  * Type representing ServerSecurityAlertPolicy.
  */
 public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertPolicyInner>, Indexable, Refreshable<ServerSecurityAlertPolicy>, Updatable<ServerSecurityAlertPolicy.Update>, HasManager<SqlManager> {
+    /**
+     * @return the creationTime value.
+     */
+    DateTime creationTime();
+
     /**
      * @return the disabledAlerts value.
      */
@@ -108,7 +114,7 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithState {
            /**
             * Specifies state.
-            * @param state Specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'New', 'Enabled', 'Disabled'
+            * @param state Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. Possible values include: 'New', 'Enabled', 'Disabled'
             * @return the next definition stage
             */
             WithCreate withState(SecurityAlertPolicyState state);

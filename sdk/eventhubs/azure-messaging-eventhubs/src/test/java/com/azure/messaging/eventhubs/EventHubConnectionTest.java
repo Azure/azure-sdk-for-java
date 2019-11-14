@@ -85,7 +85,7 @@ public class EventHubConnectionTest {
         final RetryOptions options = new RetryOptions()
             .setTryTimeout(timeout)
             .setMaxRetries(2)
-            .setRetryMode(RetryMode.FIXED);
+            .setMode(RetryMode.FIXED);
 
         final String linkName = "some-link-name";
         final String entityPath = "some-entity-path";
@@ -105,8 +105,7 @@ public class EventHubConnectionTest {
     public void getReceiveLink() {
         // Arrange
         final AmqpReceiveLink receiveLink = mock(AmqpReceiveLink.class);
-        final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setIdentifier("foo");
+        final EventHubConsumerOptions options = new EventHubConsumerOptions();
 
         final EventPosition position = EventPosition.fromOffset(10L);
         final String linkName = "some-link-name";

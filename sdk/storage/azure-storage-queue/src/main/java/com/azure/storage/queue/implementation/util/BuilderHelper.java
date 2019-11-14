@@ -58,8 +58,6 @@ public final class BuilderHelper {
             URL url = new URL(endpoint);
             QueueUrlParts parts = new QueueUrlParts();
 
-            parts.setEndpoint(url.getProtocol() + "://" + url.getAuthority());
-
             if (IP_URL_PATTERN.matcher(url.getHost()).find()) {
                 // URL is using an IP pattern of http://127.0.0.1:10000/accountName/queueName
                 // or http://localhost:10000/accountName/queueName
@@ -74,6 +72,9 @@ public final class BuilderHelper {
                 if (pathPieces.length == 2) {
                     parts.setQueueName(pathPieces[1]);
                 }
+
+                parts.setEndpoint(String.format("%s://%s/%s", url.getProtocol(), url.getAuthority(),
+                    parts.getAccountName()));
             } else {
                 // URL is using a pattern of http://accountName.blob.core.windows.net/queueName
                 String host = url.getHost();
@@ -94,6 +95,8 @@ public final class BuilderHelper {
                 if (pathSegments.length == 2 && !CoreUtils.isNullOrEmpty(pathSegments[1])) {
                     parts.setQueueName(pathSegments[1]);
                 }
+
+                parts.setEndpoint(String.format("%s://%s", url.getProtocol(), url.getAuthority()));
             }
 
             // Attempt to get the SAS token from the URL passed

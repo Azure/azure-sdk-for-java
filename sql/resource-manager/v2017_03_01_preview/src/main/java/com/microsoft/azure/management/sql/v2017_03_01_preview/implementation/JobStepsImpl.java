@@ -100,10 +100,14 @@ class JobStepsImpl extends WrapperImpl<JobStepsInner> implements JobSteps {
     public Observable<JobStep> getByVersionAsync(String resourceGroupName, String serverName, String jobAgentName, String jobName, int jobVersion, String stepName) {
         JobStepsInner client = this.inner();
         return client.getByVersionAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion, stepName)
-        .map(new Func1<JobStepInner, JobStep>() {
+        .flatMap(new Func1<JobStepInner, Observable<JobStep>>() {
             @Override
-            public JobStep call(JobStepInner inner) {
-                return wrapModel(inner);
+            public Observable<JobStep> call(JobStepInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((JobStep)wrapModel(inner));
+                }
             }
        });
     }

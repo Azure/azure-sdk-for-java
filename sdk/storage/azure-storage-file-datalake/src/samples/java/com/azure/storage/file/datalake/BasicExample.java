@@ -66,6 +66,21 @@ public class BasicExample {
         dataLakeFileSystemClient.create();
 
         /*
+         * Create a directory in the filesystem
+         */
+        DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.createDirectory("myDirectory");
+
+        /*
+         * Create a file and sub directory in the directory
+         */
+        DataLakeFileClient fileUnderDirectory = directoryClient.createFile("myFileName");
+        DataLakeDirectoryClient subDirectory = directoryClient.createSubDirectory("mySubDirectory");
+
+        System.out.println("File under myDirectory is " + fileUnderDirectory.getFileName());
+        System.out.println("Directory under myDirectory is " + subDirectory.getDirectoryName());
+
+
+        /*
          * Create a client that references a to-be-created file in your Azure Storage account's file system.
          * This returns a DataLakeFileClient object that wraps the file's endpoint, credential and a request pipeline
          * (inherited from dataLakeFileSystemClient). Note that file names can be mixed case.

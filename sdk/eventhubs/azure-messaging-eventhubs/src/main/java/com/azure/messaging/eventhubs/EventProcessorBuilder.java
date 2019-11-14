@@ -13,16 +13,17 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.models.CloseContext;
-import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
@@ -46,7 +47,7 @@ import reactor.core.scheduler.Scheduler;
  *  <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub <i>namespace</i>
  *  connection string and the Event Hub name.</li>
  *  <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the
- *  fully qualified domain name (FQDN), Event Hub name, and a set of credentials authorized to use the Event Hub.
+ *  fully qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
  *  </li>
  *  </ul>
  *  </li>

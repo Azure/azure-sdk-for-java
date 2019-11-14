@@ -21,7 +21,7 @@ import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
@@ -316,7 +316,7 @@ public class EventHubProducerClientTest {
         final EventData event = new EventData(new byte[maxEventPayload]);
 
         // No idea what the overhead for adding partition key is. But we know this will be smaller than the max size.
-        final BatchOptions options = new BatchOptions()
+        final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionKey("some-key")
             .setMaximumSizeInBytes(maxBatchSize);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
@@ -353,7 +353,7 @@ public class EventHubProducerClientTest {
         final EventData event = new EventData(new byte[maxEventPayload]);
 
         // No idea what the overhead for adding partition key is. But we know this will be smaller than the max size.
-        final BatchOptions options = new BatchOptions()
+        final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionId(partitionId)
             .setMaximumSizeInBytes(maxBatchSize);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
@@ -389,7 +389,7 @@ public class EventHubProducerClientTest {
         final EventData event = new EventData(new byte[maxEventPayload + 1]);
 
         // No idea what the overhead for adding partition key is. But we know this will be smaller than the max size.
-        final BatchOptions options = new BatchOptions()
+        final CreateBatchOptions options = new CreateBatchOptions()
             .setMaximumSizeInBytes(maxBatchSize);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventDataBatch batch = producer.createBatch(options);

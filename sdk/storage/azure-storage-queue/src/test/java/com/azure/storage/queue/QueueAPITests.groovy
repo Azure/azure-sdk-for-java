@@ -250,11 +250,10 @@ class QueueAPITests extends APISpec {
         def expectMsg = "test message"
         when:
         def enqueueMsgResponse = queueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
-        def peekMsgIter = queueClient.peekMessage().iterator()
+        def peekedMessage = queueClient.peekMessage()
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
-        expectMsg == peekMsgIter.next().getMessageText()
-        !peekMsgIter.hasNext()
+        expectMsg == peekedMessage.getMessageText()
     }
 
     def "Enqueue empty message"() {
@@ -263,11 +262,10 @@ class QueueAPITests extends APISpec {
         def expectMsg = ""
         when:
         def enqueueMsgResponse = queueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
-        def peekMsgIter = queueClient.peekMessage().iterator()
+        def peekedMessage = queueClient.peekMessage()
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
-        peekMsgIter.next().getMessageText() == null
-        !peekMsgIter.hasNext()
+        peekedMessage.getMessageText() == null
     }
 
     def "Enqueue time to live"() {
@@ -321,9 +319,9 @@ class QueueAPITests extends APISpec {
         def expectMsg = "test message"
         queueClient.sendMessage(expectMsg)
         when:
-        def peekMsgIter = queueClient.peekMessage()
+        def peekedMessage = queueClient.peekMessage()
         then:
-        expectMsg == peekMsgIter.getMessageText()
+        expectMsg == peekedMessage.getMessageText()
     }
 
     def "Peek multiple messages"() {

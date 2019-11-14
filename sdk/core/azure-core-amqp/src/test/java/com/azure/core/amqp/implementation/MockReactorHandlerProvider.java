@@ -39,12 +39,12 @@ class MockReactorHandlerProvider extends ReactorHandlerProvider {
     }
 
     @Override
-    public SendLinkHandler createSendLinkHandler(String connectionId, String hostname, String senderName, String entityPath) {
+    public SendLinkHandler createSendLinkHandler(String connectionId, String fullyQualifiedNamespace, String senderName, String entityPath) {
         return sendLinkHandler;
     }
 
     @Override
-    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname, String receiverName, String entityPath) {
+    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String fullyQualifiedNamespace, String receiverName, String entityPath) {
         return receiveLinkHandler;
     }
 }

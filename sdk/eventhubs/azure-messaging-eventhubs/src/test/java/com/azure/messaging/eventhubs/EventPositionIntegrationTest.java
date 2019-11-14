@@ -68,7 +68,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
                 receivedEvents = consumer.receive(PARTITION_ID)
                     .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                     .take(NUMBER_OF_EVENTS)
-                    .map(PartitionEvent::getEventData)
+                    .map(PartitionEvent::getData)
                     .collectList().block(TIMEOUT);
             } finally {
                 dispose(consumer);
@@ -100,9 +100,9 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         final List<EventData> enqueuedEvents;
         try {
             // Act
-            earliestEvents = consumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS).map(PartitionEvent::getEventData)
+            earliestEvents = consumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS).map(PartitionEvent::getData)
                 .collectList().block(TIMEOUT);
-            enqueuedEvents = enqueuedTimeConsumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS).map(PartitionEvent::getEventData)
+            enqueuedEvents = enqueuedTimeConsumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS).map(PartitionEvent::getData)
                 .collectList().block(TIMEOUT);
         } finally {
             dispose(consumer, enqueuedTimeConsumer);
@@ -196,7 +196,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(PARTITION_ID).map(x -> x.getEventData())
+            StepVerifier.create(consumer.receive(PARTITION_ID).map(x -> x.getData())
                 .take(1))
                 .assertNext(event -> {
                     Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
@@ -223,7 +223,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(PARTITION_ID).map(x -> x.getEventData())
+            StepVerifier.create(consumer.receive(PARTITION_ID).map(x -> x.getData())
                 .take(1))
                 .assertNext(event -> {
                     Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
@@ -249,7 +249,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getEventData)
+            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getData)
                 .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
@@ -275,7 +275,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getEventData)
+            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getData)
                 .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
@@ -301,7 +301,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getEventData)
+            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getData)
                 .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
@@ -327,7 +327,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getEventData)
+            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getData)
                 .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {

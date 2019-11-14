@@ -15,6 +15,7 @@ import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
+import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.DownloadRetryOptions
 import com.azure.storage.blob.models.LeaseStateType
@@ -34,6 +35,7 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
+import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -277,13 +279,9 @@ class BlobAPITest extends APISpec {
 
         when:
         bc.downloadToFile(testFile.getPath())
-        def fileInputStream = new FileInputStream(testFile)
-        def fileData = new byte[testFile.size()]
-        fileInputStream.read(fileData)
-        fileInputStream.close()
 
         then:
-        new String(fileData, StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
 
         cleanup:
         testFile.delete()
@@ -310,6 +308,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
 
         where:
         fileSize             | _
@@ -339,18 +338,19 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
 
         /*
         The last case is to test a range much much larger than the size of the file to ensure we don't accidentally
         send off parallel requests with invalid ranges.
          */
         where:
-        range                                 | _
-        new BlobRange(0, defaultDataSize)     | _ // Exact count
-        new BlobRange(1, defaultDataSize - 1) | _ // Offset and exact count
-        new BlobRange(3, 2)                   | _ // Narrow range in middle
-        new BlobRange(0, defaultDataSize - 1) | _ // Count that is less than total
-        new BlobRange(0, 10 * 1024)           | _ // Count much larger than remaining data
+        range                                         | _
+        new BlobRange(0, defaultDataSize)             | _ // Exact count
+        new BlobRange(1, defaultDataSize - 1 as Long) | _ // Offset and exact count
+        new BlobRange(3, 2)                           | _ // Narrow range in middle
+        new BlobRange(0, defaultDataSize - 1 as Long) | _ // Count that is less than total
+        new BlobRange(0, 10 * 1024)                   | _ // Count much larger than remaining data
     }
 
     /*
@@ -377,6 +377,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
     }
 
     @Requires({ liveMode() })
@@ -397,6 +398,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
     }
 
     @Requires({ liveMode() })
@@ -424,6 +426,7 @@ class BlobAPITest extends APISpec {
 
         cleanup:
         outFile.delete()
+        file.delete()
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -459,6 +462,10 @@ class BlobAPITest extends APISpec {
         def e = thrown(BlobStorageException)
         e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
             e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        cleanup:
+        outFile.delete()
+        file.delete()
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -506,6 +513,10 @@ class BlobAPITest extends APISpec {
         then:
         etagConflict
         !outFile.exists() // We should delete the file we tried to create
+
+        cleanup:
+        file.delete()
+        outFile.delete()
     }
 
     @Requires({ liveMode() })
@@ -1872,16 +1883,6 @@ class BlobAPITest extends APISpec {
         bc.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
-    def "Get account info error"() {
-        when:
-        def serviceURL = getServiceClient(primaryBlobServiceClient.getAccountUrl())
-
-        serviceURL.getBlobContainerClient(generateContainerName()).getBlobClient(generateBlobName()).getAccountInfo()
-
-        then:
-        thrown(IllegalArgumentException)
-    }
-
     def "Get Container Name"() {
         expect:
         containerName == bc.getContainerName()
@@ -1905,7 +1906,23 @@ class BlobAPITest extends APISpec {
         "blob"                 | "blob"
         "path/to]a blob"       | "path/to]a blob"
         "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                   | "斑點"
+        "斑點"                 | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
+
+    def "Builder cpk validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(bc.getBlobUrl()).setScheme("http").toUrl()
+        def builder = new BlobClientBuilder()
+            .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+
 }

@@ -20,27 +20,6 @@ public class EventHubConsumerClientOptionsTest {
     }
 
     @Test
-    public void invalidIdentifier() {
-        // Arrange
-        final int length = EventHubConsumerOptions.MAXIMUM_IDENTIFIER_LENGTH + 1;
-        final String longIdentifier = new String(new char[length]).replace("\0", "f");
-        final String identifier = "An Identifier";
-        final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setIdentifier(identifier);
-
-        // Act
-        try {
-            options.setIdentifier(longIdentifier);
-            Assertions.fail("Setting this should have failed.");
-        } catch (IllegalArgumentException e) {
-            // This is what we expect.
-        }
-
-        // Assert
-        Assertions.assertEquals(identifier, options.getIdentifier());
-    }
-
-    @Test
     public void invalidPrefetchMinimum() {
         // Arrange
         final int prefetch = 235;

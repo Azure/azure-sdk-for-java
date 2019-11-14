@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
 import java.io.IOException;
@@ -83,7 +83,7 @@ public class EventHubProducerClientJavaDocCodeSamples {
             new EventData("120".getBytes(UTF_8)).addProperty("telemetry", "fps")
         );
 
-        final BatchOptions options = new BatchOptions()
+        final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionKey("telemetry")
             .setMaximumSizeInBytes(256);
 

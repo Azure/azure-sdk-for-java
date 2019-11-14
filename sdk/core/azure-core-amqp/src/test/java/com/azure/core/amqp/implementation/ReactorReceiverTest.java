@@ -47,7 +47,7 @@ public class ReactorReceiverTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        when(cbsNode.authorize(any())).thenReturn(Mono.empty());
+        when(cbsNode.authorize(any(), any())).thenReturn(Mono.empty());
 
         when(event.getLink()).thenReturn(receiver);
         when(receiver.getRemoteSource()).thenReturn(new Source());
@@ -55,7 +55,7 @@ public class ReactorReceiverTest {
         final String entityPath = "test-entity-path";
         receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
             "test-receiver-name", entityPath);
-        tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode), "test-tokenAudience");
+        tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode), "test-tokenAudience", "test-scopes");
         reactorReceiver = new ReactorReceiver(entityPath, receiver, receiverHandler, tokenManager);
     }
 

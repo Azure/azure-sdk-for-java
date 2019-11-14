@@ -62,7 +62,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
             RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.single());
 
         AzureTokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(options.getAuthorizationType(),
-            options.getHostname(), ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
+            options.getFullyQualifiedNamespace(), ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
         connection = new ReactorConnection("test-connection-id", options, reactorProvider,
@@ -95,7 +95,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
         final String tokenAudience = provider.getResourceString(getConnectionStringProperties().getEntityPath());
 
         // Act & Assert
-        StepVerifier.create(connection.getCBSNode().flatMap(node -> node.authorize(tokenAudience)))
+        StepVerifier.create(connection.getCBSNode().flatMap(node -> node.authorize(tokenAudience, tokenAudience)))
             .assertNext(expiration -> OffsetDateTime.now(ZoneOffset.UTC).isBefore(expiration))
             .verifyComplete();
     }
