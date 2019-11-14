@@ -103,6 +103,9 @@ public class HttpLogOptions {
     /**
      * Sets the given whitelisted header to the default header set that should be logged.
      *
+     * <p>The allowed headers whitelist allows headers to be match via a wildcard, for example {@code x-ms-meta-*} will
+     * match all headers that begin with {@code x-ms-meta-}.</p>
+     *
      * @param allowedHeaderName The whitelisted header name from the user.
      * @return The updated HttpLogOptions object.
      * @throws NullPointerException If {@code allowedHeaderName} is {@code null}.

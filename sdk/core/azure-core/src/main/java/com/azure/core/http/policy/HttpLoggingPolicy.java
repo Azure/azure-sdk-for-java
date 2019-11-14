@@ -9,8 +9,9 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Mono;
@@ -106,7 +107,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                                 logger,
                                 request.getHeaders().getValue("Content-Type"),
                                 bodyString);
-                            logger.info("{}-byte body:%n{}", contentLength, bodyString);
+                            logger.info("{}-byte body:{}{}", contentLength, System.lineSeparator(), bodyString);
                             logger.info("--> END {}", request.getHttpMethod());
                             return Mono.empty();
                         });
@@ -123,7 +124,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private void formatAllowableHeaders(Set<String> allowedHeaderNames, HttpHeaders requestResponseHeaders,
-                                        ClientLogger logger) {
+        ClientLogger logger) {
         Set<String> lowerCasedAllowedHeaderNames = allowedHeaderNames.stream().map(String::toLowerCase)
             .collect(Collectors.toSet());
         StringBuilder sb = new StringBuilder();
@@ -135,13 +136,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             } else {
                 sb.append(REDACTED_PLACEHOLDER);
             }
-            sb.append(System.getProperty("line.separator"));
+            sb.append(System.lineSeparator());
         }
         logger.info(sb.toString());
     }
 
     private void formatAllowableQueryParams(Set<String> allowedQueryParamNames, String queryString,
-                                            ClientLogger logger) {
+        ClientLogger logger) {
         Set<String> lowerCasedAllowedQueryParams = allowedQueryParamNames.stream().map(String::toLowerCase)
             .collect(Collectors.toSet());
         if (queryString != null) {
@@ -168,8 +169,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final ClientLogger logger,
-                                                                           final URL url,
-                                                                           final long startNs) {
+        final URL url, final long startNs) {
         return (HttpResponse response) -> {
             long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
             //
@@ -198,7 +198,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     final HttpResponse bufferedResponse = response.buffer();
                     return bufferedResponse.getBodyAsString().map(bodyStr -> {
                         bodyStr = prettyPrintIfNeeded(logger, contentTypeHeader, bodyStr);
-                        logger.info("Response body:\n{}", bodyStr);
+                        logger.info("Response body:{}{}", System.lineSeparator(), bodyStr);
                         logger.info("<-- END HTTP");
                         return bufferedResponse;
                     }).switchIfEmpty(Mono.defer(() -> Mono.just(bufferedResponse)));
@@ -227,13 +227,21 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return result;
     }
 
+    /*
+     * Attempts to retrieve and parse the Content-Length header.
+     */
     private long getContentLength(ClientLogger logger, HttpHeaders headers) {
         long contentLength = 0;
+        String contentLengthHeader = headers.getValue("content-length");
+
+        if (CoreUtils.isNullOrEmpty(contentLengthHeader)) {
+            return contentLength;
+        }
+
         try {
-            contentLength = Long.parseLong(headers.getValue("content-length"));
+            contentLength = Long.parseLong(contentLengthHeader);
         } catch (NumberFormatException | NullPointerException e) {
-            logger.warning("Could not parse the HTTP header content-length: '{}'.",
-                headers.getValue("content-length"), e);
+            logger.warning("Could not parse the HTTP header content-length: '{}'.", contentLengthHeader, e);
         }
 
         return contentLength;
