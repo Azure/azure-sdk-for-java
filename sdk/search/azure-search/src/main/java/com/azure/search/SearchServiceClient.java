@@ -237,6 +237,45 @@ public class SearchServiceClient {
     }
 
     /**
+     * Determines whether or not the given datasource exists.
+     *
+     * @param datasourceName the name of the datasource
+     * @return true if the datasource exists; false otherwise.
+     */
+    public Boolean datasourceExists(String datasourceName) {
+        return asyncClient.datasourceExists(datasourceName).block();
+    }
+
+    /**
+     * Determines whether or not the given datasource exists.
+     *
+     * @param datasourceName the name of the datasource
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return true if the datasource exists; false otherwise.
+     */
+    public Boolean datasourceExists(String datasourceName, RequestOptions requestOptions) {
+        return asyncClient.datasourceExists(datasourceName, requestOptions).block();
+    }
+
+    /**
+     * Determines whether or not the given datasource exists.
+     *
+     * @param datasourceName the name of the datasource
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return true if the datasource exists; false otherwise.
+     */
+    public Response<Boolean> datasourceExistsWithResponse(String datasourceName,
+        RequestOptions requestOptions,
+        Context context) {
+        return asyncClient
+            .datasourceExistsWithResponse(datasourceName, requestOptions, context)
+            .block();
+    }
+
+    /**
      * @return the created Indexer.
      * @throws NotImplementedException not implemented
      */

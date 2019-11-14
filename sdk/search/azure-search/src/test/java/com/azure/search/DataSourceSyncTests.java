@@ -257,6 +257,19 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     }
 
     @Override
+    public void existsReturnsFalseForNonExistingDatasource() {
+        Assert.assertFalse(client.datasourceExists("inExistentDataSourceName"));
+    }
+
+    @Override
+    public void existsReturnsTrueForExistingDatasource() {
+        DataSource dataSource = createTestDataSource();
+        client.createOrUpdateDataSource(dataSource);
+
+        Assert.assertTrue(client.datasourceExists(dataSource.getName()));
+    }
+
+    @Override
     public void createDataSourceReturnsCorrectDefinition() {
         SoftDeleteColumnDeletionDetectionPolicy deletionDetectionPolicy =
             new SoftDeleteColumnDeletionDetectionPolicy()

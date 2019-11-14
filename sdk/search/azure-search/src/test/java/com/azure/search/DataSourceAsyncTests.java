@@ -284,6 +284,25 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     }
 
     @Override
+    public void existsReturnsFalseForNonExistingDatasource() {
+        StepVerifier
+            .create(client.datasourceExists("inExistentDataSourceName"))
+            .assertNext(Assert::assertFalse)
+            .verifyComplete();
+    }
+
+    @Override
+    public void existsReturnsTrueForExistingDatasource() {
+        DataSource dataSource = createTestDataSource();
+        client.createOrUpdateDataSource(dataSource).block();
+
+        StepVerifier
+            .create(client.datasourceExists(dataSource.getName()))
+            .assertNext(Assert::assertTrue)
+            .verifyComplete();
+    }
+
+    @Override
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
         DataSource dataSource = createTestSqlDataSource(null, null);
         dataSource.setType(DataSourceType.fromString("thistypedoesnotexist"));

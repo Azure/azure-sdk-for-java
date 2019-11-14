@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdk04a58790fc78.search.windows.net/datasources('inExistentDataSourceName')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "d14df4eb-219d-4345-b735-f32438ddf446",
+      "StatusCode" : "404",
+      "Date" : "Wed, 13 Nov 2019 15:09:18 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "50",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "133",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'inExistentDataSourceName' was found in service 'azs-sdk04a58790fc78'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

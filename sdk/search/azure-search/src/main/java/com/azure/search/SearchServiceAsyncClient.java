@@ -344,6 +344,48 @@ public class SearchServiceAsyncClient {
                 context).map(Function.identity());
     }
 
+
+    /**
+     * Determines whether or not the given datasource exists.
+     *
+     * @param datasourceName the name of the datasource
+     * @return true if the datasource exists; false otherwise.
+     */
+    public Mono<Boolean> datasourceExists(String datasourceName) {
+        return this.datasourceExistsWithResponse(datasourceName, null).map(Response::getValue);
+    }
+
+    /**
+     * Determines whether or not the given datasource exists.
+     *
+     * @param datasourceName the name of the datasource
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return true if the datasource exists; false otherwise.
+     */
+    public Mono<Boolean> datasourceExists(String datasourceName, RequestOptions requestOptions) {
+        return this.datasourceExistsWithResponse(datasourceName, requestOptions).map(Response::getValue);
+    }
+
+    /**
+     * Determines whether or not the given datasource exists.
+     *
+     * @param datasourceName the name of the datasource
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return true if the datasource exists; false otherwise.
+     */
+    public Mono<Response<Boolean>> datasourceExistsWithResponse(String datasourceName, RequestOptions requestOptions) {
+        return withContext(context -> this.datasourceExistsWithResponse(datasourceName, requestOptions, context));
+    }
+
+    Mono<Response<Boolean>> datasourceExistsWithResponse(String datasourceName,
+        RequestOptions requestOptions,
+        Context context) {
+        return resourceExistsWithResponse(() ->
+            this.getDataSourceWithResponse(datasourceName, requestOptions, context));
+    }
+
     /**
      * Creates a new Azure Search indexer or updates an indexer if it already exists.
      *
