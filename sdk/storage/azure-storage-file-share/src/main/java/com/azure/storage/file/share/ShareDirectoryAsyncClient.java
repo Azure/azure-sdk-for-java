@@ -140,11 +140,11 @@ public class ShareDirectoryAsyncClient {
      * <p>If the file doesn't exist in this directory {@link ShareDirectoryAsyncClient#create()} create} in the client
      * will need to be called before interaction with the directory can happen.</p>
      *
-     * @param subDirectoryName Name of the directory
+     * @param subdirectoryName Name of the directory
      * @return a ShareDirectoryAsyncClient that interacts with the specified directory
      */
-    public ShareDirectoryAsyncClient getSubDirectoryClient(String subDirectoryName) {
-        String directoryPath = this.directoryPath + "/" + subDirectoryName;
+    public ShareDirectoryAsyncClient getSubdirectoryClient(String subdirectoryName) {
+        String directoryPath = this.directoryPath + "/" + subdirectoryName;
         return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot, accountName,
             serviceVersion);
     }
@@ -674,19 +674,19 @@ public class ShareDirectoryAsyncClient {
      *
      * <p>Create the sub directory "subdir" </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubDirectory#string}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectory#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
-     * @param subDirectoryName Name of the subdirectory
+     * @param subdirectoryName Name of the subdirectory
      * @return A subdirectory client.
      * @throws ShareStorageException If the subdirectory has already existed, the parent directory does not exist or
      * directory is an invalid resource name.
      */
-    public Mono<ShareDirectoryAsyncClient> createSubDirectory(String subDirectoryName) {
+    public Mono<ShareDirectoryAsyncClient> createSubdirectory(String subdirectoryName) {
         try {
-            return createSubDirectoryWithResponse(subDirectoryName, null, null, null)
+            return createSubdirectoryWithResponse(subdirectoryName, null, null, null)
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -701,12 +701,12 @@ public class ShareDirectoryAsyncClient {
      *
      * <p>Create the subdirectory named "subdir", with metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubDirectoryWithResponse#String-FileSmbProperties-String-Map}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
-     * @param subDirectoryName Name of the subdirectory
+     * @param subdirectoryName Name of the subdirectory
      * @param smbProperties The SMB properties of the directory.
      * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the subdirectory
@@ -714,20 +714,20 @@ public class ShareDirectoryAsyncClient {
      * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
      * subdirectory is an invalid resource name.
      */
-    public Mono<Response<ShareDirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
+    public Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         try {
             return withContext(
-                context -> createSubDirectoryWithResponse(subDirectoryName, smbProperties, filePermission,
+                context -> createSubdirectoryWithResponse(subdirectoryName, smbProperties, filePermission,
                     metadata, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ShareDirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
+    Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
-        ShareDirectoryAsyncClient createSubClient = getSubDirectoryClient(subDirectoryName);
+        ShareDirectoryAsyncClient createSubClient = getSubdirectoryClient(subdirectoryName);
         return createSubClient.createWithResponse(smbProperties, filePermission, metadata, context)
             .map(response -> new SimpleResponse<>(response, createSubClient));
     }
@@ -739,19 +739,19 @@ public class ShareDirectoryAsyncClient {
      *
      * <p>Delete the subdirectory named "subdir"</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubDirectory#string}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectory#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
-     * @param subDirectoryName Name of the subdirectory
+     * @param subdirectoryName Name of the subdirectory
      * @return An empty response.
      * @throws ShareStorageException If the subdirectory doesn't exist, the parent directory does not exist or
      * subdirectory name is an invalid resource name.
      */
-    public Mono<Void> deleteSubDirectory(String subDirectoryName) {
+    public Mono<Void> deleteSubdirectory(String subdirectoryName) {
         try {
-            return deleteSubDirectoryWithResponse(subDirectoryName).flatMap(FluxUtil::toMono);
+            return deleteSubdirectoryWithResponse(subdirectoryName).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -764,26 +764,26 @@ public class ShareDirectoryAsyncClient {
      *
      * <p>Delete the subdirectory named "subdir"</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubDirectoryWithResponse#string}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryWithResponse#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
-     * @param subDirectoryName Name of the subdirectory
+     * @param subdirectoryName Name of the subdirectory
      * @return A response that only contains headers and response status code
      * @throws ShareStorageException If the subdirectory doesn't exist, the parent directory does not exist or
      * subdirectory name is an invalid resource name.
      */
-    public Mono<Response<Void>> deleteSubDirectoryWithResponse(String subDirectoryName) {
+    public Mono<Response<Void>> deleteSubdirectoryWithResponse(String subdirectoryName) {
         try {
-            return withContext(context -> deleteSubDirectoryWithResponse(subDirectoryName, context));
+            return withContext(context -> deleteSubdirectoryWithResponse(subdirectoryName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> deleteSubDirectoryWithResponse(String subDirectoryName, Context context) {
-        ShareDirectoryAsyncClient deleteSubClient = getSubDirectoryClient(subDirectoryName);
+    Mono<Response<Void>> deleteSubdirectoryWithResponse(String subdirectoryName, Context context) {
+        ShareDirectoryAsyncClient deleteSubClient = getSubdirectoryClient(subdirectoryName);
         return deleteSubClient.deleteWithResponse(context);
     }
 
