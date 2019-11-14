@@ -30,7 +30,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
     private static final AtomicReferenceFieldUpdater<RntbdRequestRecord, Stage>
-        stateUpdater = AtomicReferenceFieldUpdater.newUpdater(RntbdRequestRecord.class, Stage.class, "stage");
+        stageUpdater = AtomicReferenceFieldUpdater.newUpdater(RntbdRequestRecord.class, Stage.class, "stage");
 
     private final RntbdRequestArgs args;
     private final RntbdRequestTimer timer;
@@ -74,13 +74,12 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
         return this.timer.newTimeout(task);
     }
 
-    @JsonProperty
     public Stage stage() {
-        return stateUpdater.get(this);
+        return stageUpdater.get(this);
     }
 
     public RntbdRequestRecord stage(Stage value) {
-        stateUpdater.set(this, value);
+        stageUpdater.set(this, value);
         return this;
     }
 
@@ -120,8 +119,10 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
         }
 
         @Override
-        public void serialize(final RntbdRequestRecord value, final JsonGenerator generator,
-                              final SerializerProvider provider) throws IOException {
+        public void serialize(
+            final RntbdRequestRecord value,
+            final JsonGenerator generator,
+            final SerializerProvider provider) throws IOException {
 
             generator.writeStartObject();
             generator.writeObjectFieldStart("status");
