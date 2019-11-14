@@ -23,6 +23,7 @@ trigger:
       - sdk/eventhubs/
     exclude:
       - sdk/eventhubs/azure
+      - sdk/keyvault/azure-mgmt-
 
 pr:
   branches:
@@ -36,6 +37,7 @@ pr:
       - sdk/eventhubs/
     exclude:
       - sdk/eventhubs/azure
+      - sdk/keyvault/azure-mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
