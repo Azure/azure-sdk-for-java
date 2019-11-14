@@ -390,16 +390,14 @@ public class SearchIndexClient {
      * @param autocompleteOptions autocomplete options
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return auto complete result.
      */
     public PagedIterable<AutocompleteItem> autocomplete(String searchText,
                                                         String suggesterName,
                                                         AutocompleteOptions autocompleteOptions,
-                                                        RequestOptions requestOptions,
-                                                        Context context) {
+                                                        RequestOptions requestOptions) {
         return new PagedIterable<>(asyncClient.autocomplete(searchText,
-            suggesterName, autocompleteOptions, requestOptions, context));
+            suggesterName, autocompleteOptions, requestOptions));
     }
 
     /**

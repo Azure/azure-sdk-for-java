@@ -502,17 +502,6 @@ public class SearchIndexAsyncClient {
             nextLink -> Mono.empty());
     }
 
-    PagedFlux<AutocompleteItem> autocomplete(String searchText,
-                                             String suggesterName,
-                                             AutocompleteOptions autocompleteOptions,
-                                             RequestOptions requestOptions,
-                                             Context context) {
-        return new PagedFlux<>(
-            () -> this.autocompleteWithResponse(searchText,
-                suggesterName, autocompleteOptions, requestOptions, context),
-            nextLink -> Mono.empty());
-    }
-
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
