@@ -7,12 +7,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
-import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class IndexManagementSyncTests extends IndexManagementTestBase {
@@ -135,7 +134,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index currentResource = client.createOrUpdateIndex(mutateCorsOptionsInIndex(staleResource));
 
         try {
-            client.deleteIndex(index.getName(), generateIfMatchAccessCondition(staleResource.getETag()));
+            client.deleteIndex(index.getName(), generateIfMatchAccessCondition(staleResource.getETag()), generateRequestOptions());
             Assert.fail("deleteIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -154,9 +153,9 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createIndex(index);
 
-        client.deleteIndex(index.getName(), generateIfExistsAccessCondition());
+        client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), generateRequestOptions());
         try {
-            client.deleteIndex(index.getName(), generateIfExistsAccessCondition());
+            client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), generateRequestOptions());
             Assert.fail("deleteIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -211,10 +210,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertEquals(index1.getName(), result.get(0).getName());
         Assert.assertEquals(index2.getName(), result.get(1).getName());
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
-
-        actual = client.listIndexes("name", requestOptions);
+        actual = client.listIndexes("name", generateRequestOptions());
         result = actual.stream().collect(Collectors.toList());
 
         Assert.assertEquals(2, result.size());
@@ -222,7 +218,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertEquals(index2.getName(), result.get(1).getName());
 
         Context context = new Context("key", "value");
-        PagedResponse<Index> listResponse = client.listIndexesWithResponse("name", requestOptions, context);
+        PagedResponse<Index> listResponse = client.listIndexesWithResponse("name",
+            generateRequestOptions(), context);
         result = listResponse.getItems();
 
         Assert.assertEquals(2, result.size());
@@ -238,7 +235,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         client.createIndex(index1);
         client.createIndex(index2);
 
-        PagedIterable<Index> selectedFieldListResponse = client.listIndexes("name");
+        PagedIterable<Index> selectedFieldListResponse = client.listIndexes("name", generateRequestOptions());
         List<Index> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
         result.forEach(res -> {
@@ -305,7 +302,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         hotelNameField = getFieldByName(existingIndex, "HotelName");
         hotelNameField.setSynonymMaps(Collections.<String>emptyList());
 
-        Index updatedIndex = client.createOrUpdateIndex(existingIndex, true);
+        Index updatedIndex = client.createOrUpdateIndex(existingIndex,
+            true, new AccessCondition(), generateRequestOptions());
         assertIndexesEqual(existingIndex, updatedIndex);
     }
 
@@ -356,7 +354,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Field hotelNameField = getFieldByName(existingIndex, "HotelName");
         hotelNameField.setRetrievable(false);
 
-        updatedIndex = client.createOrUpdateIndex(existingIndex, true);
+        updatedIndex = client.createOrUpdateIndex(existingIndex,
+            true, new AccessCondition(), generateRequestOptions());
         assertIndexesEqual(existingIndex, updatedIndex);
     }
 
@@ -379,7 +378,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             .setSourceFields(Arrays.asList("HotelAmenities", "HotelRewards"))
         ));
 
-        Index updatedIndex = client.createOrUpdateIndex(existingIndex, true);
+        Index updatedIndex = client.createOrUpdateIndex(existingIndex,
+            true, new AccessCondition(), generateRequestOptions());
 
         assertIndexesEqual(existingIndex, updatedIndex);
     }
@@ -397,7 +397,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         ));
 
         try {
-            client.createOrUpdateIndex(existingIndex, true);
+            client.createOrUpdateIndex(existingIndex,
+                true, new AccessCondition(), generateRequestOptions());
             Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -429,7 +430,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
 
         try {
-            client.createOrUpdateIndex(mutatedResource, generateIfNotExistsAccessCondition());
+            client.createOrUpdateIndex(mutatedResource,
+                false, generateIfNotExistsAccessCondition(), generateRequestOptions());
             Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -440,7 +442,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
         Index resource = createTestIndex();
-        Index updatedResource = client.createOrUpdateIndex(resource, generateIfNotExistsAccessCondition());
+        Index updatedResource = client.createOrUpdateIndex(resource,
+            false, generateIfNotExistsAccessCondition(), generateRequestOptions());
 
         Assert.assertFalse(updatedResource.getETag().isEmpty());
     }
@@ -450,7 +453,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         Index createdResource = client.createOrUpdateIndex(index);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfExistsAccessCondition());
+        Index updatedResource = client.createOrUpdateIndex(mutatedResource,
+            false, generateIfExistsAccessCondition(), generateRequestOptions());
 
         Assert.assertFalse(updatedResource.getETag().isEmpty());
         Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
@@ -461,7 +465,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index resource = createTestIndex();
 
         try {
-            client.createOrUpdateIndex(resource, generateIfExistsAccessCondition());
+            client.createOrUpdateIndex(resource,
+                false, generateIfExistsAccessCondition(), generateRequestOptions());
             Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -476,7 +481,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         Index createdResource = client.createOrUpdateIndex(index);
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfMatchAccessCondition(createdResource.getETag()));
+        Index updatedResource = client.createOrUpdateIndex(mutatedResource,
+            false, generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions());
 
         Assert.assertFalse(createdResource.getETag().isEmpty());
         Assert.assertFalse(updatedResource.getETag().isEmpty());
@@ -491,7 +497,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index updatedResource = client.createOrUpdateIndex(mutatedResource);
 
         try {
-            client.createOrUpdateIndex(updatedResource, generateIfMatchAccessCondition(createdResource.getETag()));
+            client.createOrUpdateIndex(updatedResource,
+                false, generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions());
             Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());

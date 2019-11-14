@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdkd7f648242e0b.search.windows.net/indexes('thisindexdoesnotexist')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk9ae29162a8fa.search-dogfood.windows-int.net/indexes('thisindexdoesnotexist')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d8b02c48-0d03-4cdf-8d7b-9acb378c638c",
+      "request-id" : "b4c19af0-93b7-46c0-acf6-562e9cc12ca4",
       "StatusCode" : "404",
-      "Date" : "Mon, 28 Oct 2019 22:27:29 GMT",
+      "Date" : "Wed, 13 Nov 2019 22:21:09 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "68",
+      "elapsed-time" : "34",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "128",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'thisindexdoesnotexist' was found in the service 'azs-sdkd7f648242e0b'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'thisindexdoesnotexist' was found in the service 'azs-sdk9ae29162a8fa'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

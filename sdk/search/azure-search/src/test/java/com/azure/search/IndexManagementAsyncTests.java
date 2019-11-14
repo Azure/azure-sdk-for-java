@@ -5,12 +5,12 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
-import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 public class IndexManagementAsyncTests extends IndexManagementTestBase {
     private SearchServiceAsyncClient client;
@@ -150,7 +149,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index currentResource = client.createOrUpdateIndex(mutateCorsOptionsInIndex(staleResource)).block();
 
         StepVerifier
-            .create(client.deleteIndex(index.getName(), generateIfMatchAccessCondition(staleResource.getETag())))
+            .create(client.deleteIndex(index.getName(),
+                generateIfMatchAccessCondition(staleResource.getETag()), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
@@ -170,9 +170,9 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createIndex(index).block();
 
-        client.deleteIndex(index.getName(), generateIfExistsAccessCondition()).block();
+        client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), generateRequestOptions()).block();
         StepVerifier
-            .create(client.deleteIndex(index.getName(), generateIfExistsAccessCondition()))
+            .create(client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
@@ -252,10 +252,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             })
             .verifyComplete();
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
-
-        listResponse = client.listIndexes("name", requestOptions);
+        listResponse = client.listIndexes("name", generateRequestOptions());
 
         StepVerifier
             .create(listResponse.collectList())
@@ -267,7 +264,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
 
         StepVerifier
-            .create(client.listIndexesWithResponse("name", requestOptions))
+            .create(client.listIndexesWithResponse("name", generateRequestOptions()))
             .assertNext(result -> {
                 Assert.assertEquals(2, result.getItems().size());
                 Assert.assertEquals(index1.getName(), result.getValue().get(0).getName());
@@ -284,7 +281,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         client.createIndex(index1).block();
         client.createIndex(index2).block();
 
-        PagedFlux<Index> selectedFieldListResponse = client.listIndexes("name");
+        PagedFlux<Index> selectedFieldListResponse = client.listIndexes("name", generateRequestOptions());
 
         StepVerifier
             .create(selectedFieldListResponse.collectList())
@@ -364,7 +361,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         hotelNameField.setSynonymMaps(Collections.<String>emptyList());
 
         StepVerifier
-            .create(client.createOrUpdateIndex(existingIndex, true))
+            .create(client.createOrUpdateIndex(existingIndex,
+                true, new AccessCondition(), generateRequestOptions()))
             .assertNext(res  -> {
                 assertIndexesEqual(existingIndex, res);
             })
@@ -420,7 +418,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         hotelNameField.setRetrievable(false);
 
         StepVerifier
-            .create(client.createOrUpdateIndex(existingIndex, true))
+            .create(client.createOrUpdateIndex(existingIndex,
+                true, new AccessCondition(), generateRequestOptions()))
             .assertNext(res -> assertIndexesEqual(existingIndex, res))
             .verifyComplete();
     }
@@ -445,7 +444,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         ));
 
         StepVerifier
-            .create(client.createOrUpdateIndex(existingIndex, true))
+            .create(client.createOrUpdateIndex(existingIndex,
+                true, new AccessCondition(), generateRequestOptions()))
             .assertNext(res -> assertIndexesEqual(existingIndex, res))
             .verifyComplete();
     }
@@ -463,7 +463,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         ));
 
         StepVerifier
-            .create(client.createOrUpdateIndex(existingIndex, true))
+            .create(client.createOrUpdateIndex(existingIndex,
+                true, new AccessCondition(), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error)
@@ -492,7 +493,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
 
         StepVerifier
-            .create(client.createOrUpdateIndex(mutatedResource, generateIfNotExistsAccessCondition()))
+            .create(client.createOrUpdateIndex(mutatedResource,
+                false, generateIfNotExistsAccessCondition(), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
@@ -502,7 +504,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Override
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
         Index resource = createTestIndex();
-        Mono<Index> updatedResource = client.createOrUpdateIndex(resource, generateIfNotExistsAccessCondition());
+        Mono<Index> updatedResource = client.createOrUpdateIndex(resource,
+            false, generateIfNotExistsAccessCondition(), generateRequestOptions());
 
         StepVerifier
             .create(updatedResource)
@@ -515,7 +518,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         Index createdResource = client.createOrUpdateIndex(index).block();
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Mono<Index> updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfExistsAccessCondition());
+        Mono<Index> updatedResource = client.createOrUpdateIndex(mutatedResource,
+            false, generateIfExistsAccessCondition(), generateRequestOptions());
 
         StepVerifier
             .create(updatedResource)
@@ -531,7 +535,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index resource = createTestIndex();
 
         StepVerifier
-            .create(client.createOrUpdateIndex(resource, generateIfExistsAccessCondition()))
+            .create(client.createOrUpdateIndex(resource,
+                false, generateIfExistsAccessCondition(), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
@@ -546,7 +551,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         Index createdResource = client.createOrUpdateIndex(index).block();
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Mono<Index> updatedResource = client.createOrUpdateIndex(mutatedResource, generateIfMatchAccessCondition(createdResource.getETag()));
+        Mono<Index> updatedResource = client.createOrUpdateIndex(mutatedResource,
+            false, generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions());
 
         StepVerifier
             .create(updatedResource)
@@ -566,7 +572,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index updatedResource = client.createOrUpdateIndex(mutatedResource).block();
 
         StepVerifier
-            .create(client.createOrUpdateIndex(updatedResource, generateIfMatchAccessCondition(createdResource.getETag())))
+            .create(client.createOrUpdateIndex(updatedResource,
+                false, generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());

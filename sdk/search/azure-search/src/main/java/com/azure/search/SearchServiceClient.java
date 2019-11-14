@@ -477,19 +477,6 @@ public class SearchServiceClient {
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return the created Index.
-     */
-    public Index createIndex(Index index, RequestOptions requestOptions, Context context) {
-        return this.createIndexWithResponse(index, requestOptions, context).getValue();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index
-     *
-     * @param index definition of the index to create
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Index.
      */
     public Response<Index> createIndexWithResponse(Index index,
@@ -518,19 +505,6 @@ public class SearchServiceClient {
      */
     public Index getIndex(String indexName, RequestOptions requestOptions) {
         return asyncClient.getIndex(indexName, requestOptions).block();
-    }
-
-    /**
-     * Retrieves an index definition from the Azure Cognitive Search.
-     *
-     * @param indexName the name of the index to retrieve
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return the Index.
-     */
-    public Index getIndex(String indexName, RequestOptions requestOptions, Context context) {
-        return this.getIndexWithResponse(indexName, requestOptions, context).getValue();
     }
 
     /**
@@ -579,19 +553,6 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the index exists; false otherwise.
      */
-    public Boolean indexExists(String indexName, RequestOptions requestOptions, Context context) {
-        return this.indexExistsWithResponse(indexName, requestOptions, context).getValue();
-    }
-
-    /**
-     * Determines whether or not the given index exists in the Azure Cognitive Search.
-     *
-     * @param indexName the name of the index
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return true if the index exists; false otherwise.
-     */
     public Response<Boolean> indexExistsWithResponse(String indexName,
                                                      RequestOptions requestOptions,
                                                      Context context) {
@@ -629,39 +590,12 @@ public class SearchServiceClient {
      * @param select selects which top-level properties of the index definitions to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties.
      * The default is all properties
-     * @return the list of indexes.
-     */
-    public PagedIterable<Index> listIndexes(String select) {
-        return new PagedIterable<>(asyncClient.listIndexes(select));
-    }
-
-    /**
-     * Lists all indexes available for an Azure Cognitive Search service.
-     *
-     * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return the list of indexes.
      */
     public PagedIterable<Index> listIndexes(String select, RequestOptions requestOptions) {
         return new PagedIterable<>(asyncClient.listIndexes(select, requestOptions));
-    }
-
-    /**
-     * Lists all indexes available for an Azure Cognitive Search service.
-     *
-     * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return the list of indexes.
-     */
-    public PagedIterable<Index> listIndexes(String select, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listIndexes(select, requestOptions, context));
     }
 
     /**
@@ -698,50 +632,6 @@ public class SearchServiceClient {
      * indexing and query requests to fail. Performance and write availability of the index
      * can be impaired for several minutes after the index is updated, or longer for very
      * large indexes.
-     * @return the index that was created or updated.
-     */
-    public Index createOrUpdateIndex(Index index, boolean allowIndexDowntime) {
-        return asyncClient.createOrUpdateIndex(index, allowIndexDowntime).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
-     *
-     * @param index the definition of the index to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @return the index that was created or updated
-     */
-    public Index createOrUpdateIndex(Index index, AccessCondition accessCondition) {
-        return asyncClient.createOrUpdateIndex(index, accessCondition).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
-     *
-     * @param index the definition of the index to create or update
-     * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     * index by taking the index offline for at least a few seconds. This temporarily causes
-     * indexing and query requests to fail. Performance and write availability of the index
-     * can be impaired for several minutes after the index is updated, or longer for very
-     * large indexes.
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @return the index that was created or updated.
-     */
-    public Index createOrUpdateIndex(Index index, boolean allowIndexDowntime, AccessCondition accessCondition) {
-        return asyncClient.createOrUpdateIndex(index, allowIndexDowntime, accessCondition).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
-     *
-     * @param index the definition of the index to create or update
-     * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     * index by taking the index offline for at least a few seconds. This temporarily causes
-     * indexing and query requests to fail. Performance and write availability of the index
-     * can be impaired for several minutes after the index is updated, or longer for very
-     * large indexes.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
@@ -756,33 +646,6 @@ public class SearchServiceClient {
             allowIndexDowntime,
             accessCondition,
             requestOptions).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
-     *
-     * @param index the definition of the index to create or update
-     * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     * index by taking the index offline for at least a few seconds. This temporarily causes
-     * indexing and query requests to fail. Performance and write availability of the index
-     * can be impaired for several minutes after the index is updated, or longer for very
-     * large indexes.
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return the index that was created or updated.
-     */
-    public Index createOrUpdateIndex(Index index,
-                                     boolean allowIndexDowntime,
-                                     AccessCondition accessCondition,
-                                     RequestOptions requestOptions,
-                                     Context context) {
-        return this.createOrUpdateIndexWithResponse(index,
-            allowIndexDowntime,
-            accessCondition,
-            requestOptions, context).getValue();
     }
 
     /**
@@ -828,40 +691,11 @@ public class SearchServiceClient {
      * @param indexName the name of the index to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
-     */
-    public void deleteIndex(String indexName, AccessCondition accessCondition) {
-        asyncClient.deleteIndex(indexName, accessCondition).block();
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search index and all the documents it contains.
-     *
-     * @param indexName the name of the index to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      */
     public void deleteIndex(String indexName, AccessCondition accessCondition, RequestOptions requestOptions) {
         asyncClient.deleteIndex(indexName, accessCondition, requestOptions).block();
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search index and all the documents it contains.
-     *
-     * @param indexName the name of the index to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the Http pipeline during the service call
-     * Contains the tracking ID sent with the request to help with debugging
-     */
-    public void deleteIndex(String indexName,
-                            AccessCondition accessCondition,
-                            RequestOptions requestOptions,
-                            Context context) {
-        this.deleteIndexWithResponse(indexName, accessCondition, requestOptions, context);
     }
 
     /**
@@ -922,11 +756,11 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing analyze result.
      */
-    public PagedIterable<TokenInfo> analyzeIndex(String indexName,
-                                                 AnalyzeRequest analyzeRequest,
-                                                 RequestOptions requestOptions,
-                                                 Context context) {
-        return new PagedIterable<>(asyncClient.analyzeIndex(indexName, analyzeRequest, requestOptions, context));
+    public PagedResponse<TokenInfo> analyzeIndexWithResponse(String indexName,
+                                                             AnalyzeRequest analyzeRequest,
+                                                             RequestOptions requestOptions,
+                                                             Context context) {
+        return asyncClient.analyzeIndexWithResponse(indexName, analyzeRequest, requestOptions, context).block();
     }
 
     /**

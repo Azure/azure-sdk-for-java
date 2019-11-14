@@ -608,7 +608,7 @@ public class SearchServiceAsyncClient {
      * @return a response containing the created Index.
      */
     public Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions) {
-        return withContext(context -> createIndexWithResponse(index, requestOptions, context));
+        return withContext(context -> this.createIndexWithResponse(index, requestOptions, context));
     }
 
     Mono<Response<Index>> createIndexWithResponse(Index index,
@@ -653,7 +653,7 @@ public class SearchServiceAsyncClient {
      * @return a response containing the Index.
      */
     public Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions) {
-        return withContext(context -> getIndexWithResponse(indexName, requestOptions, context));
+        return withContext(context -> this.getIndexWithResponse(indexName, requestOptions, context));
     }
 
     Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions, Context context) {
@@ -734,18 +734,6 @@ public class SearchServiceAsyncClient {
      * @param select selects which top-level properties of the index definitions to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties.
      * The default is all properties
-     * @return a reactive response emitting the list of indexes.
-     */
-    public PagedFlux<Index> listIndexes(String select) {
-        return this.listIndexes(select, null);
-    }
-
-    /**
-     * Lists all indexes available for an Azure Cognitive Search service.
-     *
-     * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of indexes.
@@ -753,12 +741,6 @@ public class SearchServiceAsyncClient {
     public PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
             () -> this.listIndexesWithResponse(select, requestOptions),
-            nextLink -> Mono.empty());
-    }
-
-    PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions, Context context) {
-        return new PagedFlux<>(
-            () -> this.listIndexesWithResponse(select, requestOptions, context),
             nextLink -> Mono.empty());
     }
 
@@ -809,54 +791,6 @@ public class SearchServiceAsyncClient {
      * indexing and query requests to fail. Performance and write availability of the index
      * can be impaired for several minutes after the index is updated, or longer for very
      * large indexes
-     * @return the index that was created or updated
-     */
-    public Mono<Index> createOrUpdateIndex(Index index, boolean allowIndexDowntime) {
-        return this.createOrUpdateIndexWithResponse(index, allowIndexDowntime, null, null)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
-     *
-     * @param index the definition of the index to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @return the index that was created or updated
-     */
-    public Mono<Index> createOrUpdateIndex(Index index,
-                                           AccessCondition accessCondition) {
-        return this.createOrUpdateIndexWithResponse(index, false, accessCondition, null)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
-     *
-     * @param index the definition of the index to create or update
-     * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     * index by taking the index offline for at least a few seconds. This temporarily causes
-     * indexing and query requests to fail. Performance and write availability of the index
-     * can be impaired for several minutes after the index is updated, or longer for very
-     * large indexes
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @return the index that was created or updated
-     */
-    public Mono<Index> createOrUpdateIndex(Index index, boolean allowIndexDowntime, AccessCondition accessCondition) {
-        return this.createOrUpdateIndexWithResponse(index, allowIndexDowntime, accessCondition, null)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
-     *
-     * @param index the definition of the index to create or update
-     * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     * index by taking the index offline for at least a few seconds. This temporarily causes
-     * indexing and query requests to fail. Performance and write availability of the index
-     * can be impaired for several minutes after the index is updated, or longer for very
-     * large indexes
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
@@ -892,11 +826,8 @@ public class SearchServiceAsyncClient {
                                                                  boolean allowIndexDowntime,
                                                                  AccessCondition accessCondition,
                                                                  RequestOptions requestOptions) {
-        return withContext(context -> createOrUpdateIndexWithResponse(index,
-            allowIndexDowntime,
-            accessCondition,
-            requestOptions,
-            context));
+        return withContext(context -> this.createOrUpdateIndexWithResponse(index,
+            allowIndexDowntime, accessCondition, requestOptions, context));
     }
 
     Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index,
@@ -932,29 +863,12 @@ public class SearchServiceAsyncClient {
      * @param indexName the name of the index to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
-     * @return a response signalling completion.
-     */
-    public Mono<Void> deleteIndex(String indexName, AccessCondition accessCondition) {
-        return this.deleteIndexWithResponse(indexName,
-            accessCondition,
-            null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search index and all the documents it contains.
-     *
-     * @param indexName the name of the index to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndex(String indexName, AccessCondition accessCondition, RequestOptions requestOptions) {
-        return this.deleteIndexWithResponse(indexName,
-            accessCondition,
-            requestOptions)
+        return this.deleteIndexWithResponse(indexName, accessCondition, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -971,10 +885,8 @@ public class SearchServiceAsyncClient {
     public Mono<Response<Void>> deleteIndexWithResponse(String indexName,
                                                         AccessCondition accessCondition,
                                                         RequestOptions requestOptions) {
-        return withContext(context -> deleteIndexWithResponse(indexName,
-            accessCondition,
-            requestOptions,
-            context));
+        return withContext(context -> this.deleteIndexWithResponse(indexName,
+            accessCondition, requestOptions, context));
     }
 
     Mono<Response<Void>> deleteIndexWithResponse(String indexName,
@@ -983,10 +895,7 @@ public class SearchServiceAsyncClient {
                                                  Context context) {
         return restClient
             .indexes()
-            .deleteWithRestResponseAsync(indexName,
-                requestOptions,
-                accessCondition,
-                context)
+            .deleteWithRestResponseAsync(indexName, requestOptions, accessCondition, context)
             .map(Function.identity());
     }
 
@@ -1014,20 +923,24 @@ public class SearchServiceAsyncClient {
                                              AnalyzeRequest analyzeRequest,
                                              RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> withContext(context -> this.analyzeIndexWithResponse(indexName,
-                analyzeRequest,
-                requestOptions,
-                context)),
+            () -> this.analyzeIndexWithResponse(indexName, analyzeRequest, requestOptions),
             nextLink -> Mono.empty());
     }
 
-    PagedFlux<TokenInfo> analyzeIndex(String indexName,
-                                      AnalyzeRequest analyzeRequest,
-                                      RequestOptions requestOptions,
-                                      Context context) {
-        return new PagedFlux<>(
-            () -> this.analyzeIndexWithResponse(indexName, analyzeRequest, requestOptions, context),
-            nextLink -> Mono.empty());
+    /**
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param indexName the name of the index for which to test an analyzer
+     * @param analyzeRequest the text and analyzer or analysis components to test
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response containing analyze result.
+     */
+    public Mono<PagedResponse<TokenInfo>> analyzeIndexWithResponse(String indexName,
+                                                                   AnalyzeRequest analyzeRequest,
+                                                                   RequestOptions requestOptions) {
+        return withContext(context -> this.analyzeIndexWithResponse(indexName,
+            analyzeRequest, requestOptions, context));
     }
 
     Mono<PagedResponse<TokenInfo>> analyzeIndexWithResponse(String indexName,

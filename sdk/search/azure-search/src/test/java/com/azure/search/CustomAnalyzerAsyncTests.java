@@ -5,6 +5,7 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.search.common.SearchPagedResponse;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeRequest;
 import com.azure.search.models.Analyzer;
 import com.azure.search.models.AnalyzerName;
@@ -301,7 +302,8 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
 
         StepVerifier
-            .create(searchServiceClient.createOrUpdateIndex(index, true))
+            .create(searchServiceClient.createOrUpdateIndex(index,
+                true, new AccessCondition(), generateRequestOptions()))
             .assertNext(res -> assertAnalysisComponentsEqual(index, res))
             .verifyComplete();
     }

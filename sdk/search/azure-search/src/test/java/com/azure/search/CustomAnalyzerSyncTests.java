@@ -4,6 +4,7 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeRequest;
 import com.azure.search.models.Analyzer;
 import com.azure.search.models.AnalyzerName;
@@ -287,7 +288,8 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
         searchServiceClient.createIndex(index);
 
         addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
-        Index updatedIndex = searchServiceClient.createOrUpdateIndex(index, true);
+        Index updatedIndex = searchServiceClient.createOrUpdateIndex(index,
+            true, new AccessCondition(), generateRequestOptions());
 
         assertAnalysisComponentsEqual(index, updatedIndex);
     }
