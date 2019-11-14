@@ -302,7 +302,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "direct" })
-    public void beforeMethod(Method method) {
+    public void before_DCDocumentCrudTest(Method method) {
         client.getCapturedRequests().clear();
     }
 

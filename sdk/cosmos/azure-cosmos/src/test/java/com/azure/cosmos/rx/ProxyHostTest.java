@@ -142,7 +142,7 @@ public class ProxyHostTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "simple"})
-    public void beforeMethod() {
+    public void before_ProxyHostTest() {
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }

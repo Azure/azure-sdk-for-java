@@ -404,7 +404,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "simple" })
-    public void beforeMethod() throws Exception {
+    public void before_OrderbyDocumentQueryTest() throws Exception {
         // add a cool off time
         TimeUnit.SECONDS.sleep(10);
     }

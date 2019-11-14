@@ -141,15 +141,15 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         FailureValidator validator = new FailureValidator.Builder().statusCode(1).subStatusCode(2).build();
         validateFailure(createObservable.timeout(Duration.ofMillis(100)), validator);
     }
-    
+
     @BeforeMethod(groups = { "simple" })
-    public void beforeMethod(Method method) {
+    public void before_RetryCreateDocumentTest(Method method) {
         Mockito.reset(client.getSpyGatewayStoreModel());
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        // set up the client        
+        // set up the client
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(clientBuilder());
 
         database = SHARED_DATABASE;

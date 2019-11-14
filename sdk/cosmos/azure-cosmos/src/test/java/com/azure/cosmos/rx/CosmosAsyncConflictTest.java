@@ -71,7 +71,7 @@ public class CosmosAsyncConflictTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeMethod() {
+    public void before_CosmosAsyncConflictTest() {
         safeClose(client);
         client = clientBuilder().buildAsyncClient();
     }

@@ -260,7 +260,7 @@ public class LogLevelTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "simple" })
-    public void beforeMethod(Method method) {
+    public void before_LogLevelTest(Method method) {
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }
