@@ -33,6 +33,7 @@ import com.azure.search.models.ScoringFunction;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.ScoringProfile;
+import com.azure.search.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.models.Suggester;
 import com.azure.search.models.TagScoringFunction;
 import com.azure.search.models.TagScoringParameters;
@@ -78,6 +79,9 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     public static final String AZURE_SQL_CONN_STRING_READONLY =
         "Server=tcp:azs-playground.database.windows.net,1433;Database=usgs;User ID=reader;Password=EdrERBt3j6mZDP;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;"; // [SuppressMessage("Microsoft.Security", "CS001:SecretInline")]
+
+    public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
+    public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
 
     private String searchServiceName;
     private String searchDnsSuffix;
@@ -455,7 +459,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     protected DataSource createTestSqlDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy, DataChangeDetectionPolicy changeDetectionPolicy) {
         return azureSql(
-            "azs-java-test-sql",
+            SQL_DATASOURCE_NAME,
             SQL_CONN_STRING_FIXTURE,
             "GeoNamesRI",
             changeDetectionPolicy,
@@ -467,7 +471,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     protected DataSource createTestSqlDataSource() {
         DataDeletionDetectionPolicy deletionDetectionPolicy = null;
         return azureSql(
-            "azs-java-test-sql",
+            SQL_DATASOURCE_NAME,
             AZURE_SQL_CONN_STRING_READONLY,
             "GeoNamesRI",
             null,
@@ -488,6 +492,35 @@ public abstract class SearchServiceTestBase extends TestBase {
             useChangeDetection,
             deletionDetectionPolicy,
             FAKE_DESCRIPTION
+        );
+    }
+
+    /**
+     * create a new blob datasource object
+     * @return the created datasource
+     */
+    protected DataSource createBlobDataSource() {
+        String storageConnString = "";
+        String blobContainerDatasourceName = "";
+        if (!interceptorManager.isPlaybackMode()) {
+
+            // First, we create a storage account
+            storageConnString = azureSearchResources.createStorageAccount();
+            // Next, we create the blobs container
+            blobContainerDatasourceName =
+                azureSearchResources.createBlobContainer(storageConnString);
+        }
+
+        // create the new datasource object for this storage account and container
+        return DataSources.azureBlobStorage(
+            BLOB_DATASOURCE_NAME,
+            storageConnString,
+            blobContainerDatasourceName,
+            "/",
+            new SoftDeleteColumnDeletionDetectionPolicy()
+                .setSoftDeleteColumnName("fieldName")
+                .setSoftDeleteMarkerValue("someValue"),
+            "real live blob"
         );
     }
 

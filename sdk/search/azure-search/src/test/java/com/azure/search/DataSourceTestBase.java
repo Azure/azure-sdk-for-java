@@ -130,7 +130,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
 
     protected DataSource createTestSqlDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy, DataChangeDetectionPolicy changeDetectionPolicy) {
         return azureSql(
-            "azs-java-test-sql",
+            SQL_DATASOURCE_NAME,
             SQL_CONN_STRING_FIXTURE,
             "GeoNamesRI",
             changeDetectionPolicy,

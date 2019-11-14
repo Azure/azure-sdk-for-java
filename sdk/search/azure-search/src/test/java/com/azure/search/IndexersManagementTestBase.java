@@ -16,6 +16,7 @@ import org.junit.Test;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
@@ -33,25 +34,90 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public abstract void createIndexerFailsWithUsefulMessageOnUserError();
 
     @Test
-    public abstract void canUpdateIndexer();
+    public void canUpdateIndexer() {
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        Indexer updatedExpected = createIndexerWithDifferentDescription();
+
+        createAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+    }
 
     @Test
-    public abstract void canUpdateIndexerFieldMapping();
+    public void canUpdateIndexerFieldMapping() {
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        Indexer updatedExpected = createIndexerWithDifferentFieldMapping();
+
+        createAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+    }
 
     @Test
-    public abstract void canUpdateIndexerDisabled();
+    public void canUpdateIndexerDisabled() {
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        Indexer updatedExpected = createDisabledIndexer();
+
+        createAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+    }
 
     @Test
-    public abstract void canUpdateIndexerSchedule();
+    public void canUpdateIndexerSchedule() {
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        Indexer updatedExpected = createIndexerWithDifferentSchedule();
+
+        createAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+    }
 
     @Test
-    public abstract void canCreateIndexerWithSchedule();
+    public void canCreateIndexerWithSchedule() {
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        Indexer indexer = createIndexerWithDifferentSchedule();
+
+        createAndValidateIndexer(indexer, SQL_DATASOURCE_NAME);
+    }
 
     @Test
-    public abstract void canUpdateIndexerBatchSizeMaxFailedItems();
+    public void canUpdateIndexerBatchSizeMaxFailedItems() {
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        Indexer updatedExpected = createIndexerWithDifferentIndexingParameters();
+
+        createAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+    }
 
     @Test
-    public abstract void canCreateIndexerWithBatchSizeMaxFailedItems();
+    public void canCreateIndexerWithBatchSizeMaxFailedItems() {
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        Indexer indexer = createIndexerWithDifferentIndexingParameters();
+
+        createAndValidateIndexer(indexer, SQL_DATASOURCE_NAME);
+    }
+
+    // This test currently does not pass on our Dogfood account, as the
+    // Storage resource provider is not returning an answer.
+    @Test
+    public void canUpdateIndexerBlobParams() {
+        // Create the needed Azure blob resources and datasource object
+        DataSource blobDataSource = createBlobDataSource();
+        // Create the datasource within the search service
+        createDatasource(blobDataSource);
+
+        // modify the indexer's blob params
+        Indexer updatedExpected = changeIndexerBlobParams();
+
+        createAndValidateIndexer(updatedExpected,
+            BLOB_DATASOURCE_NAME);
+    }
 
     protected void assertIndexersEqual(Indexer expected, Indexer actual) {
         expected.setETag("none");
@@ -65,7 +131,6 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     protected Indexer createTestIndexer(String indexerName) {
         return new Indexer()
             .setName(indexerName)
-            .setDataSourceName("azs-java-test-sql")
             .setTargetIndexName("indexforindexers")
             .setSchedule(new IndexingSchedule().setInterval(Duration.ofDays(1)));
     }
@@ -117,46 +182,30 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     /**
      * Creates the index and indexer in the search service and then update the indexer
      * @param updatedIndexer the indexer to be updated
+     * @param datasourceName the datasource name for this indexer
      */
-    void createUpdateAndValidateIndexer(Indexer updatedIndexer) {
-        // Create the data source, note it's a valid DS with actual connection string
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
+    void createAndValidateIndexer(Indexer updatedIndexer, String datasourceName) {
+        updatedIndexer.setDataSourceName(datasourceName);
+
 
         // Create an index
         Index index = createTestIndexForLiveDatasource();
         createIndex(index);
 
-        // create an indexer object
         Indexer initial =
             createTestIndexer("indexer")
+                .setDataSourceName(datasourceName)
                 .setIsDisabled(true);
 
         // create this indexer in the service
         createIndexer(initial);
 
-        // update the indexer
-        Indexer updatedResponse = createIndexer(updatedIndexer);
+        // create this indexer in the service
+        Indexer indexerResponse = createIndexer(updatedIndexer);
 
         // verify the returned updated indexer is as expected
-        expectSameStartTime(updatedIndexer, updatedResponse);
-        assertIndexersEqual(updatedIndexer, updatedResponse);
-    }
-
-    void createAndValidateIndexer(Indexer indexer) {
-        // Create the data source, note it's a valid DS with actual connection string
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        createIndex(index);
-
-        // create this indexer in the service
-        Indexer indexerResponse = createIndexer(indexer);
-
-        // verify the returned indexer is as expected
-        assertIndexersEqual(indexer, indexerResponse);
+        expectSameStartTime(updatedIndexer, indexerResponse);
+        assertIndexersEqual(updatedIndexer, indexerResponse);
     }
 
     /**
@@ -240,6 +289,27 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         indexer.setParameters(ip);
 
         return indexer;
+    }
+
+    protected Indexer changeIndexerBlobParams() {
+        // create an indexer object
+        Indexer updatedExpected =
+            createTestIndexer("indexer");
+
+        // just adding some(valid) config values for blobs
+        HashMap<String, Object> config = new HashMap<>();
+        config.put("indexedFileNameExtensions", ".pdf,.docx");
+        config.put("excludedFileNameExtensions", ".xlsx");
+        config.put("dataToExtract", "storageMetadata");
+        config.put("failOnUnsupportedContentType", false);
+
+        IndexingParameters ip = new IndexingParameters()
+            .setConfiguration(config);
+
+        // modify it
+        updatedExpected.setParameters(ip);
+
+        return updatedExpected;
     }
 
     protected abstract Index createIndex(Index index);

@@ -3,12 +3,17 @@
 
 package com.azure.search.test.environment.setup;
 
+import com.azure.search.models.DataSource;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.search.SearchService;
+import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.azure.management.storage.StorageAccountKey;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
@@ -16,10 +21,15 @@ import java.util.Objects;
 public class AzureSearchResources {
     private static final String RESOURCE_GROUP_NAME_PREFIX = "azs-sdk";
     private static final String SEARCH_SERVICE_NAME_PREFIX = "azs-sdk";
+    private static final String BLOB_DATASOURCE_NAME_PREFIX = "azsblob";
+    private static final String STORAGE_NAME_PREFIX = "azsstor";
+
 
     private String resourceGroupName;
     private String searchServiceName;
     private String searchAdminKey;
+    private String blobContainerDatasourceName;
+    private String storageName;
 
     private AzureTokenCredentials azureTokenCredentials;
     private String subscriptionId;
@@ -28,9 +38,9 @@ public class AzureSearchResources {
     private Azure azure = null;
     private ResourceGroup resourceGroup = null;
     private SearchService searchService = null;
+    private DataSource blobDatasource = null;
 
     /**
-     *
      * @return The created Search service name
      */
     public String getSearchServiceName() {
@@ -38,7 +48,6 @@ public class AzureSearchResources {
     }
 
     /**
-     *
      * @return The Search service admin key
      */
     public String getSearchAdminKey() {
@@ -50,8 +59,8 @@ public class AzureSearchResources {
      * in Azure to be used for tests.
      *
      * @param azureTokenCredentials includes credentials to connect to Azure.
-     * @param subscriptionId        Azure subscription id.
-     * @param location              location of the resources to be created in.
+     * @param subscriptionId Azure subscription id.
+     * @param location location of the resources to be created in.
      */
     public AzureSearchResources(
         AzureTokenCredentials azureTokenCredentials, String subscriptionId,
@@ -131,5 +140,51 @@ public class AzureSearchResources {
             azure.resourceGroups().beginDeleteByName(resourceGroup.name());
             resourceGroup = null;
         }
+    }
+
+    /**
+     * Create a new storage account
+     * @return the storage connection string
+     */
+    public String createStorageAccount() {
+        storageName = SdkContext.randomResourceName(STORAGE_NAME_PREFIX, 15);
+
+        StorageAccount storageAccount = azure.storageAccounts().define(storageName)
+            .withRegion(location)
+            .withExistingResourceGroup(resourceGroup.name())
+            .create();
+
+        // only one item and we get its key
+        StorageAccountKey key = storageAccount.getKeys().get(0);
+
+        // Currently this only works on PROD Azure and not on Dogfood
+        String storageConnString =
+            "DefaultEndpointsProtocol=https;AccountName="
+                + storageName + ";"
+                + "AccountKey="
+                + key.value()
+                + ";EndpointSuffix=core.windows.net";
+
+        return storageConnString;
+    }
+
+    /**
+     * Create a blob container inside a given storage account
+     * @param storageConnString a given connection string
+     * @return the created container name
+     */
+    public String createBlobContainer(String storageConnString) {
+
+        // now we create a blob container, no need for an actual blob to be uploaded
+        blobContainerDatasourceName =
+            SdkContext.randomResourceName(BLOB_DATASOURCE_NAME_PREFIX, 15);
+
+        BlobServiceClient blobServiceClient =
+            new BlobServiceClientBuilder()
+                .connectionString(storageConnString)
+                .buildClient();
+        blobServiceClient.createBlobContainer(blobContainerDatasourceName);
+
+        return blobContainerDatasourceName;
     }
 }
