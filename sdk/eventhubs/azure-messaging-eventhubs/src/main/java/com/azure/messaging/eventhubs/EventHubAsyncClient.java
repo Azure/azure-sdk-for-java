@@ -42,12 +42,12 @@ class EventHubAsyncClient implements Closeable {
     }
 
     /**
-     * Returns the fully qualified domain name (FQDN) of this Event Hub.
+     * Gets the fully qualified namespace of this Event Hub.
      *
-     * @return The fully qualified domain name (FQDN) of this Event Hub.
+     * @return The fully qualified namespace of this Event Hub.
      */
-    String getFullyQualifiedDomainName() {
-        return connection.getFullyQualifiedDomainName();
+    String getFullyQualifiedNamespace() {
+        return connection.getFullyQualifiedNamespace();
     }
 
     /**
@@ -60,7 +60,7 @@ class EventHubAsyncClient implements Closeable {
     }
 
     /**
-     * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
+     * Gets information about an Event Hub, including the number of partitions present and their identifiers.
      *
      * @return The set of information for the Event Hub that this client is associated with.
      */
@@ -95,7 +95,7 @@ class EventHubAsyncClient implements Closeable {
      * @return A new {@link EventHubProducerAsyncClient}.
      */
     EventHubProducerAsyncClient createProducer() {
-        return new EventHubProducerAsyncClient(connection.getFullyQualifiedDomainName(), getEventHubName(), connection,
+        return new EventHubProducerAsyncClient(connection.getFullyQualifiedNamespace(), getEventHubName(), connection,
             connection.getRetryOptions(), tracerProvider, messageSerializer, isSharedConnection);
     }
 
@@ -162,7 +162,7 @@ class EventHubAsyncClient implements Closeable {
 
         final EventHubConsumerOptions clonedOptions = options.clone();
 
-        return new EventHubConsumerAsyncClient(connection.getFullyQualifiedDomainName(), getEventHubName(),
+        return new EventHubConsumerAsyncClient(connection.getFullyQualifiedNamespace(), getEventHubName(),
             connection, messageSerializer, consumerGroup, eventPosition, clonedOptions, isSharedConnection);
     }
 

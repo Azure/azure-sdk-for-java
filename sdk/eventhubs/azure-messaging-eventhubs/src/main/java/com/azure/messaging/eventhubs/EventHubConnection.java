@@ -43,8 +43,8 @@ public class EventHubConnection implements Closeable {
             .cache();
     }
 
-    String getFullyQualifiedDomainName() {
-        return connectionOptions.getHostname();
+    String getFullyQualifiedNamespace() {
+        return connectionOptions.getFullyQualifiedNamespace();
     }
 
     String getEventHubName() {
@@ -122,7 +122,7 @@ public class EventHubConnection implements Closeable {
             } catch (IOException exception) {
                 throw logger.logExceptionAsError(
                     new AmqpException(false, "Unable to close connection to service", exception,
-                        new ErrorContext(connectionOptions.getHostname())));
+                        new ErrorContext(connectionOptions.getFullyQualifiedNamespace())));
             }
         }
     }

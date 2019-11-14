@@ -125,12 +125,12 @@ ClientSecretCredential credential = new ClientSecretCredentialBuilder()
     .tenantId("<< DIRECTORY (TENANT) ID >>")
     .build();
 
-// The fully qualified domain name (FQDN) for the Event Hubs namespace. This is likely to be similar to:
+// The fully qualified namespace for the Event Hubs instance. This is likely to be similar to:
 // {your-namespace}.servicebus.windows.net
-String fullyQualifiedDomainName = "<< EVENT HUBS FULLY QUALIFIED DOMAIN NAME >>"
+String fullyQualifiedNamespace = "<< EVENT HUBS FULLY QUALIFIED NAMESPACE >>"
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
 EventHubProducerClient client = new EventHubClientBuilder()
-    .credential(host, eventHubName, credential)
+    .credential(fullyQualifiedNamespace, eventHubName, credential)
     .buildProducer();
 ```
 
@@ -196,14 +196,15 @@ EventHubProducerClient producer = new EventHubClientBuilder()
     .buildProducer();
 EventDataBatch eventDataBatch = producer.createBatch();
 for (EventData eventData : eventDataList) {
-  if (!eventDataBatch.tryAdd(eventData)) {
-    producer.send(eventDataBatch);
-    eventDataBatch = producer.createBatch();
-  }
+    if (!eventDataBatch.tryAdd(eventData)) {
+        producer.send(eventDataBatch);
+        eventDataBatch = producer.createBatch();
+    }
 }
+
 // send the last batch of remaining events
 if (eventDataBatch.getSize() > 0) {
-  producer.send(eventDataBatch);
+    producer.send(eventDataBatch);
 }
 ```
 

@@ -193,7 +193,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         then:
         getPropertiesBeforeVerifier.assertNext {
             assert QueueTestHelper.assertQueueServicePropertiesAreEqual(originalProperties, it)
-        }
+        }.verifyComplete()
         setPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 202)
         }.verifyComplete()

@@ -18,7 +18,8 @@ public interface EventProcessorStore {
      * Called to get the list of all existing partition ownership from the underlying data store. Could return empty
      * results if there are is no existing ownership information.
      *
-     * @param fullyQualifiedNamespace The fully qualified namespace of the Event Hub.
+     * @param fullyQualifiedNamespace The fully qualified namespace of the Event Hub. This is likely to be similar to
+     *     <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
      * @param eventHubName The Event Hub name to get ownership information.
      * @param consumerGroupName The consumer group name.
      * @return A flux of partition ownership details of all the partitions that have/had an owner.

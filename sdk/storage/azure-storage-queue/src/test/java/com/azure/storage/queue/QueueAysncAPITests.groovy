@@ -168,7 +168,9 @@ class QueueAysncAPITests extends APISpec {
         when:
         def getAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.getAccessPolicy())
         then:
-        getAccessPolicyVerifier.verifyComplete()
+        getAccessPolicyVerifier
+            .expectNextCount(0)
+            .verifyComplete()
     }
 
     def "Get access policy does error"() {

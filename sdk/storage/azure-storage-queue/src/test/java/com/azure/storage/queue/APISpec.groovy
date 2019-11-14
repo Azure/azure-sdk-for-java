@@ -146,4 +146,12 @@ class APISpec extends Specification {
             ? httpClientBuilder.wiretap(true).build()
             : httpClientBuilder.build()
     }
+
+    def sleepIfLive(long milliseconds) {
+        if (testMode == TestMode.PLAYBACK) {
+            return;
+        }
+
+        sleep(milliseconds)
+    }
 }

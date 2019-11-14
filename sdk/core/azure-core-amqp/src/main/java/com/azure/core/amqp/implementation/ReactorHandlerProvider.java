@@ -81,25 +81,25 @@ public class ReactorHandlerProvider {
      * Creates a new link handler for sending messages.
      *
      * @param connectionId Identifier of the parent connection that created this session.
-     * @param hostname Host of the parent connection.
+     * @param fullyQualifiedNamespace Fully qualified namespace of the parent connection.
      * @param senderName Name of the send link.
      * @return A new {@link SendLinkHandler}.
      */
-    public SendLinkHandler createSendLinkHandler(String connectionId, String hostname, String senderName,
+    public SendLinkHandler createSendLinkHandler(String connectionId, String fullyQualifiedNamespace, String senderName,
                                                  String entityPath) {
-        return new SendLinkHandler(connectionId, hostname, senderName, entityPath);
+        return new SendLinkHandler(connectionId, fullyQualifiedNamespace, senderName, entityPath);
     }
 
     /**
      * Creates a new link handler for receiving messages.
      *
      * @param connectionId Identifier of the parent connection that created this session.
-     * @param hostname Host of the parent connection.
+     * @param fullyQualifiedNamespace Fully qualified namespace of the parent connection.
      * @param receiverName Name of the send link.
      * @return A new {@link ReceiveLinkHandler}.
      */
-    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname, String receiverName,
-                                                String entityPath) {
-        return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath);
+    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String fullyQualifiedNamespace,
+            String receiverName, String entityPath) {
+        return new ReceiveLinkHandler(connectionId, fullyQualifiedNamespace, receiverName, entityPath);
     }
 }
