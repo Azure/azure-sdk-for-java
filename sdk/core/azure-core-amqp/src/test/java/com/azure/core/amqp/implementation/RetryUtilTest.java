@@ -24,7 +24,7 @@ public class RetryUtilTest {
     public void getCorrectModeFixed() {
         // Act
         final RetryOptions retryOptions = new RetryOptions()
-            .setRetryMode(RetryMode.FIXED);
+            .setMode(RetryMode.FIXED);
         final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         // Assert
@@ -36,7 +36,7 @@ public class RetryUtilTest {
     public void getCorrectModeExponential() {
         // Act
         final RetryOptions retryOptions = new RetryOptions()
-            .setRetryMode(RetryMode.EXPONENTIAL);
+            .setMode(RetryMode.EXPONENTIAL);
         final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         // Assert

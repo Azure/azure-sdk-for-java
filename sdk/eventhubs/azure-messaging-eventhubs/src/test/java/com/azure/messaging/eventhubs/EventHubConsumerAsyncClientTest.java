@@ -425,7 +425,7 @@ public class EventHubConsumerAsyncClientTest {
         final Disposable.Composite subscriptions = Disposables.composite(
             consumer.receive(PARTITION_ID).filter(e -> isMatchingEvent(e, messageTrackingUUID))
                 .subscribe(
-                    event -> logger.verbose("1. Received: {}", event.getEventData().getSequenceNumber()),
+                    event -> logger.verbose("1. Received: {}", event.getData().getSequenceNumber()),
                     error -> Assertions.fail(error.toString()),
                     () -> {
                         logger.info("1. Shutdown received");
@@ -433,7 +433,7 @@ public class EventHubConsumerAsyncClientTest {
                     }),
             consumer.receive(PARTITION_ID).filter(e -> isMatchingEvent(e, messageTrackingUUID))
                 .subscribe(
-                    event -> logger.verbose("2. Received: {}", event.getEventData().getSequenceNumber()),
+                    event -> logger.verbose("2. Received: {}", event.getData().getSequenceNumber()),
                     error -> Assertions.fail(error.toString()),
                     () -> {
                         logger.info("2. Shutdown received");
@@ -441,7 +441,7 @@ public class EventHubConsumerAsyncClientTest {
                     }),
             consumer.receive(PARTITION_ID).filter(e -> isMatchingEvent(e, messageTrackingUUID))
                 .subscribe(
-                    event -> logger.verbose("3. Received: {}", event.getEventData().getSequenceNumber()),
+                    event -> logger.verbose("3. Received: {}", event.getData().getSequenceNumber()),
                     error -> Assertions.fail(error.toString()),
                     () -> {
                         logger.info("3. Shutdown received");
@@ -647,7 +647,7 @@ public class EventHubConsumerAsyncClientTest {
 
     private void assertPartition(String partitionId, PartitionEvent event) {
         System.out.println("Event received: " + event.getPartitionContext().getPartitionId());
-        final Object value = event.getEventData().getProperties().get(PARTITION_ID_HEADER);
+        final Object value = event.getData().getProperties().get(PARTITION_ID_HEADER);
         Assertions.assertTrue(value instanceof String);
         Assertions.assertEquals(partitionId, value);
 

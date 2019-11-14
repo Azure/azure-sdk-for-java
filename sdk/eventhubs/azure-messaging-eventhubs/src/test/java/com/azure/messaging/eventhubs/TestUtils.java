@@ -138,7 +138,7 @@ public final class TestUtils {
      * Checks the {@link #MESSAGE_TRACKING_ID} to see if it matches the {@code expectedValue}.
      */
     public static boolean isMatchingEvent(PartitionEvent partitionEvent, String expectedValue) {
-        return isMatchingEvent(partitionEvent.getEventData(), expectedValue);
+        return isMatchingEvent(partitionEvent.getData(), expectedValue);
     }
 
     /**

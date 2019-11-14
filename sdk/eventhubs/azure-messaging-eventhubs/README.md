@@ -209,7 +209,7 @@ if (eventDataBatch.getSize() > 0) {
 ```
 
 To send events to a particular partition, set the optional parameter `partitionId` on
-[`BatchOptions`][source_batchOptions].
+[`CreateBatchOptions`][source_CreateBatchOptions].
 
 #### Partition identifier
 
@@ -228,7 +228,8 @@ Hubs service keep different events or batches of events together on the same par
 setting a `partition key` when publishing the events.
 
 ```java
-BatchOptions batchOptions = new BatchOptions().partitionKey("grouping-key");
+CreateBatchOptions batchOptions = new CreateBatchOptions()
+    .partitionKey("grouping-key");
 EventDataBatch eventDataBatch = producer.createBatch(batchOptions);
 // add events to eventDataBatch
 producer.send(eventDataBatch);
@@ -444,7 +445,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [source_eventhubclient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubClient.java
 [source_eventHubProducerClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducerClient.java
 [source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
-[source_batchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/BatchOptions.java
+[source_CreateBatchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/CreateBatchOptions.java
 [source_inmemoryeventprocessorstore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryEventProcessorStore.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java

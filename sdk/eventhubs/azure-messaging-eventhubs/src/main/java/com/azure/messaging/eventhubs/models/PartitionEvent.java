@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventData;
+
 import java.util.Objects;
 
 /**
@@ -41,7 +42,7 @@ public class PartitionEvent {
      *
      * @return Event received from the partition.
      */
-    public EventData getEventData() {
+    public EventData getData() {
         return eventData;
     }
 }

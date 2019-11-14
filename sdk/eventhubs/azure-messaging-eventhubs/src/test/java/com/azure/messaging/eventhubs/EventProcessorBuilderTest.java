@@ -3,15 +3,16 @@
 
 package com.azure.messaging.eventhubs;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
-import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for {@link EventProcessorBuilder}.
@@ -47,7 +48,7 @@ public class EventProcessorBuilderTest {
                 .eventProcessorStore(new InMemoryEventProcessorStore())
                 .processEvent(partitionEvent -> {
                     System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
-                        + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                        + "sequence number of event = " + partitionEvent.getData().getSequenceNumber());
                     return Mono.empty();
                 })
                 .buildEventProcessor();
@@ -61,7 +62,7 @@ public class EventProcessorBuilderTest {
             .consumerGroup("consumer-group")
             .processEvent(partitionEvent -> {
                 System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                    + "sequence number of event = " + partitionEvent.getData().getSequenceNumber());
                 return Mono.empty();
             })
             .eventProcessorStore(new InMemoryEventProcessorStore())

@@ -10,7 +10,6 @@ import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -505,39 +504,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             return client.listRevisions(new SettingSelector().setKeys(key).setLabels(label, label2));
         });
-    }
-
-    /**
-     * Verifies that the range header for revision selections returns the expected values.
-     */
-    @Test
-    public void listRevisionsWithRange() {
-        final String key = getKey();
-        final ConfigurationSetting original = new ConfigurationSetting().setKey(key).setValue("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
-
-        assertConfigurationEquals(original, client.addConfigurationSettingWithResponse(original, Context.NONE).getValue());
-        assertConfigurationEquals(updated, client.setConfigurationSettingWithResponse(updated, false, Context.NONE).getValue());
-        assertConfigurationEquals(updated2, client.setConfigurationSettingWithResponse(updated2, false, Context.NONE).getValue());
-
-        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeys(key).setRange(new Range(1, 2))).stream().collect(Collectors.toList());
-        assertConfigurationEquals(updated, revisions.get(0));
-        assertConfigurationEquals(original, revisions.get(1));
-    }
-
-    /**
-     * Verifies that an exception will be thrown from the service if it cannot satisfy the range request.
-     */
-    @Test
-    @Disabled
-    public void listRevisionsInvalidRange() {
-        final String key = getKey();
-        final ConfigurationSetting original = new ConfigurationSetting().setKey(key).setValue("myValue");
-
-        assertConfigurationEquals(original, client.addConfigurationSettingWithResponse(original, Context.NONE).getValue());
-        assertRestException(() -> client.listRevisions(new SettingSelector().setKeys(key).setRange(new Range(0, 10))),
-            416); // REQUESTED_RANGE_NOT_SATISFIABLE
     }
 
     /**
