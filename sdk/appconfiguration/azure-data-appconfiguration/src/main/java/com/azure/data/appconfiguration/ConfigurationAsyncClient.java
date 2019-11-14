@@ -81,8 +81,8 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSetting#string-string-string}
      *
      * @param key The key of the configuration setting to add.
-     * @param label The label of the configuration setting to add, or optionally, null if a setting with
-     * label is desired.
+     * @param label The label of the configuration setting to add, or optionally, null if the label is not desired in
+     * the request.
      * @param value The value associated with this configuration setting key.
      * @return The {@link ConfigurationSetting} that was created, or {@code null} if a key collision occurs or the key
      * is an invalid value (which will also throw HttpResponseException described below).
@@ -165,8 +165,8 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setConfigurationSetting#string-string-string}
      *
      * @param key The key of the configuration setting to create or update.
-     * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
-     * label is desired.
+     * @param label The label of the configuration setting to create or update, or optionally, null if the label is
+     * not desired in the request.
      * @param value The value of this configuration setting.
      * @return The {@link ConfigurationSetting} that was created or updated, or an empty Mono if the key is an invalid
      * value (which will also throw HttpResponseException described below).
@@ -253,8 +253,8 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string}
 
      * @param key The key of the setting to retrieve.
-     * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
-     * label is desired.
+     * @param label The label of the configuration setting to retrieve, or optionally, null if the label is not desired
+     * in the request.
      * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
      * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -281,10 +281,10 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string-OffsetDateTime}
      *
      * @param key The key of the setting to retrieve.
-     * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
-     * label is desired.
-     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if a setting with
-     * {@code acceptDateTime} is desired.
+     * @param label The label of the configuration setting to retrieve, or optionally, null if the label is not desired
+     * in the request.
+     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if the
+     * {@code acceptDateTime} is not desired in the request.
      * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
      * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -313,8 +313,8 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean}
      *
      * @param setting The setting to retrieve.
-     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if a setting with
-     * {@code acceptDateTime} is desired.
+     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if the
+     * {@code acceptDateTime} is not desired in the request.
      * @param ifChanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
      * If-None-Match header.
      * @return A REST response containing the {@link ConfigurationSetting} stored in the service, or {@code null} if
@@ -374,8 +374,8 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#string-string}
      *
      * @param key The key of configuration setting to delete.
-     * @param label The label of configuration setting to delete, or optionally, null if a setting with
-     * label is desired.
+     * @param label The label of configuration setting to delete, or optionally, null if the label is not desired in
+     * the request.
      * @return The deleted ConfigurationSetting or an empty Mono is also returned if the {@code key} is an invalid value
      * (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -444,18 +444,25 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Set the {@link ConfigurationSetting} to read-only with a matching {@code key}, and optional {@code label}
-     * combination.
+     * Set the {@link ConfigurationSetting} to read-only or not read-only with a matching {@code key},
+     * and optional {@code label} combination. If the {@code isReadOnly} is true or null, the setting will be set to
+     * read-only. If false, the setting will not be read-only.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-Boolean}
+     *
+     * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-Boolean-clearReadOnly}
      *
      * @param key The key of configuration setting to set to be read-only.
-     * @param label The label of configuration setting to read-only, or optionally, null if a setting with label is
-     * desired.
+     * @param label The label of configuration setting to read-only, or optionally, null if the label is not desired
+     * in the request.
+     * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
+     * If it is true or null, set the setting to read-only. If false, the setting won't set to read-only.
      * @return The {@link ConfigurationSetting} that is read-only, or an empty Mono if a key collision occurs or the
      * key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -473,17 +480,26 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Set the {@link ConfigurationSetting} to read-only with a matching {@link ConfigurationSetting#getKey() key},
-     * and optional {@link ConfigurationSetting#getLabel() label} combination.
+     * Set the {@link ConfigurationSetting} to read-only or not read-only with a matching
+     * {@link ConfigurationSetting#getKey() key}, and optional {@link ConfigurationSetting#getLabel() label}
+     * combination. If the {@code isReadOnly} is true or null, the setting will be set to read-only.
+     * If false, the setting will not be read-only.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean}
      *
-     * @param setting The setting to set to read-only based on its key and optional label combination.
-     * @return A REST response containing the read-only ConfigurationSetting or {@code null} if didn't exist.
+     * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-clearReadOnly}
+     *
+     * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
+     * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
+     * If it is true or null, set the setting to read-only. If false, the setting won't set to read-only.
+     * @return A REST response containing the read-only or not read-only ConfigurationSetting if {@code isReadOnly}
+     * is true or null, or false respectively. Or return {@code null} if the setting didn't exist.
      * {@code null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value.
      * (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.

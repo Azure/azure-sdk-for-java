@@ -56,8 +56,8 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#String-String-String}
      *
      * @param key The key of the configuration setting to add.
-     * @param label The label of the configuration setting to create, or optionally, null if a setting with
-     * label is desired.
+     * @param label The label of the configuration setting to create, or optionally, null if the label is not desired
+     * in the request.
      * @param value The value associated with this configuration setting key.
      * @return The {@link ConfigurationSetting} that was created, or {@code null} if a key collision occurs or the key
      * is an invalid value (which will also throw ServiceRequestException described below).
@@ -108,8 +108,8 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String}
      *
      * @param key The key of the configuration setting to create or update.
-     * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
-     * label is desired.
+     * @param label The label of the configuration setting to create or update, or optionally, null if the label
+     * is not desired in the request.
      * @param value The value of this configuration setting.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null} if the key is an invalid
      * value (which will also throw ServiceRequestException described below).
@@ -169,8 +169,8 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string}
      *
      * @param key The key of the setting to retrieve.
-     * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
-     * label is desired.
+     * @param label The label of the configuration setting to retrieve, or optionally, null if the label is not desired
+     * in the request.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -193,10 +193,10 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime}
      *
      * @param key The key of the setting to retrieve.
-     * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
-     * label is desired.
-     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if a setting with
-     * {@code acceptDateTime} is desired.
+     * @param label The label of the configuration setting to create or update, or optionally, null if the label is not
+     * desired in the request.
+     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if the
+     * {@code acceptDateTime} is not desired in the request.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -221,8 +221,8 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context}
      *
      * @param setting The setting to retrieve.
-     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if a setting with
-     * {@code acceptDateTime} is desired.
+     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if the
+     * {@code acceptDateTime} is not desired in the request.
      * @param ifChanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
      * If-None-Match header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -252,8 +252,8 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string}
      *
      * @param key The key of configuration setting to delete.
-     * @param label The label of configuration setting to delete, or optionally, null if a setting with
-     * label is desired.
+     * @param label The label of configuration setting to delete, or optionally, null if the label is not desired in the
+     * request.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if the
      * {@code key} is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -313,9 +313,13 @@ public final class ConfigurationClient {
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-Boolean}
      *
+     * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-Boolean-clearReadOnly}
+     *
      * @param key The key of configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
-     * @param label The label of configuration setting to set to read-only, or optionally, null if a setting with label
-     * is desired.
+     * @param label The label of configuration setting to set to read-only or not read-only based on the
+     * {@code isReadOnly} value, or optionally, null if the label is not desired in the request.
      * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
      * If it is true or null, set the setting to read-only. If false, the setting won't set to read-only.
      * @return The {@link ConfigurationSetting} that is read-only, or {@code null} is also returned if a key collision
@@ -341,13 +345,18 @@ public final class ConfigurationClient {
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context}
      *
-     * @param setting The setting to set to read-only based on its key and optional label combination.
+     * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context-ClearReadOnly}
+     *
+     * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
      * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
      * If it is true or null, set the setting to read-only. If false, the setting won't set to read-only.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containing the read-only ConfigurationSetting or {@code null} if didn't exist.
-     * {@code null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value. (which will
-     * also throw HttpResponseException described below).
+     * @return A REST response containing the read-only or not read-only ConfigurationSetting if {@code isReadOnly}
+     * is true or null, or false respectively. Or return {@code null} if the setting didn't exist.
+     * {@code null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value.
+     * (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
