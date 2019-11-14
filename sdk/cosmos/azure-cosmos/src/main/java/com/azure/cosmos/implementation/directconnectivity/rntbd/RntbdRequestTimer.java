@@ -17,15 +17,14 @@ import static com.google.common.base.Strings.lenientFormat;
 
 public final class RntbdRequestTimer implements AutoCloseable {
 
-    private static final long TIMER_RESOLUTION_IN_NANOS = 100_000_000L; // 100 ms // 5_000_000L;
+    private static final long TIMER_RESOLUTION_IN_NANOS = 100_000_000L; // 100 ms
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestTimer.class);
     private final long requestTimeout;
     private final Timer timer;
 
     public RntbdRequestTimer(final long requestTimeout) {
-        // Inspection of the HashedWheelTimer code shows that expiration of a timeout task takes two timer resolution
-        // units to complete
+        // HashedWheelTimer code inspection shows that timeout tasks expire within two timer resolution units
         this.timer = new HashedWheelTimer(TIMER_RESOLUTION_IN_NANOS, TimeUnit.NANOSECONDS);
         this.requestTimeout = requestTimeout;
     }
