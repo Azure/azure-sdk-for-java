@@ -576,8 +576,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 }
             });
 
-            boolean done = record.isDone();
-
             record.whenComplete((response, error) -> {
                 this.pendingRequests.remove(id);
                 pendingRequestTimeout.cancel();
