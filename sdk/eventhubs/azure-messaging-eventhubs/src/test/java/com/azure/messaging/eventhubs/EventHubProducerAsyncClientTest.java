@@ -20,7 +20,7 @@ import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
@@ -401,7 +401,7 @@ public class EventHubProducerAsyncClientTest {
 
         // This event is 1024 bytes when serialized.
         final EventData event = new EventData(new byte[eventPayload]);
-        final BatchOptions options = new BatchOptions().setPartitionKey("some-key");
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("some-key");
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
@@ -431,7 +431,7 @@ public class EventHubProducerAsyncClientTest {
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
-        final BatchOptions options = new BatchOptions().setMaximumSizeInBytes(batchSize);
+        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
@@ -441,7 +441,7 @@ public class EventHubProducerAsyncClientTest {
 
     /**
      * Verifies that the producer can create an {@link EventDataBatch} with a given {@link
-     * BatchOptions#getMaximumSizeInBytes()}.
+     * CreateBatchOptions#getMaximumSizeInBytes()}.
      */
     @Test
     public void createsEventDataBatchWithSize() {
@@ -467,7 +467,7 @@ public class EventHubProducerAsyncClientTest {
 
         // This event will be 1025 bytes when serialized.
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
-        final BatchOptions options = new BatchOptions().setMaximumSizeInBytes(batchSize);
+        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
 
 
         // Act & Assert
@@ -540,7 +540,7 @@ public class EventHubProducerAsyncClientTest {
             .thenReturn(Mono.just(link));
 
         final String originalKey = "some-key";
-        final BatchOptions options = new BatchOptions().setPartitionKey(originalKey);
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey(originalKey);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))

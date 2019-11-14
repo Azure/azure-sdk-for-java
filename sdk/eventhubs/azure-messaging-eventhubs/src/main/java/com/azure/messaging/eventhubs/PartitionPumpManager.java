@@ -126,7 +126,7 @@ class PartitionPumpManager {
 
         partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
         eventHubConsumer.receive(claimedOwnership.getPartitionId()).subscribe(partitionEvent -> {
-            EventData eventData = partitionEvent.getEventData();
+            EventData eventData = partitionEvent.getData();
             try {
                 Context processSpanContext = startProcessTracingSpan(eventData);
                 if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {

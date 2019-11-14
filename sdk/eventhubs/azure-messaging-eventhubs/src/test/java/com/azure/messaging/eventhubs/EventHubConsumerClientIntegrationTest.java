@@ -115,11 +115,11 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         final Map<Long, PartitionEvent> asList = actual.stream()
-            .collect(Collectors.toMap(e -> e.getEventData().getSequenceNumber(), Function.identity()));
+            .collect(Collectors.toMap(e -> e.getData().getSequenceNumber(), Function.identity()));
         Assertions.assertEquals(numberOfEvents, asList.size());
 
         final Map<Long, PartitionEvent> asList2 = actual2.stream()
-            .collect(Collectors.toMap(e -> e.getEventData().getSequenceNumber(), Function.identity()));
+            .collect(Collectors.toMap(e -> e.getData().getSequenceNumber(), Function.identity()));
         Assertions.assertEquals(secondNumberOfEvents, asList2.size());
 
         final Long maximumSequence = Collections.max(asList.keySet());
@@ -217,8 +217,8 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             final IterableStream<PartitionEvent> receive2 = consumer2.receive(partitionId, receiveNumber, Duration.ofSeconds(5));
 
             // Assert
-            final List<Long> asList = receive.stream().map(e -> e.getEventData().getSequenceNumber()).collect(Collectors.toList());
-            final List<Long> asList2 = receive2.stream().map(e -> e.getEventData().getSequenceNumber()).collect(Collectors.toList());
+            final List<Long> asList = receive.stream().map(e -> e.getData().getSequenceNumber()).collect(Collectors.toList());
+            final List<Long> asList2 = receive2.stream().map(e -> e.getData().getSequenceNumber()).collect(Collectors.toList());
 
             Assertions.assertEquals(receiveNumber, asList.size());
             Assertions.assertEquals(receiveNumber, asList2.size());
@@ -351,7 +351,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final PartitionContext context = event.getPartitionContext();
         Assertions.assertEquals(eventHubName, context.getEventHubName());
 
-        final EventData eventData = event.getEventData();
+        final EventData eventData = event.getData();
         final Integer partitionId = Integer.valueOf(context.getPartitionId());
 
         Assertions.assertTrue(eventData.getProperties().containsKey(PARTITION_ID_HEADER));

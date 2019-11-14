@@ -35,7 +35,7 @@ import static org.mockito.Mockito.when;
 
 public class CBSChannelTest {
     private final RetryOptions options = new RetryOptions()
-        .setRetryMode(RetryMode.FIXED)
+        .setMode(RetryMode.FIXED)
         .setTryTimeout(Duration.ofSeconds(45))
         .setMaxRetries(4);
 

@@ -213,7 +213,7 @@ public class EventHubConsumerClientTest {
 
         final Map<Integer, PartitionEvent> actual = receive.stream()
             .collect(Collectors.toMap(e -> {
-                final String value = String.valueOf(e.getEventData().getProperties().get(MESSAGE_POSITION_ID));
+                final String value = String.valueOf(e.getData().getProperties().get(MESSAGE_POSITION_ID));
                 return Integer.valueOf(value);
             }, Function.identity()));
 
@@ -381,14 +381,14 @@ public class EventHubConsumerClientTest {
     }
 
     private static Integer getPositionId(PartitionEvent partitionEvent) {
-        EventData event = partitionEvent.getEventData();
+        EventData event = partitionEvent.getData();
         final String value = String.valueOf(event.getProperties().get(MESSAGE_POSITION_ID));
         return Integer.valueOf(value);
     }
 
     private void assertPartition(String partitionId, PartitionEvent event) {
         System.out.println("Event received: " + event.getPartitionContext().getPartitionId());
-        final Object value = event.getEventData().getProperties().get(PARTITION_ID_HEADER);
+        final Object value = event.getData().getProperties().get(PARTITION_ID_HEADER);
         Assertions.assertTrue(value instanceof String);
         Assertions.assertEquals(partitionId, value);
 

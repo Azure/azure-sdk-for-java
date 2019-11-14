@@ -7,7 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
 import java.io.Closeable;
@@ -64,14 +64,14 @@ import java.util.Objects;
  *
  * <p><strong>Publish events using an {@link EventDataBatch}</strong></p>
  * Developers can create an {@link EventDataBatch}, add the events they want into it, and publish these events together.
- * When creating a {@link EventDataBatch batch}, developers can specify a set of {@link BatchOptions options} to
+ * When creating a {@link EventDataBatch batch}, developers can specify a set of {@link CreateBatchOptions options} to
  * configure this batch.
  *
  * <p>
  * In the scenario below, the developer is creating a networked video game. They want to receive telemetry about their
  * users' gaming systems, but do not want to slow down the network with telemetry. So they limit the size of their
  * {@link EventDataBatch batches} to be no larger than 256 bytes. The events within the batch also get hashed to the
- * same partition because they all share the same {@link BatchOptions#getPartitionKey()}.
+ * same partition because they all share the same {@link CreateBatchOptions#getPartitionKey()}.
  * </p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.send#eventDataBatch}
  *
@@ -159,7 +159,7 @@ public class EventHubProducerClient implements Closeable {
      * @param options A set of options used to configure the {@link EventDataBatch}.
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
-    public EventDataBatch createBatch(BatchOptions options) {
+    public EventDataBatch createBatch(CreateBatchOptions options) {
         return producer.createBatch(options).block(tryTimeout);
     }
 
@@ -237,7 +237,7 @@ public class EventHubProducerClient implements Closeable {
      * @param batch The batch to send to the service.
      * @throws NullPointerException if {@code batch} is {@code null}.
      * @see EventHubProducerClient#createBatch()
-     * @see EventHubProducerClient#createBatch(BatchOptions)
+     * @see EventHubProducerClient#createBatch(CreateBatchOptions)
      */
     public void send(EventDataBatch batch) {
         producer.send(batch).block();

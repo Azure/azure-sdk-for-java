@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -101,7 +101,7 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        final BatchOptions options = new BatchOptions().setPartitionKey("my-partition-key");
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("my-partition-key");
         final EventDataBatch batch = producer.createBatch(options);
 
         events.forEach(event -> {
@@ -133,7 +133,7 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendAllPartitions() {
         for (String partitionId : producer.getPartitionIds()) {
-            final EventDataBatch batch = producer.createBatch(new BatchOptions().setPartitionId(partitionId));
+            final EventDataBatch batch = producer.createBatch(new CreateBatchOptions().setPartitionId(partitionId));
             Assertions.assertNotNull(batch);
 
             Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid", Integer.parseInt(partitionId))));

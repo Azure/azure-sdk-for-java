@@ -107,7 +107,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
         // Receives events from all partitions as they come in.
         consumer.receive().subscribe(partitionEvent -> {
             PartitionContext context = partitionEvent.getPartitionContext();
-            EventData event = partitionEvent.getEventData();
+            EventData event = partitionEvent.getData();
             System.out.printf("Event %s is from partition %s%n.", event.getSequenceNumber(), context.getPartitionId());
         });
         // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive

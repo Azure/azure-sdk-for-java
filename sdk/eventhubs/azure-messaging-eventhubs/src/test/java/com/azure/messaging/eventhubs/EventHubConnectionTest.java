@@ -85,7 +85,7 @@ public class EventHubConnectionTest {
         final RetryOptions options = new RetryOptions()
             .setTryTimeout(timeout)
             .setMaxRetries(2)
-            .setRetryMode(RetryMode.FIXED);
+            .setMode(RetryMode.FIXED);
 
         final String linkName = "some-link-name";
         final String entityPath = "some-entity-path";
