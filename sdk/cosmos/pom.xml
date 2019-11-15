@@ -115,7 +115,7 @@ Licensed under the MIT License.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <configuration>
-            <argLine>-Xmx2048m -XX:MaxPermSize=512m</argLine>
+            <argLine>-Xmx4096m -XX:MaxMetaspaceSize=1024m</argLine>
           </configuration>
         </plugin>
       </plugins>
