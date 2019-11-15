@@ -7,15 +7,14 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.IterableStream;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -171,15 +170,17 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     public void queryAllDatabases() throws Exception {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
-        String query = String.format("SELECT * from c where c.getId = '%s'", createdDatabase.getId());
+        String query = String.format("SELECT * from c where c.id = '%s'", createdDatabase.getId());
 
         IterableStream<CosmosDatabaseProperties> queryIterator = client.queryDatabases(query, options);
         // Basic validation
         assertThat(queryIterator.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        IterableStream<CosmosDatabaseProperties> queryIterator1 = client.queryDatabases(querySpec, options);
-        // Basic validation
+        FeedOptions feedOptions = new FeedOptions();
+        feedOptions.maxItemCount(2);
+        IterableStream<CosmosDatabaseProperties> queryIterator1 = client.queryDatabases(querySpec, feedOptions);
+//        // Basic validation
         assertThat(queryIterator1.iterator().hasNext()).isTrue();
     }
 
