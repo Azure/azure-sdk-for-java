@@ -2,16 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.OperationType;
-import com.azure.cosmos.internal.ResourceType;
-import com.azure.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.cosmos.internal.Utils;
-import com.azure.cosmos.internal.directconnectivity.StoreResult;
-import com.azure.cosmos.internal.OperationType;
-import com.azure.cosmos.internal.ResourceType;
-import com.azure.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.cosmos.internal.Utils;
-import com.azure.cosmos.internal.directconnectivity.StoreResult;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;

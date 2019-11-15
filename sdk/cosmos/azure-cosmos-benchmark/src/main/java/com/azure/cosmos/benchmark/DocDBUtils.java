@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
-import com.azure.cosmos.internal.Database;
-import com.azure.cosmos.internal.DocumentCollection;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.SqlParameter;
 import com.azure.cosmos.SqlParameterList;

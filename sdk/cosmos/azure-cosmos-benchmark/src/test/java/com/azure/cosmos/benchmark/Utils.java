@@ -3,16 +3,16 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.internal.Database;
-import com.azure.cosmos.internal.DatabaseForTest;
-import com.azure.cosmos.internal.DocumentCollection;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DatabaseForTest;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.internal.ResourceResponse;
+import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.RetryOptions;
 import com.azure.cosmos.SqlQuerySpec;
-import com.azure.cosmos.internal.TestConfigurations;
+import com.azure.cosmos.implementation.TestConfigurations;
 import reactor.core.publisher.Flux;
 
 public class Utils {

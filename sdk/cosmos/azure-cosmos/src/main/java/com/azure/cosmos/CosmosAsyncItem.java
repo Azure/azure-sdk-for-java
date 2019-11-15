@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Document;
-import com.azure.cosmos.internal.Paths;
-import com.azure.cosmos.internal.RequestOptions;
-import com.azure.cosmos.internal.Document;
-import com.azure.cosmos.internal.Paths;
-import com.azure.cosmos.internal.RequestOptions;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.Paths;
+import com.azure.cosmos.implementation.RequestOptions;
 import reactor.core.publisher.Mono;
 
 public class CosmosAsyncItem {

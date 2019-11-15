@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Permission;
-import com.azure.cosmos.internal.ResourceResponse;
-import com.azure.cosmos.internal.Permission;
-import com.azure.cosmos.internal.ResourceResponse;
+import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.implementation.ResourceResponse;
 
 public class CosmosAsyncPermissionResponse extends CosmosResponse<CosmosPermissionProperties> {
     CosmosAsyncPermission permissionClient;

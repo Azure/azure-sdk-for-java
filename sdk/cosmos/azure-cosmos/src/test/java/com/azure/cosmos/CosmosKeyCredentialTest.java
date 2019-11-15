@@ -1,10 +1,8 @@
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.FailureValidator;
+import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.internal.FailureValidator;
-import com.azure.cosmos.internal.TestConfigurations;
-import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.implementation.TestConfigurations;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;

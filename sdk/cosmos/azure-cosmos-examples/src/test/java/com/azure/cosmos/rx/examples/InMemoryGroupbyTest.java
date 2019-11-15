@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.internal.AsyncDocumentClient;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.internal.Database;
-import com.azure.cosmos.internal.Document;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.internal.DocumentCollection;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.SqlParameter;
@@ -21,6 +21,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.GroupedFlux;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -68,6 +69,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
 
         int numberOfPayers = 10;
         int numberOfDocumentsPerPayer = 10;
+        List<Mono<Void>> tasks = new ArrayList<>();
 
         for (int i = 0; i < numberOfPayers; i++) {
 
@@ -81,11 +83,12 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
                         + "'payer_id': %d, "
                         + " 'created_time' : %d "
                         + "}", UUID.randomUUID().toString(), i, currentTime.getSecond()));
-                client.createDocument(getCollectionLink(), doc, null, true).single().block();
+                tasks.add(client.createDocument(getCollectionLink(), doc, null, true).then());
 
                 Thread.sleep(100);
             }
         }
+        Flux.merge(tasks).then().block();
         System.out.println("finished inserting documents");
     }
 

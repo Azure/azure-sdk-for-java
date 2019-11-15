@@ -24,9 +24,9 @@ import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.SpatialSpec;
 import com.azure.cosmos.SpatialType;
-import com.azure.cosmos.internal.Database;
-import com.azure.cosmos.internal.FailureValidator;
-import com.azure.cosmos.internal.RetryAnalyzer;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.RetryAnalyzer;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -35,6 +35,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -146,14 +147,12 @@ public class CollectionCrudTest extends TestSuiteBase {
         };
         List<SpatialSpec> spatialIndexes = new ArrayList<SpatialSpec>();
         for (int index = 0; index < 2; index++) {
-            List<SpatialType> collectionOfSpatialTypes = new ArrayList<SpatialType>();
 
             SpatialSpec spec = new SpatialSpec();
             spec.setPath("/path" + index + "/*");
 
-            for (int i = index; i < index + 3; i++) {
-                collectionOfSpatialTypes.add(spatialTypes[i]);
-            }
+            List<SpatialType> collectionOfSpatialTypes = new ArrayList<SpatialType>(Arrays.asList(spatialTypes).subList(0, index + 3));
+
             spec.setSpatialTypes(collectionOfSpatialTypes);
             spatialIndexes.add(spec);
         }

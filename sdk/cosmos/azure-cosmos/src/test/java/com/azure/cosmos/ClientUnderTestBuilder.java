@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.RxDocumentClientUnderTest;
-import com.azure.cosmos.internal.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.internal.RxDocumentClientUnderTest;
-import com.azure.cosmos.internal.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;

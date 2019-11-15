@@ -3,8 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.internal.Constants;
-import com.azure.cosmos.internal.Constants;
+import com.azure.cosmos.implementation.Constants;
 
 /**
  * Represents an excluded path of the IndexingPolicy in the Azure Cosmos DB database service.
