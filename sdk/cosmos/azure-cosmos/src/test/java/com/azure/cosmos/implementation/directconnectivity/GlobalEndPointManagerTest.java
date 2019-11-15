@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.internal.directconnectivity;
+package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.DatabaseAccount;
-import com.azure.cosmos.internal.Configs;
-import com.azure.cosmos.internal.DatabaseAccountManagerInternal;
-import com.azure.cosmos.internal.GlobalEndpointManager;
-import com.azure.cosmos.internal.routing.LocationCache;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.Assert;
@@ -289,7 +289,7 @@ public class GlobalEndPointManagerTest {
         locationInfoField.setAccessible(true);
         Object locationInfo = locationInfoField.get(locationCache);
 
-        Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.internal.routing.LocationCache$DatabaseAccountLocationsInfo");
+        Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.implementation.routing.LocationCache$DatabaseAccountLocationsInfo");
         Field availableWriteEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableWriteEndpointByLocation");
         availableWriteEndpointByLocationField.setAccessible(true);
         Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointByLocation");
@@ -303,7 +303,7 @@ public class GlobalEndPointManagerTest {
         locationInfoField.setAccessible(true);
         Object locationInfo = locationInfoField.get(locationCache);
 
-        Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.internal.routing.LocationCache$DatabaseAccountLocationsInfo");
+        Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.implementation.routing.LocationCache$DatabaseAccountLocationsInfo");
         Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointByLocation");
         availableReadEndpointByLocationField.setAccessible(true);
 
