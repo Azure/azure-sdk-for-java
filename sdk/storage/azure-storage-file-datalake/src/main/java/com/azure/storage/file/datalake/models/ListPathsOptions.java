@@ -89,11 +89,11 @@ public class ListPathsOptions {
      * The default value is false. Note that group and application Object IDs are not translated because they do not
      * have unique friendly names.
      *
-     * @param userPrincipalNameReturned The userPrincipalNameReturned value
+     * @param isUserPrincipalNameReturned The userPrincipalNameReturned value
      * @return the updated ListPathsOptions object
      */
-    public ListPathsOptions setUserPrincipalNameReturned(boolean userPrincipalNameReturned) {
-        this.userPrincipalNameReturned = userPrincipalNameReturned;
+    public ListPathsOptions setUserPrincipalNameReturned(boolean isUserPrincipalNameReturned) {
+        this.userPrincipalNameReturned = isUserPrincipalNameReturned;
         return this;
     }
 
