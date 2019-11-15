@@ -75,27 +75,6 @@ class EventHubClient implements Closeable {
 
     /**
      * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub partition, as a
-     * member of the specified consumer group, and begins reading events from the {@code eventPosition}.
-     *
-     * The consumer created is non-exclusive, allowing multiple consumers from the same consumer group to be actively
-     * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
-     * Consumers".
-     *
-     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
-     *     context of this group. The name of the consumer group that is created by default is {@link
-     *     EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
-     * @return A new {@link EventHubConsumerClient} that receives events from the partition at the given position.
-     * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
-     *     {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
-     */
-    EventHubConsumerClient createConsumer(String consumerGroup) {
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup);
-        return new EventHubConsumerClient(consumer, retry.getTryTimeout());
-    }
-
-    /**
-     * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub partition, as a
      * member of the configured consumer group.
      *
      * <p>
