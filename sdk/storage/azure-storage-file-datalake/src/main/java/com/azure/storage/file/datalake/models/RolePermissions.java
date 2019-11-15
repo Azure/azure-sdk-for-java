@@ -214,22 +214,22 @@ public class RolePermissions {
     /**
      * Sets the read permission status.
      *
-     * @param setReadPermission Permission status to set
+     * @param hasReadPermission Permission status to set
      * @return the updated RolePermissions object
      */
-    public RolePermissions setReadPermission(boolean setReadPermission) {
-        this.readPermission = setReadPermission;
+    public RolePermissions setReadPermission(boolean hasReadPermission) {
+        this.readPermission = hasReadPermission;
         return this;
     }
 
     /**
      * Sets the write permission status.
      *
-     * @param setWritePermission Permission status to set
+     * @param hasWritePermission Permission status to set
      * @return the updated RolePermissions object
      */
-    public RolePermissions setWritePermission(boolean setWritePermission) {
-        this.writePermission = setWritePermission;
+    public RolePermissions setWritePermission(boolean hasWritePermission) {
+        this.writePermission = hasWritePermission;
 
         return this;
     }
@@ -237,11 +237,11 @@ public class RolePermissions {
     /**
      * Sets the execute permission status.
      *
-     * @param setExecutePermission Permission status to set
+     * @param hasExecutePermission Permission status to set
      * @return the updated RolePermissions object
      */
-    public RolePermissions setExecutePermission(boolean setExecutePermission) {
-        this.executePermission = setExecutePermission;
+    public RolePermissions setExecutePermission(boolean hasExecutePermission) {
+        this.executePermission = hasExecutePermission;
         return this;
     }
 }
