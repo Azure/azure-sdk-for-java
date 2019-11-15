@@ -145,7 +145,16 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
         String contentType = response.getHeaderValue(CONTENT_TYPE);
         if (contentType == null) {
-            return Mono.just(responseData);
+            return response.getBodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
+                if (bytes.length == 0) {
+                    return responseData;
+                }
+
+                String content = new String(bytes, StandardCharsets.UTF_8);
+                responseData.put("Content-Length", Integer.toString(content.length()));
+                responseData.put(BODY, content);
+                return responseData;
+            });
         } else if (contentType.equalsIgnoreCase("application/octet-stream")) {
             return response.getBodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
                 if (bytes.length == 0) {
