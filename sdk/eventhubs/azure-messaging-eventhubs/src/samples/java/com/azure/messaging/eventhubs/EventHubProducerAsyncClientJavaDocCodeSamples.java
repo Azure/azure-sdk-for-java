@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
 
@@ -85,7 +85,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
             new EventData("120".getBytes(UTF_8)).addProperty("telemetry", "fps")
         );
 
-        final BatchOptions options = new BatchOptions()
+        final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionKey("telemetry")
             .setMaximumSizeInBytes(256);
         final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(

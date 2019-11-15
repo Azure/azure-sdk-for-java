@@ -12,7 +12,7 @@ public enum CBSAuthorizationType {
     /**
      * Authorize with CBS through a shared access signature.
      */
-    SHARED_ACCESS_SIGNATURE("sastoken"),
+    SHARED_ACCESS_SIGNATURE("servicebus.windows.net:sastoken"),
     /**
      * Authorize with CBS using a JSON web token.
      *

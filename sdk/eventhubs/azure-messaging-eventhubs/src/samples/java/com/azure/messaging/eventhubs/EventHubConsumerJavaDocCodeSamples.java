@@ -52,7 +52,7 @@ public class EventHubConsumerJavaDocCodeSamples {
 
         for (PartitionEvent partitionEvent : events) {
             // For each event, perform some sort of processing.
-            System.out.print("Event received: " + partitionEvent.getEventData().getSequenceNumber());
+            System.out.print("Event received: " + partitionEvent.getData().getSequenceNumber());
         }
 
         // Gets the next set of events to consume and process.
@@ -61,7 +61,7 @@ public class EventHubConsumerJavaDocCodeSamples {
 
         for (PartitionEvent partitionEvent : nextEvents) {
             // For each event, perform some sort of processing.
-            System.out.print("Event received: " + partitionEvent.getEventData().getSequenceNumber());
+            System.out.print("Event received: " + partitionEvent.getData().getSequenceNumber());
         }
     }
 }

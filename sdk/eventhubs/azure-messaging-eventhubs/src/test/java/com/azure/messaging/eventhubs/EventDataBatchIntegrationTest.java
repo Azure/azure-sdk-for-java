@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
@@ -130,7 +129,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
                 consumers.add(consumer);
                 consumer.receive(id).subscribe(partitionEvent -> {
-                    EventData event = partitionEvent.getEventData();
+                    EventData event = partitionEvent.getData();
                     if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
                         return;
                     }

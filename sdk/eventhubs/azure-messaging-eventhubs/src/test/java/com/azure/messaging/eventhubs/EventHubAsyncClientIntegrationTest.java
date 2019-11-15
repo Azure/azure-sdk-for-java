@@ -5,8 +5,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -125,12 +123,12 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                 consumers.add(consumer);
 
                 consumer.receive(PARTITION_ID).filter(partitionEvent -> {
-                    EventData event = partitionEvent.getEventData();
+                    EventData event = partitionEvent.getData();
                     return event.getProperties() != null
                         && event.getProperties().containsKey(messageTrackingId)
                         && messageTrackingValue.equals(event.getProperties().get(messageTrackingId));
                 }).take(numberOfEvents).subscribe(partitionEvent -> {
-                    EventData event = partitionEvent.getEventData();
+                    EventData event = partitionEvent.getData();
                     logger.info("Event[{}] matched.", event.getSequenceNumber());
                 }, error -> Assertions.fail("An error should not have occurred:" + error.toString()),
                     () -> {
@@ -156,5 +154,24 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             dispose(consumers.toArray(new EventHubConsumerAsyncClient[0]));
             dispose(clients);
         }
+    }
+
+    /**
+     * Sending with credentials.
+     */
+    @Test
+    public void getPropertiesWithCredentials() {
+        // Arrange
+        final EventHubAsyncClient client = createBuilder(true)
+            .buildAsyncClient();
+
+        // Act & Assert
+        StepVerifier.create(client.getProperties())
+            .assertNext(properties -> {
+                Assertions.assertEquals(getEventHubName(), properties.getName());
+                Assertions.assertEquals(2, properties.getPartitionIds().length);
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 }

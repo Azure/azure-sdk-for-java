@@ -7,18 +7,11 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
-import java.io.Closeable;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,8 +23,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.Closeable;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
@@ -102,7 +102,7 @@ public class EventProcessorTest {
         TracerProvider tracerProvider = new TracerProvider(tracers);
 
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
-        when(eventHubAsyncClient.getFullyQualifiedDomainName()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
@@ -180,7 +180,7 @@ public class EventProcessorTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
-        when(eventHubAsyncClient.getFullyQualifiedDomainName()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
@@ -231,7 +231,7 @@ public class EventProcessorTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
-        when(eventHubAsyncClient.getFullyQualifiedDomainName()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
@@ -291,7 +291,7 @@ public class EventProcessorTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
-        when(eventHubAsyncClient.getFullyQualifiedDomainName()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
@@ -356,7 +356,7 @@ public class EventProcessorTest {
 
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
-        when(eventHubAsyncClient.getFullyQualifiedDomainName()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient
             .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
@@ -438,7 +438,7 @@ public class EventProcessorTest {
 
         @Override
         public Mono<Void> processEvent(PartitionEvent partitionEvent) {
-            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
+            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData());
         }
     }
 

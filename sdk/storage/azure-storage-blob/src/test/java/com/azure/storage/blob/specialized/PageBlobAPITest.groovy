@@ -23,13 +23,11 @@ import java.time.OffsetDateTime
 
 class PageBlobAPITest extends APISpec {
     PageBlobClient bc
-    PageBlobAsyncClient bcAsync
     String blobName
 
     def setup() {
         blobName = generateBlobName()
         bc = cc.getBlobClient(blobName).getPageBlobClient()
-        bcAsync = ccAsync.getBlobAsyncClient(blobName).getPageBlobAsyncClient()
         bc.create(PageBlobClient.PAGE_BYTES)
     }
 

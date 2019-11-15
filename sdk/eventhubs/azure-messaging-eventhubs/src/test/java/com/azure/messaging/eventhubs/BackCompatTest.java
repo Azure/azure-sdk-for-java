@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.Proton;
@@ -99,7 +98,7 @@ public class BackCompatTest extends IntegrationTestBase {
         // Act & Assert
         StepVerifier.create(consumer.receive(PARTITION_ID).filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
             .then(() -> producer.send(eventData, sendOptions).block(TIMEOUT))
-            .assertNext(event -> validateAmqpProperties(applicationProperties, event.getEventData()))
+            .assertNext(event -> validateAmqpProperties(applicationProperties, event.getData()))
             .verifyComplete();
     }
 
