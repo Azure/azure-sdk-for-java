@@ -7,6 +7,7 @@ import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -43,6 +44,7 @@ class EventHubPartitionAsyncConsumer implements Closeable {
     private final String eventHubName;
     private final String consumerGroup;
     private final String partitionId;
+    private final EventPosition startingPosition;
     private final EmitterProcessor<PartitionEvent> emitterProcessor;
     private final Flux<PartitionEvent> messageFlux;
     private final boolean trackLastEnqueuedEventProperties;
@@ -50,11 +52,13 @@ class EventHubPartitionAsyncConsumer implements Closeable {
     private volatile AmqpReceiveLink receiveLink;
 
     EventHubPartitionAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
-        String eventHubName, String consumerGroup, String partitionId, EventHubConsumerOptions options) {
+        String eventHubName, String consumerGroup, String partitionId, EventPosition startingPosition,
+        EventHubConsumerOptions options) {
         this.messageSerializer = messageSerializer;
         this.eventHubName = eventHubName;
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
+        this.startingPosition = startingPosition;
         this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
         this.trackLastEnqueuedEventProperties = options.getTrackLastEnqueuedEventProperties();
 
@@ -128,6 +132,15 @@ class EventHubPartitionAsyncConsumer implements Closeable {
     }
 
     /**
+     * Gets the position this consumer started reading events from.
+     *
+     * @return The position this consumer began reading events from.
+     */
+    EventPosition startingPosition() {
+        return startingPosition;
+    }
+
+    /**
      * Disposes of the consumer by closing the underlying connection to the service.
      *
      * @throws IOException if the underlying transport and its resources could not be disposed.
@@ -154,10 +167,9 @@ class EventHubPartitionAsyncConsumer implements Closeable {
     }
 
     /**
-     * On each message received from the service, it will try to:
-     * 1. Deserialize the message into an EventData
-     * 2. If {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} is true, then it will try to update
-     *    {@link LastEnqueuedEventProperties}
+     * On each message received from the service, it will try to: 1. Deserialize the message into an EventData 2. If
+     * {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} is true, then it will try to update {@link
+     * LastEnqueuedEventProperties}
      *
      * @param message AMQP message to deserialize.
      *

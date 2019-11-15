@@ -27,7 +27,6 @@ public class EventHubConsumerJavaDocCodeSamples {
         EventHubConsumerClient consumer = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
             .consumerGroup("$DEFAULT")
-            .startingPosition(EventPosition.latest())
             .buildConsumer();
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
 
@@ -35,20 +34,23 @@ public class EventHubConsumerJavaDocCodeSamples {
     }
 
     /**
-     * Receives event data
+     * Receives event data from a single partition.
      */
     public void receive() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-duration
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration
         Instant twelveHoursAgo = Instant.now().minus(Duration.ofHours(12));
+        EventPosition startingPosition = EventPosition.fromEnqueuedTime(twelveHoursAgo);
         EventHubConsumerClient consumer = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .startingPosition(EventPosition.fromEnqueuedTime(twelveHoursAgo))
             .buildConsumer();
 
         // Obtain partitionId from EventHubConsumerClient.getPartitionIds().
         String partitionId = "0";
-        IterableStream<PartitionEvent> events = consumer.receive(partitionId, 100, Duration.ofSeconds(30));
+        int maxMessageCount = 100;
+        Duration maxWaitTime = Duration.ofSeconds(30);
+        IterableStream<PartitionEvent> events = consumer.receive(partitionId, maxMessageCount, startingPosition,
+            maxWaitTime);
 
         for (PartitionEvent partitionEvent : events) {
             // For each event, perform some sort of processing.
@@ -56,8 +58,9 @@ public class EventHubConsumerJavaDocCodeSamples {
         }
 
         // Gets the next set of events to consume and process.
-        IterableStream<PartitionEvent> nextEvents = consumer.receive(partitionId, 100, Duration.ofSeconds(30));
-        // END: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-duration
+        IterableStream<PartitionEvent> nextEvents = consumer.receive(partitionId, maxMessageCount, startingPosition,
+            maxWaitTime);
+        // END: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration
 
         for (PartitionEvent partitionEvent : nextEvents) {
             // For each event, perform some sort of processing.
