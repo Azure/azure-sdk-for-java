@@ -186,9 +186,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         }
 
         final String linkName = StringUtil.getRandomString(partitionId + "-");
-        return openPartitionConsumers
-            .computeIfAbsent(linkName, name -> createPartitionConsumer(name, partitionId, startingPosition))
-            .receive();
+        return createConsumer(linkName, partitionId, startingPosition);
     }
 
     /**
@@ -210,12 +208,11 @@ public class EventHubConsumerAsyncClient implements Closeable {
         }
 
         final String prefix = StringUtil.getRandomString("all-");
-        final Flux<PartitionEvent> allPartitionEvents = getPartitionIds().map(partitionId -> {
+        final Flux<PartitionEvent> allPartitionEvents = getPartitionIds().flatMap(partitionId -> {
             final String linkName = prefix + "-" + partitionId;
-            logger.info("{}: Creating receive consumer for partition '{}'", linkName, partitionId);
-            return openPartitionConsumers.computeIfAbsent(linkName,
-                name -> createPartitionConsumer(name, partitionId, startingPosition));
-        }).flatMap(consumer -> consumer.receive());
+
+            return createConsumer(linkName, partitionId, startingPosition);
+        });
 
         return Flux.merge(allPartitionEvents);
     }
@@ -241,6 +238,25 @@ public class EventHubConsumerAsyncClient implements Closeable {
         }
     }
 
+    private Flux<PartitionEvent> createConsumer(String linkName, String partitionId, EventPosition startingPosition) {
+        logger.info("{}: Creating receive consumer for partition '{}'", linkName, partitionId);
+        return openPartitionConsumers
+            .computeIfAbsent(linkName, name -> createPartitionConsumer(name, partitionId, startingPosition))
+            .receive()
+            .doFinally(signalType -> {
+                logger.info("{}: Receiving completed. Signal: {}", linkName, signalType);
+                final EventHubPartitionAsyncConsumer consumer = openPartitionConsumers.remove(linkName);
+
+                if (consumer != null) {
+                    try {
+                        consumer.close();
+                    } catch (IOException e) {
+                        logger.warning("Exception occurred while closing consumer {}", linkName, e);
+                    }
+                }
+            });
+    }
+
     private EventHubPartitionAsyncConsumer createPartitionConsumer(String linkName, String partitionId,
         EventPosition startingPosition) {
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT,
@@ -253,4 +269,5 @@ public class EventHubConsumerAsyncClient implements Closeable {
         return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer,
             getEventHubName(), consumerGroup, partitionId, startingPosition, consumerOptions);
     }
+
 }
