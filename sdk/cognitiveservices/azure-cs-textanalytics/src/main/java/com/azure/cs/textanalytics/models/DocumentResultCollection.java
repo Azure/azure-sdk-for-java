@@ -3,5 +3,5 @@
 
 package com.azure.cs.textanalytics.models;
 
-public class DocumentError {
+public class DocumentResultCollection {
 }

@@ -6,23 +6,20 @@ package com.azure.cs.textanalytics;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
-import com.azure.cs.textanalytics.models.DocumentEntities;
-import com.azure.cs.textanalytics.models.DocumentSentiment;
-import com.azure.cs.textanalytics.models.EntitiesResult;
+import com.azure.cs.textanalytics.implementation.models.DocumentSentiment;
+import com.azure.cs.textanalytics.implementation.models.EntitiesResult;
 import com.azure.cs.textanalytics.models.Entity;
-import com.azure.cs.textanalytics.models.EntityLinkingResult;
-import com.azure.cs.textanalytics.models.KeyPhraseResult;
+import com.azure.cs.textanalytics.implementation.models.EntityLinkingResult;
+import com.azure.cs.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.LanguageInput;
 import com.azure.cs.textanalytics.models.LanguageResult;
 import com.azure.cs.textanalytics.models.LinkedEntity;
 import com.azure.cs.textanalytics.models.MultiLanguageInput;
-import com.azure.cs.textanalytics.models.SentenceSentiment;
-import com.azure.cs.textanalytics.models.SentimentResponse;
+import com.azure.cs.textanalytics.implementation.models.SentimentResponse;
 
 import java.util.List;
 

@@ -6,11 +6,11 @@ package com.azure.cs.textanalytics.batch;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.cs.textanalytics.models.DocumentSentiment;
+import com.azure.cs.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
 import com.azure.cs.textanalytics.models.MultiLanguageInput;
-import com.azure.cs.textanalytics.models.SentenceSentiment;
-import com.azure.cs.textanalytics.models.SentimentResponse;
+import com.azure.cs.textanalytics.implementation.models.SentenceSentiment;
+import com.azure.cs.textanalytics.implementation.models.SentimentResponse;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * information about the request payload.
  */
 @Fluent
-public final class RequestStatistics {
+public final class DocumentBatchStatistics {
     /*
      * Number of documents submitted in the request.
      */
@@ -54,9 +54,9 @@ public final class RequestStatistics {
      * request.
      *
      * @param documentsCount the documentsCount value to set.
-     * @return the RequestStatistics object itself.
+     * @return the DocumentBatchStatistics object itself.
      */
-    public RequestStatistics setDocumentsCount(int documentsCount) {
+    public DocumentBatchStatistics setDocumentsCount(int documentsCount) {
         this.documentsCount = documentsCount;
         return this;
     }
@@ -76,9 +76,9 @@ public final class RequestStatistics {
      * excludes empty, over-size limit or non-supported languages documents.
      *
      * @param validDocumentsCount the validDocumentsCount value to set.
-     * @return the RequestStatistics object itself.
+     * @return the DocumentBatchStatistics object itself.
      */
-    public RequestStatistics setValidDocumentsCount(int validDocumentsCount) {
+    public DocumentBatchStatistics setValidDocumentsCount(int validDocumentsCount) {
         this.validDocumentsCount = validDocumentsCount;
         return this;
     }
@@ -100,9 +100,9 @@ public final class RequestStatistics {
      * documents.
      *
      * @param erroneousDocumentsCount the erroneousDocumentsCount value to set.
-     * @return the RequestStatistics object itself.
+     * @return the DocumentBatchStatistics object itself.
      */
-    public RequestStatistics setErroneousDocumentsCount(int erroneousDocumentsCount) {
+    public DocumentBatchStatistics setErroneousDocumentsCount(int erroneousDocumentsCount) {
         this.erroneousDocumentsCount = erroneousDocumentsCount;
         return this;
     }
@@ -122,9 +122,9 @@ public final class RequestStatistics {
      * request.
      *
      * @param transactionsCount the transactionsCount value to set.
-     * @return the RequestStatistics object itself.
+     * @return the DocumentBatchStatistics object itself.
      */
-    public RequestStatistics setTransactionsCount(long transactionsCount) {
+    public DocumentBatchStatistics setTransactionsCount(long transactionsCount) {
         this.transactionsCount = transactionsCount;
         return this;
     }

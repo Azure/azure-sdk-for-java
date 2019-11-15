@@ -5,6 +5,8 @@
 package com.azure.cs.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.cs.textanalytics.implementation.models.DocumentError;
+import com.azure.cs.textanalytics.implementation.models.DocumentLanguage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public final class LanguageResult {
      * The statistics property.
      */
     @JsonProperty(value = "statistics")
-    private RequestStatistics statistics;
+    private DocumentBatchStatistics statistics;
 
     /*
      * This field indicates which model is used for scoring.
@@ -82,7 +84,7 @@ public final class LanguageResult {
      *
      * @return the statistics value.
      */
-    public RequestStatistics getStatistics() {
+    public DocumentBatchStatistics getStatistics() {
         return this.statistics;
     }
 
@@ -92,7 +94,7 @@ public final class LanguageResult {
      * @param statistics the statistics value to set.
      * @return the LanguageResult object itself.
      */
-    public LanguageResult setStatistics(RequestStatistics statistics) {
+    public LanguageResult setStatistics(DocumentBatchStatistics statistics) {
         this.statistics = statistics;
         return this;
     }
