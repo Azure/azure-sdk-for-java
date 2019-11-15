@@ -16,7 +16,7 @@ import com.azure.cs.textanalytics.models.Entity;
 import com.azure.cs.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.cs.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.LanguageInput;
-import com.azure.cs.textanalytics.models.LanguageResult;
+import com.azure.cs.textanalytics.implementation.models.LanguageResult;
 import com.azure.cs.textanalytics.models.LinkedEntity;
 import com.azure.cs.textanalytics.models.MultiLanguageInput;
 import com.azure.cs.textanalytics.implementation.models.SentimentResponse;

@@ -3,10 +3,13 @@
 
 package com.azure.cs.textanalytics.models;
 
+import java.util.List;
+
 public class DocumentResult<T> {
 
     private String id;
     private DocumentStatistics documentStatistics;
+    private List<DocumentError> errors;
 
     public String getId() {
         return id;

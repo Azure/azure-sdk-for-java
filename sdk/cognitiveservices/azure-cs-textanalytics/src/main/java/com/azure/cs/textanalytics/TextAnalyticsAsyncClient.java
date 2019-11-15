@@ -21,16 +21,18 @@ import com.azure.cs.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.cs.textanalytics.implementation.models.DocumentLinkedEntities;
 import com.azure.cs.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.cs.textanalytics.implementation.models.EntitiesResult;
+import com.azure.cs.textanalytics.models.DocumentResult;
 import com.azure.cs.textanalytics.models.Entity;
 import com.azure.cs.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.cs.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.LanguageBatchInput;
 import com.azure.cs.textanalytics.models.LanguageInput;
-import com.azure.cs.textanalytics.models.LanguageResult;
+import com.azure.cs.textanalytics.implementation.models.LanguageResult;
 import com.azure.cs.textanalytics.models.LinkedEntity;
 import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
 import com.azure.cs.textanalytics.models.MultiLanguageInput;
 import com.azure.cs.textanalytics.implementation.models.SentimentResponse;
+import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 import reactor.core.publisher.Mono;
 
 
@@ -60,10 +62,6 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsServiceVersion getServiceVersion() {
         return serviceVersion;
     }
-
-    // TODO: LanguageResult, EntitiesResult, EntityLinkingResult, KeyPhraseResult, SentimentResponse
-    // TODO: These above classes can be one explored Type class, DocumentResult
-    // TODO: LanguageInput, MultiLanguageInput can be renamed with better names such as DocumentInput
 
     // (1) language
     // new user
@@ -109,27 +107,28 @@ public final class TextAnalyticsAsyncClient {
 
     // Advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LanguageResult> detectLanguages(List<LanguageInput> documents, String modelVersion, Boolean showStats) {
+    public Mono<DocumentResult<DetectedLanguage>> detectLanguages(List<LanguageInput> documents, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LanguageResult>> detectLanguagesWithResponse(List<LanguageInput> documents,
-                                                                      String modelVersion, Boolean showStats) {
+                                                                      TextAnalyticsRequestOptions options) {
         try {
             return withContext(
-                context -> detectLanguagesWithResponse(documents, modelVersion, showStats, context));
+                context -> detectLanguagesWithResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<LanguageResult>> detectLanguagesWithResponse(List<LanguageInput> documents, String modelVersion,
-                                                               Boolean showStats, Context context) {
+    Mono<Response<LanguageResult>> detectLanguagesWithResponse(List<LanguageInput> documents,
+                                                               TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate multiLanguageBatchInput
 
         return client.languagesWithRestResponseAsync(new LanguageBatchInput().setDocuments(documents),
-            modelVersion, showStats, context).map(response -> new SimpleResponse<>(response, null));
+            options.getModelVersion(), options.isShowStats(), context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     // (2) entities
