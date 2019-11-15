@@ -21,7 +21,6 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
@@ -31,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -73,10 +73,16 @@ public class BackPressureTest extends TestSuiteBase {
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.readAllItems(options);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
+        AtomicInteger valueCount = new AtomicInteger();
         rxClient.httpRequests.clear();
 
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosItemProperties>>(1);
-        queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        queryObservable.doOnNext(cosmosItemPropertiesFeedResponse -> {
+            if (!cosmosItemPropertiesFeedResponse.getResults().isEmpty()) {
+                valueCount.incrementAndGet();
+            }
+        }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+
         int sleepTimeInMillis = 10000; // 10 seconds
 
         int i = 0;
@@ -101,7 +107,7 @@ public class BackPressureTest extends TestSuiteBase {
 
         subscriber.assertNoErrors();
         subscriber.assertComplete();
-        assertThat(subscriber.valueCount()).isEqualTo(createdDocuments.size());
+        assertThat(valueCount.get()).isEqualTo(createdDocuments.size());
     }
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
@@ -115,7 +121,14 @@ public class BackPressureTest extends TestSuiteBase {
         rxClient.httpRequests.clear();
 
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosItemProperties>>(1);
-        queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        AtomicInteger valueCount = new AtomicInteger();
+
+        queryObservable.doOnNext(cosmosItemPropertiesFeedResponse -> {
+            if (!cosmosItemPropertiesFeedResponse.getResults().isEmpty()) {
+                valueCount.incrementAndGet();
+            }
+        }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+
         int sleepTimeInMillis = 10000;
 
         int i = 0;
@@ -140,7 +153,7 @@ public class BackPressureTest extends TestSuiteBase {
         subscriber.assertNoErrors();
         subscriber.assertComplete();
 
-        assertThat(subscriber.valueCount()).isEqualTo(createdDocuments.size());
+        assertThat(valueCount.get()).isEqualTo(createdDocuments.size());
     }
 
     @BeforeClass(groups = { "long" }, timeOut = 2 * SETUP_TIMEOUT)
