@@ -286,11 +286,11 @@ public class PathPermissions {
      * Sets the value of the sticky bit. The sticky bit may be set on directories, the files in that
      * directory may only be renamed or deleted by the file's owner, the directory's owner, or the root user.
      *
-     * @param setStickyBit {@code True} to set the sticky bit and {@code false} to clear it.
+     * @param hasStickyBit {@code True} to set the sticky bit and {@code false} to clear it.
      * @return The updated PathPermissions object.
      */
-    public PathPermissions setStickyBit(boolean setStickyBit) {
-        this.stickyBit = setStickyBit;
+    public PathPermissions setStickyBit(boolean hasStickyBit) {
+        this.stickyBit = hasStickyBit;
         return this;
     }
 
