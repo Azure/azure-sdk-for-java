@@ -8,7 +8,6 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -110,14 +109,13 @@ class EventHubAsyncClient implements Closeable {
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      * context of this group. The name of the consumer group that is created by default is {@link
      * EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
-     * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return A new {@link EventHubConsumerAsyncClient} that receives events from the partition at the given position.
      * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
      * string.
      */
-    EventHubConsumerAsyncClient createConsumer(String consumerGroup, EventPosition eventPosition) {
-        return createConsumer(consumerGroup, eventPosition, defaultConsumerOptions);
+    EventHubConsumerAsyncClient createConsumer(String consumerGroup) {
+        return createConsumer(consumerGroup, defaultConsumerOptions);
     }
 
     /**
@@ -141,7 +139,6 @@ class EventHubAsyncClient implements Closeable {
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      * context of this group. The name of the consumer group that is created by default is
      * {@link EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
-     * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
      * @return An new {@link EventHubConsumerAsyncClient} that receives events from the partition with all configured
      * {@link EventHubConsumerOptions}.
@@ -149,9 +146,7 @@ class EventHubAsyncClient implements Closeable {
      * {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    EventHubConsumerAsyncClient createConsumer(String consumerGroup, EventPosition eventPosition,
-        EventHubConsumerOptions options) {
-        Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
+    EventHubConsumerAsyncClient createConsumer(String consumerGroup, EventHubConsumerOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
 
@@ -163,7 +158,7 @@ class EventHubAsyncClient implements Closeable {
         final EventHubConsumerOptions clonedOptions = options.clone();
 
         return new EventHubConsumerAsyncClient(connection.getFullyQualifiedNamespace(), getEventHubName(),
-            connection, messageSerializer, consumerGroup, eventPosition, clonedOptions, isSharedConnection);
+            connection, messageSerializer, consumerGroup, clonedOptions, isSharedConnection);
     }
 
     /**

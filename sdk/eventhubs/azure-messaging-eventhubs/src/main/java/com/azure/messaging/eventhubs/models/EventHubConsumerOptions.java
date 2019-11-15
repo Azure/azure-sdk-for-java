@@ -80,7 +80,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * @param prefetchCount The amount of events to queue locally.
      * @return The updated {@link EventHubConsumerOptions} object.
      * @throws IllegalArgumentException if {@code prefetchCount} is less than the {@link
-     *     #MINIMUM_PREFETCH_COUNT} or greater than {@link #MAXIMUM_PREFETCH_COUNT}.
+     *     #MINIMUM_PREFETCH_COUNT 1} or greater than {@link #MAXIMUM_PREFETCH_COUNT 8000}.
      */
     public EventHubConsumerOptions setPrefetchCount(int prefetchCount) {
         if (prefetchCount < MINIMUM_PREFETCH_COUNT) {

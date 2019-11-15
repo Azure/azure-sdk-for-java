@@ -85,14 +85,13 @@ class EventHubClient implements Closeable {
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      *     context of this group. The name of the consumer group that is created by default is {@link
      *     EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
-     * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return A new {@link EventHubConsumerClient} that receives events from the partition at the given position.
      * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
      *     {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
-    EventHubConsumerClient createConsumer(String consumerGroup, EventPosition eventPosition) {
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup, eventPosition);
+    EventHubConsumerClient createConsumer(String consumerGroup) {
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup);
         return new EventHubConsumerClient(consumer, retry.getTryTimeout());
     }
 

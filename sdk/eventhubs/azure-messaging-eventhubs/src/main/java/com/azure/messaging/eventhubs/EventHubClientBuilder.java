@@ -28,7 +28,6 @@ import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -101,7 +100,6 @@ public class EventHubClientBuilder {
     private String fullyQualifiedNamespace;
     private String eventHubName;
     private EventHubConsumerOptions consumerOptions;
-    private EventPosition startingPosition;
     private String consumerGroup;
     private EventHubConnection eventHubConnection;
 
@@ -309,17 +307,6 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the position within the partition where the consumer should begin reading events.
-     *
-     * @param eventPosition Position within an Event Hub partition to begin consuming events.
-     * @return The updated {@link EventHubClientBuilder} object.
-     */
-    public EventHubClientBuilder startingPosition(EventPosition eventPosition) {
-        this.startingPosition = eventPosition;
-        return this;
-    }
-
-    /**
      * Sets the name of the consumer group this consumer is associated with. Events are read in the context of this
      * group. The name of the consumer group that is created by default is
      * {@link #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
@@ -367,9 +354,9 @@ public class EventHubClientBuilder {
      * @return A new {@link EventHubConsumerAsyncClient} with the configured options.
      *
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
-     * either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. If
-     * {@link #startingPosition(EventPosition)} or {@link #consumerGroup(String)} have not been set.
-     * Or, if a proxy is specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Also, if
+     *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
+     *     {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubConsumerAsyncClient buildAsyncConsumer() {
         final EventHubConsumerOptions options = consumerOptions != null
@@ -379,12 +366,9 @@ public class EventHubClientBuilder {
         if (CoreUtils.isNullOrEmpty(consumerGroup)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be null or an empty "
                 + "string. using EventHubClientBuilder.consumerGroup(String)"));
-        } else if (startingPosition == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'startingPosition' has not been set. Set it "
-                + "using EventHubClientBuilder.consumerGroup(String)"));
         }
 
-        return buildAsyncClient().createConsumer(consumerGroup, startingPosition, options);
+        return buildAsyncClient().createConsumer(consumerGroup, options);
     }
 
     /**
@@ -394,16 +378,16 @@ public class EventHubClientBuilder {
      * @return A new {@link EventHubConsumerClient} with the configured options.
      *
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
-     * either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. If
-     * {@link #startingPosition(EventPosition)} or {@link #consumerGroup(String)} have not been set.
-     * Or, if a proxy is specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Also, if
+     *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
+     *     {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubConsumerClient buildConsumer() {
         final EventHubConsumerOptions options = consumerOptions != null
             ? consumerOptions
             : new EventHubConsumerOptions();
 
-        return buildClient().createConsumer(consumerGroup, startingPosition, options);
+        return buildClient().createConsumer(consumerGroup, options);
     }
 
     /**

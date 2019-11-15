@@ -22,8 +22,11 @@ import reactor.core.publisher.Mono;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
@@ -65,9 +68,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class EventHubConsumerAsyncClient implements Closeable {
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
 
-    private final ConcurrentHashMap<String, EventHubPartitionAsyncConsumer> openPartitionConsumers =
-        new ConcurrentHashMap<>();
-
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClient.class);
     private final String fullyQualifiedNamespace;
@@ -75,30 +75,21 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final EventHubConnection connection;
     private final MessageSerializer messageSerializer;
     private final String consumerGroup;
-    private final EventPosition startingPosition;
     private final EventHubConsumerOptions consumerOptions;
     private final boolean isSharedConnection;
-    private final Flux<PartitionEvent> allPartitionsFlux;
+    private final ConcurrentHashMap<String, EventHubPartitionAsyncConsumer> openPartitionConsumers =
+        new ConcurrentHashMap<>();
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
-        MessageSerializer messageSerializer, String consumerGroup, EventPosition startingPosition,
-        EventHubConsumerOptions consumerOptions, boolean isSharedConnection) {
+        MessageSerializer messageSerializer, String consumerGroup, EventHubConsumerOptions consumerOptions,
+        boolean isSharedConnection) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connection = connection;
         this.messageSerializer = messageSerializer;
         this.consumerGroup = consumerGroup;
-        this.startingPosition = startingPosition;
         this.consumerOptions = consumerOptions;
         this.isSharedConnection = isSharedConnection;
-        this.allPartitionsFlux = Flux.defer(() -> {
-            return getPartitionIds().map(id -> {
-                final EventHubPartitionAsyncConsumer partitionConsumer = createPartitionConsumer(id);
-                logger.info("Creating receive-all-consumer for partition '{}'", id);
-                openPartitionConsumers.put("receive-all-" + id, partitionConsumer);
-                return partitionConsumer;
-            }).flatMap(consumer -> consumer.receive());
-        }).share();
     }
 
     /**
@@ -118,15 +109,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     public String getEventHubName() {
         return eventHubName;
-    }
-
-    /**
-     * Gets the position of the event in the partition where the consumer should begin reading.
-     *
-     * @return The position of the event in the partition where the consumer should begin reading.
-     */
-    public EventPosition getStartingPosition() {
-        return startingPosition;
     }
 
     /**
@@ -167,43 +149,70 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
+        if (Objects.isNull(partitionId)) {
+            return monoError(logger, new NullPointerException("'partitionId' cannot be null."));
+        }  else if (partitionId.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'partitionId' cannot be an empty string."));
+        }
+
         return connection.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
     /**
-     * Begin consuming events from a single partition starting at {@link #getStartingPosition()} until there are no more
-     * subscribers.
+     * Begin consuming events from a single partition starting at {@code startingPosition}.
      *
      * @param partitionId Identifier of the partition to read events from.
+     * @param startingPosition Position within the Event Hub partition to begin consuming events.
      * @return A stream of events for this partition. If a stream for the events was opened before, the same position
-     *     within that partition is returned. Otherwise, events are read starting from {@link #getStartingPosition()}.
+     *     within that partition is returned. Otherwise, events are read starting from {@code startingPosition}.
      *
-     * @throws NullPointerException if {@code partitionId} is null.
+     * @throws NullPointerException if {@code partitionId} or {@code startingPosition} is null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
-    public Flux<PartitionEvent> receive(String partitionId) {
-        if (partitionId == null) {
+    public Flux<PartitionEvent> receive(String partitionId, EventPosition startingPosition) {
+        if (Objects.isNull(partitionId)) {
             return Flux.error(logger.logExceptionAsError(new NullPointerException("'partitionId' cannot be null.")));
         } else if (partitionId.isEmpty()) {
             return Flux.error(logger.logExceptionAsError(
                 new IllegalArgumentException("'partitionId' cannot be an empty string.")));
         }
 
-        return openPartitionConsumers.computeIfAbsent(partitionId, id -> createPartitionConsumer(id)).receive();
+        if (Objects.isNull(startingPosition)) {
+            return Flux.error((logger.logExceptionAsError(
+                new NullPointerException("'startingPosition' cannot be null."))));
+        }
+
+        final String linkName = StringUtil.getRandomString(partitionId + "-");
+        return openPartitionConsumers.computeIfAbsent(linkName, id -> createPartitionConsumer(id, startingPosition))
+            .receive();
     }
 
     /**
-     * Begin consuming events from all partitions starting at {@link #getStartingPosition()} until there are no more
-     * subscribers.
+     * Begin consuming events from all partitions starting at {@code startingPosition}.
      *
      * @return A stream of events for every partition in the Event Hub. Otherwise, events are read starting from
-     *     {@link #getStartingPosition()}.
+     *     {@link EventPosition#earliest()}.
      *
-     * @throws NullPointerException if {@code partitionId} is null.
-     * @throws IllegalArgumentException if {@code partitionId} is an empty string.
+     * @throws NullPointerException if {@code startingPosition} is null.
      */
-    public Flux<PartitionEvent> receive() {
-        return allPartitionsFlux;
+    public Flux<PartitionEvent> receive(EventPosition startingPosition) {
+        if (Objects.isNull(startingPosition)) {
+            return Flux.error((logger.logExceptionAsError(
+                new NullPointerException("'startingPosition' cannot be null."))));
+        }
+
+        return Flux.defer(() -> {
+            final String prefix = StringUtil.getRandomString("all-");
+            final Flux<PartitionEvent> allPartitionEvents = getPartitionIds().map(partitionId -> {
+                final String linkName = prefix + "-" + partitionId;
+                logger.info("Creating receive consumer for partition '{}'", partitionId);
+                return openPartitionConsumers.computeIfAbsent(linkName,
+                    existingKey -> createPartitionConsumer(existingKey, startingPosition));
+
+            }).flatMap(consumer -> consumer.receive());
+
+            return Flux.merge(allPartitionEvents);
+        });
     }
 
     /**
@@ -228,13 +237,13 @@ public class EventHubConsumerAsyncClient implements Closeable {
         }
     }
 
-    private EventHubPartitionAsyncConsumer createPartitionConsumer(String partitionId) {
+    private EventHubPartitionAsyncConsumer createPartitionConsumer(String partitionId, EventPosition startingPosition) {
         final String linkName = StringUtil.getRandomString("PR");
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT,
             getEventHubName(), consumerGroup, partitionId);
 
         final Mono<AmqpReceiveLink> receiveLinkMono =
-            connection.createReceiveLink(linkName, entityPath, getStartingPosition(), consumerOptions)
+            connection.createReceiveLink(linkName, entityPath, startingPosition, consumerOptions)
                 .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
 
         return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer,
