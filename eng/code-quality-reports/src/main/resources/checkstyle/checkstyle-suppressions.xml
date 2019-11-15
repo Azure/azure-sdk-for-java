@@ -247,4 +247,9 @@
    This suppression need to be deleted after AzConfig using AAD credential.
    Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/5131 -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" files="com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy.java"/>
+
+  <!-- Only checks Public Api classes -->
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]test[/\\].*" />
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]samples[/\\].*" />
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]implementation[/\\].*" />
 </suppressions>
