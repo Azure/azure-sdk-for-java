@@ -202,6 +202,7 @@ public class EventHubConsumerAsyncClientTest {
     /**
      * Verifies that we can resubscribe to the receiver multiple times.
      */
+    @SuppressWarnings("unchecked")
     @Test
     public void returnsNewListener() {
         // Arrange
