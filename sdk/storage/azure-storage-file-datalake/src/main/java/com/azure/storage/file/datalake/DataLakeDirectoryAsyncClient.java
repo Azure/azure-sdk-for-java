@@ -259,28 +259,28 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     /**
-     * Creates a new DataLakeDirectoryAsyncClient object by concatenating subDirectoryName to the end of
+     * Creates a new DataLakeDirectoryAsyncClient object by concatenating subdirectoryName to the end of
      * DataLakeDirectoryAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
      * as the DataLakeDirectoryAsyncClient.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getSubDirectoryAsyncClient#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getSubdirectoryAsyncClient#String}
      *
-     * @param subDirectoryName A {@code String} representing the name of the sub-directory.
+     * @param subdirectoryName A {@code String} representing the name of the sub-directory.
      * @return A new {@link DataLakeDirectoryAsyncClient} object which references the directory with the specified name
      * in this file system.
      */
-    public DataLakeDirectoryAsyncClient getSubDirectoryAsyncClient(String subDirectoryName) {
-        Objects.requireNonNull(subDirectoryName, "'subDirectoryName' can not be set to null");
+    public DataLakeDirectoryAsyncClient getSubdirectoryAsyncClient(String subdirectoryName) {
+        Objects.requireNonNull(subdirectoryName, "'subdirectoryName' can not be set to null");
 
-        BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(subDirectoryName)
+        BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(subdirectoryName)
             .buildBlockBlobAsyncClient();
 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(subDirectoryName)))
+            StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(subdirectoryName)))
                 .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), getObjectPath() + "/"
-            + Utility.urlDecode(subDirectoryName), blockBlobAsyncClient);
+            + Utility.urlDecode(subdirectoryName), blockBlobAsyncClient);
     }
 
     /**
@@ -290,15 +290,15 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectory#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String}
      *
-     * @param subDirectoryName Name of the sub-directory to create.
+     * @param subdirectoryName Name of the sub-directory to create.
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
      * created.
      */
-    public Mono<DataLakeDirectoryAsyncClient> createSubDirectory(String subDirectoryName) {
+    public Mono<DataLakeDirectoryAsyncClient> createSubdirectory(String subdirectoryName) {
         try {
-            return createSubDirectoryWithResponse(subDirectoryName, null, null, null, null, null)
+            return createSubdirectoryWithResponse(subdirectoryName, null, null, null, null, null)
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -312,9 +312,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions}
      *
-     * @param subDirectoryName Name of the sub-directory to create.
+     * @param subdirectoryName Name of the sub-directory to create.
      * @param permissions POSIX access permissions for the sub-directory owner, the sub-directory owning group, and
      * others.
      * @param umask Restricts permissions of the sub-directory to be created.
@@ -324,11 +324,11 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the sub-directory created.
      */
-    public Mono<Response<DataLakeDirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
+    public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
         try {
-            DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = getSubDirectoryAsyncClient(subDirectoryName);
+            DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = getSubdirectoryAsyncClient(subdirectoryName);
 
             return dataLakeDirectoryAsyncClient.createWithResponse(permissions, umask, headers, metadata,
                 requestConditions).map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
@@ -345,14 +345,14 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubDirectory#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectory#String}
      *
-     * @param subDirectoryName Name of the sub-directory to delete.
+     * @param subdirectoryName Name of the sub-directory to delete.
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> deleteSubDirectory(String subDirectoryName) {
+    public Mono<Void> deleteSubdirectory(String subdirectoryName) {
         try {
-            return deleteSubDirectoryWithResponse(subDirectoryName, false, null).flatMap(FluxUtil::toMono);
+            return deleteSubdirectoryWithResponse(subdirectoryName, false, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -366,17 +366,17 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubDirectoryWithResponse#String-boolean-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryWithResponse#String-boolean-DataLakeRequestConditions}
      *
      * @param directoryName Name of the sub-directory to delete.
      * @param recursive Whether or not to delete all paths beneath the sub-directory.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
-    public Mono<Response<Void>> deleteSubDirectoryWithResponse(String directoryName, boolean recursive,
+    public Mono<Response<Void>> deleteSubdirectoryWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions) {
         try {
-            return getSubDirectoryAsyncClient(directoryName).deleteWithResponse(recursive, requestConditions);
+            return getSubdirectoryAsyncClient(directoryName).deleteWithResponse(recursive, requestConditions);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -419,15 +419,15 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
      * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
      * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
-     * @param destRequestConditions {@link DataLakeRequestConditions} against the destination.
+     * @param destinationRequestConditions {@link DataLakeRequestConditions} against the destination.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the directory created.
      */
     public Mono<Response<DataLakeDirectoryAsyncClient>> renameWithResponse(String destinationPath,
-        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destRequestConditions) {
+        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions) {
         try {
             return withContext(context -> renameWithResponse(destinationPath, sourceRequestConditions,
-                destRequestConditions, context)).map(response -> new SimpleResponse<>(response,
+                destinationRequestConditions, context)).map(response -> new SimpleResponse<>(response,
                     new DataLakeDirectoryAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
