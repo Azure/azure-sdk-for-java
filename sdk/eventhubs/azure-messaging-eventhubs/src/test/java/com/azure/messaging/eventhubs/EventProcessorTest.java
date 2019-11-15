@@ -106,9 +106,9 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
-            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
-        when(consumer1.receive(anyString())).thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)));
+        when(consumer1.receive(anyString(), any(EventPosition.class))).thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
         when(eventData1.getOffset()).thenReturn(1L);
@@ -163,8 +163,8 @@ public class EventProcessorTest {
 
         verify(eventHubAsyncClient, atLeastOnce()).getPartitionIds();
         verify(eventHubAsyncClient, atLeastOnce())
-            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class));
-        verify(consumer1, atLeastOnce()).receive(anyString());
+            .createConsumer(anyString(), any(EventHubConsumerOptions.class));
+        verify(consumer1, atLeastOnce()).receive(anyString(), any(EventPosition.class));
         verify(consumer1, atLeastOnce()).close();
     }
 
@@ -184,9 +184,9 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
-            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
-        when(consumer1.receive(anyString())).thenReturn(Flux.just(getEvent(eventData1)));
+        when(consumer1.receive(anyString(), any(EventPosition.class))).thenReturn(Flux.just(getEvent(eventData1)));
         String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
 
         final InMemoryEventProcessorStore eventProcessorStore = new InMemoryEventProcessorStore();
@@ -235,7 +235,7 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
-            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
@@ -247,7 +247,7 @@ public class EventProcessorTest {
         properties.put(DIAGNOSTIC_ID_KEY, diagnosticId);
 
         when(eventData1.getProperties()).thenReturn(properties);
-        when(consumer1.receive(anyString())).thenReturn(Flux.just(getEvent(eventData1)));
+        when(consumer1.receive(anyString(), any(EventPosition.class))).thenReturn(Flux.just(getEvent(eventData1)));
         when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
@@ -295,7 +295,7 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
-            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
@@ -307,7 +307,7 @@ public class EventProcessorTest {
         properties.put(DIAGNOSTIC_ID_KEY, diagnosticId);
 
         when(eventData1.getProperties()).thenReturn(properties);
-        when(consumer1.receive(anyString())).thenReturn(Flux.just(getEvent(eventData1)));
+        when(consumer1.receive(anyString(), any(EventPosition.class))).thenReturn(Flux.just(getEvent(eventData1)));
         when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
@@ -359,7 +359,7 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient
-            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1, consumer2, consumer3);
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(identifiers));
@@ -401,7 +401,7 @@ public class EventProcessorTest {
 
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
         verify(eventHubAsyncClient, times(1))
-            .createConsumer(anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class));
+            .createConsumer(anyString(), any(EventHubConsumerOptions.class));
 
         // We expected one to be removed.
         Assertions.assertEquals(2, identifiers.size());
@@ -409,7 +409,7 @@ public class EventProcessorTest {
         StepVerifier.create(eventProcessorStore.listOwnership("ns", "test-eh", "test-consumer"))
             .assertNext(po -> {
                 String partitionId = po.getPartitionId();
-                verify(consumer1, atLeastOnce()).receive(eq(partitionId));
+                verify(consumer1, atLeastOnce()).receive(eq(partitionId), any(EventPosition.class));
             }).verifyComplete();
     }
 

@@ -79,11 +79,12 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setPrefetchCount(2);
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME,
-            EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, options);
+        final EventPosition startingPosition = EventPosition.fromEnqueuedTime(testData.getEnqueuedTime());
 
         // Act & Assert
-        StepVerifier.create(consumer.receive(PARTITION_ID).filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
+        StepVerifier.create(consumer.receive(PARTITION_ID, startingPosition)
+            .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .expectComplete()
@@ -119,17 +120,14 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
         try {
             for (final EventHubAsyncClient hubClient : clients) {
-                final EventHubConsumerAsyncClient consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, EventPosition.latest());
+                final EventHubConsumerAsyncClient consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
                 consumers.add(consumer);
 
-                consumer.receive(PARTITION_ID).filter(partitionEvent -> {
-                    EventData event = partitionEvent.getData();
-                    return event.getProperties() != null
-                        && event.getProperties().containsKey(messageTrackingId)
-                        && messageTrackingValue.equals(event.getProperties().get(messageTrackingId));
-                }).take(numberOfEvents).subscribe(partitionEvent -> {
-                    EventData event = partitionEvent.getData();
-                    logger.info("Event[{}] matched.", event.getSequenceNumber());
+                consumer.receive(PARTITION_ID, EventPosition.latest())
+                    .filter(partitionEvent -> TestUtils.isMatchingEvent(partitionEvent.getData(), messageTrackingValue))
+                    .take(numberOfEvents).subscribe(partitionEvent -> {
+                        EventData event = partitionEvent.getData();
+                        logger.info("Event[{}] matched.", event.getSequenceNumber());
                 }, error -> Assertions.fail("An error should not have occurred:" + error.toString()),
                     () -> {
                         long count = countDownLatch.getCount();

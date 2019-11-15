@@ -115,7 +115,7 @@ public class EventHubConsumerClientTest {
         EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setPrefetchCount(PREFETCH);
         asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(), options, false);
+            linkProvider, messageSerializer, CONSUMER_GROUP, options, false);
         consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
     }
 
@@ -138,7 +138,7 @@ public class EventHubConsumerClientTest {
     public void lastEnqueuedEventInformationIsNull() {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(),
+            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP,
             new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(false), false);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
         final int numberOfEvents = 10;
@@ -146,7 +146,7 @@ public class EventHubConsumerClientTest {
         final int numberToReceive = 3;
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, numberToReceive);
+        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, numberToReceive, EventPosition.earliest());
 
         // Assert
         Assertions.assertNotNull(receive);
@@ -163,7 +163,7 @@ public class EventHubConsumerClientTest {
     public void lastEnqueuedEventInformationCreated() {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(),
+            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP,
             new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true), false);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
 
@@ -172,7 +172,7 @@ public class EventHubConsumerClientTest {
         final int numberToReceive = 3;
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, numberOfEvents);
+        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, numberOfEvents, EventPosition.earliest());
 
         // Assert
         Assertions.assertNotNull(receive);
@@ -200,7 +200,7 @@ public class EventHubConsumerClientTest {
         // Act
         semaphore.acquire();
         EXECUTOR_SERVICE.execute(() -> {
-            received.set(consumer.receive(PARTITION_ID, numberToReceive));
+            received.set(consumer.receive(PARTITION_ID, numberToReceive, EventPosition.earliest()));
             semaphore.release();
         });
 
@@ -237,8 +237,8 @@ public class EventHubConsumerClientTest {
         sendMessages(sink, numberOfEvents, PARTITION_ID);
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, firstReceive);
-        final IterableStream<PartitionEvent> receive2 = consumer.receive(PARTITION_ID, secondReceive);
+        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, firstReceive, EventPosition.earliest());
+        final IterableStream<PartitionEvent> receive2 = consumer.receive(PARTITION_ID, secondReceive, EventPosition.earliest());
 
         // Assert
         final Map<Integer, PartitionEvent> firstActual = receive.stream()
@@ -271,7 +271,7 @@ public class EventHubConsumerClientTest {
         sendMessages(sink, numberOfEvents, PARTITION_ID);
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, firstReceive, timeout);
+        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, firstReceive, EventPosition.earliest(), timeout);
 
         // Assert
         final Map<Integer, PartitionEvent> firstActual = receive.stream()
@@ -292,7 +292,6 @@ public class EventHubConsumerClientTest {
         // Act
         EventHubConsumerClient consumer = new EventHubClientBuilder()
             .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath=dummy-event-hub")
-            .startingPosition(position)
             .consumerGroup(CONSUMER_GROUP)
             .consumerOptions(options)
             .buildConsumer();
@@ -300,7 +299,6 @@ public class EventHubConsumerClientTest {
         Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
         Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
         Assertions.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
-        Assertions.assertSame(position, consumer.getStartingPosition());
     }
 
     @Test
@@ -324,7 +322,7 @@ public class EventHubConsumerClientTest {
             .setPrefetchCount(PREFETCH);
 
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            eventHubConnection, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(), options, false);
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, options, false);
 
         EmitterProcessor<Message> processor2 = EmitterProcessor.create();
         FluxSink<Message> processor2sink = processor2.sink();
@@ -368,7 +366,8 @@ public class EventHubConsumerClientTest {
             .thenReturn(Mono.just(link3));
 
         // Act & Assert
-        StepVerifier.create(asyncClient.receive().filter(e -> isMatchingEvent(e, messageTrackingUUID)))
+        StepVerifier.create(asyncClient.receive(EventPosition.earliest())
+            .filter(e -> isMatchingEvent(e, messageTrackingUUID)))
             .then(() -> sendMessages(processor2sink, 2, id2))
             .assertNext(event -> assertPartition(id2, event))
             .assertNext(event -> assertPartition(id2, event))

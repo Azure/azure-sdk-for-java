@@ -122,32 +122,33 @@ class PartitionPumpManager {
 
         EventHubConsumerOptions eventHubConsumerOptions = new EventHubConsumerOptions().setOwnerLevel(0L);
         EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
-            .createConsumer(claimedOwnership.getConsumerGroupName(), startFromEventPosition, eventHubConsumerOptions);
+            .createConsumer(claimedOwnership.getConsumerGroupName(), eventHubConsumerOptions);
 
         partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
-        eventHubConsumer.receive(claimedOwnership.getPartitionId()).subscribe(partitionEvent -> {
-            EventData eventData = partitionEvent.getData();
-            try {
-                Context processSpanContext = startProcessTracingSpan(eventData);
-                if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
-                    eventData.addContext(SPAN_CONTEXT_KEY, processSpanContext);
+        eventHubConsumer.receive(claimedOwnership.getPartitionId(), startFromEventPosition)
+            .subscribe(partitionEvent -> {
+                EventData eventData = partitionEvent.getData();
+                try {
+                    Context processSpanContext = startProcessTracingSpan(eventData);
+                    if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
+                        eventData.addContext(SPAN_CONTEXT_KEY, processSpanContext);
+                    }
+                    partitionProcessor.processEvent(new PartitionEvent(partitionContext, eventData)).doOnEach(signal ->
+                        endProcessTracingSpan(processSpanContext, signal)).subscribe(unused -> {
+                        },
+                        /* event processing returned error */
+                        ex -> handleProcessingError(claimedOwnership, partitionProcessor, ex, partitionContext));
+                } catch (Exception ex) {
+                    /* event processing threw an exception */
+                    handleProcessingError(claimedOwnership, partitionProcessor, ex, partitionContext);
                 }
-                partitionProcessor.processEvent(new PartitionEvent(partitionContext, eventData)).doOnEach(signal ->
-                    endProcessTracingSpan(processSpanContext, signal)).subscribe(unused -> {
-                    }, /* event processing returned error */ ex -> handleProcessingError(claimedOwnership,
-                    eventHubConsumer, partitionProcessor, ex, partitionContext));
-            } catch (Exception ex) {
-                /* event processing threw an exception */
-                handleProcessingError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext);
-            }
-        }, /* EventHubConsumer receive() returned an error */
+            }, /* EventHubConsumer receive() returned an error */
             ex -> handleReceiveError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
             () -> partitionProcessor.close(new CloseContext(partitionContext, CloseReason.EVENT_PROCESSOR_SHUTDOWN)));
     }
 
-    private void handleProcessingError(PartitionOwnership claimedOwnership,
-            EventHubConsumerAsyncClient eventHubConsumer, PartitionProcessor partitionProcessor, Throwable error,
-            PartitionContext partitionContext) {
+    private void handleProcessingError(PartitionOwnership claimedOwnership, PartitionProcessor partitionProcessor,
+        Throwable error, PartitionContext partitionContext) {
         try {
             // There was an error in process event (user provided code), call process error and if that
             // also fails just log and continue
