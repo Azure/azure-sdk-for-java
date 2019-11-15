@@ -40,6 +40,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_BUFFER_LENGTH = 1024;
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String CONTENT_ENCODING = "Content-Encoding";
+    private static final String CONTENT_LENGTH = "Content-Length";
     private static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
     private static final String X_MS_ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
     private static final String X_MS_VERSION = "x-ms-version";
@@ -151,7 +152,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 }
 
                 String content = new String(bytes, StandardCharsets.UTF_8);
-                responseData.put("Content-Length", Integer.toString(content.length()));
+                responseData.put(CONTENT_LENGTH, Integer.toString(content.length()));
                 responseData.put(BODY, content);
                 return responseData;
             });
@@ -198,7 +199,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 }
 
                 responseData.remove(CONTENT_ENCODING);
-                responseData.put("Content-Length", Integer.toString(content.length()));
+                responseData.put(CONTENT_LENGTH, Integer.toString(content.length()));
 
                 responseData.put(BODY, content);
                 return responseData;
