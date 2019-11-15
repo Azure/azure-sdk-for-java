@@ -22,7 +22,7 @@ trigger:
     include:
       - sdk/servicebus/
     exclude:
-      - sdk/keyvault/azure-mgmt-
+      - sdk/servicebus/azure-mgmt-
 
 pr:
   branches:
@@ -35,7 +35,7 @@ pr:
     include:
       - sdk/servicebus/
     exclude:
-      - sdk/keyvault/azure-mgmt-
+      - sdk/servicebus/azure-mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
