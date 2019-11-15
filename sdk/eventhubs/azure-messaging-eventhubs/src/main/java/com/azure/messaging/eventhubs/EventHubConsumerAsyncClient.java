@@ -43,27 +43,27 @@ import static com.azure.core.util.FluxUtil.monoError;
  * </ul>
  *
  * <p><strong>Creating an {@link EventHubConsumerAsyncClient}</strong></p>
- * <p>Required parameters are {@code consumerGroup}, {@code startingPosition}, and credentials are required when
+ * <p>Required parameters are {@code consumerGroup}, and credentials are required when
  * creating a consumer.</p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
  *
  * <p><strong>Consuming events a single partition from Event Hub</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition}
+ *
+ * <p><strong>Receiving from all partitions</strong></p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition}
  *
  * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
  * <p>For event consumers that need to limit the number of events they receive at a given time, they can use {@link
  * BaseSubscriber#request(long)}.</p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-basesubscriber}
- *
- * <p><strong>Receiving from all partitions</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber}
  *
  * <p><strong>Viewing latest partition information</strong></p>
  * <p>Latest partition information as events are received can by setting
  * {@link EventHubConsumerOptions#setTrackLastEnqueuedEventProperties(boolean) setTrackLastEnqueuedEventProperties} to
  * {@code true}. As events come in, explore the {@link PartitionContext} object.
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#lastenqueuedeventproperties}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition-lastenqueuedeventproperties}
  */
 @Immutable
 public class EventHubConsumerAsyncClient implements Closeable {

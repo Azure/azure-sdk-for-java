@@ -34,22 +34,19 @@ import java.util.concurrent.atomic.AtomicLong;
  * </ul>
  *
  * <p><strong>Creating a synchronous consumer</strong></p>
- * Create an {@link EventHubConsumerClient} using {@link EventHubClientBuilder}.
- *
+ * <p>Required parameters are {@code consumerGroup} and credentials when creating a consumer.</p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation}
  *
  * <p><strong>Consuming events from a single partition</strong></p>
- * Events from a single partition can be consumed using {@link #receive(String, int, EventPosition)} or
+ * <p>Events from a single partition can be consumed using {@link #receive(String, int, EventPosition)} or
  * {@link #receive(String, int, EventPosition, Duration)}. The call to `receive` completes and returns an
- * {@link IterableStream} when either the maximum number of events is received, or the timeout has elapsed.
- *
+ * {@link IterableStream} when either the maximum number of events is received, or the timeout has elapsed.</p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration}
  *
  * <p><strong>Consuming events from all partitions</strong></p>
- * Events can be read from all partitions using {@link #receive(int, EventPosition)} or
+ * <p>Events can be read from all partitions using {@link #receive(int, EventPosition)} or
  * {@link #receive(int, EventPosition, Duration)}. The call to `receive` completes and returns an {@link IterableStream}
- * when either the maximum number of events is received, or the timeout has elapsed.
- *
+ * when either the maximum number of events is received, or the timeout has elapsed.</p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-eventposition-duration}
  */
 public class EventHubConsumerClient implements Closeable {
