@@ -157,6 +157,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
