@@ -470,7 +470,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                    final BatchOptions batchOptions = new BatchOptions()
+                    final CreateBatchOptions batchOptions = new CreateBatchOptions()
                         .setPartitionKey(options.getPartitionKey())
                         .setPartitionId(options.getPartitionId())
                         .setMaximumSizeInBytes(batchSize);
@@ -551,7 +551,7 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         private volatile EventDataBatch currentBatch;
 
-        EventDataCollector(BatchOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider,
+        EventDataCollector(CreateBatchOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider,
             final TracerProvider tracerProvider) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
