@@ -6,19 +6,14 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
-import com.azure.messaging.eventhubs.implementation.SynchronousReceiveWork;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 
 import java.io.Closeable;
 import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A consumer responsible for reading {@link EventData} from either a specific Event Hub partition or all partitions in
@@ -50,11 +45,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-eventposition-duration}
  */
 public class EventHubConsumerClient implements Closeable {
-    private static final String RECEIVE_ALL_KEY = "receive-all";
-
     private final ClientLogger logger = new ClientLogger(EventHubConsumerClient.class);
-    private final ConcurrentHashMap<String, SynchronousEventSubscriber> openSubscribers = new ConcurrentHashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong();
 
     private final EventHubConsumerAsyncClient consumer;
     private final Duration timeout;
@@ -179,9 +170,10 @@ public class EventHubConsumerClient implements Closeable {
                 new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
-        final Flux<PartitionEvent> events = Flux.create(emitter -> {
-            queueWork(partitionId, maximumMessageCount, startingPosition, maximumWaitTime, emitter);
-        });
+        final Flux<PartitionEvent> events = consumer.receive(partitionId, startingPosition)
+            .windowTimeout(maximumMessageCount, maximumWaitTime)
+            .take(1)
+            .flatMap(x -> x);
 
         return new IterableStream<>(events);
     }
@@ -229,38 +221,12 @@ public class EventHubConsumerClient implements Closeable {
                 new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
-        final Flux<PartitionEvent> events = Flux.create(emitter -> {
-            queueWork(RECEIVE_ALL_KEY, maximumMessageCount, startingPosition, maximumWaitTime, emitter);
-        });
+        final Flux<PartitionEvent> events = consumer.receive(startingPosition)
+            .windowTimeout(maximumMessageCount, maximumWaitTime)
+            .take(1)
+            .flatMap(x -> x);
 
         return new IterableStream<>(events);
-    }
-
-    /**
-     * Given an {@code emitter}, queues that work in {@link SynchronousEventSubscriber}. If the synchronous job has not
-     * been created, will initialise it.
-     */
-    private void queueWork(String partitionId, int maximumMessageCount, EventPosition startingPosition,
-        Duration maximumWaitTime, FluxSink<PartitionEvent> emitter) {
-        final long id = idGenerator.getAndIncrement();
-        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maximumWaitTime,
-            emitter);
-
-        final SynchronousEventSubscriber subscriber = openSubscribers.computeIfAbsent(partitionId, key -> {
-            SynchronousEventSubscriber syncSubscriber = new SynchronousEventSubscriber();
-
-            if (RECEIVE_ALL_KEY.equals(key)) {
-                logger.info("Started synchronous event subscriber for all partitions");
-                consumer.receive(startingPosition).subscribeWith(syncSubscriber);
-            } else {
-                logger.info("Started synchronous event subscriber for partition '{}'.", key);
-                consumer.receive(key, startingPosition).subscribeWith(syncSubscriber);
-            }
-            return syncSubscriber;
-        });
-
-        logger.info("Queueing work item in SynchronousEventSubscriber.");
-        subscriber.queueReceiveWork(work);
     }
 
     /**
