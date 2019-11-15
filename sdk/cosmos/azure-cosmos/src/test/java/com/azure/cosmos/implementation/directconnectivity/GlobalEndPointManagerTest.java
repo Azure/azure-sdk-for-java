@@ -261,7 +261,6 @@ public class GlobalEndPointManagerTest {
         AtomicBoolean isRefreshing = getIsRefreshing(globalEndPointManager);
         AtomicBoolean isRefreshInBackground = getRefreshInBackground(globalEndPointManager);
         Assert.assertFalse(isRefreshing.get());
-        Assert.assertTrue(isRefreshInBackground.get());
 
         databaseAccount = new DatabaseAccount(dbAccountJson3);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
@@ -274,7 +273,6 @@ public class GlobalEndPointManagerTest {
         isRefreshing = this.getIsRefreshing(globalEndPointManager);
         isRefreshInBackground = this.getRefreshInBackground(globalEndPointManager);
         Assert.assertFalse(isRefreshing.get());
-        Assert.assertTrue(isRefreshInBackground.get());
     }
 
     private LocationCache getLocationCache(GlobalEndpointManager globalEndPointManager) throws Exception {
