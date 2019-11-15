@@ -72,10 +72,10 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         this.idleConnectionTimeoutInNanos = config.idleConnectionTimeoutInNanos();
 
         this.readDelayLimitInNanos = config.receiveHangDetectionTimeInNanos();
-        checkArgument(this.readDelayLimitInNanos > readHangGracePeriodInNanos, "config.receiveHangDetectionTime: %s", this.readDelayLimitInNanos);
+        checkArgument(this.readDelayLimitInNanos > readHangGracePeriodInNanos, "config.receiveHangDetectionTimeInNanos: %s", this.readDelayLimitInNanos);
 
         this.writeDelayLimitInNanos = config.sendHangDetectionTimeInNanos();
-        checkArgument(this.writeDelayLimitInNanos > writeHangGracePeriodInNanos, "config.sendHangDetectionTime: %s", this.writeDelayLimitInNanos);
+        checkArgument(this.writeDelayLimitInNanos > writeHangGracePeriodInNanos, "config.sendHangDetectionTimeInNanos: %s", this.writeDelayLimitInNanos);
     }
 
     // endregion
@@ -187,9 +187,9 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         @Override
         public void serialize(RntbdClientChannelHealthChecker value, JsonGenerator generator, SerializerProvider provider) throws IOException {
             generator.writeStartObject();
-            generator.writeNumberField("idleConnectionTimeout", value.idleConnectionTimeoutInNanos());
-            generator.writeNumberField("readDelayLimit", value.readDelayLimitInNanos());
-            generator.writeNumberField("writeDelayLimit", value.writeDelayLimitInNanos());
+            generator.writeNumberField("idleConnectionTimeoutInNanos", value.idleConnectionTimeoutInNanos());
+            generator.writeNumberField("readDelayLimitInNanos", value.readDelayLimitInNanos());
+            generator.writeNumberField("writeDelayLimitInNanos", value.writeDelayLimitInNanos());
             generator.writeEndObject();
         }
     }
