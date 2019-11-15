@@ -173,7 +173,6 @@ public interface Tracer {
     /**
      * Provides a way to link multiple tracing spans.
      * Used in batching operations to relate multiple requests under a single batch.
-     * @deprecated This method is no longer acceptable to to link multiple tracing spans with openTelemetry API.
      *
      * <p><strong>Code samples</strong></p>
      *
@@ -183,7 +182,6 @@ public interface Tracer {
      * @param context Additional metadata that is passed through the call stack.
      * @throws NullPointerException if {@code context} is {@code null}.
      */
-    @Deprecated
     void addLink(Context context);
 
     /**

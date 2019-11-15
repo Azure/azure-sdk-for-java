@@ -213,6 +213,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
      *
      * @param options A set of options used to configure the {@link EventDataBatch}.
+     *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
@@ -385,6 +386,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @param batch The batch to send to the service.
      *
      * @return A {@link Mono} that completes when the batch is pushed to the service.
+     *
      * @throws NullPointerException if {@code batch} is {@code null}.
      * @see EventHubProducerAsyncClient#createBatch()
      * @see EventHubProducerAsyncClient#createBatch(BatchOptions)

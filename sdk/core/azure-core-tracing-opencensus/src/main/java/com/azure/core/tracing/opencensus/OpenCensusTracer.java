@@ -11,6 +11,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opencensus.trace.AttributeValue;
+import io.opencensus.trace.Link;
 import io.opencensus.trace.Span;
 import io.opencensus.trace.Span.Options;
 import io.opencensus.trace.SpanBuilder;
@@ -20,6 +21,8 @@ import io.opencensus.trace.Tracing;
 
 import java.util.Objects;
 import java.util.Optional;
+
+import static io.opencensus.trace.Link.Type.PARENT_LINKED_SPAN;
 
 /**
  * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process
@@ -151,7 +154,20 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
 
     @Override
     public void addLink(Context context) {
-        //Noop - deprecated
+        final Span span = getSpan(context);
+        if (span == null) {
+            logger.warning("Failed to find span to link it.");
+            return;
+        }
+
+        final SpanContext spanContext = getSpanContext(context);
+        if (spanContext == null) {
+            logger.warning("Failed to find span context to link it.");
+            return;
+        }
+        // TODO: Needs to be updated with Open Telemetry support to addLink using Span Context before span is started
+        // and no link type is needed.
+        span.addLink(Link.fromSpanContext(spanContext, PARENT_LINKED_SPAN));
     }
 
     /**

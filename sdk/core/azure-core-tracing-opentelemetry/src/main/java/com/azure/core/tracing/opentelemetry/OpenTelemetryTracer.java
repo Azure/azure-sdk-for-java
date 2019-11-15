@@ -150,7 +150,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
     @Override
     public void addLink(Context context) {
-        //Noop - deprecated
+        // No op
     }
 
     /**
