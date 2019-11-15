@@ -126,7 +126,7 @@ public class PathAsyncClientJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlList#List-String-String
         PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
             .entityID("entityId")
-            .permissions(new RolePermissions().read(true));
+            .permissions(new RolePermissions().setReadPermission(true));
         List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
         pathAccessControlEntries.add(pathAccessControlEntry);
         String group = "group";
@@ -145,7 +145,7 @@ public class PathAsyncClientJavaDocCodeSamples {
         DataLakeRequestConditions accessConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
         PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
             .entityID("entityId")
-            .permissions(new RolePermissions().read(true));
+            .permissions(new RolePermissions().setReadPermission(true));
         List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
         pathAccessControlEntries.add(pathAccessControlEntry);
         String group = "group";
@@ -162,9 +162,9 @@ public class PathAsyncClientJavaDocCodeSamples {
     public void setPermissionsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissions#PathPermissions-String-String
         PathPermissions permissions = new PathPermissions()
-            .group(new RolePermissions().execute(true).read(true))
-            .owner(new RolePermissions().execute(true).read(true).write(true))
-            .other(new RolePermissions().read(true));
+            .setGroup(new RolePermissions().setExecutePermission(true).setReadPermission(true))
+            .setOwner(new RolePermissions().setExecutePermission(true).setReadPermission(true).setWritePermission(true))
+            .setOther(new RolePermissions().setReadPermission(true));
         String group = "group";
         String owner = "owner";
 
@@ -180,9 +180,9 @@ public class PathAsyncClientJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissionsWithResponse#PathPermissions-String-String-DataLakeRequestConditions
         DataLakeRequestConditions accessConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
         PathPermissions permissions = new PathPermissions()
-            .group(new RolePermissions().execute(true).read(true))
-            .owner(new RolePermissions().execute(true).read(true).write(true))
-            .other(new RolePermissions().read(true));
+            .setGroup(new RolePermissions().setExecutePermission(true).setReadPermission(true))
+            .setOwner(new RolePermissions().setExecutePermission(true).setReadPermission(true).setWritePermission(true))
+            .setOther(new RolePermissions().setReadPermission(true));
         String group = "group";
         String owner = "owner";
 

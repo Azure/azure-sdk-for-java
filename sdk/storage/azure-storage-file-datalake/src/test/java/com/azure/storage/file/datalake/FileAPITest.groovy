@@ -17,9 +17,9 @@ class FileAPITest extends APISpec {
     String fileName
 
     PathPermissions permissions = new PathPermissions()
-        .owner(new RolePermissions().read(true).write(true).execute(true))
-        .group(new RolePermissions().read(true).execute(true))
-        .other(new RolePermissions().read(true))
+        .setOwner(new RolePermissions().setReadPermission(true).setWritePermission(true).setExecutePermission(true))
+        .setGroup(new RolePermissions().setReadPermission(true).setExecutePermission(true))
+        .setOther(new RolePermissions().setReadPermission(true))
 
     List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
 
