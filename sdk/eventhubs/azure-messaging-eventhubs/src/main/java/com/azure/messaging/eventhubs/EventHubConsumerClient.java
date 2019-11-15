@@ -21,8 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
- * consumer group.
+ * A consumer responsible for reading {@link EventData} from either a specific Event Hub partition or all partitions in
+ * the context of a consumer group.
  *
  * <ul>
  * <li>If {@link EventHubConsumerClient} is created where {@link EventHubConsumerOptions#getOwnerLevel()} has a
@@ -41,9 +41,16 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p><strong>Consuming events from a single partition</strong></p>
  * Events from a single partition can be consumed using {@link #receive(String, int, EventPosition)} or
  * {@link #receive(String, int, EventPosition, Duration)}. The call to `receive` completes and returns an
- * {@link IterableStream} when either the maximum number of events is reached, or the timeout duration is reached.
+ * {@link IterableStream} when either the maximum number of events is received, or the timeout has elapsed.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration}
+ *
+ * <p><strong>Consuming events from all partitions</strong></p>
+ * Events can be read from all partitions using {@link #receive(int, EventPosition)} or
+ * {@link #receive(int, EventPosition, Duration)}. The call to `receive` completes and returns an {@link IterableStream}
+ * when either the maximum number of events is received, or the timeout has elapsed.
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-eventposition-duration}
  */
 public class EventHubConsumerClient implements Closeable {
     private static final String RECEIVE_ALL_KEY = "receive-all";
