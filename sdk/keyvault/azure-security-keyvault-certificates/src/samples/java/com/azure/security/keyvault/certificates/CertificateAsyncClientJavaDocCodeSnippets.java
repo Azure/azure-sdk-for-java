@@ -545,7 +545,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.listIssuers
         certificateAsyncClient.listPropertiesOfIssuers()
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(issuerBase -> certificateAsyncClient.getIssuer(issuerBase)
+            .subscribe(issuerProperties -> certificateAsyncClient.getIssuer(issuerProperties.getName())
                 .subscribe(issuerResponse -> System.out.printf("Received issuer with name %s and provider %s",
                     issuerResponse.getName(), issuerResponse.getProperties().getProvider())));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.listIssuers
@@ -598,7 +598,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.listContacts
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteContacts
-        certificateAsyncClient.listContacts().subscribe(contact ->
+        certificateAsyncClient.deleteContacts().subscribe(contact ->
             System.out.printf("Deleted Contact name %s and email %s", contact.getName(), contact.getEmailAddress())
         );
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteContacts

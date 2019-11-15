@@ -1,14 +1,20 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.certificates;
 
-
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 
+/**
+ * Represents well known issuer names to refer in {@link CertificatePolicy}
+ */
 public class WellKnownIssuerNames {
 
     /**
      * Create a self-issued certificate.
      */
-    public static String SELF = "Self";
+    public static final String SELF = "Self";
 
 
     /**
@@ -16,6 +22,6 @@ public class WellKnownIssuerNames {
      * {@link CertificateClient#mergeCertificate(MergeCertificateOptions)} or
      * {@link CertificateAsyncClient#mergeCertificate(MergeCertificateOptions)}.
      */
-    public static String UNKNOWN = "Unknown";
+    public static final String UNKNOWN = "Unknown";
 
 }
