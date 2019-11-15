@@ -150,7 +150,18 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
     @Override
     public void addLink(Context context) {
-        // No op
+        final Builder spanBuilder = getSharedSpanBuilder(context);
+        if (spanBuilder == null) {
+            logger.warning("Failed to find spanBuilder to link it.");
+            return;
+        }
+
+        final SpanContext spanContext = getSpanContext(context);
+        if (spanContext == null) {
+            logger.warning("Failed to find span context to link it.");
+            return;
+        }
+        spanBuilder.addLink(spanContext);
     }
 
     /**
@@ -336,6 +347,23 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             parentSpan = TRACER.getCurrentSpan();
         }
         return TRACER.spanBuilder(spanNameKey).setParent(parentSpan);
+    }
+
+    /**
+     * Extracts a {@link Span.Builder} from the given {@code context}.
+     *
+     * @param context The context containing the Span.Builder.
+     * @return The {@link Span.Builder} contained in the context, and {@code null} if it does not.
+     */
+    private Span.Builder getSharedSpanBuilder(Context context) {
+        final Object value = getOptionalObject(context, SPAN_BUILDER_KEY);
+        if (!(value instanceof Span.Builder)) {
+            logger.warning("Could not extract the shared span builder. Data in context for key {} "
+                + "is not of type Span.Builder.", SPAN_BUILDER_KEY);
+            return null;
+        }
+
+        return (Span.Builder) value;
     }
 
     /**

@@ -152,6 +152,9 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
         span.end();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addLink(Context context) {
         final Span span = getSpan(context);

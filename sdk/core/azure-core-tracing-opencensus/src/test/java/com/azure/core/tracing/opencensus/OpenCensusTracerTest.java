@@ -218,6 +218,7 @@ public class OpenCensusTracerTest {
         Assertions.assertEquals(expectedLink.getSpanId(), createdLink.getSpanId());
     }
 
+    @Test
     public void endSpanNoSuccessErrorMessageTest() {
         // Arrange
         final RecordEventsSpanImpl recordEventsSpan = (RecordEventsSpanImpl) tracer.getCurrentSpan();

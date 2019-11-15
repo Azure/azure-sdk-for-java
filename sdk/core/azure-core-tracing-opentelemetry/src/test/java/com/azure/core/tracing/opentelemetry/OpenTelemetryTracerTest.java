@@ -7,12 +7,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opentelemetry.OpenTelemetry;
 import io.opentelemetry.sdk.trace.ReadableSpan;
+import io.opentelemetry.sdk.trace.SpanData;
 import io.opentelemetry.trace.AttributeValue;
+import io.opentelemetry.trace.Link;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.SpanContext;
 import io.opentelemetry.trace.SpanId;
 import io.opentelemetry.trace.Tracer;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +28,7 @@ import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -202,6 +206,28 @@ public class OpenTelemetryTracerTest {
         // Assert
         assertThrows(NullPointerException.class, () ->
             openTelemetryTracer.start("", Context.NONE, null));
+    }
+
+    @Test
+    public void addLinkTest() {
+        // Arrange
+        Span.Builder span = tracer.spanBuilder("parent-span");
+        Span toLinkSpan = tracer.spanBuilder("new test span").startSpan();
+
+        Context spanContext = new Context(
+            SPAN_CONTEXT_KEY, toLinkSpan.getContext());
+        SpanData.Link expectedLink = SpanData.Link.create(toLinkSpan.getContext());
+
+        // Act
+        openTelemetryTracer.addLink(spanContext.addData(SPAN_BUILDER_KEY, span));
+        ReadableSpan span1 = (ReadableSpan) span.startSpan();
+
+        //Assert
+        // verify parent span has the expected Link
+        Link createdLink = span1.toSpanData().getLinks().get(0);
+        Assertions.assertEquals(1, span1.toSpanData().getLinks().size());
+        Assertions.assertEquals(expectedLink.getContext().getTraceId(), createdLink.getContext().getTraceId());
+        Assertions.assertEquals(expectedLink.getContext().getSpanId(), createdLink.getContext().getSpanId());
     }
 
     @Test
