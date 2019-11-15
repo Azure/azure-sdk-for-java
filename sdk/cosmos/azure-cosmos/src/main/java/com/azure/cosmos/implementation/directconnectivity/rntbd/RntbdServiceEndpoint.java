@@ -48,7 +48,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     // region Fields
 
     private static final String TAG_NAME = RntbdServiceEndpoint.class.getSimpleName();
-    private static final long QUIET_PERIOD = 2L * 1_000_000_000L; // 2 seconds
+    private static final long QUIET_PERIOD = 2_000_000_000L; // 2 seconds
 
     private static final AtomicLong instanceCount = new AtomicLong();
     private static final Logger logger = LoggerFactory.getLogger(RntbdServiceEndpoint.class);
@@ -79,7 +79,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .group(group)
             .option(ChannelOption.ALLOCATOR, config.allocator())
             .option(ChannelOption.AUTO_READ, true)
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectionTimeout())
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectionTimeoutInMillis())
             .option(ChannelOption.RCVBUF_ALLOCATOR, receiveBufferAllocator)
             .option(ChannelOption.SO_KEEPALIVE, true)
             .remoteAddress(physicalAddress.getHost(), physicalAddress.getPort());
@@ -330,7 +330,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
             this.transportClient = transportClient;
             this.config = new Config(options, sslContext, wireLogLevel);
-            this.requestTimer = new RntbdRequestTimer(config.requestTimeout());
+            this.requestTimer = new RntbdRequestTimer(config.requestTimeoutInNanos());
             this.eventLoopGroup = new NioEventLoopGroup(threadCount, threadFactory);
 
             this.endpoints = new ConcurrentHashMap<>();
@@ -349,7 +349,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                     endpoint.close();
                 }
 
-                this.eventLoopGroup.shutdownGracefully(QUIET_PERIOD, this.config.shutdownTimeout(), NANOSECONDS)
+                this.eventLoopGroup.shutdownGracefully(QUIET_PERIOD, this.config.shutdownTimeoutInNanos(), NANOSECONDS)
                     .addListener(future -> {
                         if (future.isSuccess()) {
                             logger.debug("\n  [{}]\n  closed endpoints", this);
@@ -357,6 +357,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                         }
                         logger.error("\n  [{}]\n  failed to close endpoints due to ", this, future.cause());
                     });
+
                 return;
             }
 
