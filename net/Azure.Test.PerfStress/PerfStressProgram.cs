@@ -14,14 +14,14 @@ namespace Azure.Test.PerfStress
 {
     public static class PerfStressProgram
     {
-        private static int _completedOperations;
+        private static int[] _completedOperations;
         private static TimeSpan[] _lastCompletionTimes;
 
         public static async Task Main(Assembly assembly, string[] args)
         {
             var testTypes = assembly.ExportedTypes
-                .Where(t => typeof(IPerfStressTest).IsAssignableFrom(t) && !t.IsAbstract)
-                .Append(typeof(NoOpTest));
+                .Concat(typeof(PerfStressProgram).Assembly.ExportedTypes)
+                .Where(t => typeof(IPerfStressTest).IsAssignableFrom(t) && !t.IsAbstract);
 
             var optionTypes = GetOptionTypes(testTypes);
 
@@ -122,26 +122,28 @@ namespace Azure.Test.PerfStress
 
         private static async Task RunTestsAsync(IPerfStressTest[] tests, bool sync, int parallel, int durationSeconds, string title)
         {
-            _completedOperations = 0;
+            _completedOperations = new int[parallel];
             _lastCompletionTimes = new TimeSpan[parallel];
 
             var duration = TimeSpan.FromSeconds(durationSeconds);
-            using var cts = new CancellationTokenSource(duration);
-            var cancellationToken = cts.Token;
+            using var testCts = new CancellationTokenSource(duration);
+            var cancellationToken = testCts.Token;
 
             var lastCompleted = 0;
+
+            using var progressStatusCts = new CancellationTokenSource();
             var progressStatusThread = PrintStatus(
                 $"=== {title} ===" + Environment.NewLine +
                 "Current\t\tTotal",
                 () =>
                 {
-                    var totalCompleted = _completedOperations;
+                    var totalCompleted = _completedOperations.Sum();
                     var currentCompleted = totalCompleted - lastCompleted;
                     lastCompleted = totalCompleted;
                     return currentCompleted + "\t\t" + totalCompleted;
                 },
                 newLine: true,
-                cancellationToken);
+                progressStatusCts.Token);
 
             if (sync)
             {
@@ -150,7 +152,7 @@ namespace Azure.Test.PerfStress
                 for (var i = 0; i < parallel; i++)
                 {
                     var j = i;
-                    threads[i] = new Thread(() => RunLoop(tests[j], cancellationToken));
+                    threads[i] = new Thread(() => RunLoop(tests[j], j, cancellationToken));
                     threads[i].Start();
                 }
                 for (var i = 0; i < parallel; i++)
@@ -166,25 +168,27 @@ namespace Azure.Test.PerfStress
                     var j = i;
                     // Call Task.Run() instead of directly calling RunLoopAsync(), to ensure the requested
                     // level of parallelism is achieved even if the test RunAsync() completes synchronously.
-                    tasks[j] = Task.Run(() => RunLoopAsync(tests[j], cancellationToken));
+                    tasks[j] = Task.Run(() => RunLoopAsync(tests[j], j, cancellationToken));
                 }
                 await Task.WhenAll(tasks);
             }
 
+            progressStatusCts.Cancel();
             progressStatusThread.Join();
 
             Console.WriteLine("=== Results ===");
 
-            var averageElapsedSeconds = _lastCompletionTimes.Select(t => t.TotalSeconds).Average();
-            var operationsPerSecond = _completedOperations / averageElapsedSeconds;
+            var totalOperations = _completedOperations.Sum();
+            var operationsPerSecond = _completedOperations.Zip(_lastCompletionTimes, (operations, time) => (operations / time.TotalSeconds)).Sum();
             var secondsPerOperation = 1 / operationsPerSecond;
+            var weightedAverageSeconds = totalOperations / operationsPerSecond;
 
-            Console.WriteLine($"Completed {_completedOperations} operations in an average of {averageElapsedSeconds:N2}s " +
+            Console.WriteLine($"Completed {totalOperations} operations in a weighted-average of {weightedAverageSeconds:N2}s " +
                 $"({operationsPerSecond:N2} ops/s, {secondsPerOperation:N3} s/op)");
             Console.WriteLine();
         }
 
-        private static void RunLoop(IPerfStressTest test, CancellationToken cancellationToken)
+        private static void RunLoop(IPerfStressTest test, int index, CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
             while (!cancellationToken.IsCancellationRequested)
@@ -192,8 +196,8 @@ namespace Azure.Test.PerfStress
                 try
                 {
                     test.Run(cancellationToken);
-                    var count = Interlocked.Increment(ref _completedOperations);
-                    _lastCompletionTimes[count % _lastCompletionTimes.Length] = sw.Elapsed;
+                    _completedOperations[index]++;
+                    _lastCompletionTimes[index] = sw.Elapsed;
                 }
                 catch (OperationCanceledException)
                 {
@@ -201,7 +205,7 @@ namespace Azure.Test.PerfStress
             }
         }
 
-        private static async Task RunLoopAsync(IPerfStressTest test, CancellationToken cancellationToken)
+        private static async Task RunLoopAsync(IPerfStressTest test, int index, CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
             while (!cancellationToken.IsCancellationRequested)
@@ -209,8 +213,8 @@ namespace Azure.Test.PerfStress
                 try
                 {
                     await test.RunAsync(cancellationToken);
-                    var count = Interlocked.Increment(ref _completedOperations);
-                    _lastCompletionTimes[count % _lastCompletionTimes.Length] = sw.Elapsed;
+                    _completedOperations[index]++;
+                    _lastCompletionTimes[index] = sw.Elapsed;
                 }
                 catch (Exception e)
                 {
@@ -238,21 +242,21 @@ namespace Azure.Test.PerfStress
                     try
                     {
                         Sleep(TimeSpan.FromSeconds(1), token);
-
-                        var obj = status();
-
-                        if (newLine)
-                        {
-                            Console.WriteLine(obj);
-                        }
-                        else
-                        {
-                            Console.Write(obj);
-                            needsExtraNewline = true;
-                        }
                     }
                     catch (OperationCanceledException)
                     {
+                    }
+
+                    var obj = status();
+
+                    if (newLine)
+                    {
+                        Console.WriteLine(obj);
+                    }
+                    else
+                    {
+                        Console.Write(obj);
+                        needsExtraNewline = true;
                     }
                 }
 
