@@ -203,27 +203,63 @@ public class EventHubConsumerAsyncClientTest {
      * Verifies that we can resubscribe to the receiver multiple times.
      */
     @Test
-    public void canResubscribeToConsumer() {
+    public void returnsNewListener() {
         // Arrange
         final int numberOfEvents = 10;
 
-        when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents, 0);
+        EventHubAmqpConnection connection1 = mock(EventHubAmqpConnection.class);
+        EventHubConnection eventHubConnection = new EventHubConnection(Mono.fromCallable(() -> connection1),
+            connectionOptions);
+
+        EmitterProcessor<Message> processor2 = EmitterProcessor.create();
+        FluxSink<Message> processor2sink = processor2.sink();
+        AmqpReceiveLink link2 = mock(AmqpReceiveLink.class);
+        EventHubSession session2 = mock(EventHubSession.class);
+
+        EmitterProcessor<Message> processor3 = EmitterProcessor.create();
+        FluxSink<Message> processor3sink = processor3.sink();
+        AmqpReceiveLink link3 = mock(AmqpReceiveLink.class);
+        EventHubSession session3 = mock(EventHubSession.class);
+
+        when(link2.receive()).thenReturn(processor2);
+        when(link2.getErrors()).thenReturn(Flux.never());
+        when(link2.getConnectionStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
+        when(link2.getShutdownSignals()).thenReturn(Flux.never());
+        when(link2.getCredits()).thenReturn(numberOfEvents);
+
+        when(link3.receive()).thenReturn(processor3);
+        when(link3.getErrors()).thenReturn(Flux.never());
+        when(link3.getConnectionStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
+        when(link3.getShutdownSignals()).thenReturn(Flux.never());
+        when(link3.getCredits()).thenReturn(numberOfEvents);
+
+        when(connection1.createSession(any())).thenReturn(Mono.just(session2), Mono.just(session3));
+        when(session2.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
+            .thenReturn(Mono.just(link2));
+        when(session3.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
+            .thenReturn(Mono.just(link3));
+
+        EventHubConsumerOptions options = new EventHubConsumerOptions()
+            .setPrefetchCount(PREFETCH);
+
+        EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, options, false);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
-            .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
+        StepVerifier.create(asyncClient.receive(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
+            .then(() -> sendMessages(processor2sink, numberOfEvents, PARTITION_ID))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
-        StepVerifier.create(consumer.receive(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
-            .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
+        StepVerifier.create(asyncClient.receive(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
+            .then(() -> sendMessages(processor3sink, numberOfEvents, PARTITION_ID))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
         // After the initial prefetch, when we subscribe, and when we do, it'll ask for Long.MAXVALUE, which will set
         // the limit request to MAXIMUM_REQUEST = 100.
-        verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
-        verify(amqpReceiveLink, times(1)).addCredits(100);
+        verify(link2, times(1)).addCredits(PREFETCH);
+        verify(link3, times(1)).addCredits(PREFETCH);
     }
 
     /**
@@ -457,7 +493,7 @@ public class EventHubConsumerAsyncClientTest {
             boolean successful = shutdownReceived.await(5, TimeUnit.SECONDS);
             Assertions.assertTrue(successful);
             Assertions.assertEquals(0, shutdownReceived.getCount());
-            verify(amqpReceiveLink, times(1)).close();
+            verify(amqpReceiveLink, times(3)).close();
         } finally {
             subscriptions.dispose();
         }

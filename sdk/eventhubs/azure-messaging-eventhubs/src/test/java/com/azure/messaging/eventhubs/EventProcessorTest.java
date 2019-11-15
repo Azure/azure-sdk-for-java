@@ -352,7 +352,7 @@ public class EventProcessorTest {
         identifiers.add("1");
         identifiers.add("2");
         identifiers.add("3");
-        final Set<String> original = new HashSet<>(identifiers);
+        final EventPosition position = EventPosition.latest();
 
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
@@ -365,7 +365,7 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(identifiers));
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
 
-        when(consumer1.receive(argThat(arg -> identifiers.remove(arg))))
+        when(consumer1.receive(argThat(arg -> identifiers.remove(arg)), eq(position)))
             .thenReturn(Mono.fromRunnable(() -> count.countDown())
                 .thenMany(Flux.just(getEvent(eventData1), getEvent(eventData2))));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
@@ -373,12 +373,12 @@ public class EventProcessorTest {
         when(eventData1.getOffset()).thenReturn(1L);
         when(eventData2.getOffset()).thenReturn(100L);
 
-        when(consumer2.receive(argThat(arg -> identifiers.remove(arg))))
+        when(consumer2.receive(argThat(arg -> identifiers.remove(arg)), eq(position)))
             .thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData3))));
         when(eventData3.getSequenceNumber()).thenReturn(1L);
         when(eventData3.getOffset()).thenReturn(1L);
 
-        when(consumer3.receive(argThat(arg -> identifiers.remove(arg))))
+        when(consumer3.receive(argThat(arg -> identifiers.remove(arg)), eq(position)))
             .thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData4))));
         when(eventData4.getSequenceNumber()).thenReturn(1L);
         when(eventData4.getOffset()).thenReturn(1L);
@@ -389,7 +389,7 @@ public class EventProcessorTest {
         // Act
         final EventProcessor eventProcessor = new EventProcessor(eventHubClientBuilder,
             "test-consumer",
-            TestPartitionProcessor::new, EventPosition.latest(), eventProcessorStore, tracerProvider);
+            TestPartitionProcessor::new, position, eventProcessorStore, tracerProvider);
         eventProcessor.start();
         final boolean completed = count.await(10, TimeUnit.SECONDS);
         eventProcessor.stop();

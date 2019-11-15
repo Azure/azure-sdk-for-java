@@ -25,7 +25,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -80,9 +79,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final boolean isSharedConnection;
     private final ConcurrentHashMap<String, EventHubPartitionAsyncConsumer> openPartitionConsumers =
         new ConcurrentHashMap<>();
-    private final AtomicReference<EventPosition> receiveAllStartingPosition = new AtomicReference<>();
-
-    private Flux<PartitionEvent> receiveAllFlux;
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
         MessageSerializer messageSerializer, String consumerGroup, EventHubConsumerOptions consumerOptions,
@@ -189,16 +185,10 @@ public class EventHubConsumerAsyncClient implements Closeable {
                 new NullPointerException("'startingPosition' cannot be null."))));
         }
 
-        final EventHubPartitionAsyncConsumer consumer = openPartitionConsumers
-            .computeIfAbsent(partitionId, id -> createPartitionConsumer(id, startingPosition));
-
-        if (!consumer.startingPosition().equals(startingPosition)) {
-            return Flux.error(logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
-                "Consumer for partition '%s' exists already but does not have the same starting position. "
-                    + "Existing: %s, Requested: %s", partitionId, consumer.startingPosition(), startingPosition))));
-        }
-
-        return consumer.receive();
+        final String linkName = StringUtil.getRandomString(partitionId + "-");
+        return openPartitionConsumers
+            .computeIfAbsent(linkName, name -> createPartitionConsumer(name, partitionId, startingPosition))
+            .receive();
     }
 
     /**
@@ -219,27 +209,15 @@ public class EventHubConsumerAsyncClient implements Closeable {
                 new NullPointerException("'startingPosition' cannot be null."))));
         }
 
-        // This is successful when we have not opened a receive for all partitions, yet.
-        if (receiveAllStartingPosition.compareAndSet(null, startingPosition)) {
-            final Flux<PartitionEvent> allPartitionEvents = getPartitionIds().map(partitionId -> {
-                final String linkName = "receive-all-" + partitionId;
-                logger.info("Creating receive consumer for partition '{}'", partitionId);
-                return openPartitionConsumers.computeIfAbsent(linkName,
-                    existingKey -> createPartitionConsumer(existingKey, startingPosition));
+        final String prefix = StringUtil.getRandomString("all-");
+        final Flux<PartitionEvent> allPartitionEvents = getPartitionIds().map(partitionId -> {
+            final String linkName = prefix + "-" + partitionId;
+            logger.info("{}: Creating receive consumer for partition '{}'", linkName, partitionId);
+            return openPartitionConsumers.computeIfAbsent(linkName,
+                name -> createPartitionConsumer(name, partitionId, startingPosition));
+        }).flatMap(consumer -> consumer.receive());
 
-            }).flatMap(consumer -> consumer.receive());
-
-            receiveAllFlux = Flux.merge(allPartitionEvents);
-            return receiveAllFlux;
-        }
-
-        // See if the existing receive all starting position is the same as the one requested.
-        final EventPosition existingStartingPosition = receiveAllStartingPosition.get();
-        return existingStartingPosition.equals(startingPosition)
-            ? receiveAllFlux
-            : Flux.error(logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
-            "Consumer for all partitions exists already but does not have the same starting position. "
-                + "Existing: %s, Requested: %s", existingStartingPosition, startingPosition))));
+        return Flux.merge(allPartitionEvents);
     }
 
     /**
@@ -263,8 +241,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
         }
     }
 
-    private EventHubPartitionAsyncConsumer createPartitionConsumer(String partitionId, EventPosition startingPosition) {
-        final String linkName = StringUtil.getRandomString("PR");
+    private EventHubPartitionAsyncConsumer createPartitionConsumer(String linkName, String partitionId,
+        EventPosition startingPosition) {
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT,
             getEventHubName(), consumerGroup, partitionId);
 

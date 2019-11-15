@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -28,7 +29,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
@@ -96,7 +99,7 @@ public class PartitionBasedLoadBalancerTest {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         when(eventHubAsyncClient.createConsumer(anyString(), any(EventHubConsumerOptions.class))).thenReturn(eventHubConsumer);
 
-        when(eventHubConsumer.receive(any()))
+        when(eventHubConsumer.receive(any(), any()))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("foo", "bar", "bazz", null, null, null);
                 return new PartitionEvent(partitionContext, eventDataList.get(index.intValue()));
@@ -396,21 +399,38 @@ public class PartitionBasedLoadBalancerTest {
                 return new PartitionEvent(partitionContext, eventDataList.get(index.intValue()));
             }));
 
-        PartitionBasedLoadBalancer partitionBasedLoadBalancer = createPartitionLoadBalancer("owner1");
+        String ownerName = "owner1";
+        PartitionBasedLoadBalancer partitionBasedLoadBalancer = createPartitionLoadBalancer(ownerName);
 
         IntStream.range(0, partitionIds.size()).forEach(index -> {
             partitionBasedLoadBalancer.loadBalance();
         });
-        List<PartitionOwnership> partitionOwnership = eventProcessorStore.listOwnership(fqNamespace, eventHubName,
-            consumerGroupName).collectList().block();
-        assertEquals(3, partitionOwnership.size());
-        partitionOwnership.forEach(po -> assertEquals("owner1", partitionOwnership.get(0).getOwnerId()));
-        assertEquals(3, partitionOwnership.stream().map(po -> po.getPartitionId()).distinct().count());
+
+        final Set<String> allPartitionIds = new HashSet<>(partitionIds);
+
+        // Act & Assert
+        StepVerifier.create(eventProcessorStore.listOwnership(fqNamespace, eventHubName, consumerGroupName))
+            .assertNext(po -> {
+                assertEquals(ownerName, po.getOwnerId());
+                assertTrue(allPartitionIds.remove(po.getPartitionId()));
+            })
+            .assertNext(po -> {
+                assertEquals(ownerName, po.getOwnerId());
+                assertTrue(allPartitionIds.remove(po.getPartitionId()));
+            })
+            .assertNext(po -> {
+                assertEquals(ownerName, po.getOwnerId());
+                assertTrue(allPartitionIds.remove(po.getPartitionId()));
+            })
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
+
+        assertTrue(allPartitionIds.isEmpty(), "Expected it to claim all partitions.");
     }
 
     private PartitionBasedLoadBalancer createPartitionLoadBalancer(String owner) {
         final Tracer tracer1 = mock(Tracer.class);
-        final List<Tracer> tracers = Arrays.asList(tracer1);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(eventProcessorStore,
             () -> new PartitionProcessor() {
