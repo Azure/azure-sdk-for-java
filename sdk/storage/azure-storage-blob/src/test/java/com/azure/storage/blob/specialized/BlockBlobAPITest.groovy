@@ -530,7 +530,7 @@ class BlockBlobAPITest extends APISpec {
         def committedBlocks = [getBlockID(), getBlockID()]
         blockBlobClient.stageBlock(committedBlocks.get(0), defaultInputStream.get(), defaultDataSize)
         blockBlobClient.stageBlock(committedBlocks.get(1), defaultInputStream.get(), defaultDataSize)
-        blockBlobClient.commitBlockList(committedBlocks)
+        blockBlobClient.commitBlockList(committedBlocks, true)
 
         def uncommittedBlocks = [getBlockID(), getBlockID()]
         blockBlobClient.stageBlock(uncommittedBlocks.get(0), defaultInputStream.get(), defaultDataSize)
@@ -561,7 +561,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def blockID = getBlockID()
         blockBlobClient.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
-        blockBlobClient.commitBlockList([blockID])
+        blockBlobClient.commitBlockList([blockID], true)
         blockBlobClient.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize)
 
         when:
@@ -975,7 +975,7 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Async buffered upload empty"() {
         expect:
-        StepVerifier.create(blobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null))
+        StepVerifier.create(blobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null, true))
             .assertNext({ assert it.getETag() != null })
             .verifyComplete()
 
@@ -1271,7 +1271,7 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload AC"() {
         setup:
-        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize).block()
+        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
         match = setupBlobMatchCondition(blockBlobAsyncClient, match)
         leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, leaseID)
         def requestConditions = new BlobRequestConditions()
@@ -1303,7 +1303,7 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload AC fail"() {
         setup:
-        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize).block()
+        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
         noneMatch = setupBlobMatchCondition(blockBlobAsyncClient, noneMatch)
         leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, leaseID)
         def requestConditions = new BlobRequestConditions()
@@ -1337,7 +1337,7 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "UploadBufferPool lock three or more buffers"() {
         setup:
-        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize).block()
+        blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
         def leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, garbageLeaseID)
         def requestConditions = new BlobRequestConditions().setLeaseId(leaseID)
 
@@ -1391,13 +1391,14 @@ class BlockBlobAPITest extends APISpec {
     notThrown(IllegalArgumentException)
 }*/
 
+    @Requires({ liveMode() })
     def "Buffered upload network error"() {
         setup:
         /*
          This test uses a Flowable that does not allow multiple subscriptions and therefore ensures that we are
          buffering properly to allow for retries even given this source behavior.
          */
-        blockBlobAsyncClient.upload(Flux.just(defaultData), defaultDataSize).block()
+        blockBlobAsyncClient.upload(Flux.just(defaultData), defaultDataSize, true).block()
 
         // Mock a response that will always be retried.
         def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
@@ -1520,7 +1521,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Builder cpk validation"() {
         setup:
-        String endpoint = BlobUrlParts.parse(bc.getBlobUrl()).setScheme("http").toUrl()
+        String endpoint = BlobUrlParts.parse(blockBlobClient.getBlobUrl()).setScheme("http").toUrl()
         def builder = new SpecializedBlobClientBuilder()
             .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
             .endpoint(endpoint)
