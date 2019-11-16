@@ -303,25 +303,22 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco-maven-plugin.version}</version>
         <executions>
-          <!--
-              Prepares the property pointing to the JaCoCo runtime agent which
-              is passed as VM argument when Maven the Surefire plugin is executed.
-          -->
-          <execution>
-            <id>pre-unit-test</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-            <configuration>
-              <!--Sets the name of the property containing the settings for JaCoCo runtime agent.-->
-              <propertyName>surefireArgLine</propertyName>
-            </configuration>
-          </execution>
+        <execution>
+          <id>default-instrument</id>
+          <goals>
+            <goal>instrument</goal>
+          </goals>
+        </execution>
+        <execution>
+          <id>default-restore-instrumented-classes</id>
+          <goals>
+            <goal>restore-instrumented-classes</goal>
+          </goals>
+        </execution>
           <execution>
             <!-- This generates the unit test reports for individual modules.
               jacoco-test-coverage generates aggregate reports for all modules -->
             <id>post-unit-test</id>
-            <phase>test</phase>
             <goals>
               <goal>report</goal>
             </goals>
@@ -512,6 +509,17 @@
     </pluginManagement>
 
   </build>
+
+  <dependencies>
+    <dependency>
+      <!-- must be on the classpath -->
+      <groupId>org.jacoco</groupId>
+      <artifactId>org.jacoco.agent</artifactId>
+      <classifier>runtime</classifier>
+      <version>${jacoco-maven-plugin.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
   <reporting>
     <plugins>
@@ -800,6 +808,9 @@
                 --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+                --add-reads com.azure.core=ALL-UNNAMED
+                --add-reads com.azure.core.test=ALL-UNNAMED
+                --add-reads com.azure.core.amqp=ALL-UNNAMED
 
                 <!-- Mockito uses reflection to create PollResponses in tests. -->
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
@@ -810,6 +821,7 @@
 
                 <!-- Checkpoint store tests fail without this -->
                 --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
+                --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
 
                 <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
                 --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
@@ -818,6 +830,9 @@
               <useSystemClassLoader>false</useSystemClassLoader>
               <forkCount>1</forkCount>
               <testFailureIgnore>false</testFailureIgnore>
+              <systemPropertyVariables>
+                <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
