@@ -10,16 +10,20 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class Sentiment {
-    private String length;
 
+    // SentimentConfidenceScorePerLabel
     private double negativeScore;
 
     private double neutralScore;
 
     private double positiveScore;
 
+    // sentence
+    private String length;
+
     private int offSet;
 
+    // sentiment string
     private SentimentClass sentimentClass;
 
     public String getLength() {

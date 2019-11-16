@@ -9,7 +9,7 @@ public class DocumentResult<T> {
 
     private String id;
     private DocumentStatistics documentStatistics;
-    private List<DocumentError> errors;
+    private List<T> items;
 
     public String getId() {
         return id;
@@ -25,5 +25,13 @@ public class DocumentResult<T> {
 
     public void setDocumentStatistics(DocumentStatistics documentStatistics) {
         this.documentStatistics = documentStatistics;
+    }
+
+    public List<T> getItems() {
+        return items;
+    }
+
+    public void setItems(List<T> items) {
+        this.items = items;
     }
 }

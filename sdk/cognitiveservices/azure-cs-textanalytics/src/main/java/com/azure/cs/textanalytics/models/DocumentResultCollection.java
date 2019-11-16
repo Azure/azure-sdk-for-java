@@ -3,24 +3,34 @@
 
 package com.azure.cs.textanalytics.models;
 
-public class DocumentResultCollection<T> {
+import java.util.List;
 
-    private int characterCount;
-    private int transactionCount;
+public class DocumentResultCollection<T> extends DocumentResult<T> {
+    private List<DocumentError> errors;
+    private String modelVersion;
+    private DocumentBatchStatistics statistics;
 
-    public int getCharacterCount() {
-        return characterCount;
+    public List<DocumentError> getErrors() {
+        return errors;
     }
 
-    public void setCharacterCount(int characterCount) {
-        this.characterCount = characterCount;
+    public void setErrors(List<DocumentError> errors) {
+        this.errors = errors;
     }
 
-    public int getTransactionCount() {
-        return transactionCount;
+    public String getModelVersion() {
+        return modelVersion;
     }
 
-    public void setTransactionCount(int transactionCount) {
-        this.transactionCount = transactionCount;
+    public void setModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
+    }
+
+    public DocumentBatchStatistics getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(DocumentBatchStatistics statistics) {
+        this.statistics = statistics;
     }
 }
