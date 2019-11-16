@@ -10,6 +10,7 @@ import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.PartitionKind;
 import org.testng.SkipException;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -176,7 +177,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         assertThat(readLagging).isFalse();
     }
 
-    // TODO (DANOBLE) test is flaky
+    // TODO (DANOBLE) Address ConsistencyTests1::validateConsistentPrefixOnAsyncReplication test failure #6378
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6378
+    @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateConsistentPrefixOnAsyncReplication() throws InterruptedException {
         if (!(TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.STRONG.toString()) || TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.BOUNDED_STALENESS.toString()))) {
