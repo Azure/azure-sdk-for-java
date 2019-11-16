@@ -35,9 +35,9 @@ interface ICryptoTransform {
         /**
          * @param context The context required for the creation of a new ICryptoTransform instance
          * @return The new instance.
-         * @throws InvalidKeyException                if a particular key is invalid (invalid encoding, wrong length, uninitialized, etc).
-         * @throws NoSuchAlgorithmException           if a particular cryptographic algorithm is requested but is not available in the environment.
-         * @throws NoSuchPaddingException             if a particular padding mechanism is requested but is not available in the environment.
+         * @throws InvalidKeyException if a particular key is invalid (invalid encoding, wrong length, uninitialized, etc).
+         * @throws NoSuchAlgorithmException if a particular cryptographic algorithm is requested but is not available in the environment.
+         * @throws NoSuchPaddingException if a particular padding mechanism is requested but is not available in the environment.
          * @throws InvalidAlgorithmParameterException if a particular algorithm parameters is invalid or inappropriate.
          */
         ICryptoTransform create(T context) throws InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException;
