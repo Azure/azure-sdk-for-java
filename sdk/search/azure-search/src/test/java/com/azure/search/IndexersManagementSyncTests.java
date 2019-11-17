@@ -3,6 +3,8 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
@@ -34,6 +36,11 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     protected Indexer createIndexer(Indexer indexer) {
         return client.createOrUpdateIndexer(indexer);
+    }
+
+    @Override
+    protected Response<Void> deleteIndexer(Indexer indexer) {
+        return client.deleteIndexerWithResponse(indexer.getName(), null, null, Context.NONE);
     }
 
     @Override

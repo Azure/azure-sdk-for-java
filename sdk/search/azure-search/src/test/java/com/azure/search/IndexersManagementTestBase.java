@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.http.rest.Response;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
@@ -10,6 +11,7 @@ import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexingParameters;
 import com.azure.search.models.IndexingSchedule;
+import org.apache.http.HttpStatus;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -117,6 +119,36 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
         createAndValidateIndexer(updatedExpected,
             BLOB_DATASOURCE_NAME);
+    }
+
+    @Test
+    public void deleteIndexerIsIdempotent() {
+        // Create Datasource
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        // Create an index
+        Index index = createTestIndexForLiveDatasource();
+        createIndex(index);
+
+        // Create the indexer object
+        Indexer indexer = createTestIndexer("indexer");
+        indexer.setDataSourceName(SQL_DATASOURCE_NAME);
+
+        // Try delete before the indexer even exists.
+        Response<Void> result = deleteIndexer(indexer);
+
+        Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
+
+        // Actually create the indexer
+        createIndexer(indexer);
+
+        // Now delete twice.
+        result = deleteIndexer(indexer);
+        Assert.assertEquals(HttpStatus.SC_NO_CONTENT, result.getStatusCode());
+
+        result = deleteIndexer(indexer);
+        Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
     }
 
     protected void assertIndexersEqual(Indexer expected, Indexer actual) {
@@ -316,5 +348,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     protected abstract DataSource createDatasource(DataSource datasource);
 
-    protected abstract Indexer createIndexer(Indexer initial);
+    protected abstract Indexer createIndexer(Indexer indexer);
+
+    protected abstract Response<Void> deleteIndexer(Indexer indexer);
 }

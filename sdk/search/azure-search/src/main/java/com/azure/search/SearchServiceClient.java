@@ -409,18 +409,42 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Cognitive Search indexer.
+     *
+     * @param indexerName the name of the indexer to delete
      */
-    public void deleteIndexer() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public void deleteIndexer(String indexerName) {
+        asyncClient.deleteIndexerWithResponse(indexerName, null, null).block();
     }
 
     /**
-     * @return a response signalling completion
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Cognitive Search indexer.
+     *
+     * @param indexerName the name of the indexer to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
      */
-    public Response<Response<Void>> deleteIndexerWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public void deleteIndexer(String indexerName, AccessCondition accessCondition, RequestOptions requestOptions) {
+        asyncClient.deleteIndexerWithResponse(indexerName, accessCondition, requestOptions).block();
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search indexer.
+     *
+     * @param indexerName the name of the indexer to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context the context
+     * @return a response signalling completion.
+     */
+    public Response<Void> deleteIndexerWithResponse(String indexerName, AccessCondition accessCondition,
+                                                          RequestOptions requestOptions, Context context) {
+        return asyncClient.deleteIndexerWithResponse(
+            indexerName, accessCondition, requestOptions, context).block();
     }
 
     /**

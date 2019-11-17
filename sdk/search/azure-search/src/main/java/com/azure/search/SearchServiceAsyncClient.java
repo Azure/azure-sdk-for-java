@@ -380,8 +380,8 @@ public class SearchServiceAsyncClient {
     }
 
     Mono<Response<Boolean>> datasourceExistsWithResponse(String datasourceName,
-        RequestOptions requestOptions,
-        Context context) {
+                                                         RequestOptions requestOptions,
+                                                         Context context) {
         return resourceExistsWithResponse(() ->
             this.getDataSourceWithResponse(datasourceName, requestOptions, context));
     }
@@ -393,7 +393,10 @@ public class SearchServiceAsyncClient {
      * @return a response containing the created Indexer.
      */
     public Mono<Indexer> createOrUpdateIndexer(Indexer indexer) {
-        return createOrUpdateIndexer(indexer, null, null);
+        return createOrUpdateIndexer(
+            indexer,
+            null,
+            null);
     }
 
     /**
@@ -536,19 +539,69 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @return a reactive response signalling completion.
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Cognitive Search indexer.
+     *
+     * @param indexerName the name of the indexer to delete
+     * @return a response signalling completion.
      */
-    public Mono<Void> deleteIndexer() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Void> deleteIndexer(String indexerName) {
+        return this.deleteIndexerWithResponse(indexerName, null, null)
+            .map(Response::getValue);
     }
 
     /**
-     * @return a reactive response signalling completion.
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Cognitive Search indexer.
+     *
+     * @param indexerName the name of the indexer to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response signalling completion.
      */
-    public Mono<Response<Response<Void>>> deleteIndexerWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Void> deleteIndexer(String indexerName,
+                                    AccessCondition accessCondition,
+                                    RequestOptions requestOptions) {
+        return this.deleteIndexerWithResponse(indexerName, accessCondition, requestOptions)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search indexer.
+     *
+     * @param indexerName the name of the indexer to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response signalling completion.
+     */
+    public Mono<Response<Void>> deleteIndexerWithResponse(String indexerName,
+                                                          AccessCondition accessCondition,
+                                                          RequestOptions requestOptions) {
+        return withContext(context -> this.deleteIndexerWithResponse(
+            indexerName,
+            accessCondition,
+            requestOptions,
+            context));
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search indexer.
+     *
+     * @param indexerName the name of the indexer to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context the context
+     * @return a response signalling completion.
+     */
+    Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, AccessCondition accessCondition,
+                                                   RequestOptions requestOptions, Context context) {
+        return restClient.indexers().deleteWithRestResponseAsync(
+            indexerName, requestOptions, accessCondition, context)
+            .map(Function.identity());
     }
 
     /**
@@ -900,7 +953,11 @@ public class SearchServiceAsyncClient {
      * @return the index that was created or updated.
      */
     public Mono<Index> createOrUpdateIndex(Index index) {
-        return this.createOrUpdateIndexWithResponse(index, false, null, null)
+        return this.createOrUpdateIndexWithResponse(
+            index,
+            false,
+            null,
+            null)
             .map(Response::getValue);
     }
 
@@ -1141,7 +1198,7 @@ public class SearchServiceAsyncClient {
      *
      * @param skillsetName the name of the skillset to retrieve
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return the Skillset.
      */
     public Mono<Skillset> getSkillset(String skillsetName, RequestOptions requestOptions) {
@@ -1154,7 +1211,7 @@ public class SearchServiceAsyncClient {
      *
      * @param skillsetName the name of the skillset to retrieve
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the Skillset.
      */
     public Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName,
@@ -1164,8 +1221,8 @@ public class SearchServiceAsyncClient {
     }
 
     Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName,
-                                                            RequestOptions requestOptions,
-                                                            Context context) {
+                                                     RequestOptions requestOptions,
+                                                     Context context) {
         return this.restClient
             .skillsets()
             .getWithRestResponseAsync(skillsetName, requestOptions, context)
@@ -1185,10 +1242,10 @@ public class SearchServiceAsyncClient {
      * Lists all skillsets available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the skillset definitions to retrieve.
-     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *               The default is all properties
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a reactive response emitting the list of skillsets.
      */
     public PagedFlux<Skillset> listSkillsets(String select, RequestOptions requestOptions) {
@@ -1201,10 +1258,10 @@ public class SearchServiceAsyncClient {
      * Lists all skillsets available for an Azure Cognitive Search service.
      *
      * @param select selects which top-level properties of the skillset definitions to retrieve.
-     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *               The default is all properties
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
+     * The default is all properties
      * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * Contains the tracking ID sent with the request to help with debugging
      * @return a response emitting the list of skillsets.
      */
     public Mono<PagedResponse<Skillset>> listSkillsetsWithResponse(String select, RequestOptions requestOptions) {
