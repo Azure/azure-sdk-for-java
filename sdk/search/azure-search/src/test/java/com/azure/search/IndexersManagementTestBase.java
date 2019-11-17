@@ -42,7 +42,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
         Indexer updatedExpected = createIndexerWithDifferentDescription();
 
-        createAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+        createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
     @Test
@@ -52,7 +52,18 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
         Indexer updatedExpected = createIndexerWithDifferentFieldMapping();
 
-        createAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+        createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+    }
+
+    @Test
+    public void canCreateIndexerWithFieldMapping() {
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        Indexer indexer = createIndexerWithDifferentFieldMapping()
+            .setDataSourceName(SQL_DATASOURCE_NAME);
+
+        createAndValidateIndexer(indexer);
     }
 
     @Test
@@ -62,7 +73,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
         Indexer updatedExpected = createDisabledIndexer();
 
-        createAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+        createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
     @Test
@@ -72,7 +83,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
         Indexer updatedExpected = createIndexerWithDifferentSchedule();
 
-        createAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+        createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
     @Test
@@ -80,9 +91,10 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         DataSource datasource = createTestSqlDataSource();
         createDatasource(datasource);
 
-        Indexer indexer = createIndexerWithDifferentSchedule();
+        Indexer indexer = createIndexerWithDifferentSchedule()
+            .setDataSourceName(SQL_DATASOURCE_NAME);
 
-        createAndValidateIndexer(indexer, SQL_DATASOURCE_NAME);
+        createAndValidateIndexer(indexer);
     }
 
     @Test
@@ -92,7 +104,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
         Indexer updatedExpected = createIndexerWithDifferentIndexingParameters();
 
-        createAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+        createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
     @Test
@@ -100,9 +112,10 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         DataSource datasource = createTestSqlDataSource();
         createDatasource(datasource);
 
-        Indexer indexer = createIndexerWithDifferentIndexingParameters();
+        Indexer indexer = createIndexerWithDifferentIndexingParameters()
+            .setDataSourceName(SQL_DATASOURCE_NAME);
 
-        createAndValidateIndexer(indexer, SQL_DATASOURCE_NAME);
+        createAndValidateIndexer(indexer);
     }
 
     // This test currently does not pass on our Dogfood account, as the
@@ -117,7 +130,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         // modify the indexer's blob params
         Indexer updatedExpected = changeIndexerBlobParams();
 
-        createAndValidateIndexer(updatedExpected,
+        createUpdateAndValidateIndexer(updatedExpected,
             BLOB_DATASOURCE_NAME);
     }
 
@@ -167,7 +180,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
             .setSchedule(new IndexingSchedule().setInterval(Duration.ofDays(1)));
     }
 
-    protected static void expectSameStartTime(Indexer expected, Indexer actual) {
+    static void expectSameStartTime(Indexer expected, Indexer actual) {
         // There ought to be a start time in the response; We just can't know what it is because it would
         // make the test timing-dependent.
         expected.getSchedule().setStartTime(actual.getSchedule().getStartTime());
@@ -216,9 +229,8 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      * @param updatedIndexer the indexer to be updated
      * @param datasourceName the datasource name for this indexer
      */
-    void createAndValidateIndexer(Indexer updatedIndexer, String datasourceName) {
+    void createUpdateAndValidateIndexer(Indexer updatedIndexer, String datasourceName) {
         updatedIndexer.setDataSourceName(datasourceName);
-
 
         // Create an index
         Index index = createTestIndexForLiveDatasource();
@@ -238,6 +250,23 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         // verify the returned updated indexer is as expected
         expectSameStartTime(updatedIndexer, indexerResponse);
         assertIndexersEqual(updatedIndexer, indexerResponse);
+    }
+
+    /**
+     * Creates the index and indexer in the search service and then retrieves the indexer and validates it
+     * @param indexer the indexer to be created
+     */
+    void createAndValidateIndexer(Indexer indexer) {
+        // Create an index
+        Index index = createTestIndexForLiveDatasource();
+        createIndex(index);
+
+        // create this indexer in the service
+        Indexer indexerResponse = createIndexer(indexer);
+
+        // verify the returned updated indexer is as expected
+        expectSameStartTime(indexer, indexerResponse);
+        assertIndexersEqual(indexer, indexerResponse);
     }
 
     /**
