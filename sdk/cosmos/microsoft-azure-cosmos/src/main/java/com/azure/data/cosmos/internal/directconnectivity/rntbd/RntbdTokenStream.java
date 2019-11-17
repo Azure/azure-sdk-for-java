@@ -8,11 +8,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.CorruptedFrameException;
 
 import java.util.stream.Collector;
 
 import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.lenientFormat;
 
 @SuppressWarnings("UnstableApiUsage")
 abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
@@ -59,7 +61,7 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
 
     static <T extends RntbdTokenStream<?>> T decode(final T stream) {
 
-        ByteBuf in = stream.in;
+        final ByteBuf in = stream.in;
 
         while (in.readableBytes() > 0) {
 
@@ -77,9 +79,8 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
 
         for (final RntbdToken token : stream.tokens.values()) {
             if (!token.isPresent() && token.isRequired()) {
-                final String reason = Strings.lenientFormat("Required token not found on token stream: type=%s, identifier=%s",
-                    token.getTokenType(), token.getId());
-                throw new IllegalStateException(reason);
+                final String message = lenientFormat("Required header not found on token stream: %s", token);
+                throw new CorruptedFrameException(message);
             }
         }
 
