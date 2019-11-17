@@ -3,7 +3,7 @@ package com.azure.storage.file.datalake
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-
+import com.azure.storage.common.Utility
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
@@ -895,25 +895,43 @@ class FileSystemAPITest extends APISpec {
         def filePath = response.next()
         !response.hasNext()
     }
+    // TODO (gapra): Add more get paths tests (Github issue created)
 
-//    def "List paths path"() {
-//        setup:
-//        def dirName = generatePathName()
-//        fsc.getDirectoryClient("foo").create()
-//
-//        def fileName = generatePathName()
-//        fsc.getFileClient(fileName).create()
-//
-//        when:
-//        def response = fsc.listPaths(new ListPathsOptions().setPath("foo"), null).iterator()
-//
-//        then:
-//        def dirPath = response.next()
-////        response.hasNext()
-////        def filePath = response.next()
-//        !response.hasNext()
-//    }
+    @Unroll
+    def "Create URL special chars encoded"() {
+        // This test checks that we handle path names with encoded special characters correctly.
+        setup:
+        def fc1 = fsc.getFileClient(name + "file1")
+        def fc2 = fsc.getFileClient(name + "file2")
+        def dc1 = fsc.getDirectoryClient(name + "dir1")
+        def dc2 = fsc.getDirectoryClient(name + "dir2")
 
-//    setupFileSystemForGetPaths() {}
+        expect:
+        fc1.createWithResponse(null, null, null, null, null, null, null).getStatusCode() == 201
+        fc2.create()
+        fc2.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+        fc2.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, null, null, null).getStatusCode() == 202
+        dc1.createWithResponse(null, null, null, null, null, null, null).getStatusCode() == 201
+        dc2.create()
+        dc2.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+
+        when:
+        def paths = fsc.listPaths().iterator()
+
+        then:
+        paths.next().getName() == Utility.urlDecode(name) + "dir1"
+        paths.next().getName() == Utility.urlDecode(name) + "dir2"
+        paths.next().getName() == Utility.urlDecode(name) + "file1"
+        paths.next().getName() == Utility.urlDecode(name) + "file2"
+
+        // Note you cannot use the / character in a path in datalake unless it is to specify an absolute path
+        where:
+        name                                                     | _
+        "%E4%B8%AD%E6%96%87"                                     | _
+        "az%5B%5D"                                               | _
+        "hello%20world"                                          | _
+        "hello%26world"                                          | _
+        "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%3F%23%5B%5D"    | _
+    }
 
 }

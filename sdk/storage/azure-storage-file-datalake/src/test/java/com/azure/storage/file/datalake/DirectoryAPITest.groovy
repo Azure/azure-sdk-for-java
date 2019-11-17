@@ -1,5 +1,6 @@
 package com.azure.storage.file.datalake
 
+import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
@@ -1411,5 +1412,97 @@ class DirectoryAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    @Unroll
+    def "Get Directory Name and Build Client"() {
+        when:
+        DataLakeDirectoryClient client = fsc.getDirectoryClient(originalDirectoryName)
+
+        then:
+        // Note : Here I use Path because there is a test that tests the use of a /
+        client.getDirectoryPath() == finalDirectoryName
+
+        where:
+        originalDirectoryName  || finalDirectoryName
+        "dir"                  || "dir"
+        "path/to]a dir"        || "path/to]a dir"
+        "path%2Fto%5Da%20dir"  || "path/to]a dir"
+        "斑點"                  || "斑點"
+        "%E6%96%91%E9%BB%9E"   || "斑點"
+    }
+
+    @Unroll
+    def "Create Delete sub directory url encoding"() {
+        setup:
+        def dirName = generatePathName()
+        DataLakeDirectoryClient client = fsc.getDirectoryClient(dirName)
+
+        when:
+        Response<DataLakeDirectoryClient> resp = client.createSubDirectoryWithResponse(originalDirectoryName, null, null, null, null, null, null, null)
+
+        then:
+        resp.getStatusCode() == 201
+        resp.getValue().getDirectoryPath() == dirName + "/" + finalDirectoryName
+
+        expect:
+        client.deleteSubDirectoryWithResponse(originalDirectoryName, false, null, null, null).getStatusCode() == 200
+
+        where:
+        originalDirectoryName  || finalDirectoryName
+        "dir"                  || "dir"
+        "path/to]a dir"        || "path/to]a dir"
+        "path%2Fto%5Da%20dir"  || "path/to]a dir"
+        "斑點"                  || "斑點"
+        "%E6%96%91%E9%BB%9E"   || "斑點"
+    }
+
+    @Unroll
+    def "Create Delete file url encoding"() {
+        setup:
+        def fileName = generatePathName()
+        DataLakeDirectoryClient client = fsc.getDirectoryClient(fileName)
+
+        when:
+        Response<DataLakeFileClient> resp = client.createFileWithResponse(originalFileName, null, null, null, null, null, null, null)
+
+        then:
+        resp.getStatusCode() == 201
+        resp.getValue().getFilePath() == fileName + "/" + finalFileName
+
+        expect:
+        client.deleteSubDirectoryWithResponse(originalFileName, false, null, null, null).getStatusCode() == 200
+
+        where:
+        originalFileName       || finalFileName
+        "file"                 || "file"
+        "path/to]a file"       || "path/to]a file"
+        "path%2Fto%5Da%20file" || "path/to]a file"
+        "斑點"                  || "斑點"
+        "%E6%96%91%E9%BB%9E"   || "斑點"
+    }
+
+    @Unroll
+    def "Create file with path structure"() {
+        when:
+        DataLakeFileClient fileClient = fsc.getFileClient(pathName as String)
+        fileClient.create()
+        // Check that service created underlying directory
+        DataLakeDirectoryClient dirClient = fsc.getDirectoryClient("dir")
+
+        then:
+        dirClient.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+
+        when:
+        // Delete file
+        fileClient.deleteWithResponse(null, null, null).getStatusCode() == 200
+
+        then:
+        // Directory should still exist
+        dirClient.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+
+        where:
+        pathName     || _
+        "dir/file"   || _
+        "dir%2Ffile" || _
+    }
 
 }

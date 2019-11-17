@@ -4,7 +4,7 @@
 //package com.azure.cs.textanalytics;
 //
 //
-//import com.azure.cs.textanalytics.models.DocumentEntities;
+//import com.azure.cs.textanalytics.implementation.models.DocumentEntities;
 //import com.azure.cs.textanalytics.models.Entity;
 //
 //import java.util.List;

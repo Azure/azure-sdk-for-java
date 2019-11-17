@@ -4,11 +4,6 @@
 package com.azure.cs.textanalytics;
 
 
-import com.azure.cs.textanalytics.models.DetectedLanguage;
-import com.azure.cs.textanalytics.models.DocumentLanguage;
-
-import java.util.List;
-
 public class HelloWorldAsync {
 
     public static void main(String[] args) {

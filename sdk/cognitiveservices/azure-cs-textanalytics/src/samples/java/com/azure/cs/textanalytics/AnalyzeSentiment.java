@@ -3,7 +3,7 @@
 
 package com.azure.cs.textanalytics;
 
-import com.azure.cs.textanalytics.models.DocumentSentiment;
+import com.azure.cs.textanalytics.implementation.models.DocumentSentiment;
 
 public class AnalyzeSentiment {
 

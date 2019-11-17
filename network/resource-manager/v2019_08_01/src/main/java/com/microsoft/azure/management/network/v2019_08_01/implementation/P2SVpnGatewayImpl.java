@@ -16,7 +16,6 @@ import java.util.List;
 import com.microsoft.azure.management.network.v2019_08_01.P2SConnectionConfiguration;
 import com.microsoft.azure.management.network.v2019_08_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2019_08_01.VpnClientConnectionHealth;
-import com.microsoft.azure.management.network.v2019_08_01.VpnServerConfiguration;
 
 class P2SVpnGatewayImpl extends GroupableResourceCoreImpl<P2SVpnGateway, P2SVpnGatewayInner, P2SVpnGatewayImpl, NetworkManager> implements P2SVpnGateway, P2SVpnGateway.Definition, P2SVpnGateway.Update {
     P2SVpnGatewayImpl(String name, P2SVpnGatewayInner inner, NetworkManager manager) {
@@ -55,8 +54,8 @@ class P2SVpnGatewayImpl extends GroupableResourceCoreImpl<P2SVpnGateway, P2SVpnG
     }
 
     @Override
-    public List<P2SConnectionConfiguration> p2sConnectionConfigurations() {
-        return this.inner().p2sConnectionConfigurations();
+    public List<P2SConnectionConfiguration> p2SConnectionConfigurations() {
+        return this.inner().p2SConnectionConfigurations();
     }
 
     @Override
@@ -80,18 +79,13 @@ class P2SVpnGatewayImpl extends GroupableResourceCoreImpl<P2SVpnGateway, P2SVpnG
     }
 
     @Override
-    public VpnServerConfiguration vpnServerConfiguration() {
-        VpnServerConfigurationInner inner = this.inner().vpnServerConfiguration();
-        if (inner != null) {
-            return  new VpnServerConfigurationImpl(inner.name(), inner, manager());
-        } else {
-            return null;
-        }
+    public SubResource vpnServerConfiguration() {
+        return this.inner().vpnServerConfiguration();
     }
 
     @Override
-    public P2SVpnGatewayImpl withP2sConnectionConfigurations(List<P2SConnectionConfiguration> p2sConnectionConfigurations) {
-        this.inner().withP2sConnectionConfigurations(p2sConnectionConfigurations);
+    public P2SVpnGatewayImpl withP2SConnectionConfigurations(List<P2SConnectionConfiguration> p2SConnectionConfigurations) {
+        this.inner().withP2SConnectionConfigurations(p2SConnectionConfigurations);
         return this;
     }
 
@@ -114,7 +108,7 @@ class P2SVpnGatewayImpl extends GroupableResourceCoreImpl<P2SVpnGateway, P2SVpnG
     }
 
     @Override
-    public P2SVpnGatewayImpl withVpnServerConfiguration(VpnServerConfigurationInner vpnServerConfiguration) {
+    public P2SVpnGatewayImpl withVpnServerConfiguration(SubResource vpnServerConfiguration) {
         this.inner().withVpnServerConfiguration(vpnServerConfiguration);
         return this;
     }

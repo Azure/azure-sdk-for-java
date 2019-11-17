@@ -6,8 +6,8 @@ package com.azure.cs.textanalytics.batch;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.cs.textanalytics.models.DocumentKeyPhrases;
-import com.azure.cs.textanalytics.models.KeyPhraseResult;
+import com.azure.cs.textanalytics.implementation.models.DocumentKeyPhrases;
+import com.azure.cs.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
 import com.azure.cs.textanalytics.models.MultiLanguageInput;
 

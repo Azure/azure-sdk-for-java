@@ -7,10 +7,10 @@ import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
-import com.azure.cs.textanalytics.models.DocumentLanguage;
+import com.azure.cs.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.cs.textanalytics.models.LanguageBatchInput;
 import com.azure.cs.textanalytics.models.LanguageInput;
-import com.azure.cs.textanalytics.models.LanguageResult;
+import com.azure.cs.textanalytics.implementation.models.LanguageResult;
 
 import java.util.ArrayList;
 import java.util.List;

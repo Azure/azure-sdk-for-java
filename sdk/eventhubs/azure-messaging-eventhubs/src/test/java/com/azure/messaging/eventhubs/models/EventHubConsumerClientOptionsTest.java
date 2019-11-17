@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class EventHubConsumerClientOptionsTest {
     /**
@@ -16,7 +16,7 @@ public class EventHubConsumerClientOptionsTest {
         final EventHubConsumerOptions options = new EventHubConsumerOptions();
 
         // Assert
-        Assert.assertEquals(EventHubConsumerOptions.DEFAULT_PREFETCH_COUNT, options.getPrefetchCount());
+        Assertions.assertEquals(EventHubConsumerOptions.DEFAULT_PREFETCH_COUNT, options.getPrefetchCount());
     }
 
     @Test
@@ -31,13 +31,13 @@ public class EventHubConsumerClientOptionsTest {
         // Act
         try {
             options.setIdentifier(longIdentifier);
-            Assert.fail("Setting this should have failed.");
+            Assertions.fail("Setting this should have failed.");
         } catch (IllegalArgumentException e) {
             // This is what we expect.
         }
 
         // Assert
-        Assert.assertEquals(identifier, options.getIdentifier());
+        Assertions.assertEquals(identifier, options.getIdentifier());
     }
 
     @Test
@@ -51,13 +51,13 @@ public class EventHubConsumerClientOptionsTest {
         // Act
         try {
             options.setPrefetchCount(invalid);
-            Assert.fail("Setting this should have failed.");
+            Assertions.fail("Setting this should have failed.");
         } catch (IllegalArgumentException e) {
             // This is what we expect.
         }
 
         // Assert
-        Assert.assertEquals(prefetch, options.getPrefetchCount());
+        Assertions.assertEquals(prefetch, options.getPrefetchCount());
     }
 
     @Test
@@ -71,13 +71,13 @@ public class EventHubConsumerClientOptionsTest {
         // Act
         try {
             options.setPrefetchCount(invalid);
-            Assert.fail("Setting this should have failed.");
+            Assertions.fail("Setting this should have failed.");
         } catch (IllegalArgumentException e) {
             // This is what we expect.
         }
 
         // Assert
-        Assert.assertEquals(prefetch, options.getPrefetchCount());
+        Assertions.assertEquals(prefetch, options.getPrefetchCount());
     }
 
     @Test
@@ -91,12 +91,12 @@ public class EventHubConsumerClientOptionsTest {
         // Act
         try {
             options.setOwnerLevel(invalidOwnerLevel);
-            Assert.fail("Setting this should have failed.");
+            Assertions.fail("Setting this should have failed.");
         } catch (IllegalArgumentException e) {
             // This is what we expect.
         }
 
         // Assert
-        Assert.assertEquals(Long.valueOf(ownerLevel), options.getOwnerLevel());
+        Assertions.assertEquals(Long.valueOf(ownerLevel), options.getOwnerLevel());
     }
 }
