@@ -97,7 +97,6 @@ public class ProxyHostTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    // TODO (DANOBLE) test is flaky
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithValidHttpProxyWithNettyWireLogging() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);

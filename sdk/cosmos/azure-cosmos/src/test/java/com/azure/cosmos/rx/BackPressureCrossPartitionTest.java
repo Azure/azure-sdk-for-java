@@ -114,9 +114,6 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         };
     }
 
-    // TODO: DANOBLE: Investigate DIRECT TCP performance issue
-    // Links: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
-
     @Test(groups = { "long" }, dataProvider = "queryProvider", timeOut = 2 * TIMEOUT)
     public void query(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
         FeedOptions options = new FeedOptions();
@@ -185,9 +182,6 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(clientBuilder());
         warmUp();
     }
-
-    // TODO: DANOBLE: Investigate DIRECT TCP performance issue
-    // Links: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
 
     @AfterClass(groups = { "long" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {

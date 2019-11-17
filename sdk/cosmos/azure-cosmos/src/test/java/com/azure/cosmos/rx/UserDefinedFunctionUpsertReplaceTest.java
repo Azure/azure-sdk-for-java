@@ -17,7 +17,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-// TODO (DANOBLE) beforeClass times out inconsistently.
 public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
 
     private CosmosAsyncContainer createdCollection;

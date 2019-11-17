@@ -98,7 +98,6 @@ public class SessionTest extends TestSuiteBase {
                 .map(r -> r.headers().value(HttpConstants.HttpHeaders.SESSION_TOKEN)).collect(Collectors.toList());
     }
 
-    // TODO (DANOBLE) Test flakes inconsistently with assertion error
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionConsistency_ReadYourWrites(boolean isNameBased) {
         spyClient.readCollection(getCollectionLink(isNameBased), null).blockFirst();

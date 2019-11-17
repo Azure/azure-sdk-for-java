@@ -41,7 +41,6 @@ public class UserQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    // TODO (DANOBLE) test times out inconsistently
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryUsersWithFilter() throws Exception {
 

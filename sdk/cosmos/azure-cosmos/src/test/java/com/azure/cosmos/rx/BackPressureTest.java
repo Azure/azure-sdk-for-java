@@ -34,7 +34,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-// TODO (DANOBLE) beforeClass method times out inconsistently
 public class BackPressureTest extends TestSuiteBase {
 
     private static final int TIMEOUT = 200000;
@@ -194,10 +193,6 @@ public class BackPressureTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
         createdCollection.queryItems("SELECT * from r", options).blockFirst();
     }
-
-    // TODO: DANOBLE: Investigate DIRECT TCP performance issue
-    // NOTE: This method requires multiple SHUTDOWN_TIMEOUT intervals
-    // SEE: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
 
     @AfterClass(groups = { "long" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {

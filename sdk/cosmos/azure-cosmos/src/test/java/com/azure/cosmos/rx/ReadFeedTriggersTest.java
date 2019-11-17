@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-// TODO (DANOBLE) beforeClass times out inconsistently.
 public class ReadFeedTriggersTest extends TestSuiteBase {
 
     private CosmosAsyncContainer createdCollection;

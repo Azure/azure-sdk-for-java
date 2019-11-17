@@ -123,7 +123,6 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_DOCUEMNT_ID + "\"");
     }
 
-    // TODO (DANOBLE) test is flaky
     @Test(groups = { "simple" })
     public void testNonPartitionedCollectionOperations() throws Exception {
         createContainerWithoutPk();

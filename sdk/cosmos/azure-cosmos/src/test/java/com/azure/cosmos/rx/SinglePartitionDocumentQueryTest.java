@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-// TODO (DANOBLE) beforeclass times out inconsistently
 public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
     private Database createdDatabase;
@@ -51,7 +50,6 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    // TODO (DANOBLE) test is flaky
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocuments(boolean queryMetricsEnabled) throws Exception {
 

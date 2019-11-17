@@ -40,7 +40,6 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
 import static org.assertj.core.api.Assertions.assertThat;
 
-// TODO (DANOBLE) beforeClass times out inconsistently
 public class ParallelDocumentQueryTest extends TestSuiteBase {
     private CosmosAsyncDatabase createdDatabase;
     private CosmosAsyncContainer createdCollection;
@@ -65,7 +64,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         };
     }
 
-    // TODO (DANOBLE) test times out inconsistently
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocuments(boolean qmEnabled) {
         String query = "SELECT * from c where c.prop = 99";
@@ -255,7 +253,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     	}
     }
 
-    //  TODO: This test has been timing out on buildAsyncClient, related work item - https://msdata.visualstudio.com/CosmosDB/_workitems/edit/402438/
     @Test(groups = { "non-emulator" }, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithCompositeContinuationTokens() throws Exception {
         String query = "SELECT * FROM c";

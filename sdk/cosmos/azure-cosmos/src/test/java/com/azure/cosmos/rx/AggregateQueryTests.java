@@ -184,6 +184,8 @@ public class AggregateQueryTests extends TestSuiteBase {
         safeClose(client);
     }
 
+    // TODO (DANOBLE) AggregateQueryTests initialization intermittently fails due to collection truncation error.
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6346
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT * 2)
     public void before_AggregateQueryTests() throws Throwable {
         client = this.clientBuilder().buildAsyncClient();

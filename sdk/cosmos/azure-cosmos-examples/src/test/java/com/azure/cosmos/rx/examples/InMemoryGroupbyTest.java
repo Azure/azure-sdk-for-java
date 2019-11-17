@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-// TODO (DANOBLE) setup method times out occasionally when running against emulator.
 public class InMemoryGroupbyTest extends DocumentClientTest {
 
     private final static int TIMEOUT = 60000;

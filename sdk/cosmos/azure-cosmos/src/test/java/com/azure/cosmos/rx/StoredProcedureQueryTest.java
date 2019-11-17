@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-// TODO (DANOBLE) beforeCLass times out inconsistently
 public class StoredProcedureQueryTest extends TestSuiteBase {
 
     private CosmosAsyncContainer createdCollection;

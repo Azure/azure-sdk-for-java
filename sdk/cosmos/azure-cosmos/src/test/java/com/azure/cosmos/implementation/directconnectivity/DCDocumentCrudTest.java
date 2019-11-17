@@ -199,7 +199,6 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         validateNoDocumentOperationThroughGateway();
     }
 
-    // TODO (DANOBLE) Times out
     @Test(groups = { "direct" }, timeOut = QUERY_TIMEOUT)
     public void crossPartitionQuery() {
 

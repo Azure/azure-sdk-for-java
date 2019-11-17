@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-// TODO (DANOBLE) beforeClass times out.
 public class ReadFeedUdfsTest extends TestSuiteBase {
 
     private Database createdDatabase;

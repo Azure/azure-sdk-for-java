@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 // TODO: change to use external TestSuiteBase
-// TODO (DANOBLE) beforeClass times out inconsistently
 public class PermissionQueryTest extends TestSuiteBase {
 
     public final String databaseId = DatabaseForTest.generateId();

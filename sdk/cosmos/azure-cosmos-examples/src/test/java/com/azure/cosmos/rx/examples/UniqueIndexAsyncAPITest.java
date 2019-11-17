@@ -37,7 +37,6 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
     private AsyncDocumentClient client;
     private Database createdDatabase;
 
-    // TODO (DANOBLE) Times out when running in emulator tests.
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void uniqueIndex() {
         DocumentCollection collectionDefinition = new DocumentCollection();

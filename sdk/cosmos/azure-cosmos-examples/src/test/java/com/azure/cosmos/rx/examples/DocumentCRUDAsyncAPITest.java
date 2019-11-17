@@ -68,7 +68,7 @@ import static org.hamcrest.Matchers.is;
  * transform a flux to CompletableFuture. Please see
  * {@link #transformObservableToCompletableFuture()}
  */
-// TODO (DANOBLE) beforeClass times out inconsistently
+
 public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
 
     private final static String PARTITION_KEY_PATH = "/mypk";

@@ -21,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConsistencyTests1 extends ConsistencyTestsBase {
 
-    // TODO (DANOBLE) test is flaky
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateStrongConsistencyOnSyncReplication() throws Exception {
         if (!TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.STRONG.toString())) {
@@ -177,7 +176,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         assertThat(readLagging).isFalse();
     }
 
-    // TODO (DANOBLE) Address ConsistencyTests1::validateConsistentPrefixOnAsyncReplication test failure #6378
+    // TODO (DANOBLE) ConsistencyTests1::validateConsistentPrefixOnAsyncReplication test fails
+    //  This test requires BoundedStaleness and fails due to timeouts when run in Direct TCP mode.
+    //  This test should be enabled when we are ready to address our BoundedStaleness consistency issues.
     //  see https://github.com/Azure/azure-sdk-for-java/issues/6378
     @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)

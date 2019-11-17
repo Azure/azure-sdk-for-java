@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-// TODO (DANOBLE) beforeClass times out inconsistently
 public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
     private Database createdDatabase;

@@ -838,11 +838,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return simpleClientBuildersWithDirect(toArray(protocols));
     }
 
-    // TODO (DANOBLE) uncomment this DataProvider
-    //    @DataProvider
-    //    public static Object[][] simpleClientBuildersWithDirectHttps() {
-    //        return simpleClientBuildersWithDirect(Protocol.HTTPS);
-    //    }
+    @DataProvider
+    public static Object[][] simpleClientBuildersWithDirectHttps() {
+        return simpleClientBuildersWithDirect(Protocol.HTTPS);
+    }
 
     private static Object[][] simpleClientBuildersWithDirect(Protocol... protocols) {
         logger.info("Max test consistency to use is [{}]", accountConsistency);

@@ -154,7 +154,6 @@ public class TokenResolverTest extends TestSuiteBase {
         }
     }
 
-    // TODO (DANOBLE) test is flaky
     @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void writeDocumentWithAllPermission(ConnectionMode connectionMode) {
         AsyncDocumentClient asyncClientWithTokenResolver = null;

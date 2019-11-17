@@ -114,7 +114,6 @@ public class LogLevelTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    // TODO (DANOBLE) test is flaky
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithTraceLevel() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);
@@ -142,7 +141,6 @@ public class LogLevelTest extends TestSuiteBase {
         }
     }
 
-    //FIXME test is flaky
     @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithTraceLevelAtRoot() throws Exception {
