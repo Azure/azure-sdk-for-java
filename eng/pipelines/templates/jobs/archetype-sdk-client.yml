@@ -165,9 +165,9 @@ jobs:
           publishJUnitResults: false
           goals: 'install'
 
-      # Run SpotBugs, CheckStyle and JavaDoc tools to ensure high code quality - these will fail the build if issues are found
+      # Run SpotBugs, CheckStyle, Revapi, and JavaDoc tools to ensure high code quality - these will fail the build if issues are found
       - task: Maven@3
-        displayName: 'Run SpotBugs, CheckStyle, and JavaDoc'
+        displayName: 'Run SpotBugs, CheckStyle, Revapi, and JavaDoc'
         inputs:
           mavenPomFile: pom.client.xml
           options: '-DskipTests -Dgpg.skip'
@@ -176,7 +176,7 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'spotbugs:check checkstyle:checkstyle-aggregate javadoc:aggregate'
+          goals: 'spotbugs:check checkstyle:checkstyle-aggregate revapi:check javadoc:aggregate'
 
       # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module
       - task: Maven@3

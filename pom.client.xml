@@ -340,6 +340,34 @@
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
       </plugin>
+
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>${revapi-maven-plugin.version}</version>
+        <configuration>
+          <analysisConfigurationFiles>
+            <file>${session.executionRootDirectory}/eng/revapi.json</file>
+          </analysisConfigurationFiles>
+          <checkDependencies>false</checkDependencies>
+          <failBuildOnProblemsFound>false</failBuildOnProblemsFound> <!-- TODO: enable this -->
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-java</artifactId>
+            <version>${revapi-java.version}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
 
     <pluginManagement>
@@ -641,6 +669,32 @@
               <report>ci-management</report>
               <report>dependencies</report>
               <report>issue-management</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>${revapi-maven-plugin.version}</version>
+        <configuration>
+          <analysisConfigurationFiles>
+            <file>${session.executionRootDirectory}/eng/revapi.json</file>
+          </analysisConfigurationFiles>
+          <checkDependencies>false</checkDependencies>
+          <failBuildOnProblemsFound>false</failBuildOnProblemsFound> <!-- TODO: enable this -->
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report</report>
+            </reports>
+          </reportSet>
+          <reportSet>
+            <inherited>false</inherited>
+            <reports>
+              <report>report-aggregate</report>
             </reports>
           </reportSet>
         </reportSets>
