@@ -141,7 +141,6 @@ public class LogLevelTest extends TestSuiteBase {
         }
     }
 
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithTraceLevelAtRoot() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);
