@@ -6,6 +6,7 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpResponse;
 import java.net.HttpURLConnection;
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * The interface for determining the retry strategy used in {@link RetryPolicy}.
@@ -13,6 +14,8 @@ import java.time.Duration;
 public interface RetryStrategy {
 
     int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
+    String RETRY_AFTER_MS_HEADER = "retry-after-ms";
+    String X_MS_RETRY_AFTER_MS_HEADER = "x-ms-retry-after-ms";
 
     /**
      * Max number of retry attempts to be make.
@@ -28,6 +31,26 @@ public interface RetryStrategy {
      * @return The delay duration before the next retry.
      */
     Duration calculateRetryDelay(int retryAttempts);
+
+    /**
+     * Computes the delay between each retry by using {@link HttpResponse} headers.  The order of {@link HttpResponse}
+     * headers to find retry delay is 'x-ms-retry-after-ms' followed by 'retry-after-ms'. In absence of
+     * these headers it will use {@code retryAttempts} only. A client can customize this behaviour by overwriting
+     * {@code calculateRetryDelay} function.
+     *
+     * @param httpResponse The {@link HttpResponse} from previous {@link com.azure.core.http.HttpRequest}.
+     * @param retryAttempts The number of retry attempts completed so far.
+     * @return The delay duration before the next retry.
+     */
+    default Duration calculateRetryDelay(HttpResponse httpResponse, int retryAttempts) {
+        String delayStringValue = httpResponse.getHeaderValue(X_MS_RETRY_AFTER_MS_HEADER);
+        if (Objects.isNull(delayStringValue)) {
+            delayStringValue = httpResponse.getHeaderValue(RETRY_AFTER_MS_HEADER);
+        }
+
+        return (!Objects.isNull(delayStringValue))
+            ? Duration.ofMillis(Long.parseLong(delayStringValue)) : calculateRetryDelay(retryAttempts);
+    }
 
     /**
      * This method is consulted to determine if a retry attempt should be made for the given {@link HttpResponse} if the
