@@ -100,7 +100,6 @@ jobs:
           pip install doc-warden
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
-        enabled: false
       
       - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
         # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR

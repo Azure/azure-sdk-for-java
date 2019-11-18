@@ -80,6 +80,8 @@ known_content_issues:
   - ['sdk/storage/azure-storage-file-datalake/swagger/README.md', '#3113']
   - ['sdk/storage/azure-storage-queue/swagger/README.md', '#3113']
   - ['sdk/storage/azure-storage-file-share/swagger/README.md', '#3113']
+  - ['sdk/search/azure-search/src/test/README.md', '#3113']
+  - ['sdk/search/open-api/readme.md', '#3113']
 package_indexing_exclusion_list:
   - azure-loganalytics-sample
   - azure-applicationinsights-query-sample
