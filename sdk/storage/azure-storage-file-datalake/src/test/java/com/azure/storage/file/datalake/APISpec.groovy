@@ -15,6 +15,8 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -88,7 +90,7 @@ class APISpec extends Specification {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    public static final String defaultEndpointTemplate = "https://%s.dfs.core.windows.net/"
+    public static final String defaultEndpointTemplate = "http://%s.dfs.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def DATA_LAKE_STORAGE = "STORAGE_DATA_LAKE_"
@@ -161,15 +163,15 @@ class APISpec extends Specification {
     }
 
     static TestMode setupTestMode() {
-        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
-
-        if (testMode != null) {
-            try {
-                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException ignore) {
-                return TestMode.PLAYBACK
-            }
-        }
+//        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
+//
+//        if (testMode != null) {
+//            try {
+//                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
+//            } catch (IllegalArgumentException ignore) {
+//                return TestMode.PLAYBACK
+//            }
+//        }
 
         return TestMode.PLAYBACK
     }
@@ -287,13 +289,24 @@ class APISpec extends Specification {
         }
     }
 
-    static DataLakeLeaseClient createLeaseClient(DataLakePathClient pathClient) {
+    static DataLakeLeaseClient createLeaseClient(DataLakeFileClient pathClient) {
         return createLeaseClient(pathClient, null)
     }
 
-    static DataLakeLeaseClient createLeaseClient(DataLakePathClient pathClient, String leaseId) {
+    static DataLakeLeaseClient createLeaseClient(DataLakeFileClient pathClient, String leaseId) {
         return new DataLakeLeaseClientBuilder()
-            .pathClient(pathClient)
+            .fileClient(pathClient)
+            .leaseId(leaseId)
+            .buildClient()
+    }
+
+    static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient) {
+        return createLeaseClient(pathClient, null)
+    }
+
+    static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder()
+            .directoryClient(pathClient)
             .leaseId(leaseId)
             .buildClient()
     }
