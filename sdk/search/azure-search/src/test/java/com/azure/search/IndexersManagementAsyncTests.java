@@ -5,11 +5,16 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
+import com.azure.search.models.IndexerExecutionInfo;
+import com.azure.search.models.IndexerExecutionStatus;
+import com.azure.search.models.IndexerStatus;
 import com.azure.search.models.IndexingParameters;
 import org.junit.Assert;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.HashMap;
@@ -41,9 +46,26 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         return client.deleteIndexerWithResponse(indexer.getName(), null, null).block();
     }
 
+
+    @Override
+    public void canResetIndexerAndGetIndexerStatus() {
+        Indexer indexer = createTestDataSourceAndIndexer();
+
+        Mono<IndexerExecutionInfo> indexerStatusAfterReset = client.resetIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE)
+            .flatMap(res -> client.getIndexerStatus(indexer.getName()));
+
+
+        StepVerifier.create(indexerStatusAfterReset)
+            .assertNext(indexerStatus -> {
+                Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
+                Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
+            }).verifyComplete();
+
+    }
+
     @Override
     public void createIndexerReturnsCorrectDefinition() {
-        Indexer expectedIndexer = createTestIndexer("indexer");
+        Indexer expectedIndexer = createTestDataSourceAndIndexer("indexer");
         expectedIndexer.setIsDisabled(true);
         expectedIndexer.setParameters(
             new IndexingParameters()
@@ -75,8 +97,8 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
 
         // Create two indexers
-        Indexer indexer1 = createTestIndexer("i1");
-        Indexer indexer2 = createTestIndexer("i2");
+        Indexer indexer1 = createTestDataSourceAndIndexer("i1");
+        Indexer indexer2 = createTestDataSourceAndIndexer("i2");
         client.createOrUpdateIndexer(indexer1).block();
         client.createOrUpdateIndexer(indexer2).block();
 
@@ -93,7 +115,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
     @Override
     public void createIndexerFailsWithUsefulMessageOnUserError() {
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createTestDataSourceAndIndexer("indexer");
         indexer.setDataSourceName("thisdatasourcedoesnotexist");
 
         assertException(

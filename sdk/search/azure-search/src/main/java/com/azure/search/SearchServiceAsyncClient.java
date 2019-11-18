@@ -611,7 +611,7 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> resetIndexer(String indexerName) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return this.resetIndexerWithResponse(indexerName, null).map(Response::getValue);
     }
 
     /**
@@ -623,7 +623,7 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> resetIndexer(String indexerName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return this.resetIndexerWithResponse(indexerName, requestOptions).map(Response::getValue);
     }
 
     /**
@@ -635,13 +635,15 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return withContext(context -> this.resetIndexerWithResponse(indexerName, requestOptions, context));
     }
 
     Mono<Response<Void>> resetIndexerWithResponse(String indexerName,
                                                   RequestOptions requestOptions,
                                                   Context context) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return restClient.indexers().resetWithRestResponseAsync(
+            indexerName, requestOptions, context)
+            .map(Function.identity());
     }
 
     /**
@@ -691,7 +693,7 @@ public class SearchServiceAsyncClient {
      * @return the indexer execution info.
      */
     public Mono<IndexerExecutionInfo> getIndexerStatus(String indexerName) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return this.getIndexerStatusWithResponse(indexerName, null).map(Response::getValue);
     }
 
     /**
@@ -703,7 +705,7 @@ public class SearchServiceAsyncClient {
      * @return the indexer execution info.
      */
     public Mono<IndexerExecutionInfo> getIndexerStatus(String indexerName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return this.getIndexerStatusWithResponse(indexerName, requestOptions).map(Response::getValue);
     }
 
     /**
@@ -716,13 +718,15 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName,
                                                                              RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return withContext(context -> this.getIndexerStatusWithResponse(indexerName, requestOptions, context));
     }
 
     Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName,
                                                                       RequestOptions requestOptions,
                                                                       Context context) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return restClient.indexers().getStatusWithRestResponseAsync(
+            indexerName, requestOptions, context)
+            .map(Function.identity());
     }
 
     /**

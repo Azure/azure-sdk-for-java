@@ -36,6 +36,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public abstract void createIndexerFailsWithUsefulMessageOnUserError();
 
     @Test
+    public abstract void canResetIndexerAndGetIndexerStatus();
+
+    @Test
     public void canUpdateIndexer() {
         DataSource datasource = createTestSqlDataSource();
         createDatasource(datasource);
@@ -145,7 +148,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         createIndex(index);
 
         // Create the indexer object
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createTestDataSourceAndIndexer("indexer");
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
 
         // Try delete before the indexer even exists.
@@ -173,11 +176,28 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
-    protected Indexer createTestIndexer(String indexerName) {
+    protected Indexer createTestDataSourceAndIndexer(String indexerName) {
         return new Indexer()
             .setName(indexerName)
             .setTargetIndexName("indexforindexers")
             .setSchedule(new IndexingSchedule().setInterval(Duration.ofDays(1)));
+    }
+
+    protected Indexer createTestDataSourceAndIndexer() {
+        // Create Datasource
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        // Create an index
+        Index index = createTestIndexForLiveDatasource();
+        createIndex(index);
+
+        // Create the indexer object
+        Indexer indexer = createTestDataSourceAndIndexer("indexer");
+        indexer.setDataSourceName(SQL_DATASOURCE_NAME);
+        createIndexer(indexer);
+
+        return indexer;
     }
 
     static void expectSameStartTime(Indexer expected, Indexer actual) {
@@ -237,7 +257,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         createIndex(index);
 
         Indexer initial =
-            createTestIndexer("indexer")
+            createTestDataSourceAndIndexer("indexer")
                 .setDataSourceName(datasourceName)
                 .setIsDisabled(true);
 
@@ -275,7 +295,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      */
     Indexer createIndexerWithDifferentDescription() {
         // create a new indexer object
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createTestDataSourceAndIndexer("indexer");
 
         // modify it
         indexer.setDescription("somethingdifferent");
@@ -289,7 +309,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      */
     Indexer createIndexerWithDifferentFieldMapping() {
         // create a new indexer object
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createTestDataSourceAndIndexer("indexer");
 
         // Create field mappings
         List<FieldMapping> fieldMappings = Collections.singletonList(new FieldMapping()
@@ -308,7 +328,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      */
     Indexer createDisabledIndexer() {
         // create a new indexer object
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createTestDataSourceAndIndexer("indexer");
 
         // modify it
         indexer.setIsDisabled(false);
@@ -322,7 +342,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      */
     Indexer createIndexerWithDifferentSchedule() {
         // create a new indexer object
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createTestDataSourceAndIndexer("indexer");
 
         IndexingSchedule is = new IndexingSchedule()
             .setInterval(Duration.ofMinutes(10));
@@ -339,7 +359,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      */
     Indexer createIndexerWithDifferentIndexingParameters() {
         // create a new indexer object
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createTestDataSourceAndIndexer("indexer");
 
         IndexingParameters ip = new IndexingParameters()
             .setMaxFailedItems(121)
@@ -355,7 +375,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     protected Indexer changeIndexerBlobParams() {
         // create an indexer object
         Indexer updatedExpected =
-            createTestIndexer("indexer");
+            createTestDataSourceAndIndexer("indexer");
 
         // just adding some(valid) config values for blobs
         HashMap<String, Object> config = new HashMap<>();

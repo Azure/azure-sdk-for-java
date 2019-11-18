@@ -8,9 +8,11 @@ import com.azure.core.util.Context;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
+import com.azure.search.models.IndexerExecutionInfo;
+import com.azure.search.models.IndexerExecutionStatus;
+import com.azure.search.models.IndexerStatus;
 import com.azure.search.models.IndexingParameters;
 import org.junit.Assert;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +48,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     @Override
     public void createIndexerReturnsCorrectDefinition() {
         Indexer expectedIndexer =
-            createTestIndexer("indexer")
+            createTestDataSourceAndIndexer("indexer")
                 .setIsDisabled(true)
                 .setParameters(
                     new IndexingParameters()
@@ -79,8 +81,8 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
 
         // Create two indexers
-        Indexer indexer1 = createTestIndexer("i1");
-        Indexer indexer2 = createTestIndexer("i2");
+        Indexer indexer1 = createTestDataSourceAndIndexer("i1");
+        Indexer indexer2 = createTestDataSourceAndIndexer("i2");
         client.createOrUpdateIndexer(indexer1);
         client.createOrUpdateIndexer(indexer2);
 
@@ -97,12 +99,24 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void createIndexerFailsWithUsefulMessageOnUserError() {
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createTestDataSourceAndIndexer("indexer");
         indexer.setDataSourceName("thisdatasourcedoesnotexist");
 
         assertException(
             () -> client.createOrUpdateIndexer(indexer),
             HttpResponseException.class,
             "This indexer refers to a data source 'thisdatasourcedoesnotexist' that doesn't exist");
+    }
+
+    @Override
+    public void canResetIndexerAndGetIndexerStatus() {
+        Indexer indexer = createTestDataSourceAndIndexer();
+
+        client.resetIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
+
+        IndexerExecutionInfo indexerStatus = client.getIndexerStatus(indexer.getName());
+
+        Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
+        Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
     }
 }

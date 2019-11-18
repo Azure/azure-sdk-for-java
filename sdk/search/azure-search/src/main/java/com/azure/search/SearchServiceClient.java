@@ -453,7 +453,7 @@ public class SearchServiceClient {
      * @param indexerName the name of the indexer to reset
      */
     public void resetIndexer(String indexerName) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        asyncClient.resetIndexer(indexerName).block();
     }
 
     /**
@@ -464,7 +464,7 @@ public class SearchServiceClient {
      * Contains the tracking ID sent with the request to help with debugging
      */
     public void resetIndexer(String indexerName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        asyncClient.resetIndexer(indexerName, requestOptions).block();
     }
 
     /**
@@ -477,7 +477,7 @@ public class SearchServiceClient {
      * @return a response signalling completion.
      */
     public Response<Void> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return asyncClient.resetIndexerWithResponse(indexerName, requestOptions, context).block();
     }
 
     /**
@@ -522,7 +522,7 @@ public class SearchServiceClient {
      * @return a response with the indexer execution info.
      */
     public IndexerExecutionInfo getIndexerStatus(String indexerName) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return asyncClient.getIndexerStatus(indexerName).block();
     }
 
     /**
@@ -534,7 +534,7 @@ public class SearchServiceClient {
      * @return a response with the indexer execution info.
      */
     public IndexerExecutionInfo getIndexerStatus(String indexerName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return asyncClient.getIndexerStatus(indexerName, requestOptions).block();
     }
 
     /**
@@ -549,7 +549,7 @@ public class SearchServiceClient {
     public Response<IndexerExecutionInfo> getIndexerStatusWithResponse(String indexerName,
                                                                        RequestOptions requestOptions,
                                                                        Context context) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return asyncClient.getIndexerStatusWithResponse(indexerName, requestOptions, context).block();
     }
 
     /**
