@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 @Immutable
 public class RequestIdPolicyOptions {
 
-    private volatile Supplier<HttpHeaders> idHeaderSupplier;
+    private final Supplier<HttpHeaders> idHeaderSupplier;
 
     /**
      * Creates {@link RequestIdPolicyOptions} with provided {@code idHeaderSupplier }.
@@ -32,6 +32,7 @@ public class RequestIdPolicyOptions {
     }
 
     /**
+     * Get the provided {@link Supplier} which dynamically generate id for various request id headers.
      *
      * @return {@link Supplier} to provide dynamically generated id for various request id headers
      */

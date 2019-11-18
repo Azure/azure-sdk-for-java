@@ -23,8 +23,7 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
     private final RequestIdPolicyOptions requestIdPolicyOptions;
 
     /**
-     * Creates {@link RequestIdPolicy} with default {@link ExponentialBackoff} as {@link RetryStrategy}and use
-     * 'retry-after-ms' in {@link HttpResponse} header for calculating retry delay.
+     * Creates {@link RequestIdPolicy}  with default behaviour.
      */
     public RequestIdPolicy() {
         this.requestIdPolicyOptions = null;
@@ -35,25 +34,33 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
      * User can specify {@link java.util.function.Function} to dynamically generated id for various id headers.
      *
      * @param requestIdPolicyOptions with given {@link RetryPolicyOptions}.
-     * @throws NullPointerException if {@code RequestIdPolicyOptions} is {@code null}.
      */
     public RequestIdPolicy(RequestIdPolicyOptions requestIdPolicyOptions) {
-        this.requestIdPolicyOptions = Objects.requireNonNull(requestIdPolicyOptions,
-            "'retryPolicyOptions' cannot be null.");
+        this.requestIdPolicyOptions = requestIdPolicyOptions;
     }
 
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        String requestId = context.getHttpRequest().getHeaders().getValue(REQUEST_ID_HEADER);
         if (!Objects.isNull(requestIdPolicyOptions)) {
             HttpHeaders httpHeaders =  requestIdPolicyOptions.getIdHeaderSupplier().get();
             if (!Objects.isNull(httpHeaders)) {
-                httpHeaders.stream().forEach(httpHeader ->
-                    context.getHttpRequest().getHeaders().put(httpHeader.getName(), httpHeader.getValue())
-                );
+                httpHeaders.stream().forEach(httpHeader -> {
+                    String requestIdHeaderValue = context.getHttpRequest().getHeaders().getValue(httpHeader.getName());
+                    if (requestIdHeaderValue == null) {
+                        context.getHttpRequest().getHeaders().put(httpHeader.getName(), httpHeader.getValue());
+                    }
+            });
+            }else {
+                if (requestId == null) {
+                    context.getHttpRequest().getHeaders().put(REQUEST_ID_HEADER, UUID.randomUUID().toString());
+                }
             }
         } else {
-            context.getHttpRequest().getHeaders().put(REQUEST_ID_HEADER, UUID.randomUUID().toString());
+            if (requestId == null) {
+                context.getHttpRequest().getHeaders().put(REQUEST_ID_HEADER, UUID.randomUUID().toString());
+            }
         }
         return next.process();
     }
