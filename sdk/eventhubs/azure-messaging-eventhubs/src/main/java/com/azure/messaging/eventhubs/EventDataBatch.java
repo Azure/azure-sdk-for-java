@@ -134,14 +134,11 @@ public final class EventDataBatch {
         } else {
             // Starting the span makes the sampling decision (nothing is logged at this time)
             Context eventSpanContext = tracerProvider.startSpan(eventData.getContext(), ProcessKind.MESSAGE);
-            if (eventSpanContext != null) {
-                Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
-
-                if (eventDiagnosticIdOptional.isPresent()) {
-                    eventData.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
-                    tracerProvider.endSpan(eventSpanContext, Signal.complete());
-                    eventData.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
-                }
+            Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+            if (eventDiagnosticIdOptional.isPresent()) {
+                eventData.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
+                tracerProvider.endSpan(eventSpanContext, Signal.complete());
+                eventData.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
             }
         }
 

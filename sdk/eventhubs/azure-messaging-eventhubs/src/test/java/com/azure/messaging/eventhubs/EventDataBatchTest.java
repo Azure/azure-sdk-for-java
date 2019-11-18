@@ -7,12 +7,15 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -43,7 +46,8 @@ public class EventDataBatchTest {
     public void payloadExceededException() {
         when(errorContextProvider.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
 
-        final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, errorContextProvider, null);
+        final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, errorContextProvider,
+            new TracerProvider(Collections.emptyList()));
         final EventData tooBig = new EventData(new byte[1024 * 1024 * 2]);
         try {
             batch.tryAdd(tooBig);
@@ -59,7 +63,8 @@ public class EventDataBatchTest {
      */
     @Test
     public void withinPayloadSize() {
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, null, null);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, null,
+            new TracerProvider(Collections.emptyList()));
         final EventData within = new EventData(new byte[1024]);
 
         Assertions.assertTrue(batch.tryAdd(within));

@@ -44,7 +44,6 @@ import java.util.List;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -52,7 +51,6 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -292,6 +290,46 @@ public class EventHubProducerClientTest {
         Assertions.assertTrue(batch.tryAdd(event));
 
         verify(link, times(1)).getLinkSize();
+    }
+
+    /**
+     * Verifies that message spans are started and ended on tryAdd when creating batches to send in
+     * {@link EventDataBatch}.
+     */
+    @Test
+    public void startsMessageSpanOnEventBatch() {
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        final TracerProvider tracerProvider = new TracerProvider(tracers);
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
+        when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
+
+        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
+            eq(retryOptions.getTryTimeout()), any()))
+            .thenReturn(Mono.just(link));
+
+        when(tracer1.start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+            }
+        );
+
+        // Act & Assert
+        final EventDataBatch batch = producer.createBatch();
+        Assertions.assertTrue(batch.tryAdd(new EventData("Hello World".getBytes(UTF_8))));
+        Assertions.assertTrue(batch.tryAdd(new EventData("Test World".getBytes(UTF_8))));
+
+        verify(tracer1, times(2))
+            .start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
+        verify(tracer1, times(2)).end(eq("success"), isNull(), any());
     }
 
     /**

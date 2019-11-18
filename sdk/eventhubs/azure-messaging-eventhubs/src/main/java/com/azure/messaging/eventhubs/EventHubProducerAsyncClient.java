@@ -427,10 +427,10 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         return getSendLink(batch.getPartitionId())
             .flatMap(link -> {
-
-                Context userSpanContext = parentContext.get();
-                parentContext.set(traceSendSpan(userSpanContext, link));
-
+                if (isTracingEnabled) {
+                    Context userSpanContext = parentContext.get();
+                    parentContext.set(traceSendSpan(userSpanContext, link));
+                }
                 return messages.size() == 1
                     ? link.send(messages.get(0))
                     : link.send(messages);
@@ -552,7 +552,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         private volatile EventDataBatch currentBatch;
 
         EventDataCollector(CreateBatchOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider,
-            final TracerProvider tracerProvider) {
+            TracerProvider tracerProvider) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
                 ? options.getMaximumSizeInBytes()
