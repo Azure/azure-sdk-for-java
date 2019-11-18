@@ -9,13 +9,13 @@
 
 <!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Consuming the official Microsoft Azure Cosmos DB Java SDK](#Consuming the official Microsoft Azure Cosmos DB Java SDK)
+- [Consuming the official Microsoft Azure Cosmos DB Java SDK](#Consuming-the-official-Microsoft-Azure-Cosmos-DB-Java-SDK)
 - [Prerequisites](#Prerequisites)
 - [Usage Code Sample](#Example)
-- [Guide for Prod](#Guide for Production)
+- [Guide for Prod](#Guide-for-Production)
 - [FAQ](#faq)
-- [Release changes](#Release changes)
-- [Contribution and Feedback](#Contribution and feedback)
+- [Release changes](#Release-changes)
+- [Contribution and Feedback](#Contribution-and-feedback)
 - [License](#license)
 
 <!-- /TOC -->
