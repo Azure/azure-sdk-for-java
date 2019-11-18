@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
@@ -30,7 +31,9 @@ import java.util.stream.Collectors;
  */
 public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final ObjectMapper PRETTY_PRINTER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-    private final HttpLogOptions httpLogOptions;
+    private final HttpLogDetailLevel logDetailLevel;
+    private final Set<String> allowedHttpHeaderNames;
+    private final Set<String> allowedQueryParamNames;
     private final boolean prettyPrintJSON;
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
@@ -51,15 +54,30 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param prettyPrintJSON If true, pretty prints JSON message bodies when logging. If the detailLevel does not
      * include body logging, this flag does nothing.
      */
-    HttpLoggingPolicy(HttpLogOptions httpLogOptions, boolean prettyPrintJSON) {
-        this.httpLogOptions = httpLogOptions;
+    private HttpLoggingPolicy(HttpLogOptions httpLogOptions, boolean prettyPrintJSON) {
+        if (httpLogOptions != null) {
+            this.logDetailLevel = httpLogOptions.getLogLevel();
+            this.allowedHttpHeaderNames = httpLogOptions.getAllowedHeaderNames()
+                .stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
+            this.allowedQueryParamNames = httpLogOptions.getAllowedQueryParamNames()
+                .stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
+        } else {
+            this.logDetailLevel = HttpLogDetailLevel.NONE;
+            this.allowedHttpHeaderNames = Collections.emptySet();
+            this.allowedQueryParamNames = Collections.emptySet();
+        }
+
         this.prettyPrintJSON = prettyPrintJSON;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        // HttpLogOptions are null or the HttpLogDetailLevel is NONE perform a no-op.
-        if (httpLogOptions == null || httpLogOptions.getLogLevel() == HttpLogDetailLevel.NONE) {
+        // HttpLogDetailLevel is NONE perform a no-op.
+        if (logDetailLevel == HttpLogDetailLevel.NONE) {
             return next.process();
         } else {
             Optional<Object> data = context.getData("caller-method");
@@ -77,20 +95,18 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
-        final HttpLogDetailLevel httpLogLevel = httpLogOptions.getLogLevel();
-        if (httpLogLevel.shouldLogUrl()) {
+        // First log the URL information.
+        if (logDetailLevel.shouldLogUrl()) {
             logger.info("--> {} {}", request.getHttpMethod(), request.getUrl());
-            formatAllowableQueryParams(httpLogOptions.getAllowedQueryParamNames(), request.getUrl().getQuery(), logger);
+            formatAllowableQueryParams(request.getUrl().getQuery(), logger);
         }
 
-        if (httpLogLevel.shouldLogHeaders()) {
-            formatAllowableHeaders(httpLogOptions.getAllowedHeaderNames(), request.getHeaders(), logger);
-        }
+        // Then log the headers.
+        logHeaders(request.getHeaders(), logger);
 
-        //
+        // Finally log the body.
         Mono<Void> reqBodyLoggingMono = Mono.empty();
-        //
-        if (httpLogLevel.shouldLogBody()) {
+        if (logDetailLevel.shouldLogBody()) {
             if (request.getBody() == null) {
                 logger.info("(empty body)");
                 logger.info("--> END {}", request.getHttpMethod());
@@ -99,7 +115,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     !"application/octet-stream".equalsIgnoreCase(request.getHeaders().getValue("Content-Type"));
                 final long contentLength = getContentLength(logger, request.getHeaders());
 
-                if (contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
+                if (contentLength > 0 && contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
                     try {
                         Mono<byte[]> collectedBytes = FluxUtil.collectBytesInByteBufferStream(request.getBody());
                         reqBodyLoggingMono = collectedBytes.flatMap(bytes -> {
@@ -124,15 +140,19 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return reqBodyLoggingMono;
     }
 
-    private void formatAllowableHeaders(Set<String> allowedHeaderNames, HttpHeaders requestResponseHeaders,
-        ClientLogger logger) {
-        Set<String> lowerCasedAllowedHeaderNames = allowedHeaderNames.stream().map(String::toLowerCase)
-            .collect(Collectors.toSet());
+    private void logHeaders(HttpHeaders requestResponseHeaders, ClientLogger logger) {
+        // If the HttpHeaders shouldn't be logged or there are no headers to log quit out early.
+        if (!logDetailLevel.shouldLogHeaders() ||
+            requestResponseHeaders == null ||
+            requestResponseHeaders.getSize() == 0) {
+            return;
+        }
+
         StringBuilder sb = new StringBuilder();
         for (HttpHeader header : requestResponseHeaders) {
             String headerName = header.getName();
             sb.append(headerName).append(":");
-            if (lowerCasedAllowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))) {
+            if (allowedHttpHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))) {
                 sb.append(header.getValue());
             } else {
                 sb.append(REDACTED_PLACEHOLDER);
@@ -142,10 +162,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         logger.info(sb.toString());
     }
 
-    private void formatAllowableQueryParams(Set<String> allowedQueryParamNames, String queryString,
-        ClientLogger logger) {
-        Set<String> lowerCasedAllowedQueryParams = allowedQueryParamNames.stream().map(String::toLowerCase)
-            .collect(Collectors.toSet());
+    private void formatAllowableQueryParams(String queryString, ClientLogger logger) {
         if (queryString != null) {
             StringBuilder sb = new StringBuilder();
             String[] queryParams = queryString.split("&");
@@ -153,7 +170,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 String[] queryPair = queryParam.split("=", 2);
                 if (queryPair.length == 2) {
                     String queryName = queryPair[0];
-                    if (lowerCasedAllowedQueryParams.contains(queryName.toLowerCase(Locale.ROOT))) {
+                    if (allowedQueryParamNames.contains(queryName.toLowerCase(Locale.ROOT))) {
                         sb.append(queryParam);
                     } else {
                         sb.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
@@ -181,17 +198,15 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             } else {
                 bodySize = contentLengthString + "-byte";
             }
-            HttpLogDetailLevel httpLogLevel = httpLogOptions.getLogLevel();
+
             // HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
-            if (httpLogLevel.shouldLogUrl()) {
+            if (logDetailLevel.shouldLogUrl()) {
                 logger.info("<-- {} {} ({} ms, {} body)", response.getStatusCode(), url, tookMs, bodySize);
             }
 
-            if (httpLogLevel.shouldLogHeaders()) {
-                formatAllowableHeaders(httpLogOptions.getAllowedHeaderNames(), response.getHeaders(), logger);
-            }
+            logHeaders(response.getHeaders(), logger);
 
-            if (httpLogLevel.shouldLogBody()) {
+            if (logDetailLevel.shouldLogBody()) {
                 long contentLength = getContentLength(logger, response.getHeaders());
                 final String contentTypeHeader = response.getHeaderValue("Content-Type");
                 if (!"application/octet-stream".equalsIgnoreCase(contentTypeHeader)
