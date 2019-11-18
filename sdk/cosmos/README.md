@@ -11,8 +11,8 @@
 
 - [Consuming the official Microsoft Azure Cosmos DB Java SDK](#Consuming-the-official-Microsoft-Azure-Cosmos-DB-Java-SDK)
 - [Prerequisites](#Prerequisites)
-- [Usage Code Sample](#Example)
-- [Guide for Prod](#Guide-for-Production)
+- [Usage Code Sample](#Usage-Code-Sample)
+- [Guide for Production](#Guide-for-Production)
 - [FAQ](#faq)
 - [Release changes](#Release-changes)
 - [Contribution and Feedback](#Contribution-and-feedback)
@@ -66,7 +66,7 @@ The SDK provides Reactor Core based async APIs. You can read more about Reactor 
 -->
 
 
-## Example
+## Usage Code Sample
 
 See the complete code for the above sample in [`HelloWorldDemo.java`](./microsoft-azure-cosmos-examples/src/main/java/com/azure/data/cosmos/examples/HelloWorldDemo.java)
 
