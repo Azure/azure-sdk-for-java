@@ -3,14 +3,15 @@
 
 package com.azure.cs.textanalytics.batch;
 
-import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.cs.textanalytics.implementation.models.DocumentEntities;
-import com.azure.cs.textanalytics.implementation.models.EntitiesResult;
-import com.azure.cs.textanalytics.models.Entity;
-import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
+import com.azure.cs.textanalytics.models.DocumentBatchStatistics;
 import com.azure.cs.textanalytics.models.DocumentInput;
+import com.azure.cs.textanalytics.models.DocumentResult;
+import com.azure.cs.textanalytics.models.DocumentResultCollection;
+import com.azure.cs.textanalytics.models.DocumentStatistics;
+import com.azure.cs.textanalytics.models.Entity;
+import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +32,28 @@ public class RecognizePIIBatchDocuments {
         input2.setId("2").setText("Visa card 4147999933330000").setLanguage("US");
         documents.add(input);
         documents.add(input2);
-        MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput();
-        batchInput.setDocuments(documents);
+
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStats(true).setModelVersion("1.0");
+        DocumentResultCollection<Entity> detectedResult = client.recognizePiiEntities(documents, requestOptions);
+        // Document level statistics
+        final String modelVersion = detectedResult.getModelVersion();
+        System.out.println(String.format("Model version: %s", modelVersion));
+
+        final DocumentBatchStatistics documentBatchStatistics = detectedResult.getStatistics();
+        System.out.println(String.format("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
+            documentBatchStatistics.getDocumentsCount(),
+            documentBatchStatistics.getErroneousDocumentsCount(),
+            documentBatchStatistics.getTransactionsCount(),
+            documentBatchStatistics.getValidDocumentsCount()));
 
 
-        // Detecting language from a batch of documents
-        EntitiesResult detectedResult = client.recognizePiiEntitiesWithResponse(batchInput, false, Context.NONE).getValue();
-        List<DocumentEntities> documentEntities = detectedResult.getDocuments();
-        for (DocumentEntities documentEntitie : documentEntities) {
-            List<Entity> entities = documentEntitie.getEntities();
+        // Detecting pii entities from a batch of documents
+        for (DocumentResult<Entity> entitiesList : detectedResult) {
+            final DocumentStatistics documentStatistics = entitiesList.getDocumentStatistics();
+            System.out.println(String.format("One PII entity document statistics, character count: %s, transaction count: %s.",
+                documentStatistics.getCharactersCount(), documentStatistics.getTransactionsCount()));
+
+            List<Entity> entities = entitiesList.getItems();
             for (Entity entity : entities) {
                 System.out.println(String.format(
                     "Recognized Personal Idenfiable Info Entity: %s, Entity Type: %s, Entity Subtype: %s, Offset: %s, Length: %s, Score: %s",

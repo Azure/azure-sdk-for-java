@@ -7,8 +7,10 @@ import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.cs.textanalytics.models.DocumentBatchStatistics;
 import com.azure.cs.textanalytics.models.DocumentInput;
+import com.azure.cs.textanalytics.models.DocumentResult;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.DocumentSentiment;
+import com.azure.cs.textanalytics.models.DocumentStatistics;
 import com.azure.cs.textanalytics.models.Sentiment;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
@@ -46,28 +48,37 @@ public class AnalyzeSentimentBatchDocuments {
             documentBatchStatistics.getTransactionsCount(),
             documentBatchStatistics.getValidDocumentsCount()));
 
-        // Detecting sentiment from a batch of documents
-        final List<DocumentSentiment> documentSentiments = detectedResult.get().getItems();
-        for (DocumentSentiment item : documentSentiments) {
-            final Sentiment documentSentiment = item.getDocumentSentiment();
-            System.out.println(String.format(
-                "Recognized document sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.",
-                documentSentiment.getSentimentClass(),
-                documentSentiment.getPositiveScore(),
-                documentSentiment.getNeutralScore(),
-                documentSentiment.getNegativeScore()));
+        // Detecting sentiment for each of document from a batch of documents
+        for (DocumentResult<DocumentSentiment> documentSentimentDocumentResult : detectedResult) {
+            // For each document
+            final DocumentStatistics documentStatistics = documentSentimentDocumentResult.getDocumentStatistics();
+            System.out.println(String.format("One sentiment document statistics, character count: %s, transaction count: %s.",
+                documentStatistics.getCharactersCount(), documentStatistics.getTransactionsCount()));
 
-            final List<Sentiment> sentenceSentiments = item.getItems();
-            for (Sentiment sentenceSentiment : sentenceSentiments) {
+            final List<DocumentSentiment> documentSentiments = documentSentimentDocumentResult.getItems();
+
+            for (DocumentSentiment item : documentSentiments) {
+                final Sentiment documentSentiment = item.getDocumentSentiment();
                 System.out.println(String.format(
-                    "Recognized sentence sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s",
-                    sentenceSentiment.getSentimentClass(),
-                    sentenceSentiment.getPositiveScore(),
-                    sentenceSentiment.getNeutralScore(),
-                    sentenceSentiment.getNegativeScore(),
-                    sentenceSentiment.getLength(),
-                    sentenceSentiment.getOffSet()));
+                    "Recognized document sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.",
+                    documentSentiment.getSentimentClass(),
+                    documentSentiment.getPositiveScore(),
+                    documentSentiment.getNeutralScore(),
+                    documentSentiment.getNegativeScore()));
+
+                final List<Sentiment> sentenceSentiments = item.getItems();
+                for (Sentiment sentenceSentiment : sentenceSentiments) {
+                    System.out.println(String.format(
+                        "Recognized sentence sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s",
+                        sentenceSentiment.getSentimentClass(),
+                        sentenceSentiment.getPositiveScore(),
+                        sentenceSentiment.getNeutralScore(),
+                        sentenceSentiment.getNegativeScore(),
+                        sentenceSentiment.getLength(),
+                        sentenceSentiment.getOffSet()));
+                }
             }
         }
+
     }
 }

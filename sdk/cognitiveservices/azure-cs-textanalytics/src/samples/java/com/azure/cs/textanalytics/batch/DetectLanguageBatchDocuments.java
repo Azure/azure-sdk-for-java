@@ -7,7 +7,9 @@ import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
 import com.azure.cs.textanalytics.models.DocumentBatchStatistics;
+import com.azure.cs.textanalytics.models.DocumentResult;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
+import com.azure.cs.textanalytics.models.DocumentStatistics;
 import com.azure.cs.textanalytics.models.LanguageInput;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
@@ -44,11 +46,17 @@ public class DetectLanguageBatchDocuments {
             documentBatchStatistics.getTransactionsCount(),
             documentBatchStatistics.getValidDocumentsCount()));
 
-        // Detecting language from a batch of documents
-        List<DetectedLanguage> documentLanguages = detectedResult.getItems();
-        for (DetectedLanguage detectedLanguage : documentLanguages) {
+        // Detecting languages for a document from a batch of documents
+        for (DocumentResult<DetectedLanguage> documentResult : detectedResult) {
+            final DocumentStatistics documentStatistics = documentResult.getDocumentStatistics();
+            System.out.println(String.format("One language document statistics, character count: %s, transaction count: %s.",
+                documentStatistics.getCharactersCount(), documentStatistics.getTransactionsCount()));
+
+            final List<DetectedLanguage> documentLanguages = documentResult.getItems();
+            for (DetectedLanguage detectedLanguage : documentLanguages) {
                 System.out.println(String.format("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
                     detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));
+            }
         }
     }
 

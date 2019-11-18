@@ -7,7 +7,9 @@ import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.cs.textanalytics.models.DocumentBatchStatistics;
 import com.azure.cs.textanalytics.models.DocumentInput;
+import com.azure.cs.textanalytics.models.DocumentResult;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
+import com.azure.cs.textanalytics.models.DocumentStatistics;
 import com.azure.cs.textanalytics.models.Entity;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
@@ -43,12 +45,19 @@ public class RecognizeEntitiesBatchDocuments {
             documentBatchStatistics.getTransactionsCount(),
             documentBatchStatistics.getValidDocumentsCount()));
 
-        // Detecting entity from a batch of documents
-        List<Entity> entities = detectedResult.getItems();
-        for (Entity entity : entities) {
-            System.out.println(String.format("Recognized Entity: %s, Entity Type: %s, Entity Subtype: %s, Offset: %s, Length: %s, Score: %s",
-                entity.getText(), entity.getType(), entity.getSubType(), entity.getOffset(), entity.getLength(), entity.getScore()));
+        // Detecting entities for each of document from a batch of documents
+        for (DocumentResult<Entity> entitiesList : detectedResult) {
+            final DocumentStatistics documentStatistics = entitiesList.getDocumentStatistics();
+            System.out.println(String.format("One entity document statistics, character count: %s, transaction count: %s.",
+                documentStatistics.getCharactersCount(), documentStatistics.getTransactionsCount()));
+
+            final List<Entity> entities = entitiesList.getItems();
+            for (Entity entity : entities) {
+                System.out.println(String.format("Recognized Entity: %s, Entity Type: %s, Entity Subtype: %s, Offset: %s, Length: %s, Score: %s",
+                    entity.getText(), entity.getType(), entity.getSubType(), entity.getOffset(), entity.getLength(), entity.getScore()));
+            }
         }
+
 
     }
 }
