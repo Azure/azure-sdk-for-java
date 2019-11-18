@@ -673,8 +673,8 @@ public class DataLakePathAsyncClient {
      */
     SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationPath) {
         // Get current Blob URL and replace current path with user provided path
-        String newBlobEndpoint = BlobUrlParts.parse(DataLakeImplUtils.endpointToDesiredEndpoint(getPathUrl(), "blob", "dfs"))
-            .setBlobName(destinationPath).toUrl().toString();
+        String newBlobEndpoint = BlobUrlParts.parse(DataLakeImplUtils.endpointToDesiredEndpoint(getPathUrl(),
+            "blob", "dfs")).setBlobName(destinationPath).toUrl().toString();
 
         // TODO (gapra) : Investigate how to convert from datalake service version to blob service version
         return new SpecializedBlobClientBuilder()
