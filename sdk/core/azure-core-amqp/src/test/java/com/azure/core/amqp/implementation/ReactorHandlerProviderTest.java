@@ -8,7 +8,7 @@ import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
 import com.azure.core.amqp.ProxyAuthenticationType;
-import com.azure.core.amqp.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -53,9 +53,9 @@ public class ReactorHandlerProviderTest {
     private ProxySelector proxySelector;
 
 
-    public static Stream<ProxyConfiguration> getProxyConfigurations() {
-        return Stream.of(ProxyConfiguration.SYSTEM_DEFAULTS,
-            new ProxyConfiguration(ProxyAuthenticationType.BASIC, null, "some username", "some password"),
+    public static Stream<ProxyOptions> getProxyConfigurations() {
+        return Stream.of(ProxyOptions.SYSTEM_DEFAULTS,
+            new ProxyOptions(ProxyAuthenticationType.BASIC, null, "some username", "some password"),
             null
         );
     }
@@ -96,7 +96,7 @@ public class ReactorHandlerProviderTest {
      */
     @ParameterizedTest
     @MethodSource("getProxyConfigurations")
-    public void getsConnectionHandlerWebSockets(ProxyConfiguration configuration) {
+    public void getsConnectionHandlerWebSockets(ProxyOptions configuration) {
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, HOSTNAME,
             TransportType.AMQP_WEB_SOCKETS, configuration);
@@ -115,7 +115,7 @@ public class ReactorHandlerProviderTest {
         // Arrange
         final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
-        final ProxyConfiguration configuration = new ProxyConfiguration(ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
+        final ProxyOptions configuration = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
         final String hostname = "foo.eventhubs.azure.com";
 
         // Act
@@ -136,7 +136,7 @@ public class ReactorHandlerProviderTest {
      */
     @ParameterizedTest
     @MethodSource("getProxyConfigurations")
-    public void noProxySelected(ProxyConfiguration configuration) {
+    public void noProxySelected(ProxyOptions configuration) {
         // Arrange
         final String hostname = "foo.eventhubs.azure.com";
         when(proxySelector.select(argThat(u -> u.getHost().equals(hostname))))

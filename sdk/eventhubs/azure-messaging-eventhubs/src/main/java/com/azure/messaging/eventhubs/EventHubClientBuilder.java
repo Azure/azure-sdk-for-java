@@ -16,7 +16,7 @@ import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.ProxyAuthenticationType;
-import com.azure.core.amqp.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
@@ -94,7 +94,7 @@ public class EventHubClientBuilder {
 
     private TokenCredential credentials;
     private Configuration configuration;
-    private ProxyConfiguration proxyConfiguration;
+    private ProxyOptions proxyOptions;
     private RetryOptions retryOptions;
     private Scheduler scheduler;
     private TransportType transport;
@@ -262,12 +262,12 @@ public class EventHubClientBuilder {
      * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
      * TransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
-     * @param proxyConfiguration The proxy configuration to use.
+     * @param proxyOptions The proxy configuration to use.
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder proxyConfiguration(ProxyConfiguration proxyConfiguration) {
-        this.proxyConfiguration = proxyConfiguration;
+    public EventHubClientBuilder proxyConfiguration(ProxyOptions proxyOptions) {
+        this.proxyOptions = proxyOptions;
         return this;
     }
 
@@ -444,8 +444,8 @@ public class EventHubClientBuilder {
      * <ul>
      * <li>If no configuration is specified, the {@link Configuration#getGlobalConfiguration() global configuration}
      * is used to provide any shared configuration values. The configuration values read are the {@link
-     * Configuration#PROPERTY_HTTP_PROXY}, {@link ProxyConfiguration#PROXY_USERNAME}, and {@link
-     * ProxyConfiguration#PROXY_PASSWORD}.</li>
+     * Configuration#PROPERTY_HTTP_PROXY}, {@link ProxyOptions#PROXY_USERNAME}, and {@link
+     * ProxyOptions#PROXY_PASSWORD}.</li>
      * <li>If no retry is specified, the default retry options are used.</li>
      * <li>If no proxy is specified, the builder checks the {@link Configuration#getGlobalConfiguration() global
      * configuration} for a configured proxy, then it checks to see if a system proxy is configured.</li>
@@ -490,8 +490,8 @@ public class EventHubClientBuilder {
      * <ul>
      * <li>If no configuration is specified, the {@link Configuration#getGlobalConfiguration() global configuration}
      * is used to provide any shared configuration values. The configuration values read are the {@link
-     * Configuration#PROPERTY_HTTP_PROXY}, {@link ProxyConfiguration#PROXY_USERNAME}, and {@link
-     * ProxyConfiguration#PROXY_PASSWORD}.</li>
+     * Configuration#PROPERTY_HTTP_PROXY}, {@link ProxyOptions#PROXY_USERNAME}, and {@link
+     * ProxyOptions#PROXY_PASSWORD}.</li>
      * <li>If no retry is specified, the default retry options are used.</li>
      * <li>If no proxy is specified, the builder checks the {@link Configuration#getGlobalConfiguration() global
      * configuration} for a configured proxy, then it checks to see if a system proxy is configured.</li>
@@ -547,14 +547,14 @@ public class EventHubClientBuilder {
 
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
         // is not AMQP_WEB_SOCKETS.
-        if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()
+        if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()
             && transport != TransportType.AMQP_WEB_SOCKETS) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Cannot use a proxy when TransportType is not AMQP."));
         }
 
-        if (proxyConfiguration == null) {
-            proxyConfiguration = getDefaultProxyConfiguration(configuration);
+        if (proxyOptions == null) {
+            proxyOptions = getDefaultProxyConfiguration(configuration);
         }
 
         final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedAccessKeyCredential
@@ -562,19 +562,19 @@ public class EventHubClientBuilder {
             : CBSAuthorizationType.JSON_WEB_TOKEN;
 
         return new ConnectionOptions(fullyQualifiedNamespace, eventHubName, credentials, authorizationType,
-            transport, retryOptions, proxyConfiguration, scheduler);
+            transport, retryOptions, proxyOptions, scheduler);
     }
 
-    private ProxyConfiguration getDefaultProxyConfiguration(Configuration configuration) {
+    private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
         ProxyAuthenticationType authentication = ProxyAuthenticationType.NONE;
-        if (proxyConfiguration != null) {
-            authentication = proxyConfiguration.getAuthentication();
+        if (proxyOptions != null) {
+            authentication = proxyOptions.getAuthentication();
         }
 
         String proxyAddress = configuration.get(Configuration.PROPERTY_HTTP_PROXY);
 
         if (CoreUtils.isNullOrEmpty(proxyAddress)) {
-            return ProxyConfiguration.SYSTEM_DEFAULTS;
+            return ProxyOptions.SYSTEM_DEFAULTS;
         }
 
         final String[] hostPort = proxyAddress.split(":");
@@ -585,9 +585,9 @@ public class EventHubClientBuilder {
         final String host = hostPort[0];
         final int port = Integer.parseInt(hostPort[1]);
         final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
-        final String username = configuration.get(ProxyConfiguration.PROXY_USERNAME);
-        final String password = configuration.get(ProxyConfiguration.PROXY_PASSWORD);
+        final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
+        final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
 
-        return new ProxyConfiguration(authentication, proxy, username, password);
+        return new ProxyOptions(authentication, proxy, username, password);
     }
 }

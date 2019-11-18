@@ -13,7 +13,7 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
-import com.azure.core.amqp.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -67,7 +67,7 @@ public class EventHubReactorConnectionTest {
             .thenReturn(reactorConnection);
         when(reactor.process()).thenReturn(true);
 
-        final ProxyConfiguration proxy = ProxyConfiguration.SYSTEM_DEFAULTS;
+        final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-name",
             tokenCredential, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP, new RetryOptions(),
             proxy, scheduler);

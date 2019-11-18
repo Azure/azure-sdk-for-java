@@ -10,7 +10,7 @@ import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
-import com.azure.core.amqp.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.reactor.Reactor;
 
@@ -43,17 +43,17 @@ public class ReactorHandlerProvider {
      * @return A new {@link ConnectionHandler}.
      */
     public ConnectionHandler createConnectionHandler(String connectionId, String hostname, TransportType transportType,
-                                                     ProxyConfiguration proxyConfiguration) {
+                                                     ProxyOptions proxyOptions) {
         switch (transportType) {
             case AMQP:
                 return new ConnectionHandler(connectionId, hostname);
             case AMQP_WEB_SOCKETS:
-                if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()) {
-                    return new WebSocketsProxyConnectionHandler(connectionId, hostname, proxyConfiguration);
+                if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()) {
+                    return new WebSocketsProxyConnectionHandler(connectionId, hostname, proxyOptions);
                 } else if (WebSocketsProxyConnectionHandler.shouldUseProxy(hostname)) {
                     logger.info("System default proxy configured for hostname '{}'. Using proxy.", hostname);
                     return new WebSocketsProxyConnectionHandler(connectionId, hostname,
-                        ProxyConfiguration.SYSTEM_DEFAULTS);
+                        ProxyOptions.SYSTEM_DEFAULTS);
                 } else {
                     return new WebSocketsConnectionHandler(connectionId, hostname);
                 }

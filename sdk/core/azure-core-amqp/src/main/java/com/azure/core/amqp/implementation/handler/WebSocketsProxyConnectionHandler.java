@@ -5,7 +5,7 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.AmqpErrorCode;
 import com.azure.core.amqp.ProxyAuthenticationType;
-import com.azure.core.amqp.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
@@ -40,7 +40,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
     private final ClientLogger logger = new ClientLogger(WebSocketsProxyConnectionHandler.class);
     private final String amqpHostname;
     private final String remoteHost;
-    private final ProxyConfiguration proxyConfiguration;
+    private final ProxyOptions proxyOptions;
 
     /**
      * Creates a handler that handles proton-j's connection through a proxy using web sockets.
@@ -51,10 +51,10 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * @throws NullPointerException if {@code amqpHostname} or {@code proxyConfiguration} is null.
      */
     public WebSocketsProxyConnectionHandler(String connectionId, String amqpHostname,
-                                            ProxyConfiguration proxyConfiguration) {
+                                            ProxyOptions proxyOptions) {
         super(connectionId, amqpHostname);
         this.amqpHostname = Objects.requireNonNull(amqpHostname, "'amqpHostname' cannot be null.");
-        this.proxyConfiguration = Objects.requireNonNull(proxyConfiguration, "'proxyConfiguration' cannot be null.");
+        this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.remoteHost = amqpHostname + ":" + HTTPS_PORT;
     }
 
@@ -124,7 +124,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         final String hostName = event.getReactor().getConnectionAddress(connection);
         final ProxySelector proxySelector = ProxySelector.getDefault();
         final boolean isProxyConfigured = proxySelector != null
-            || (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured());
+            || (proxyOptions != null && proxyOptions.isProxyAddressConfigured());
 
         if (!isProxyConfigured || CoreUtils.isNullOrEmpty(hostName)) {
             return;
@@ -164,8 +164,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         super.addTransportLayers(event, transport);
 
         // Checking that the proxy configuration is not null and not equal to the system defaults option.
-        final ProxyImpl proxy = proxyConfiguration != null
-            && !(proxyConfiguration == ProxyConfiguration.SYSTEM_DEFAULTS)
+        final ProxyImpl proxy = proxyOptions != null
+            && !(proxyOptions == ProxyOptions.SYSTEM_DEFAULTS)
             ? new ProxyImpl(getProtonConfiguration())
             : new ProxyImpl();
 
@@ -181,8 +181,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
     }
 
     private InetSocketAddress getProxyAddress() {
-        if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()) {
-            return (InetSocketAddress) proxyConfiguration.getProxyAddress().address();
+        if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()) {
+            return (InetSocketAddress) proxyOptions.getProxyAddress().address();
         }
 
         final URI serviceUri = createURI(amqpHostname, HTTPS_PORT);
@@ -202,16 +202,16 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
     private com.microsoft.azure.proton.transport.proxy.ProxyConfiguration getProtonConfiguration() {
         final com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType type =
-            getProtonAuthType(proxyConfiguration.getAuthentication());
-        final String username = proxyConfiguration.hasUserDefinedCredentials()
-            ? proxyConfiguration.getCredential().getUserName()
+            getProtonAuthType(proxyOptions.getAuthentication());
+        final String username = proxyOptions.hasUserDefinedCredentials()
+            ? proxyOptions.getCredential().getUserName()
             : null;
-        final String password = proxyConfiguration.hasUserDefinedCredentials()
-            ? new String(proxyConfiguration.getCredential().getPassword())
+        final String password = proxyOptions.hasUserDefinedCredentials()
+            ? new String(proxyOptions.getCredential().getPassword())
             : null;
 
         return new com.microsoft.azure.proton.transport.proxy.ProxyConfiguration(type,
-            proxyConfiguration.getProxyAddress(), username, password);
+            proxyOptions.getProxyAddress(), username, password);
     }
 
     private com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType getProtonAuthType(

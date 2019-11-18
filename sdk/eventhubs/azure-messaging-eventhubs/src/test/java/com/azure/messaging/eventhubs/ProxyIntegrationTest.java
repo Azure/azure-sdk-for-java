@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
-import com.azure.core.amqp.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -39,14 +39,14 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        final ProxyConfiguration proxyConfiguration = getProxyConfiguration();
+        final ProxyOptions proxyOptions = getProxyConfiguration();
 
-        Assumptions.assumeTrue(proxyConfiguration != null, "Cannot run proxy integration tests without setting proxy configuration.");
+        Assumptions.assumeTrue(proxyOptions != null, "Cannot run proxy integration tests without setting proxy configuration.");
 
         sender = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(new RetryOptions().setMaxRetries(0))
-            .proxyConfiguration(proxyConfiguration)
+            .proxyConfiguration(proxyOptions)
             .transportType(TransportType.AMQP_WEB_SOCKETS)
             .buildProducer();
 
