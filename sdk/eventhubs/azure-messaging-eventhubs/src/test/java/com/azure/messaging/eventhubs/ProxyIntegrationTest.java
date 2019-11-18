@@ -46,7 +46,7 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
         sender = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(new RetryOptions().setMaxRetries(0))
-            .proxyConfiguration(proxyOptions)
+            .proxyOptions(proxyOptions)
             .transportType(TransportType.AMQP_WEB_SOCKETS)
             .buildProducer();
 

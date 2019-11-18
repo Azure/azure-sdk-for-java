@@ -266,7 +266,7 @@ public class EventHubClientBuilder {
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder proxyConfiguration(ProxyOptions proxyOptions) {
+    public EventHubClientBuilder proxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }

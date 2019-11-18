@@ -166,7 +166,7 @@ public class EventProcessorBuilder {
      * @return The updated {@link EventProcessorBuilder} object.
      */
     public EventProcessorBuilder proxyConfiguration(ProxyOptions proxyOptions) {
-        eventHubClientBuilder.proxyConfiguration(proxyOptions);
+        eventHubClientBuilder.proxyOptions(proxyOptions);
         return this;
     }
 

@@ -59,7 +59,7 @@ public class EventHubClientBuilderTest {
         // Act
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
-            .proxyConfiguration(proxyConfig)
+            .proxyOptions(proxyConfig)
             .transportType(TransportType.AMQP_WEB_SOCKETS);
 
         // Assert
@@ -76,7 +76,7 @@ public class EventHubClientBuilderTest {
             // Act
             final EventHubClientBuilder builder = new EventHubClientBuilder()
                 .connectionString(CORRECT_CONNECTION_STRING)
-                .proxyConfiguration(proxyConfig);
+                .proxyOptions(proxyConfig);
 
             // Assert
             assertNotNull(builder.buildAsyncClient());

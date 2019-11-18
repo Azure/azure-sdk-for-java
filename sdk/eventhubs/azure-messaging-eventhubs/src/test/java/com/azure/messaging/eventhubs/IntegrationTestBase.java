@@ -159,7 +159,7 @@ public abstract class IntegrationTestBase extends TestBase {
      */
     protected EventHubClientBuilder createBuilder(boolean useCredentials) {
         final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .proxyConfiguration(ProxyOptions.SYSTEM_DEFAULTS)
+            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .scheduler(scheduler)
             .retry(RETRY_OPTIONS)
             .transportType(TransportType.AMQP);
