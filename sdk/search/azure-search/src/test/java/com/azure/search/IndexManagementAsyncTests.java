@@ -11,6 +11,7 @@ import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
+import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
@@ -581,5 +582,21 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Assert.assertFalse(createdResource.getETag().isEmpty());
         Assert.assertFalse(updatedResource.getETag().isEmpty());
         Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
+    }
+
+    @Override
+    public void canCreateAndGetIndexStats() {
+        Index testIndex = createTestIndex();
+        Mono<IndexGetStatisticsResult> indexStatistics = client.createOrUpdateIndex(testIndex)
+            .flatMap(index -> client.getIndexStatistics(index.getName()));
+
+        StepVerifier
+            .create(indexStatistics)
+            .assertNext(stats -> {
+                Assert.assertEquals(0, stats.getDocumentCount());
+                Assert.assertEquals(0, stats.getStorageSize());
+            })
+            .verifyComplete();
+
     }
 }

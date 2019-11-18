@@ -85,6 +85,9 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged();
 
+    @Test
+    public abstract void canCreateAndGetIndexStats();
+
     protected void assertIndexesEqual(Index expected, Index actual) {
         expected.setETag("none");
         actual.setETag("none");

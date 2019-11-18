@@ -82,6 +82,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
+    public static final String COSMOS_DATASOURCE_NAME = "azs-java-live-blob";
 
     private String searchServiceName;
     private String searchDnsSuffix;
@@ -448,7 +449,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     protected DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
         return DataSources.azureBlobStorage(
-            "azs-java-test-blob",
+            BLOB_DATASOURCE_NAME,
             "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;",
             "fakecontainer",
             "/fakefolder/",
@@ -485,7 +486,7 @@ public abstract class SearchServiceTestBase extends TestBase {
         boolean useChangeDetection) {
 
         return DataSources.cosmosDb(
-            "azs-java-test-cosmos",
+            COSMOS_DATASOURCE_NAME,
             "AccountEndpoint=https://NotaRealAccount.documents.azure.com;AccountKey=fake;Database=someFakeDatabase",
             "faketable",
             "SELECT ... FROM x where x._ts > @HighWaterMark",

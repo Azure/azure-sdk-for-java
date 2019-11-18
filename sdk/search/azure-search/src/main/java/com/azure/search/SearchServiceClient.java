@@ -668,7 +668,7 @@ public class SearchServiceClient {
      * @return the index statistics result.
      */
     public IndexGetStatisticsResult getIndexStatistics(String indexName) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return asyncClient.getIndexStatistics(indexName).block();
     }
 
     /**
@@ -680,7 +680,7 @@ public class SearchServiceClient {
      * @return the index statistics result.
      */
     public IndexGetStatisticsResult getIndexStatistics(String indexName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return asyncClient.getIndexStatistics(indexName, requestOptions).block();
     }
 
     /**
@@ -695,7 +695,7 @@ public class SearchServiceClient {
     public Response<IndexGetStatisticsResult> getIndexStatisticsWithResponse(String indexName,
                                                                              RequestOptions requestOptions,
                                                                              Context context) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return asyncClient.getIndexStatisticsWithResponse(indexName, requestOptions, context).block();
     }
 
     /**

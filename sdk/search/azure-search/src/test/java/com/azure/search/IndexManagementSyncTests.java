@@ -13,6 +13,7 @@ import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
+import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
@@ -22,7 +23,6 @@ import com.azure.search.models.Suggester;
 import com.azure.search.models.SynonymMap;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -507,5 +507,17 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertFalse(createdResource.getETag().isEmpty());
         Assert.assertFalse(updatedResource.getETag().isEmpty());
         Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
+    }
+
+    @Override
+    public void canCreateAndGetIndexStats() {
+        Index index = createTestIndex();
+        Index createdResource = client.createOrUpdateIndex(index);
+        IndexGetStatisticsResult indexStatistics = client.getIndexStatistics(index.getName());
+
+        Assert.assertEquals(0, indexStatistics.getDocumentCount());
+        Assert.assertEquals(0, indexStatistics.getStorageSize());
+
+
     }
 }

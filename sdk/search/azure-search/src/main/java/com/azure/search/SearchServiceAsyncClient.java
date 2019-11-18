@@ -867,7 +867,8 @@ public class SearchServiceAsyncClient {
      * @return the index statistics result.
      */
     public Mono<IndexGetStatisticsResult> getIndexStatistics(String indexName) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return this.getIndexStatisticsWithResponse(indexName, null)
+            .map(Response::getValue);
     }
 
     /**
@@ -879,7 +880,8 @@ public class SearchServiceAsyncClient {
      * @return the index statistics result.
      */
     public Mono<IndexGetStatisticsResult> getIndexStatistics(String indexName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return this.getIndexStatisticsWithResponse(indexName, requestOptions)
+            .map(Response::getValue);
     }
 
     /**
@@ -892,13 +894,16 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Response<IndexGetStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
                                                                                    RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return withContext(context -> this.getIndexStatisticsWithResponse(indexName, requestOptions, context));
     }
 
     Mono<Response<IndexGetStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
                                                                             RequestOptions requestOptions,
                                                                             Context context) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return restClient
+            .indexes()
+            .getStatisticsWithRestResponseAsync(indexName, requestOptions, context)
+            .map(Function.identity());
     }
 
     /**
