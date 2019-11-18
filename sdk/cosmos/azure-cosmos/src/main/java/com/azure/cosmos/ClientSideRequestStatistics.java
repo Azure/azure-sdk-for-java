@@ -2,10 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.sun.management.OperatingSystemMXBean;
 import org.apache.commons.lang3.StringUtils;
@@ -105,7 +110,7 @@ class ClientSideRequestStatistics {
         }
     }
 
-    void recordGatewayResponse(URI uri, RxDocumentServiceRequest rxDocumentServiceRequest) {
+    void recordGatewayResponse(RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponse storeResponse, CosmosClientException exception) {
         ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
         connectionMode = ConnectionMode.GATEWAY;
         synchronized (this) {
@@ -113,8 +118,28 @@ class ClientSideRequestStatistics {
                 this.requestEndTime = responseTime;
             }
             this.gatewayStatistic = new GatewayStatistic();
-            this.gatewayStatistic.requestUrl = uri;
-            this.gatewayStatistic.operationType = rxDocumentServiceRequest.getOperationType().toString();
+            this.gatewayStatistic.operationType = rxDocumentServiceRequest.getOperationType();
+            if (storeResponse != null) {
+                this.gatewayStatistic.statusCode = storeResponse.getStatus();
+                this.gatewayStatistic.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
+
+                ISessionToken sessionToken = null;
+                String headerValue;
+                if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN)) != null) {
+                    sessionToken = SessionTokenHelper.parse(headerValue);
+                }
+
+                double requestCharge = 0;
+                if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE)) != null) {
+                    requestCharge = Double.parseDouble(headerValue);
+                }
+
+                this.gatewayStatistic.sessionToken = sessionToken;
+                this.gatewayStatistic.requestCharge = requestCharge;
+            } else if(exception != null){
+                this.gatewayStatistic.statusCode = exception.getStatusCode();
+                this.gatewayStatistic.subStatusCode = exception.getSubStatusCode();
+            }
         }
     }
 
@@ -203,9 +228,7 @@ class ClientSideRequestStatistics {
             }
 
             if (this.gatewayStatistic != null) {
-                stringBuilder.append("Gateway request URI :" + this.gatewayStatistic.requestUrl.toString() + ", ")
-                    .append("Operation Type :" + this.gatewayStatistic.operationType)
-                    .append(System.lineSeparator());
+                stringBuilder.append(this.gatewayStatistic).append(System.lineSeparator());
             }
 
             printSystemInformation(stringBuilder);
@@ -255,10 +278,10 @@ class ClientSideRequestStatistics {
             String systemCpuLoad = Double.toString(mbean.getSystemCpuLoad());
 
             stringBuilder.append("System State Information -------").append(System.lineSeparator());
-            stringBuilder.append("Used Memory :" + used_Memory).append(System.lineSeparator());
-            stringBuilder.append("Available Memory :" + available_Memory).append(System.lineSeparator());
-            stringBuilder.append("CPU Process Load :" + processCpuLoad).append(System.lineSeparator());
-            stringBuilder.append("CPU System Load :" + systemCpuLoad).append(System.lineSeparator());
+            stringBuilder.append("Used Memory : " + used_Memory).append(System.lineSeparator());
+            stringBuilder.append("Available Memory : " + available_Memory).append(System.lineSeparator());
+            stringBuilder.append("CPU Process Load : " + processCpuLoad).append(System.lineSeparator());
+            stringBuilder.append("CPU System Load : " + systemCpuLoad).append(System.lineSeparator());
         } catch (Exception e) {
             // Error while evaluating system information, do nothing
         }
@@ -308,7 +331,20 @@ class ClientSideRequestStatistics {
     }
 
     private class GatewayStatistic {
-        private URI requestUrl;
-        private String operationType;
+        private OperationType operationType;
+        private int statusCode;
+        private int subStatusCode;
+        private ISessionToken sessionToken;
+        private double requestCharge;
+
+        public String toString() {
+            return "Gateway statistics{ " +
+                "Operation Type : " + this.operationType +
+                "Status Code : " + this.statusCode +
+                "Substatus Code : " + this.statusCode +
+                "Session Token : " + (this.sessionToken != null ? this.sessionToken.convertToString() : null) +
+                "Request Charge : " + requestCharge +
+                '}';
+        }
     }
 }

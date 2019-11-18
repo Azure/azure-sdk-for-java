@@ -14,4 +14,8 @@ public class DirectBridgeInternal {
     public static void setCosmosResponseDiagnostics(StoreResponse storeResponse, CosmosResponseDiagnostics cosmosResponseDiagnostics) {
         storeResponse.setCosmosResponseDiagnostics(cosmosResponseDiagnostics);
     }
+
+    public static int getSubStatusCode(StoreResponse storeResponse) {
+        return storeResponse.getSubStatusCode();
+    }
 }
