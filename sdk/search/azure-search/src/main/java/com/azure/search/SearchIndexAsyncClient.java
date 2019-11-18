@@ -292,10 +292,11 @@ public class SearchIndexAsyncClient {
     /**
      * Searches for documents in the Azure Search index
      *
+     * @param searchText search text
      * @return A {@link PagedFlux} of SearchResults
      */
-    public PagedFluxBase<SearchResult, SearchPagedResponse> search() {
-        return this.search(null, null, null);
+    public PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText) {
+        return this.search(searchText, null, null);
     }
 
     /**

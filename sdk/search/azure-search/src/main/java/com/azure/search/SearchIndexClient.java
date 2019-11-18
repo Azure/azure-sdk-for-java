@@ -190,10 +190,11 @@ public class SearchIndexClient {
     /**
      * Searches for documents in the Azure Search index
      *
+     * @param searchText search text
      * @return A {@link PagedIterable} of SearchResults
      */
-    public PagedIterableBase<SearchResult, SearchPagedResponse> search() {
-        return this.search(null,
+    public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText) {
+        return this.search(searchText,
             null,
             null,
             Context.NONE);

@@ -40,14 +40,14 @@ public class SearchOptionsExample {
 
 
         List<SearchResult> results = searchClient
-            .search()
+            .search("search text")
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
             .doOnNext(item -> System.out.println("Processing item " + item))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .collectList().block();
 
-        Stream<SearchPagedResponse> pagedResults = searchClient.search()
+        Stream<SearchPagedResponse> pagedResults = searchClient.search("search text")
             .byPage().toStream();
 
 

@@ -70,7 +70,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
     @Override
     public void createIndexerReturnsCorrectDefinition() {
-        Indexer expectedIndexer = createTestDataSourceAndIndexer("indexer");
+        Indexer expectedIndexer = createTestIndexer("indexer");
         expectedIndexer.setIsDisabled(true);
         expectedIndexer.setParameters(
             new IndexingParameters()
@@ -102,8 +102,8 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
 
         // Create two indexers
-        Indexer indexer1 = createTestDataSourceAndIndexer("i1");
-        Indexer indexer2 = createTestDataSourceAndIndexer("i2");
+        Indexer indexer1 = createTestIndexer("i1");
+        Indexer indexer2 = createTestIndexer("i2");
         client.createOrUpdateIndexer(indexer1).block();
         client.createOrUpdateIndexer(indexer2).block();
 
@@ -120,7 +120,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
     @Override
     public void createIndexerFailsWithUsefulMessageOnUserError() {
-        Indexer indexer = createTestDataSourceAndIndexer("indexer");
+        Indexer indexer = createTestIndexer("indexer");
         indexer.setDataSourceName("thisdatasourcedoesnotexist");
 
         assertException(

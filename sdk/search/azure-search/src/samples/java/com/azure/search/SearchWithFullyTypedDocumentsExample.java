@@ -39,7 +39,7 @@ public class SearchWithFullyTypedDocumentsExample {
         JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
         jsonApi.configureTimezone();
 
-        PagedFluxBase<SearchResult, SearchPagedResponse> results = searchClient.search();
+        PagedFluxBase<SearchResult, SearchPagedResponse> results = searchClient.search("searchText");
         results
             .subscribe(item -> {
                 Document document = item.getDocument();
