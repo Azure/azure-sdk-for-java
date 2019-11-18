@@ -4,8 +4,8 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.AmqpErrorCode;
-import com.azure.core.amqp.models.ProxyAuthenticationType;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyConfiguration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;

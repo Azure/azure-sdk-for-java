@@ -13,7 +13,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyConfiguration;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;

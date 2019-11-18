@@ -6,8 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
-import com.azure.core.amqp.models.ProxyAuthenticationType;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyConfiguration;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -33,8 +33,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-import static com.azure.core.amqp.models.ProxyConfiguration.PROXY_PASSWORD;
-import static com.azure.core.amqp.models.ProxyConfiguration.PROXY_USERNAME;
+import static com.azure.core.amqp.ProxyConfiguration.PROXY_PASSWORD;
+import static com.azure.core.amqp.ProxyConfiguration.PROXY_USERNAME;
 
 /**
  * Test base for running integration tests.

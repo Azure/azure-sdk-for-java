@@ -5,7 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyConfiguration;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
 import reactor.core.scheduler.Scheduler;

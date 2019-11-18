@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyConfiguration;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;

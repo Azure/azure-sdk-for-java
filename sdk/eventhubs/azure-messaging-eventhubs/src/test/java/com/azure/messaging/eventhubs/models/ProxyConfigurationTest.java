@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.amqp.models.ProxyAuthenticationType;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
-import static com.azure.core.amqp.models.ProxyConfiguration.SYSTEM_DEFAULTS;
+import static com.azure.core.amqp.ProxyConfiguration.SYSTEM_DEFAULTS;
 
 public class ProxyConfigurationTest {
 

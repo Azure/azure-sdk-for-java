@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyConfiguration;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.Configuration;

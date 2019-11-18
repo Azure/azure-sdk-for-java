@@ -4,8 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.TransportType;
-import com.azure.core.amqp.models.ProxyAuthenticationType;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyConfiguration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.jupiter.api.Test;
 

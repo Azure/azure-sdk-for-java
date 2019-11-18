@@ -13,7 +13,7 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyConfiguration;
 import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.reactor.Reactor;
