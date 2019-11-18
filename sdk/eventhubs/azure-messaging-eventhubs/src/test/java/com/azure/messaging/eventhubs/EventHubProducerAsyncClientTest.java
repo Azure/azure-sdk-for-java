@@ -13,7 +13,7 @@ import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
@@ -90,7 +90,7 @@ public class EventHubProducerAsyncClientTest {
 
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, retryOptions, tracerProvider,
             messageSerializer, false);

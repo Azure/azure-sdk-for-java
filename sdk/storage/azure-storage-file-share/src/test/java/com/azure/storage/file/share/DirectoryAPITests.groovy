@@ -65,7 +65,7 @@ class DirectoryAPITests extends APISpec {
 
     def "Get sub directory client"() {
         given:
-        def subDirectoryClient = primaryDirectoryClient.getSubDirectoryClient("testSubDirectory")
+        def subDirectoryClient = primaryDirectoryClient.getSubdirectoryClient("testSubDirectory")
 
         expect:
         subDirectoryClient instanceof ShareDirectoryClient
@@ -287,7 +287,7 @@ class DirectoryAPITests extends APISpec {
         }
 
         for (def expectedDirectory : expectedDirectories) {
-            primaryDirectoryClient.createSubDirectory(expectedDirectory)
+            primaryDirectoryClient.createSubdirectory(expectedDirectory)
         }
 
         when:
@@ -326,7 +326,7 @@ class DirectoryAPITests extends APISpec {
         def nameList = new LinkedList()
         def dirPrefix = testResourceName.randomName(methodName, 60)
         for (int i = 0; i < 2; i++) {
-            def subDirClient = primaryDirectoryClient.getSubDirectoryClient(dirPrefix + i)
+            def subDirClient = primaryDirectoryClient.getSubdirectoryClient(dirPrefix + i)
             subDirClient.create()
             for (int j = 0; j < 2; j++) {
                 def num = i * 2 + j + 3
@@ -417,7 +417,7 @@ class DirectoryAPITests extends APISpec {
 
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryDirectoryClient.createSubDirectoryWithResponse("testCreateSubDirectory", null, null, null, null, null), 201)
+            primaryDirectoryClient.createSubdirectoryWithResponse("testCreateSubDirectory", null, null, null, null, null), 201)
     }
 
     def "Create sub directory invalid name"() {
@@ -425,7 +425,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         when:
-        primaryDirectoryClient.createSubDirectory("test/subdirectory")
+        primaryDirectoryClient.createSubdirectory("test/subdirectory")
 
         then:
         def e = thrown(ShareStorageException)
@@ -438,7 +438,7 @@ class DirectoryAPITests extends APISpec {
 
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryDirectoryClient.createSubDirectoryWithResponse("testCreateSubDirectory", null, null, testMetadata, null, null), 201)
+            primaryDirectoryClient.createSubdirectoryWithResponse("testCreateSubDirectory", null, null, testMetadata, null, null), 201)
     }
 
     def "Create sub directory metadata error"() {
@@ -446,7 +446,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         when:
-        primaryDirectoryClient.createSubDirectoryWithResponse("testsubdirectory", null, null, Collections.singletonMap("", "value"), null, null)
+        primaryDirectoryClient.createSubdirectoryWithResponse("testsubdirectory", null, null, Collections.singletonMap("", "value"), null, null)
 
         then:
         def e = thrown(ShareStorageException)
@@ -458,7 +458,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryDirectoryClient.createSubDirectoryWithResponse("testCreateSubDirectory", null, filePermission, null, null, null), 201)
+            primaryDirectoryClient.createSubdirectoryWithResponse("testCreateSubDirectory", null, filePermission, null, null, null), 201)
     }
 
     def "Create sub directory file permission key"() {
@@ -470,17 +470,17 @@ class DirectoryAPITests extends APISpec {
             .setFilePermissionKey(filePermissionKey)
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryDirectoryClient.createSubDirectoryWithResponse("testCreateSubDirectory", smbProperties, null, null, null, null), 201)
+            primaryDirectoryClient.createSubdirectoryWithResponse("testCreateSubDirectory", smbProperties, null, null, null, null), 201)
     }
 
     def "Delete sub directory"() {
         given:
         def subDirectoryName = "testSubCreateDirectory"
         primaryDirectoryClient.create()
-        primaryDirectoryClient.createSubDirectory(subDirectoryName)
+        primaryDirectoryClient.createSubdirectory(subDirectoryName)
 
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteSubDirectoryWithResponse(subDirectoryName, null, null), 202)
+        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteSubdirectoryWithResponse(subDirectoryName, null, null), 202)
     }
 
     def "Delete sub directory error"() {
@@ -488,7 +488,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         when:
-        primaryDirectoryClient.deleteSubDirectory("testsubdirectory")
+        primaryDirectoryClient.deleteSubdirectory("testsubdirectory")
 
         then:
         def e = thrown(ShareStorageException)

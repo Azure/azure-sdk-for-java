@@ -266,7 +266,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param range {@link FileRange}
      * @param options {@link DownloadRetryOptions}
      * @param requestConditions {@link DataLakeRequestConditions}
-     * @param rangeGetContentMD5 Whether the contentMD5 for the specified file range should be returned.
+     * @param getRangeContentMd5 Whether the contentMD5 for the specified file range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -275,10 +275,10 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws NullPointerException if {@code stream} is null
      */
     public FileReadResponse readWithResponse(OutputStream stream, FileRange range, DownloadRetryOptions options,
-        DataLakeRequestConditions requestConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
+        DataLakeRequestConditions requestConditions, boolean getRangeContentMd5, Duration timeout, Context context) {
         BlobDownloadResponse response = blockBlobClient.downloadWithResponse(stream, Transforms.toBlobRange(range),
             Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
-            rangeGetContentMD5, timeout, context);
+            getRangeContentMd5, timeout, context);
         return Transforms.toFileReadResponse(response);
     }
 
@@ -314,7 +314,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * For example if you want to move a file with fileSystem = "myfilesystem", path = "mydir/hello.txt" to another path
      * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
      * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
-     * @param destRequestConditions {@link DataLakeRequestConditions} against the destination.
+     * @param destinationRequestConditions {@link DataLakeRequestConditions} against the destination.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -322,11 +322,11 @@ public class DataLakeFileClient extends DataLakePathClient {
      * used to interact with the file created.
      */
     public Response<DataLakeFileClient> renameWithResponse(String destinationPath,
-        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destRequestConditions,
+        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Duration timeout, Context context) {
 
         Mono<Response<DataLakePathClient>> response = renameWithResponse(destinationPath, sourceRequestConditions,
-            destRequestConditions, context);
+            destinationRequestConditions, context);
 
         Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));

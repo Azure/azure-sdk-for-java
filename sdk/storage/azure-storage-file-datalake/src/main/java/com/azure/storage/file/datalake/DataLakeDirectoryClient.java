@@ -223,20 +223,20 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * DataLakeDirectoryClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
      * DataLakeDirectoryClient.
      *
-     * @param subDirectoryName A {@code String} representing the name of the sub-directory.
+     * @param subdirectoryName A {@code String} representing the name of the sub-directory.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.getSubDirectoryClient#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.getSubdirectoryClient#String}
      *
      * @return A new {@link DataLakeDirectoryClient} object which references the sub-directory with the specified name
      * in this directory
      */
-    public DataLakeDirectoryClient getSubDirectoryClient(String subDirectoryName) {
-        Objects.requireNonNull(subDirectoryName, "'subDirectoryName' can not be set to null");
+    public DataLakeDirectoryClient getSubdirectoryClient(String subdirectoryName) {
+        Objects.requireNonNull(subdirectoryName, "'subdirectoryName' can not be set to null");
 
-        return new DataLakeDirectoryClient(dataLakeDirectoryAsyncClient.getSubDirectoryAsyncClient(subDirectoryName),
-            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(subDirectoryName).buildBlockBlobClient());
+        return new DataLakeDirectoryClient(dataLakeDirectoryAsyncClient.getSubdirectoryAsyncClient(subdirectoryName),
+            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(subdirectoryName).buildBlockBlobClient());
     }
 
     /**
@@ -246,13 +246,13 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectory#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectory#String}
      *
-     * @param subDirectoryName Name of the sub-directory to create.
+     * @param subdirectoryName Name of the sub-directory to create.
      * @return A {@link DataLakeDirectoryClient} used to interact with the sub-directory created.
      */
-    public DataLakeDirectoryClient createSubDirectory(String subDirectoryName) {
-        return createSubDirectoryWithResponse(subDirectoryName, null, null, null, null, null, null, null).getValue();
+    public DataLakeDirectoryClient createSubdirectory(String subdirectoryName) {
+        return createSubdirectoryWithResponse(subdirectoryName, null, null, null, null, null, null, null).getValue();
     }
 
     /**
@@ -262,9 +262,9 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context}
      *
-     * @param subDirectoryName Name of the sub-directory to create.
+     * @param subdirectoryName Name of the sub-directory to create.
      * @param permissions POSIX access permissions for the sub-directory owner, the sub-directory owning group, and
      * others.
      * @param umask Restricts permissions of the sub-directory to be created.
@@ -277,10 +277,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DataLakeDirectoryClient}
      * used to interact with the sub-directory created.
      */
-    public Response<DataLakeDirectoryClient> createSubDirectoryWithResponse(String subDirectoryName,
+    public Response<DataLakeDirectoryClient> createSubdirectoryWithResponse(String subdirectoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        DataLakeDirectoryClient dataLakeDirectoryClient = getSubDirectoryClient(subDirectoryName);
+        DataLakeDirectoryClient dataLakeDirectoryClient = getSubdirectoryClient(subdirectoryName);
         Response<PathInfo> response = dataLakeDirectoryClient.createWithResponse(permissions, umask, headers, metadata,
             requestConditions, timeout, context);
         return new SimpleResponse<>(response, dataLakeDirectoryClient);
@@ -294,12 +294,12 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteSubDirectory#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteSubdirectory#String}
      *
-     * @param subDirectoryName Name of the sub-directory to delete.
+     * @param subdirectoryName Name of the sub-directory to delete.
      */
-    public void deleteSubDirectory(String subDirectoryName) {
-        deleteSubDirectoryWithResponse(subDirectoryName, false, null, null, null);
+    public void deleteSubdirectory(String subdirectoryName) {
+        deleteSubdirectoryWithResponse(subdirectoryName, false, null, null, null);
     }
 
     /**
@@ -310,18 +310,18 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteSubDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteSubdirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context}
      *
-     * @param subDirectoryName Name of the sub-directory to delete.
+     * @param subdirectoryName Name of the sub-directory to delete.
      * @param recursive Whether or not to delete all paths beneath the sub-directory.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> deleteSubDirectoryWithResponse(String subDirectoryName, boolean recursive,
+    public Response<Void> deleteSubdirectoryWithResponse(String subdirectoryName, boolean recursive,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        DataLakeDirectoryClient dataLakeDirectoryClient = getSubDirectoryClient(subDirectoryName);
+        DataLakeDirectoryClient dataLakeDirectoryClient = getSubdirectoryClient(subdirectoryName);
         return dataLakeDirectoryClient.deleteWithResponse(recursive, requestConditions, timeout, context);
     }
 
@@ -357,7 +357,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
      * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
      * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
-     * @param destRequestConditions {@link DataLakeRequestConditions} against the destination.
+     * @param destinationRequestConditions {@link DataLakeRequestConditions} against the destination.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -365,11 +365,11 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
     public Response<DataLakeDirectoryClient> renameWithResponse(String destinationPath,
-        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destRequestConditions,
+        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Duration timeout, Context context) {
 
         Mono<Response<DataLakePathClient>> response = renameWithResponse(destinationPath, sourceRequestConditions,
-            destRequestConditions, context);
+            destinationRequestConditions, context);
 
         Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeDirectoryClient(resp.getValue()));

@@ -211,6 +211,10 @@
                 --add-opens com.azure.storage.queue/com.azure.storage.queue=ALL-UNNAMED
                 --add-opens com.azure.storage.queue/com.azure.storage.queue.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.queue/com.azure.storage.queue.models=ALL-UNNAMED
+                --add-reads com.azure.core=ALL-UNNAMED
+                --add-reads com.azure.core.test=ALL-UNNAMED
+                --add-reads com.azure.core.amqp=ALL-UNNAMED
+                --add-reads com.azure.storage.common=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

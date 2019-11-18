@@ -152,7 +152,8 @@ public final class BuilderHelper {
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, BlobServiceVersion serviceVersion) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
-        return new UserAgentPolicy(DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration, serviceVersion);
+        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(), DEFAULT_USER_AGENT_NAME,
+            DEFAULT_USER_AGENT_VERSION, configuration, serviceVersion);
     }
 
     /*

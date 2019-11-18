@@ -77,7 +77,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
         this.messageSerializer = messageSerializer;
         this.handler = handlerProvider.createConnectionHandler(connectionId,
             connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getTransportType(),
-            connectionOptions.getProxyConfiguration());
+            connectionOptions.getProxyOptions());
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
 
         this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)

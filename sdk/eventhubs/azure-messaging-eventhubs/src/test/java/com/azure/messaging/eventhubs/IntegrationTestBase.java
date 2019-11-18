@@ -6,8 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
-import com.azure.core.amqp.models.ProxyAuthenticationType;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -33,8 +33,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-import static com.azure.core.amqp.models.ProxyConfiguration.PROXY_PASSWORD;
-import static com.azure.core.amqp.models.ProxyConfiguration.PROXY_USERNAME;
+import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
+import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
 
 /**
  * Test base for running integration tests.
@@ -101,7 +101,7 @@ public abstract class IntegrationTestBase extends TestBase {
     /**
      * Gets the configured ProxyConfiguration from environment variables.
      */
-    public ProxyConfiguration getProxyConfiguration() {
+    public ProxyOptions getProxyConfiguration() {
         final String address = System.getenv(Configuration.PROPERTY_HTTP_PROXY);
 
         if (address == null) {
@@ -123,7 +123,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         if (username == null) {
             logger.info("Environment variable '{}' is not set. No authentication used.");
-            return new ProxyConfiguration(ProxyAuthenticationType.NONE, proxy, null, null);
+            return new ProxyOptions(ProxyAuthenticationType.NONE, proxy, null, null);
         }
 
         final String password = System.getenv(PROXY_PASSWORD);
@@ -133,7 +133,7 @@ public abstract class IntegrationTestBase extends TestBase {
             ? ProxyAuthenticationType.NONE
             : ProxyAuthenticationType.valueOf(authentication);
 
-        return new ProxyConfiguration(authenticationType, proxy, username, password);
+        return new ProxyOptions(authenticationType, proxy, username, password);
     }
 
     public String getFullyQualifiedDomainName() {
@@ -159,7 +159,7 @@ public abstract class IntegrationTestBase extends TestBase {
      */
     protected EventHubClientBuilder createBuilder(boolean useCredentials) {
         final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .proxyConfiguration(ProxyConfiguration.SYSTEM_DEFAULTS)
+            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .scheduler(scheduler)
             .retry(RETRY_OPTIONS)
             .transportType(TransportType.AMQP);

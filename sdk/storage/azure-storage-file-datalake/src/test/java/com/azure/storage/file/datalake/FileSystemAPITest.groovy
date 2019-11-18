@@ -869,7 +869,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getFileClient(fileName).create()
 
         when:
-        def response = fsc.listPaths(new ListPathsOptions().setReturnUpn(true), null).iterator()
+        def response = fsc.listPaths(new ListPathsOptions().setUserPrincipalNameReturned(true), null).iterator()
 
         then:
         def dirPath = response.next()
