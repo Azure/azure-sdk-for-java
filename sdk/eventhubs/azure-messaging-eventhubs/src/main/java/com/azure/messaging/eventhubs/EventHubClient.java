@@ -81,9 +81,8 @@ class EventHubClient implements Closeable {
      *     EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param prefetchCount The set of options to apply when creating the consumer.
      * @return An new {@link EventHubConsumerClient} that receives events.
-     * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
-     *     {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
+     * @throws NullPointerException If {@code consumerGroup} is null.
+     * @throws IllegalArgumentException If {@code consumerGroup} is an empty string.
      */
     EventHubConsumerClient createConsumer(String consumerGroup, int prefetchCount) {
         final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup, prefetchCount);

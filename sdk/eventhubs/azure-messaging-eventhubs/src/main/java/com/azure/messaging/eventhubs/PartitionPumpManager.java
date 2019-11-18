@@ -10,13 +10,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Signal;
 
 import java.io.Closeable;
@@ -120,12 +120,12 @@ class PartitionPumpManager {
             startFromEventPosition = initialEventPosition;
         }
 
-        EventHubConsumerOptions eventHubConsumerOptions = new EventHubConsumerOptions().setOwnerLevel(0L);
+        ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L);
         EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
-            .createConsumer(claimedOwnership.getConsumerGroupName(), eventHubConsumerOptions);
+            .createConsumer(claimedOwnership.getConsumerGroupName(), EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
 
         partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
-        eventHubConsumer.receive(claimedOwnership.getPartitionId(), startFromEventPosition)
+        eventHubConsumer.receive(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
             .subscribe(partitionEvent -> {
                 EventData eventData = partitionEvent.getData();
                 try {

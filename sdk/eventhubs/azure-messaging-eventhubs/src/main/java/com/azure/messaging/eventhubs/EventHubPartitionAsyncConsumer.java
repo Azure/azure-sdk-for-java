@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -168,8 +167,8 @@ class EventHubPartitionAsyncConsumer implements Closeable {
 
     /**
      * On each message received from the service, it will try to: 1. Deserialize the message into an EventData 2. If
-     * {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} is true, then it will try to update {@link
-     * LastEnqueuedEventProperties}
+     * {@link com.azure.messaging.eventhubs.models.ReceiveOptions#getTrackLastEnqueuedEventProperties()} is true, then
+     * it will try to update {@link LastEnqueuedEventProperties}
      *
      * @param message AMQP message to deserialize.
      *
