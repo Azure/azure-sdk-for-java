@@ -200,8 +200,7 @@ public final class DataLakeLeaseClientBuilder {
      * @return the {@link SpecializedBlobClientBuilder}
      */
     private SpecializedBlobClientBuilder getSpecializedBlobClientBuilder(String dfsEndpoint, HttpPipeline pipeline) {
-        String blobEndpoint = BlobUrlParts.parse(
-            DataLakeImplUtils.endpointToDesiredEndpoint(dfsEndpoint, "blob", "dfs")).toUrl().toString();
+        String blobEndpoint = DataLakeImplUtils.endpointToDesiredEndpoint(dfsEndpoint, "blob", "dfs");
         return new SpecializedBlobClientBuilder()
             .pipeline(pipeline)
             .endpoint(blobEndpoint)
@@ -215,8 +214,7 @@ public final class DataLakeLeaseClientBuilder {
      * @return the {@link BlobContainerClientBuilder}
      */
     private BlobContainerClientBuilder getBlobContainerClientBuilder(String dfsEndpoint, HttpPipeline pipeline) {
-        String blobEndpoint = BlobUrlParts.parse(
-            DataLakeImplUtils.endpointToDesiredEndpoint(dfsEndpoint, "blob", "dfs")).toUrl().toString();
+        String blobEndpoint = DataLakeImplUtils.endpointToDesiredEndpoint(dfsEndpoint, "blob", "dfs");
         return new BlobContainerClientBuilder()
             .pipeline(pipeline)
             .endpoint(blobEndpoint)
