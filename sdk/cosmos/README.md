@@ -98,12 +98,12 @@ import java.io.IOException;
     container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND"))
         .flatMap(response -> {
             System.out.println("Created item: " + response.properties().toJson());
-            // Read that item 👓
+            // Read that item 
             return response.item().read();
         })
         .flatMap(response -> {
             System.out.println("Read item: " + response.properties().toJson());
-            // Replace that item 🔁
+            // Replace that item 
             try {
                 Passenger p = response.properties().getObject(Passenger.class);
                 p.setDestination("SFO");
@@ -113,7 +113,7 @@ import java.io.IOException;
                 return Mono.error(e);
             }
         })
-        // delete that item 💣
+        // delete that item 
         .flatMap(response -> response.item().delete())
         .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
 // ...
