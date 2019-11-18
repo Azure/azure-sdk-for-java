@@ -81,6 +81,7 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
      *
      * @return A {@code String} representing all SAS query parameters.
      */
+    @Deprecated
     public String encode() {
         /*
          We should be url-encoding each key and each value, but because we know all the keys and values will encode to

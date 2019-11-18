@@ -6,6 +6,7 @@ package com.azure.storage.blob.sas;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -15,28 +16,17 @@ import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
+
 /**
- * Used to generate a Shared Access Signature (SAS) for an Azure Blob Storage service. Once all the values here are set,
- * call {@link
- * #generateSasQueryParameters(StorageSharedKeyCredential) generateSasQueryParameters(StorageSharedKeyCredential)} or
- * {@link #generateSasQueryParameters(UserDelegationKey, String) generateSasQueryParameters(UserDelegationKey, String)}
- * to obtain a representation of the SAS which can be applied to blob urls.
+ * Used to initialize parameters for a Shared Access Signature (SAS) for an Azure Blob Storage service. Once all the
+ * values here are set, use the appropriate generate*Sas method on the desired client to obtain a representation of the
+ * SAS which can then be applied to a new client using the .sasToken method on a client builder.
  *
- * <p><strong>Generating SAS query parameters with {@link StorageSharedKeyCredential}</strong></p>
- * The following code generates SAS query parameters for an Azure storage blob.
- * <p>
- * {@codesnippet com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential}
- *
- * <p><strong>Generating SAS query parameters with {@link UserDelegationKey}</strong></p>
- * The following sample generates SAS query parameters for an Azure storage container.
- * <p>
- * {@codesnippet com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#UserDelegationKey-String}
- *
- * @see BlobServiceSasQueryParameters
  * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
  * SAS</a>
  */
+// TODO (gapra) : Add code snippets for new workflow
 public final class BlobServiceSasSignatureValues {
     /**
      * The SAS blob constant.
@@ -90,6 +80,7 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Creates an object with empty values for all fields.
      */
+    @Deprecated
     public BlobServiceSasSignatureValues() {
     }
 
@@ -99,17 +90,34 @@ public final class BlobServiceSasSignatureValues {
      * @param expiryTime Time the SAS becomes valid
      * @param permissions Permissions granted by the SAS
      */
-    BlobServiceSasSignatureValues(OffsetDateTime expiryTime, String permissions) {
+    public BlobServiceSasSignatureValues(OffsetDateTime expiryTime, BlobContainerSasPermission permissions) {
+        StorageImplUtils.assertNotNull("expiryTime", expiryTime);
+        StorageImplUtils.assertNotNull("permissions", permissions);
         this.expiryTime = expiryTime;
-        this.permissions = permissions;
+        this.permissions = permissions.toString();
     }
 
     /**
-     * Creates an object with the specified identifier
+     * Creates an object with the specified expiry time and permissions
+     *
+     * @param expiryTime Time the SAS becomes valid
+     * @param permissions Permissions granted by the SAS
+     */
+    public BlobServiceSasSignatureValues(OffsetDateTime expiryTime, BlobSasPermission permissions) {
+        StorageImplUtils.assertNotNull("expiryTime", expiryTime);
+        StorageImplUtils.assertNotNull("permissions", permissions);
+        this.expiryTime = expiryTime;
+        this.permissions = permissions.toString();
+    }
+
+    /**
+     * Creates an object with the specified identifier.
+     * NOTE: Identifier can not be used for a {@link UserDelegationKey} SAS.
      *
      * @param identifier Identifier for the SAS
      */
-    BlobServiceSasSignatureValues(String identifier) {
+    public BlobServiceSasSignatureValues(String identifier) {
+        StorageImplUtils.assertNotNull("identifier", identifier);
         this.identifier = identifier;
     }
 
@@ -130,6 +138,7 @@ public final class BlobServiceSasSignatureValues {
      * @param contentLanguage The content-language header for the SAS.
      * @param contentType The content-type header for the SAS.
      */
+    @Deprecated
     public BlobServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, String permission, SasIpRange sasIpRange, String identifier, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
@@ -290,6 +299,7 @@ public final class BlobServiceSasSignatureValues {
      * @param containerName The name of the container.
      * @return The updated BlobServiceSASSignatureValues object.
      */
+    @Deprecated
     public BlobServiceSasSignatureValues setContainerName(String containerName) {
         this.containerName = containerName;
         return this;
@@ -312,6 +322,7 @@ public final class BlobServiceSasSignatureValues {
      * @param blobName The name of the blob. Use {@code null} or an empty string to create a container SAS.
      * @return The updated BlobServiceSASSignatureValues object.
      */
+    @Deprecated
     public BlobServiceSasSignatureValues setBlobName(String blobName) {
         this.blobName = (blobName == null) ? null : Utility.urlDecode(blobName);
         return this;
@@ -333,6 +344,7 @@ public final class BlobServiceSasSignatureValues {
      * @param snapshotId Identifier of the snapshot
      * @return the updated BlobServiceSASSignatureValues object
      */
+    @Deprecated
     public BlobServiceSasSignatureValues setSnapshotId(String snapshotId) {
         this.snapshotId = snapshotId;
         if (snapshotId != null && SAS_BLOB_CONSTANT.equals(resource)) {
@@ -358,6 +370,7 @@ public final class BlobServiceSasSignatureValues {
      * @param identifier Name of the access policy
      * @return the updated BlobServiceSASSignatureValues object
      */
+    @Deprecated
     public BlobServiceSasSignatureValues setIdentifier(String identifier) {
         this.identifier = identifier;
         return this;
@@ -486,6 +499,7 @@ public final class BlobServiceSasSignatureValues {
      * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
      * @throws NullPointerException if {@code storageSharedKeyCredentials} is null.
      */
+    @Deprecated
     public BlobServiceSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
@@ -536,8 +550,9 @@ public final class BlobServiceSasSignatureValues {
      * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas">
      *     Create a user delegation SAS</a>
      */
+    @Deprecated
     public BlobServiceSasQueryParameters generateSasQueryParameters(UserDelegationKey delegationKey,
-                                                                    String accountName) {
+        String accountName) {
         StorageImplUtils.assertNotNull("delegationKey", delegationKey);
         StorageImplUtils.assertNotNull("accountName", accountName);
 

@@ -27,6 +27,8 @@ import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -60,6 +62,19 @@ public class BlobClientBase {
      */
     protected BlobClientBase(BlobAsyncClientBase client) {
         this.client = client;
+    }
+
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return getBlobClient().generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
+    }
+
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
+        return getBlobClient().generateSas(blobServiceSasSignatureValues);
+    }
+
+    private BlobClient getBlobClient() {
+        return this.client.prepareBuilder().buildClient();
     }
 
     /**

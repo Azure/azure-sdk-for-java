@@ -45,7 +45,29 @@ public final class AccountSasSignatureValues {
     /**
      * Initializes a new {@link AccountSasSignatureValues} object.
      */
+    @Deprecated
     public AccountSasSignatureValues() {
+    }
+
+    /**
+     * Initializes a new {@link AccountSasSignatureValues} object.
+     *
+     * @param expiryTime The time after which the SAS will no longer work.
+     * @param services {@link AccountSasService}
+     * @param resourceTypes {@link AccountSasResourceType}
+     * @param permissions {@link AccountSasPermission}
+     */
+    public AccountSasSignatureValues(OffsetDateTime expiryTime, AccountSasService services,
+        AccountSasResourceType resourceTypes, AccountSasPermission permissions) {
+        StorageImplUtils.assertNotNull("expiryTime", expiryTime);
+        StorageImplUtils.assertNotNull("services", services);
+        StorageImplUtils.assertNotNull("permissions", permissions);
+        StorageImplUtils.assertNotNull("resourceTypes", resourceTypes);
+
+        this.expiryTime = expiryTime;
+        this.services = services.toString();
+        this.resourceTypes = resourceTypes.toString();
+        this.permissions = permissions.toString();
     }
 
     /**
@@ -118,6 +140,7 @@ public final class AccountSasSignatureValues {
      * @param expiryTime Expiry time to set
      * @return the updated AccountSasSignatureValues object.
      */
+    @Deprecated
     public AccountSasSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
@@ -141,6 +164,7 @@ public final class AccountSasSignatureValues {
      * @return the updated AccountSasSignatureValues object.
      * @throws NullPointerException if {@code permissions} is null.
      */
+    @Deprecated
     public AccountSasSignatureValues setPermissions(AccountSasPermission permissions) {
         StorageImplUtils.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
@@ -179,6 +203,7 @@ public final class AccountSasSignatureValues {
      * @param services Allowed services string to set
      * @return the updated AccountSasSignatureValues object.
      */
+    @Deprecated
     public AccountSasSignatureValues setServices(String services) {
         this.services = services;
         return this;
@@ -199,6 +224,7 @@ public final class AccountSasSignatureValues {
      * @param resourceTypes Allowed resource types string to set
      * @return the updated AccountSasSignatureValues object.
      */
+    @Deprecated
     public AccountSasSignatureValues setResourceTypes(String resourceTypes) {
         this.resourceTypes = resourceTypes;
         return this;
@@ -233,6 +259,7 @@ public final class AccountSasSignatureValues {
      * @throws NullPointerException If any of {@code storageSharedKeyCredentials}, {@code services},
      * {@code resourceTypes}, {@code expiryTime}, or {@code permissions} is null.
      */
+    @Deprecated
     public AccountSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);

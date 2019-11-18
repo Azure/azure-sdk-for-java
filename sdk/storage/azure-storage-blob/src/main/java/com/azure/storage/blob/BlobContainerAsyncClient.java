@@ -20,6 +20,7 @@ import com.azure.storage.blob.implementation.models.ContainerGetAccountInfoHeade
 import com.azure.storage.blob.implementation.models.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobItem;
@@ -30,7 +31,10 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
@@ -900,6 +904,16 @@ public final class BlobContainerAsyncClient {
             });
     }
 
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
+            .generateUserDelegationSas(userDelegationKey, getAccountName());
+    }
+
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+    }
 
     private boolean validateNoETag(BlobRequestConditions modifiedRequestConditions) {
         if (modifiedRequestConditions == null) {

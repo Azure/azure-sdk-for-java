@@ -15,6 +15,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.ProgressReporter;
@@ -23,6 +25,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.BlobGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
@@ -36,13 +39,17 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -121,6 +128,34 @@ public class BlobAsyncClientBase {
         this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
+    }
+
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return getBlobAsyncClient().generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
+    }
+
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
+        return getBlobAsyncClient().generateSas(blobServiceSasSignatureValues);
+    }
+
+    private BlobAsyncClient getBlobAsyncClient() {
+        return prepareBuilder().buildAsyncClient();
+    }
+
+    BlobClientBuilder prepareBuilder() {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .pipeline(getHttpPipeline())
+            .endpoint(getBlobUrl())
+            .snapshot(getSnapshotId())
+            .serviceVersion(getServiceVersion());
+
+        CpkInfo cpk = getCustomerProvidedKey();
+        if (cpk != null) {
+            builder.customerProvidedKey(new CustomerProvidedKey(cpk.getEncryptionKey()));
+        }
+
+        return builder;
     }
 
     /**

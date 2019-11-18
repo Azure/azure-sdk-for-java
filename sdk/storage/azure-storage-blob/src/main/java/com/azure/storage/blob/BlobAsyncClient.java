@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -16,12 +17,15 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -549,6 +553,35 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Generates a user delegation sas for the blob using the specified
+     * {@link BlobServiceSasSignatureValues}.
+     * @see BlobServiceSasSignatureValues for more information on how to construct a user delegation SAS.
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey {@link UserDelegationKey}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(), getSnapshotId())
+            .generateUserDelegationSas(userDelegationKey, getAccountName());
+    }
+
+    /**
+     * Generates a service sas for the blob using the specified {@link BlobServiceSasSignatureValues}
+     * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(), getSnapshotId())
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
     }
 
     boolean uploadInBlocks(String filePath) {

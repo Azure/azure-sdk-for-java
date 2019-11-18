@@ -17,6 +17,8 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -551,5 +553,14 @@ public final class BlobContainerClient {
         Mono<Response<StorageAccountInfo>> response = client.getAccountInfoWithResponse(context);
 
         return blockWithOptionalTimeout(response, timeout);
+    }
+
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return this.client.generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
+    }
+
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
+        return this.client.generateSas(blobServiceSasSignatureValues);
     }
 }

@@ -28,8 +28,11 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -550,5 +553,10 @@ public final class BlobServiceAsyncClient {
      */
     public String getAccountName() {
         return this.accountName;
+    }
+
+    public String generateSas(AccountSasSignatureValues accountSasSignatureValues) {
+        return new AccountSasImplUtil(accountSasSignatureValues)
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
     }
 }
