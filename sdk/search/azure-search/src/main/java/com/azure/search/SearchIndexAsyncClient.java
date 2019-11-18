@@ -293,7 +293,9 @@ public class SearchIndexAsyncClient {
      * Searches for documents in the Azure Search index
      *
      * @param searchText search text
-     * @return A {@link PagedFlux} of SearchResults
+     * @return A {@link PagedFluxBase} that iterates over {@link SearchResult} objects
+     * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
+     * facet, and coverage information.
      */
     public PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText) {
         return this.search(searchText, null, null);
@@ -306,7 +308,9 @@ public class SearchIndexAsyncClient {
      * @param searchOptions search options
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return A {@link PagedFlux} of SearchResults
+     * @return A {@link PagedFluxBase} that iterates over {@link SearchResult} objects
+     * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
+     * facet, and coverage information.
      */
     public PagedFluxBase<SearchResult, SearchPagedResponse> search(
         String searchText,
@@ -318,7 +322,7 @@ public class SearchIndexAsyncClient {
             skip -> withContext(context -> searchNextPage(searchRequest, requestOptions, skip, context)));
     }
 
-    PagedFluxBase<SearchResult, SearchPagedResponse> search(
+    PagedFluxBase<SearchResult, SearchPagedResponse> searchWithResponse(
         String searchText,
         SearchOptions searchOptions,
         RequestOptions requestOptions,
@@ -396,7 +400,9 @@ public class SearchIndexAsyncClient {
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @return suggests result
+     * @return A {@link PagedFluxBase} that iterates over {@link SuggestResult} objects
+     * and provides access to the {@link SuggestPagedResponse} object for each page containing
+     * HTTP response and coverage information.
      */
     public PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
         return suggest(searchText, suggesterName, null, null);
@@ -410,7 +416,9 @@ public class SearchIndexAsyncClient {
      * @param suggestOptions suggest options
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return suggests results
+     * @return A {@link PagedFluxBase} that iterates over {@link SuggestResult} objects
+     * and provides access to the {@link SuggestPagedResponse} object for each page containing
+     * HTTP response and coverage information.
      */
     public PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(
         String searchText,
@@ -425,7 +433,7 @@ public class SearchIndexAsyncClient {
             nextLink -> Mono.empty());
     }
 
-    PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(
+    PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestWithResponse(
         String searchText,
         String suggesterName,
         SuggestOptions suggestOptions,

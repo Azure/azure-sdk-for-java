@@ -191,13 +191,14 @@ public class SearchIndexClient {
      * Searches for documents in the Azure Search index
      *
      * @param searchText search text
-     * @return A {@link PagedIterable} of SearchResults
+     * @return A {@link PagedIterable} that iterates over {@link SearchResult} objects
+     * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
+     * facet, and coverage information.
      */
     public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText) {
         return this.search(searchText,
             null,
-            null,
-            Context.NONE);
+            null);
     }
 
     /**
@@ -207,12 +208,15 @@ public class SearchIndexClient {
      * @param searchOptions search options
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return A {@link PagedIterable} of SearchResults
+     * @return A {@link PagedIterable} that iterates over {@link SearchResult} objects
+     * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
+     * facet, and coverage information.
      */
     public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText,
                                                                        SearchOptions searchOptions,
                                                                        RequestOptions requestOptions) {
-        return this.search(searchText,
+        return this.searchWithResponse(
+            searchText,
             searchOptions,
             requestOptions,
             Context.NONE);
@@ -226,13 +230,16 @@ public class SearchIndexClient {
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
-     * @return A {@link PagedIterable} of SearchResults
+     * @return A {@link PagedIterable} that iterates over {@link SearchResult} objects
+     * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
+     * facet, and coverage information.
      */
-    public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText,
+    public PagedIterableBase<SearchResult, SearchPagedResponse> searchWithResponse(String searchText,
                                                                        SearchOptions searchOptions,
                                                                        RequestOptions requestOptions,
                                                                        Context context) {
-        PagedFluxBase<SearchResult, SearchPagedResponse> result = asyncClient.search(searchText,
+        PagedFluxBase<SearchResult, SearchPagedResponse> result = asyncClient.searchWithResponse(
+            searchText,
             searchOptions,
             requestOptions,
             context);
@@ -295,14 +302,15 @@ public class SearchIndexClient {
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @return suggests result
+     * @return A {@link PagedIterableBase} that iterates over {@link SuggestResult} objects
+     * and provides access to the {@link SuggestPagedResponse} object for each page containing
+     * HTTP response and coverage information.
      */
     public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
         return this.suggest(searchText,
             suggesterName,
             null,
-            null,
-            Context.NONE);
+            null);
     }
 
     /**
@@ -313,13 +321,15 @@ public class SearchIndexClient {
      * @param suggestOptions suggest options
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return suggests results
+     * @return A {@link PagedIterableBase} that iterates over {@link SuggestResult} objects
+     * and provides access to the {@link SuggestPagedResponse} object for each page containing
+     * HTTP response and coverage information.
      */
     public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
                                                                           String suggesterName,
                                                                           SuggestOptions suggestOptions,
                                                                           RequestOptions requestOptions) {
-        return this.suggest(searchText,
+        return this.suggestWithResponse(searchText,
             suggesterName,
             suggestOptions,
             requestOptions,
@@ -335,14 +345,17 @@ public class SearchIndexClient {
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
-     * @return suggests results
+     * @return A {@link PagedIterableBase} that iterates over {@link SuggestResult} objects
+     * and provides access to the {@link SuggestPagedResponse} object for each page containing
+     * HTTP response and coverage information.
      */
-    public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
+    public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestWithResponse(String searchText,
                                                                           String suggesterName,
                                                                           SuggestOptions suggestOptions,
                                                                           RequestOptions requestOptions,
                                                                           Context context) {
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> result = asyncClient.suggest(searchText,
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> result = asyncClient.suggestWithResponse(
+            searchText,
             suggesterName,
             suggestOptions,
             requestOptions,
