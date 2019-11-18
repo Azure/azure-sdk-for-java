@@ -127,14 +127,31 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public void canUpdateIndexerBlobParams() {
         // Create the needed Azure blob resources and datasource object
         DataSource blobDataSource = createBlobDataSource();
+
         // Create the datasource within the search service
         createDatasource(blobDataSource);
 
         // modify the indexer's blob params
-        Indexer updatedExpected = changeIndexerBlobParams();
+        Indexer updatedExpected = createIndexerWithStorageConfig();
 
-        createUpdateAndValidateIndexer(updatedExpected,
-            BLOB_DATASOURCE_NAME);
+        createUpdateAndValidateIndexer(updatedExpected, BLOB_DATASOURCE_NAME);
+    }
+
+    // This test currently does not pass on our Dogfood account, as the
+    // Storage resource provider is not returning an answer.
+    @Test
+    public void canCreateIndexerWithBlobParams() {
+        // Create the needed Azure blob resources and datasource object
+        DataSource blobDataSource = createBlobDataSource();
+
+        // Create the datasource within the search service
+        DataSource dataSource = createDatasource(blobDataSource);
+
+        // modify the indexer's blob params
+        Indexer indexer = createIndexerWithStorageConfig()
+            .setDataSourceName(dataSource.getName());
+
+        createAndValidateIndexer(indexer);
     }
 
     @Test
@@ -372,7 +389,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         return indexer;
     }
 
-    protected Indexer changeIndexerBlobParams() {
+    protected Indexer createIndexerWithStorageConfig() {
         // create an indexer object
         Indexer updatedExpected =
             createTestDataSourceAndIndexer("indexer");
