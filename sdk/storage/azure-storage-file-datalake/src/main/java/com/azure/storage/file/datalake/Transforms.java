@@ -147,16 +147,6 @@ class Transforms {
             .setValue(blobUserDelegationKey.getValue());
     }
 
-    static String endpointToDesiredEndpoint(String endpoint, String desiredEndpoint, String currentEndpoint) {
-        String desiredRegex = "." + desiredEndpoint + ".";
-        String currentRegex = "." + currentEndpoint + ".";
-        if (endpoint.contains(desiredRegex)) {
-            return endpoint;
-        } else {
-            return endpoint.replaceFirst(currentRegex, desiredRegex);
-        }
-    }
-
     static BlobHttpHeaders toBlobHttpHeaders(PathHttpHeaders pathHTTPHeaders) {
         if (pathHTTPHeaders == null) {
             return null;
