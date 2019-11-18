@@ -3,7 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.http.*;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -17,6 +17,10 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpClient;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
