@@ -450,8 +450,8 @@ public class SearchServiceAsyncClient {
      * @return the indexer.
      */
     public Mono<Indexer> getIndexer(String indexerName) {
-        throw logger.logExceptionAsError(
-            new NotImplementedException("not implemented."));
+        return this.getIndexerWithResponse(indexerName, null)
+            .map(Response::getValue);
     }
 
     /**
@@ -463,8 +463,8 @@ public class SearchServiceAsyncClient {
      * @return the indexer.
      */
     public Mono<Indexer> getIndexer(String indexerName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(
-                new NotImplementedException("not implemented."));
+        return this.getIndexerWithResponse(indexerName, requestOptions)
+            .map(Response::getValue);
     }
 
     /**
@@ -476,13 +476,16 @@ public class SearchServiceAsyncClient {
      * @return a response containing the indexer.
      */
     public Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(
-                new NotImplementedException("not implemented."));
+        return withContext(
+            context -> this.getIndexerWithResponse(indexerName, requestOptions, context)
+        );
     }
 
     Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
-        throw logger.logExceptionAsError(
-            new NotImplementedException("not implemented."));
+        return restClient
+            .indexers()
+            .getWithRestResponseAsync(indexerName, requestOptions, context)
+            .map(Function.identity());
     }
 
     /**

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataType;
@@ -184,6 +185,30 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
     }
 
+    @Test
+    public void canCreateAndGetIndexer() {
+        String indexerName = "indexer";
+
+        Index index = createTestIndexForLiveDatasource();
+        createIndex(index);
+
+        Indexer indexer = createTestDataSourceAndIndexer(indexerName);
+
+        createIndexer(indexer);
+
+        Indexer indexerResult = getIndexer(indexerName);
+
+        assertIndexersEqual(indexer, indexerResult);
+    }
+
+    @Test
+    public void getIndexerThrowsOnNotFound() {
+        assertException(
+            () -> getIndexer("thisindexerdoesnotexist"),
+            HttpResponseException.class,
+            "Indexer 'thisindexerdoesnotexist' was not found");
+    }
+
     protected void assertIndexersEqual(Indexer expected, Indexer actual) {
         expected.setETag("none");
         actual.setETag("none");
@@ -249,16 +274,6 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
                     .setKey(Boolean.TRUE)
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.FALSE)));
-    }
-
-    void assertException(Runnable exceptionThrower, Class<? extends Exception> expectedExceptionType, String expectedMessage) {
-        try {
-            exceptionThrower.run();
-            Assert.fail();
-        } catch (Throwable ex) {
-            Assert.assertEquals(expectedExceptionType, ex.getClass());
-            Assert.assertTrue(ex.getMessage().contains(expectedMessage));
-        }
     }
 
     /**
@@ -415,6 +430,8 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     protected abstract DataSource createDatasource(DataSource datasource);
 
     protected abstract Indexer createIndexer(Indexer indexer);
+
+    protected abstract Indexer getIndexer(String indexerName);
 
     protected abstract Response<Void> deleteIndexer(Indexer indexer);
 }

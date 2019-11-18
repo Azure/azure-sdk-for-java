@@ -42,6 +42,11 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     }
 
     @Override
+    protected Indexer getIndexer(String indexerName) {
+        return client.getIndexer(indexerName).block();
+    }
+
+    @Override
     protected Response<Void> deleteIndexer(Indexer indexer) {
         return client.deleteIndexerWithResponse(indexer.getName(), null, null).block();
     }

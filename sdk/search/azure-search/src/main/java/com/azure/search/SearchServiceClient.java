@@ -19,7 +19,6 @@ import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SynonymMap;
-
 import com.azure.search.models.TokenInfo;
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -378,7 +377,7 @@ public class SearchServiceClient {
      * @return the indexer.
      */
     public Indexer getIndexer(String indexerName) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return asyncClient.getIndexer(indexerName).block();
     }
 
     /**
@@ -390,7 +389,7 @@ public class SearchServiceClient {
      * @return the indexer.
      */
     public Indexer getIndexer(String indexerName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return asyncClient.getIndexer(indexerName, requestOptions).block();
     }
 
     /**
@@ -402,10 +401,9 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the indexer.
      */
-    public Response<Indexer> getIndexerWithResponse(String indexerName,
-                                                    RequestOptions requestOptions,
-                                                    Context context) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Response<Indexer> getIndexerWithResponse(String indexerName, RequestOptions requestOptions,
+        Context context) {
+        return asyncClient.getIndexerWithResponse(indexerName, requestOptions, context).block();
     }
 
     /**
