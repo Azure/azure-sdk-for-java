@@ -138,7 +138,7 @@ ConfigurationAsyncClient client = new ConfigurationClientBuilder()
 You can also use `TokenCredential` to create a configuration client, such as an AAD token. 
 Unlike a connection string if you're using an AAD token you must supply the endpoint of AppConfiguration service. The
 endpoint can be obtained by going to your App Configuration instance in the Azure portal and navigating to "Overview"
-page. Looking for the "Endpoint" keyword.. You can get `TokenCredential` from other azure service
+page. Looking for the "Endpoint" keyword. You can get `TokenCredential` from other Azure services
 such as [Azure Identity][azure_identity].
 
 ```Java
