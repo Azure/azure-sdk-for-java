@@ -5,10 +5,10 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -26,12 +26,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 
 public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
@@ -76,7 +78,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         }
 
         startingPosition = EventPosition.fromEnqueuedTime(testData.getEnqueuedTime());
-        consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, new EventHubConsumerOptions());
+        consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
     }
 
     @Override
@@ -140,20 +142,27 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final String partitionId = "1";
         final List<EventData> events = getEventsAsList(numberOfEvents);
 
-        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, new EventHubConsumerOptions());
+        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now().minus(Duration.ofSeconds(10)));
+        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
         final EventHubProducerClient producer = client.createProducer();
 
         try {
+            final PartitionProperties partitionProperties = consumer.getPartitionProperties(partitionId);
             producer.send(events, sendOptions);
+            final PartitionProperties partitionProperties2 = consumer.getPartitionProperties(partitionId);
 
             // Act
-            final IterableStream<PartitionEvent> receive = consumer.receive(partitionId, 100, position, Duration.ofSeconds(5));
+            final IterableStream<PartitionEvent> receive = consumer.receive(partitionId, 100, position, Duration.ofSeconds(20));
 
             // Assert
+            System.out.println("Sleeping...");
+            TimeUnit.SECONDS.sleep(10);
+            System.out.println("Waking up...");
             final List<PartitionEvent> asList = receive.stream().collect(Collectors.toList());
             Assertions.assertEquals(numberOfEvents, asList.size());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             dispose(producer, consumer);
         }
@@ -173,16 +182,17 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final List<EventData> events = getEventsAsList(numberOfEvents);
         final List<EventData> events2 = getEventsAsList(secondSetOfEvents);
 
-        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, new EventHubConsumerOptions());
+        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
         final EventHubProducerClient producer = client.createProducer();
 
         try {
+            final Instant enqueuedTime = Instant.now();
             producer.send(events, sendOptions);
 
             // Act
             final IterableStream<PartitionEvent> receive = consumer.receive(partitionId, receiveNumber,
-                EventPosition.fromEnqueuedTime(Instant.now()), Duration.ofSeconds(5));
+                EventPosition.fromEnqueuedTime(enqueuedTime), Duration.ofSeconds(5));
 
             // Assert
             final List<PartitionEvent> asList = receive.stream().collect(Collectors.toList());
@@ -206,8 +216,8 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final List<EventData> events = getEventsAsList(numberOfEvents);
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, new EventHubConsumerOptions());
-        final EventHubConsumerClient consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, new EventHubConsumerOptions());
+        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
+        final EventHubConsumerClient consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
         final EventHubProducerClient producer = client.createProducer();
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
 
@@ -302,10 +312,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
     public void receivesMultiplePartitions() {
         // Arrange
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setPrefetchCount(1)
-            .setTrackLastEnqueuedEventProperties(false);
-        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, options);
+        final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 1);
 
         final AtomicBoolean isActive = new AtomicBoolean(true);
         final AtomicInteger counter = new AtomicInteger();
@@ -320,6 +327,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             "Cannot run this test if there are more partitions than expected.");
 
         final EventHubProducerAsyncClient producer = createBuilder().buildAsyncProducer();
+        final ReceiveOptions receiveOptions = new ReceiveOptions().setTrackLastEnqueuedEventProperties(false);
         final Disposable producerEvents = getEvents(isActive).flatMap(event -> {
             final int partition = counter.getAndIncrement() % allPartitions.size();
             event.addProperty(PARTITION_ID_HEADER, partition);

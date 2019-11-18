@@ -354,11 +354,11 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     }
 
     /**
-     * Verify that each time we receive an event, the data, {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()},
-     * null as we are consuming events.
+     * Verify that each time we receive an event, the data, and
+     * {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} as we are consuming events.
      */
     @Test
-    public void canReceiveMultipleTimes() {
+    public void canReceive() {
         // Arrange
         final String secondPartitionId = "1";
         final AtomicBoolean isActive = new AtomicBoolean(true);

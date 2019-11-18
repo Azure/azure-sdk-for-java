@@ -28,7 +28,6 @@ class EventHubAsyncClient implements Closeable {
     private final MessageSerializer messageSerializer;
     private final EventHubConnection connection;
     private final boolean isSharedConnection;
-    private final EventHubConsumerOptions defaultConsumerOptions;
     private final TracerProvider tracerProvider;
 
     EventHubAsyncClient(EventHubConnection connection, TracerProvider tracerProvider,
@@ -37,7 +36,6 @@ class EventHubAsyncClient implements Closeable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connection = Objects.requireNonNull(connection, "'connection' cannot be null.");
         this.isSharedConnection = isSharedConnection;
-        this.defaultConsumerOptions = new EventHubConsumerOptions();
     }
 
     /**
@@ -100,26 +98,6 @@ class EventHubAsyncClient implements Closeable {
 
     /**
      * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub partition, as a
-     * member of the specified consumer group, and begins reading events from the {@code eventPosition}.
-     *
-     * The consumer created is non-exclusive, allowing multiple consumers from the same consumer group to be actively
-     * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
-     * Consumers".
-     *
-     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
-     * context of this group. The name of the consumer group that is created by default is {@link
-     * EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
-     * @return A new {@link EventHubConsumerAsyncClient} that receives events from the partition at the given position.
-     * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
-     * string.
-     */
-    EventHubConsumerAsyncClient createConsumer(String consumerGroup) {
-        return createConsumer(consumerGroup, defaultConsumerOptions);
-    }
-
-    /**
-     * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub partition, as a
      * member of the configured consumer group, and begins reading events from the specified {@code eventPosition}.
      *
      * <p>
@@ -139,15 +117,13 @@ class EventHubAsyncClient implements Closeable {
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      * context of this group. The name of the consumer group that is created by default is
      * {@link EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
-     * @param options The set of options to apply when creating the consumer.
+     * @param prefetchCount The set of options to apply when creating the consumer.
      * @return An new {@link EventHubConsumerAsyncClient} that receives events from the partition with all configured
      * {@link EventHubConsumerOptions}.
-     * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
-     * {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
+     * @throws NullPointerException If {@code consumerGroup} is {@code null}.
+     * @throws IllegalArgumentException If {@code consumerGroup} is an empty string.
      */
-    EventHubConsumerAsyncClient createConsumer(String consumerGroup, EventHubConsumerOptions options) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
+    EventHubConsumerAsyncClient createConsumer(String consumerGroup, int prefetchCount) {
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
 
         if (consumerGroup.isEmpty()) {
@@ -155,10 +131,8 @@ class EventHubAsyncClient implements Closeable {
                 new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
         }
 
-        final EventHubConsumerOptions clonedOptions = options.clone();
-
         return new EventHubConsumerAsyncClient(connection.getFullyQualifiedNamespace(), getEventHubName(),
-            connection, messageSerializer, consumerGroup, clonedOptions, isSharedConnection);
+            connection, messageSerializer, consumerGroup, prefetchCount, isSharedConnection);
     }
 
     /**

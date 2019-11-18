@@ -53,24 +53,24 @@ class EventHubPartitionAsyncConsumer implements Closeable {
 
     EventHubPartitionAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
         String eventHubName, String consumerGroup, String partitionId, EventPosition startingPosition,
-        EventHubConsumerOptions options) {
+        int prefetchCount, boolean trackLastEnqueuedEventProperties) {
         this.messageSerializer = messageSerializer;
         this.eventHubName = eventHubName;
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
         this.startingPosition = startingPosition;
-        this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
-        this.trackLastEnqueuedEventProperties = options.getTrackLastEnqueuedEventProperties();
+        this.emitterProcessor = EmitterProcessor.create(prefetchCount, false);
+        this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
 
-        if (options.getTrackLastEnqueuedEventProperties()) {
+        if (trackLastEnqueuedEventProperties) {
             lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
         }
 
         // Caching the created link so we don't invoke another link creation.
         this.messageFlux = receiveLinkMono.cache().flatMapMany(link -> {
             if (RECEIVE_LINK_FIELD_UPDATER.compareAndSet(this, null, link)) {
-                logger.info("Created AMQP receive link. Initializing prefetch credits: {}", options.getPrefetchCount());
-                link.addCredits(options.getPrefetchCount());
+                logger.info("Created AMQP receive link. Initializing prefetch credits: {}", prefetchCount);
+                link.addCredits(prefetchCount);
 
                 link.setEmptyCreditListener(() -> {
                     if (emitterProcessor.hasDownstreams()) {

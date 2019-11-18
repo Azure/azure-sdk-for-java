@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
@@ -15,8 +17,6 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.ProxyAuthenticationType;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
@@ -27,7 +27,6 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -61,8 +60,7 @@ import java.util.ServiceLoader;
  * <p>
  * <strong>Starting position</strong>, <strong>consumer group</strong>, and <strong>credentials</strong> are
  * <strong>required</strong> when creating an {@link EventHubConsumerAsyncClient} or {@link EventHubConsumerClient}.
- * {@link EventHubClientBuilder#consumerOptions(EventHubConsumerOptions) Consumer options} can be supplied for
- * optional consumer customizations.
+ * {@link EventHubClientBuilder#prefetchCount(int) Prefetch } can be supplied for customized to change default prefetch.
  * </p>
  *
  * <p><strong>Creating an asynchronous {@link EventHubProducerAsyncClient} using Event Hubs namespace connection string
@@ -84,6 +82,16 @@ public class EventHubClientBuilder {
      * The name of the default consumer group in the Event Hubs service.
      */
     public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
+    /**
+     * The minimum value allowed for the prefetch count of the consumer.
+     */
+    static final int MINIMUM_PREFETCH_COUNT = 1;
+    /**
+     * The maximum value allowed for the prefetch count of the consumer.
+     */
+    static final int MAXIMUM_PREFETCH_COUNT = 8000;
+    // Default number of events to fetch when creating the consumer.
+    static final int DEFAULT_PREFETCH_COUNT = 500;
 
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
@@ -99,15 +107,16 @@ public class EventHubClientBuilder {
     private TransportType transport;
     private String fullyQualifiedNamespace;
     private String eventHubName;
-    private EventHubConsumerOptions consumerOptions;
     private String consumerGroup;
     private EventHubConnection eventHubConnection;
+    private int prefetchCount;
 
     /**
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
      */
     public EventHubClientBuilder() {
         transport = TransportType.AMQP;
+        prefetchCount = DEFAULT_PREFETCH_COUNT;
     }
 
     /**
@@ -322,13 +331,26 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the set of options to apply when creating the consumer.
+     * Sets the count used by the receiver to control the number of events the Event Hub consumer will actively receive
+     * and queue locally without regard to whether a receive operation is currently active.
      *
-     * @param consumerOptions The set of options to apply when creating the consumer.
+     * @param prefetchCount The amount of events to queue locally.
      * @return The updated {@link EventHubClientBuilder} object.
+     * @throws IllegalArgumentException if {@code prefetchCount} is less than the {@link #MINIMUM_PREFETCH_COUNT 1} or
+     *     greater than {@link #MAXIMUM_PREFETCH_COUNT 8000}.
      */
-    public EventHubClientBuilder consumerOptions(EventHubConsumerOptions consumerOptions) {
-        this.consumerOptions = consumerOptions;
+    public EventHubClientBuilder prefetchCount(int prefetchCount) {
+        if (prefetchCount < MINIMUM_PREFETCH_COUNT) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "PrefetchCount, '%s' has to be above %s", prefetchCount, MINIMUM_PREFETCH_COUNT)));
+        }
+
+        if (prefetchCount > MAXIMUM_PREFETCH_COUNT) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "PrefetchCount, '%s', has to be below %s", prefetchCount, MAXIMUM_PREFETCH_COUNT)));
+        }
+
+        this.prefetchCount = prefetchCount;
         return this;
     }
 
@@ -359,16 +381,12 @@ public class EventHubClientBuilder {
      *     {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubConsumerAsyncClient buildAsyncConsumer() {
-        final EventHubConsumerOptions options = consumerOptions != null
-            ? consumerOptions
-            : new EventHubConsumerOptions();
-
         if (CoreUtils.isNullOrEmpty(consumerGroup)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be null or an empty "
                 + "string. using EventHubClientBuilder.consumerGroup(String)"));
         }
 
-        return buildAsyncClient().createConsumer(consumerGroup, options);
+        return buildAsyncClient().createConsumer(consumerGroup, prefetchCount);
     }
 
     /**
@@ -383,11 +401,7 @@ public class EventHubClientBuilder {
      *     {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubConsumerClient buildConsumer() {
-        final EventHubConsumerOptions options = consumerOptions != null
-            ? consumerOptions
-            : new EventHubConsumerOptions();
-
-        return buildClient().createConsumer(consumerGroup, options);
+        return buildClient().createConsumer(consumerGroup, prefetchCount);
     }
 
     /**

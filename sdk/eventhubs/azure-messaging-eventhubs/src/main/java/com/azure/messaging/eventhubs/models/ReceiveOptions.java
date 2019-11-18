@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
@@ -11,6 +12,7 @@ import com.azure.messaging.eventhubs.EventHubConsumerClient;
  * Set of options that can be specified when receiving events from an {@link EventHubConsumerAsyncClient} or
  * {@link EventHubConsumerClient}.
  */
+@Fluent
 public class ReceiveOptions {
     private final ClientLogger logger = new ClientLogger(ReceiveOptions.class);
     private Long ownerLevel;

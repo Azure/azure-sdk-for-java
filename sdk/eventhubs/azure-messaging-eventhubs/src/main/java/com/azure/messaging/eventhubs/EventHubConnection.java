@@ -16,8 +16,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
@@ -105,7 +105,7 @@ public class EventHubConnection implements Closeable {
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
-            EventHubConsumerOptions options) {
+            ReceiveOptions options) {
         return currentConnection.flatMap(connection -> connection.createSession(entityPath).cast(EventHubSession.class))
             .flatMap(session -> {
                 logger.verbose("Creating consumer for path: {}", entityPath);

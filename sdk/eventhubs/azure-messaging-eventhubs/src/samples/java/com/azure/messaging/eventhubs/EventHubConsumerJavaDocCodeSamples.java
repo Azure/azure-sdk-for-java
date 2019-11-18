@@ -64,40 +64,4 @@ public class EventHubConsumerJavaDocCodeSamples {
             System.out.print("Event received: " + partitionEvent.getData().getSequenceNumber());
         }
     }
-
-    /**
-     * Receive events from all partitions.
-     */
-    public void receiveAll() {
-        EventHubConsumerClient consumer = new EventHubClientBuilder()
-            .connectionString("event-hub-instance-connection-string")
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildConsumer();
-
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-eventposition-duration
-        Instant anHourAgo = Instant.now().minus(Duration.ofHours(1));
-        EventPosition startingPosition = EventPosition.fromEnqueuedTime(anHourAgo);
-
-        int maxMessageCount = 100;
-        Duration maxWaitTime = Duration.ofSeconds(30);
-
-        // Begins reading events from all partitions and returns the first 100 received or until the wait time of 30
-        // seconds has elapsed.
-        IterableStream<PartitionEvent> events = consumer.receive(maxMessageCount, startingPosition, maxWaitTime);
-
-        for (PartitionEvent partitionEvent : events) {
-            // For each event, perform some sort of processing.
-            System.out.print("Event received: " + partitionEvent.getData().getSequenceNumber());
-        }
-
-        // Gets the next set of events from all partitions to consume and process.
-        IterableStream<PartitionEvent> nextEvents = consumer.receive(maxMessageCount, startingPosition,
-            maxWaitTime);
-        // END: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#int-eventposition-duration
-
-        for (PartitionEvent partitionEvent : nextEvents) {
-            // For each event, perform some sort of processing.
-            System.out.print("Event received: " + partitionEvent.getData().getSequenceNumber());
-        }
-    }
 }
