@@ -86,20 +86,32 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
 
         // Create two indexers
-        Indexer indexer1 = createTestIndexer("i1");
-        Indexer indexer2 = createTestIndexer("i2");
+        Indexer indexer1 = createTestIndexer("indexer1").setDataSourceName(datasource.getName());
+        Indexer indexer2 = createTestIndexer("indexer2").setDataSourceName(datasource.getName());
         client.createOrUpdateIndexer(indexer1);
         client.createOrUpdateIndexer(indexer2);
 
         List<Indexer> indexers = client.listIndexers().stream().collect(Collectors.toList());
         Assert.assertEquals(2, indexers.size());
 
-        Assert.assertTrue(
-            indexers.stream()
-                .anyMatch(item -> indexer1.getName().equals(item.getName())));
-        Assert.assertTrue(
-            indexers.stream()
-                .anyMatch(item -> indexer2.getName().equals(item.getName())));
+        assertIndexersEqual(indexer1, indexers.get(0));
+        assertIndexersEqual(indexer2, indexers.get(1));
+    }
+
+    @Override
+    public void canCreateAndListIndexerNames() {
+        List<Indexer> indexers = prepareIndexersForCreateAndListIndexers();
+
+        List<Indexer> indexersRes = client.listIndexers("name", generateRequestOptions())
+            .stream().collect(Collectors.toList());
+
+        Assert.assertEquals(2, indexersRes.size());
+        Assert.assertEquals(indexers.get(0).getName(), indexersRes.get(0).getName());
+        Assert.assertEquals(indexers.get(1).getName(), indexersRes.get(1).getName());
+
+        // Assert all other fields than "name" are null:
+        assertAllIndexerFieldsNullExceptName(indexersRes.get(0));
+        assertAllIndexerFieldsNullExceptName(indexersRes.get(1));
     }
 
     @Override

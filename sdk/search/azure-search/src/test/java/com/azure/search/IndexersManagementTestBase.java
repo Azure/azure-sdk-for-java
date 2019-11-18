@@ -34,6 +34,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public abstract void canCreateAndListIndexers();
 
     @Test
+    public abstract void canCreateAndListIndexerNames();
+
+    @Test
     public abstract void createIndexerFailsWithUsefulMessageOnUserError();
 
     @Test
@@ -276,6 +279,18 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
                     .setFilterable(Boolean.FALSE)));
     }
 
+    void assertAllIndexerFieldsNullExceptName(Indexer indexer) {
+        Assert.assertNull(indexer.getParameters());
+        Assert.assertNull(indexer.getDataSourceName());
+        Assert.assertNull(indexer.getDescription());
+        Assert.assertNull(indexer.getETag());
+        Assert.assertNull(indexer.getFieldMappings());
+        Assert.assertNull(indexer.getOutputFieldMappings());
+        Assert.assertNull(indexer.getSchedule());
+        Assert.assertNull(indexer.getSkillsetName());
+        Assert.assertNull(indexer.getTargetIndexName());
+    }
+
     /**
      * Creates the index and indexer in the search service and then update the indexer
      * @param updatedIndexer the indexer to be updated
@@ -423,6 +438,24 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         updatedExpected.setParameters(ip);
 
         return updatedExpected;
+    }
+
+    List<Indexer> prepareIndexersForCreateAndListIndexers() {
+        // Create the data source, note it is a valid DS with actual connection string
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        // Create an index
+        Index index = createTestIndexForLiveDatasource();
+        createIndex(index);
+
+        // Create two indexers
+        Indexer indexer1 = createTestIndexer("indexer1").setDataSourceName(datasource.getName());
+        Indexer indexer2 = createTestIndexer("indexer2").setDataSourceName(datasource.getName());
+        createIndexer(indexer1);
+        createIndexer(indexer2);
+
+        return Arrays.asList(indexer1, indexer2);
     }
 
     protected abstract Index createIndex(Index index);

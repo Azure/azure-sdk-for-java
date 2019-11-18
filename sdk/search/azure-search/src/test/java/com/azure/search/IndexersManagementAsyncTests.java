@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
@@ -91,29 +92,34 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canCreateAndListIndexers() {
-        // Create the data source, note it a valid DS with actual
-        // connection string
-        DataSource datasource = createTestSqlDataSource();
-        client.createOrUpdateDataSource(datasource).block();
+        List<Indexer> indexers = prepareIndexersForCreateAndListIndexers();
 
-        // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        client.createOrUpdateIndex(index).block();
-
-
-        // Create two indexers
-        Indexer indexer1 = createTestIndexer("i1");
-        Indexer indexer2 = createTestIndexer("i2");
-        client.createOrUpdateIndexer(indexer1).block();
-        client.createOrUpdateIndexer(indexer2).block();
-
-        PagedFlux<Indexer> returnedIndexersLst = client.listIndexers();
+        PagedFlux<Indexer> returnedIndexersList = client.listIndexers();
         StepVerifier
-            .create(returnedIndexersLst.collectList())
-            .assertNext(indexers -> {
-                Assert.assertEquals(2, indexers.size());
-                Assert.assertTrue(indexers.get(0).getName().equals(indexer1.getName()));
-                Assert.assertTrue(indexers.get(1).getName().equals(indexer2.getName()));
+            .create(returnedIndexersList.collectList())
+            .assertNext(indexersRes -> {
+                Assert.assertEquals(2, indexersRes.size());
+                assertIndexersEqual(indexers.get(0), indexersRes.get(0));
+                assertIndexersEqual(indexers.get(1), indexersRes.get(1));
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void canCreateAndListIndexerNames() {
+        List<Indexer> indexers = prepareIndexersForCreateAndListIndexers();
+
+        PagedFlux<Indexer> returnedIndexersList = client.listIndexers("name", generateRequestOptions());
+        StepVerifier
+            .create(returnedIndexersList.collectList())
+            .assertNext(indexersRes -> {
+                Assert.assertEquals(2, indexersRes.size());
+                Assert.assertEquals(indexers.get(0).getName(), indexersRes.get(0).getName());
+                Assert.assertEquals(indexers.get(1).getName(), indexersRes.get(1).getName());
+
+                // Assert all other fields than "name" are null:
+                assertAllIndexerFieldsNullExceptName(indexersRes.get(0));
+                assertAllIndexerFieldsNullExceptName(indexersRes.get(1));
             })
             .verifyComplete();
     }
