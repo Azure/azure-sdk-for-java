@@ -8,7 +8,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 
 /**
- * An {@code ProgressReceiver} is an object that can be used to report progress on network transfers. When specified on
+ * A {@code ProgressReceiver} is an object that can be used to report progress on network transfers. When specified on
  * transfer operations, the {@code reportProgress} method will be called periodically with the total number of bytes
  * transferred. The user may configure this method to report progress in whatever format desired. It is recommended
  * that this type be used in conjunction with {@link ProgressReporter#addProgressReporting(Flux, ProgressReceiver)} to
