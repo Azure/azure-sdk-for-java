@@ -3,6 +3,8 @@
 
 package com.azure.cs.textanalytics;
 
+import com.azure.cs.textanalytics.models.DetectedLanguage;
+
 public class HelloWorld {
 
     public static void main(String[] args) {
@@ -14,8 +16,8 @@ public class HelloWorld {
         // The text that need be analysed.
         String text = "hello world";
 
-        client.detectLanguage(text, "US", false).stream().forEach(detectedLanguage ->
-            System.out.println(String.format("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
-                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore())));
+        DetectedLanguage detectedLanguage = client.detectLanguage(text, "US");
+        System.out.println(String.format("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
+            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));
     }
 }

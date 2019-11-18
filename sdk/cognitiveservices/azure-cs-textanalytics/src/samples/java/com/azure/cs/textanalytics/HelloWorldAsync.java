@@ -15,7 +15,7 @@ public class HelloWorldAsync {
         // The text that need be analysed.
         String text = "hello world";
 
-        client.detectLanguages(text, "US", false).subscribe(
+        client.detectLanguage(text, "US").subscribe(
             result -> System.out.println(String.format("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
                 result.getName(), result.getIso6391Name(), result.getScore())),
             error -> System.err.println("There was an error detecting language of the text" + error.toString()),

@@ -14,8 +14,7 @@ public class RecognizeKeyPhrases {
         // The text that need be analysed.
         String text = "My cat might need to see a veterinarian";
 
-        client.extractKeyPhrases(text, "US", false)
-            .stream()
-            .forEach(phrase -> System.out.println(String.format("Recognized Phrases: %s", phrase)));
+        client.extractKeyPhrases(text, "US").stream().forEach(
+            phrase -> System.out.println(String.format("Recognized Phrases: %s", phrase)));
     }
 }

@@ -10,7 +10,7 @@ import com.azure.cs.textanalytics.implementation.models.DocumentEntities;
 import com.azure.cs.textanalytics.implementation.models.EntitiesResult;
 import com.azure.cs.textanalytics.models.Entity;
 import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
-import com.azure.cs.textanalytics.models.MultiLanguageInput;
+import com.azure.cs.textanalytics.models.DocumentInput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +24,10 @@ public class RecognizePIIBatchDocuments {
             .buildClient();
 
         // The texts that need be analysed.
-        List<MultiLanguageInput> documents = new ArrayList<>();
-        MultiLanguageInput input = new MultiLanguageInput();
+        List<DocumentInput> documents = new ArrayList<>();
+        DocumentInput input = new DocumentInput();
         input.setId("1").setText("My SSN is 555-55-5555").setLanguage("US");
-        MultiLanguageInput input2 = new MultiLanguageInput();
+        DocumentInput input2 = new DocumentInput();
         input2.setId("2").setText("Visa card 4147999933330000").setLanguage("US");
         documents.add(input);
         documents.add(input2);

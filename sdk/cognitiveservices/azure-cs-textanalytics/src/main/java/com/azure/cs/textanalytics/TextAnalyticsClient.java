@@ -10,18 +10,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
-import com.azure.cs.textanalytics.implementation.models.DocumentSentiment;
-import com.azure.cs.textanalytics.implementation.models.EntitiesResult;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
+import com.azure.cs.textanalytics.models.DocumentSentiment;
 import com.azure.cs.textanalytics.models.Entity;
-import com.azure.cs.textanalytics.implementation.models.EntityLinkingResult;
-import com.azure.cs.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.LanguageInput;
-import com.azure.cs.textanalytics.implementation.models.LanguageResult;
 import com.azure.cs.textanalytics.models.LinkedEntity;
-import com.azure.cs.textanalytics.models.MultiLanguageInput;
-import com.azure.cs.textanalytics.implementation.models.SentimentResponse;
+import com.azure.cs.textanalytics.models.DocumentInput;
 import com.azure.cs.textanalytics.models.Sentiment;
+import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
 import java.util.List;
 
@@ -47,21 +43,21 @@ public final class TextAnalyticsClient {
 
     // hackathon user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DetectedLanguage> detectLanguages(List<String> documents, String countryHint) {
+    public PagedIterable<DetectedLanguage> detectLanguages(List<String> document, String countryHint) {
         return null;
     }
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<DetectedLanguage> detectLanguages(List<LanguageInput> documents, String modelVersion, Boolean showStats) {
+    public DocumentResultCollection<DetectedLanguage> detectLanguages(List<LanguageInput> document,
+                                                                      TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<DetectedLanguage>> detectLanguagesWithResponse(List<LanguageInput> documents,
-                                                                String modelVersion, Boolean showStats,
-                                                                Context context) {
-        return client.detectLanguagesWithResponse(documents, modelVersion, showStats, context).block();
+    public Response<DocumentResultCollection<DetectedLanguage>> detectLanguagesWithResponse(
+        List<LanguageInput> document, TextAnalyticsRequestOptions options, Context context) {
+        return client.detectLanguagesWithResponse(document, modelVersion, showStats, context).block();
     }
 
     // (2) entities
@@ -73,22 +69,21 @@ public final class TextAnalyticsClient {
 
     // hackathon user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<List<Entity>> recognizeEntities(List<String> documents, String language) {
+    public PagedIterable<List<Entity>> recognizeEntities(List<String> document, String language) {
         return null;
     }
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<Entity> recognizeEntities(List<MultiLanguageInput> documents,
-                                            String modelVersion, Boolean showStats) {
+    public DocumentResultCollection<Entity> recognizeEntities(
+        List<DocumentInput> document, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<Entity>> recognizeEntitiesWithResponse(List<MultiLanguageInput> documents,
-                                                                  String modelVersion, Boolean showStats,
-                                                                  Context context) {
-        return client.recognizeEntitiesWithResponse(documents, modelVersion, showStats, context).block();
+    public Response<DocumentResultCollection<Entity>> recognizeEntitiesWithResponse(
+        List<DocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
+        return client.recognizeEntitiesWithResponse(document, modelVersion, showStats, context).block();
     }
 
     // (3) PII entities
@@ -100,21 +95,21 @@ public final class TextAnalyticsClient {
 
     // hackathon user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<List<Entity>> recognizePiiEntities(List<String> documents, String language) {
+    public PagedIterable<List<Entity>> recognizePiiEntities(List<String> document, String language) {
         return null;
     }
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<Entity> recognizePiiEntities(
-        List<MultiLanguageInput> documents, String modelVersion, Boolean showStats) {
+        List<DocumentInput> document, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<Entity>> recognizePiiEntitiesWithResponse(
-        List<MultiLanguageInput> documents, String modelVersion, Boolean showStats, Context context) {
-        return client.recognizePiiEntitiesWithResponse(documents, modelVersion, showStats, context).block();
+        List<DocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
+        return client.recognizePiiEntitiesWithResponse(document, modelVersion, showStats, context).block();
     }
 
     // (4) Link entities
@@ -126,21 +121,21 @@ public final class TextAnalyticsClient {
 
     // hackathon user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<List<LinkedEntity>> recognizeLinkedEntities(List<String> documents, String language) {
+    public PagedIterable<List<LinkedEntity>> recognizeLinkedEntities(List<String> document, String language) {
         return null;
     }
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<LinkedEntity> recognizeLinkedEntities(
-        List<MultiLanguageInput> documents, String modelVersion, Boolean showStats) {
+        List<DocumentInput> document, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<LinkedEntity>> recognizeLinkedEntitiesWithResponse(
-        List<MultiLanguageInput> documents, String modelVersion, boolean showStats, Context context) {
-        return client.recognizeLinkedEntitiesWithResponse(documents, modelVersion, showStats, context)
+        List<DocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
+        return client.recognizeLinkedEntitiesWithResponse(document, modelVersion, showStats, context)
             .block();
     }
 
@@ -153,22 +148,21 @@ public final class TextAnalyticsClient {
 
     // hackathon user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<List<String>> extractKeyPhrases(List<String> documents, String language) {
+    public PagedIterable<List<String>> extractKeyPhrases(List<String> document, String language) {
         return null;
     }
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<String> extractKeyPhrases(List<MultiLanguageInput> documents,
-                                             String modelVersion, Boolean showStats) {
+    public DocumentResultCollection<String> extractKeyPhrases(
+        List<DocumentInput> document, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<String>> extractKeyPhrasesWithResponse(List<MultiLanguageInput> documents,
-                                                                   String modelVersion, Boolean showStats,
-                                                                   Context context){
-        return client.extractKeyPhrasesWithResponse(documents, modelVersion, showStats, context).block();
+    public Response<DocumentResultCollection<String>> extractKeyPhrasesWithResponse(
+        List<DocumentInput> document, TextAnalyticsRequestOptions options, Context context){
+        return client.extractKeyPhrasesWithResponse(document, modelVersion, showStats, context).block();
     }
 
     // (6) sentiment
@@ -178,22 +172,26 @@ public final class TextAnalyticsClient {
         return null;
     }
 
+    public Response<Sentiment> analyzeSentenceSentimentWithResponse(String text, String language, Context context) {
+        return null;
+    }
+
     // hackathon user
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<Sentiment> analyzeSentenceSentimentWithResponse(List<String> documents, String language) {
+    public PagedIterable<Sentiment> analyzeDocumentSentiment(List<String> document, String language) {
         return null;
     }
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<Sentiment> analyzeDocumentSentimentWithResponse(List<MultiLanguageInput> documents,
-                                                                  String modelVersion, Boolean showStats) {
+    public DocumentResultCollection<DocumentSentiment> analyzeDocumentSentiment(
+        List<DocumentInput> document, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<Sentiment>> analyzeDocumentSentimentWithResponse(
-        List<MultiLanguageInput> documents, String modelVersion, Boolean showStats, Context context) {
-        return client.analyzeDocumentSentimentWithResponse(documents, modelVersion, showStats, context).block();
+    public Response<DocumentResultCollection<DocumentSentiment>> analyzeDocumentSentimentWithResponse(
+        List<DocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
+        return client.analyzeDocumentSentimentWithResponse(document, modelVersion, showStats, context).block();
     }
 }

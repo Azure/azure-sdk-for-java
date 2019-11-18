@@ -3,7 +3,7 @@
 
 package com.azure.cs.textanalytics.models;
 
-public class TextAnalyticsRequestOptions {
+public final class TextAnalyticsRequestOptions {
     private String modelVersion;
     private boolean showStats;
 
@@ -11,15 +11,17 @@ public class TextAnalyticsRequestOptions {
         return modelVersion;
     }
 
-    public void setModelVersion(String modelVersion) {
+    public TextAnalyticsRequestOptions setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
+        return this;
     }
 
     public boolean isShowStats() {
         return showStats;
     }
 
-    public void setShowStats(boolean showStats) {
+    public TextAnalyticsRequestOptions setShowStats(boolean showStats) {
         this.showStats = showStats;
+        return this;
     }
 }

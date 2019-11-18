@@ -3,9 +3,10 @@
 
 package com.azure.cs.textanalytics.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DocumentResultCollection<T> extends DocumentResult<T> {
+public class DocumentResultCollection<T> extends ArrayList<DocumentResult<T>> {
     private List<DocumentError> errors;
     private String modelVersion;
     private DocumentBatchStatistics statistics;

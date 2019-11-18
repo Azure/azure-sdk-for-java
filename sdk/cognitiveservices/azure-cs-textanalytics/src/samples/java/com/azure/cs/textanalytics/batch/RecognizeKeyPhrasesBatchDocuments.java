@@ -9,7 +9,7 @@ import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.cs.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.cs.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
-import com.azure.cs.textanalytics.models.MultiLanguageInput;
+import com.azure.cs.textanalytics.models.DocumentInput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +24,10 @@ public class RecognizeKeyPhrasesBatchDocuments {
             .buildClient();
 
         // The texts that need be analysed.
-        List<MultiLanguageInput> documents = new ArrayList<>();
-        MultiLanguageInput input = new MultiLanguageInput();
+        List<DocumentInput> documents = new ArrayList<>();
+        DocumentInput input = new DocumentInput();
         input.setId("1").setText("My cat might need to see a veterinarian").setLanguage("US");
-        MultiLanguageInput input2 = new MultiLanguageInput();
+        DocumentInput input2 = new DocumentInput();
         input2.setId("2").setText("The pitot tube is used to measure airspeed.").setLanguage("US");
         documents.add(input);
         documents.add(input2);

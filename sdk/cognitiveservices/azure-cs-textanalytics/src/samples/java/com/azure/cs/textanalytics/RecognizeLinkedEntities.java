@@ -14,7 +14,7 @@ public class RecognizeLinkedEntities {
         // The text that need be analysed.
         String text = "Old Faithful is a geyser at Yellowstone Park";
 
-        client.recognizeLinkedEntities(text, "US", false).stream().forEach(
+        client.recognizeLinkedEntities(text, "US").stream().forEach(
             linkedEntity -> System.out.println(String.format("Recognized Linked Entity: %s, URL: %s, Data Source: %s",
                 linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource())));
     }

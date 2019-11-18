@@ -30,47 +30,53 @@ public class Sentiment {
         return length;
     }
 
-    public void setLength(String length) {
+    public Sentiment setLength(String length) {
         this.length = length;
+        return this;
     }
 
     public double getNegativeScore() {
         return negativeScore;
     }
 
-    public void setNegativeScore(double negativeScore) {
+    public Sentiment setNegativeScore(double negativeScore) {
         this.negativeScore = negativeScore;
+        return this;
     }
 
     public double getNeutralScore() {
         return neutralScore;
     }
 
-    public void setNeutralScore(double neutralScore) {
+    public Sentiment setNeutralScore(double neutralScore) {
         this.neutralScore = neutralScore;
+        return this;
     }
 
     public double getPositiveScore() {
         return positiveScore;
     }
 
-    public void setPositiveScore(double positiveScore) {
+    public Sentiment setPositiveScore(double positiveScore) {
         this.positiveScore = positiveScore;
+        return this;
     }
 
     public int getOffSet() {
         return offSet;
     }
 
-    public void setOffSet(int offSet) {
+    public Sentiment setOffSet(int offSet) {
         this.offSet = offSet;
+        return this;
     }
 
     public SentimentClass getSentimentClass() {
         return sentimentClass;
     }
 
-    public void setSentimentClass(SentimentClass sentimentClass) {
+    public Sentiment setSentimentClass(SentimentClass sentimentClass) {
         this.sentimentClass = sentimentClass;
+        return this;
     }
 }

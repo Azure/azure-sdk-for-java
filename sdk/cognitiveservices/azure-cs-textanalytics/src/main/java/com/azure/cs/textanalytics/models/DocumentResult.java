@@ -15,23 +15,26 @@ public class DocumentResult<T> {
         return id;
     }
 
-    public void setId(String id) {
+    public DocumentResult setId(String id) {
         this.id = id;
+        return this;
     }
 
     public DocumentStatistics getDocumentStatistics() {
         return documentStatistics;
     }
 
-    public void setDocumentStatistics(DocumentStatistics documentStatistics) {
+    public DocumentResult setDocumentStatistics(DocumentStatistics documentStatistics) {
         this.documentStatistics = documentStatistics;
+        return this;
     }
 
     public List<T> getItems() {
         return items;
     }
 
-    public void setItems(List<T> items) {
+    public DocumentResult setItems(List<T> items) {
         this.items = items;
+        return this;
     }
 }

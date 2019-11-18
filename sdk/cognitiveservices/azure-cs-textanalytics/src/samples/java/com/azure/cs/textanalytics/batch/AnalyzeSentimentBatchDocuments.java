@@ -3,14 +3,14 @@
 
 package com.azure.cs.textanalytics.batch;
 
-import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.cs.textanalytics.implementation.models.DocumentSentiment;
-import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
-import com.azure.cs.textanalytics.models.MultiLanguageInput;
-import com.azure.cs.textanalytics.implementation.models.SentenceSentiment;
-import com.azure.cs.textanalytics.implementation.models.SentimentResponse;
+import com.azure.cs.textanalytics.models.DocumentBatchStatistics;
+import com.azure.cs.textanalytics.models.DocumentInput;
+import com.azure.cs.textanalytics.models.DocumentResultCollection;
+import com.azure.cs.textanalytics.models.DocumentSentiment;
+import com.azure.cs.textanalytics.models.Sentiment;
+import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,31 +24,49 @@ public class AnalyzeSentimentBatchDocuments {
             .buildClient();
 
         // The texts that need be analysed.
-        List<MultiLanguageInput> documents = new ArrayList<>();
-        MultiLanguageInput input = new MultiLanguageInput();
+        List<DocumentInput> documents = new ArrayList<>();
+        DocumentInput input = new DocumentInput();
         input.setId("1").setText("The hotel was dark and unclean.").setLanguage("US");
-        MultiLanguageInput input2 = new MultiLanguageInput();
+        DocumentInput input2 = new DocumentInput();
         input2.setId("2").setText("The restaurant had amazing gnocci.").setLanguage("US");
         documents.add(input);
         documents.add(input2);
-        MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput();
-        batchInput.setDocuments(documents);
 
-        // Detecting language from a batch of documents
-        SentimentResponse detectedResult = client.analyzeSentimentWithResponse(batchInput, false, Context.NONE).getValue();
-        List<DocumentSentiment> documentSentiments = detectedResult.getDocuments();
-        for (DocumentSentiment documentSentiment : documentSentiments) {
-            final String sentiment = documentSentiment.getSentiment();
-            final Double documentScore = (Double) documentSentiment.getDocumentScores();
-            System.out.println(String.format("Recognized Sentiment: %s, Document Score: %s", sentiment, documentScore));
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStats(true).setModelVersion("1.0");
 
-            final List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences();
-            for (SentenceSentiment sentenceSentiment : sentenceSentiments) {
-                System.out.println(String.format("Recognized Sentence Sentiment: %s, Sentence Score: %s, Offset: %s, Length: %s",
-                    sentenceSentiment.getSentiment(),
-                    sentenceSentiment.getSentenceScores(),
-                    sentenceSentiment.getOffset(),
-                    sentenceSentiment.getLength()));
+        // Document level statistics
+        DocumentResultCollection<DocumentSentiment> detectedResult = client.analyzeDocumentSentiment(documents, requestOptions);
+        final String modelVersion = detectedResult.getModelVersion();
+        System.out.println(String.format("Model version: %s", modelVersion));
+
+        final DocumentBatchStatistics documentBatchStatistics = detectedResult.getStatistics();
+        System.out.println(String.format("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
+            documentBatchStatistics.getDocumentsCount(),
+            documentBatchStatistics.getErroneousDocumentsCount(),
+            documentBatchStatistics.getTransactionsCount(),
+            documentBatchStatistics.getValidDocumentsCount()));
+
+        // Detecting sentiment from a batch of documents
+        final List<DocumentSentiment> documentSentiments = detectedResult.get().getItems();
+        for (DocumentSentiment item : documentSentiments) {
+            final Sentiment documentSentiment = item.getDocumentSentiment();
+            System.out.println(String.format(
+                "Recognized document sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.",
+                documentSentiment.getSentimentClass(),
+                documentSentiment.getPositiveScore(),
+                documentSentiment.getNeutralScore(),
+                documentSentiment.getNegativeScore()));
+
+            final List<Sentiment> sentenceSentiments = item.getItems();
+            for (Sentiment sentenceSentiment : sentenceSentiments) {
+                System.out.println(String.format(
+                    "Recognized sentence sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s",
+                    sentenceSentiment.getSentimentClass(),
+                    sentenceSentiment.getPositiveScore(),
+                    sentenceSentiment.getNeutralScore(),
+                    sentenceSentiment.getNegativeScore(),
+                    sentenceSentiment.getLength(),
+                    sentenceSentiment.getOffSet()));
             }
         }
     }

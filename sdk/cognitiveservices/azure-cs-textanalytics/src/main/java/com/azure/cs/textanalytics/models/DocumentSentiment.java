@@ -5,15 +5,15 @@ package com.azure.cs.textanalytics.models;
 
 import java.util.List;
 
-public class DocumentSentiment extends Sentiment {
-    // if it is document sentiment level, this represents sentence sentiment, it is sentence sentiment, it will be null
-    private List<Sentiment> sentenceSentiments;
+public class DocumentSentiment extends DocumentResult<Sentiment> {
+    private Sentiment documentSentiment;
 
-    public List<Sentiment> getSentenceSentiments() {
-        return sentenceSentiments;
+    public Sentiment getDocumentSentiment() {
+        return documentSentiment;
     }
 
-    public void setSentenceSentiments(List<Sentiment> sentenceSentiments) {
-        this.sentenceSentiments = sentenceSentiments;
+    public DocumentSentiment setDocumentSentiment(Sentiment documentSentiment) {
+        this.documentSentiment = documentSentiment;
+        return this;
     }
 }

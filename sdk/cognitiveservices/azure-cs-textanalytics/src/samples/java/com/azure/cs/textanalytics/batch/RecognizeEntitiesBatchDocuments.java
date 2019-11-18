@@ -3,14 +3,13 @@
 
 package com.azure.cs.textanalytics.batch;
 
-import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.cs.textanalytics.implementation.models.DocumentEntities;
-import com.azure.cs.textanalytics.implementation.models.EntitiesResult;
+import com.azure.cs.textanalytics.models.DocumentBatchStatistics;
+import com.azure.cs.textanalytics.models.DocumentInput;
+import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.Entity;
-import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
-import com.azure.cs.textanalytics.models.MultiLanguageInput;
+import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,26 +22,33 @@ public class RecognizeEntitiesBatchDocuments {
             .buildClient();
 
         // The texts that need be analysed.
-        List<MultiLanguageInput> documents = new ArrayList<>();
-        MultiLanguageInput input = new MultiLanguageInput();
+        List<DocumentInput> document = new ArrayList<>();
+        DocumentInput input = new DocumentInput();
         input.setId("1").setText("Satya Nadella is the CEO of Microsoft").setLanguage("US");
-        MultiLanguageInput input2 = new MultiLanguageInput();
+        DocumentInput input2 = new DocumentInput();
         input2.setId("2").setText("Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("US");
-        documents.add(input);
-        documents.add(input2);
-        MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput();
-        batchInput.setDocuments(documents);
+        document.add(input);
+        document.add(input2);
 
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStats(true).setModelVersion("1.0");
+        DocumentResultCollection<Entity> detectedResult = client.recognizeEntities(document, requestOptions);
+        // Document level statistics
+        final String modelVersion = detectedResult.getModelVersion();
+        System.out.println(String.format("Model version: %s", modelVersion));
 
-        // Detecting language from a batch of documents
-        EntitiesResult detectedResult = client.recognizeEntitiesWithResponse(batchInput, false, Context.NONE).getValue();
-        List<DocumentEntities> documentEntities = detectedResult.getDocuments();
-        for (DocumentEntities documentEntitie : documentEntities) {
-            List<Entity> entities = documentEntitie.getEntities();
-            for (Entity entity : entities) {
-                System.out.println(String.format("Recognized Entity: %s, Entity Type: %s, Entity Subtype: %s, Offset: %s, Length: %s, Score: %s",
-                    entity.getText(), entity.getType(), entity.getSubType(), entity.getOffset(), entity.getLength(), entity.getScore()));
-            }
+        final DocumentBatchStatistics documentBatchStatistics = detectedResult.getStatistics();
+        System.out.println(String.format("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
+            documentBatchStatistics.getDocumentsCount(),
+            documentBatchStatistics.getErroneousDocumentsCount(),
+            documentBatchStatistics.getTransactionsCount(),
+            documentBatchStatistics.getValidDocumentsCount()));
+
+        // Detecting entity from a batch of documents
+        List<Entity> entities = detectedResult.getItems();
+        for (Entity entity : entities) {
+            System.out.println(String.format("Recognized Entity: %s, Entity Type: %s, Entity Subtype: %s, Offset: %s, Length: %s, Score: %s",
+                entity.getText(), entity.getType(), entity.getSubType(), entity.getOffset(), entity.getLength(), entity.getScore()));
         }
+
     }
 }

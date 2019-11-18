@@ -3,14 +3,13 @@
 
 package com.azure.cs.textanalytics.batch;
 
-import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
-import com.azure.cs.textanalytics.implementation.models.DocumentLanguage;
-import com.azure.cs.textanalytics.models.LanguageBatchInput;
+import com.azure.cs.textanalytics.models.DocumentBatchStatistics;
+import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.LanguageInput;
-import com.azure.cs.textanalytics.implementation.models.LanguageResult;
+import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,26 +23,32 @@ public class DetectLanguageBatchDocuments {
             .buildClient();
 
         // The texts that need be analysed.
-        List<LanguageInput> documents = new ArrayList<>();
+        List<LanguageInput> document = new ArrayList<>();
         LanguageInput input = new LanguageInput();
         input.setId("1").setText("This is written in English").setCountryHint("US");
         LanguageInput input2 = new LanguageInput();
         input2.setId("2").setText("Este es un document escrito en Español.").setCountryHint("es");
-        documents.add(input);
-        documents.add(input2);
-        LanguageBatchInput batchInput = new LanguageBatchInput();
-        batchInput.setDocuments(documents);
+        document.add(input);
+        document.add(input2);
 
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStats(true).setModelVersion("1.0");
+        DocumentResultCollection<DetectedLanguage> detectedResult = client.detectLanguages(document, requestOptions);
+        // Document level statistics
+        final String modelVersion = detectedResult.getModelVersion();
+        System.out.println(String.format("Model version: %s", modelVersion));
+
+        final DocumentBatchStatistics documentBatchStatistics = detectedResult.getStatistics();
+        System.out.println(String.format("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
+            documentBatchStatistics.getDocumentsCount(),
+            documentBatchStatistics.getErroneousDocumentsCount(),
+            documentBatchStatistics.getTransactionsCount(),
+            documentBatchStatistics.getValidDocumentsCount()));
 
         // Detecting language from a batch of documents
-        LanguageResult detectedResult = client.detectLanguagesWithResponse(batchInput, false, Context.NONE).getValue();
-        List<DocumentLanguage> documentLanguages = detectedResult.getDocuments();
-        for (DocumentLanguage documentLanguage : documentLanguages) {
-            List<DetectedLanguage> detectedLanguages = documentLanguage.getDetectedLanguages();
-            for (DetectedLanguage detectedLanguage : detectedLanguages) {
+        List<DetectedLanguage> documentLanguages = detectedResult.getItems();
+        for (DetectedLanguage detectedLanguage : documentLanguages) {
                 System.out.println(String.format("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
                     detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));
-            }
         }
     }
 
