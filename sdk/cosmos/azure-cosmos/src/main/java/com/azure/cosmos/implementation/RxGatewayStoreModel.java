@@ -280,7 +280,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                    content);
                                if (request.requestContext.cosmosResponseDiagnostics != null &&
                                    request.getResourceType().equals(ResourceType.Document)) {
-                                   BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, uri, request);
+                                   BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, request, rsp, null);
                                    DirectBridgeInternal.setCosmosResponseDiagnostics(rsp, request.requestContext.cosmosResponseDiagnostics);
                                }
                                return Flux.just(rsp);
@@ -310,7 +310,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
                        if (request.requestContext.cosmosResponseDiagnostics != null &&
                            request.getResourceType().equals(ResourceType.Document)) {
-                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, uri, request);
+                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, request, null, (CosmosClientException)exception);
                            BridgeInternal.setCosmosResponseDiagnostics((CosmosClientException)exception, request.requestContext.cosmosResponseDiagnostics);
                        }
 

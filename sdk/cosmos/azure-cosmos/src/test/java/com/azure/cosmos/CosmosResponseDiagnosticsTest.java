@@ -59,8 +59,8 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             CosmosItemResponse createResponse = cosmosContainer.createItem(cosmosItemProperties);
             String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
             assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.GATEWAY);
-            assertThat(diagnostics).contains("Gateway request URI :");
-            assertThat(diagnostics).contains("Operation Type :" + OperationType.Create);
+            assertThat(diagnostics).contains("Gateway statistics");
+            assertThat(diagnostics).contains("Operation Type : " + OperationType.Create);
             assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
         } catch (CosmosClientException e) {
             fail(e.getMessage());
@@ -81,8 +81,9 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             String diagnostics = exception.getCosmosResponseDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.GATEWAY);
-            assertThat(diagnostics).contains("Gateway request URI :");
-            assertThat(diagnostics).contains("Operation Type :" + OperationType.Read);
+            assertThat(diagnostics).contains("Gateway statistics");
+            assertThat(diagnostics).contains("Status Code : 404");
+            assertThat(diagnostics).contains("Operation Type : " + OperationType.Read);
             assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
             System.out.println(diagnostics);
         }
@@ -136,14 +137,12 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             CosmosItemResponse createResponse = this.cosmosContainer.createItem(cosmosItemProperties);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             cosmosItemRequestOptions.setPartitionKey(new PartitionKey("wrongPartitionKey"));
-            CosmosItemResponse readResponse = this.cosmosContainer.getItem(createResponse.getItem().getId(), null).read(cosmosItemRequestOptions);
+            CosmosItemResponse readResponse = cosmosContainer.getItem(createResponse.getItem().getId(), null).read(cosmosItemRequestOptions);
             fail("request should fail as partition key is wrong");
         } catch (CosmosClientException exception) {
             String diagnostics = exception.getCosmosResponseDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
-            assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.GATEWAY);
-            assertThat(diagnostics).contains("Gateway request URI :");
-            assertThat(diagnostics).contains("Operation Type :" + OperationType.Read);
+            assertThat(diagnostics).contains("Connection Mode : " + ConnectionMode.DIRECT);
             assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
         }
     }
