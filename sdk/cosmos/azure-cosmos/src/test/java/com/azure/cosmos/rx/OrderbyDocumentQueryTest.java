@@ -407,7 +407,9 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         TimeUnit.SECONDS.sleep(10);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    // TODO (DANOBLE) OrderbyDocumentQueryTest initialization intermittently times out in CI environments
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6386
+    @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_OrderbyDocumentQueryTest() throws Exception {
         client = clientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
