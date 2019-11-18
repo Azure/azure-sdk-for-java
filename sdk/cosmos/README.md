@@ -1,7 +1,7 @@
-﻿# Java SDK for SQL API of Azure Cosmos DB
+# Java SDK for SQL API of Azure Cosmos DB
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmos.svg)](https://search.maven.org/artifact/com.microsoft.azure/azure-cosmos)
-[![Known Vulnerabilities](https://snyk.io/test/github/Azure/azure-cosmosdb-java/badge.svg?targetFile=sdk%2Fpom.xml)](https://snyk.io/test/github/Azure/azure-cosmosdb-java?targetFile=sdk%2Fpom.xml)
+[![Known Vulnerabilities](https://snyk.io/test/github/Azure/azure-sdk-for-java/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/Azure/azure-sdk-for-java/badge.svg?targetFile=pom.xml)
 
 <!--[![Coverage Status](https://img.shields.io/codecov/c/github/Azure/azure-cosmos-java.svg)](https://codecov.io/gh/Azure/azure-cosmosdb-java)
 ![](https://img.shields.io/github/issues/azure/azure-cosmosdb-java.svg)
@@ -9,17 +9,62 @@
 
 <!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Consuming the official Microsoft Azure Cosmos DB Java SDK](#consuming-the-official-microsoft-azure-cosmos-db-java-sdk)
-- [Prerequisites](#prerequisites)
-- [API Documentation](#api-documentation)
-- [Usage Code Sample](#usage-code-sample)
-- [Guide for Prod](#guide-for-prod)
+- [Consuming the official Microsoft Azure Cosmos DB Java SDK](#Consuming the official Microsoft Azure Cosmos DB Java SDK)
+- [Prerequisites](#Prerequisites)
+- [Usage Code Sample](#Example)
+- [Guide for Prod](#Guide for Production)
 - [FAQ](#faq)
-- [Release changes](#release-changes)
-- [Contribution and Feedback](#contribution-and-feedback)
+- [Release changes](#Release changes)
+- [Contribution and Feedback](#Contribution and feedback)
 - [License](#license)
 
 <!-- /TOC -->
+
+## Consuming the official Microsoft Azure Cosmos DB Java SDK
+
+This project provides a SDK library in Java for interacting with [SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query) of [Azure Cosmos DB
+Database Service](https://azure.microsoft.com/en-us/services/cosmos-db/). This project also includes samples, tools, and utilities.
+
+Jar dependency binary information for maven and gradle can be found here at [maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmos).
+
+For example, using maven, you can add the following dependency to your maven pom file:
+
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-cosmos;current})
+```xml
+<dependency>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-cosmos</artifactId>
+  <version>3.4.0</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+Useful links:
+
+- [Sample Get Started APP](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started)
+- [Introduction to Resource Model of Azure Cosmos DB Service](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-resources)
+- [Introduction to SQL API of Azure Cosmos DB Service](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query)
+- [Reactor Core JavaDoc API](https://projectreactor.io/docs/core/release/api/)
+- [SDK FAQ](faq/)
+
+## Prerequisites
+
+- Java Development Kit 8
+- An active Azure account. If you don't have one, you can sign up for a [free account](https://azure.microsoft.com/free/). Alternatively, you can use the [Azure Cosmos DB Emulator](https://azure.microsoft.com/documentation/articles/documentdb-nosql-local-emulator) for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator-export-ssl-certificates)
+- (Optional) SLF4J is a logging facade.
+- (Optional) [SLF4J binding](http://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
+- (Optional) Maven
+
+SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](http://www.slf4j.org/manual.html) for more information.
+
+<!-- TODO - update once JavaDoc is published
+## API Documentation
+
+Javadoc is available [here](https://azure.github.io/azure-cosmosdb-java/2.4.0/com/microsoft/azure/cosmosdb/rx/AsyncDocumentClient.html).
+
+The SDK provides Reactor Core based async APIs. You can read more about Reactor Core and [Flux/Mono types here](https://projectreactor.io/docs/core/release/api/).
+-->
+
 
 ## Example
 
@@ -76,52 +121,7 @@ import java.io.IOException;
 
 We have a get started sample app available [here](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started).
 
-Also We have more examples in form of standalone unit tests in [examples project](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples).
-
-## Consuming the official Microsoft Azure Cosmos DB Java SDK
-
-This project provides a SDK library in Java for interacting with [SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query) of [Azure Cosmos DB
-Database Service](https://azure.microsoft.com/en-us/services/cosmos-db/). This project also includes samples, tools, and utilities.
-
-Jar dependency binary information for maven and gradle can be found here at [maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmos).
-
-For example, using maven, you can add the following dependency to your maven pom file:
-
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-cosmos;current})
-```xml
-<dependency>
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure-cosmos</artifactId>
-  <version>3.3.1</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-Useful links:
-
-- [Sample Get Started APP](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started)
-- [Introduction to Resource Model of Azure Cosmos DB Service](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-resources)
-- [Introduction to SQL API of Azure Cosmos DB Service](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query)
-- [Reactor Core JavaDoc API](https://projectreactor.io/docs/core/release/api/)
-- [SDK FAQ](faq/)
-
-## Prerequisites
-
-- Java Development Kit 8
-- An active Azure account. If you don't have one, you can sign up for a [free account](https://azure.microsoft.com/free/). Alternatively, you can use the [Azure Cosmos DB Emulator](https://azure.microsoft.com/documentation/articles/documentdb-nosql-local-emulator) for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator-export-ssl-certificates)
-- (Optional) SLF4J is a logging facade.
-- (Optional) [SLF4J binding](http://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
-- (Optional) Maven
-
-SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](http://www.slf4j.org/manual.html) for more information.
-
-<!-- TODO - update once JavaDoc is published
-## API Documentation
-
-Javadoc is available [here](https://azure.github.io/azure-cosmosdb-java/2.4.0/com/microsoft/azure/cosmosdb/rx/AsyncDocumentClient.html).
-
-The SDK provides Reactor Core based async APIs. You can read more about Reactor Core and [Flux/Mono types here](https://projectreactor.io/docs/core/release/api/).
--->
+Also We have more examples in form of standalone unit tests in [examples project](microsoft-azure-cosmos-examples/src/main/java/com/azure/data/cosmos).
 
 ## Guide for Production
 
@@ -239,11 +239,11 @@ We have a frequently asked questions which is maintained [here](faq/).
 
 Release changelog is available [here](changelog/).
 
-## Contribution and Feedback
+## Contribution and feedback
 
 This is an open source project and we welcome contributions. If you would like to become an active contributor to this project please follow the instructions provided in [Azure Projects Contribution Guidelines](http://azure.github.io/guidelines/). Instructions on how to fetch and build the code can be found in [dev.md](./dev.md). Our PRs have CI that will run after a contributor has reviewed your code. You can run those same tests locally via the instructions in [dev.md](./dev.md). 
 
-If you encounter any bugs with the SDK please file an [issue](https://github.com/Azure/azure-cosmosdb-java/issues) in the Issues section of the project.
+If you encounter any bugs with the SDK please file an [issue](https://github.com/Azure/azure-sdk-for-java/issues) in the Issues section of the project.
 
 ## License
 
@@ -251,4 +251,4 @@ If you encounter any bugs with the SDK please file an [issue](https://github.com
 
 Copyright (c) 2018 Copyright (c) Microsoft Corporation
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/cosmos/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2FREADME.png)
