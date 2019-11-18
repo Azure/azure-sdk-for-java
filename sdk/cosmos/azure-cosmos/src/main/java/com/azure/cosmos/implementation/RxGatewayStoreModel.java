@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -13,6 +12,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosError;
+import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
@@ -138,6 +138,12 @@ class RxGatewayStoreModel implements RxStoreModel {
     public Flux<RxDocumentServiceResponse> performRequest(RxDocumentServiceRequest request, HttpMethod method) {
 
         try {
+
+            if (request.getResourceType().equals(ResourceType.Document) &&
+                request.requestContext.cosmosResponseDiagnostics == null) {
+                request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
+            }
+
             URI uri = getUri(request);
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
@@ -159,7 +165,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
 
-            return toDocumentServiceResponse(httpResponseMono, request);
+            return toDocumentServiceResponse(httpResponseMono, request, uri);
 
         } catch (Exception e) {
             return Flux.error(e);
@@ -239,7 +245,8 @@ class RxGatewayStoreModel implements RxStoreModel {
      * @return {@link Flux}
      */
     private Flux<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponseMono,
-                                                                            RxDocumentServiceRequest request) {
+                                                                      RxDocumentServiceRequest request,
+                                                                      URI uri) {
 
         return httpResponseMono.flatMap(httpResponse ->  {
 
@@ -271,6 +278,11 @@ class RxGatewayStoreModel implements RxStoreModel {
                                StoreResponse rsp = new StoreResponse(httpResponseStatus,
                                    HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()),
                                    content);
+                               if (request.requestContext.cosmosResponseDiagnostics != null &&
+                                   request.getResourceType().equals(ResourceType.Document)) {
+                                   BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, uri, request);
+                                   DirectBridgeInternal.setCosmosResponseDiagnostics(rsp, request.requestContext.cosmosResponseDiagnostics);
+                               }
                                return Flux.just(rsp);
                            } catch (Exception e) {
                                return Flux.error(e);
@@ -294,6 +306,12 @@ class RxGatewayStoreModel implements RxStoreModel {
                            CosmosClientException dce = BridgeInternal.createCosmosClientException(0, exception);
                            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
                            return Mono.error(dce);
+                       }
+
+                       if (request.requestContext.cosmosResponseDiagnostics != null &&
+                           request.getResourceType().equals(ResourceType.Document)) {
+                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, uri, request);
+                           BridgeInternal.setCosmosResponseDiagnostics((CosmosClientException)exception, request.requestContext.cosmosResponseDiagnostics);
                        }
 
                        return Mono.error(exception);

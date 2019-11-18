@@ -392,8 +392,14 @@ public class BridgeInternal {
     }
 
     public static void recordResponse(CosmosResponseDiagnostics cosmosResponseDiagnostics,
-                                      RxDocumentServiceRequest request, StoreResult storeResult) {
+                                           RxDocumentServiceRequest request, StoreResult storeResult) {
         cosmosResponseDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResult);
+    }
+
+    public static void recordGatewayResponse(CosmosResponseDiagnostics cosmosResponseDiagnostics,
+                                             URI uri,
+                                             RxDocumentServiceRequest rxDocumentServiceRequest) {
+        cosmosResponseDiagnostics.clientSideRequestStatistics().recordGatewayResponse(uri, rxDocumentServiceRequest);
     }
 
     public static String recordAddressResolutionStart(CosmosResponseDiagnostics cosmosResponseDiagnostics,
