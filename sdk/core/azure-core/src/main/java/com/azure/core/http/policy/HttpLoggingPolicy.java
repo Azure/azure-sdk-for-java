@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +34,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final ObjectMapper PRETTY_PRINTER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private final HttpLogDetailLevel logDetailLevel;
     private final Set<String> allowedHttpHeaderNames;
+    private final Pattern allowedHeaderPattern;
     private final Set<String> allowedQueryParamNames;
     private final boolean prettyPrintJSON;
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
@@ -65,9 +67,28 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .stream()
                 .map(String::toLowerCase)
                 .collect(Collectors.toSet());
+
+            Set<String> headerPatterns = httpLogOptions.getAllowedHeaderPatterns();
+            if (CoreUtils.isNullOrEmpty(headerPatterns)) {
+                this.allowedHeaderPattern = null;
+            } else {
+                StringBuilder patternBuilder = new StringBuilder();
+                for (String headerPattern : headerPatterns) {
+                    if (patternBuilder.length() > 0) {
+                        patternBuilder.append("|");
+                    }
+
+                    patternBuilder.append("(?:")
+                        .append(headerPattern)
+                        .append(")");
+                }
+
+                this.allowedHeaderPattern = Pattern.compile(patternBuilder.toString(), Pattern.CASE_INSENSITIVE);
+            }
         } else {
             this.logDetailLevel = HttpLogDetailLevel.NONE;
             this.allowedHttpHeaderNames = Collections.emptySet();
+            this.allowedHeaderPattern = null;
             this.allowedQueryParamNames = Collections.emptySet();
         }
 
@@ -152,37 +173,42 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         for (HttpHeader header : requestResponseHeaders) {
             String headerName = header.getName();
             sb.append(headerName).append(":");
-            if (allowedHttpHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))) {
+            if (allowedHttpHeaderNames.contains(headerName.toLowerCase(Locale.ROOT)) ||
+                (allowedHeaderPattern != null && allowedHeaderPattern.matcher(headerName).find())) {
                 sb.append(header.getValue());
             } else {
                 sb.append(REDACTED_PLACEHOLDER);
             }
             sb.append(System.lineSeparator());
         }
+
         logger.info(sb.toString());
     }
 
     private void formatAllowableQueryParams(String queryString, ClientLogger logger) {
-        if (queryString != null) {
-            StringBuilder sb = new StringBuilder();
-            String[] queryParams = queryString.split("&");
-            for (String queryParam : queryParams) {
-                String[] queryPair = queryParam.split("=", 2);
-                if (queryPair.length == 2) {
-                    String queryName = queryPair[0];
-                    if (allowedQueryParamNames.contains(queryName.toLowerCase(Locale.ROOT))) {
-                        sb.append(queryParam);
-                    } else {
-                        sb.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
-                    }
-                } else {
+        if (CoreUtils.isNullOrEmpty(queryString)) {
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        String[] queryParams = queryString.split("&");
+        for (String queryParam : queryParams) {
+            String[] queryPair = queryParam.split("=", 2);
+            if (queryPair.length == 2) {
+                String queryName = queryPair[0];
+                if (allowedQueryParamNames.contains(queryName.toLowerCase(Locale.ROOT))) {
                     sb.append(queryParam);
+                } else {
+                    sb.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
                 }
-                sb.append("&");
+            } else {
+                sb.append(queryParam);
             }
-            if (sb.length() > 0) {
-                logger.info(sb.substring(0, sb.length() - 1));
-            }
+            sb.append("&");
+        }
+
+        if (sb.length() > 0) {
+            logger.info(sb.substring(0, sb.length() - 1));
         }
     }
 

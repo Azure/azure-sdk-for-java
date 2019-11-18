@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * The log configurations for HTTP messages.
@@ -15,6 +17,7 @@ import java.util.Set;
 public class HttpLogOptions {
     private HttpLogDetailLevel logLevel;
     private Set<String> allowedHeaderNames;
+    private Set<String> allowedHeaderPatterns;
     private Set<String> allowedQueryParamNames;
     private static final List<String> DEFAULT_HEADERS_WHITELIST = Arrays.asList(
         "x-ms-client-request-id",
@@ -39,7 +42,7 @@ public class HttpLogOptions {
         "Server",
         "Transfer-Encoding",
         "User-Agent"
-        );
+    );
 
     /**
      * Creates a new instance that does not log any information about HTTP requests or responses.
@@ -47,6 +50,7 @@ public class HttpLogOptions {
     public HttpLogOptions() {
         logLevel = HttpLogDetailLevel.NONE;
         allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_WHITELIST);
+        allowedHeaderPatterns = new HashSet<>();
         allowedQueryParamNames = new HashSet<>();
     }
 
@@ -103,9 +107,6 @@ public class HttpLogOptions {
     /**
      * Sets the given whitelisted header to the default header set that should be logged.
      *
-     * <p>The allowed headers whitelist allows headers to be match via a wildcard, for example {@code x-ms-meta-*} will
-     * match all headers that begin with {@code x-ms-meta-}.</p>
-     *
      * @param allowedHeaderName The whitelisted header name from the user.
      * @return The updated HttpLogOptions object.
      * @throws NullPointerException If {@code allowedHeaderName} is {@code null}.
@@ -113,6 +114,48 @@ public class HttpLogOptions {
     public HttpLogOptions addAllowedHeaderName(final String allowedHeaderName) {
         Objects.requireNonNull(allowedHeaderName);
         this.allowedHeaderNames.add(allowedHeaderName);
+        return this;
+    }
+
+    /**
+     * Gets the header patterns that are used to match header names to determine if they should be logged.
+     *
+     * @return The list of header patterns.
+     */
+    public Set<String> getAllowedHeaderPatterns() {
+        return allowedHeaderPatterns;
+    }
+
+    /**
+     * Sets the given header patterns that are used to match header names to determine if they should be logged.
+     *
+     * <p>This method sets the header patterns that are used in all HTTP requests and responses, overwriting any
+     * previously configured patterns, including the default set. Additionally, users can use {@link
+     * #addAllowedHeaderPattern(String)} or {@link #getAllowedHeaderPatterns()} to add or remove patterns to the
+     * existing set of allowed patterns.</p>
+     *
+     * @param allowedHeaderPatterns The list of header patterns.
+     * @return The updated HttpLogOptions object.
+     */
+    public HttpLogOptions setAllowedHeaderPatterns(final Set<String> allowedHeaderPatterns) {
+        this.allowedHeaderPatterns = (allowedHeaderPatterns == null) ? new HashSet<>() : allowedHeaderPatterns;
+        return this;
+    }
+
+    /**
+     * Adds the given pattern to the header patterns set that determine if a header should be logged.
+     *
+     * <p>The pattern allows headers to be match via a wildcard, for example {@code x-ms-meta-*} will match all headers
+     * that begin with {@code x-ms-meta-}.</p>
+     *
+     * @param allowedHeaderPattern The header pattern.
+     * @return The updated HttpLogOptions object.
+     * @throws NullPointerException If {@code allowedHeaderPattern} is {@code null}.
+     * @throws PatternSyntaxException If {@code allowedHeaderPattern} is an invalid pattern.
+     */
+    public HttpLogOptions addAllowedHeaderPattern(final String allowedHeaderPattern) {
+        Pattern.compile(allowedHeaderPattern);
+        this.allowedHeaderPatterns.add(Objects.requireNonNull(allowedHeaderPattern));
         return this;
     }
 

@@ -265,7 +265,8 @@ public class HttpLoggingPolicyTests {
 
         HttpPipeline testPipeline = createPipeline(new HttpLogOptions()
                 .setLogLevel(HttpLogDetailLevel.HEADERS)
-                .addAllowedHeaderName(wildCardHeaderBase + "*"),
+                .addAllowedHeaderPattern(wildCardHeaderBase + "*")
+                .addAllowedHeaderPattern("anotherPattern+"),
             httpResponse, false);
 
         StepVerifier.create(testPipeline.send(httpRequest, context))
@@ -283,7 +284,7 @@ public class HttpLoggingPolicyTests {
      * Tests that when the request or response body is empty or considered large they don't get logger.
      */
     @ParameterizedTest
-    @ValueSource(ints = { 0, 16 * 1024 + 1,  32 * 1024})
+    @ValueSource(ints = {0, 16 * 1024 + 1, 32 * 1024})
     public void bodyDoesNotGetLogged(int bodySize) {
         HttpRequest httpRequest = new HttpRequest(httpMethod, url, requestHeaders
             .put("Content-Length", Integer.toString(bodySize)), requestBody);
