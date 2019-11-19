@@ -393,7 +393,7 @@ public class BlobClientBase {
      * @param range {@link BlobRange}
      * @param options {@link DownloadRetryOptions}
      * @param requestConditions {@link BlobRequestConditions}
-     * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
@@ -401,11 +401,11 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null
      */
     public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
-        DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean rangeGetContentMD5,
+        DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
-            .downloadWithResponse(range, options, requestConditions, rangeGetContentMD5, context)
+            .downloadWithResponse(range, options, requestConditions, getRangeContentMd5, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));

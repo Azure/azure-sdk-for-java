@@ -25,6 +25,8 @@ import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
 import com.azure.storage.file.datalake.models.PathProperties
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Shared
@@ -293,13 +295,24 @@ class APISpec extends Specification {
             : httpClientBuilder.build()
     }
 
-    static DataLakeLeaseClient createLeaseClient(DataLakePathClient pathClient) {
+    static DataLakeLeaseClient createLeaseClient(DataLakeFileClient pathClient) {
         return createLeaseClient(pathClient, null)
     }
 
-    static DataLakeLeaseClient createLeaseClient(DataLakePathClient pathClient, String leaseId) {
+    static DataLakeLeaseClient createLeaseClient(DataLakeFileClient pathClient, String leaseId) {
         return new DataLakeLeaseClientBuilder()
-            .pathClient(pathClient)
+            .fileClient(pathClient)
+            .leaseId(leaseId)
+            .buildClient()
+    }
+
+    static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient) {
+        return createLeaseClient(pathClient, null)
+    }
+
+    static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder()
+            .directoryClient(pathClient)
             .leaseId(leaseId)
             .buildClient()
     }

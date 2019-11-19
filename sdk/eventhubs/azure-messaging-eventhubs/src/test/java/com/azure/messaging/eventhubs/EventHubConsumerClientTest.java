@@ -11,7 +11,7 @@ import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -105,7 +105,7 @@ public class EventHubConsumerClientTest {
 
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
-            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
         when(connection.createSession(argThat(name -> name.endsWith(PARTITION_ID))))
             .thenReturn(Mono.fromCallable(() -> session));
@@ -213,7 +213,7 @@ public class EventHubConsumerClientTest {
 
         final Map<Integer, PartitionEvent> actual = receive.stream()
             .collect(Collectors.toMap(e -> {
-                final String value = String.valueOf(e.getEventData().getProperties().get(MESSAGE_POSITION_ID));
+                final String value = String.valueOf(e.getData().getProperties().get(MESSAGE_POSITION_ID));
                 return Integer.valueOf(value);
             }, Function.identity()));
 
@@ -381,14 +381,14 @@ public class EventHubConsumerClientTest {
     }
 
     private static Integer getPositionId(PartitionEvent partitionEvent) {
-        EventData event = partitionEvent.getEventData();
+        EventData event = partitionEvent.getData();
         final String value = String.valueOf(event.getProperties().get(MESSAGE_POSITION_ID));
         return Integer.valueOf(value);
     }
 
     private void assertPartition(String partitionId, PartitionEvent event) {
         System.out.println("Event received: " + event.getPartitionContext().getPartitionId());
-        final Object value = event.getEventData().getProperties().get(PARTITION_ID_HEADER);
+        final Object value = event.getData().getProperties().get(PARTITION_ID_HEADER);
         Assertions.assertTrue(value instanceof String);
         Assertions.assertEquals(partitionId, value);
 

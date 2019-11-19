@@ -442,15 +442,13 @@ class ShareAPITests extends APISpec {
             primaryShareClient.createPermissionWithResponse(filePermission, null), 201)
     }
 
-    // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @Ignore
     def "Create and get permission"() {
         given:
         primaryShareClient.create()
         def permissionKey = primaryShareClient.createPermission(filePermission)
 
         when:
-        def permission = primaryShareClient.setPermission(permissionKey)
+        def permission = primaryShareClient.getPermission(permissionKey)
 
         then:
         permission == filePermission

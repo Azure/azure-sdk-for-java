@@ -93,7 +93,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
                 final Disposable subscription = consumer.receive(partitionId).take(numberOfEvents)
                     .subscribe(
-                        event -> logger.info("Event[{}] received. partition: {}", event.getEventData().getSequenceNumber(), partitionId),
+                        event -> logger.info("Event[{}] received. partition: {}", event.getData().getSequenceNumber(), partitionId),
                         error -> Assertions.fail("An error should not have occurred:" + error.toString()),
                         () -> {
                             logger.info("Disposing of consumer now that the receive is complete.");
@@ -262,7 +262,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         subscriptions.add(consumer.receive(secondPartitionId)
             .filter(event -> TestUtils.isMatchingEvent(event, MESSAGE_TRACKING_ID))
             .subscribe(
-                event -> logger.info("C1:\tReceived event sequence: {}", event.getEventData().getSequenceNumber()),
+                event -> logger.info("C1:\tReceived event sequence: {}", event.getData().getSequenceNumber()),
                 ex -> logger.error("C1:\tERROR", ex),
                 () -> {
                     logger.info("C1:\tCompleted.");
@@ -277,7 +277,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         subscriptions.add(consumer2.receive(secondPartitionId)
             .filter(event -> TestUtils.isMatchingEvent(event, MESSAGE_TRACKING_ID))
             .subscribe(
-                event -> logger.info("C3:\tReceived event sequence: {}", event.getEventData().getSequenceNumber()),
+                event -> logger.info("C3:\tReceived event sequence: {}", event.getData().getSequenceNumber()),
                 ex -> logger.error("C3:\tERROR", ex),
                 () -> logger.info("C3:\tCompleted.")));
 
@@ -436,7 +436,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         // Act & Assert
         try {
             StepVerifier.create(consumer.receive()
-                .filter(x -> TestUtils.isMatchingEvent(x.getEventData(), MESSAGE_TRACKING_ID))
+                .filter(x -> TestUtils.isMatchingEvent(x.getData(), MESSAGE_TRACKING_ID))
                 .take(expectedNumber))
                 .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions, expectedPartitions))
                 .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions, expectedPartitions))
@@ -459,7 +459,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         final PartitionContext context = event.getPartitionContext();
         Assertions.assertEquals(eventHubName, context.getEventHubName());
 
-        final EventData eventData = event.getEventData();
+        final EventData eventData = event.getData();
         final Integer partitionId = Integer.valueOf(context.getPartitionId());
 
         Assertions.assertTrue(eventData.getProperties().containsKey(PARTITION_ID_HEADER));

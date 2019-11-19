@@ -427,8 +427,8 @@ public class PartitionBasedLoadBalancerTest {
                         "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
                         partitionEvent.getPartitionContext().getEventHubName(), partitionEvent.getPartitionContext().getConsumerGroup(),
                         partitionEvent.getPartitionContext().getPartitionId(),
-                        partitionEvent.getEventData().getSequenceNumber());
-                    return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
+                        partitionEvent.getData().getSequenceNumber());
+                    return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData());
                 }
             }, EventPosition.earliest(), eventHubClientBuilder, tracerProvider);
         return new PartitionBasedLoadBalancer(eventProcessorStore, eventHubAsyncClient, fqNamespace,

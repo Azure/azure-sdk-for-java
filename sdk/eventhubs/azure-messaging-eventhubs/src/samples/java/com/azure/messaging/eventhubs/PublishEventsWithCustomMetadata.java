@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.BatchOptions;
-import java.util.concurrent.atomic.AtomicReference;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -67,7 +67,7 @@ public class PublishEventsWithCustomMetadata {
         String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
         // Create a batch to send the events.
-        final BatchOptions options = new BatchOptions()
+        final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionId(firstPartition)
             .setMaximumSizeInBytes(256);
         final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(

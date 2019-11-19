@@ -147,7 +147,7 @@ Response<Void> deleteSnapshotResponse =
         
 // Delete a blob that has a lease.
 Response<Void> deleteWithLeaseResponse =
-    blobBatch.deleteBlob(blobUrlWithLease, DeleteSnapshotsOptionType.INCLUDE, new BlobAccessConditions()
+    blobBatch.deleteBlob(blobUrlWithLease, DeleteSnapshotsOptionType.INCLUDE, new BlobRequestConditions()
         .setLeaseId("leaseId"));
 
 blobBatchClient.submitBatch(blobBatch);

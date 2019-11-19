@@ -3,6 +3,9 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -13,9 +16,13 @@ import java.util.Set;
  * The log configurations for HTTP messages.
  */
 public class HttpLogOptions {
+    private String applicationId;
     private HttpLogDetailLevel logLevel;
     private Set<String> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
+    private final ClientLogger logger = new ClientLogger(HttpLogOptions.class);
+
+    private static final int MAX_APPLICATION_ID_LENGTH = 24;
     private static final List<String> DEFAULT_HEADERS_WHITELIST = Arrays.asList(
         "x-ms-client-request-id",
         "x-ms-return-client-request-id",
@@ -39,7 +46,7 @@ public class HttpLogOptions {
         "Server",
         "Transfer-Encoding",
         "User-Agent"
-        );
+    );
 
     /**
      * Creates a new instance that does not log any information about HTTP requests or responses.
@@ -48,6 +55,7 @@ public class HttpLogOptions {
         logLevel = HttpLogDetailLevel.NONE;
         allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_WHITELIST);
         allowedQueryParamNames = new HashSet<>();
+        applicationId = null;
     }
 
     /**
@@ -142,6 +150,37 @@ public class HttpLogOptions {
      */
     public HttpLogOptions addAllowedQueryParamName(final String allowedQueryParamName) {
         this.allowedQueryParamNames.add(allowedQueryParamName);
+        return this;
+    }
+
+    /**
+     * Gets the application specific id.
+     *
+     * @return The application specific id.
+     */
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    /**
+     * Sets the custom application specific id supplied by the user of the client library.
+     *
+     * @param applicationId The user specified application id.
+     * @return The updated HttpLogOptions object.
+     */
+    public HttpLogOptions setApplicationId(final String applicationId) {
+        if (!CoreUtils.isNullOrEmpty(applicationId)) {
+            if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("'applicationId' length cannot be greater than "
+                        + MAX_APPLICATION_ID_LENGTH));
+            } else if (applicationId.contains(" ")) {
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("'applicationId' must not contain a space."));
+            } else {
+                this.applicationId = applicationId;
+            }
+        }
         return this;
     }
 }

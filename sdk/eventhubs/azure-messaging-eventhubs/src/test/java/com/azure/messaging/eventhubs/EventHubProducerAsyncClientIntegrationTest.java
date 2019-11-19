@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -110,7 +110,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             new EventData("Event 2".getBytes(UTF_8)),
             new EventData("Event 3".getBytes(UTF_8)));
 
-        final BatchOptions options = new BatchOptions().setPartitionKey("my-partition-key");
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("my-partition-key");
         final Mono<EventDataBatch> createBatch = producer.createBatch(options)
             .map(batch -> {
                 Assertions.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
@@ -157,7 +157,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
         Assertions.assertNotNull(partitionIds);
 
         for (String partitionId : partitionIds) {
-            final EventDataBatch batch = producer.createBatch(new BatchOptions().setPartitionId(partitionId)).block(TIMEOUT);
+            final EventDataBatch batch = producer.createBatch(new CreateBatchOptions().setPartitionId(partitionId)).block(TIMEOUT);
             Assertions.assertNotNull(batch);
 
             Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid", Integer.parseInt(partitionId))));

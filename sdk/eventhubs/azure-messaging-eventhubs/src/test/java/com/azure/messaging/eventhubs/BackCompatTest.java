@@ -98,7 +98,7 @@ public class BackCompatTest extends IntegrationTestBase {
         // Act & Assert
         StepVerifier.create(consumer.receive(PARTITION_ID).filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
             .then(() -> producer.send(eventData, sendOptions).block(TIMEOUT))
-            .assertNext(event -> validateAmqpProperties(applicationProperties, event.getEventData()))
+            .assertNext(event -> validateAmqpProperties(applicationProperties, event.getData()))
             .verifyComplete();
     }
 

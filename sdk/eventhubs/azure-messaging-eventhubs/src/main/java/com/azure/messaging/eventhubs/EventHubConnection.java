@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Class that manages the connection to Azure Event Hubs.
  */
-public class EventHubConnection implements Closeable {
+class EventHubConnection implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConnection.class);
     private final AtomicBoolean hasConnection = new AtomicBoolean();
     private final ConnectionOptions connectionOptions;
@@ -43,11 +43,21 @@ public class EventHubConnection implements Closeable {
             .cache();
     }
 
-    String getFullyQualifiedNamespace() {
+    /**
+     * Gets the fully qualified namespace for the connection.
+     *
+     * @return The fully qualified namespace this is connection.
+     */
+    public String getFullyQualifiedNamespace() {
         return connectionOptions.getFullyQualifiedNamespace();
     }
 
-    String getEventHubName() {
+    /**
+     * Gets the name of the Event Hub.
+     *
+     * @return The name of the Event Hub.
+     */
+    public String getEventHubName() {
         return connectionOptions.getEntityPath();
     }
 

@@ -29,7 +29,7 @@ public class LogPartitionProcessor extends PartitionProcessor {
             partitionEvent.getPartitionContext().getEventHubName(),
             partitionEvent.getPartitionContext().getConsumerGroup(),
             partitionEvent.getPartitionContext().getPartitionId(),
-            partitionEvent.getEventData().getSequenceNumber());
-        return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
+            partitionEvent.getData().getSequenceNumber());
+        return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData());
     }
 }

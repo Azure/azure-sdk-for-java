@@ -74,7 +74,7 @@ public class BasicExample {
          * Create a file and sub directory in the directory
          */
         DataLakeFileClient fileUnderDirectory = directoryClient.createFile("myFileName");
-        DataLakeDirectoryClient subDirectory = directoryClient.createSubDirectory("mySubDirectory");
+        DataLakeDirectoryClient subDirectory = directoryClient.createSubdirectory("mySubDirectory");
 
         System.out.println("File under myDirectory is " + fileUnderDirectory.getFileName());
         System.out.println("Directory under myDirectory is " + subDirectory.getDirectoryName());

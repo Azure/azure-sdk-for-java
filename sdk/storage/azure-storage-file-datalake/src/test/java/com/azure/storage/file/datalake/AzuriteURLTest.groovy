@@ -7,6 +7,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
 import spock.lang.Unroll
 
 class AzuriteURLTest extends APISpec {
@@ -173,7 +174,7 @@ class AzuriteURLTest extends APISpec {
 
         when:
         def pathLeaseClient = new DataLakeLeaseClientBuilder()
-            .pathClient(pathClient)
+            .fileClient(pathClient)
             .buildClient()
 
         then:
