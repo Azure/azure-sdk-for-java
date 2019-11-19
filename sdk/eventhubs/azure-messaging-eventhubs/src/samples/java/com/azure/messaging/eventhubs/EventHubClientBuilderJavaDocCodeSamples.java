@@ -3,7 +3,13 @@
 
 package com.azure.messaging.eventhubs;
 
+/**
+ * Code snippets for {@link EventHubClientBuilder}.
+ */
 public class EventHubClientBuilderJavaDocCodeSamples {
+    /**
+     * Code snippet for {@link EventHubClientBuilder#shareConnection()}.
+     */
     public void sharingConnection() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation
         // Toggling `shareConnection` instructs the builder to use the same underlying connection
