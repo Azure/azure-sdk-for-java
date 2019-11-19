@@ -38,6 +38,17 @@ public class ExponentialBackoff implements RetryStrategy {
     public ExponentialBackoff() {
         this(DEFAULT_MAX_RETRIES, DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY, X_MS_RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS);
     }
+    
+    /**
+     * Creates an instance of {@link ExponentialBackoff}.
+     *
+     * @param maxRetries The max retry attempts that can be made.
+     * @param baseDelay The base delay duration for retry.
+     * @param maxDelay The max delay duration for retry.
+     */
+    public ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay) {
+        this(maxRetries, baseDelay, maxDelay, X_MS_RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS);
+    }
 
     /**
      * Creates an instance of {@link ExponentialBackoff}.
@@ -73,17 +84,6 @@ public class ExponentialBackoff implements RetryStrategy {
         this.maxDelay = maxDelay;
         this.retryAfterHeader = retryAfterHeader;
         this.retryAfterTimeUnit = retryAfterTimeUnit;
-    }
-
-    /**
-     * Creates an instance of {@link ExponentialBackoff}.
-     *
-     * @param maxRetries The max retry attempts that can be made.
-     * @param baseDelay The base delay duration for retry.
-     * @param maxDelay The max delay duration for retry.
-     */
-    public ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay) {
-        this(maxRetries, baseDelay, maxDelay, X_MS_RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS);
     }
 
     @Override
