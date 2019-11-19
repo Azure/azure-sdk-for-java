@@ -24,6 +24,7 @@ import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAc
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -568,21 +569,22 @@ public class DataLakePathAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
      *
-     * @param returnUpn When true, user identity values returned as User Principal Names. When false, user identity
-     * values returned as Azure Active Directory Object IDs. Default value is false.
+     * @param userPrincipalNameReturned When true, user identity values returned as User Principal Names. When false,
+     * user identity values returned as Azure Active Directory Object IDs. Default value is false.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource access control.
      */
-    public Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean returnUpn,
+    public Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean userPrincipalNameReturned,
         DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> getAccessControlWithResponse(returnUpn, requestConditions, context));
+            return withContext(context -> getAccessControlWithResponse(userPrincipalNameReturned, requestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean returnUpn,
+    Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean userPrincipalNameReturned,
         DataLakeRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
 
@@ -594,7 +596,7 @@ public class DataLakePathAsyncClient {
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         return this.dataLakeStorage.paths().getPropertiesWithRestResponseAsync(
-            PathGetPropertiesAction.GET_ACCESS_CONTROL, returnUpn, null, null, lac, mac, context)
+            PathGetPropertiesAction.GET_ACCESS_CONTROL, userPrincipalNameReturned, null, null, lac, mac, context)
             .map(response -> new SimpleResponse<>(response, new PathAccessControl(
                 PathAccessControlEntry.parseList(response.getDeserializedHeaders().getAcl()),
                 PathPermissions.parseSymbolic(response.getDeserializedHeaders().getPermissions()),
@@ -606,16 +608,17 @@ public class DataLakePathAsyncClient {
      *
      * @param destinationPath The path of the destination relative to the file system name
      * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
-     * @param destRequestConditions {@link DataLakeRequestConditions} against the destination.
+     * @param destinationRequestConditions {@link DataLakeRequestConditions} against the destination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakePathAsyncClient} used to interact with the path created.
      */
     Mono<Response<DataLakePathAsyncClient>> renameWithResponse(String destinationPath,
-        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destRequestConditions,
+        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Context context) {
 
-        destRequestConditions = destRequestConditions == null ? new DataLakeRequestConditions() : destRequestConditions;
+        destinationRequestConditions = destinationRequestConditions == null ? new DataLakeRequestConditions()
+            : destinationRequestConditions;
         sourceRequestConditions = sourceRequestConditions == null ? new DataLakeRequestConditions()
             : sourceRequestConditions;
 
@@ -626,12 +629,13 @@ public class DataLakePathAsyncClient {
             .setSourceIfMatch(sourceRequestConditions.getIfMatch())
             .setSourceIfNoneMatch(sourceRequestConditions.getIfNoneMatch());
 
-        LeaseAccessConditions destLac = new LeaseAccessConditions().setLeaseId(destRequestConditions.getLeaseId());
+        LeaseAccessConditions destLac = new LeaseAccessConditions()
+            .setLeaseId(destinationRequestConditions.getLeaseId());
         ModifiedAccessConditions destMac = new ModifiedAccessConditions()
-            .setIfMatch(destRequestConditions.getIfMatch())
-            .setIfNoneMatch(destRequestConditions.getIfNoneMatch())
-            .setIfModifiedSince(destRequestConditions.getIfModifiedSince())
-            .setIfUnmodifiedSince(destRequestConditions.getIfUnmodifiedSince());
+            .setIfMatch(destinationRequestConditions.getIfMatch())
+            .setIfNoneMatch(destinationRequestConditions.getIfNoneMatch())
+            .setIfModifiedSince(destinationRequestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(destinationRequestConditions.getIfUnmodifiedSince());
 
         DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationPath);
 
@@ -669,8 +673,8 @@ public class DataLakePathAsyncClient {
      */
     SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationPath) {
         // Get current Blob URL and replace current path with user provided path
-        String newBlobEndpoint = BlobUrlParts.parse(Transforms.endpointToDesiredEndpoint(getPathUrl(), "blob", "dfs"))
-            .setBlobName(destinationPath).toUrl().toString();
+        String newBlobEndpoint = BlobUrlParts.parse(DataLakeImplUtils.endpointToDesiredEndpoint(getPathUrl(),
+            "blob", "dfs")).setBlobName(destinationPath).toUrl().toString();
 
         // TODO (gapra) : Investigate how to convert from datalake service version to blob service version
         return new SpecializedBlobClientBuilder()

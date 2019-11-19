@@ -83,4 +83,11 @@ public class ReadmeCodeSamples {
         System.out.printf("Set AccessTier on  blob with lease completed with status code %d%n",
             setTierWithLeaseResponse.getStatusCode());
     }
+
+    public void deleteBlobWithLease() {
+        BlobBatch blobBatch = blobBatchClient.getBlobBatch();
+        Response<Void> deleteWithLeaseResponse =
+            blobBatch.deleteBlob(blobUrlWithLease, DeleteSnapshotsOptionType.INCLUDE, new BlobRequestConditions()
+                .setLeaseId("leaseId"));
+    }
 }

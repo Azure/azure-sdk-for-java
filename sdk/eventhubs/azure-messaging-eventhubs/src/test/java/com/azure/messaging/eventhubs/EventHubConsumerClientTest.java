@@ -11,7 +11,7 @@ import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -105,7 +105,7 @@ public class EventHubConsumerClientTest {
 
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
-            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
         when(connection.createSession(argThat(name -> name.endsWith(PARTITION_ID))))
             .thenReturn(Mono.fromCallable(() -> session));

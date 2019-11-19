@@ -163,6 +163,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -431,7 +432,36 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIds) {
         try {
-            return commitBlockListWithResponse(base64BlockIds, null, null, null, null).flatMap(FluxUtil::toMono);
+            return commitBlockList(base64BlockIds, false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Writes a blob by specifying the list of block IDs that are to make up the blob. In order to be written as part of
+     * a blob, a block must have been successfully written to the server in a prior stageBlock operation. You can call
+     * commitBlockList to update a blob by uploading only those blocks that have changed, then committing the new and
+     * existing blocks together. Any blocks not specified in the block list and permanently deleted. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List-boolean}
+     *
+     * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @return A reactive response containing the information of the block blob.
+     */
+    public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIds, boolean overwrite) {
+        try {
+            BlobRequestConditions requestConditions = null;
+            if (!overwrite) {
+                requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+            return commitBlockListWithResponse(base64BlockIds, null, null, null, requestConditions)
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -444,6 +474,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * and existing blocks together. Any blocks not specified in the block list and permanently deleted. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
