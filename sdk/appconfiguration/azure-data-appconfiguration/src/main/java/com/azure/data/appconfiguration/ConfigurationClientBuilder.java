@@ -79,6 +79,7 @@ public final class ConfigurationClientBuilder {
     private static final String APP_CONFIG_PROPERTIES = "azure-appconfig.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
+    private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
 
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(new ExponentialBackoff() {
         @Override
