@@ -185,7 +185,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
-        return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
+        return getProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
 
     /**

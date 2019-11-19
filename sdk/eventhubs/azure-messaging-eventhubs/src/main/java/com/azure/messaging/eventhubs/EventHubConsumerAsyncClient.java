@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -128,7 +129,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
-        return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
+        return getProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
 
     /**
@@ -156,10 +157,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @param partitionId Identifier of the partition to read events from.
      * @param startingPosition Position within the Event Hub partition to begin consuming events.
      *
-     * @return A stream of events for this partition. If a stream for the events was opened before, the same position
-     *     within that partition is returned. Otherwise, events are read starting from {@code startingPosition}.
+     * @return A stream of events for this partition starting from {@code startingPosition}.
      *
-     * @throws NullPointerException if {@code partitionId}, {@code startingPosition}, {@code receiveOptions} is null.
+     * @throws NullPointerException if {@code partitionId}, or {@code startingPosition} is null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
     public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition) {
@@ -192,15 +192,13 @@ public class EventHubConsumerAsyncClient implements Closeable {
     public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition,
         ReceiveOptions receiveOptions) {
         if (Objects.isNull(partitionId)) {
-            return Flux.error(logger.logExceptionAsError(new NullPointerException("'partitionId' cannot be null.")));
+            return fluxError(logger, new NullPointerException("'partitionId' cannot be null."));
         } else if (partitionId.isEmpty()) {
-            return Flux.error(logger.logExceptionAsError(
-                new IllegalArgumentException("'partitionId' cannot be an empty string.")));
+            return fluxError(logger, new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
         if (Objects.isNull(startingPosition)) {
-            return Flux.error((logger.logExceptionAsError(
-                new NullPointerException("'startingPosition' cannot be null."))));
+            return fluxError(logger, new NullPointerException("'startingPosition' cannot be null."));
         }
 
         final String linkName = StringUtil.getRandomString(partitionId);
@@ -232,11 +230,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     public Flux<PartitionEvent> receive(EventPosition startingPosition, ReceiveOptions receiveOptions) {
         if (Objects.isNull(startingPosition)) {
-            return Flux.error((logger.logExceptionAsError(
-                new NullPointerException("'startingPosition' cannot be null."))));
+            return fluxError(logger, new NullPointerException("'startingPosition' cannot be null."));
         } else if (Objects.isNull(receiveOptions)) {
-            return Flux.error((logger.logExceptionAsError(
-                new NullPointerException("'receiveOptions' cannot be null."))));
+            return fluxError(logger, new NullPointerException("'receiveOptions' cannot be null."));
         }
 
         final String prefix = StringUtil.getRandomString("all");
@@ -279,7 +275,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
             })
             .receive()
             .doFinally(signalType -> {
-                logger.info("{}: Receiving completed. Signal: {}", linkName, signalType);
+                logger.info("{}: Receiving completed. Partition: '{}'. Signal: '{}'", linkName, partitionId,
+                    signalType);
                 final EventHubPartitionAsyncConsumer consumer = openPartitionConsumers.remove(linkName);
 
                 if (consumer != null) {
