@@ -287,15 +287,15 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void deleteCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.begindeleteCertificate#string
-        SyncPoller<DeletedCertificate, Void> deletedCertificatePoller =
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#string
+        SyncPoller<DeletedCertificate, Void> deleteCertificatePoller =
             certificateClient.beginDeleteCertificate("certificateName");
         // Deleted Certificate is accessible as soon as polling beings.
-        PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
+        PollResponse<DeletedCertificate> pollResponse = deleteCertificatePoller.poll();
         System.out.printf("Deleted certitifcate with name %s and recovery id %s", pollResponse.getValue().getName(),
             pollResponse.getValue().getRecoveryId());
-        deletedCertificatePoller.waitForCompletion();
-        // END: com.azure.security.keyvault.certificates.CertificateClient.begindeleteCertificate#string
+        deleteCertificatePoller.waitForCompletion();
+        // END: com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#string
     }
 
     /**

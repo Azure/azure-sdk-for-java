@@ -226,7 +226,7 @@ public class CertificateAsyncClient {
      */
     public PollerFlux<CertificateOperation, KeyVaultCertificate> getCertificateOperation(String name) {
         return new PollerFlux<>(Duration.ofSeconds(1),
-            null,
+            (pollingContext) -> Mono.empty(),
             createPollOperation(name),
             cancelOperation(name),
             fetchResultOperation(name));
@@ -1644,14 +1644,14 @@ public class CertificateAsyncClient {
      * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
      * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
      *
-     * @param importOptions The details of the certificate to import to the key vault
-     * @throws HttpRequestException when the {@code importOptions} are invalid.
+     * @param importCertificateOptions The details of the certificate to import to the key vault
+     * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificate imported certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultCertificate> importCertificate(ImportCertificateOptions importOptions) {
+    public Mono<KeyVaultCertificate> importCertificate(ImportCertificateOptions importCertificateOptions) {
         try {
-            return withContext(context -> importCertificateWithResponse(importOptions, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> importCertificateWithResponse(importCertificateOptions, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1661,28 +1661,28 @@ public class CertificateAsyncClient {
      * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
      * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
      *
-     * @param importOptions The details of the certificate to import to the key vault
-     * @throws HttpRequestException when the {@code importOptions} are invalid.
+     * @param importCertificateOptions The details of the certificate to import to the key vault
+     * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificate imported certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultCertificate>> importCertificateWithResponse(ImportCertificateOptions importOptions) {
+    public Mono<Response<KeyVaultCertificate>> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions) {
         try {
-            return withContext(context -> importCertificateWithResponse(importOptions, context));
+            return withContext(context -> importCertificateWithResponse(importCertificateOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<KeyVaultCertificate>> importCertificateWithResponse(ImportCertificateOptions importOptions, Context context) {
+    Mono<Response<KeyVaultCertificate>> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
         CertificateImportParameters parameters = new CertificateImportParameters()
-            .base64EncodedCertificate(Base64Url.encode(importOptions.getValue()).toString())
-            .certificateAttributes(new CertificateRequestAttributes(importOptions))
-            .certificatePolicy(importOptions.getCertificatePolicy())
-            .password(importOptions.getPassword())
-            .tags(importOptions.getTags());
+            .base64EncodedCertificate(Base64Url.encode(importCertificateOptions.getValue()).toString())
+            .certificateAttributes(new CertificateRequestAttributes(importCertificateOptions))
+            .certificatePolicy(importCertificateOptions.getCertificatePolicy())
+            .password(importCertificateOptions.getPassword())
+            .tags(importCertificateOptions.getTags());
 
-        return service.importCertificate(vaultUrl, importOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.importCertificate(vaultUrl, importCertificateOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context);
     }
 

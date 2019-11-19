@@ -368,14 +368,14 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     public void deleteCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.begindeleteCertificate#string
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#string
         certificateAsyncClient.beginDeleteCertificate("certificateName")
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
                 System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.begindeleteCertificate#string
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#string
     }
 
     /**

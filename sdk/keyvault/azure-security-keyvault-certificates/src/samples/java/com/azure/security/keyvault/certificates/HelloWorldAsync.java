@@ -38,7 +38,7 @@ public class HelloWorldAsync {
         // Let's create a self signed certificate valid for 1 year. if the certificate
         //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
+            .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
             .setReuseKey(true)
             .setKeyType(CertificateKeyType.EC)
             .setKeyCurveName(CertificateKeyCurveName.P_256);

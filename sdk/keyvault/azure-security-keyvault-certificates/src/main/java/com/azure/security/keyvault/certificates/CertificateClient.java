@@ -13,7 +13,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.DeletedCertificate;
+import com.azure.security.keyvault.certificates.models.CertificateContact;
+import com.azure.security.keyvault.certificates.models.CertificateIssuer;
+import com.azure.security.keyvault.certificates.models.IssuerProperties;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
+import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
+import com.azure.security.keyvault.certificates.models.LifeTimeAction;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 
 import java.util.List;
@@ -798,7 +809,7 @@ public class CertificateClient {
      * call {@link CertificateClient#getIssuer(String)} . This will return the {@link CertificateIssuer issuer}
      * with all its properties.</p>.
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.listIssuers}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers}
      *
      * @return A {@link PagedIterable} containing all of the {@link IssuerProperties certificate issuers} in the vault.
      */
@@ -1058,24 +1069,24 @@ public class CertificateClient {
      * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
      * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
      *
-     * @param importOptions The details of the certificate to import to the key vault
-     * @throws HttpRequestException when the {@code importOptions} are invalid.
+     * @param importCertificateOptions The details of the certificate to import to the key vault
+     * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
      * @return the {@link KeyVaultCertificate imported certificate}.
      */
-    public KeyVaultCertificate importCertificate(ImportCertificateOptions importOptions) {
-        return importCertificateWithResponse(importOptions, Context.NONE).getValue();
+    public KeyVaultCertificate importCertificate(ImportCertificateOptions importCertificateOptions) {
+        return importCertificateWithResponse(importCertificateOptions, Context.NONE).getValue();
     }
 
     /**
      * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
      * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
      *
-     * @param importOptions The details of the certificate to import to the key vault
+     * @param importCertificateOptions The details of the certificate to import to the key vault
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws HttpRequestException when the {@code importOptions} are invalid.
+     * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificate imported certificate}.
      */
-    public Response<KeyVaultCertificate> importCertificateWithResponse(ImportCertificateOptions importOptions, Context context) {
-        return client.importCertificateWithResponse(importOptions, context).block();
+    public Response<KeyVaultCertificate> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
+        return client.importCertificateWithResponse(importCertificateOptions, context).block();
     }
 }

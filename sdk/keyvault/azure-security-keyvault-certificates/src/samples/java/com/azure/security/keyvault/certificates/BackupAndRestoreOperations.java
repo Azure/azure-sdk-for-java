@@ -49,7 +49,7 @@ public class BackupAndRestoreOperations {
         // Let's create a self signed certificate valid for 1 year. if the certificate
         //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
+            .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
             .setReuseKey(true)
             .setKeyCurveName(CertificateKeyCurveName.P_256);
         Map<String, String> tags = new HashMap<>();

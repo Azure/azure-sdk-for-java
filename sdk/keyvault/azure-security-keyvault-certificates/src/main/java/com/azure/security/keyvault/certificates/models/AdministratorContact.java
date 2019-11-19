@@ -50,7 +50,7 @@ public final class AdministratorContact {
      * @param firstName the firstName of the admin.
      * @param lastName the last name of the admin.
      * @param email the email of the admin.
-     * @param phone tne contact info of the admin.
+     * @param phone the contact info of the admin.
      */
     public AdministratorContact(String firstName, String lastName, String email, String phone) {
         this.firstName = firstName;

@@ -148,6 +148,19 @@ public final class CertificatePolicy {
         this.subjectAlternativeNames = subjectAlternativeNames;
     }
 
+    /**
+     * Creates certificate policy.
+     * @param issuerName The issuer name to set.
+     * @param subjectName The subject name to set.
+     * @param subjectAlternativeNames The subject alternative names to set.
+     */
+    public CertificatePolicy(String issuerName, String subjectName, SubjectAlternativeNames subjectAlternativeNames) {
+        this.issuerName = issuerName;
+        this.subjectName = subjectName;
+        this.subjectAlternativeNames = subjectAlternativeNames;
+    }
+
+
     CertificatePolicy() {
 
     }

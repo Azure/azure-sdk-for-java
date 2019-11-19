@@ -217,13 +217,13 @@ System.out.printf("Updated Certificate with name %s and enabled status %s", upda
 Delete an existing Certificate by calling `beginDeleteCertificate`.
 
 ```Java
-SyncPoller<DeletedCertificate, Void> deletedCertificatePoller =
+SyncPoller<DeletedCertificate, Void> deleteCertificatePoller =
     certificateClient.beginDeleteCertificate("certificateName");
 // Deleted Certificate is accessible as soon as polling beings.
-PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
+PollResponse<DeletedCertificate> pollResponse = deleteCertificatePoller.poll();
 System.out.printf("Deleted certitifcate with name %s and recovery id %s", pollResponse.getValue().getName(),
     pollResponse.getValue().getRecoveryId());
-deletedCertificatePoller.waitForCompletion();
+deleteCertificatePoller.waitForCompletion();
 ```
 
 ### List Certificates
