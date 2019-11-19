@@ -39,7 +39,7 @@ public final class GeoPoint {
     }
 
     /**
-     * Ensures that the GeoPoint values are valid for the Geography Point type in Search Service.
+     * Ensures that the GeoPoint values are valid for the Geography Point type in Azure Cognitive Search service.
      *
      * @return true if valid, false if invalid
      */

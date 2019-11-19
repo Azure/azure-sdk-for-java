@@ -23,7 +23,7 @@ import java.util.List;
  * <p>
  * The following information must be provided on this builder:
  *     <ul>
- *         <li>the search service endpoint through {@code .endpoint()}
+ *         <li>the Azure Cognitive Search service endpoint through {@code .endpoint()}
  *         <li>the API key through {@code .credential()}</li>
  *     </ul>
  * </p>
@@ -59,9 +59,9 @@ public class SearchServiceClientBuilder {
     }
 
     /**
-     * Sets the search service endpoint
+     * Sets the Azure Cognitive Search service endpoint
      *
-     * @param endpoint the endpoint URL to the search service
+     * @param endpoint the endpoint URL to the Azure Cognitive Search service
      * @return the updated SearchIndexClientBuilder object
      */
     public SearchServiceClientBuilder endpoint(String endpoint) {

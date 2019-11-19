@@ -16,7 +16,7 @@ import java.util.TimeZone;
  */
 public class SerializationUtil {
     /**
-     * Configures an {@link ObjectMapper} with custom behavior needed to work with the Azure Search REST API.
+     * Configures an {@link ObjectMapper} with custom behavior needed to work with the Azure Cognitive Search REST API.
      *
      * @param mapper the mapper to be configured
      */

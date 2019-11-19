@@ -41,21 +41,21 @@ public class AzureSearchResources {
     private DataSource blobDatasource = null;
 
     /**
-     * @return The created Search service name
+     * @return The created Azure Cognitive Search service name
      */
     public String getSearchServiceName() {
         return searchServiceName;
     }
 
     /**
-     * @return The Search service admin key
+     * @return The Azure Cognitive Search service admin key
      */
     public String getSearchAdminKey() {
         return searchAdminKey;
     }
 
     /**
-     * Creates an instance of AzureTokenCredentials to be used in creating a Resource Group and Search service
+     * Creates an instance of AzureTokenCredentials to be used in creating a Resource Group and Azure Cognitive Search service
      * in Azure to be used for tests.
      *
      * @param azureTokenCredentials includes credentials to connect to Azure.
@@ -71,7 +71,7 @@ public class AzureSearchResources {
     }
 
     /**
-     * Creates a Resource Group and Search Service in Azure, and updates their names in class variables
+     * Creates a Resource Group and Azure Cognitive Search Service in Azure, and updates their names in class variables
      * to be retrieved later.
      */
     public void initialize() {
@@ -96,7 +96,7 @@ public class AzureSearchResources {
      */
     public void createService() {
         searchServiceName = SdkContext.randomResourceName(SEARCH_SERVICE_NAME_PREFIX, 24);
-        System.out.println("Creating Search Service: " + searchServiceName);
+        System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
         searchService = azure.searchServices()
             .define(searchServiceName)
             .withRegion(location)
@@ -108,11 +108,11 @@ public class AzureSearchResources {
     }
 
     /**
-     * Deletes the Search service in Azure.
+     * Deletes the Azure Cognitive Search service.
      */
     public void deleteService() {
         if (searchService != null) {
-            System.out.println("Deleting Search Service: " + searchService.name());
+            System.out.println("Deleting Azure Cognitive Search service: " + searchService.name());
             azure.searchServices().deleteById(searchService.id());
         }
     }

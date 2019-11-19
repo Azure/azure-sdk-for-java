@@ -202,7 +202,7 @@ public class SearchServiceClient {
     }
 
     /**
-     * Deletes an Azure Search datasource.
+     * Deletes an Azure Cognitive Search datasource.
      *
      * @param dataSourceName The name of the datasource to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
@@ -291,7 +291,7 @@ public class SearchServiceClient {
     }
 
     /**
-     * Creates a new Azure Search indexer or updates an indexer if it already exists.
+     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
      * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
@@ -301,7 +301,7 @@ public class SearchServiceClient {
     }
 
     /**
-     * Creates a new Azure Search indexer or updates an indexer if it already exists.
+     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
      * @param indexer The definition of the indexer to create or update.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
@@ -317,7 +317,7 @@ public class SearchServiceClient {
     }
 
     /**
-     * Creates a new Azure Search indexer or updates an indexer if it already exists.
+     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
      * @param indexer The definition of the indexer to create or update.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
@@ -342,7 +342,7 @@ public class SearchServiceClient {
     }
 
     /**
-     * Lists all indexers available for an Azure Search service.
+     * Lists all indexers available for an Azure Cognitive Search service.
      *
      * @param select Selects which top-level properties of the indexers to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties.
@@ -355,7 +355,7 @@ public class SearchServiceClient {
     }
 
     /**
-     * Lists all indexers available for an Azure Search service.
+     * Lists all indexers available for an Azure Cognitive Search service.
      *
      * @param select Selects which top-level properties of the indexers to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties.

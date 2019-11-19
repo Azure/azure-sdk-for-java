@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 /**
- * This sample demonstrates how to create an Azure Search data source for SQL Server/Azure SQL,
+ * This sample demonstrates how to create an Azure Cognitive Search data source for SQL Server/Azure SQL,
  * Azure Cosmos DB, Blob Storage and Table Storage.
  * To use it, create the respective databases/storage services and replace their connection strings below.
  */
@@ -26,8 +26,8 @@ public class DataSourceExample {
      * From the Azure portal, get your Azure Cognitive Search service URL and API key,
      * and set the values of these environment variables:
      */
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
-    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ADMIN_KEY");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
+    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
     public static final String TABLE_STORAGE_CONNECTION_STRING = "<Your Table Storage connection string>";
     public static final String COSMOS_DB_CONNECTION_STRING = "<Your Cosmos DB connection string>";
     public static final String BLOB_STORAGE_CONNECTION_STRING = "<Your Blob Storage connection string>";

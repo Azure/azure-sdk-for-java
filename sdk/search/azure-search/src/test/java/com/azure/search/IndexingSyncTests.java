@@ -351,7 +351,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Document actualBook1 = client.getDocument("1");
         Assert.assertEquals(utcTime, actualBook1.get("PublishDate"));
 
-        // Azure Search normalizes to UTC, so we compare instants
+        // Azure Cognitive Search normalizes to UTC, so we compare instants
         Document actualBook2 = client.getDocument("2");
         Assert.assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC), ((OffsetDateTime) actualBook2.get("PublishDate")).withOffsetSameInstant(ZoneOffset.UTC));
     }
@@ -381,7 +381,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Document actualBook1 = client.getDocument("1");
         Assert.assertEquals(books.get(0).publishDate(), convertToType(actualBook1, Book.class).publishDate());
 
-        // Azure Search normalizes to UTC, so we compare instants
+        // Azure Cognitive Search normalizes to UTC, so we compare instants
         Document actualBook2 = client.getDocument("2");
         Assert.assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), convertToType(actualBook2, Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC));
     }

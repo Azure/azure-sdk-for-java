@@ -322,7 +322,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .assertNext(res -> Assert.assertEquals(utcTime, res.get("PublishDate")))
             .verifyComplete();
 
-        // Azure Search normalizes to UTC, so we compare instants
+        // Azure Cognitive Search normalizes to UTC, so we compare instants
         StepVerifier
             .create(actualBook2)
             .assertNext(res -> Assert.assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC), ((OffsetDateTime) res.get("PublishDate")).withOffsetSameInstant(ZoneOffset.UTC)))
@@ -377,7 +377,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .assertNext(res -> Assert.assertEquals(books.get(0).publishDate(), convertToType(res, Book.class).publishDate()))
             .verifyComplete();
 
-        // Azure Search normalizes to UTC, so we compare instants
+        // Azure Cognitive Search normalizes to UTC, so we compare instants
         Mono<Document> actualBook2 = client.getDocument("2");
         StepVerifier
             .create(actualBook2)

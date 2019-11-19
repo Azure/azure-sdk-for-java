@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An {@code IndexBatchException} is thrown whenever Azure Search index call was only partially successful.
+ * An {@code IndexBatchException} is thrown whenever Azure Cognitive Search index call was only partially successful.
  * Users can inspect the indexingResults to determine the operation(s) that have failed.
  */
 public class IndexBatchException extends AzureException {

@@ -15,7 +15,7 @@ public class CreateIndexExample {
      * From the Azure portal, get your Azure Cognitive Search service name and API key and
      * populate ADMIN_KEY and SEARCH_SERVICE_NAME.
      */
-    public static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ADMIN_KEY");
+    public static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
     public static final String SEARCH_SERVICE_NAME = "<Your Search Service Name>";
 
     public static void main( String[] args ) {

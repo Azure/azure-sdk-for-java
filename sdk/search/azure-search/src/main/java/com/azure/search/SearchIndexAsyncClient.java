@@ -66,7 +66,7 @@ public class SearchIndexAsyncClient {
     private final String endpoint;
 
     /**
-     * The name of the Azure Search index.
+     * The name of the Azure Cognitive Search index.
      */
     private final String indexName;
 
@@ -76,7 +76,7 @@ public class SearchIndexAsyncClient {
     private final ClientLogger logger = new ClientLogger(SearchIndexAsyncClient.class);
 
     /**
-     * The underlying AutoRest client used to interact with the Search service
+     * The underlying AutoRest client used to interact with the Azure Cognitive Search service
      */
     private final SearchIndexRestClientImpl restClient;
 
@@ -118,7 +118,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Gets the name of the Azure Search index.
+     * Gets the name of the Azure Cognitive Search index.
      *
      * @return the indexName value.
      */
@@ -290,7 +290,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Searches for documents in the Azure Search index
+     * Searches for documents in the Azure Cognitive Search index
      *
      * @param searchText search text
      * @return A {@link PagedFluxBase} that iterates over {@link SearchResult} objects
@@ -302,7 +302,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Searches for documents in the Azure Search index
+     * Searches for documents in the Azure Cognitive Search index
      *
      * @param searchText Search text
      * @param searchOptions search options
@@ -334,7 +334,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Retrieves a document from the Azure Search index.
+     * Retrieves a document from the Azure Cognitive Search index.
      *
      * @param key the name of the document
      * @return the document object
@@ -346,7 +346,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Retrieves a document from the Azure Search index.
+     * Retrieves a document from the Azure Cognitive Search index.
      *
      * @param key document key
      * @param selectedFields selected fields to return
@@ -363,7 +363,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Retrieves a document from the Azure Search index.
+     * Retrieves a document from the Azure Cognitive Search index.
      *
      * @param key document key
      * @param selectedFields selected fields to return
@@ -396,7 +396,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Suggests documents in the Azure Search index that match the given partial query text.
+     * Suggests documents in the Azure Cognitive Search index that match the given partial query text.
      *
      * @param searchText search text
      * @param suggesterName suggester name
@@ -409,7 +409,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Suggests documents in the Azure Search index that match the given partial query text.
+     * Suggests documents in the Azure Cognitive Search index that match the given partial query text.
      *
      * @param searchText search text
      * @param suggesterName suggester name
@@ -448,7 +448,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Sends a batch of document actions to the Azure Search index.
+     * Sends a batch of document actions to the Azure Cognitive Search index.
      *
      * @param batch batch of documents to send to the index with the requested action
      * @return document index result
@@ -459,7 +459,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Sends a batch of document actions to the Azure Search index.
+     * Sends a batch of document actions to the Azure Cognitive Search index.
      *
      * @param batch batch of documents to send to the index with the requested action
      * @return a response containing the document index result

@@ -23,12 +23,12 @@ public class SearchIndexService {
     private SearchServiceClient searchServiceClient;
 
     /**
-     * Creates an instance of SearchIndexService to be used in creating a sample index in Azure Search,
+     * Creates an instance of SearchIndexService to be used in creating a sample index in Azure Cognitive Search,
      * to be used in tests.
      *
      * @param indexDataFileName the name of a file that contains a JSON index definition.
      * @param endpoint the endpoint of an Azure Cognitive Search instance.
-     * @param apiAdminKey       the Admin Key of Search Service
+     * @param apiAdminKey the Admin Key of Azure Cognitive Search service
      */
     public SearchIndexService(String indexDataFileName, String endpoint, String apiAdminKey) {
         this.indexDataFileName = indexDataFileName;
@@ -37,7 +37,7 @@ public class SearchIndexService {
     }
 
     /**
-     * Creates a new sample Index in Azure Search with configuration retrieved from INDEX_DATA_JSON
+     * Creates a new sample Index in Azure Cognitive Search with configuration retrieved from INDEX_DATA_JSON
      *
      * @throws IOException thrown when indexDataFileName does not exist or has invalid contents.
      */

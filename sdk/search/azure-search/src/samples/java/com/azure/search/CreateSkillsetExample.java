@@ -22,8 +22,8 @@ public class CreateSkillsetExample {
      * From the Azure portal, get your Azure Cognitive Search service URL and API key,
      * and set the values of these environment variables:
      */
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
-    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ADMIN_KEY");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
+    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
 
     public static void main(String[] args) {
         SearchServiceClient searchServiceClient = new SearchServiceClientBuilder()

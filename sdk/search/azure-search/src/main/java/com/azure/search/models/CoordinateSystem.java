@@ -23,7 +23,7 @@ public class CoordinateSystem {
 
     /**
      * Creates a new instance for CoordinateSystem, with default values.
-     * The EPSG:4326 is the coordination system used for GeographyPoints in Azure Search.
+     * The EPSG:4326 is the coordination system used for GeographyPoints in Azure Cognitive Search.
      *
      * @return a new instance of CoordinateSystem
      */
@@ -36,7 +36,7 @@ public class CoordinateSystem {
     }
 
     /**
-     * Ensures that the values are valid as "crs" field in the GeoPoint for the Search Service:
+     * Ensures that the values are valid as "crs" field in the GeoPoint for the Azure Cognitive Search service:
      * \"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}
      *
      * @return true if valid, false if invalid
