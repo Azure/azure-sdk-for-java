@@ -59,6 +59,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class EventHubConsumerClientTest {
@@ -75,13 +77,13 @@ public class EventHubConsumerClientTest {
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create(100, false);
     private final FluxSink<Message> sink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();
-    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
-    private final DirectProcessor<AmqpShutdownSignal> shutdownProcessor = DirectProcessor.create();
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
+    @Mock
+    private AmqpReceiveLink amqpReceiveLink2;
+
     @Mock
     private EventHubAmqpConnection connection;
     @Mock
@@ -94,14 +96,15 @@ public class EventHubConsumerClientTest {
     private ConnectionOptions connectionOptions;
     private EventHubConsumerAsyncClient asyncConsumer;
 
+    @SuppressWarnings("unchecked")
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
-        when(amqpReceiveLink.getErrors()).thenReturn(errorProcessor);
-        when(amqpReceiveLink.getConnectionStates()).thenReturn(endpointProcessor);
-        when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
+        when(amqpReceiveLink.getErrors()).thenReturn(Flux.never());
+        when(amqpReceiveLink.getConnectionStates()).thenReturn(Flux.never());
+        when(amqpReceiveLink.getShutdownSignals()).thenReturn(Flux.never());
 
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
@@ -110,7 +113,10 @@ public class EventHubConsumerClientTest {
         when(connection.createSession(argThat(name -> name.endsWith(PARTITION_ID))))
             .thenReturn(Mono.fromCallable(() -> session));
         when(session.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
-            .thenReturn(Mono.fromCallable(() -> amqpReceiveLink));
+            .thenReturn(Mono.just(amqpReceiveLink), Mono.fromCallable(() -> {
+                System.out.println("Returning second link");
+                return amqpReceiveLink2;
+            }));
 
         asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             linkProvider, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
@@ -235,22 +241,32 @@ public class EventHubConsumerClientTest {
         final int firstReceive = 8;
         final int secondReceive = 4;
 
-        sendMessages(sink, numberOfEvents, PARTITION_ID);
+        DirectProcessor<Message> processor = DirectProcessor.create();
+        FluxSink<Message> sink2 = processor.sink(FluxSink.OverflowStrategy.BUFFER);
+        when(amqpReceiveLink2.receive()).thenReturn(processor);
+        when(amqpReceiveLink2.getErrors()).thenReturn(Flux.never());
+        when(amqpReceiveLink2.getConnectionStates()).thenReturn(Flux.never());
+        when(amqpReceiveLink2.getShutdownSignals()).thenReturn(Flux.never());
 
         // Act
+        sendMessages(sink, numberOfEvents, PARTITION_ID);
         final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, firstReceive, EventPosition.earliest());
+
+        sendMessages(sink2, numberOfEvents, PARTITION_ID);
         final IterableStream<PartitionEvent> receive2 = consumer.receiveFromPartition(PARTITION_ID, secondReceive, EventPosition.earliest());
 
         // Assert
-        System.out.println("first");
+        System.out.println("First receive.");
         final Map<Integer, PartitionEvent> firstActual = receive.stream()
             .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
-        System.out.println("first1");
         Assertions.assertEquals(firstReceive, firstActual.size());
 
+        System.out.println("Second receive.");
         final Map<Integer, PartitionEvent> secondActual = receive2.stream()
             .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
-        System.out.println("first2");
+
+        verify(amqpReceiveLink, times(1)).receive();
+        verify(amqpReceiveLink2, times(1)).receive();
 
         Assertions.assertEquals(firstReceive, firstActual.size());
         Assertions.assertEquals(secondReceive, secondActual.size());

@@ -133,7 +133,7 @@ public class PartitionBasedLoadBalancerTest {
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
-        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class)))
+        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("foo", "bar", "bazz", null, null, null);
                 return new PartitionEvent(partitionContext, eventDataList.get(index.intValue()));
@@ -166,7 +166,7 @@ public class PartitionBasedLoadBalancerTest {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
 
-        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class)))
+        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("foo", "bar", "bazz", null, null, null);
                 return new PartitionEvent(partitionContext, eventDataList.get(index.intValue()));
@@ -203,7 +203,7 @@ public class PartitionBasedLoadBalancerTest {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
 
-        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class)))
+        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("foo", "bar", "bazz", null, null, null);
                 return new PartitionEvent(partitionContext, eventDataList.get(index.intValue()));
@@ -239,7 +239,7 @@ public class PartitionBasedLoadBalancerTest {
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
-        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class)))
+        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("foo", "bar", "bazz", null, null, null);
                 return new PartitionEvent(partitionContext, eventDataList.get(index.intValue()));
@@ -302,7 +302,7 @@ public class PartitionBasedLoadBalancerTest {
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
-        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class))).thenReturn(Flux.error(new IllegalStateException()));
+        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class))).thenReturn(Flux.error(new IllegalStateException()));
 
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(eventProcessorStore,
             () -> partitionProcessor, EventPosition.earliest(),
@@ -338,7 +338,7 @@ public class PartitionBasedLoadBalancerTest {
         loadBalancer.loadBalance();
         sleep(5);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
-        verify(eventHubAsyncClient, never()).createConsumer(any(), any());
+        verify(eventHubAsyncClient, never()).createConsumer(anyString(), anyInt());
         verify(eventHubConsumer, never()).receive(any());
         verify(partitionProcessor, never()).processEvent(any(PartitionEvent.class));
         verify(partitionProcessor, never()).processError(any(EventProcessingErrorContext.class));
@@ -363,8 +363,8 @@ public class PartitionBasedLoadBalancerTest {
         loadBalancer.loadBalance();
         sleep(2);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
-        verify(eventHubAsyncClient, never()).createConsumer(any(), any());
-        verify(eventHubConsumer, never()).receive(any());
+        verify(eventHubAsyncClient, never()).createConsumer(anyString(), anyInt());
+        verify(eventHubConsumer, never()).receive(any(), any());
         verify(partitionProcessor, never()).processEvent(any(PartitionEvent.class));
         verify(partitionProcessor, never()).processError(any(EventProcessingErrorContext.class));
         verify(eventHubConsumer, never()).close();
@@ -394,7 +394,7 @@ public class PartitionBasedLoadBalancerTest {
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
-        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class)))
+        when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("foo", "bar", "bazz", null, null, null);
                 return new PartitionEvent(partitionContext, eventDataList.get(index.intValue()));
