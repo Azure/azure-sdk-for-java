@@ -5,22 +5,22 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -54,6 +54,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -121,10 +122,8 @@ public class EventHubConsumerAsyncClientTest {
         when(session.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
             .thenReturn(Mono.just(amqpReceiveLink));
 
-        EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setPrefetchCount(PREFETCH);
         consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer,
-            CONSUMER_GROUP, options, false);
+            CONSUMER_GROUP, PREFETCH, false);
     }
 
     @AfterEach
@@ -134,14 +133,13 @@ public class EventHubConsumerAsyncClientTest {
     }
 
     /**
-     * Verify that by default, lastEnqueuedInformation is null if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()}
-     * is not set.
+     * Verify that by default, lastEnqueuedInformation is null if
+     * {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()} is not set.
      */
     @Test
     public void lastEnqueuedEventInformationIsNull() {
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP,
-            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(false), false);
+            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false);
         final int numberOfEvents = 10;
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
         final int numberToReceive = 3;
@@ -162,8 +160,7 @@ public class EventHubConsumerAsyncClientTest {
     public void lastEnqueuedEventInformationCreated() {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP,
-            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true), false);
+            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false);
         final int numberOfEvents = 10;
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 
@@ -240,11 +237,8 @@ public class EventHubConsumerAsyncClientTest {
         when(session3.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
             .thenReturn(Mono.just(link3));
 
-        EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setPrefetchCount(PREFETCH);
-
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            eventHubConnection, messageSerializer, CONSUMER_GROUP, options, false);
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
 
         // Act & Assert
         StepVerifier.create(asyncClient.receive(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
@@ -502,16 +496,10 @@ public class EventHubConsumerAsyncClientTest {
 
     @Test
     public void setsCorrectProperties() {
-        EventPosition position = EventPosition.fromOffset(105L);
-        EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setOwnerLevel(100L)
-            .setPrefetchCount(100);
-
         // Act
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath=dummy-event-hub")
             .consumerGroup(CONSUMER_GROUP)
-            .consumerOptions(options)
             .buildAsyncConsumer();
 
         Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
@@ -536,11 +524,8 @@ public class EventHubConsumerAsyncClientTest {
         when(managementNode.getEventHubProperties())
             .thenReturn(Mono.just(new EventHubProperties(EVENT_HUB_NAME, Instant.EPOCH, partitions)));
 
-        EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setPrefetchCount(PREFETCH);
-
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            eventHubConnection, messageSerializer, CONSUMER_GROUP, options, false);
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
 
         EmitterProcessor<Message> processor2 = EmitterProcessor.create();
         FluxSink<Message> processor2sink = processor2.sink();
@@ -617,11 +602,8 @@ public class EventHubConsumerAsyncClientTest {
         when(managementNode.getEventHubProperties())
             .thenReturn(Mono.just(new EventHubProperties(EVENT_HUB_NAME, Instant.EPOCH, partitions)));
 
-        EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setPrefetchCount(PREFETCH);
-
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            eventHubConnection, messageSerializer, CONSUMER_GROUP, options, false);
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
 
         EmitterProcessor<Message> processor2 = EmitterProcessor.create();
         FluxSink<Message> processor2sink = processor2.sink();

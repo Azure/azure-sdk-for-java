@@ -60,6 +60,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private final ReceiveOptions defaultReceiveOptions = new ReceiveOptions();
     private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
@@ -149,6 +150,23 @@ public class EventHubConsumerAsyncClient implements Closeable {
         return connection.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
+
+    /**
+     * Begin consuming events from a single partition starting at {@code startingPosition}.
+     *
+     * @param partitionId Identifier of the partition to read events from.
+     * @param startingPosition Position within the Event Hub partition to begin consuming events.
+     *
+     * @return A stream of events for this partition. If a stream for the events was opened before, the same position
+     *     within that partition is returned. Otherwise, events are read starting from {@code startingPosition}.
+     *
+     * @throws NullPointerException if {@code partitionId}, {@code startingPosition}, {@code receiveOptions} is null.
+     * @throws IllegalArgumentException if {@code partitionId} is an empty string.
+     */
+    public Flux<PartitionEvent> receive(String partitionId, EventPosition startingPosition) {
+        return receive(partitionId, startingPosition, defaultReceiveOptions);
+    }
+
     /**
      * Begin consuming events from a single partition starting at {@code startingPosition} with a set of
      * {@link ReceiveOptions receive options}.
@@ -188,6 +206,19 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
         final String linkName = StringUtil.getRandomString(partitionId + "-");
         return createConsumer(linkName, partitionId, startingPosition, receiveOptions);
+    }
+
+    /**
+     * Begin consuming events from all partitions starting at {@code startingPosition}.
+     *
+     * @param startingPosition Position within each Event Hub partition to begin consuming events.
+     *
+     * @return A stream of events for every partition in the Event Hub starting from {@code startingPosition}.
+     *
+     * @throws NullPointerException if {@code startingPosition} is null.
+     */
+    public Flux<PartitionEvent> receive(EventPosition startingPosition) {
+        return receive(startingPosition, defaultReceiveOptions);
     }
 
     /**

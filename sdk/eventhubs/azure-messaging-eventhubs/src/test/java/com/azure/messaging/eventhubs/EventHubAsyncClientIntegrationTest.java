@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
@@ -25,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -77,9 +77,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     public void receiveMessage(TransportType transportType) {
         beforeTest(transportType);
         // Arrange
-        final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setPrefetchCount(2);
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, options);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 2);
         final EventPosition startingPosition = EventPosition.fromEnqueuedTime(testData.getEnqueuedTime());
 
         // Act & Assert
@@ -120,7 +118,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
         try {
             for (final EventHubAsyncClient hubClient : clients) {
-                final EventHubConsumerAsyncClient consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+                final EventHubConsumerAsyncClient consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
                 consumers.add(consumer);
 
                 consumer.receive(PARTITION_ID, EventPosition.latest())
