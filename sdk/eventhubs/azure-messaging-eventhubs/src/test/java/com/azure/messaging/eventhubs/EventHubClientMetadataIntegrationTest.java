@@ -50,7 +50,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
             .assertNext(properties -> {
                 Assertions.assertNotNull(properties);
                 Assertions.assertEquals(eventHubName, properties.getName());
-                Assertions.assertEquals(expectedPartitionIds.length, properties.getPartitionIds().length);
+                Assertions.assertEquals(expectedPartitionIds.length, properties.getPartitionIds().stream().count());
             }).verifyComplete();
     }
 
