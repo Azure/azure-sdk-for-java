@@ -28,9 +28,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * <p><strong>Consuming events from a single partition</strong></p>
  * <p>Events from a single partition can be consumed using {@link #receiveFromPartition(String, int, EventPosition)} or
- * {@link #receiveFromPartition(String, int, EventPosition, Duration)}. The call to `receive` completes and returns an {@link
- * IterableStream} when either the maximum number of events is received, or the timeout has elapsed.</p> {@codesnippet
- * com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration}
+ * {@link #receiveFromPartition(String, int, EventPosition, Duration)}. The call to `receive` completes and returns an
+ * {@link IterableStream} when either the maximum number of events is received, or the timeout has elapsed.</p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration}
  */
 public class EventHubConsumerClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerClient.class);
@@ -112,9 +113,9 @@ public class EventHubConsumerClient implements Closeable {
      * @param partitionId Identifier of the partition to read events from.
      * @param startingPosition Position within the Event Hub partition to begin consuming events.
      *
-     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to {@code
-     *     maximumMessageCount} events. If a stream for the events was opened before, the same position within that
-     *     partition is returned. Otherwise, events are read starting from {@code startingPosition}.
+     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
+     *     {@code maximumMessageCount} events. If a stream for the events was opened before, the same position within
+     *     that partition is returned. Otherwise, events are read starting from {@code startingPosition}.
      *
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1.
      */
@@ -132,8 +133,8 @@ public class EventHubConsumerClient implements Closeable {
      * @param maximumWaitTime The maximum amount of time to wait to build up the requested message count for the
      *     batch; if not specified, the default wait time specified when the consumer was created will be used.
      *
-     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to {@code
-     *     maximumMessageCount} events.
+     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
+     *     {@code maximumMessageCount} events.
      *
      * @throws NullPointerException if {@code maximumWaitTime} or {@code eventPosition} is null.
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
@@ -176,9 +177,10 @@ public class EventHubConsumerClient implements Closeable {
      * @param startingPosition Position within the Event Hub partition to begin consuming events.
      * @param maximumWaitTime The maximum amount of time to wait to build up the requested message count for the
      *     batch; if not specified, the default wait time specified when the consumer was created will be used.
-     *
-     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to {@code
-     *     maximumMessageCount} events.
+     * @param receiveOptions Options when receiving events from the partition.
+
+     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
+     *     {@code maximumMessageCount} events.
      *
      * @throws NullPointerException if {@code maximumWaitTime}, {@code eventPosition}, {@code partitionId}, or
      *     {@code receiveOptions} is {@code null}.
