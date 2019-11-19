@@ -28,6 +28,7 @@ import com.azure.search.models.TextExtractionAlgorithm;
 import com.azure.search.models.TextSplitMode;
 import com.azure.search.models.VisualFeature;
 import com.azure.search.models.WebApiSkill;
+import com.azure.search.models.ConditionalSkill;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -129,6 +130,15 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void createOrUpdateUpdatesCognitiveService();
+
+    @Test
+    public abstract void createSkillsetReturnsCorrectDefinitionShaperWithNestedInputs();
+
+    @Test
+    public abstract void createSkillsetThrowsExceptionWithNonShaperSkillWithNestedInputs();
+
+    @Test
+    public abstract void createSkillsetReturnsCorrectDefinitionConditional();
 
     @Test
     public abstract void createOrUpdateSkillsetIfNotExistsFailsOnExistingResource();
@@ -814,6 +824,105 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setName("custom-skillset")
             .setDescription("Skillset for testing custom skillsets")
             .setSkills(Collections.singletonList(webApiSkill));
+    }
+
+    protected Skillset createSkillsetWithSharperSkillWithNestedInputs() {
+        List<InputFieldMappingEntry> inputs = this.createNestedInputFieldMappingEntry();
+        List<OutputFieldMappingEntry> outputs = this.createOutputFieldMappingEntry();
+
+        List<Skill> skills = new ArrayList<>();
+        skills.add(new ShaperSkill()
+            .setName("myshaper")
+            .setDescription("Tested Shaper skill")
+            .setContext(CONTEXT_VALUE)
+            .setInputs(inputs)
+            .setOutputs(outputs)
+        );
+
+        return new Skillset()
+            .setName("nested-skillset-with-sharperskill")
+            .setDescription("Skillset for testing")
+            .setSkills(skills);
+    }
+
+    protected Skillset createSkillsetWithNonSharperSkillWithNestedInputs() {
+        List<InputFieldMappingEntry> inputs = this.createNestedInputFieldMappingEntry();
+        List<OutputFieldMappingEntry> outputs = this.createOutputFieldMappingEntry();
+
+        List<Skill> skills = new ArrayList<>();
+        // Used for testing skill that shouldn't allow nested inputs
+        skills.add(new WebApiSkill()
+            .setUri("https://contoso.example.org")
+            .setDescription("Invalid skill with nested inputed")
+            .setContext(CONTEXT_VALUE)
+            .setInputs(inputs)
+            .setOutputs(outputs)
+        );
+
+        return new Skillset()
+            .setName("nested-skillset-with-nonsharperskill")
+            .setDescription("Skillset for testing")
+            .setSkills(skills);
+    }
+
+    private List<InputFieldMappingEntry> createNestedInputFieldMappingEntry() {
+        List<InputFieldMappingEntry> inputs = Collections.singletonList(
+            new InputFieldMappingEntry()
+                .setName("doc")
+                .setSourceContext("/document")
+                .setInputs(Arrays.asList(
+                    new InputFieldMappingEntry()
+                        .setName("text")
+                        .setSource("/document/content"),
+                    new InputFieldMappingEntry()
+                        .setName("images")
+                        .setSource("/document/normalized_images/*"))
+                )
+        );
+        return inputs;
+    }
+
+    private List<OutputFieldMappingEntry> createOutputFieldMappingEntry() {
+        List<OutputFieldMappingEntry> outputs = Collections.singletonList(
+            new OutputFieldMappingEntry()
+                .setName("output")
+                .setTargetName("myOutput")
+        );
+        return outputs;
+    }
+
+    protected Skillset createTestSkillsetConditional() {
+        List<InputFieldMappingEntry> inputs = Arrays.asList(
+            new InputFieldMappingEntry()
+                .setName("condition")
+                .setSource("= $(/document/language) == null"),
+            new InputFieldMappingEntry()
+                .setName("whenTrue")
+                .setSource("= 'es'"),
+            new InputFieldMappingEntry()
+                .setName("whenFalse")
+                .setSource("= $(/document/language)")
+        );
+
+        List<OutputFieldMappingEntry> outputs = Collections.singletonList(
+            new OutputFieldMappingEntry()
+                .setName("output")
+                .setTargetName("myLanguageCode")
+        );
+
+        List<Skill> skills = Collections.singletonList(
+            new ConditionalSkill()
+                .setName("myconditional")
+                .setDescription("Tested Conditional skill")
+                .setContext(CONTEXT_VALUE)
+                .setInputs(inputs)
+                .setOutputs(outputs)
+        );
+
+        return new Skillset()
+            .setName("conditional-skillset")
+            .setDescription("Skillset for testing")
+            .setSkills(skills);
     }
 
     protected Skillset mutateSkillsInSkillset(Skillset skillset) {

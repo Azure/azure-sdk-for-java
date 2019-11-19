@@ -459,6 +459,16 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     }
 
     @Override
+    public void createSkillsetReturnsCorrectDefinitionShaperWithNestedInputs() {
+        Skillset expected = createSkillsetWithSharperSkillWithNestedInputs();
+
+        StepVerifier
+            .create(client.createSkillset(expected))
+            .assertNext(actual -> assertSkillsetsEqual(expected, actual))
+            .verifyComplete();
+    }
+
+    @Override
     public void createOrUpdateSkillsetIfNotExistsFailsOnExistingResource() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
         Skillset createdResource = client.createOrUpdateSkillset(skillset).block();
@@ -521,6 +531,28 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
                 Assert.assertFalse(res.getETag().isEmpty());
                 Assert.assertNotEquals(createdResource.getETag(), res.getETag());
             })
+            .verifyComplete();
+    }
+
+    @Override
+    public void createSkillsetThrowsExceptionWithNonShaperSkillWithNestedInputs() {
+        Skillset skillset = createSkillsetWithNonSharperSkillWithNestedInputs();
+
+        StepVerifier
+            .create(client.createSkillset(skillset))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertTrue(error.getMessage().contains("Skill '#1' is not allowed to have recursively defined inputs"));
+            });
+    }
+
+    @Override
+    public void createSkillsetReturnsCorrectDefinitionConditional() {
+        Skillset expected = createTestSkillsetConditional();
+
+        StepVerifier
+            .create(client.createSkillset(expected))
+            .assertNext(actual -> assertSkillsetsEqual(expected, actual))
             .verifyComplete();
     }
 

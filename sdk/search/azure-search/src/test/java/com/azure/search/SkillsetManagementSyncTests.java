@@ -380,6 +380,32 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     }
 
     @Override
+    public void createSkillsetReturnsCorrectDefinitionShaperWithNestedInputs() {
+        Skillset expected = createSkillsetWithSharperSkillWithNestedInputs();
+        Skillset actual = client.createSkillset(expected);
+
+        assertSkillsetsEqual(expected, actual);
+    }
+
+    @Override
+    public void createSkillsetThrowsExceptionWithNonShaperSkillWithNestedInputs() {
+        Skillset skillset = createSkillsetWithNonSharperSkillWithNestedInputs();
+
+        assertException(
+            () -> client.createSkillset(skillset),
+            HttpResponseException.class,
+            "Skill '#1' is not allowed to have recursively defined inputs");
+    }
+
+    @Override
+    public void createSkillsetReturnsCorrectDefinitionConditional() {
+        Skillset expected = createTestSkillsetConditional();
+        Skillset actual = client.createSkillset(expected);
+
+        assertSkillsetsEqual(expected, actual);
+    }
+
+    @Override
     public void createOrUpdateSkillsetIfNotExistsFailsOnExistingResource() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
         Skillset createdResource = client.createOrUpdateSkillset(skillset);
