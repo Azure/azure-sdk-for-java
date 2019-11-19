@@ -3,13 +3,27 @@
 
 package com.azure.cs.textanalytics.models;
 
+import com.azure.core.util.IterableStream;
+import reactor.core.publisher.Flux;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class DocumentResultCollection<T> extends ArrayList<DocumentResult<T>> {
+public class DocumentResultCollection<T> extends IterableStream<DocumentResult<T>> {
+
+
     private List<DocumentError> errors;
     private String modelVersion;
     private DocumentBatchStatistics statistics;
+
+    /**
+     * Creates instance with the given {@link Flux}.
+     *
+     * @param flux Flux of items to iterate over.
+     */
+    public DocumentResultCollection(Flux<DocumentResult<T>> flux) {
+        super(flux);
+    }
 
     public List<DocumentError> getErrors() {
         return errors;
