@@ -1,12 +1,13 @@
 # Change Log azure-storage-blob
 
-## Version XX.X.X (XXXX-XX-XX)
+## Version 12.0.1 (2019-11-19)
 This package's
-[documentation](LINK)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.1/sdk/storage/azure-storage-blob/README.md)
 and
-[samples](LINK)
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.1/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
 
 - Optimized downloadToFile to avoid an unnecessary getProperties call and to lock on an etag once the operation has started.
+- Upgraded storage-common dependency to 12.0.1.
 
 ## Version 12.0.0 (2019-10-31)
 
