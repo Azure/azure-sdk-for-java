@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -43,7 +42,6 @@ class EventHubPartitionAsyncConsumer implements Closeable {
     private final String eventHubName;
     private final String consumerGroup;
     private final String partitionId;
-    private final EventPosition startingPosition;
     private final EmitterProcessor<PartitionEvent> emitterProcessor;
     private final Flux<PartitionEvent> messageFlux;
     private final boolean trackLastEnqueuedEventProperties;
@@ -51,13 +49,12 @@ class EventHubPartitionAsyncConsumer implements Closeable {
     private volatile AmqpReceiveLink receiveLink;
 
     EventHubPartitionAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
-        String eventHubName, String consumerGroup, String partitionId, EventPosition startingPosition,
-        int prefetchCount, boolean trackLastEnqueuedEventProperties) {
+        String eventHubName, String consumerGroup, String partitionId, int prefetchCount,
+        boolean trackLastEnqueuedEventProperties) {
         this.messageSerializer = messageSerializer;
         this.eventHubName = eventHubName;
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
-        this.startingPosition = startingPosition;
         this.emitterProcessor = EmitterProcessor.create(prefetchCount, false);
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
 
@@ -128,15 +125,6 @@ class EventHubPartitionAsyncConsumer implements Closeable {
                     newRequest);
                 creditsToRequest.set(newRequest);
             });
-    }
-
-    /**
-     * Gets the position this consumer started reading events from.
-     *
-     * @return The position this consumer began reading events from.
-     */
-    EventPosition startingPosition() {
-        return startingPosition;
     }
 
     /**
