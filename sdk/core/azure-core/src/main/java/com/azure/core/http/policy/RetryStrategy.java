@@ -4,8 +4,11 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.CoreUtils;
+
 import java.net.HttpURLConnection;
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 /**
@@ -22,6 +25,22 @@ public interface RetryStrategy {
      * @return The max number of retry attempts.
      */
     int getMaxRetries();
+
+    /**
+     * The {@link com.azure.core.http.HttpHeader} to use in {@link HttpResponse} to calculate delay.
+     * @return The name of {@link com.azure.core.http.HttpHeader}.
+     */
+    default String getRetryAfterHeader() {
+        return X_MS_RETRY_AFTER_MS_HEADER;
+    }
+
+    /**
+     * The {@link ChronoUnit} to use to calculate delay.
+     * @return time unit of the delay.
+     */
+    default ChronoUnit getRetryAfterTimeUnit() {
+        return ChronoUnit.MILLIS;
+    }
 
     /**
      * Computes the delay between each retry.
@@ -41,7 +60,6 @@ public interface RetryStrategy {
      * @return The delay duration before the next retry.
      */
     default Duration calculateRetryDelay(HttpResponse httpResponse, int retryAttempts) {
-
         int code = httpResponse.getStatusCode();
 
         // Response will not have a X_MS_RETRY_AFTER_MS_HEADER header.
@@ -49,10 +67,15 @@ public interface RetryStrategy {
             && code != 503) {  // service unavailable
             return calculateRetryDelay(retryAttempts);
         }
-        String delayStringValue = httpResponse.getHeaderValue(X_MS_RETRY_AFTER_MS_HEADER);
 
-        return (!Objects.isNull(delayStringValue))
-            ? Duration.ofMillis(Long.parseLong(delayStringValue)) : calculateRetryDelay(retryAttempts);
+        String delayStringValue = null;
+        if (!CoreUtils.isNullOrEmpty(getRetryAfterHeader())) {
+            delayStringValue = httpResponse.getHeaderValue(getRetryAfterHeader());
+        }
+
+        return (!CoreUtils.isNullOrEmpty(delayStringValue) && !Objects.isNull(getRetryAfterTimeUnit()))
+            ? Duration.of(Long.parseLong(delayStringValue), getRetryAfterTimeUnit())
+            : calculateRetryDelay(retryAttempts);
     }
 
     /**

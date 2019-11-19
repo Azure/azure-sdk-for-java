@@ -32,6 +32,7 @@ import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -79,19 +80,8 @@ public final class ConfigurationClientBuilder {
     private static final String APP_CONFIG_PROPERTIES = "azure-appconfig.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
-    private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
 
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(new ExponentialBackoff() {
-        @Override
-        public Duration calculateRetryDelay(HttpResponse httpResponse, int retryAttempts) {
-            String delay = httpResponse.getHeaderValue(RETRY_AFTER_MS_HEADER);
-            if (delay != null) {
-                return Duration.ofMillis(Long.parseLong(delay));
-            } else {
-                return calculateRetryDelay(retryAttempts);
-            }
-        }
-    });
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;

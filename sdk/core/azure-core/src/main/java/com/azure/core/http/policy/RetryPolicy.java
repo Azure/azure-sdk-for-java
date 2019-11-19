@@ -8,9 +8,12 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
+
+import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 import java.time.Duration;
 
@@ -23,12 +26,41 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     private final RetryStrategy retryStrategy;
 
+
     /**
      * Creates {@link RetryPolicy} with default {@link ExponentialBackoff} as {@link RetryStrategy} and use
      * 'retry-after-ms' in {@link HttpResponse} header for calculating retry delay.
      */
     public RetryPolicy() {
         this(new ExponentialBackoff());
+    }
+
+    /**
+     * Creates {@link RetryPolicy} with default {@link ExponentialBackoff} as {@link RetryStrategy} and use
+     * provided {@code retryAfterHeader} in {@link HttpResponse} headers for calculating retry delay.
+     *
+     * @param retryAfterHeader The HTTP header, such as 'Retry-After' or 'x-ms-retry-after-ms', to lookup for the
+     * retry delay. If the value is {@code null}, {@link RetryPolicy} will use the retry strategy to compute the delay
+     * and ignore the delay provided in response header.
+     * @param  retryAfterTimeUnit The time unit to use when applying the retry delay. {@code null} is valid if, and only
+     * if, {@code retryAfterHeader} is {@code null}.
+     */
+    public RetryPolicy(String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
+        this(
+            (new ExponentialBackoff() {
+                @Override
+                public String getRetryAfterHeader() {
+                    return retryAfterHeader;
+                }
+
+                @Override
+                public ChronoUnit getRetryAfterTimeUnit() {
+                    return retryAfterTimeUnit;
+                }
+            }));
+        if (!isNullOrEmpty(retryAfterHeader)) {
+            Objects.requireNonNull(retryAfterTimeUnit, "'retryAfterTimeUnit' cannot be null.");
+        }
     }
 
     /**
