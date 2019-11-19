@@ -97,7 +97,7 @@ public final class CertificateIssuer {
     }
 
     /**
-     * Get the account id of the isssuer.
+     * Get the account id of the issuer.
      * @return the account id
      */
     public String getAccountId() {
@@ -105,7 +105,7 @@ public final class CertificateIssuer {
     }
 
     /**
-     * Set the account id of the isssuer.
+     * Set the account id of the issuer.
      * @param accountId the account id to set.
      * @return the Issuer object itself.
      */
@@ -115,7 +115,7 @@ public final class CertificateIssuer {
     }
 
     /**
-     * Get the password of the isssuer.
+     * Get the password of the issuer.
      * @return the password
      */
     public String getPassword() {
@@ -123,7 +123,7 @@ public final class CertificateIssuer {
     }
 
     /**
-     * Set the password id of the isssuer.
+     * Set the password id of the issuer.
      * @param password the password set.
      * @return the Issuer object itself.
      */
@@ -133,7 +133,7 @@ public final class CertificateIssuer {
     }
 
     /**
-     * Get the organization id of the isssuer.
+     * Get the organization id of the issuer.
      * @return the organization id
      */
     public String getOrganizationId() {
@@ -151,7 +151,7 @@ public final class CertificateIssuer {
     }
 
     /**
-     * Get the administrators of the isssuer.
+     * Get the administrators of the issuer.
      * @return the administrators
      */
     public List<AdministratorContact> getAdministratorContacts() {
@@ -159,7 +159,7 @@ public final class CertificateIssuer {
     }
 
     /**
-     * Set the administrators of the isssuer.
+     * Set the administrators of the issuer.
      * @param administratorContacts the administrators to set.
      * @return the Issuer object itself.
      */
@@ -210,7 +210,7 @@ public final class CertificateIssuer {
 
     @JsonProperty(value = "org_details")
     @SuppressWarnings("unchecked")
-    private void unpacOrganizationalDetails(Map<String, Object> orgDetails) {
+    private void unpackOrganizationalDetails(Map<String, Object> orgDetails) {
         this.administratorContacts =  orgDetails.containsKey("admin_details") ? parseAdministrators((List<Object>) orgDetails.get("admin_details")) : null;
         this.organizationId = (String) orgDetails.get("id");
     }

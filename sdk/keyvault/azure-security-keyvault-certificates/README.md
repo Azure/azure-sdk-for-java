@@ -214,12 +214,16 @@ System.out.printf("Updated Certificate with name %s and enabled status %s", upda
 
 ### Delete a Certificate
 
-Delete an existing Certificate by calling `deleteCertificate`.
+Delete an existing Certificate by calling `beginDeleteCertificate`.
 
 ```Java
-DeletedCertificate deletedCertificate = certificateClient.deleteCertificate("certificateName");
-System.out.printf("Deleted certificate with name %s and recovery id %s", deletedCertificate.getName(),
-    deletedCertificate.getRecoveryId());
+SyncPoller<DeletedCertificate, Void> deletedCertificatePoller =
+    certificateClient.beginDeleteCertificate("certificateName");
+// Deleted Certificate is accessible as soon as polling beings.
+PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
+System.out.printf("Deleted certitifcate with name %s and recovery id %s", pollResponse.getValue().getName(),
+    pollResponse.getValue().getRecoveryId());
+deletedCertificatePoller.waitForCompletion();
 ```
 
 ### List Certificates
@@ -301,12 +305,15 @@ certificateAsyncClient.getCertificate("certificateName")
 
 ### Delete a Certificate Asynchronously
 
-Delete an existing Certificate by calling `deleteCertificate`.
+Delete an existing Certificate by calling `beginDeleteCertificate`.
 
 ```java
-certificateAsyncClient.deleteCertificate("certificateName")
-    .subscribe(deletedSecretResponse ->
-        System.out.printf("Deleted Certificate's Recovery Id %s \n", deletedSecretResponse.getRecoveryId()));
+certificateAsyncClient.beginDeleteCertificate("certificateName")
+    .subscribe(pollResponse -> {
+        System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+        System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
+        System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+    });
 ```
 
 ### List Certificates Asynchronously

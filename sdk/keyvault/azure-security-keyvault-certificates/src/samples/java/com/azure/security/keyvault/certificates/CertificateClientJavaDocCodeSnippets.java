@@ -200,24 +200,6 @@ public final class CertificateClientJavaDocCodeSnippets {
         System.out.printf("Retrieved issuer with name %s and prodier %s", issuerResponse.getValue().getName(),
             issuerResponse.getValue().getProperties().getProvider());
         // END: com.azure.security.keyvault.certificates.CertificateClient.getIssuerWithResponse#string-context
-
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getIssuer#issuerProperties
-        for (IssuerProperties issuer : certificateClient.listPropertiesOfIssuers()) {
-            CertificateIssuer retrievedIssuer = certificateClient.getIssuer(issuer);
-            System.out.printf("Received issuer with name %s and provider %s", retrievedIssuer.getName(),
-                retrievedIssuer.getProperties().getProvider());
-        }
-        // END: com.azure.security.keyvault.certificates.CertificateClient.getIssuer#issuerProperties
-
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getIssuerWithResponse#issuerProperties-context
-        for (IssuerProperties issuer : certificateClient.listPropertiesOfIssuers()) {
-            Response<CertificateIssuer> retrievedIssuerResponse = certificateClient.getIssuerWithResponse(issuer,
-                new Context(key1, value1));
-            System.out.printf("Received issuer with name %s and provider %s",
-                retrievedIssuerResponse.getValue().getName(),
-                retrievedIssuerResponse.getValue().getProperties().getProvider());
-        }
-        // END: com.azure.security.keyvault.certificates.CertificateClient.getIssuerWithResponse#issuerProperties-context
     }
 
     /**
@@ -384,7 +366,7 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void recoverDeletedCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.certificatevault.certificates.CertificateClient.beginrecoverDeletedCertificate#string
+        // BEGIN: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#string
         SyncPoller<KeyVaultCertificate, Void> recoverCertPoller = certificateClient
             .beginRecoverDeletedCertificate("deletedCertificateName");
         // Recovered certificate is accessible as soon as polling beings
@@ -392,7 +374,7 @@ public final class CertificateClientJavaDocCodeSnippets {
         System.out.printf(" Recovered Deleted certificate with name %s and id %s", pollResponse.getValue()
                 .getProperties().getName(), pollResponse.getValue().getProperties().getId());
         recoverCertPoller.waitForCompletion();
-        // END: com.azure.security.certificatevault.certificates.CertificateClient.beginrecoverDeletedCertificate#string
+        // END: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#string
     }
 
     /**
@@ -467,21 +449,21 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void listCertificateIssuersCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.listIssuers
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers
         for (IssuerProperties issuer : certificateClient.listPropertiesOfIssuers()) {
             CertificateIssuer retrievedIssuer = certificateClient.getIssuer(issuer.getName());
             System.out.printf("Received issuer with name %s and provider %s", retrievedIssuer.getName(),
                 retrievedIssuer.getProperties().getProvider());
         }
-        // END: com.azure.security.keyvault.certificates.CertificateClient.listIssuers
+        // END: com.azure.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.listIssuers#context
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers#context
         for (IssuerProperties issuer : certificateClient.listPropertiesOfIssuers(new Context(key1, value1))) {
-            CertificateIssuer retrievedIssuer = certificateClient.getIssuer(issuer);
+            CertificateIssuer retrievedIssuer = certificateClient.getIssuer(issuer.getName());
             System.out.printf("Received issuer with name %s and provider %s", retrievedIssuer.getName(),
                 retrievedIssuer.getProperties().getProvider());
         }
-        // END: com.azure.security.keyvault.certificates.CertificateClient.listIssuers#context
+        // END: com.azure.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers#context
     }
 
     /**

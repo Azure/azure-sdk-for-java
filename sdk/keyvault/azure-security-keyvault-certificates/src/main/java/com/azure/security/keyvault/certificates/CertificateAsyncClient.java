@@ -38,7 +38,7 @@ import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.LifeTimeAction;
-import com.azure.security.keyvault.certificates.models.CertificateImportOptions;
+import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -410,7 +410,7 @@ public class CertificateAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the certificate in the Azure Key Vault. Prints out the deleted certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.begindeleteCertificate#string}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#string}
      *
      * @param name The name of the certificate to be deleted.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
@@ -428,23 +428,23 @@ public class CertificateAsyncClient {
 
     private Function<PollingContext<DeletedCertificate>, Mono<DeletedCertificate>> activationOperation(String name) {
         return (pollingContext) -> withContext(context -> deleteCertificateWithResponse(name, context)
-            .flatMap(deletedKeyResponse -> Mono.just(deletedKeyResponse.getValue())));
+            .flatMap(deletedCertificateResponse -> Mono.just(deletedCertificateResponse.getValue())));
     }
 
     /*
-    Polling operation to poll on create delete key operation status.
+    Polling operation to poll on create delete certificate operation status.
     */
     private Function<PollingContext<DeletedCertificate>, Mono<PollResponse<DeletedCertificate>>> createDeletePollOperation(String keyName) {
         return pollingContext ->
             withContext(context -> service.getDeletedCertificatePoller(vaultUrl, keyName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-                .flatMap(deletedKeyResponse -> {
-                    if (deletedKeyResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                .flatMap(deletedCertificateResponse -> {
+                    if (deletedCertificateResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                             pollingContext.getLatestResponse().getValue())));
                     }
-                    return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deletedKeyResponse.getValue())));
+                    return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deletedCertificateResponse.getValue())));
                 }))
-                // This means either vault has soft-delete disabled or permission is not granted for the get deleted key operation.
+                // This means either vault has soft-delete disabled or permission is not granted for the get deleted certificate operation.
                 // In both cases deletion operation was successful when activation operation succeeded before reaching here.
                 .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollingContext.getLatestResponse().getValue()));
     }
@@ -577,7 +577,7 @@ public class CertificateAsyncClient {
      * <p>Recovers the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * recovered certificate details when a response has been received.</p>
 
-     * {@codesnippet com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginrecoverDeletedCertificate#string}
+     * {@codesnippet com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#string}
      *
      * @param name The name of the deleted certificate to be recovered.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the certificate vault.
@@ -595,22 +595,22 @@ public class CertificateAsyncClient {
 
     private Function<PollingContext<KeyVaultCertificate>, Mono<KeyVaultCertificate>> recoverActivationOperation(String name) {
         return (pollingContext) -> withContext(context -> recoverDeletedCertificateWithResponse(name, context)
-            .flatMap(keyResponse -> Mono.just(keyResponse.getValue())));
+            .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue())));
     }
 
     /*
-    Polling operation to poll on create delete key operation status.
+    Polling operation to poll on create delete certificate operation status.
     */
     private Function<PollingContext<KeyVaultCertificate>, Mono<PollResponse<KeyVaultCertificate>>> createRecoverPollOperation(String keyName) {
         return pollingContext ->
             withContext(context -> service.getCertificatePoller(vaultUrl, keyName, "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-                .flatMap(keyResponse -> {
-                    if (keyResponse.getStatusCode() == 404) {
+                .flatMap(certificateResponse -> {
+                    if (certificateResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                             pollingContext.getLatestResponse().getValue())));
                     }
                     return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                        keyResponse.getValue())));
+                        certificateResponse.getValue())));
                 }))
                 // This means permission is not granted for the get deleted key operation.
                 // In both cases deletion operation was successful when activation operation succeeded before reaching here.
@@ -986,8 +986,8 @@ public class CertificateAsyncClient {
      *
      * @param mergeCertificateOptions the merge certificate options holding the x509 certificates.
      *
-     * @throws NullPointerException when {@code mergeCertificateConfig} is null.
-     * @throws HttpRequestException if {@code mergeCertificateConfig} is invalid/corrupt.
+     * @throws NullPointerException when {@code mergeCertificateOptions} is null.
+     * @throws HttpRequestException if {@code mergeCertificateOptions} is invalid/corrupt.
      * @return A {@link Mono} containing the merged certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1010,28 +1010,28 @@ public class CertificateAsyncClient {
      *
      * @param mergeCertificateOptions the merge certificate options holding the x509 certificates.
      *
-     * @throws NullPointerException when {@code mergeCertificateConfig} is null.
-     * @throws HttpRequestException if {@code mergeCertificateConfig} is invalid/corrupt.
+     * @throws NullPointerException when {@code mergeCertificateOptions} is null.
+     * @throws HttpRequestException if {@code mergeCertificateOptions} is invalid/corrupt.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the merged certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultCertificate>> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions) {
         try {
-            Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateConfig' cannot be null.");
+            Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
             return withContext(context -> mergeCertificateWithResponse(mergeCertificateOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<KeyVaultCertificate>> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateConfig, Context context) {
-        CertificateMergeParameters mergeParameters = new CertificateMergeParameters().x509Certificates(mergeCertificateConfig.getX509Certificates())
-            .tags(mergeCertificateConfig.getTags())
-            .certificateAttributes(new CertificateRequestAttributes().enabled(mergeCertificateConfig.isEnabled()));
-        return service.mergeCertificate(vaultUrl, mergeCertificateConfig.getName(), API_VERSION, ACCEPT_LANGUAGE, mergeParameters, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Merging certificate - {}",  mergeCertificateConfig.getName()))
+    Mono<Response<KeyVaultCertificate>> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions, Context context) {
+        CertificateMergeParameters mergeParameters = new CertificateMergeParameters().x509Certificates(mergeCertificateOptions.getX509Certificates())
+            .tags(mergeCertificateOptions.getTags())
+            .certificateAttributes(new CertificateRequestAttributes().enabled(mergeCertificateOptions.isEnabled()));
+        return service.mergeCertificate(vaultUrl, mergeCertificateOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, mergeParameters, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Merging certificate - {}",  mergeCertificateOptions.getName()))
             .doOnSuccess(response -> logger.info("Merged certificate  - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to merge certificate - {}", mergeCertificateConfig.getName(), error));
+            .doOnError(error -> logger.warning("Failed to merge certificate - {}", mergeCertificateOptions.getName(), error));
     }
 
     /**
@@ -1296,54 +1296,6 @@ public class CertificateAsyncClient {
     }
 
     /**
-     * Gets information about the certificate issuer which represents the {@link IssuerProperties} from the key vault. This operation
-     * requires the certificates/manageissuers/getissuers permission.
-     *
-     * <p>The list operations {@link CertificateAsyncClient#listPropertiesOfIssuers()} return the {@link PagedFlux} containing
-     * {@link IssuerProperties issuerProperties} as output excluding the properties like accountId and organization details of the certificate issuer.
-     * This operation can then be used to get the full certificate issuer with its properties from {@code issuerProperties}.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuer#issuerProperties}
-     *
-     * @param issuerProperties The {@link IssuerProperties issuerProperties} holding attributes of the certificate issuer being requested.
-     * @throws ResourceNotFoundException when a certificate with {@link IssuerProperties#getName() name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link IssuerProperties#getName() name} is empty string.
-     * @return A {@link Mono} containing the requested {@link CertificateIssuer certificate issuer}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateIssuer> getIssuer(IssuerProperties issuerProperties) {
-        try {
-            return withContext(context -> getIssuerWithResponse(issuerProperties.getName(), context)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Gets information about the certificate issuer which represents the {@link IssuerProperties} from the key vault. This operation
-     * requires the certificates/manageissuers/getissuers permission.
-     *
-     * <p>The list operations {@link CertificateAsyncClient#listPropertiesOfIssuers()} return the {@link PagedFlux} containing
-     * {@link IssuerProperties issuerProperties} as output excluding the properties like accountId and organization details of the certificate issuer.
-     * This operation can then be used to get the full certificate issuer with its properties from {@code issuerProperties}.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuerWithResponse#issuerProperties}
-     *
-     * @param issuerProperties The {@link IssuerProperties issuerProperties} holding attributes of the certificate issuer being requested.
-     * @throws ResourceNotFoundException when a certificate with {@link IssuerProperties#getName() name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link IssuerProperties#getName() name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested {@link CertificateIssuer certificate issuer}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateIssuer>> getIssuerWithResponse(IssuerProperties issuerProperties) {
-        try {
-            return withContext(context -> getIssuerWithResponse(issuerProperties.getName(), context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
      * Deletes the specified certificate issuer. The DeleteCertificateIssuer operation permanently removes the specified certificate
      * issuer from the key vault. This operation requires the {@code certificates/manageissuers/deleteissuers permission}.
      *
@@ -1406,9 +1358,8 @@ public class CertificateAsyncClient {
      *
      * <p>It is possible to get the certificate issuer with all of its properties from this information. Convert the {@link PagedFlux}
      * containing {@link IssuerProperties issuerProperties} to {@link PagedFlux} containing {@link CertificateIssuer issuer} using
-     * {@link CertificateAsyncClient#getIssuer(IssuerProperties issuerProperties)} within {@link PagedFlux#flatMap(Function)}.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.listIssuers}
+     * {@link CertificateAsyncClient#getIssuer(String)}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.listPropertiesOfIssuers}
      *
      * @return A {@link PagedFlux} containing all of the {@link IssuerProperties certificate issuers} in the vault.
      */
@@ -1698,7 +1649,7 @@ public class CertificateAsyncClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificate imported certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultCertificate> importCertificate(CertificateImportOptions importOptions) {
+    public Mono<KeyVaultCertificate> importCertificate(ImportCertificateOptions importOptions) {
         try {
             return withContext(context -> importCertificateWithResponse(importOptions, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -1715,7 +1666,7 @@ public class CertificateAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificate imported certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultCertificate>> importCertificateWithResponse(CertificateImportOptions importOptions) {
+    public Mono<Response<KeyVaultCertificate>> importCertificateWithResponse(ImportCertificateOptions importOptions) {
         try {
             return withContext(context -> importCertificateWithResponse(importOptions, context));
         } catch (RuntimeException ex) {
@@ -1723,7 +1674,7 @@ public class CertificateAsyncClient {
         }
     }
 
-    Mono<Response<KeyVaultCertificate>> importCertificateWithResponse(CertificateImportOptions importOptions, Context context) {
+    Mono<Response<KeyVaultCertificate>> importCertificateWithResponse(ImportCertificateOptions importOptions, Context context) {
         CertificateImportParameters parameters = new CertificateImportParameters()
             .base64EncodedCertificate(Base64Url.encode(importOptions.getValue()).toString())
             .certificateAttributes(new CertificateRequestAttributes(importOptions))

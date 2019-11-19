@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
@@ -250,27 +251,6 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
                     issuerResponse.getValue().getProperties().getProvider());
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuerWithResponse#string
-
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuer#issuerProperties
-        certificateAsyncClient.getIssuer("issuerName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(issuer -> certificateAsyncClient.getIssuer(issuer.getProperties())
-            .subscribe(issuerResponse -> {
-                System.out.printf("Issuer returned with %s and %s", issuerResponse.getName(),
-                    issuerResponse.getProperties().getProvider());
-            }));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuer#issuerProperties
-
-
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuerWithResponse#issuerProperties
-        certificateAsyncClient.getIssuerWithResponse("issuerName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(issuer -> certificateAsyncClient.getIssuerWithResponse(issuer.getValue().getProperties())
-                .subscribe(issuerResponse -> {
-                    System.out.printf("Issuer returned with %s and %s", issuerResponse.getValue().getName(),
-                        issuerResponse.getValue().getProperties().getProvider());
-                }));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuerWithResponse#issuerProperties
     }
 
     /**
@@ -469,14 +449,14 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     public void recoverDeletedCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginrecoverDeletedCertificate#string
+        // BEGIN: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#string
         certificateAsyncClient.beginRecoverDeletedCertificate("deletedCertificateName")
             .subscribe(pollResponse -> {
                 System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
                 System.out.println("Recover Certificate Name: " + pollResponse.getValue().getName());
                 System.out.println("Recover Certificate Id: " + pollResponse.getValue().getId());
             });
-        // END: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginrecoverDeletedCertificate#string
+        // END: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#string
     }
 
     /**
@@ -542,13 +522,13 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     public void listCertificateIssuersCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.listIssuers
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.listPropertiesOfIssuers
         certificateAsyncClient.listPropertiesOfIssuers()
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerProperties -> certificateAsyncClient.getIssuer(issuerProperties.getName())
                 .subscribe(issuerResponse -> System.out.printf("Received issuer with name %s and provider %s",
                     issuerResponse.getName(), issuerResponse.getProperties().getProvider())));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.listIssuers
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.listPropertiesOfIssuers
     }
 
     /**

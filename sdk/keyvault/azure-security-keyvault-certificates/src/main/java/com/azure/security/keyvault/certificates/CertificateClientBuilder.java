@@ -18,6 +18,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
