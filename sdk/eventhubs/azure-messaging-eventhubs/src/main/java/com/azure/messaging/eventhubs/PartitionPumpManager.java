@@ -144,7 +144,8 @@ class PartitionPumpManager {
                 }
             }, /* EventHubConsumer receive() returned an error */
                 ex -> handleReceiveError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
-                () -> partitionProcessor.close(new CloseContext(partitionContext, CloseReason.EVENT_PROCESSOR_SHUTDOWN)));
+                () -> partitionProcessor.close(new CloseContext(partitionContext,
+                    CloseReason.EVENT_PROCESSOR_SHUTDOWN)));
     }
 
     private void handleProcessingError(PartitionOwnership claimedOwnership, PartitionProcessor partitionProcessor,

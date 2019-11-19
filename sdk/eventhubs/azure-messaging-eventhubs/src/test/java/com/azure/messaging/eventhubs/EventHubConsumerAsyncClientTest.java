@@ -350,7 +350,7 @@ public class EventHubConsumerAsyncClientTest {
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
 
         when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
-        consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents).subscribe(new BaseSubscriber<>() {
+        consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents).subscribe(new BaseSubscriber<PartitionEvent>() {
             final AtomicInteger count = new AtomicInteger();
 
             @Override
