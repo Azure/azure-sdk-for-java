@@ -76,6 +76,12 @@ import java.util.ServiceLoader;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
  *
+ * <p><strong>Creating producers and consumers that share the same connection</strong></p>
+ * <p>By default, a dedicated connection is created for each producer and consumer created from the builder. If users
+ * wish to leverage the same underlying connection, they can toggle {@link #shareConnection() shareConnection()}.</p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation}
+ *
  * @see EventHubClient
  * @see EventHubAsyncClient
  */
@@ -220,10 +226,9 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the Event Hub connection to use when interacting with Event Hubs. If not set, a new connection will be
-     * constructed and used. If a connection is provided, end users are responsible for disposing of it.
+     * Toggles the builder to use the same connection for producers or consumers that are built from this instance. By
+     * default, a new connection is constructed and used created for each Event Hub consumer or producer created.
      *
-     * @param eventHubConnection Event Hub connection to use.
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder shareConnection() {
