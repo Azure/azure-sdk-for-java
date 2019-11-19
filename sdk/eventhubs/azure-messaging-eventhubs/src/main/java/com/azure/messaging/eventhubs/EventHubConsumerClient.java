@@ -232,10 +232,7 @@ public class EventHubConsumerClient implements Closeable {
         final long id = idGenerator.getAndIncrement();
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maximumWaitTime,
             emitter);
-
-        logger.info("Queueing work item in SynchronousEventSubscriber.");
-        SynchronousEventSubscriber syncSubscriber = new SynchronousEventSubscriber(work);
-
+        final SynchronousEventSubscriber syncSubscriber = new SynchronousEventSubscriber(work);
         logger.info("Started synchronous event subscriber for partition '{}'.", partitionId);
         consumer.receiveFromPartition(partitionId, startingPosition, receiveOptions).subscribeWith(syncSubscriber);
     }

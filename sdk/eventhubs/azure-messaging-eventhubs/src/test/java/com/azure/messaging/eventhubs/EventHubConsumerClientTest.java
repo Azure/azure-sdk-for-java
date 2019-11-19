@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
@@ -30,7 +29,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -105,6 +103,7 @@ public class EventHubConsumerClientTest {
         when(amqpReceiveLink.getErrors()).thenReturn(Flux.never());
         when(amqpReceiveLink.getConnectionStates()).thenReturn(Flux.never());
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(Flux.never());
+        when(amqpReceiveLink.getCredits()).thenReturn(10);
 
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
@@ -241,12 +240,13 @@ public class EventHubConsumerClientTest {
         final int firstReceive = 8;
         final int secondReceive = 4;
 
-        DirectProcessor<Message> processor = DirectProcessor.create();
+        EmitterProcessor<Message> processor = EmitterProcessor.create(100, false);
         FluxSink<Message> sink2 = processor.sink(FluxSink.OverflowStrategy.BUFFER);
         when(amqpReceiveLink2.receive()).thenReturn(processor);
         when(amqpReceiveLink2.getErrors()).thenReturn(Flux.never());
         when(amqpReceiveLink2.getConnectionStates()).thenReturn(Flux.never());
         when(amqpReceiveLink2.getShutdownSignals()).thenReturn(Flux.never());
+        when(amqpReceiveLink2.getCredits()).thenReturn(10);
 
         // Act
         sendMessages(sink, numberOfEvents, PARTITION_ID);
@@ -259,7 +259,6 @@ public class EventHubConsumerClientTest {
         System.out.println("First receive.");
         final Map<Integer, PartitionEvent> firstActual = receive.stream()
             .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
-        Assertions.assertEquals(firstReceive, firstActual.size());
 
         System.out.println("Second receive.");
         final Map<Integer, PartitionEvent> secondActual = receive2.stream()
@@ -271,13 +270,8 @@ public class EventHubConsumerClientTest {
         Assertions.assertEquals(firstReceive, firstActual.size());
         Assertions.assertEquals(secondReceive, secondActual.size());
 
-        int startingIndex = 0;
-        int endIndex = firstReceive;
-        IntStream.range(startingIndex, endIndex).forEachOrdered(number -> Assertions.assertTrue(firstActual.containsKey(number)));
-
-        startingIndex += firstReceive;
-        endIndex += secondReceive;
-        IntStream.range(startingIndex, endIndex).forEachOrdered(number -> Assertions.assertTrue(secondActual.containsKey(number)));
+        IntStream.range(0, firstReceive).forEachOrdered(number -> Assertions.assertTrue(firstActual.containsKey(number)));
+        IntStream.range(0, secondReceive).forEachOrdered(number -> Assertions.assertTrue(secondActual.containsKey(number)));
     }
 
     /**
@@ -415,7 +409,8 @@ public class EventHubConsumerClientTest {
             Map<String, String> set = new HashMap<>();
             set.put(MESSAGE_POSITION_ID, Integer.valueOf(i).toString());
             set.put(PARTITION_ID_HEADER, partitionId);
-            sink.next(getMessage(PAYLOAD_BYTES, messageTrackingUUID, set));
+            final Message message = getMessage(PAYLOAD_BYTES, messageTrackingUUID, set);
+            sink.next(message);
         }
     }
 }
