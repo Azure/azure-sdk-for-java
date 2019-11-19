@@ -50,10 +50,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        EventHubConnection connection = createBuilder().buildConnection();
-        client = createBuilder()
-            .connection(connection)
-            .buildAsyncClient();
+        client = createBuilder().shareConnection().buildAsyncClient();
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);

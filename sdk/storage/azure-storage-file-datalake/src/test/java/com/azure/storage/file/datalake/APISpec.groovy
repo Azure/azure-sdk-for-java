@@ -15,6 +15,8 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -287,13 +289,24 @@ class APISpec extends Specification {
         }
     }
 
-    static DataLakeLeaseClient createLeaseClient(DataLakePathClient pathClient) {
+    static DataLakeLeaseClient createLeaseClient(DataLakeFileClient pathClient) {
         return createLeaseClient(pathClient, null)
     }
 
-    static DataLakeLeaseClient createLeaseClient(DataLakePathClient pathClient, String leaseId) {
+    static DataLakeLeaseClient createLeaseClient(DataLakeFileClient pathClient, String leaseId) {
         return new DataLakeLeaseClientBuilder()
-            .pathClient(pathClient)
+            .fileClient(pathClient)
+            .leaseId(leaseId)
+            .buildClient()
+    }
+
+    static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient) {
+        return createLeaseClient(pathClient, null)
+    }
+
+    static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder()
+            .directoryClient(pathClient)
             .leaseId(leaseId)
             .buildClient()
     }

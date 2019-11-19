@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
@@ -15,8 +17,6 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.ProxyAuthenticationType;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
@@ -76,6 +76,12 @@ import java.util.ServiceLoader;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
  *
+ * <p><strong>Creating producers and consumers that share the same connection</strong></p>
+ * <p>By default, a dedicated connection is created for each producer and consumer created from the builder. If users
+ * wish to leverage the same underlying connection, they can toggle {@link #shareConnection() shareConnection()}.</p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation}
+ *
  * @see EventHubClient
  * @see EventHubAsyncClient
  */
@@ -104,12 +110,16 @@ public class EventHubClientBuilder {
     private EventPosition startingPosition;
     private String consumerGroup;
     private EventHubConnection eventHubConnection;
+    private boolean isSharedConnection;
 
     /**
-     * Creates a new instance with the default transport {@link TransportType#AMQP}.
+     * Creates a new instance with the default transport {@link TransportType#AMQP} and a non-shared connection. A
+     * non-shared connection means that a dedicated AMQP connection is created for every Event Hub consumer or producer
+     * created using the builder.
      */
     public EventHubClientBuilder() {
         transport = TransportType.AMQP;
+        isSharedConnection = false;
     }
 
     /**
@@ -216,14 +226,13 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the Event Hub connection to use when interacting with Event Hubs. If not set, a new connection will be
-     * constructed and used. If a connection is provided, end users are responsible for disposing of it.
+     * Toggles the builder to use the same connection for producers or consumers that are built from this instance. By
+     * default, a new connection is constructed and used created for each Event Hub consumer or producer created.
      *
-     * @param eventHubConnection Event Hub connection to use.
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder connection(EventHubConnection eventHubConnection) {
-        this.eventHubConnection = eventHubConnection;
+    public EventHubClientBuilder shareConnection() {
+        this.isSharedConnection = true;
         return this;
     }
 
@@ -346,21 +355,6 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Creates a new {@link EventHubConnection} based on the options set on this builder. Every time
-     * {@code buildConnection()} is invoked, a new instance of {@link EventHubConnection} is created.
-     *
-     * @return A new {@link EventHubConnection} with the configured options.
-     *
-     * @throws IllegalArgumentException if the credentials have not been set using either {@link
-     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
-     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
-     */
-    public EventHubConnection buildConnection() {
-        final MessageSerializer messageSerializer = new EventHubMessageSerializer();
-        return buildConnection(messageSerializer);
-    }
-
-    /**
      * Creates a new {@link EventHubConsumerAsyncClient} based on the options set on this builder. Every time
      * {@code buildAsyncConsumer()} is invoked, a new instance of {@link EventHubConsumerAsyncClient} is created.
      *
@@ -470,7 +464,10 @@ public class EventHubClientBuilder {
 
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
-        final boolean isSharedConnection = eventHubConnection != null;
+        if (isSharedConnection && eventHubConnection == null) {
+            eventHubConnection = buildConnection(messageSerializer);
+        }
+
         final EventHubConnection connection = isSharedConnection
             ? eventHubConnection
             : buildConnection(messageSerializer);

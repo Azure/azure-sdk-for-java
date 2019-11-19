@@ -163,6 +163,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -473,6 +474,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * and existing blocks together. Any blocks not specified in the block list and permanently deleted. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *

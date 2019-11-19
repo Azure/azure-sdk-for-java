@@ -22,6 +22,7 @@ import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -268,7 +269,9 @@ public final class DataLakePathClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
     public DataLakePathClientBuilder endpoint(String endpoint) {
-        blobClientBuilder.endpoint(Transforms.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
+        // Ensure endpoint provided is dfs endpoint
+        endpoint = DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "dfs", "blob");
+        blobClientBuilder.endpoint(DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
         try {
             URL url = new URL(endpoint);
             BlobUrlParts parts = BlobUrlParts.parse(url);
@@ -333,7 +336,8 @@ public final class DataLakePathClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated DataLakePathClientBuilder object
