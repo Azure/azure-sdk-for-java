@@ -270,6 +270,10 @@
                 --add-opens com.azure.storage.blob/com.azure.storage.blob=ALL-UNNAMED
                 --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.blob/com.azure.storage.blob.specialized=ALL-UNNAMED
+                --add-reads com.azure.core=ALL-UNNAMED
+                --add-reads com.azure.core.test=ALL-UNNAMED
+                --add-reads com.azure.core.amqp=ALL-UNNAMED
+                --add-reads com.azure.storage.common=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

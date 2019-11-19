@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.Configuration;
@@ -162,11 +162,11 @@ public class EventProcessorBuilder {
      * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
      * TransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
-     * @param proxyConfiguration The proxy configuration to use.
+     * @param proxyOptions The proxy configuration to use.
      * @return The updated {@link EventProcessorBuilder} object.
      */
-    public EventProcessorBuilder proxyConfiguration(ProxyConfiguration proxyConfiguration) {
-        eventHubClientBuilder.proxyConfiguration(proxyConfiguration);
+    public EventProcessorBuilder proxyConfiguration(ProxyOptions proxyOptions) {
+        eventHubClientBuilder.proxyOptions(proxyOptions);
         return this;
     }
 

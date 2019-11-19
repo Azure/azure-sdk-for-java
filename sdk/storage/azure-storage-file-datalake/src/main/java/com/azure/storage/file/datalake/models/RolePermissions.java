@@ -20,47 +20,33 @@ public class RolePermissions {
     /**
      * Grants read permissions for the role.
      */
-    private boolean read = false;
+    private boolean readPermission = false;
 
     /**
      * Grants write permissions for the role.
      */
-    private boolean write = false;
+    private boolean writePermission = false;
 
     /**
      * Grants execute permissions for the role.
      */
-    private boolean execute = false;
+    private boolean executePermission = false;
 
     /**
      * Initializes an instance of {@code RolePermissions} with all values set to false.
      */
     public RolePermissions() {
-
     }
 
     /**
-     * Initializes an instance of {@code RolePermissions} with the given values.
+     * Package-private constructor for use by PathAccessControlEntry
      *
-     * @param read Grants read permissions to this role.
-     * @param write Grants write permissions to this role.
-     * @param execute Grants execute permissions to this role.
+     * @param other {@link RolePermissions}
      */
-    public RolePermissions(boolean read, boolean write, boolean execute) {
-        this.read = read;
-        this.write = write;
-        this.execute = execute;
-    }
-
-    /**
-     * Initializs an instance of {@code RolePermissions} with values copied from the passed instance.
-     *
-     * @param other The instance with values to copy.
-     */
-    public RolePermissions(RolePermissions other) {
-        this.read = other.read;
-        this.write = other.write;
-        this.execute = other.execute;
+    RolePermissions(RolePermissions other) {
+        this.readPermission = other.readPermission;
+        this.writePermission = other.writePermission;
+        this.executePermission = other.executePermission;
     }
 
     /**
@@ -73,15 +59,15 @@ public class RolePermissions {
         RolePermissions res = new RolePermissions();
         StorageImplUtils.assertInBounds("octal", octal, 0, 7);
         if (octal / 4 > 0) {
-            res.read = true;
+            res.readPermission = true;
         }
         octal = octal % 4;
         if (octal / 2 > 0) {
-            res.write = true;
+            res.writePermission = true;
         }
         octal = octal % 2;
         if (octal > 0) {
-            res.execute = true;
+            res.executePermission = true;
         }
         return res;
     }
@@ -103,22 +89,22 @@ public class RolePermissions {
         RolePermissions res = new RolePermissions();
         IllegalArgumentException ex = new IllegalArgumentException(ROLE_PERMISSIONS_FORMAT_ERROR);
         if (str.charAt(0) == 'r') {
-            res.read = true;
+            res.readPermission = true;
         } else if (str.charAt(0) != '-') {
             throw ex;
         }
 
         if (str.charAt(1) == 'w') {
-            res.write = true;
+            res.writePermission = true;
         } else if (str.charAt(1) != '-') {
             throw ex;
         }
 
         if (str.charAt(2) == 'x') {
-            res.execute = true;
+            res.executePermission = true;
         } else if (allowStickyBit) {
             if (str.charAt(2) == 't') {
-                res.execute = true;
+                res.executePermission = true;
             } else if (str.charAt(2) != 'T' && str.charAt(2) != '-') {
                 throw ex;
             }
@@ -136,13 +122,13 @@ public class RolePermissions {
      */
     public String toOctal() {
         int res = 0;
-        if (this.read) {
+        if (this.readPermission) {
             res = res | (1 << 2);
         }
-        if (this.write) {
+        if (this.writePermission) {
             res = res | (1 << 1);
         }
-        if (this.execute) {
+        if (this.executePermission) {
             res = res | 1;
         }
         return "" + res;
@@ -155,19 +141,19 @@ public class RolePermissions {
      */
     public String toSymbolic() {
         StringBuilder sb = new StringBuilder();
-        if (this.read) {
+        if (this.readPermission) {
             sb.append('r');
         } else {
             sb.append('-');
         }
 
-        if (this.write) {
+        if (this.writePermission) {
             sb.append('w');
         } else {
             sb.append('-');
         }
 
-        if (this.execute) {
+        if (this.executePermission) {
             sb.append('x');
         } else {
             sb.append('-');
@@ -187,81 +173,75 @@ public class RolePermissions {
 
         RolePermissions that = (RolePermissions) o;
 
-        if (read != that.read) {
+        if (readPermission != that.readPermission) {
             return false;
         }
-        if (write != that.write) {
+        if (writePermission != that.writePermission) {
             return false;
         }
-        return execute == that.execute;
+        return executePermission == that.executePermission;
     }
 
     @Override
     public int hashCode() {
-        int result = (read ? 1 : 0);
-        result = 31 * result + (write ? 1 : 0);
-        result = 31 * result + (execute ? 1 : 0);
+        int result = (readPermission ? 1 : 0);
+        result = 31 * result + (writePermission ? 1 : 0);
+        result = 31 * result + (executePermission ? 1 : 0);
         return result;
     }
 
     /**
-     * Grants the role read permissions on the resource.
-     *
-     * @return Whether or not the role has read permissions on the resource.
+     * @return the read permission status
      */
-    public boolean read() {
-        return read;
+    public boolean hasReadPermission() {
+        return readPermission;
     }
 
     /**
-     * Grants the role write permissions on the resource.
-     *
-     * @return Whether or not the role has write permissions on the resource.
+     * @return the write permission status
      */
-    public boolean write() {
-        return write;
+    public boolean hasWritePermission() {
+        return writePermission;
     }
 
     /**
-     * Grants the role execute permissions on the resource.
-     *
-     * @return Whether or not the role has execute permissions on the resource.
+     * @return the execute permission status
      */
-    public boolean execute() {
-        return execute;
+    public boolean hasExecutePermission() {
+        return executePermission;
     }
 
     /**
-     * Grants the role read permissions on the resource.
+     * Sets the read permission status.
      *
-     * @param read {@code true} if read permissions should be granted.
-     * @return The updated RolePermissions object.
+     * @param hasReadPermission Permission status to set
+     * @return the updated RolePermissions object
      */
-    public RolePermissions read(boolean read) {
-        this.read = read;
+    public RolePermissions setReadPermission(boolean hasReadPermission) {
+        this.readPermission = hasReadPermission;
         return this;
     }
 
     /**
-     * Grants the role execute permissions on the resource.
+     * Sets the write permission status.
      *
-     * @param write {@code true} if write permissions should be granted.
-     * @return The updated RolePermissions object.
+     * @param hasWritePermission Permission status to set
+     * @return the updated RolePermissions object
      */
-    public RolePermissions write(boolean write) {
-        this.write = write;
+    public RolePermissions setWritePermission(boolean hasWritePermission) {
+        this.writePermission = hasWritePermission;
 
         return this;
     }
 
     /**
-     * Grants the role execute permissions on the resource.
+     * Sets the execute permission status.
      *
-     * @param execute {@code true} if execute permissions should be granted.
-     * @return The updated RolePermissions object.
+     * @param hasExecutePermission Permission status to set
+     * @return the updated RolePermissions object
      */
-    public RolePermissions execute(boolean execute) {
-        this.execute = execute;
+    public RolePermissions setExecutePermission(boolean hasExecutePermission) {
+        this.executePermission = hasExecutePermission;
         return this;
     }
 }

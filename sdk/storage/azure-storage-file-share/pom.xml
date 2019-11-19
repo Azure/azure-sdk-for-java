@@ -225,6 +225,10 @@
                 --add-opens com.azure.storage.file.share/com.azure.storage.file.share=ALL-UNNAMED
                 --add-opens com.azure.storage.file.share/com.azure.storage.file.share.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.file.share/com.azure.storage.file.share.models=ALL-UNNAMED
+                --add-reads com.azure.core=ALL-UNNAMED
+                --add-reads com.azure.core.test=ALL-UNNAMED
+                --add-reads com.azure.core.amqp=ALL-UNNAMED
+                --add-reads com.azure.storage.common=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

@@ -6,7 +6,7 @@
       "verbose": "",
       "sdkrel:azure-libraries-for-java-folder": ".",
       "multiapi": "",
-      "use": "@microsoft.azure/autorest.java@preview"
+      "use": "@microsoft.azure/autorest.java@2.1.95"
     },
     "version": "0.2.0",
     "advanced_options": {

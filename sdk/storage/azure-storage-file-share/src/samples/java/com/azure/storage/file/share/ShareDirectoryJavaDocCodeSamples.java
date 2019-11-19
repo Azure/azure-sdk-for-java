@@ -120,30 +120,30 @@ public class ShareDirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryClient#createSubDirectory(String)}
+     * Generates a code sample for using {@link ShareDirectoryClient#createSubdirectory(String)}
      */
-    public void createSubDirectory() {
+    public void createSubdirectory() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createSubDirectory#string
-        shareDirectoryClient.createSubDirectory("subdir");
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectory#string
+        shareDirectoryClient.createSubdirectory("subdir");
         System.out.println("Completed creating the subdirectory.");
-        // END: com.azure.storage.file.share.ShareDirectoryClient.createSubDirectory#string
+        // END: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectory#string
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryClient#createSubDirectoryWithResponse(String,
+     * Generates a code sample for using {@link ShareDirectoryClient#createSubdirectoryWithResponse(String,
      * FileSmbProperties, String, Map, Duration, Context)}
      */
-    public void createSubDirectoryMaxOverload() {
+    public void createSubdirectoryMaxOverload() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createSubDirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
-        Response<ShareDirectoryClient> response = shareDirectoryClient.createSubDirectoryWithResponse("subdir",
+        Response<ShareDirectoryClient> response = shareDirectoryClient.createSubdirectoryWithResponse("subdir",
             smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the sub directory completed with status code %d", response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareDirectoryClient.createSubDirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context
+        // END: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context
     }
 
     /**
@@ -236,27 +236,27 @@ public class ShareDirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryClient#deleteSubDirectory(String)}
+     * Generates a code sample for using {@link ShareDirectoryClient#deleteSubdirectory(String)}
      */
-    public void deleteSubDirectory() {
+    public void deleteSubdirectory() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteSubDirectory#string
-        shareDirectoryClient.deleteSubDirectory("mysubdirectory");
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectory#string
+        shareDirectoryClient.deleteSubdirectory("mysubdirectory");
         System.out.println("Complete deleting the subdirectory.");
-        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteSubDirectory#string
+        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectory#string
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryClient#deleteSubDirectoryWithResponse(String, Duration,
+     * Generates a code sample for using {@link ShareDirectoryClient#deleteSubdirectoryWithResponse(String, Duration,
      * Context)}
      */
-    public void deleteSubDirectoryWithResponse() {
+    public void deleteSubdirectoryWithResponse() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteSubDirectoryWithResponse#string-duration-context
-        Response<Void> response = shareDirectoryClient.deleteSubDirectoryWithResponse("mysubdirectory",
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryWithResponse#string-duration-context
+        Response<Void> response = shareDirectoryClient.deleteSubdirectoryWithResponse("mysubdirectory",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed deleting the subdirectory with status code: " + response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteSubDirectoryWithResponse#string-duration-context
+        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryWithResponse#string-duration-context
     }
 
     /**

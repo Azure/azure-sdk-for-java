@@ -183,6 +183,17 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobAsyncClient#commitBlockList(List, boolean)}
+     */
+    public void commitBlockListWithOverwrite() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List-boolean
+        boolean overwrite = false; // Default behavior
+        client.commitBlockList(Collections.singletonList(base64BlockID), overwrite).subscribe(response ->
+            System.out.printf("Committing block list completed. Last modified: %s%n", response.getLastModified()));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List-boolean
+    }
+
+    /**
      * Code snippet for {@link BlockBlobAsyncClient#commitBlockListWithResponse(List, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
      */
     public void commitBlockList2() {
