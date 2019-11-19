@@ -74,7 +74,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
             .buildAsyncConsumer();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber
-        consumer.receiveFromPartition(partitionId, EventPosition.latest()).subscribe(new BaseSubscriber<>() {
+        consumer.receiveFromPartition(partitionId, EventPosition.latest()).subscribe(new BaseSubscriber<PartitionEvent>() {
             private static final int NUMBER_OF_EVENTS = 5;
             private final AtomicInteger currentNumberOfEvents = new AtomicInteger();
 
