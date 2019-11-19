@@ -429,7 +429,10 @@ public class EventHubProducerAsyncClient implements Closeable {
             .flatMap(link -> {
                 if (isTracingEnabled) {
                     Context userSpanContext = parentContext.get();
-                    parentContext.set(traceSendSpan(userSpanContext, link));
+                    Context entityContext = userSpanContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
+                    // start send span and store updated context
+                    parentContext.set(tracerProvider.startSpan(
+                        entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
                 }
                 return messages.size() == 1
                     ? link.send(messages.get(0))
@@ -440,20 +443,6 @@ public class EventHubProducerAsyncClient implements Closeable {
                     tracerProvider.endSpan(parentContext.get(), signal);
                 }
             });
-    }
-
-    /**
-     * Method to start a "Azure.EventHubs.send" span and return the created span in context object.
-     *
-     * @param userSpanContext context containing the optional parent span from the user.
-     * @param link the {@link com.azure.core.amqp.implementation.AmqpSendLink}.
-     *
-     * @return the updated {@link com.azure.core.util.Context} object containing the created send span
-     */
-    private Context traceSendSpan(Context userSpanContext, AmqpSendLink link) {
-        Context entityContext = userSpanContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
-        return tracerProvider.startSpan(
-            entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND);
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
