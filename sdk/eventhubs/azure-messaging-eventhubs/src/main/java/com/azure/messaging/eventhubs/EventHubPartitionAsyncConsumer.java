@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -154,9 +155,12 @@ class EventHubPartitionAsyncConsumer implements Closeable {
     }
 
     /**
-     * On each message received from the service, it will try to: 1. Deserialize the message into an EventData 2. If
-     * {@link com.azure.messaging.eventhubs.models.ReceiveOptions#getTrackLastEnqueuedEventProperties()} is true, then
-     * it will try to update {@link LastEnqueuedEventProperties}
+     * On each message received from the service, it will try to:
+     * <ol>
+     * <li>Deserialize the message into an {@link EventData}.</li>
+     * <li>If {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()} is true, then it will try to update
+     * {@link LastEnqueuedEventProperties}.</li>
+     * </ol>
      *
      * @param message AMQP message to deserialize.
      *
