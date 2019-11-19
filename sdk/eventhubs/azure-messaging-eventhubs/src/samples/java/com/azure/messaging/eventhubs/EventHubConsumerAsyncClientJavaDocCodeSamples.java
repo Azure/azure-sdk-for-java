@@ -30,6 +30,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
             .buildAsyncConsumer();
         // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
     }
+
     /**
      * Receives event data
      */
