@@ -45,11 +45,9 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     protected void beforeTest(TransportType transportType) {
-        builder = createBuilder()
-            .transportType(transportType);
-        EventHubConnection connection = builder.buildConnection();
         client = new EventHubClientBuilder()
-            .connection(connection)
+            .transportType(transportType)
+            .shareConnection()
             .buildAsyncClient();
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
