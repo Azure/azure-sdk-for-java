@@ -70,7 +70,7 @@ class EventHubAsyncClient implements Closeable {
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
     Flux<String> getPartitionIds() {
-        return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
+        return getProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
 
     /**

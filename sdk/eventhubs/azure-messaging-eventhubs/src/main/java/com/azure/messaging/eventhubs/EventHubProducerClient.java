@@ -127,7 +127,6 @@ public class EventHubProducerClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<String> getPartitionIds() {
         return new IterableStream<>(producer.getPartitionIds());
     }
