@@ -62,6 +62,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -100,7 +101,7 @@ public class EventHubConsumerAsyncClientTest {
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplier;
 
-    private EventHubConnection linkProvider;
+    private EventHubConnection eventHubConnection;
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConsumerAsyncClient consumer;
     private ConnectionOptions connectionOptions;
@@ -117,12 +118,12 @@ public class EventHubConsumerAsyncClientTest {
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
-        linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
+        eventHubConnection = new EventHubConnection(Mono.just(connection), connectionOptions);
         when(connection.createSession(any())).thenReturn(Mono.just(session));
         when(session.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
             .thenReturn(Mono.just(amqpReceiveLink));
 
-        consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer,
+        consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, eventHubConnection, messageSerializer,
             CONSUMER_GROUP, PREFETCH, false);
     }
 
@@ -138,8 +139,8 @@ public class EventHubConsumerAsyncClientTest {
      */
     @Test
     public void lastEnqueuedEventInformationIsNull() {
-        final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false);
+        final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+        eventHubConnection, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false);
         final int numberOfEvents = 10;
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
         final int numberToReceive = 3;
@@ -159,8 +160,8 @@ public class EventHubConsumerAsyncClientTest {
     @Test
     public void lastEnqueuedEventInformationCreated() {
         // Arrange
-        final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false);
+        final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false);
         final int numberOfEvents = 10;
         final ReceiveOptions receiveOptions = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
@@ -662,6 +663,42 @@ public class EventHubConsumerAsyncClientTest {
             .assertNext(event -> assertPartition(PARTITION_ID, event))
             .thenCancel()
             .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that when we have a shared connection, the consumer does not close that connection.
+     */
+    @Test
+    public void doesNotCloseSharedConnection() {
+        // Arrange
+        EventHubConnection hubConnection = mock(EventHubConnection.class);
+        EventHubConsumerOptions options = new EventHubConsumerOptions();
+        EventHubConsumerAsyncClient sharedConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            hubConnection, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(), options, true);
+
+        // Act
+        sharedConsumer.close();
+
+        // Verify
+        verify(hubConnection, never()).close();
+    }
+
+    /**
+     * Verifies that when we have a non-shared connection, the consumer closes that connection.
+     */
+    @Test
+    public void closesDedicatedConnection() {
+        // Arrange
+        EventHubConnection hubConnection = mock(EventHubConnection.class);
+        EventHubConsumerOptions options = new EventHubConsumerOptions();
+        EventHubConsumerAsyncClient dedicatedConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            hubConnection, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(), options, false);
+
+        // Act
+        dedicatedConsumer.close();
+
+        // Verify
+        verify(hubConnection, times(1)).close();
     }
 
     private void assertPartition(String partitionId, PartitionEvent event) {

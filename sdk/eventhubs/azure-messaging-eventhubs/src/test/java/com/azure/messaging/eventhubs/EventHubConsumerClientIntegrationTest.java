@@ -51,12 +51,12 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        connection = new EventHubClientBuilder()
+        client = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .scheduler(Schedulers.single())
             .retry(RETRY_OPTIONS)
-            .buildConnection();
-        client = new EventHubClientBuilder().connection(connection).buildClient();
+            .shareConnection()
+            .buildClient();
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.info("Already pushed events to partition. Skipping.");
