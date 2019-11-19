@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 
@@ -53,6 +54,12 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     @SuppressWarnings("unchecked")
     public T proxyOptions(ProxyOptions proxyOptions) {
         this.identityClientOptions.setProxyOptions(proxyOptions);
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T httpPipeline(HttpPipeline httpPipeline) {
+        this.identityClientOptions.setHttpPipeline(httpPipeline);
         return (T) this;
     }
 }

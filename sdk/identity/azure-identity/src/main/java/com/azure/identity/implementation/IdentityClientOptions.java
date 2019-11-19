@@ -3,8 +3,18 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 
+import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.function.Function;
 
@@ -19,6 +29,7 @@ public final class IdentityClientOptions {
     private int maxRetry;
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
+    private HttpPipeline httpPipeline;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -27,6 +38,12 @@ public final class IdentityClientOptions {
         authorityHost = DEFAULT_AUTHORITY_HOST;
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
+        httpPipeline = new HttpPipelineBuilder()
+                .httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("10.127.70.25", 8888))).build())
+                .policies(
+                new UserAgentPolicy(),
+                new RetryPolicy(),
+                new CookiePolicy(), new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))).build();
     }
 
     /**
@@ -95,5 +112,13 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setProxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
+    }
+
+    public HttpPipeline getHttpPipeline() {
+        return httpPipeline;
+    }
+
+    public void setHttpPipeline(HttpPipeline httpPipeline) {
+        this.httpPipeline = httpPipeline;
     }
 }

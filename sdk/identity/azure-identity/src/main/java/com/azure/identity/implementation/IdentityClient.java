@@ -87,6 +87,7 @@ public class IdentityClient {
         } else {
             String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
+            publicClientApplicationBuilder = publicClientApplicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
@@ -110,7 +111,8 @@ public class IdentityClient {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(clientSecret))
+                ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromSecret(clientSecret))
+                    .httpClient(new HttpPipelineAdapter(options.getHttpPipeline()))
                     .authority(authorityUrl);
             if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
@@ -140,7 +142,8 @@ public class IdentityClient {
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId,
-                    ClientCredentialFactory.create(new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
+                    ClientCredentialFactory.createFromCertificate(new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
+                    .httpClient(new HttpPipelineAdapter(options.getHttpPipeline()))
                     .authority(authorityUrl);
             if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
@@ -174,8 +177,10 @@ public class IdentityClient {
             byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemCertificatePath));
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId,
-                    ClientCredentialFactory.create(CertificateUtil.privateKeyFromPem(pemCertificateBytes),
-                        CertificateUtil.publicKeyFromPem(pemCertificateBytes))).authority(authorityUrl);
+                    ClientCredentialFactory.createFromCertificate(CertificateUtil.privateKeyFromPem(pemCertificateBytes),
+                        CertificateUtil.publicKeyFromPem(pemCertificateBytes)))
+                        .httpClient(new HttpPipelineAdapter(options.getHttpPipeline()))
+                        .authority(authorityUrl);
             if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }

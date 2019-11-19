@@ -8,6 +8,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
 import org.junit.Assert;
 import org.junit.Ignore;
+import org.junit.Test;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
@@ -21,9 +22,9 @@ public class IdentityClientIntegrationTests {
     private static final String AZURE_CLIENT_CERTIFICATE = "AZURE_CLIENT_CERTIFICATE";
     private final TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
 
-    @Ignore("Integration test")
+    @Test
     public void clientSecretCanGetToken() {
-        IdentityClient client = new IdentityClient(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
+        IdentityClient client = new IdentityClient(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions());
         StepVerifier.create(client.authenticateWithClientSecret(System.getenv(AZURE_CLIENT_SECRET), request))
             .expectNextMatches(token -> token.getToken() != null
                 && token.getExpiresAt() != null
@@ -36,7 +37,7 @@ public class IdentityClientIntegrationTests {
             .verifyComplete();
     }
 
-    @Ignore("Integration tests")
+    @Test
     public void deviceCodeCanGetToken() {
         IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
         MsalToken token = client.authenticateWithDeviceCode(request, deviceCode -> {
@@ -58,9 +59,9 @@ public class IdentityClientIntegrationTests {
         Assert.assertFalse(token.isExpired());
     }
 
-    @Ignore("Integration tests")
+    @Test
     public void browserCanGetToken() {
-        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
+        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions());
         MsalToken token = client.authenticateWithBrowserInteraction(request, 8765).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
