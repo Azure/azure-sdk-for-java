@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,14 +45,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @see EventHubProducerClient
  * @see EventHubProducerAsyncClient
  */
-public class EventData implements Comparable<EventData> {
+public class EventData {
     /*
      * These are properties owned by the service and set when a message is received.
      */
     static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
     private final Map<String, Object> properties;
-    private final ByteBuffer body;
+    private final byte[] body;
     private final SystemProperties systemProperties;
     private Context context;
 
@@ -107,7 +108,7 @@ public class EventData implements Comparable<EventData> {
         Objects.requireNonNull(body, "'body' cannot be null.");
         Objects.requireNonNull(body, "'context' cannot be null.");
 
-        this.body = body;
+        this.body = body.array();
         this.properties = new HashMap<>();
         this.systemProperties = new SystemProperties();
         this.context = context;
@@ -130,7 +131,7 @@ public class EventData implements Comparable<EventData> {
      * @param context A specified key-value pair of type {@link Context}.
      * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
-    EventData(ByteBuffer body, SystemProperties systemProperties, Context context) {
+    EventData(byte[] body, SystemProperties systemProperties, Context context) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
         this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
@@ -138,31 +139,12 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * Adds a piece of metadata to the event, allowing publishers to offer additional information to event consumers. If
-     * the {@code key} exists in the map, its existing value is overwritten.
+     * A specified key-value pair of type {@link Context} to set additional information on the event.
      *
-     * <p>
-     * A common use case for {@link #getProperties()} is to associate serialization hints for the {@link #getBody()} as
-     * an aid to consumers who wish to deserialize the binary data.
-     * </p>
-     *
-     * <p>
-     * <strong>Adding serialization hint using {@code addProperty(String, Object)}</strong>
-     * </p>
-     *
-     * {@codesnippet com.azure.messaging.eventhubs.eventdata.addProperty#string-object}
-     *
-     * @param key The key for this application property
-     * @param value The value for this application property.
-     * @return The updated EventData object.
-     * @throws NullPointerException if {@code key} or {@code value} is null.
+     * @return the {@link Context} object set on the event
      */
-    public EventData addProperty(String key, Object value) {
-        Objects.requireNonNull(key, "'key' cannot be null.");
-        Objects.requireNonNull(value, "'value' cannot be null.");
-
-        properties.put(key, value);
-        return this;
+    Context getContext() {
+        return context;
     }
 
     /**
@@ -173,7 +155,7 @@ public class EventData implements Comparable<EventData> {
      * @return The updated EventData object.
      * @throws NullPointerException if {@code key} or {@code value} is null.
      */
-    public EventData addContext(String key, Object value) {
+    EventData addContext(String key, Object value) {
         Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
         Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
         this.context = context.addData(key, value);
@@ -182,26 +164,19 @@ public class EventData implements Comparable<EventData> {
 
     /**
      * The set of free-form event properties which may be used for passing metadata associated with the event with the
-     * event body during Event Hubs operations.
-     *
-     * <p>
-     * A common use case for {@code properties()} is to associate serialization hints for the {@link #getBody()} as an
-     * aid to consumers who wish to deserialize the binary data. See {@link #addProperty(String, Object)} for a sample.
+     * event body during Event Hubs operations. A common use case for {@code properties()} is to associate serialization
+     * hints for the {@link #getBody()} as an aid to consumers who wish to deserialize the binary data.
      * </p>
+     *
+     * <p><strong>Adding serialization hint using {@code getProperties()}</strong></p>
+     * <p>In the sample, the type of telemetry is indicated by adding an application property with key "eventType".</p>
+     *
+     * {@codesnippet com.azure.messaging.eventhubs.eventdata.getProperties}
      *
      * @return Application properties associated with this {@link EventData}.
      */
     public Map<String, Object> getProperties() {
         return properties;
-    }
-
-    /**
-     * A specified key-value pair of type {@link Context} to set additional information on the event.
-     *
-     * @return the {@link Context} object set on the event
-     */
-    public Context getContext() {
-        return context;
     }
 
     /**
@@ -226,8 +201,8 @@ public class EventData implements Comparable<EventData> {
      *
      * @return ByteBuffer representing the data.
      */
-    public ByteBuffer getBody() {
-        return body.duplicate();
+    public byte[] getBody() {
+        return body;
     }
 
     /**
@@ -236,7 +211,7 @@ public class EventData implements Comparable<EventData> {
      * @return UTF-8 decoded string representation of the event data.
      */
     public String getBodyAsString() {
-        return UTF_8.decode(body).toString();
+        return UTF_8.decode(ByteBuffer.wrap(body)).toString();
     }
 
     /**
@@ -285,17 +260,6 @@ public class EventData implements Comparable<EventData> {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(EventData other) {
-        return Long.compare(
-            this.getSequenceNumber(),
-            other.getSequenceNumber()
-        );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -305,7 +269,7 @@ public class EventData implements Comparable<EventData> {
         }
 
         EventData eventData = (EventData) o;
-        return Objects.equals(body, eventData.body);
+        return Arrays.equals(body, eventData.body);
     }
 
     /**
@@ -313,7 +277,7 @@ public class EventData implements Comparable<EventData> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(body);
+        return Arrays.hashCode(body);
     }
 
     /**
