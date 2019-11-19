@@ -345,7 +345,7 @@ public class EventHubClientBuilder {
      *
      * @param prefetchCount The amount of events to queue locally.
      * @return The updated {@link EventHubClientBuilder} object.
-     * @throws IllegalArgumentException if {@code prefetchCount} is less than the {@link #MINIMUM_PREFETCH_COUNT 1} or
+     * @throws IllegalArgumentException if {@code prefetchCount} is less than {@link #MINIMUM_PREFETCH_COUNT 1} or
      *     greater than {@link #MAXIMUM_PREFETCH_COUNT 8000}.
      */
     public EventHubClientBuilder prefetchCount(int prefetchCount) {
