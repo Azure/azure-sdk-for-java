@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -95,18 +94,17 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can receive multiple times.
+     * Verifies that we can receive multiple times and each time, the same set is received.
      */
     @Test
     public void receiveEventsMultipleTimes() {
         // Arrange
         final int numberOfEvents = 5;
-        final int secondNumberOfEvents = 2;
         final Duration waitTime = Duration.ofSeconds(10);
 
         // Act
         final IterableStream<PartitionEvent> actual = consumer.receiveFromPartition(PARTITION_ID, numberOfEvents, startingPosition, waitTime);
-        final IterableStream<PartitionEvent> actual2 = consumer.receiveFromPartition(PARTITION_ID, secondNumberOfEvents, startingPosition, waitTime);
+        final IterableStream<PartitionEvent> actual2 = consumer.receiveFromPartition(PARTITION_ID, numberOfEvents, startingPosition, waitTime);
 
         // Assert
         final Map<Long, PartitionEvent> asList = actual.stream()
@@ -115,12 +113,14 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
 
         final Map<Long, PartitionEvent> asList2 = actual2.stream()
             .collect(Collectors.toMap(e -> e.getData().getSequenceNumber(), Function.identity()));
-        Assertions.assertEquals(secondNumberOfEvents, asList2.size());
+        Assertions.assertEquals(numberOfEvents, asList2.size());
 
-        final Long maximumSequence = Collections.max(asList.keySet());
-        final Long minimumSequence = Collections.min(asList2.keySet());
+        for (Long key : asList.keySet()) {
+            final PartitionEvent removed = asList2.remove(key);
+            Assertions.assertNotNull(removed, String.format("Expecting '%s' to be in second set. But was not.", key));
+        }
 
-        Assertions.assertTrue(maximumSequence < minimumSequence, "The minimum in second receive should be less than first receive.");
+        Assertions.assertTrue(asList2.isEmpty(), "Expected all keys to be removed from second set.");
     }
 
     /**
@@ -133,27 +133,20 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final String partitionId = "1";
         final List<EventData> events = getEventsAsList(numberOfEvents);
 
-        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now().minus(Duration.ofSeconds(10)));
+        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
         final EventHubProducerClient producer = client.createProducer();
 
         try {
-            final PartitionProperties partitionProperties = consumer.getPartitionProperties(partitionId);
             producer.send(events, sendOptions);
-            final PartitionProperties partitionProperties2 = consumer.getPartitionProperties(partitionId);
 
             // Act
             final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(partitionId, 100, position, Duration.ofSeconds(20));
 
             // Assert
-            System.out.println("Sleeping...");
-            TimeUnit.SECONDS.sleep(10);
-            System.out.println("Waking up...");
             final List<PartitionEvent> asList = receive.stream().collect(Collectors.toList());
             Assertions.assertEquals(numberOfEvents, asList.size());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         } finally {
             dispose(producer, consumer);
         }
