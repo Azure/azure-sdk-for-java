@@ -9,10 +9,8 @@ import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 
 import java.util.Objects;
-import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -22,27 +20,11 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
     private final Timer timer = new Timer("SynchronousEventSubscriber");
     private final AtomicInteger pendingReceives = new AtomicInteger();
     private final ClientLogger logger = new ClientLogger(SynchronousEventSubscriber.class);
-    private final Queue<SynchronousReceiveWork> pendingWork = new ConcurrentLinkedQueue<>();
+    private final SynchronousReceiveWork work;
     private volatile Subscription subscription;
 
-    /**
-     * Adds a new receive work item to the queue.
-     *
-     * @param work Synchronous receive work to add to the queue.
-     */
-    public void queueReceiveWork(SynchronousReceiveWork work) {
-        Objects.requireNonNull(work, "'work' cannot be null.");
-
-        final boolean isEmpty = pendingWork.isEmpty();
-        pendingWork.add(work);
-
-        if (isEmpty) {
-            logger.info("There is no existing work in queue. Scheduling: {}", work.getId());
-            scheduleWork(work);
-        } else {
-            logger.info("Verifying if there are any new work items. {}", work.getId());
-            getOrUpdateNextWork();
-        }
+    public SynchronousEventSubscriber(SynchronousReceiveWork work) {
+        this.work = Objects.requireNonNull(work, "'work' cannot be null.");
     }
 
     /**
@@ -56,91 +38,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
             this.subscription = subscription;
         }
 
-        final SynchronousReceiveWork work = pendingWork.peek();
-        if (work == null) {
-            logger.warning("There is no work to request EventData for. Listener should have been created with work.");
-        } else {
-            logger.info("Scheduling first work item: {}", work.getId());
-            scheduleWork(work);
-        }
-    }
-
-    /**
-     * Publishes the event to the current {@link SynchronousReceiveWork}. If that work item is complete, will pop off
-     * that work item, and queue the next one.
-     *
-     * @param value Event to publish.
-     */
-    @Override
-    protected void hookOnNext(PartitionEvent value) {
-        SynchronousReceiveWork currentItem = getOrUpdateNextWork();
-        if (currentItem == null) {
-            logger.warning("PartitionEvent received when there is no pending work. Skipping.");
-            return;
-        }
-
-        pendingReceives.decrementAndGet();
-        currentItem.next(value);
-
-        if (currentItem.isTerminal()) {
-            logger.info("Work: {}, Is completed. Closing flux.", currentItem.getId());
-            currentItem.complete();
-            getOrUpdateNextWork();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void hookOnError(Throwable throwable) {
-        logger.error("Error occurred in subscriber.", throwable);
-        final SynchronousReceiveWork[] remainingWork = pendingWork.toArray(new SynchronousReceiveWork[0]);
-        pendingWork.clear();
-
-        for (SynchronousReceiveWork work : remainingWork) {
-            work.error(throwable);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void dispose() {
-        final SynchronousReceiveWork[] remainingWork = pendingWork.toArray(new SynchronousReceiveWork[0]);
-        pendingWork.clear();
-
-        for (SynchronousReceiveWork work : remainingWork) {
-            work.complete();
-        }
-
-        super.dispose();
-    }
-
-    private synchronized SynchronousReceiveWork getOrUpdateNextWork() {
-        SynchronousReceiveWork work = pendingWork.peek();
-        if (work == null) {
-            subscription.request(0);
-        }
-
-        if (work == null || !work.isTerminal()) {
-            return work;
-        }
-
-        pendingWork.remove(work);
-        work = pendingWork.peek();
-
-        if (work == null) {
-            subscription.request(0);
-            return null;
-        }
-
-        scheduleWork(work);
-        return work;
-    }
-
-    private synchronized void scheduleWork(SynchronousReceiveWork work) {
+        logger.info("Scheduling work item: {}", work.getId());
         if (subscription == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "This has not been subscribed to. Cannot start receiving work."));
@@ -156,6 +54,42 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
         timer.schedule(new ReceiveTimeoutTask(work), work.getTimeout().toMillis());
     }
 
+    /**
+     * Publishes the event to the current {@link SynchronousReceiveWork}. If that work item is complete, will pop off
+     * that work item, and queue the next one.
+     *
+     * @param value Event to publish.
+     */
+    @Override
+    protected void hookOnNext(PartitionEvent value) {
+        work.next(value);
+
+        if (work.isTerminal()) {
+            logger.info("Work: {}, Is completed. Closing Flux and cancelling subscription.", work.getId());
+            work.complete();
+            subscription.cancel();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void hookOnError(Throwable throwable) {
+        logger.error("Error occurred in subscriber. Error: {}", throwable);
+        work.error(throwable);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void dispose() {
+        work.complete();
+        subscription.cancel();
+        super.dispose();
+    }
+
     private class ReceiveTimeoutTask extends TimerTask {
         private final ClientLogger logger = new ClientLogger(ReceiveTimeoutTask.class);
         private final SynchronousReceiveWork work;
@@ -166,9 +100,8 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
 
         @Override
         public void run() {
-            logger.info("Timeout task encountered, disposing of task. Work: {}", work.getId());
-            work.complete();
-            SynchronousEventSubscriber.this.getOrUpdateNextWork();
+            logger.info("Timeout task encountered, disposing of subscriber. Work: {}", work.getId());
+            SynchronousEventSubscriber.this.dispose();
         }
     }
 }

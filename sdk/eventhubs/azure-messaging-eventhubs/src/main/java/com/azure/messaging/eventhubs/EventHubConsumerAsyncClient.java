@@ -204,7 +204,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
                 new NullPointerException("'startingPosition' cannot be null."))));
         }
 
-        final String linkName = StringUtil.getRandomString(partitionId + "-");
+        final String linkName = StringUtil.getRandomString(partitionId);
         return createConsumer(linkName, partitionId, startingPosition, receiveOptions);
     }
 
@@ -240,7 +240,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
                 new NullPointerException("'receiveOptions' cannot be null."))));
         }
 
-        final String prefix = StringUtil.getRandomString("all-");
+        final String prefix = StringUtil.getRandomString("all");
         final Flux<PartitionEvent> allPartitionEvents = getPartitionIds().flatMap(partitionId -> {
             final String linkName = prefix + "-" + partitionId;
 
@@ -272,7 +272,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     private Flux<PartitionEvent> createConsumer(String linkName, String partitionId, EventPosition startingPosition,
-        ReceiveOptions receiveOptions) {
+            ReceiveOptions receiveOptions) {
         return openPartitionConsumers
             .computeIfAbsent(linkName, name -> {
                 logger.info("{}: Creating receive consumer for partition '{}'", linkName, partitionId);

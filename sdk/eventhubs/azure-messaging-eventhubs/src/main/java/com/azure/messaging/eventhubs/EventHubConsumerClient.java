@@ -28,9 +28,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * <p><strong>Consuming events from a single partition</strong></p>
  * <p>Events from a single partition can be consumed using {@link #receive(String, int, EventPosition)} or
- * {@link #receive(String, int, EventPosition, Duration)}. The call to `receive` completes and returns an
- * {@link IterableStream} when either the maximum number of events is received, or the timeout has elapsed.</p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration}
+ * {@link #receive(String, int, EventPosition, Duration)}. The call to `receive` completes and returns an {@link
+ * IterableStream} when either the maximum number of events is received, or the timeout has elapsed.</p> {@codesnippet
+ * com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration}
  */
 public class EventHubConsumerClient implements Closeable {
     private static final String RECEIVE_ALL_KEY = "receive-all-partitions";
@@ -120,7 +120,7 @@ public class EventHubConsumerClient implements Closeable {
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1.
      */
     public IterableStream<PartitionEvent> receive(String partitionId, int maximumMessageCount,
-            EventPosition startingPosition) {
+        EventPosition startingPosition) {
         return receive(partitionId, maximumMessageCount, startingPosition, timeout);
     }
 
@@ -161,16 +161,10 @@ public class EventHubConsumerClient implements Closeable {
                 new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
-        // Wait here until either the events are received or this is complete. So that it is resolved now rather than
-        // creating a cold Flux that is resolved later.
-        Flux<PartitionEvent> events = consumer.receive(partitionId, startingPosition, defaultReceiveOptions)
-            .windowTimeout(maximumMessageCount, maximumWaitTime)
-            .blockFirst();
-
-        if (events == null) {
-            logger.info("No events received within the amount of time.");
-            events = Flux.empty();
-        }
+        final Flux<PartitionEvent> events = Flux.create(emitter -> {
+            queueWork(partitionId, maximumMessageCount, startingPosition, maximumWaitTime, defaultReceiveOptions,
+                emitter);
+        });
 
         return new IterableStream<>(events);
     }
@@ -215,16 +209,9 @@ public class EventHubConsumerClient implements Closeable {
                 new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
-        // Wait here until either the events are received or this is complete. So that it is resolved now rather than
-        // creating a cold Flux that is resolved later.
-        Flux<PartitionEvent> events = consumer.receive(partitionId, startingPosition, receiveOptions)
-            .windowTimeout(maximumMessageCount, maximumWaitTime)
-            .blockFirst();
-
-        if (events == null) {
-            logger.info("No events received within the amount of time.");
-            events = Flux.empty();
-        }
+        final Flux<PartitionEvent> events = Flux.create(emitter -> {
+            queueWork(partitionId, maximumMessageCount, startingPosition, maximumWaitTime, receiveOptions, emitter);
+        });
 
         return new IterableStream<>(events);
     }
@@ -247,17 +234,10 @@ public class EventHubConsumerClient implements Closeable {
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maximumWaitTime,
             emitter);
 
-        SynchronousEventSubscriber syncSubscriber = new SynchronousEventSubscriber();
-
-        if (RECEIVE_ALL_KEY.equals(partitionId)) {
-            logger.info("Started synchronous event subscriber for all partitions");
-            consumer.receive(startingPosition, receiveOptions).subscribeWith(syncSubscriber);
-        } else {
-            logger.info("Started synchronous event subscriber for partition '{}'.", partitionId);
-            consumer.receive(partitionId, startingPosition, receiveOptions).subscribeWith(syncSubscriber);
-        }
-
         logger.info("Queueing work item in SynchronousEventSubscriber.");
-        syncSubscriber.queueReceiveWork(work);
+        SynchronousEventSubscriber syncSubscriber = new SynchronousEventSubscriber(work);
+
+        logger.info("Started synchronous event subscriber for partition '{}'.", partitionId);
+        consumer.receive(partitionId, startingPosition, receiveOptions).subscribeWith(syncSubscriber);
     }
 }

@@ -242,10 +242,15 @@ public class EventHubConsumerClientTest {
         final IterableStream<PartitionEvent> receive2 = consumer.receive(PARTITION_ID, secondReceive, EventPosition.earliest());
 
         // Assert
+        System.out.println("first");
         final Map<Integer, PartitionEvent> firstActual = receive.stream()
             .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
+        System.out.println("first1");
+        Assertions.assertEquals(firstReceive, firstActual.size());
+
         final Map<Integer, PartitionEvent> secondActual = receive2.stream()
             .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
+        System.out.println("first2");
 
         Assertions.assertEquals(firstReceive, firstActual.size());
         Assertions.assertEquals(secondReceive, secondActual.size());
