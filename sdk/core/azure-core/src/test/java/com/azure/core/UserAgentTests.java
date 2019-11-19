@@ -15,6 +15,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryPolicyOptions;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -84,6 +85,45 @@ public class UserAgentTests {
             .verifyComplete();
     }
 
+    /**
+     * Tests that passing a {@link Context} with a value set for {@link UserAgentPolicy#OVERRIDE_USER_AGENT_CONTEXT_KEY}
+     * will use the value, and only the value, for the User-Agent header.
+     */
+    @ParameterizedTest(name = "{displayName} [{index}]")
+    @MethodSource("userAgentAndExpectedSupplier")
+    public void overrideUserAgentContext(UserAgentPolicy userAgentPolicy, String expected) {
+        String overrideUserAgent = "overrideUserAgent";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new ValidationHttpClient(request ->
+                assertEquals(overrideUserAgent, request.getHeaders().getValue(USER_AGENT))))
+            .policies(userAgentPolicy)
+            .build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost"),
+            new Context(UserAgentPolicy.OVERRIDE_USER_AGENT_CONTEXT_KEY, overrideUserAgent)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    /**
+     * Tests that passing a {@link Context} with a value set for {@link UserAgentPolicy#APPEND_USER_AGENT_CONTEXT_KEY}
+     * will append the value to the User-Agent header.
+     */
+    @ParameterizedTest(name = "{displayName} [{index}]")
+    @MethodSource("userAgentAndExpectedSupplier")
+    public void appendUserAgentContext(UserAgentPolicy userAgentPolicy, String expected) {
+        String appendUserAgent = "appendUserAgent";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new ValidationHttpClient(request ->
+                assertEquals(expected + " " + appendUserAgent, request.getHeaders().getValue(USER_AGENT))))
+            .policies(userAgentPolicy)
+            .build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost"),
+            new Context(UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
 
     private static Stream<Arguments> userAgentAndExpectedSupplier() {
         String defaultUserAgent = "azsdk-java";

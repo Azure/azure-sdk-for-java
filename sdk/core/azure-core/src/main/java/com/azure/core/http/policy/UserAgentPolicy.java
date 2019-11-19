@@ -7,6 +7,8 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
 import reactor.core.publisher.Mono;
 
@@ -19,6 +21,18 @@ import reactor.core.publisher.Mono;
 public class UserAgentPolicy implements HttpPipelinePolicy {
     private static final String USER_AGENT = "User-Agent";
     private static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
+
+    /**
+     * Key for {@link Context} to add a value which will override the User-Agent supplied in this policy in an ad-hoc
+     * manor.
+     */
+    public static final String OVERRIDE_USER_AGENT_CONTEXT_KEY = "Override-User-Agent";
+
+    /**
+     * Key for {@link Context} to add a value which will be appended to the User-Agent supplied in this policy in an
+     * ad-hoc manor.
+     */
+    public static final String APPEND_USER_AGENT_CONTEXT_KEY = "Append-User-Agent";
 
     /*
      * The base User-Agent header format is azsdk-java-<client_lib>/<sdk_version>. Additional information such as the
@@ -94,19 +108,29 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Updates the "User-Agent" header with the value supplied in the policy.
      *
-     * When the User-Agent header already has a value and it differs from the value used to create this policy the
-     * User-Agent header is updated by prepending the value in this policy.
-     * {@inheritDoc}
+     * <p>The {@code context} will be checked for {@code Override-User-Agent} and {@code Append-User-Agent}.
+     * {@code Override-User-Agent} will take precedence over the value supplied in the policy,
+     * {@code Append-User-Agent} will be appended to the value supplied in the policy.</p>
+     *
+     * @param context request context
+     * @param next The next policy to invoke.
+     * @return A publisher that initiates the request upon subscription and emits a response on completion.
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String header = context.getHttpRequest().getHeaders().getValue(USER_AGENT);
-        if (header == null || header.contains(DEFAULT_USER_AGENT_HEADER)) {
-            header = userAgent;
+        String overrideUserAgent = (String) context.getData(OVERRIDE_USER_AGENT_CONTEXT_KEY).orElse(null);
+        String appendUserAgent = (String) context.getData(APPEND_USER_AGENT_CONTEXT_KEY).orElse(null);
+
+        String userAgentValue;
+        if (!CoreUtils.isNullOrEmpty(overrideUserAgent)) {
+            userAgentValue = overrideUserAgent;
+        } else if (!CoreUtils.isNullOrEmpty(appendUserAgent)) {
+            userAgentValue = userAgent + " " + appendUserAgent;
         } else {
-            header = userAgent + " " + header;
+            userAgentValue = userAgent;
         }
-        context.getHttpRequest().getHeaders().put(USER_AGENT, header);
+
+        context.getHttpRequest().getHeaders().put(USER_AGENT, userAgentValue);
         return next.process();
     }
 
