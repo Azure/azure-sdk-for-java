@@ -256,7 +256,7 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Sets the AAD credential to use when authenticating HTTP requests.
+     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
      * @param tokenCredential TokenCredential used to authenticate HTTP requests.
      * @return The updated ConfigurationClientBuilder object.
