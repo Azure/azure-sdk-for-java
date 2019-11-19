@@ -14,4 +14,6 @@ public enum TestMode {
      * Playback data from an existing test session.
      */
     PLAYBACK,
+
+    LIVE
 }
