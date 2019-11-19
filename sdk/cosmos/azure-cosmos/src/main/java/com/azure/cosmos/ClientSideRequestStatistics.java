@@ -269,8 +269,8 @@ class ClientSideRequestStatistics {
             long totalMemory = Runtime.getRuntime().totalMemory() / 1024;
             long freeMemory = Runtime.getRuntime().freeMemory() / 1024;
             long maxMemory = Runtime.getRuntime().maxMemory() / 1024;
-            String used_Memory = totalMemory - freeMemory + " KB";
-            String available_Memory = (maxMemory - (totalMemory - freeMemory)) + " KB";
+            String usedMemory = totalMemory - freeMemory + " KB";
+            String availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
 
             OperatingSystemMXBean mbean = (com.sun.management.OperatingSystemMXBean)
                 ManagementFactory.getOperatingSystemMXBean();
@@ -278,8 +278,8 @@ class ClientSideRequestStatistics {
             String systemCpuLoad = Double.toString(mbean.getSystemCpuLoad());
 
             stringBuilder.append("System State Information -------").append(System.lineSeparator());
-            stringBuilder.append("Used Memory : " + used_Memory).append(System.lineSeparator());
-            stringBuilder.append("Available Memory : " + available_Memory).append(System.lineSeparator());
+            stringBuilder.append("Used Memory : " + usedMemory).append(System.lineSeparator());
+            stringBuilder.append("Available Memory : " + availableMemory).append(System.lineSeparator());
             stringBuilder.append("CPU Process Load : " + processCpuLoad).append(System.lineSeparator());
             stringBuilder.append("CPU System Load : " + systemCpuLoad).append(System.lineSeparator());
         } catch (Exception e) {
