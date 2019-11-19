@@ -33,8 +33,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ServiceLoader;
@@ -156,8 +154,7 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder connectionString(String connectionString) {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        final TokenCredential tokenCredential;
-        tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
+        final TokenCredential tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
             properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
 
         return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
@@ -192,14 +189,8 @@ public class EventHubClientBuilder {
         }
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        final TokenCredential tokenCredential;
-        try {
-            tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
+        final TokenCredential tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
                 properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new AzureException(
-                "Could not create the EventHubSharedAccessKeyCredential.", e));
-        }
 
         if (!CoreUtils.isNullOrEmpty(properties.getEntityPath())
             && !eventHubName.equals(properties.getEntityPath())) {
