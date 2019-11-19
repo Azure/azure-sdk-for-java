@@ -165,7 +165,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
 
-            return toDocumentServiceResponse(httpResponseMono, request, uri);
+            return toDocumentServiceResponse(httpResponseMono, request);
 
         } catch (Exception e) {
             return Flux.error(e);
@@ -245,8 +245,7 @@ class RxGatewayStoreModel implements RxStoreModel {
      * @return {@link Flux}
      */
     private Flux<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponseMono,
-                                                                      RxDocumentServiceRequest request,
-                                                                      URI uri) {
+                                                                            RxDocumentServiceRequest request) {
 
         return httpResponseMono.flatMap(httpResponse ->  {
 
