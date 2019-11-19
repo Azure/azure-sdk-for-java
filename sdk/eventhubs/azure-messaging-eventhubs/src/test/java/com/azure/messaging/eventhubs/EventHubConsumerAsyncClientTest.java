@@ -673,7 +673,7 @@ public class EventHubConsumerAsyncClientTest {
         EventHubConnection hubConnection = mock(EventHubConnection.class);
         EventHubConsumerOptions options = new EventHubConsumerOptions();
         EventHubConsumerAsyncClient dedicatedConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            hubConnection, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(), options, true);
+            hubConnection, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(), options, false);
 
         // Act
         dedicatedConsumer.close();
