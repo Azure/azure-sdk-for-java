@@ -23,6 +23,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
@@ -64,11 +65,11 @@ public final class SkillsetsImpl {
     private interface SkillsetsService {
         @Put("skillsets('{skillsetName}')")
         @ExpectedResponses({200, 201})
-        Mono<SimpleResponse<Skillset>> createOrUpdate(@PathParam("skillsetName") String skillsetName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @BodyParam("application/json; charset=utf-8") Skillset skillset, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<Skillset>> createOrUpdate(@PathParam("skillsetName") String skillsetName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @BodyParam("application/json; charset=utf-8") Skillset skillset, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Delete("skillsets('{skillsetName}')")
         @ExpectedResponses({204, 404})
-        Mono<SimpleResponse<Void>> delete(@PathParam("skillsetName") String skillsetName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<Void>> delete(@PathParam("skillsetName") String skillsetName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Get("skillsets('{skillsetName}')")
         @ExpectedResponses({200})
@@ -96,7 +97,9 @@ public final class SkillsetsImpl {
     public Mono<SimpleResponse<Skillset>> createOrUpdateWithRestResponseAsync(String skillsetName, Skillset skillset, Context context) {
         final String prefer = "return=representation";
         final UUID clientRequestId = null;
-        return service.createOrUpdate(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), skillset, prefer, this.client.getApiVersion(), clientRequestId, context);
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return service.createOrUpdate(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), skillset, prefer, this.client.getApiVersion(), clientRequestId, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -105,18 +108,27 @@ public final class SkillsetsImpl {
      * @param skillsetName The name of the skillset to create or update.
      * @param skillset The skillset containing one or more skills to create or update in a search service.
      * @param requestOptions Additional parameters for the operation.
+     * @param accessCondition Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Skillset>> createOrUpdateWithRestResponseAsync(String skillsetName, Skillset skillset, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<Skillset>> createOrUpdateWithRestResponseAsync(String skillsetName, Skillset skillset, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
         final String prefer = "return=representation";
         UUID clientRequestId = null;
         if (requestOptions != null) {
             clientRequestId = requestOptions.getClientRequestId();
         }
-        return service.createOrUpdate(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), skillset, prefer, this.client.getApiVersion(), clientRequestId, context);
+        String ifMatch = null;
+        if (accessCondition != null) {
+            ifMatch = accessCondition.getIfMatch();
+        }
+        String ifNoneMatch = null;
+        if (accessCondition != null) {
+            ifNoneMatch = accessCondition.getIfNoneMatch();
+        }
+        return service.createOrUpdate(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), skillset, prefer, this.client.getApiVersion(), clientRequestId, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -130,7 +142,9 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String skillsetName, Context context) {
         final UUID clientRequestId = null;
-        return service.delete(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return service.delete(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -138,17 +152,26 @@ public final class SkillsetsImpl {
      *
      * @param skillsetName The name of the skillset to delete.
      * @param requestOptions Additional parameters for the operation.
+     * @param accessCondition Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String skillsetName, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String skillsetName, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
         UUID clientRequestId = null;
         if (requestOptions != null) {
             clientRequestId = requestOptions.getClientRequestId();
         }
-        return service.delete(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
+        String ifMatch = null;
+        if (accessCondition != null) {
+            ifMatch = accessCondition.getIfMatch();
+        }
+        String ifNoneMatch = null;
+        if (accessCondition != null) {
+            ifNoneMatch = accessCondition.getIfNoneMatch();
+        }
+        return service.delete(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, ifMatch, ifNoneMatch, context);
     }
 
     /**

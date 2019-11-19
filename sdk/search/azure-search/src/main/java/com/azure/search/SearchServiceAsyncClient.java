@@ -1310,13 +1310,16 @@ public class SearchServiceAsyncClient {
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
      *
      * @param skillset the definition of the skillset to create or update
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return the skillset that was created or updated.
      */
     public Mono<Skillset> createOrUpdateSkillset(Skillset skillset,
+                                                 AccessCondition accessCondition,
                                                  RequestOptions requestOptions) {
-        return this.createOrUpdateSkillsetWithResponse(skillset, requestOptions)
+        return this.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions)
             .map(Response::getValue);
     }
 
@@ -1324,18 +1327,23 @@ public class SearchServiceAsyncClient {
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
      *
      * @param skillset the definition of the skillset to create or update
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the skillset that was created or updated.
      */
     public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
+                                                                       AccessCondition accessCondition,
                                                                        RequestOptions requestOptions) {
         return withContext(context -> this.createOrUpdateSkillsetWithResponse(skillset,
+            accessCondition,
             requestOptions,
             context));
     }
 
     Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
+                                                                AccessCondition accessCondition,
                                                                 RequestOptions requestOptions,
                                                                 Context context) {
         return restClient
@@ -1343,6 +1351,7 @@ public class SearchServiceAsyncClient {
             .createOrUpdateWithRestResponseAsync(skillset.getName(),
                 skillset,
                 requestOptions,
+                accessCondition,
                 context)
             .map(Function.identity());
     }
@@ -1354,7 +1363,7 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteSkillset(String skillsetName) {
-        return this.deleteSkillsetWithResponse(skillsetName, null)
+        return this.deleteSkillsetWithResponse(skillsetName, null, null)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -1362,12 +1371,16 @@ public class SearchServiceAsyncClient {
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
      * @param skillsetName the name of the skillset to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Void> deleteSkillset(String skillsetName, RequestOptions requestOptions) {
-        return this.deleteSkillsetWithResponse(skillsetName, requestOptions)
+    public Mono<Void> deleteSkillset(String skillsetName,
+                                     AccessCondition accessCondition,
+                                     RequestOptions requestOptions) {
+        return this.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -1375,20 +1388,26 @@ public class SearchServiceAsyncClient {
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
      * @param skillsetName the name of the skillset to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, RequestOptions requestOptions) {
-        return withContext(context -> this.deleteSkillsetWithResponse(skillsetName, requestOptions, context));
+    public Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName,
+                                                           AccessCondition accessCondition,
+                                                           RequestOptions requestOptions) {
+        return withContext(context -> this.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions,
+            context));
     }
 
     Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName,
+                                                    AccessCondition accessCondition,
                                                     RequestOptions requestOptions,
                                                     Context context) {
         return restClient
             .skillsets()
-            .deleteWithRestResponseAsync(skillsetName, requestOptions, context)
+            .deleteWithRestResponseAsync(skillsetName, requestOptions, accessCondition, context)
             .map(Function.identity());
     }
 

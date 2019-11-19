@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk6314332831fe.search-dogfood.windows-int.net/synonymmaps('thisdoesnotexist')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk72f61597ef5e.search.windows.net/skillsets('thisdoesnotexist')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "affbdcd1-ff9d-4a92-8dfa-6329896778f4",
+      "request-id" : "e57d62e2-58d7-4b08-8b59-e303e001f3d7",
       "StatusCode" : "404",
-      "Date" : "Thu, 14 Nov 2019 00:50:18 GMT",
+      "Date" : "Fri, 15 Nov 2019 01:04:05 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "24",
+      "elapsed-time" : "40",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "125",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisdoesnotexist' was found in service 'azs-sdk6314332831fe'.\"}}",
+      "Content-Length" : "122",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'thisdoesnotexist' was found in service 'azs-sdk72f61597ef5e'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

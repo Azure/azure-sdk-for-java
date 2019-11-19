@@ -1015,27 +1015,35 @@ public class SearchServiceClient {
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
      *
      * @param skillset the definition of the skillset to create or update
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @return the skillset that was created or updated.
      */
-    public Skillset createOrUpdateSkillset(Skillset skillset, RequestOptions requestOptions) {
-        return asyncClient.createOrUpdateSkillset(skillset, requestOptions).block();
+    public Skillset createOrUpdateSkillset(Skillset skillset,
+                                           AccessCondition accessCondition,
+                                           RequestOptions requestOptions) {
+        return asyncClient.createOrUpdateSkillset(skillset, accessCondition, requestOptions).block();
     }
 
     /**
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
      *
      * @param skillset the definition of the skillset to create or update
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the skillset that was created or updated.
      */
     public Response<Skillset> createOrUpdateSkillsetWithResponse(Skillset skillset,
+                                                                 AccessCondition accessCondition,
                                                                  RequestOptions requestOptions,
                                                                  Context context) {
         return asyncClient.createOrUpdateSkillsetWithResponse(skillset,
+            accessCondition,
             requestOptions,
             context).block();
     }
@@ -1053,26 +1061,31 @@ public class SearchServiceClient {
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
      * @param skillsetName the name of the skillset to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      */
-    public void deleteSkillset(String skillsetName, RequestOptions requestOptions) {
-        asyncClient.deleteSkillsetWithResponse(skillsetName, requestOptions).block();
+    public void deleteSkillset(String skillsetName, AccessCondition accessCondition, RequestOptions requestOptions) {
+        asyncClient.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions).block();
     }
 
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
      * @param skillsetName the name of the skillset to delete
+     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
+     * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response signalling completion.
      */
     public Response<Void> deleteSkillsetWithResponse(String skillsetName,
+                                                     AccessCondition accessCondition,
                                                      RequestOptions requestOptions,
                                                      Context context) {
-        return asyncClient.deleteSkillsetWithResponse(skillsetName, requestOptions, context).block();
+        return asyncClient.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions, context).block();
     }
 
     /**

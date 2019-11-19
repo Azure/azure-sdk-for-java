@@ -129,7 +129,31 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void createOrUpdateUpdatesCognitiveService();
-    
+
+    @Test
+    public abstract void createOrUpdateSkillsetIfNotExistsFailsOnExistingResource();
+
+    @Test
+    public abstract void createOrUpdateSkillsetIfNotExistsSucceedsOnNoResource();
+
+    @Test
+    public abstract void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource();
+
+    @Test
+    public abstract void createOrUpdateSkillsetIfExistsFailsOnNoResource();
+
+    @Test
+    public abstract void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged();
+
+    @Test
+    public abstract void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged();
+
+    @Test
+    public abstract void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource();
+
+    @Test
+    public abstract void deleteSkillsetIfExistsWorksOnlyWhenResourceExists();
+
     protected void assertSkillsetsEqual(Skillset expected, Skillset actual) {
         expected.setETag("none");
         actual.setETag("none");
@@ -790,5 +814,25 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setName("custom-skillset")
             .setDescription("Skillset for testing custom skillsets")
             .setSkills(Collections.singletonList(webApiSkill));
+    }
+
+    protected Skillset mutateSkillsInSkillset(Skillset skillset) {
+        skillset.setSkills(Collections.singletonList(
+            new KeyPhraseExtractionSkill()
+                .setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage.EN)
+                .setName("mykeyphrases")
+                .setDescription("Tested Key Phrase skill")
+                .setContext(CONTEXT_VALUE)
+                .setInputs(Collections.singletonList(
+                    new InputFieldMappingEntry()
+                        .setName("text")
+                        .setSource("/document/mydescription/*/Tags/*")))
+                .setOutputs(Collections.singletonList(
+                    new OutputFieldMappingEntry()
+                        .setName("keyPhrases")
+                        .setTargetName("myKeyPhrases")
+                ))
+        ));
+        return skillset;
     }
 }

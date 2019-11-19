@@ -4,6 +4,8 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.Response;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DefaultCognitiveServices;
 import com.azure.search.models.EntityCategory;
 import com.azure.search.models.InputFieldMappingEntry;
@@ -18,6 +20,7 @@ import com.azure.search.models.TextExtractionAlgorithm;
 import com.azure.search.models.TextSplitMode;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
@@ -288,7 +291,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     public void getSkillsetThrowsOnNotFound() {
         String skillsetName = "thisdoesnotexist";
         StepVerifier
-            .create(client.getSynonymMap(skillsetName))
+            .create(client.getSkillset(skillsetName))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
@@ -369,7 +372,8 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED, false);
 
         StepVerifier
-            .create(client.createOrUpdateSkillsetWithResponse(skillset, generateRequestOptions()))
+            .create(client.createOrUpdateSkillsetWithResponse(skillset, new AccessCondition(),
+                generateRequestOptions()))
             .assertNext(res -> Assert.assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode()))
             .verifyComplete();
     }
@@ -378,13 +382,15 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     public void createOrUpdateUpdatesWhenSkillsetExists() {
         Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN, false);
         StepVerifier
-            .create(client.createOrUpdateSkillsetWithResponse(skillset, generateRequestOptions()))
+            .create(client.createOrUpdateSkillsetWithResponse(skillset, new AccessCondition(),
+                generateRequestOptions()))
             .assertNext(res -> Assert.assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode()))
             .verifyComplete();
 
         skillset = createTestOcrSkillSet(2, TextExtractionAlgorithm.PRINTED, false);
         StepVerifier
-            .create(client.createOrUpdateSkillsetWithResponse(skillset, generateRequestOptions()))
+            .create(client.createOrUpdateSkillsetWithResponse(skillset, new AccessCondition(),
+                generateRequestOptions()))
             .assertNext(res -> Assert.assertEquals(HttpResponseStatus.OK.code(), res.getStatusCode()))
             .verifyComplete();
     }
@@ -450,5 +456,161 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .create(client.createOrUpdateSkillset(createdSkillset))
             .assertNext(res -> assertSkillsetsEqual(createdSkillset, res))
             .verifyComplete();
+    }
+
+    @Override
+    public void createOrUpdateSkillsetIfNotExistsFailsOnExistingResource() {
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        Skillset createdResource = client.createOrUpdateSkillset(skillset).block();
+        Skillset mutatedResource = mutateSkillsInSkillset(createdResource);
+
+        StepVerifier
+            .create(client.createOrUpdateSkillset(mutatedResource,
+                generateIfNotExistsAccessCondition(), generateRequestOptions()))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+            });
+
+        StepVerifier
+            .create(client.createOrUpdateSkillsetWithResponse(mutatedResource,
+                generateIfNotExistsAccessCondition(), generateRequestOptions()))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+            });
+    }
+
+    @Override
+    public void createOrUpdateSkillsetIfNotExistsSucceedsOnNoResource() {
+        Skillset resource = createSkillsetWithOcrDefaultSettings(false);
+
+        StepVerifier
+            .create(client.createOrUpdateSkillset(resource,
+                generateIfNotExistsAccessCondition(), generateRequestOptions()))
+            .assertNext(res -> Assert.assertFalse(res.getETag().isEmpty()))
+            .verifyComplete();
+
+
+        StepVerifier
+            .create(client.createOrUpdateSkillset(resource.setName("test-skillset1"),
+                generateIfNotExistsAccessCondition(), generateRequestOptions()))
+            .assertNext(res -> Assert.assertFalse(res.getETag().isEmpty()))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.createOrUpdateSkillsetWithResponse(resource.setName("test-skillset2"),
+                generateIfNotExistsAccessCondition(), generateRequestOptions()))
+            .assertNext(res -> Assert.assertFalse(res.getValue().getETag().isEmpty()))
+            .verifyComplete();
+
+
+    }
+
+    @Override
+    public void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource() {
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        Skillset createdResource = client.createOrUpdateSkillset(skillset).block();
+        Skillset mutatedResource = mutateSkillsInSkillset(createdResource);
+        Mono<Skillset> updatedResource = client.createOrUpdateSkillset(mutatedResource,
+            generateIfExistsAccessCondition(), generateRequestOptions());
+
+        StepVerifier
+            .create(updatedResource)
+            .assertNext(res -> {
+                Assert.assertFalse(res.getETag().isEmpty());
+                Assert.assertNotEquals(createdResource.getETag(), res.getETag());
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void createOrUpdateSkillsetIfExistsFailsOnNoResource() {
+        Skillset resource = createSkillsetWithOcrDefaultSettings(false);
+
+        StepVerifier
+            .create(client.createOrUpdateSkillset(resource,
+                generateIfExistsAccessCondition(), generateRequestOptions()))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(),
+                    ((HttpResponseException) error).getResponse().getStatusCode());
+            });
+
+        // The resource should never have been created on the server, and thus it should not have an ETag
+        Assert.assertNull(resource.getETag());
+    }
+
+    @Override
+    public void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged() {
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        Skillset createdResource = client.createOrUpdateSkillset(skillset).block();
+        Skillset mutatedResource = mutateSkillsInSkillset(createdResource);
+        Mono<Skillset> updatedResource = client.createOrUpdateSkillset(mutatedResource,
+            generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions());
+
+        StepVerifier
+            .create(updatedResource)
+            .assertNext(res -> {
+                Assert.assertFalse(createdResource.getETag().isEmpty());
+                Assert.assertFalse(res.getETag().isEmpty());
+                Assert.assertNotEquals(createdResource.getETag(), res.getETag());
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged() {
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        Skillset createdResource = client.createOrUpdateSkillset(skillset).block();
+        Skillset mutatedResource = mutateSkillsInSkillset(createdResource);
+        Skillset updatedResource = client.createOrUpdateSkillset(mutatedResource).block();
+
+        StepVerifier
+            .create(client.createOrUpdateSkillset(updatedResource,
+                generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions()))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+            });
+        Assert.assertFalse(createdResource.getETag().isEmpty());
+        Assert.assertFalse(updatedResource.getETag().isEmpty());
+        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
+    }
+
+    @Override
+    public void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource() {
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        Skillset staleResource = client.createOrUpdateSkillset(skillset).block();
+        Skillset currentResource = client.createOrUpdateSkillset(staleResource.setDescription("description")).block();
+
+        StepVerifier
+            .create(client.deleteSkillset(skillset.getName(),
+                generateIfMatchAccessCondition(staleResource.getETag()), generateRequestOptions()))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+            });
+
+        Response<Void> response = client.deleteSkillsetWithResponse(skillset.getName(),
+            generateIfMatchAccessCondition(currentResource.getETag()),
+            null,
+            null
+        ).block();
+        Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), response.getStatusCode());
+    }
+
+    @Override
+    public void deleteSkillsetIfExistsWorksOnlyWhenResourceExists() {
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        client.createSkillset(skillset).block();
+
+        client.deleteSkillset(skillset.getName(), generateIfExistsAccessCondition(), generateRequestOptions()).block();
+        StepVerifier
+            .create(client.deleteSkillset(skillset.getName(), generateIfExistsAccessCondition(), generateRequestOptions()))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+            });
     }
 }
