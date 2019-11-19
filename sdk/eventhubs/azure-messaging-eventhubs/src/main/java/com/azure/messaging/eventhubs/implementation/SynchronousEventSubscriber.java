@@ -43,8 +43,8 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
     }
 
     /**
-     * Publishes the event to the current {@link SynchronousReceiveWork}. If that work item is complete, will pop off
-     * that work item, and queue the next one.
+     * Publishes the event to the current {@link SynchronousReceiveWork}. If that work item is complete, will dispose of
+     * the subscriber.
      *
      * @param value Event to publish.
      */
@@ -54,9 +54,14 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
 
         if (work.isTerminal()) {
             logger.info("Work: {}. Completed. Closing Flux and cancelling subscription.", work.getId());
-            work.complete();
-            subscription.cancel();
+            dispose();
         }
+    }
+
+    @Override
+    protected void hookOnComplete() {
+        logger.info("Completed. No events to listen to.");
+        dispose();
     }
 
     /**
@@ -66,6 +71,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
     protected void hookOnError(Throwable throwable) {
         logger.error("Error occurred in subscriber. Error: {}", throwable);
         work.error(throwable);
+        dispose();
     }
 
     /**
@@ -75,6 +81,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
     public void dispose() {
         work.complete();
         subscription.cancel();
+        timer.cancel();
         super.dispose();
     }
 
