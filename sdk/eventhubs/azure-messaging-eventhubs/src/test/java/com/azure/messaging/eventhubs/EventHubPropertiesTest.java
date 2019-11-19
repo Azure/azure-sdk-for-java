@@ -7,9 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class EventHubPropertiesTest {
     /**
@@ -30,7 +29,7 @@ public class EventHubPropertiesTest {
         Assertions.assertEquals(instant, eventHubProperties.getCreatedAt());
         Assertions.assertEquals(partitionIds.length, eventHubProperties.getPartitionIds().stream().count());
 
-        final Set<String> actual = new HashSet<>(Arrays.asList(eventHubProperties.getPartitionIds()));
+        final Set<String> actual = eventHubProperties.getPartitionIds().stream().collect(Collectors.toSet());
         for (String id : partitionIds) {
             Assertions.assertTrue(actual.contains(id));
         }

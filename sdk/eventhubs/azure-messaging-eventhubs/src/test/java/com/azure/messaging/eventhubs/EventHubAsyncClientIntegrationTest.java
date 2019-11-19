@@ -49,7 +49,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             .transportType(transportType)
             .shareConnection()
             .buildAsyncClient();
-        transportType = transportType;
+        this.transportType = transportType;
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.warning("Already pushed events to partition. Skipping.");

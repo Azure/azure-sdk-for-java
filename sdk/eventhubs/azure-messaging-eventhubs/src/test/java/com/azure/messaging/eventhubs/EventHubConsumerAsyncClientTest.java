@@ -140,7 +140,7 @@ public class EventHubConsumerAsyncClientTest {
     @Test
     public void lastEnqueuedEventInformationIsNull() {
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-        eventHubConnection, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false);
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false);
         final int numberOfEvents = 10;
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
         final int numberToReceive = 3;

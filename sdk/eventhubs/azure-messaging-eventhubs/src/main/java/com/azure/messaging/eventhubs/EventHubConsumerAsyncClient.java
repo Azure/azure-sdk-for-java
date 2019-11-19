@@ -70,6 +70,11 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final String consumerGroup;
     private final int prefetchCount;
     private final boolean isSharedConnection;
+    /**
+     * Keeps track of the open partition consumers keyed by linkName. The link name is generated as:
+     * {@code "partitionId_GUID"}. For receiving from all partitions, links are prefixed with
+     * {@code "all-GUID-partitionId"}.
+     */
     private final ConcurrentHashMap<String, EventHubPartitionAsyncConsumer> openPartitionConsumers =
         new ConcurrentHashMap<>();
 
@@ -127,7 +132,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
         return getProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
