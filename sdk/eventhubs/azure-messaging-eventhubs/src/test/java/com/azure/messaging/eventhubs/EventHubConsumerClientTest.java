@@ -145,7 +145,7 @@ public class EventHubConsumerClientTest {
         final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(false);
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, numberToReceive,
+        final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, numberToReceive,
             EventPosition.earliest(), TIMEOUT, options);
 
         // Assert
@@ -172,7 +172,7 @@ public class EventHubConsumerClientTest {
         final int numberToReceive = 3;
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, numberOfEvents,
+        final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, numberOfEvents,
             EventPosition.earliest(), TIMEOUT, options);
 
         // Assert
@@ -201,7 +201,7 @@ public class EventHubConsumerClientTest {
         // Act
         semaphore.acquire();
         EXECUTOR_SERVICE.execute(() -> {
-            received.set(consumer.receive(PARTITION_ID, numberToReceive, EventPosition.earliest()));
+            received.set(consumer.receiveFromPartition(PARTITION_ID, numberToReceive, EventPosition.earliest()));
             semaphore.release();
         });
 
@@ -238,8 +238,8 @@ public class EventHubConsumerClientTest {
         sendMessages(sink, numberOfEvents, PARTITION_ID);
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, firstReceive, EventPosition.earliest());
-        final IterableStream<PartitionEvent> receive2 = consumer.receive(PARTITION_ID, secondReceive, EventPosition.earliest());
+        final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, firstReceive, EventPosition.earliest());
+        final IterableStream<PartitionEvent> receive2 = consumer.receiveFromPartition(PARTITION_ID, secondReceive, EventPosition.earliest());
 
         // Assert
         System.out.println("first");
@@ -277,7 +277,7 @@ public class EventHubConsumerClientTest {
         sendMessages(sink, numberOfEvents, PARTITION_ID);
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, firstReceive, EventPosition.earliest(), timeout);
+        final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, firstReceive, EventPosition.earliest(), timeout);
 
         // Assert
         final Map<Integer, PartitionEvent> firstActual = receive.stream()

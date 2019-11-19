@@ -86,7 +86,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final int numberOfEvents = 5;
 
         // Act
-        final IterableStream<PartitionEvent> actual = consumer.receive(PARTITION_ID, numberOfEvents, startingPosition,
+        final IterableStream<PartitionEvent> actual = consumer.receiveFromPartition(PARTITION_ID, numberOfEvents, startingPosition,
             Duration.ofSeconds(10));
 
         // Assert
@@ -105,8 +105,8 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final Duration waitTime = Duration.ofSeconds(10);
 
         // Act
-        final IterableStream<PartitionEvent> actual = consumer.receive(PARTITION_ID, numberOfEvents, startingPosition, waitTime);
-        final IterableStream<PartitionEvent> actual2 = consumer.receive(PARTITION_ID, secondNumberOfEvents, startingPosition, waitTime);
+        final IterableStream<PartitionEvent> actual = consumer.receiveFromPartition(PARTITION_ID, numberOfEvents, startingPosition, waitTime);
+        final IterableStream<PartitionEvent> actual2 = consumer.receiveFromPartition(PARTITION_ID, secondNumberOfEvents, startingPosition, waitTime);
 
         // Assert
         final Map<Long, PartitionEvent> asList = actual.stream()
@@ -144,7 +144,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             final PartitionProperties partitionProperties2 = consumer.getPartitionProperties(partitionId);
 
             // Act
-            final IterableStream<PartitionEvent> receive = consumer.receive(partitionId, 100, position, Duration.ofSeconds(20));
+            final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(partitionId, 100, position, Duration.ofSeconds(20));
 
             // Assert
             System.out.println("Sleeping...");
@@ -182,7 +182,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             producer.send(events, sendOptions);
 
             // Act
-            final IterableStream<PartitionEvent> receive = consumer.receive(partitionId, receiveNumber,
+            final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(partitionId, receiveNumber,
                 EventPosition.fromEnqueuedTime(enqueuedTime), Duration.ofSeconds(5));
 
             // Assert
@@ -216,8 +216,8 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             producer.send(events, sendOptions);
 
             // Act
-            final IterableStream<PartitionEvent> receive = consumer.receive(partitionId, receiveNumber, position, Duration.ofSeconds(5));
-            final IterableStream<PartitionEvent> receive2 = consumer2.receive(partitionId, receiveNumber, position, Duration.ofSeconds(5));
+            final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(partitionId, receiveNumber, position, Duration.ofSeconds(5));
+            final IterableStream<PartitionEvent> receive2 = consumer2.receiveFromPartition(partitionId, receiveNumber, position, Duration.ofSeconds(5));
 
             // Assert
             final List<Long> asList = receive.stream().map(e -> e.getData().getSequenceNumber()).collect(Collectors.toList());

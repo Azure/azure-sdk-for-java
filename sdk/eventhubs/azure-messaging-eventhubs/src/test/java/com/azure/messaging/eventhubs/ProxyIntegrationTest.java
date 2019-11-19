@@ -84,7 +84,7 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
         producer.send(TestUtils.getEvents(numberOfEvents, messageId), sendOptions).block();
 
         // Act
-        final IterableStream<PartitionEvent> receive = receiver.receive(PARTITION_ID, 15, EventPosition.earliest(), Duration.ofSeconds(30));
+        final IterableStream<PartitionEvent> receive = receiver.receiveFromPartition(PARTITION_ID, 15, EventPosition.earliest(), Duration.ofSeconds(30));
 
         // Assert
         Assertions.assertNotNull(receive);

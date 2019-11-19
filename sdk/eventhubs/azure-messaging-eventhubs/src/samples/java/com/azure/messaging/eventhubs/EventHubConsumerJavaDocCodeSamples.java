@@ -48,7 +48,7 @@ public class EventHubConsumerJavaDocCodeSamples {
 
         // Begins reading events from partition '0' and returns the first 100 received or until the wait time of 30
         // seconds has elapsed.
-        IterableStream<PartitionEvent> events = consumer.receive(partitionId, 100, startingPosition, Duration.ofSeconds(30));
+        IterableStream<PartitionEvent> events = consumer.receiveFromPartition(partitionId, 100, startingPosition, Duration.ofSeconds(30));
 
         for (PartitionEvent partitionEvent : events) {
             // For each event, perform some sort of processing.
@@ -56,7 +56,7 @@ public class EventHubConsumerJavaDocCodeSamples {
         }
 
         // Gets the next set of events from partition '0' to consume and process.
-        IterableStream<PartitionEvent> nextEvents = consumer.receive(partitionId, 100, startingPosition, Duration.ofSeconds(30));
+        IterableStream<PartitionEvent> nextEvents = consumer.receiveFromPartition(partitionId, 100, startingPosition, Duration.ofSeconds(30));
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration
 
         for (PartitionEvent partitionEvent : nextEvents) {
