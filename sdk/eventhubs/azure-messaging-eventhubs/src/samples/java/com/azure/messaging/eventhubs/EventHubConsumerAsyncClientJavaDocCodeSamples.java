@@ -3,11 +3,11 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
@@ -124,22 +124,21 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
      * Receives from all partitions with last enqueued information.
      */
     public void receiveLastEnqueuedInformation() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition-lastenqueuedeventproperties
-        EventHubConsumerOptions options = new EventHubConsumerOptions()
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition-receiveoptions
+        ReceiveOptions receiveOptions = new ReceiveOptions()
             .setTrackLastEnqueuedEventProperties(true);
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .consumerOptions(options)
             .buildAsyncConsumer();
 
         // Receives events from all partitions as they come in.
-        consumer.receive(EventPosition.latest()).subscribe(partitionEvent -> {
+        consumer.receive(EventPosition.latest(), receiveOptions).subscribe(partitionEvent -> {
             PartitionContext context = partitionEvent.getPartitionContext();
             LastEnqueuedEventProperties properties = context.getLastEnqueuedEventProperties();
             System.out.printf("Information received at %s. Sequence Id: %s%n", properties.getRetrievalTime(),
                 properties.getSequenceNumber());
         });
-        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition-lastenqueuedeventproperties
+        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition-receiveoptions
     }
 }

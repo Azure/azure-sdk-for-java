@@ -53,7 +53,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * {@link ReceiveOptions#setTrackLastEnqueuedEventProperties(boolean) setTrackLastEnqueuedEventProperties} to
  * {@code true}. As events come in, explore the {@link PartitionContext} object.
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition-lastenqueuedeventproperties}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition-receiveoptions}
  */
 @Immutable
 public class EventHubConsumerAsyncClient implements Closeable {
