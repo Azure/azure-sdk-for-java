@@ -38,7 +38,7 @@ public class ExponentialBackoff implements RetryStrategy {
     public ExponentialBackoff() {
         this(DEFAULT_MAX_RETRIES, DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY, X_MS_RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS);
     }
-    
+
     /**
      * Creates an instance of {@link ExponentialBackoff}.
      *
