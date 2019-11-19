@@ -25,7 +25,7 @@ public class EventProcessorBuilderJavaDocCodeSamples {
             .eventProcessorStore(new InMemoryEventProcessorStore())
             .processEvent(partitionEvent -> {
                 System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+                    + "sequence number of event = " + partitionEvent.getData().getSequenceNumber());
                 return Mono.empty();
             })
             .connectionString(connectionString)

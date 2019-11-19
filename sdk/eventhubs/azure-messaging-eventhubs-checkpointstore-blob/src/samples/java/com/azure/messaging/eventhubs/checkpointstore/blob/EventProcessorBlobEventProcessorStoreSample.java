@@ -10,9 +10,10 @@ import com.azure.messaging.eventhubs.EventProcessorBuilder;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+import reactor.core.publisher.Mono;
+
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import reactor.core.publisher.Mono;
 
 /**
  * Sample for using {@link BlobEventProcessorStore} with {@link EventProcessor}.
@@ -25,10 +26,10 @@ public class EventProcessorBlobEventProcessorStoreSample {
 
     public static final Function<PartitionEvent, Mono<Void>> PARTITION_PROCESSOR = partitionEvent -> {
         System.out.printf("Processing event from partition %s with sequence number %d %n",
-            partitionEvent.getPartitionContext().getPartitionId(), partitionEvent.getEventData().getSequenceNumber());
+            partitionEvent.getPartitionContext().getPartitionId(), partitionEvent.getData().getSequenceNumber());
 
-        if (partitionEvent.getEventData().getSequenceNumber() % 10 == 0) {
-            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
+        if (partitionEvent.getData().getSequenceNumber() % 10 == 0) {
+            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData());
         }
         return Mono.empty();
     };

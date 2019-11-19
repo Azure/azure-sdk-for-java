@@ -12,15 +12,15 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
@@ -78,12 +78,12 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  *
  * <p><strong>Create a producer that routes events to any partition</strong></p>
  * To allow automatic routing of messages to available partition, do not specify the {@link
- * BatchOptions#getPartitionId() partitionId} when creating the {@link EventHubProducerAsyncClient}.
+ * CreateBatchOptions#getPartitionId() partitionId} when creating the {@link EventHubProducerAsyncClient}.
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation}
  *
  * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
  * Developers can push events to a single partition by specifying the
- * {@link BatchOptions#setPartitionId(String) partitionId} when creating an {@link EventHubProducerAsyncClient}.
+ * {@link CreateBatchOptions#setPartitionId(String) partitionId} when creating an {@link EventHubProducerAsyncClient}.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation#partitionId}
  *
@@ -99,23 +99,23 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  *
  * <p><strong>Publish events using an {@link EventDataBatch}.</strong></p>
  * Developers can create an {@link EventDataBatch}, add the events they want into it, and publish these
- * events together. When creating a {@link EventDataBatch batch}, developers can specify a set of {@link BatchOptions
- * options} to configure this batch.
+ * events together. When creating a {@link EventDataBatch batch}, developers can specify a set of
+ * {@link CreateBatchOptions options} to configure this batch.
  * <p>
  * In the scenario below, the developer is creating a networked video game. They want to receive telemetry about their
  * users' gaming systems, but do not want to slow down the network with telemetry. So they limit the size of their
  * {@link EventDataBatch batches} to be no larger than 256 bytes. The events within the batch also get hashed to the
- * same partition because they all share the same {@link BatchOptions#getPartitionKey()}.
+ * same partition because they all share the same {@link CreateBatchOptions#getPartitionKey()}.
  * </p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#eventDataBatch}
  */
-@Immutable
+@ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubProducerAsyncClient implements Closeable {
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
 
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
-    private static final BatchOptions DEFAULT_BATCH_OPTIONS = new BatchOptions();
+    private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS = new CreateBatchOptions();
 
     /**
      * Keeps track of the opened send links. Links are key'd by their entityPath. The send link for allowing the service
@@ -134,8 +134,8 @@ public class EventHubProducerAsyncClient implements Closeable {
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
-     * when {@link BatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to load
-     * balance the messages amongst available partitions.
+     * when {@link CreateBatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to
+     * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
         RetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
@@ -183,9 +183,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
-        return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
+        return getProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
 
     /**
@@ -216,12 +215,12 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
-    public Mono<EventDataBatch> createBatch(BatchOptions options) {
+    public Mono<EventDataBatch> createBatch(CreateBatchOptions options) {
         if (options == null) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
 
-        final BatchOptions clone = options.clone();
+        final CreateBatchOptions clone = options.clone();
 
         if (!CoreUtils.isNullOrEmpty(clone.getPartitionKey())
                 && !CoreUtils.isNullOrEmpty(clone.getPartitionId())) {
@@ -389,7 +388,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @throws NullPointerException if {@code batch} is {@code null}.
      * @see EventHubProducerAsyncClient#createBatch()
-     * @see EventHubProducerAsyncClient#createBatch(BatchOptions)
+     * @see EventHubProducerAsyncClient#createBatch(CreateBatchOptions)
      */
     public Mono<Void> send(EventDataBatch batch) {
         if (batch == null) {
@@ -449,7 +448,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 return link.getLinkSize()
                     .flatMap(size -> {
                         final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                        final BatchOptions batchOptions = new BatchOptions()
+                        final CreateBatchOptions createBatchOptions = new CreateBatchOptions()
                             .setPartitionKey(options.getPartitionKey())
                             .setPartitionId(options.getPartitionId())
                             .setMaximumSizeInBytes(batchSize);
@@ -469,7 +468,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                             }
 
                             return setSpanContext(eventData, parentContext);
-                        }).collect(new EventDataCollector(batchOptions, 1, link::getErrorContext));
+                        }).collect(new EventDataCollector(createBatchOptions, 1, link::getErrorContext));
                     })
                     .flatMap(list -> sendInternal(Flux.fromIterable(list)))
                     .doOnEach(signal -> {
@@ -571,7 +570,8 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         private volatile EventDataBatch currentBatch;
 
-        EventDataCollector(BatchOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider) {
+        EventDataCollector(CreateBatchOptions options, Integer maxNumberOfBatches,
+            ErrorContextProvider contextProvider) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
                 ? options.getMaximumSizeInBytes()

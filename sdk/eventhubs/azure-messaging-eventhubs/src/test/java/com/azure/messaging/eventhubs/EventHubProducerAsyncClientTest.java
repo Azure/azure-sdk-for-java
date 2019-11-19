@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
@@ -13,14 +14,13 @@ import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
@@ -76,21 +76,21 @@ public class EventHubProducerAsyncClientTest {
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private final RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(10));
     private EventHubProducerAsyncClient producer;
-    private EventHubConnection linkProvider;
+    private EventHubConnection eventHubConnection;
     @Mock
     private TokenCredential tokenCredential;
+    private TracerProvider tracerProvider;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
+        tracerProvider = new TracerProvider(Collections.emptyList());
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
-        linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, retryOptions, tracerProvider,
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
+        eventHubConnection = new EventHubConnection(Mono.just(connection), connectionOptions);
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, eventHubConnection, retryOptions, tracerProvider,
             messageSerializer, false);
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -217,7 +217,7 @@ public class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions()
             .setPartitionId(partitionId);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
+            eventHubConnection, retryOptions, tracerProvider, messageSerializer, false);
 
         when(connection.createSession(argThat(name -> name.endsWith(partitionId))))
             .thenReturn(Mono.just(session));
@@ -353,7 +353,7 @@ public class EventHubProducerAsyncClientTest {
 
         // This event is 1024 bytes when serialized.
         final EventData event = new EventData(new byte[eventPayload]);
-        final BatchOptions options = new BatchOptions().setPartitionKey("some-key");
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("some-key");
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
@@ -383,7 +383,7 @@ public class EventHubProducerAsyncClientTest {
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
-        final BatchOptions options = new BatchOptions().setMaximumSizeInBytes(batchSize);
+        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
@@ -393,7 +393,7 @@ public class EventHubProducerAsyncClientTest {
 
     /**
      * Verifies that the producer can create an {@link EventDataBatch} with a given {@link
-     * BatchOptions#getMaximumSizeInBytes()}.
+     * CreateBatchOptions#getMaximumSizeInBytes()}.
      */
     @Test
     public void createsEventDataBatchWithSize() {
@@ -419,7 +419,7 @@ public class EventHubProducerAsyncClientTest {
 
         // This event will be 1025 bytes when serialized.
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
-        final BatchOptions options = new BatchOptions().setMaximumSizeInBytes(batchSize);
+        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
 
 
         // Act & Assert
@@ -492,7 +492,7 @@ public class EventHubProducerAsyncClientTest {
             .thenReturn(Mono.just(link));
 
         final String originalKey = "some-key";
-        final BatchOptions options = new BatchOptions().setPartitionKey(originalKey);
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey(originalKey);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
@@ -612,6 +612,41 @@ public class EventHubProducerAsyncClientTest {
 
         verify(sendLink1, times(1)).send(anyList());
         verify(sendLink2, times(1)).send(anyList());
+    }
+
+
+    /**
+     * Verifies that when we have a shared connection, the producer does not close that connection.
+     */
+    @Test
+    public void doesNotCloseSharedConnection() {
+        // Arrange
+        EventHubConnection hubConnection = mock(EventHubConnection.class);
+        EventHubProducerAsyncClient sharedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            hubConnection, retryOptions, tracerProvider, messageSerializer, true);
+
+        // Act
+        sharedProducer.close();
+
+        // Verify
+        verify(hubConnection, never()).close();
+    }
+
+    /**
+     * Verifies that when we have a non-shared connection, the producer closes that connection.
+     */
+    @Test
+    public void closesDedicatedConnection() {
+        // Arrange
+        EventHubConnection hubConnection = mock(EventHubConnection.class);
+        EventHubProducerAsyncClient sharedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            hubConnection, retryOptions, tracerProvider, messageSerializer, false);
+
+        // Act
+        sharedProducer.close();
+
+        // Verify
+        verify(hubConnection, times(1)).close();
     }
 
     static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"

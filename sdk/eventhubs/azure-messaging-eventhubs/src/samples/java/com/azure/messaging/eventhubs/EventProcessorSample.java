@@ -4,11 +4,12 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.PartitionEvent;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * Sample code to demonstrate how a customer might use {@link EventProcessor}.
@@ -32,8 +33,8 @@ public class EventProcessorSample {
                 partitionEvent.getPartitionContext().getEventHubName(),
                 partitionEvent.getPartitionContext().getConsumerGroup(),
                 partitionEvent.getPartitionContext().getPartitionId(),
-                partitionEvent.getEventData().getSequenceNumber());
-            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
+                partitionEvent.getData().getSequenceNumber());
+            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData());
         };
 
         EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()

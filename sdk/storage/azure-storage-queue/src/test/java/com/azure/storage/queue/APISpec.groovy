@@ -30,7 +30,7 @@ class APISpec extends Specification {
 
     // Test name for test method name.
     String methodName
-    def testMode = getTestMode()
+    TestMode testMode = getTestMode()
     String connectionString
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
@@ -85,7 +85,7 @@ class APISpec extends Specification {
         if (azureTestMode != null) {
             try {
                 return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException ignored) {
                 logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode)
                 return TestMode.PLAYBACK
             }
@@ -140,5 +140,13 @@ class APISpec extends Specification {
 
     static HttpClient getHttpClient() {
         return HttpClient.createDefault()
+    }
+
+    def sleepIfLive(long milliseconds) {
+        if (testMode == TestMode.PLAYBACK) {
+            return;
+        }
+
+        sleep(milliseconds)
     }
 }

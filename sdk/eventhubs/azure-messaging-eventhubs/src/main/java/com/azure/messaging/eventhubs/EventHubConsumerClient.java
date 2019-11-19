@@ -3,54 +3,47 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
 import com.azure.messaging.eventhubs.implementation.SynchronousReceiveWork;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
 import java.io.Closeable;
 import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
- * consumer group.
- *
- * <ul>
- * <li>If {@link EventHubConsumerClient} is created where {@link EventHubConsumerOptions#getOwnerLevel()} has a
- * value, then Event Hubs service will guarantee only one active consumer exists per partitionId and consumer group
- * combination. This consumer is sometimes referred to as an "Epoch Consumer."</li>
- * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
- * {@link EventHubConsumerOptions#getOwnerLevel()} when creating consumers. This non-exclusive consumer is sometimes
- * referred to as a "Non-Epoch Consumer."</li>
- * </ul>
+ * A consumer responsible for reading {@link EventData} from either a specific Event Hub partition or all partitions in
+ * the context of a consumer group.
  *
  * <p><strong>Creating a synchronous consumer</strong></p>
- * Create an {@link EventHubConsumerClient} using {@link EventHubClientBuilder}.
- *
+ * <p>Required parameters are {@code consumerGroup} and credentials when creating a consumer.</p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation}
  *
- * <p><strong>Consuming events from an Event Hub</strong></p>
- * Events can be consumed using {@link #receive(String, int)} or {@link #receive(String, int, Duration)}. The call to
- * `receive` completes and returns an {@link IterableStream} when either the number of events is reached, or the
- * timeout duration is reached.
+ * <p><strong>Consuming events from a single partition</strong></p>
+ * <p>Events from a single partition can be consumed using {@link #receiveFromPartition(String, int, EventPosition)} or
+ * {@link #receiveFromPartition(String, int, EventPosition, Duration)}. The call to `receive` completes and returns an
+ * {@link IterableStream} when either the maximum number of events is received, or the timeout has elapsed.</p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-duration}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration}
  */
+@ServiceClient(builder = EventHubClientBuilder.class)
 public class EventHubConsumerClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerClient.class);
-    private final ConcurrentHashMap<String, SynchronousEventSubscriber> openSubscribers = new ConcurrentHashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong();
 
     private final EventHubConsumerAsyncClient consumer;
+    private final ReceiveOptions defaultReceiveOptions = new ReceiveOptions();
     private final Duration timeout;
+    private final AtomicInteger idGenerator = new AtomicInteger();
 
     EventHubConsumerClient(EventHubConsumerAsyncClient consumer, Duration tryTimeout) {
         Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
@@ -79,15 +72,6 @@ public class EventHubConsumerClient implements Closeable {
     }
 
     /**
-     * Gets the position of the event in the partition where the consumer should begin reading.
-     *
-     * @return The position of the event in the partition where the consumer should begin reading.
-     */
-    public EventPosition getStartingPosition() {
-        return consumer.getStartingPosition();
-    }
-
-    /**
      * Gets the consumer group this consumer is reading events as a part of.
      *
      * @return The consumer group this consumer is reading events as a part of.
@@ -101,6 +85,7 @@ public class EventHubConsumerClient implements Closeable {
      *
      * @return The set of information for the Event Hub that this client is associated with.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public EventHubProperties getProperties() {
         return consumer.getProperties().block(timeout);
     }
@@ -119,43 +104,61 @@ public class EventHubConsumerClient implements Closeable {
      * events in the partition event stream.
      *
      * @param partitionId The unique identifier of a partition associated with the Event Hub.
+     *
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionProperties getPartitionProperties(String partitionId) {
         return consumer.getPartitionProperties(partitionId).block(timeout);
     }
 
     /**
-     * Receives a batch of EventData from the Event Hub partition.
+     * Receives a batch of {@link PartitionEvent events} from the Event Hub partition.
      *
      * @param maximumMessageCount The maximum number of messages to receive in this batch.
      * @param partitionId Identifier of the partition to read events from.
-     * @return A set of {@link EventData} that was received. The iterable contains up to {@code maximumMessageCount}
-     *     events. If a stream for the events was opened before, the same position within that partition is returned.
-     *     Otherwise, events are read starting from {@link #getStartingPosition()}.
+     * @param startingPosition Position within the Event Hub partition to begin consuming events.
+     *
+     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
+     *     {@code maximumMessageCount} events. If a stream for the events was opened before, the same position within
+     *     that partition is returned. Otherwise, events are read starting from {@code startingPosition}.
+     *
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1.
      */
-    public IterableStream<PartitionEvent> receive(String partitionId, int maximumMessageCount) {
-        return receive(partitionId, maximumMessageCount, timeout);
+    public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
+        EventPosition startingPosition) {
+        return receiveFromPartition(partitionId, maximumMessageCount, startingPosition, timeout);
     }
 
     /**
-     * Receives a batch of EventData from the Event Hub partition
+     * Receives a batch of {@link PartitionEvent events} from the Event Hub partition.
      *
      * @param partitionId Identifier of the partition to read events from.
      * @param maximumMessageCount The maximum number of messages to receive in this batch.
+     * @param startingPosition Position within the Event Hub partition to begin consuming events.
      * @param maximumWaitTime The maximum amount of time to wait to build up the requested message count for the
      *     batch; if not specified, the default wait time specified when the consumer was created will be used.
-     * @return A set of {@link EventData} that was received. The iterable contains up to {@code maximumMessageCount}
-     *     events.
-     * @throws NullPointerException if {@code maximumWaitTime} is null.
+     *
+     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
+     *     {@code maximumMessageCount} events.
+     *
+     * @throws NullPointerException if {@code maximumWaitTime} or {@code eventPosition} is null.
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
      *     zero or a negative duration.
      */
-    public IterableStream<PartitionEvent> receive(String partitionId, int maximumMessageCount,
-            Duration maximumWaitTime) {
-        Objects.requireNonNull(maximumWaitTime, "'maximumWaitTime' cannot be null.");
+    public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
+        EventPosition startingPosition, Duration maximumWaitTime) {
+        if (Objects.isNull(maximumWaitTime)) {
+            throw logger.logExceptionAsError(new NullPointerException("'maximumWaitTime' cannot be null."));
+        } else if (Objects.isNull(startingPosition)) {
+            throw logger.logExceptionAsError(new NullPointerException("'startingPosition' cannot be null."));
+        } else if (Objects.isNull(partitionId)) {
+            throw logger.logExceptionAsError(new NullPointerException("'partitionId' cannot be null."));
+        }
 
+        if (partitionId.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
+        }
         if (maximumMessageCount < 1) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
@@ -165,36 +168,59 @@ public class EventHubConsumerClient implements Closeable {
         }
 
         final Flux<PartitionEvent> events = Flux.create(emitter -> {
-            queueWork(partitionId, maximumMessageCount, maximumWaitTime, emitter);
+            queueWork(partitionId, maximumMessageCount, startingPosition, maximumWaitTime, defaultReceiveOptions,
+                emitter);
         });
 
-        final Flux<PartitionEvent> map = events.collectList().map(x -> {
-            logger.info("Number of events received: {}", x.size());
-            return Flux.fromIterable(x);
-        }).block();
-        return new IterableStream<>(map);
+        return new IterableStream<>(events);
     }
 
     /**
-     * Given an {@code emitter}, queues that work in {@link SynchronousEventSubscriber}. If the synchronous job has not
-     * been created, will initialise it.
+     * Receives a batch of {@link PartitionEvent events} from the Event Hub partition.
+     *
+     * @param partitionId Identifier of the partition to read events from.
+     * @param maximumMessageCount The maximum number of messages to receive in this batch.
+     * @param startingPosition Position within the Event Hub partition to begin consuming events.
+     * @param maximumWaitTime The maximum amount of time to wait to build up the requested message count for the
+     *     batch; if not specified, the default wait time specified when the consumer was created will be used.
+     * @param receiveOptions Options when receiving events from the partition.
+
+     * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
+     *     {@code maximumMessageCount} events.
+     *
+     * @throws NullPointerException if {@code maximumWaitTime}, {@code eventPosition}, {@code partitionId}, or
+     *     {@code receiveOptions} is {@code null}.
+     * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
+     *     zero or a negative duration.
      */
-    private void queueWork(String partitionId, int maximumMessageCount, Duration maximumWaitTime,
-        FluxSink<PartitionEvent> emitter) {
-        final long id = idGenerator.getAndIncrement();
-        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maximumWaitTime,
-            emitter);
+    public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
+        EventPosition startingPosition, Duration maximumWaitTime, ReceiveOptions receiveOptions) {
+        if (Objects.isNull(maximumWaitTime)) {
+            throw logger.logExceptionAsError(new NullPointerException("'maximumWaitTime' cannot be null."));
+        } else if (Objects.isNull(startingPosition)) {
+            throw logger.logExceptionAsError(new NullPointerException("'startingPosition' cannot be null."));
+        } else if (Objects.isNull(partitionId)) {
+            throw logger.logExceptionAsError(new NullPointerException("'partitionId' cannot be null."));
+        } else if (Objects.isNull(receiveOptions)) {
+            throw logger.logExceptionAsError(new NullPointerException("'receiveOptions' cannot be null."));
+        }
 
-        final SynchronousEventSubscriber subscriber =
-            openSubscribers.computeIfAbsent(partitionId, key -> {
-                logger.info("Started synchronous event subscriber for partition '{}'.", key);
-                SynchronousEventSubscriber syncSubscriber = new SynchronousEventSubscriber();
-                consumer.receive(key).subscribeWith(syncSubscriber);
-                return syncSubscriber;
-            });
+        if (partitionId.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
+        }
+        if (maximumMessageCount < 1) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
+        } else if (maximumWaitTime.isNegative() || maximumWaitTime.isZero()) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
+        }
 
-        logger.info("Queueing work item in SynchronousEventSubscriber.");
-        subscriber.queueReceiveWork(work);
+        final Flux<PartitionEvent> events = Flux.create(emitter -> {
+            queueWork(partitionId, maximumMessageCount, startingPosition, maximumWaitTime, receiveOptions, emitter);
+        });
+
+        return new IterableStream<>(events);
     }
 
     /**
@@ -203,5 +229,19 @@ public class EventHubConsumerClient implements Closeable {
     @Override
     public void close() {
         consumer.close();
+    }
+
+    /**
+     * Given an {@code emitter}, queues that work in {@link SynchronousEventSubscriber}. If the synchronous job has not
+     * been created, will initialise it.
+     */
+    private void queueWork(String partitionId, int maximumMessageCount, EventPosition startingPosition,
+        Duration maximumWaitTime, ReceiveOptions receiveOptions, FluxSink<PartitionEvent> emitter) {
+        final long id = idGenerator.getAndIncrement();
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maximumWaitTime,
+            emitter);
+        final SynchronousEventSubscriber syncSubscriber = new SynchronousEventSubscriber(work);
+        logger.info("Started synchronous event subscriber for partition '{}'.", partitionId);
+        consumer.receiveFromPartition(partitionId, startingPosition, receiveOptions).subscribeWith(syncSubscriber);
     }
 }

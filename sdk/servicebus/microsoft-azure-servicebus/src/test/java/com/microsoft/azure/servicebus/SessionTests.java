@@ -125,10 +125,10 @@ public abstract class SessionTests extends Tests {
     }
 
     @Test
-    public void testBasicReceiveAndDeleteWithLargeBinaryData() throws InterruptedException, ServiceBusException, ExecutionException {
+    public void testBasicReceiveAndCompleteWithLargeBinaryData() throws InterruptedException, ServiceBusException, ExecutionException {
         String sessionId = TestUtils.getRandomString();
-        this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.RECEIVEANDDELETE);
-        TestCommons.testBasicReceiveAndDeleteWithLargeBinaryData(this.sender, sessionId, this.session);
+        this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.PEEKLOCK);
+        TestCommons.testBasicReceiveAndCompleteWithLargeBinaryData(this.sender, sessionId, this.session);
     }
 
     @Test

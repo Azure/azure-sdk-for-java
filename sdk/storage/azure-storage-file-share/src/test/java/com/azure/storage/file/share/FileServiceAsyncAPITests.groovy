@@ -72,7 +72,7 @@ class FileServiceAsyncAPITests extends APISpec {
         then:
         createShareVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
-        }
+        }.verifyComplete()
 
         where:
         metadata     | quota
@@ -102,7 +102,7 @@ class FileServiceAsyncAPITests extends APISpec {
 
     def "Delete share"() {
         given:
-        primaryFileServiceAsyncClient.createShare(shareName)
+        primaryFileServiceAsyncClient.createShare(shareName).block()
 
         when:
         def deleteShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.deleteShareWithResponse(shareName, null))
@@ -110,7 +110,7 @@ class FileServiceAsyncAPITests extends APISpec {
         then:
         deleteShareVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 202)
-        }
+        }.verifyComplete()
     }
 
     def "Delete share does not exist"() {
@@ -213,7 +213,7 @@ class FileServiceAsyncAPITests extends APISpec {
         }.verifyComplete()
         setPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 202)
-        }
+        }.verifyComplete()
 
         getPropertiesAfterVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)

@@ -21,12 +21,12 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
     private String destinationPath = "destinationPath";
 
     /**
-     * Code snippet for {@link DataLakeDirectoryAsyncClient#getSubDirectoryAsyncClient(String)}
+     * Code snippet for {@link DataLakeDirectoryAsyncClient#getSubdirectoryAsyncClient(String)}
      */
     public void getDirectoryClient() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getSubDirectoryAsyncClient#String
-        DataLakeDirectoryAsyncClient dataLakeDirectoryClient = client.getSubDirectoryAsyncClient(directoryName);
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getSubDirectoryAsyncClient#String
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getSubdirectoryAsyncClient#String
+        DataLakeDirectoryAsyncClient dataLakeDirectoryClient = client.getSubdirectoryAsyncClient(directoryName);
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getSubdirectoryAsyncClient#String
     }
 
     /**
@@ -101,15 +101,15 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeDirectoryAsyncClient#createSubDirectory(String)} and
-     * {@link DataLakeDirectoryAsyncClient#createSubDirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
+     * Code snippets for {@link DataLakeDirectoryAsyncClient#createSubdirectory(String)} and
+     * {@link DataLakeDirectoryAsyncClient#createSubdirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
-    public void createSubDirectoryCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectory#String
-        DataLakeDirectoryAsyncClient directoryClient = client.createSubDirectory(fileName).block();
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectory#String
+    public void createSubdirectoryCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String
+        DataLakeDirectoryAsyncClient directoryClient = client.createSubdirectory(fileName).block();
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -117,30 +117,30 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubDirectoryWithResponse(
+        DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubdirectoryWithResponse(
             fileName, permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions
         ).block().getValue();
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
     }
 
     /**
-     * Code snippets for {@link DataLakeDirectoryAsyncClient#deleteSubDirectory(String)} and
-     * {@link DataLakeDirectoryAsyncClient#deleteSubDirectoryWithResponse(String, boolean, DataLakeRequestConditions)}
+     * Code snippets for {@link DataLakeDirectoryAsyncClient#deleteSubdirectory(String)} and
+     * {@link DataLakeDirectoryAsyncClient#deleteSubdirectoryWithResponse(String, boolean, DataLakeRequestConditions)}
      */
-    public void deleteSubDirectoryCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubDirectory#String
-        client.deleteSubDirectory(directoryName).subscribe(response ->
+    public void deleteSubdirectoryCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectory#String
+        client.deleteSubdirectory(directoryName).subscribe(response ->
             System.out.println("Delete request completed"));
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubDirectory#String
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectory#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubDirectoryWithResponse#String-boolean-DataLakeRequestConditions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryWithResponse#String-boolean-DataLakeRequestConditions
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
         boolean recursive = false; // Default value
 
-        client.deleteSubDirectoryWithResponse(directoryName, recursive, requestConditions)
+        client.deleteSubdirectoryWithResponse(directoryName, recursive, requestConditions)
             .subscribe(response -> System.out.println("Delete request completed"));
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubDirectoryWithResponse#String-boolean-DataLakeRequestConditions
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryWithResponse#String-boolean-DataLakeRequestConditions
     }
 
     /**

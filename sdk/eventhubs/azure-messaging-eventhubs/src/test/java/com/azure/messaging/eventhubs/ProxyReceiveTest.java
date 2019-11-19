@@ -86,7 +86,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         }
 
         consumer = builder.consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .startingPosition(EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
             .buildAsyncConsumer();
     }
 
@@ -98,7 +97,8 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     @Test
     public void testReceiverStartOfStreamFilters() {
         // Act & Assert
-        StepVerifier.create(consumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS))
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
+            .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
     }

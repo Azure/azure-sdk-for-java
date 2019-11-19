@@ -84,9 +84,9 @@ public class GetSetAccessControlExample {
          */
         // Set permissions
         PathPermissions permissions = new PathPermissions()
-            .group(new RolePermissions().execute(true).read(true))
-            .owner(new RolePermissions().execute(true).read(true).write(true))
-            .other(new RolePermissions().read(true));
+            .setGroup(new RolePermissions().setExecutePermission(true).setReadPermission(true))
+            .setOwner(new RolePermissions().setExecutePermission(true).setReadPermission(true).setWritePermission(true))
+            .setOther(new RolePermissions().setReadPermission(true));
         String group = "group";
         String owner = "owner";
 
@@ -95,7 +95,7 @@ public class GetSetAccessControlExample {
         // Set access control list
         PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
             .entityID("entityId")
-            .permissions(new RolePermissions().read(true));
+            .permissions(new RolePermissions().setReadPermission(true));
         List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
         pathAccessControlEntries.add(pathAccessControlEntry);
 
