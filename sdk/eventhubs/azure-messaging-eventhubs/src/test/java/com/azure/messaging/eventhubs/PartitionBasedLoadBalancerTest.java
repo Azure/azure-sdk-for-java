@@ -6,12 +6,12 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
@@ -97,9 +98,9 @@ public class PartitionBasedLoadBalancerTest {
     public void testSingleEventProcessor() {
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
-        when(eventHubAsyncClient.createConsumer(anyString(), any(EventHubConsumerOptions.class))).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
 
-        when(eventHubConsumer.receive(any(), any()))
+        when(eventHubConsumer.receive(any(), any(), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("foo", "bar", "bazz", null, null, null);
                 return new PartitionEvent(partitionContext, eventDataList.get(index.intValue()));
@@ -131,7 +132,7 @@ public class PartitionBasedLoadBalancerTest {
     public void testTwoEventProcessors() {
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
-        when(eventHubAsyncClient.createConsumer(anyString(), any(EventHubConsumerOptions.class))).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receive(anyString(), any(EventPosition.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("foo", "bar", "bazz", null, null, null);
@@ -163,7 +164,7 @@ public class PartitionBasedLoadBalancerTest {
     public void testPartitionStealing() {
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
-        when(eventHubAsyncClient.createConsumer(anyString(), any(EventHubConsumerOptions.class))).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
 
         when(eventHubConsumer.receive(anyString(), any(EventPosition.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
@@ -200,7 +201,7 @@ public class PartitionBasedLoadBalancerTest {
     public void testMoreEventProcessorsThanPartitions() {
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
-        when(eventHubAsyncClient.createConsumer(anyString(), any(EventHubConsumerOptions.class))).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
 
         when(eventHubConsumer.receive(anyString(), any(EventPosition.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
@@ -237,7 +238,7 @@ public class PartitionBasedLoadBalancerTest {
 
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
-        when(eventHubAsyncClient.createConsumer(anyString(), any(EventHubConsumerOptions.class))).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receive(anyString(), any(EventPosition.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("foo", "bar", "bazz", null, null, null);
@@ -300,7 +301,7 @@ public class PartitionBasedLoadBalancerTest {
         when(partitionProcessor.processEvent(any(PartitionEvent.class))).thenReturn(Mono.error(new IllegalStateException()));
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
-        when(eventHubAsyncClient.createConsumer(anyString(), any(EventHubConsumerOptions.class))).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receive(anyString(), any(EventPosition.class))).thenReturn(Flux.error(new IllegalStateException()));
 
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(eventProcessorStore,
@@ -392,7 +393,7 @@ public class PartitionBasedLoadBalancerTest {
 
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
-        when(eventHubAsyncClient.createConsumer(anyString(), any(EventHubConsumerOptions.class))).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receive(anyString(), any(EventPosition.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("foo", "bar", "bazz", null, null, null);

@@ -7,7 +7,6 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -40,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -106,7 +106,7 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
-            .createConsumer(anyString(), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
         when(consumer1.receive(anyString(), any(EventPosition.class))).thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
@@ -163,7 +163,7 @@ public class EventProcessorTest {
 
         verify(eventHubAsyncClient, atLeastOnce()).getPartitionIds();
         verify(eventHubAsyncClient, atLeastOnce())
-            .createConsumer(anyString(), any(EventHubConsumerOptions.class));
+            .createConsumer(anyString(), anyInt());
         verify(consumer1, atLeastOnce()).receive(anyString(), any(EventPosition.class));
         verify(consumer1, atLeastOnce()).close();
     }
@@ -184,7 +184,7 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
-            .createConsumer(anyString(), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
         when(consumer1.receive(anyString(), any(EventPosition.class))).thenReturn(Flux.just(getEvent(eventData1)));
         String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
@@ -235,7 +235,7 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
-            .createConsumer(anyString(), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
@@ -295,7 +295,7 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
-            .createConsumer(anyString(), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
@@ -359,7 +359,7 @@ public class EventProcessorTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient
-            .createConsumer(anyString(), any(EventHubConsumerOptions.class)))
+            .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1, consumer2, consumer3);
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(identifiers));
@@ -401,7 +401,7 @@ public class EventProcessorTest {
 
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
         verify(eventHubAsyncClient, times(1))
-            .createConsumer(anyString(), any(EventHubConsumerOptions.class));
+            .createConsumer(anyString(), anyInt());
 
         // We expected one to be removed.
         Assertions.assertEquals(2, identifiers.size());

@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
@@ -60,7 +59,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
     }
 
     /**
-     * Test that we can use a very large prefetch number with {@link EventHubConsumerOptions}
+     * Test that we can use a very large prefetch number.
      */
     @Test
     public void setLargePrefetchCount() throws InterruptedException {
@@ -69,10 +68,8 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         // chosen
         final int eventCount = NUMBER_OF_EVENTS;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
-        final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setPrefetchCount(2000);
 
-        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, options);
+        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, 2000);
 
         final Disposable subscription = consumer.receive(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
             .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
@@ -97,9 +94,8 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         // Arrange
         final int eventCount = 30;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
-        final EventHubConsumerOptions options = new EventHubConsumerOptions().setPrefetchCount(11);
 
-        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, options);
+        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, 11);
 
         final Disposable subscription = consumer.receive(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
             .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))

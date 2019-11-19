@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -62,7 +63,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
             // Receiving back those events we sent so we have something to compare to.
             logger.info("Receiving the events we sent.");
             final EventHubConsumerAsyncClient consumer = client
-                .createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+                .createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
             final EventPosition startingPosition = EventPosition.fromEnqueuedTime(testData.getEnqueuedTime());
             final List<EventData> receivedEvents;
             try {
@@ -94,8 +95,8 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
     @Test
     public void receiveEarliestMessages() {
         // Arrange
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
-        final EventHubConsumerAsyncClient enqueuedTimeConsumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
+        final EventHubConsumerAsyncClient enqueuedTimeConsumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
 
         final List<EventData> earliestEvents;
         final List<EventData> enqueuedEvents;
@@ -140,7 +141,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
     @Test
     public void receiveLatestMessagesNoneAdded() {
         // Arrange
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
 
         // Act & Assert
         try {
@@ -161,7 +162,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
     public void receiveLatestMessages() throws InterruptedException {
         // Arrange
         final String messageValue = UUID.randomUUID().toString();
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
         final EventHubProducerAsyncClient producer = client.createProducer();
         final Flux<EventData> events = Flux.range(0, NUMBER_OF_EVENTS).map(number -> {
@@ -197,7 +198,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         final EventData[] events = EVENTS_PUSHED.get();
         final EventPosition position = EventPosition.fromEnqueuedTime(testData.getEnqueuedTime());
         final EventData expectedEvent = events[0];
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
 
         // Act & Assert
         try {
@@ -224,7 +225,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         final EventData secondEvent = events[1];
         final EventPosition position = EventPosition.fromEnqueuedTime(secondEvent.getEnqueuedTime());
         final EventData expectedEvent = events[2];
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
 
         // Act & Assert
         try {
@@ -250,7 +251,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         final EventData[] events = EVENTS_PUSHED.get();
         final EventData expectedEvent = events[4];
         final EventPosition position = EventPosition.fromOffset(expectedEvent.getOffset());
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
 
         // Act & Assert
         try {
@@ -276,7 +277,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         final EventData[] events = EVENTS_PUSHED.get();
         final EventData expectedEvent = events[4];
         final EventPosition position = EventPosition.fromOffset(events[3].getOffset(), false);
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
 
         // Act & Assert
         try {
@@ -302,7 +303,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         final EventData[] events = EVENTS_PUSHED.get();
         final EventData expectedEvent = events[3];
         final EventPosition position = EventPosition.fromSequenceNumber(expectedEvent.getSequenceNumber(), true);
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
 
         // Act & Assert
         try {
@@ -328,7 +329,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         final EventData[] events = EVENTS_PUSHED.get();
         final EventData expectedEvent = events[4];
         final EventPosition position = EventPosition.fromSequenceNumber(events[3].getSequenceNumber());
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
 
         // Act & Assert
         try {
