@@ -45,7 +45,6 @@ public class ConsumeEvent {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString(connectionString)
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .startingPosition(EventPosition.latest())
             .buildAsyncConsumer();
 
         // To create a consumer, we need to know what partition to connect to. We take the first partition id.
@@ -61,7 +60,7 @@ public class ConsumeEvent {
 
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
         // countDownLatch.
-        Disposable subscription = consumer.receive(firstPartition).subscribe(partitionEvent -> {
+        Disposable subscription = consumer.receiveFromPartition(firstPartition, EventPosition.latest()).subscribe(partitionEvent -> {
             EventData event = partitionEvent.getData();
             String contents = UTF_8.decode(event.getBody()).toString();
             System.out.println(String.format("[%s] Sequence Number: %s. Contents: %s", countDownLatch.getCount(),
@@ -88,7 +87,8 @@ public class ConsumeEvent {
             // We wait for all the events to be received before continuing.
             boolean isSuccessful = countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
             if (!isSuccessful) {
-                System.err.printf("Did not complete successfully. There are: %s events left.", countDownLatch.getCount());
+                System.err.printf("Did not complete successfully. There are: %s events left.%n",
+                    countDownLatch.getCount());
             }
         } finally {
             // Dispose and close of all the resources we've created.
