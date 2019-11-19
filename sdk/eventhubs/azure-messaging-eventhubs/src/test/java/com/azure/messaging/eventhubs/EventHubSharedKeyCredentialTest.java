@@ -22,43 +22,43 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class EventHubSharedAccessKeyCredentialTest {
+public class EventHubSharedKeyCredentialTest {
     private static final String KEY_NAME = "some-key-name";
     private static final String KEY_VALUE = "ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=";
     private static final Duration TOKEN_DURATION = Duration.ofMinutes(10);
 
     @Test
     public void constructorNullDuration() {
-        assertThrows(NullPointerException.class, () -> new EventHubSharedAccessKeyCredential(KEY_NAME, KEY_VALUE, null));
+        assertThrows(NullPointerException.class, () -> new EventHubSharedKeyCredential(KEY_NAME, KEY_VALUE, null));
     }
 
     @Test
     public void constructorNullKey() {
-        assertThrows(NullPointerException.class, () -> new EventHubSharedAccessKeyCredential(null, KEY_VALUE, TOKEN_DURATION));
+        assertThrows(NullPointerException.class, () -> new EventHubSharedKeyCredential(null, KEY_VALUE, TOKEN_DURATION));
     }
 
     @Test
     public void constructorEmptyKey() {
-        assertThrows(IllegalArgumentException.class, () -> new EventHubSharedAccessKeyCredential("", KEY_VALUE, TOKEN_DURATION));
+        assertThrows(IllegalArgumentException.class, () -> new EventHubSharedKeyCredential("", KEY_VALUE, TOKEN_DURATION));
 
     }
 
     @Test
     public void constructorNullValue() {
-        assertThrows(NullPointerException.class, () -> new EventHubSharedAccessKeyCredential(KEY_NAME, null, TOKEN_DURATION));
+        assertThrows(NullPointerException.class, () -> new EventHubSharedKeyCredential(KEY_NAME, null, TOKEN_DURATION));
     }
 
     @Test
     public void constructorEmptyValue() {
-        assertThrows(IllegalArgumentException.class, () -> new EventHubSharedAccessKeyCredential(KEY_NAME, "", TOKEN_DURATION));
+        assertThrows(IllegalArgumentException.class, () -> new EventHubSharedKeyCredential(KEY_NAME, "", TOKEN_DURATION));
     }
 
     @Test
     public void constructsToken() throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
         // Arrange
         final String signatureExpires = "se";
-        final EventHubSharedAccessKeyCredential credential =
-            new EventHubSharedAccessKeyCredential(KEY_NAME, KEY_VALUE, TOKEN_DURATION);
+        final EventHubSharedKeyCredential credential =
+            new EventHubSharedKeyCredential(KEY_NAME, KEY_VALUE, TOKEN_DURATION);
         final String resource = "some resource name";
         final String resourceUriEncode = URLEncoder.encode(resource, StandardCharsets.UTF_8.toString());
         final Map<String, String> expected = new HashMap<>();

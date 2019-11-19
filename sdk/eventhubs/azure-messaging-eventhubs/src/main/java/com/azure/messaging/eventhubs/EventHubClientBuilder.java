@@ -157,13 +157,8 @@ public class EventHubClientBuilder {
     public EventHubClientBuilder connectionString(String connectionString) {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential;
-        try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(properties.getSharedAccessKeyName(),
-                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new AzureException(
-                "Could not create the EventHubSharedAccessKeyCredential.", e));
-        }
+        tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
+            properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
 
         return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
     }
@@ -199,7 +194,7 @@ public class EventHubClientBuilder {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential;
         try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(properties.getSharedAccessKeyName(),
+            tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
                 properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
             throw logger.logExceptionAsError(new AzureException(
@@ -553,7 +548,7 @@ public class EventHubClientBuilder {
             proxyOptions = getDefaultProxyConfiguration(configuration);
         }
 
-        final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedAccessKeyCredential
+        final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
             ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CBSAuthorizationType.JSON_WEB_TOKEN;
 

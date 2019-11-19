@@ -3,10 +3,11 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.AzureException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -42,11 +43,11 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *     access with shared access signature.</a>
  */
 @Immutable
-public class EventHubSharedAccessKeyCredential implements TokenCredential {
+class EventHubSharedKeyCredential implements TokenCredential {
     private static final String SHARED_ACCESS_SIGNATURE_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
     private static final String HASH_ALGORITHM = "HMACSHA256";
 
-    private final ClientLogger logger = new ClientLogger(EventHubSharedAccessKeyCredential.class);
+    private final ClientLogger logger = new ClientLogger(EventHubSharedKeyCredential.class);
 
     private final String policyName;
     private final Mac hmac;
@@ -60,15 +61,14 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
      * @param sharedAccessKey Value of the shared access key.
      * @param tokenValidity The duration for which the shared access signature is valid.
      * @throws IllegalArgumentException if {@code policyName}, {@code sharedAccessKey} is an empty string. Or the
-     *     duration of {@code tokenValidity} is zero or a negative value.
-     * @throws NoSuchAlgorithmException If the hashing algorithm cannot be instantiated, which is used to generate
-     *     the shared access signatures.
-     * @throws InvalidKeyException If the {@code sharedAccessKey} is an invalid value for the hashing algorithm.
+     *     duration of {@code tokenValidity} is zero or a negative value. If the {@code sharedAccessKey} is an invalid
+     *     value for the hashing algorithm.
      * @throws NullPointerException if {@code policyName}, {@code sharedAccessKey}, or {@code tokenValidity} is
      *     null.
+     * @throws AzureException If the hashing algorithm cannot be instantiated, which is used to generate
+     *     the shared access signatures.
      */
-    public EventHubSharedAccessKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity)
-        throws NoSuchAlgorithmException, InvalidKeyException {
+    EventHubSharedKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity) {
 
         Objects.requireNonNull(sharedAccessKey, "'sharedAccessKey' cannot be null.");
         this.policyName = Objects.requireNonNull(policyName, "'sharedAccessKey' cannot be null.");
@@ -82,11 +82,21 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
             throw new IllegalArgumentException("'tokenTimeToLive' has to positive and in the order-of seconds");
         }
 
-        hmac = Mac.getInstance(HASH_ALGORITHM);
+        try {
+            hmac = Mac.getInstance(HASH_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(new AzureException(
+                String.format("Unable to create hashing algorithm '%s'", HASH_ALGORITHM), e));
+        }
 
         final byte[] sasKeyBytes = sharedAccessKey.getBytes(UTF_8);
         final SecretKeySpec finalKey = new SecretKeySpec(sasKeyBytes, HASH_ALGORITHM);
-        hmac.init(finalKey);
+        try {
+            hmac.init(finalKey);
+        } catch (InvalidKeyException e) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'sharedAccessKey' is an invalid value for the hashing algorithm.", e));
+        }
     }
 
     /**
