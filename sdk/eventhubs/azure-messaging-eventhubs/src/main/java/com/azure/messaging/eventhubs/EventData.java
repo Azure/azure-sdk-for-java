@@ -55,6 +55,7 @@ public class EventData {
     private final byte[] body;
     private final SystemProperties systemProperties;
     private Context context;
+    private volatile ByteBuffer bodyAsBuffer;
 
     static {
         final Set<String> properties = new HashSet<>();
@@ -73,18 +74,10 @@ public class EventData {
      * @param body The data to set for this event.
      */
     public EventData(byte[] body) {
-        this(body, Context.NONE);
-    }
-
-    /**
-     * Creates an event containing the {@code data}.
-     *
-     * @param body The data to set for this event.
-     * @param context A specified key-value pair of type {@link Context}.
-     * @throws NullPointerException if {@code body} or if {@code context} is {@code null}.
-     */
-    public EventData(byte[] body, Context context) {
-        this(ByteBuffer.wrap(body), context);
+        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
+        this.context = Context.NONE;
+        this.properties = new HashMap<>();
+        this.systemProperties = new SystemProperties();
     }
 
     /**
@@ -94,24 +87,11 @@ public class EventData {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(ByteBuffer body) {
-        this(body, Context.NONE);
-    }
-
-    /**
-     * Creates an event containing the {@code body}.
-     *
-     * @param body The data to set for this event.
-     * @param context A specified key-value pair of type {@link Context}.
-     * @throws NullPointerException if {@code body} or if {@code context} is {@code null}.
-     */
-    public EventData(ByteBuffer body, Context context) {
-        Objects.requireNonNull(body, "'body' cannot be null.");
-        Objects.requireNonNull(body, "'context' cannot be null.");
-
+        this.bodyAsBuffer = Objects.requireNonNull(body, "'body' cannot be null.");
         this.body = body.array();
+        this.context = Context.NONE;
         this.properties = new HashMap<>();
         this.systemProperties = new SystemProperties();
-        this.context = context;
     }
 
     /**
@@ -152,14 +132,12 @@ public class EventData {
      *
      * @param key The key for this context object
      * @param value The value for this context object.
-     * @return The updated EventData object.
      * @throws NullPointerException if {@code key} or {@code value} is null.
      */
-    EventData addContext(String key, Object value) {
+    void addContext(String key, Object value) {
         Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
         Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
         this.context = context.addData(key, value);
-        return this;
     }
 
     /**
@@ -211,7 +189,7 @@ public class EventData {
      * @return UTF-8 decoded string representation of the event data.
      */
     public String getBodyAsString() {
-        return UTF_8.decode(ByteBuffer.wrap(body)).toString();
+        return UTF_8.decode(bodyAsBuffer).toString();
     }
 
     /**

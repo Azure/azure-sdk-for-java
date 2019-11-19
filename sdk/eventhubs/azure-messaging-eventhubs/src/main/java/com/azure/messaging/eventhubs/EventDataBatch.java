@@ -222,7 +222,7 @@ public final class EventDataBatch {
         }
 
         if (event.getBody() != null) {
-            message.setBody(new Data(Binary.create(event.getBody())));
+            message.setBody(new Data(new Binary(event.getBody())));
         }
 
         return message;

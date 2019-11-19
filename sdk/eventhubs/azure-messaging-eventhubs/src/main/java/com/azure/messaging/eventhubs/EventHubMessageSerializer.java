@@ -21,7 +21,6 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
-import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
@@ -114,7 +113,8 @@ class EventHubMessageSerializer implements MessageSerializer {
         setSystemProperties(eventData, message);
 
         if (eventData.getBody() != null) {
-            message.setBody(new Data(Binary.create(eventData.getBody())));
+
+            message.setBody(new Data(new Binary(eventData.getBody())));
         }
 
         return message;
@@ -212,16 +212,16 @@ class EventHubMessageSerializer implements MessageSerializer {
         }
 
         final Section bodySection = message.getBody();
-        ByteBuffer body;
+        byte[] body;
         if (bodySection instanceof Data) {
             Data bodyData = (Data) bodySection;
-            body = bodyData.getValue().asByteBuffer();
+            body = bodyData.getValue().getArray();
         } else {
             logger.warning(String.format(Locale.US,
                 "Message body type is not of type Data, but type: %s. Not setting body contents.",
                 bodySection != null ? bodySection.getType() : "null"));
 
-            body = ByteBuffer.wrap(new byte[0]);
+            body = new byte[0];
         }
 
         final EventData.SystemProperties systemProperties = new EventData.SystemProperties(receiveProperties);
@@ -230,7 +230,7 @@ class EventHubMessageSerializer implements MessageSerializer {
             ? new HashMap<>()
             : message.getApplicationProperties().getValue();
 
-        properties.forEach((key, value) -> eventData.addProperty(key, value));
+        properties.forEach((key, value) -> eventData.getProperties().put(key, value));
 
         message.clear();
         return eventData;
