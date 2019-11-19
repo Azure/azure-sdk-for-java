@@ -305,7 +305,7 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory).
 
 ```Java
 String subDirName = "testsubdir";
-directoryClient.createSubDirectory(subDirName);
+directoryClient.createSubdirectory(subDirName);
 ```
 
 ### Create a File
@@ -358,7 +358,7 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
 String subDirName = "testsubdir";
-directoryClient.deleteSubDirectory(subDirName);
+directoryClient.deleteSubdirectory(subDirName);
 ```
 
 ### Delete a file

@@ -21,6 +21,8 @@ trigger:
   paths:
     include:
       - sdk/search/
+    exclude:
+      - sdk/search/azure-mgmt-
 
 pr:
   branches:
@@ -32,6 +34,8 @@ pr:
   paths:
     include:
       - sdk/search/
+    exclude:
+      - sdk/search/azure-mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml  

@@ -11,7 +11,6 @@ module com.azure.core.amqp {
 
     exports com.azure.core.amqp;
     exports com.azure.core.amqp.exception;
-    exports com.azure.core.amqp.models;
 
     // FIXME this should not be a long-term solution
     exports com.azure.core.amqp.implementation to

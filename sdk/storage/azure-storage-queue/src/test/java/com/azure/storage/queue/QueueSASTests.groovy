@@ -215,6 +215,9 @@ class QueueSASTests extends APISpec {
                 .setExpiresOn(expiryTime).setStartsOn(startTime))
         queueClient.setAccessPolicy(Arrays.asList(identifier))
 
+        // Wait 30 seconds as it may take time for the access policy to take effect.
+        sleepIfLive(30000)
+
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasIdentifier = new QueueServiceSasSignatureValues()

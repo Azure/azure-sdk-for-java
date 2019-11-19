@@ -80,13 +80,34 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream() {
-        return getBlobOutputStream(null);
+        return getBlobOutputStream(false);
     }
 
     /**
      * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
      * will be overwritten.
      *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(boolean overwrite) {
+        BlobRequestConditions requestConditions = null;
+        if (!overwrite) {
+            if (exists()) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+            }
+            requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return getBlobOutputStream(requestConditions);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
+     * will be overwritten.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * 
      * @param requestConditions A {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.
      *
@@ -151,6 +172,8 @@ public final class BlockBlobClient extends BlobClientBase {
      * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
      * and PutBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -361,7 +384,32 @@ public final class BlockBlobClient extends BlobClientBase {
      * @return The information of the block blob.
      */
     public BlockBlobItem commitBlockList(List<String> base64BlockIds) {
-        return commitBlockListWithResponse(base64BlockIds, null, null, null, null, null, Context.NONE).getValue();
+        return commitBlockList(base64BlockIds, false);
+    }
+
+    /**
+     * Writes a blob by specifying the list of block IDs that are to make up the blob. In order to be written as part of
+     * a blob, a block must have been successfully written to the server in a prior stageBlock operation. You can call
+     * commitBlockList to update a blob by uploading only those blocks that have changed, then committing the new and
+     * existing blocks together. Any blocks not specified in the block list and permanently deleted. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean}
+     *
+     * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @return The information of the block blob.
+     */
+    public BlockBlobItem commitBlockList(List<String> base64BlockIds, boolean overwrite) {
+        BlobRequestConditions requestConditions = null;
+        if (!overwrite) {
+            requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return commitBlockListWithResponse(base64BlockIds, null, null, null, requestConditions, null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -371,6 +419,8 @@ public final class BlockBlobClient extends BlobClientBase {
      * and existing blocks together. Any blocks not specified in the block list and permanently deleted. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *

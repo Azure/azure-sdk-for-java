@@ -157,8 +157,7 @@
         <version>${jacoco-maven-plugin.version}</version>
         <executions>
           <execution>
-            <id>post-unit-test</id>
-            <phase>test</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>report-aggregate</goal>
             </goals>

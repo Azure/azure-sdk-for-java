@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.amqp.models.ProxyAuthenticationType;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,8 +32,8 @@ public class WebSocketsProxyConnectionHandlerTest {
     private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, PROXY_ADDRESS);
     private static final String USERNAME = "test-user";
     private static final String PASSWORD = "test-password";
-    private static final ProxyConfiguration PROXY_CONFIGURATION =
-        new ProxyConfiguration(ProxyAuthenticationType.DIGEST, PROXY, USERNAME, PASSWORD);
+    private static final ProxyOptions PROXY_CONFIGURATION =
+        new ProxyOptions(ProxyAuthenticationType.DIGEST, PROXY, USERNAME, PASSWORD);
 
     private ProxySelector originalProxySelector;
     private ProxySelector proxySelector;
@@ -91,7 +91,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.singletonList(PROXY));
 
         final WebSocketsProxyConnectionHandler handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, HOSTNAME,
-            ProxyConfiguration.SYSTEM_DEFAULTS);
+            ProxyOptions.SYSTEM_DEFAULTS);
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
@@ -109,7 +109,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         // Arrange
         final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
-        final ProxyConfiguration configuration = new ProxyConfiguration(ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
+        final ProxyOptions configuration = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
         final String host = "foo.eventhubs.azure.com";
 
         when(proxySelector.select(any())).thenReturn(Collections.singletonList(PROXY));

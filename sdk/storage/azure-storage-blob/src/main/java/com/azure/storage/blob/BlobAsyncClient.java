@@ -54,8 +54,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by the
- * client are downloading and copying a blob, retrieving and setting metadata, retrieving and setting HTTP headers, and
- * deleting and un-deleting a blob.
+ * client are uploading and downloading, copying a blob, retrieving and setting metadata, retrieving and setting HTTP
+ * headers, and deleting and un-deleting a blob.
  *
  * <p>
  * This client is instantiated through {@link BlobClientBuilder} or retrieved via {@link
@@ -74,8 +74,16 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class BlobAsyncClient extends BlobAsyncClientBase {
     private static final int CHUNKED_UPLOAD_REQUIREMENT = 4 * Constants.MB;
 
+    /**
+     * The block size to use if none is specified in parallel operations.
+     */
     public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
+
+    /**
+     * The number of buffers to use if none is specied on the buffered upload method.
+     */
     public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = 8;
+
     /**
      * If a blob is known to be greater than 100MB, using a larger block size will trigger some server-side
      * optimizations. If the block size is not set and the size of the blob is known to be greater than 100MB, this
@@ -86,7 +94,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
+     * Protected constructor for use by {@link BlobClientBuilder}.
      *
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
@@ -107,7 +115,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * Creates a new {@link BlobAsyncClient} linked to the {@code snapshot} of this blob resource.
      *
      * @param snapshot the identifier for a specific snapshot of this blob
-     * @return a {@link BlobAsyncClient} used to interact with the specific snapshot.
+     * @return A {@link BlobAsyncClient} used to interact with the specific snapshot.
      */
     @Override
     public BlobAsyncClient getSnapshotClient(String snapshot) {
@@ -116,27 +124,27 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a new {@link AppendBlobAsyncClient} associated to this blob.
+     * Creates a new {@link AppendBlobAsyncClient} associated with this blob.
      *
-     * @return a {@link AppendBlobAsyncClient} associated to this blob.
+     * @return A {@link AppendBlobAsyncClient} associated with this blob.
      */
     public AppendBlobAsyncClient getAppendBlobAsyncClient() {
         return prepareBuilder().buildAppendBlobAsyncClient();
     }
 
     /**
-     * Creates a new {@link BlockBlobAsyncClient} associated to this blob.
+     * Creates a new {@link BlockBlobAsyncClient} associated with this blob.
      *
-     * @return a {@link BlockBlobAsyncClient} associated to this blob.
+     * @return A {@link BlockBlobAsyncClient} associated with this blob.
      */
     public BlockBlobAsyncClient getBlockBlobAsyncClient() {
         return prepareBuilder().buildBlockBlobAsyncClient();
     }
 
     /**
-     * Creates a new {@link PageBlobAsyncClient} associated to this blob.
+     * Creates a new {@link PageBlobAsyncClient} associated with this blob.
      *
-     * @return a {@link PageBlobAsyncClient} associated to this blob.
+     * @return A {@link PageBlobAsyncClient} associated with this blob.
      */
     public PageBlobAsyncClient getPageBlobAsyncClient() {
         return prepareBuilder().buildPageBlobAsyncClient();
@@ -163,12 +171,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
      * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
      * update of a block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
-     * BlockBlobAsyncClient#commitBlockList(List)}. For more information, see the
+     * BlockBlobAsyncClient#commitBlockList(List) commitBlockList}. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
      * <p>
      * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
-     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
+     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method does
      * support uploading any arbitrary data source, including network streams. This behavior is possible because this
      * method will perform some internal buffering as configured by the blockSize and numBuffers parameters, so while
      * this method may offer additional convenience, it will not be as performant as other options, which should be
@@ -203,12 +211,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
      * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
      * update of a block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
-     * BlockBlobAsyncClient#commitBlockList(List)}. For more information, see the
+     * BlockBlobAsyncClient#commitBlockList(List) commitBlockList}. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
      * <p>
      * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
-     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
+     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method does
      * support uploading any arbitrary data source, including network streams. This behavior is possible because this
      * method will perform some internal buffering as configured by the blockSize and numBuffers parameters, so while
      * this method may offer additional convenience, it will not be as performant as other options, which should be
@@ -233,33 +241,39 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
         try {
-            Mono<BlockBlobItem> uploadTask = uploadWithResponse(data, parallelTransferOptions, null,
-                null, null, null).flatMap(FluxUtil::toMono);
+            Mono<Void> overwriteCheck;
+            BlobRequestConditions requestConditions;
 
             if (overwrite) {
-                return uploadTask;
+                overwriteCheck = Mono.empty();
+                requestConditions = null;
             } else {
-                return exists()
-                    .flatMap(exists -> exists
-                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                        : uploadTask);
+                overwriteCheck = exists().flatMap(exists -> exists
+                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                    : Mono.empty());
+                requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
             }
+
+            return overwriteCheck
+                .then(uploadWithResponse(data, parallelTransferOptions, null, null, null,
+                    requestConditions)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
-     * overwrites any existing metadata on the blob. Partial updates are not supported with this method; the content of
-     * the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use {@link
-     * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
-     * BlockBlobAsyncClient#commitBlockList(List)}, which this method uses internally. For more information, see the
+     * Creates a new block blob, or updates the content of an existing block blob.
+     * <p>
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
+     * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
+     * update of a block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
+     * BlockBlobAsyncClient#commitBlockList(List) commitBlockList}. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
      * <p>
      * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
-     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
+     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method does
      * support uploading any arbitrary data source, including network streams. This behavior is possible because this
      * method will perform some internal buffering as configured by the blockSize and numBuffers parameters, so while
      * this method may offer additional convenience, it will not be as performant as other options, which should be
@@ -269,6 +283,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * data. Larger buffers means we will have to stage fewer blocks and therefore require fewer IO operations. The
      * trade-offs between these values are context-dependent, so some experimentation may be required to optimize inputs
      * for a given scenario.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -479,16 +495,21 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
         try {
-            Mono<Void> uploadTask = uploadFromFile(filePath, null, null, null, null, null);
+            Mono<Void> overwriteCheck = Mono.empty();
+            BlobRequestConditions requestConditions = null;
 
-            if (overwrite) {
-                return uploadTask;
-            } else {
-                return exists()
-                    .flatMap(exists -> exists
+            // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
+            if (!overwrite) {
+                if (uploadInBlocks(filePath)) {
+                    overwriteCheck = exists().flatMap(exists -> exists
                         ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                        : uploadTask);
+                        : Mono.empty());
+                }
+
+                requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
             }
+
+            return overwriteCheck.then(uploadFromFile(filePath, null, null, null, null, requestConditions));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -497,6 +518,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Creates a new block blob, or updates the content of an existing block blob, with the content of the specified
      * file.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -523,7 +546,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         long fileSize = channel.size();
 
                         // If the file is larger than 256MB chunk it and stage it as blocks.
-                        if (fileSize > 256 * Constants.MB) {
+                        if (uploadInBlocks(filePath)) {
                             return uploadBlocks(fileSize, parallelTransferOptions, headers, metadata, tier,
                                 requestConditions, channel, blockBlobAsyncClient);
                         } else {
@@ -541,6 +564,20 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
+    boolean uploadInBlocks(String filePath) {
+        AsynchronousFileChannel channel = uploadFileResourceSupplier(filePath);
+        boolean retVal;
+        try {
+            retVal = channel.size() > 256 * Constants.MB;
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
+        } finally {
+            uploadFileCleanup(channel);
+        }
+
+        return retVal;
+    }
+
     private Mono<Void> uploadBlocks(long fileSize, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions, AsynchronousFileChannel channel, BlockBlobAsyncClient client) {
@@ -548,7 +585,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
         final BlobRequestConditions finalRequestConditions = (requestConditions == null)
             ? new BlobRequestConditions() : requestConditions;
-
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();
@@ -574,7 +610,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Resource Supplier for UploadFile
+     * RESERVED FOR INTERNAL USE.
+     *
+     * Resource Supplier for UploadFile.
      *
      * @param filePath The path for the file
      * @return {@code AsynchronousFileChannel}

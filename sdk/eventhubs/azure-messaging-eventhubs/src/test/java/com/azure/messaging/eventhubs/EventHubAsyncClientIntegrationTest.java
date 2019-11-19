@@ -33,24 +33,23 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final int NUMBER_OF_EVENTS = 5;
-    private EventHubClientBuilder builder;
     private static final String PARTITION_ID = "1";
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
     private static volatile IntegrationTestEventData testData = null;
 
     private EventHubAsyncClient client;
+    private TransportType transportType;
 
     public EventHubAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubAsyncClientIntegrationTest.class));
     }
 
     protected void beforeTest(TransportType transportType) {
-        builder = createBuilder()
-            .transportType(transportType);
-        EventHubConnection connection = builder.buildConnection();
-        client = new EventHubClientBuilder()
-            .connection(connection)
+        client = createBuilder()
+            .transportType(transportType)
+            .shareConnection()
             .buildAsyncClient();
+        transportType = transportType;
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.warning("Already pushed events to partition. Skipping.");
@@ -110,7 +109,10 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfClients);
         final EventHubAsyncClient[] clients = new EventHubAsyncClient[numberOfClients];
         for (int i = 0; i < numberOfClients; i++) {
-            clients[i] = builder.buildAsyncClient();
+            clients[i] = createBuilder()
+                .transportType(transportType)
+                .shareConnection()
+                .buildAsyncClient();
         }
 
         final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
@@ -123,12 +125,12 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                 consumers.add(consumer);
 
                 consumer.receive(PARTITION_ID).filter(partitionEvent -> {
-                    EventData event = partitionEvent.getEventData();
+                    EventData event = partitionEvent.getData();
                     return event.getProperties() != null
                         && event.getProperties().containsKey(messageTrackingId)
                         && messageTrackingValue.equals(event.getProperties().get(messageTrackingId));
                 }).take(numberOfEvents).subscribe(partitionEvent -> {
-                    EventData event = partitionEvent.getEventData();
+                    EventData event = partitionEvent.getData();
                     logger.info("Event[{}] matched.", event.getSequenceNumber());
                 }, error -> Assertions.fail("An error should not have occurred:" + error.toString()),
                     () -> {
@@ -160,7 +162,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
      * Sending with credentials.
      */
     @Test
-    public void sendWithCredentials() {
+    public void getPropertiesWithCredentials() {
         // Arrange
         final EventHubAsyncClient client = createBuilder(true)
             .buildAsyncClient();
