@@ -4,16 +4,12 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -52,14 +48,6 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         super(new ClientLogger(EventPositionIntegrationTest.class));
     }
 
-    @Rule
-    public TestName testName = new TestName();
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
-    }
-
     @Override
     protected void beforeTest() {
         EventHubConnection connection = createBuilder().buildConnection();
@@ -80,14 +68,14 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
                 receivedEvents = consumer.receive(PARTITION_ID)
                     .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                     .take(NUMBER_OF_EVENTS)
-                    .map(PartitionEvent::getEventData)
+                    .map(PartitionEvent::getData)
                     .collectList().block(TIMEOUT);
             } finally {
                 dispose(consumer);
             }
 
-            Assert.assertNotNull(receivedEvents);
-            Assert.assertEquals(NUMBER_OF_EVENTS, receivedEvents.size());
+            Assertions.assertNotNull(receivedEvents);
+            Assertions.assertEquals(NUMBER_OF_EVENTS, receivedEvents.size());
 
             EVENTS_PUSHED.set(receivedEvents.toArray(new EventData[0]));
         }
@@ -112,20 +100,20 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         final List<EventData> enqueuedEvents;
         try {
             // Act
-            earliestEvents = consumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS).map(PartitionEvent::getEventData)
+            earliestEvents = consumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS).map(PartitionEvent::getData)
                 .collectList().block(TIMEOUT);
-            enqueuedEvents = enqueuedTimeConsumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS).map(PartitionEvent::getEventData)
+            enqueuedEvents = enqueuedTimeConsumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS).map(PartitionEvent::getData)
                 .collectList().block(TIMEOUT);
         } finally {
             dispose(consumer, enqueuedTimeConsumer);
         }
 
         // Assert
-        Assert.assertNotNull(earliestEvents);
-        Assert.assertNotNull(enqueuedEvents);
+        Assertions.assertNotNull(earliestEvents);
+        Assertions.assertNotNull(enqueuedEvents);
 
-        Assert.assertEquals(NUMBER_OF_EVENTS, earliestEvents.size());
-        Assert.assertEquals(NUMBER_OF_EVENTS, enqueuedEvents.size());
+        Assertions.assertEquals(NUMBER_OF_EVENTS, earliestEvents.size());
+        Assertions.assertEquals(NUMBER_OF_EVENTS, enqueuedEvents.size());
 
         // EventData implements Comparable, so we can sort these and ensure that the events received are the same.
         Collections.sort(earliestEvents);
@@ -137,9 +125,9 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
             final String eventBody = UTF_8.decode(event.getBody()).toString();
             final String event2Body = UTF_8.decode(event2.getBody()).toString();
 
-            Assert.assertEquals(event.getSequenceNumber(), event2.getSequenceNumber());
-            Assert.assertEquals(event.getOffset(), event2.getOffset());
-            Assert.assertEquals(eventBody, event2Body);
+            Assertions.assertEquals(event.getSequenceNumber(), event2.getSequenceNumber());
+            Assertions.assertEquals(event.getOffset(), event2.getOffset());
+            Assertions.assertEquals(eventBody, event2Body);
         }
     }
 
@@ -192,7 +180,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         }
 
         // Assert
-        Assert.assertEquals(0, countDownLatch.getCount());
+        Assertions.assertEquals(0, countDownLatch.getCount());
     }
 
     /**
@@ -208,12 +196,12 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(PARTITION_ID).map(x -> x.getEventData())
+            StepVerifier.create(consumer.receive(PARTITION_ID).map(x -> x.getData())
                 .take(1))
                 .assertNext(event -> {
-                    Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
-                    Assert.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
-                    Assert.assertEquals(expectedEvent.getOffset(), event.getOffset());
+                    Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                    Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                    Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
@@ -223,7 +211,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
     /**
      * Test for receiving messages with a previously received message.
      */
-    @Ignore("Investigate. We cannot use the enqueuedTime from an existing event. If we set Instant we created, like Instant.now() it works.")
+    @Disabled("Investigate. We cannot use the enqueuedTime from an existing event. If we set Instant we created, like Instant.now() it works.")
     @Test
     public void receiveMessageFromEnqueuedTimeReceivedMessage() {
         // Arrange
@@ -235,12 +223,12 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(PARTITION_ID).map(x -> x.getEventData())
+            StepVerifier.create(consumer.receive(PARTITION_ID).map(x -> x.getData())
                 .take(1))
                 .assertNext(event -> {
-                    Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
-                    Assert.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
-                    Assert.assertEquals(expectedEvent.getOffset(), event.getOffset());
+                    Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                    Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                    Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
@@ -261,13 +249,13 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getEventData)
+            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getData)
                 .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
-                    Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
-                    Assert.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
-                    Assert.assertEquals(expectedEvent.getOffset(), event.getOffset());
+                    Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                    Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                    Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
@@ -287,13 +275,13 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getEventData)
+            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getData)
                 .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
-                    Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
-                    Assert.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
-                    Assert.assertEquals(expectedEvent.getOffset(), event.getOffset());
+                    Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                    Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                    Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
@@ -313,13 +301,13 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getEventData)
+            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getData)
                 .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
-                    Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
-                    Assert.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
-                    Assert.assertEquals(expectedEvent.getOffset(), event.getOffset());
+                    Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                    Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                    Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
@@ -339,13 +327,13 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getEventData)
+            StepVerifier.create(consumer.receive(PARTITION_ID).map(PartitionEvent::getData)
                 .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
-                    Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
-                    Assert.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
-                    Assert.assertEquals(expectedEvent.getOffset(), event.getOffset());
+                    Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                    Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                    Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
                 }).verifyComplete();
         } finally {
             dispose(consumer);

@@ -6,13 +6,10 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
@@ -37,16 +34,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     @Mock
     private ErrorContextProvider contextProvider;
 
-    @Rule
-    public TestName testName = new TestName();
-
     public EventDataBatchIntegrationTest() {
         super(new ClientLogger(EventDataBatchIntegrationTest.class));
-    }
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
     }
 
     @Override
@@ -132,7 +121,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         try {
             // Creating consumers on all the partitions and subscribing to the receive event.
             final List<String> partitionIds = client.getPartitionIds().collectList().block(TIMEOUT);
-            Assert.assertNotNull(partitionIds);
+            Assertions.assertNotNull(partitionIds);
 
             for (String id : partitionIds) {
                 final EventHubConsumerAsyncClient consumer =
@@ -140,7 +129,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
                 consumers.add(consumer);
                 consumer.receive(id).subscribe(partitionEvent -> {
-                    EventData event = partitionEvent.getEventData();
+                    EventData event = partitionEvent.getData();
                     if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
                         return;
                     }
@@ -153,7 +142,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
                             event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_TRACKING_ID)));
                     }
                 }, error -> {
-                        Assert.fail("An error should not have occurred:" + error.toString());
+                        Assertions.fail("An error should not have occurred:" + error.toString());
                     }, () -> {
                         logger.info("Disposing of consumer now that the receive is complete.");
                         dispose(consumer);
@@ -171,7 +160,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
             dispose(consumers.toArray(new EventHubConsumerAsyncClient[0]));
         }
 
-        Assert.assertEquals(0, countDownLatch.getCount());
+        Assertions.assertEquals(0, countDownLatch.getCount());
     }
 
     /**
@@ -200,7 +189,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         }
 
         // Act & Assert
-        Assert.assertEquals(count, batch.getSize());
+        Assertions.assertEquals(count, batch.getSize());
         StepVerifier.create(producer.send(batch.getEvents(), sendOptions))
             .verifyComplete();
     }

@@ -6,6 +6,7 @@ package com.azure.data.cosmos.internal.changefeed.implementation;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverContext;
+import com.azure.data.cosmos.internal.changefeed.Lease;
 import com.azure.data.cosmos.internal.changefeed.PartitionCheckpointer;
 import reactor.core.publisher.Mono;
 
@@ -40,7 +41,7 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
      * @return a deferred computation of this call.
      */
     @Override
-    public Mono<Void> checkpoint() {
+    public Mono<Lease> checkpoint() {
         this.responseContinuation = this.feedResponse.continuationToken();
 
         return this.checkpointer.checkpointPartition(this.responseContinuation);

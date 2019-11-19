@@ -16,7 +16,7 @@ own AMQP client library that abstracts from the underlying transport library's i
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-amqp</artifactId>
-    <version>1.0.0-preview.8</version>
+    <version>1.0.0-preview.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -43,4 +43,4 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/core/azure-core-amqp/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-amqp%2FREADME.png)

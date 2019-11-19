@@ -147,16 +147,6 @@ class Transforms {
             .setValue(blobUserDelegationKey.getValue());
     }
 
-    static String endpointToDesiredEndpoint(String endpoint, String desiredEndpoint, String currentEndpoint) {
-        String desiredRegex = "." + desiredEndpoint + ".";
-        String currentRegex = "." + currentEndpoint + ".";
-        if (endpoint.contains(desiredRegex)) {
-            return endpoint;
-        } else {
-            return endpoint.replaceFirst(currentRegex, desiredRegex);
-        }
-    }
-
     static BlobHttpHeaders toBlobHttpHeaders(PathHttpHeaders pathHTTPHeaders) {
         if (pathHTTPHeaders == null) {
             return null;
@@ -242,16 +232,16 @@ class Transforms {
             path.getName(), path.getOwner(), path.getPermissions());
     }
 
-    static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions accessConditions) {
-        if (accessConditions == null) {
+    static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions requestConditions) {
+        if (requestConditions == null) {
             return null;
         }
         return new BlobRequestConditions()
-            .setLeaseId(accessConditions.getLeaseId())
-            .setIfUnmodifiedSince(accessConditions.getIfUnmodifiedSince())
-            .setIfNoneMatch(accessConditions.getIfNoneMatch())
-            .setIfMatch(accessConditions.getIfMatch())
-            .setIfModifiedSince(accessConditions.getIfModifiedSince());
+            .setLeaseId(requestConditions.getLeaseId())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfMatch(requestConditions.getIfMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince());
 
     }
 

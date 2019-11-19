@@ -40,25 +40,25 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
      * Creates a new {@link ShareServiceSasQueryParameters} object.
      *
      * @param queryParamsMap All query parameters for the request as key-value pairs
-     * @param removeSASParametersFromMap When {@code true}, the SAS query parameters will be removed from
+     * @param removeSasParametersFromMap When {@code true}, the SAS query parameters will be removed from
      * queryParamsMap
      */
-    public ShareServiceSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
-        super(queryParamsMap, removeSASParametersFromMap);
+    public ShareServiceSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSasParametersFromMap) {
+        super(queryParamsMap, removeSasParametersFromMap);
         this.identifier = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.resource = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_RESOURCE,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.cacheControl = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CACHE_CONTROL,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.contentDisposition = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_DISPOSITION,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.contentEncoding = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_ENCODING,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.contentLanguage = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_LANGUAGE,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.contentType = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_TYPE,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
     }
 
     /**

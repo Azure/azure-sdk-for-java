@@ -14,21 +14,21 @@ import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -82,7 +82,7 @@ public class EventHubProducerClientTest {
     @Mock
     private TokenCredential tokenCredential;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -94,13 +94,13 @@ public class EventHubProducerClientTest {
 
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
         asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, retryOptions,
             tracerProvider, messageSerializer, false);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
         sendLink = null;
@@ -132,7 +132,7 @@ public class EventHubProducerClientTest {
         verify(sendLink).send(singleMessageCaptor.capture());
 
         final Message message = singleMessageCaptor.getValue();
-        Assert.assertEquals(Section.SectionType.Data, message.getBody().getType());
+        Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType());
     }
 
     /**
@@ -248,9 +248,9 @@ public class EventHubProducerClientTest {
         verify(sendLink).send(messagesCaptor.capture());
 
         final List<Message> messagesSent = messagesCaptor.getValue();
-        Assert.assertEquals(count, messagesSent.size());
+        Assertions.assertEquals(count, messagesSent.size());
 
-        messagesSent.forEach(message -> Assert.assertEquals(Section.SectionType.Data, message.getBody().getType()));
+        messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
     }
 
     /**
@@ -286,9 +286,9 @@ public class EventHubProducerClientTest {
         final EventDataBatch batch = hubProducer.createBatch();
 
         // Assert
-        Assert.assertNull(batch.getPartitionKey());
-        Assert.assertFalse(batch.tryAdd(tooLargeEvent));
-        Assert.assertTrue(batch.tryAdd(event));
+        Assertions.assertNull(batch.getPartitionKey());
+        Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
+        Assertions.assertTrue(batch.tryAdd(event));
 
         verify(link, times(1)).getLinkSize();
     }
@@ -316,7 +316,7 @@ public class EventHubProducerClientTest {
         final EventData event = new EventData(new byte[maxEventPayload]);
 
         // No idea what the overhead for adding partition key is. But we know this will be smaller than the max size.
-        final BatchOptions options = new BatchOptions()
+        final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionKey("some-key")
             .setMaximumSizeInBytes(maxBatchSize);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
@@ -325,8 +325,8 @@ public class EventHubProducerClientTest {
         final EventDataBatch batch = producer.createBatch(options);
 
         // Arrange
-        Assert.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
-        Assert.assertTrue(batch.tryAdd(event));
+        Assertions.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
+        Assertions.assertTrue(batch.tryAdd(event));
     }
 
     /**
@@ -353,7 +353,7 @@ public class EventHubProducerClientTest {
         final EventData event = new EventData(new byte[maxEventPayload]);
 
         // No idea what the overhead for adding partition key is. But we know this will be smaller than the max size.
-        final BatchOptions options = new BatchOptions()
+        final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionId(partitionId)
             .setMaximumSizeInBytes(maxBatchSize);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
@@ -362,8 +362,8 @@ public class EventHubProducerClientTest {
         final EventDataBatch batch = producer.createBatch(options);
 
         // Arrange
-        Assert.assertEquals(options.getPartitionId(), batch.getPartitionId());
-        Assert.assertTrue(batch.tryAdd(event));
+        Assertions.assertEquals(options.getPartitionId(), batch.getPartitionId());
+        Assertions.assertTrue(batch.tryAdd(event));
     }
 
     /**
@@ -389,7 +389,7 @@ public class EventHubProducerClientTest {
         final EventData event = new EventData(new byte[maxEventPayload + 1]);
 
         // No idea what the overhead for adding partition key is. But we know this will be smaller than the max size.
-        final BatchOptions options = new BatchOptions()
+        final CreateBatchOptions options = new CreateBatchOptions()
             .setMaximumSizeInBytes(maxBatchSize);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventDataBatch batch = producer.createBatch(options);
@@ -398,7 +398,7 @@ public class EventHubProducerClientTest {
         try {
             batch.tryAdd(event);
         } catch (AmqpException e) {
-            Assert.assertEquals(ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
+            Assertions.assertEquals(ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
         }
     }
 }

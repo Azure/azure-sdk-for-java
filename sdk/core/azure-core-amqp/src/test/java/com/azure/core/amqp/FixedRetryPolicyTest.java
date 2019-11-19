@@ -6,8 +6,8 @@ package com.azure.core.amqp;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
@@ -22,7 +22,7 @@ public class FixedRetryPolicyTest {
         .setDelay(minBackoff)
         .setMaxDelay(maxBackoff)
         .setMaxRetries(retryAttempts)
-        .setRetryMode(RetryMode.FIXED);
+        .setMode(RetryMode.FIXED);
 
     /**
      * Verifies that when the service is busy and we retry an exception multiple times, the retry duration gets longer.
@@ -37,13 +37,13 @@ public class FixedRetryPolicyTest {
         final Duration secondRetryInterval = retry.calculateRetryDelay(exception, 2);
 
         // Assert
-        Assert.assertNotNull(firstRetryInterval);
-        Assert.assertNotNull(secondRetryInterval);
+        Assertions.assertNotNull(firstRetryInterval);
+        Assertions.assertNotNull(secondRetryInterval);
 
         // Assert that the second retry interval is within our jitter threshold.
         final Duration minValue = firstRetryInterval.minus(tolerance);
         final Duration maxValue = firstRetryInterval.plus(tolerance);
-        Assert.assertTrue(minValue.compareTo(secondRetryInterval) < 0
+        Assertions.assertTrue(minValue.compareTo(secondRetryInterval) < 0
             && maxValue.compareTo(secondRetryInterval) > 0);
     }
 
@@ -60,13 +60,13 @@ public class FixedRetryPolicyTest {
         final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, 4);
 
         // Assert
-        Assert.assertNotNull(retryInterval);
-        Assert.assertNotNull(cloneRetryInterval);
+        Assertions.assertNotNull(retryInterval);
+        Assertions.assertNotNull(cloneRetryInterval);
 
         // Assert that the cloned retry interval is within our jitter threshold.
         final Duration minValue = retryInterval.minus(tolerance);
         final Duration maxValue = retryInterval.plus(tolerance);
-        Assert.assertTrue(minValue.compareTo(cloneRetryInterval) < 0
+        Assertions.assertTrue(minValue.compareTo(cloneRetryInterval) < 0
             && maxValue.compareTo(cloneRetryInterval) > 0);
     }
 
@@ -82,12 +82,12 @@ public class FixedRetryPolicyTest {
             .setDelay(minBackoff)
             .setMaxDelay(maxBackoff)
             .setMaxRetries(retryAttempts)
-            .setRetryMode(RetryMode.FIXED);
+            .setMode(RetryMode.FIXED);
         final FixedRetryPolicy otherPolicy = new FixedRetryPolicy(otherOptions);
 
         // Assert
-        Assert.assertEquals(policy, otherPolicy);
-        Assert.assertEquals(policy.hashCode(), otherPolicy.hashCode());
+        Assertions.assertEquals(policy, otherPolicy);
+        Assertions.assertEquals(policy.hashCode(), otherPolicy.hashCode());
     }
 
     @Test
@@ -102,17 +102,17 @@ public class FixedRetryPolicyTest {
         final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, retryCount);
 
         // Assert
-        Assert.assertNotSame(retry, clone);
-        Assert.assertEquals(retry, clone);
-        Assert.assertEquals(retry.hashCode(), clone.hashCode());
+        Assertions.assertNotSame(retry, clone);
+        Assertions.assertEquals(retry, clone);
+        Assertions.assertEquals(retry.hashCode(), clone.hashCode());
 
-        Assert.assertNotNull(retryInterval);
-        Assert.assertNotNull(cloneRetryInterval);
+        Assertions.assertNotNull(retryInterval);
+        Assertions.assertNotNull(cloneRetryInterval);
 
         // Assert that the cloned interval is within our jitter threshold.
         final Duration minValue = retryInterval.minus(tolerance);
         final Duration maxValue = retryInterval.plus(tolerance);
-        Assert.assertTrue(minValue.compareTo(cloneRetryInterval) < 0
+        Assertions.assertTrue(minValue.compareTo(cloneRetryInterval) < 0
             && maxValue.compareTo(cloneRetryInterval) > 0);
     }
 }

@@ -33,7 +33,7 @@ public class RetryOptions implements Cloneable {
      * @param retryMode The retry approach to use for calculating delays.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions setRetryMode(RetryMode retryMode) {
+    public RetryOptions setMode(RetryMode retryMode) {
         this.retryMode = retryMode;
         return this;
     }
@@ -88,7 +88,7 @@ public class RetryOptions implements Cloneable {
      *
      * @return The approach to use for calculating retry delays.
      */
-    public RetryMode getRetryMode() {
+    public RetryMode getMode() {
         return retryMode;
     }
 
@@ -148,7 +148,7 @@ public class RetryOptions implements Cloneable {
             .setMaxDelay(maxDelay)
             .setMaxRetries(maxRetries)
             .setTryTimeout(tryTimeout)
-            .setRetryMode(retryMode);
+            .setMode(retryMode);
     }
 
     /**
@@ -167,7 +167,7 @@ public class RetryOptions implements Cloneable {
         final RetryOptions other = (RetryOptions) obj;
 
         return this.getMaxRetries() == other.getMaxRetries()
-            && this.getRetryMode() == other.getRetryMode()
+            && this.getMode() == other.getMode()
             && Objects.equals(this.getMaxDelay(), other.getMaxDelay())
             && Objects.equals(this.getDelay(), other.getDelay())
             && Objects.equals(this.getTryTimeout(), other.getTryTimeout());

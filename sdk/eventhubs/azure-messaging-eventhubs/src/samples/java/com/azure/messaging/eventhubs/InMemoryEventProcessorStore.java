@@ -26,7 +26,7 @@ public class InMemoryEventProcessorStore implements EventProcessorStore {
     /**
      * {@inheritDoc}
      *
-     * @param fullyQualifiedNamespace The fully qualified namespace of the Event Hub.
+     * @param fullyQualifiedNamespace The fully qualified namespace of the Event Hubs instance.
      * @param eventHubName The name of the Event Hub to list ownership of.
      * @param consumerGroupName The name of the consumer group to list ownership of.
      * @return A {@link Flux} of partition ownership information.

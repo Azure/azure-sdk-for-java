@@ -8,8 +8,8 @@ import com.azure.core.implementation.serializer.jsonwrapper.api.Deserializer;
 import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.implementation.serializer.jsonwrapper.api.Node;
 import com.azure.core.implementation.serializer.jsonwrapper.api.Type;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -25,21 +25,21 @@ public abstract class JsonDeserializationTests {
     public void deserializeString() {
         String json = "{ \"color\" : \"Black\", \"type\" : \"BMW\" }";
         Car car = jsonApi.readString(json, Car.class);
-        Assert.assertNotNull(car);
-        Assert.assertEquals("Black", car.getColor());
-        Assert.assertEquals("BMW", car.getType());
+        Assertions.assertNotNull(car);
+        Assertions.assertEquals("Black", car.getColor());
+        Assertions.assertEquals("BMW", car.getType());
     }
 
     @Test
     public void deserializeListString() {
         String json = "[{ \"color\" : \"Black\", \"type\" : \"BMW\" }, { \"color\" : \"Red\", \"type\" : \"FIAT\" }]";
         List<Car> cars = jsonApi.readStringToList(json, new Type<List<Car>>() { });
-        Assert.assertNotNull(cars);
-        Assert.assertEquals(2, cars.size());
-        Assert.assertEquals("Black", cars.get(0).getColor());
-        Assert.assertEquals("BMW", cars.get(0).getType());
-        Assert.assertEquals("Red", cars.get(1).getColor());
-        Assert.assertEquals("FIAT", cars.get(1).getType());
+        Assertions.assertNotNull(cars);
+        Assertions.assertEquals(2, cars.size());
+        Assertions.assertEquals("Black", cars.get(0).getColor());
+        Assertions.assertEquals("BMW", cars.get(0).getType());
+        Assertions.assertEquals("Red", cars.get(1).getColor());
+        Assertions.assertEquals("FIAT", cars.get(1).getType());
     }
 
     @Test
@@ -48,8 +48,8 @@ public abstract class JsonDeserializationTests {
 
         Foo targetObject = jsonApi.readString(json, Foo.class);
 
-        Assert.assertEquals(targetObject.getIntValue(), 1);
-        Assert.assertEquals(targetObject.getStringValue(), "one");
+        Assertions.assertEquals(targetObject.getIntValue(), 1);
+        Assertions.assertEquals(targetObject.getStringValue(), "one");
     }
 
     @Test
@@ -58,7 +58,7 @@ public abstract class JsonDeserializationTests {
 
         GenericFoo<Integer> targetObject = jsonApi.readString(json, new Type<GenericFoo<Integer>>() { });
 
-        Assert.assertEquals(targetObject.getTheValue(), new Integer(1));
+        Assertions.assertEquals(targetObject.getTheValue(), new Integer(1));
     }
 
     @Test
@@ -68,8 +68,8 @@ public abstract class JsonDeserializationTests {
         String json = "{\"intValue\":1,\"stringValue\":\"one\",\"extraString\":\"two\",\"extraFloat\":2.2}";
         Foo targetObject = jsonApi.readString(json, Foo.class);
 
-        Assert.assertEquals(targetObject.getIntValue(), 1);
-        Assert.assertEquals(targetObject.getStringValue(), "one");
+        Assertions.assertEquals(targetObject.getIntValue(), 1);
+        Assertions.assertEquals(targetObject.getStringValue(), "one");
     }
 
     @Test
@@ -85,8 +85,8 @@ public abstract class JsonDeserializationTests {
         });
         Foo targetObject = jsonApi.readString(json, Foo.class);
 
-        Assert.assertEquals(targetObject.getIntValue(), 7);
-        Assert.assertEquals(targetObject.getStringValue(), "seven");
+        Assertions.assertEquals(targetObject.getIntValue(), 7);
+        Assertions.assertEquals(targetObject.getStringValue(), "seven");
     }
 
     @Test
@@ -104,8 +104,8 @@ public abstract class JsonDeserializationTests {
         });
 
         Car car = jsonApi.readString(json, Car.class);
-        Assert.assertEquals(car.getColor(), "Black");
-        Assert.assertNull(car.getType());
+        Assertions.assertEquals(car.getColor(), "Black");
+        Assertions.assertNull(car.getType());
     }
 
     @Test
@@ -113,9 +113,9 @@ public abstract class JsonDeserializationTests {
         String json = "[{\"intValue\":1,\"stringValue\":\"one\"}," + "{\"intValue\":2,\"stringValue\":\"two\"}]";
         Foo[] targetArray = jsonApi.readString(json, Foo[].class);
 
-        Assert.assertEquals(2, targetArray.length);
-        Assert.assertEquals(new Foo(1, "one"), targetArray[0]);
-        Assert.assertEquals(new Foo(2, "two"), targetArray[1]);
+        Assertions.assertEquals(2, targetArray.length);
+        Assertions.assertEquals(new Foo(1, "one"), targetArray[0]);
+        Assertions.assertEquals(new Foo(2, "two"), targetArray[1]);
     }
 
 
@@ -127,9 +127,9 @@ public abstract class JsonDeserializationTests {
         Type targetClassType = new Type<List<Foo>>() { };
 
         List<Foo> targetList = jsonApi.readStringToList(json, targetClassType);
-        Assert.assertEquals(2, targetList.size());
-        Assert.assertEquals(new Foo(1, "one"), targetList.get(0));
-        Assert.assertEquals(new Foo(2, "two"), targetList.get(1));
+        Assertions.assertEquals(2, targetList.size());
+        Assertions.assertEquals(new Foo(1, "one"), targetList.get(0));
+        Assertions.assertEquals(new Foo(2, "two"), targetList.get(1));
     }
 
     @Test
@@ -138,8 +138,8 @@ public abstract class JsonDeserializationTests {
 
         FooWithInner targetObject = jsonApi.readString(json, FooWithInner.class);
 
-        Assert.assertEquals(targetObject.getIntValue(), 1);
-        Assert.assertEquals(targetObject.getStringValue(), "one");
-        Assert.assertEquals(targetObject.getInnerFoo().getName(), "inner");
+        Assertions.assertEquals(targetObject.getIntValue(), 1);
+        Assertions.assertEquals(targetObject.getStringValue(), "one");
+        Assertions.assertEquals(targetObject.getInnerFoo().getName(), "inner");
     }
 }

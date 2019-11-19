@@ -303,25 +303,22 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco-maven-plugin.version}</version>
         <executions>
-          <!--
-              Prepares the property pointing to the JaCoCo runtime agent which
-              is passed as VM argument when Maven the Surefire plugin is executed.
-          -->
-          <execution>
-            <id>pre-unit-test</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-            <configuration>
-              <!--Sets the name of the property containing the settings for JaCoCo runtime agent.-->
-              <propertyName>surefireArgLine</propertyName>
-            </configuration>
-          </execution>
+        <execution>
+          <id>default-instrument</id>
+          <goals>
+            <goal>instrument</goal>
+          </goals>
+        </execution>
+        <execution>
+          <id>default-restore-instrumented-classes</id>
+          <goals>
+            <goal>restore-instrumented-classes</goal>
+          </goals>
+        </execution>
           <execution>
             <!-- This generates the unit test reports for individual modules.
               jacoco-test-coverage generates aggregate reports for all modules -->
             <id>post-unit-test</id>
-            <phase>test</phase>
             <goals>
               <goal>report</goal>
             </goals>
@@ -513,6 +510,17 @@
 
   </build>
 
+  <dependencies>
+    <dependency>
+      <!-- must be on the classpath -->
+      <groupId>org.jacoco</groupId>
+      <artifactId>org.jacoco.agent</artifactId>
+      <classifier>runtime</classifier>
+      <version>${jacoco-maven-plugin.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <reporting>
     <plugins>
       <plugin>
@@ -644,6 +652,12 @@
         <maven.compiler.target>8</maven.compiler.target>
       </properties>
       <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
         <plugins>
           <!-- Don't compile module-info.java, see java 9+ profile -->
           <plugin>
@@ -719,6 +733,12 @@
         <jdk>[11,)</jdk>
       </activation>
       <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -789,6 +809,11 @@
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
 
+                <!-- Needed for JUnit offline instrumentation -->
+                --add-reads com.azure.core=ALL-UNNAMED
+                --add-reads com.azure.core.test=ALL-UNNAMED
+                --add-reads com.azure.core.amqp=ALL-UNNAMED
+
                 <!-- Mockito uses reflection to create PollResponses in tests. -->
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
 
@@ -798,6 +823,7 @@
 
                 <!-- Checkpoint store tests fail without this -->
                 --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
+                --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
 
                 <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
                 --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
@@ -806,6 +832,9 @@
               <useSystemClassLoader>false</useSystemClassLoader>
               <forkCount>1</forkCount>
               <testFailureIgnore>false</testFailureIgnore>
+              <systemPropertyVariables>
+                <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -888,6 +917,9 @@
         <property>
           <name>generate-overview</name>
         </property>
+        <file>
+          <exists>../../../eng/pipelines/scripts/generate_overview_from_readme.py</exists>
+        </file>
       </activation>
       <build>
         <plugins>
@@ -912,7 +944,7 @@
                       <argument>${project.basedir}/README.md</argument>
                       <argument>--v</argument>
                       <argument>${project.version}</argument>
-                </arguments>    
+                </arguments>
               </configuration>
           </plugin>
           <!-- Add the overview argument to the javadoc args -->
@@ -938,6 +970,7 @@
     <module>sdk/core/azure-core-http-okhttp</module>
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opencensus</module>
+    <module>sdk/core/azure-core-tracing-opentelemetry</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
     <module>sdk/identity/azure-identity</module>

@@ -3,10 +3,12 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -16,15 +18,19 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.credentials.SasTokenCredential;
+import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * This class provides helper methods for common builder patterns.
@@ -34,13 +40,16 @@ import java.util.function.Supplier;
 public final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-blob";
     // {x-version-update-start;com.azure:azure-storage-blob;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.1.0-preview.1";
+    private static final String DEFAULT_USER_AGENT_VERSION = "12.1.0-beta.1";
     // {x-version-update-end}
 
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.
      *
-     * @param credentialPolicySupplier Supplier for credentials in the pipeline.
+     * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
+     * @param tokenCredential {@link TokenCredential} if present.
+     * @param sasTokenCredential {@link SasTokenCredential} if present.
+     * @param endpoint The endpoint for the client.
      * @param retryOptions Retry options to set in the retry policy.
      * @param logOptions Logging options to set in the logging policy.
      * @param httpClient HttpClient to use in the builder.
@@ -49,7 +58,8 @@ public final class BuilderHelper {
      * @param serviceVersion {@link BlobServiceVersion} of the service to be used when making requests.
      * @return A new {@link HttpPipeline} from the passed values.
      */
-    public static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
+    public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
+        TokenCredential tokenCredential, SasTokenCredential sasTokenCredential, String endpoint,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, BlobServiceVersion serviceVersion) {
         // Closest to API goes first, closest to wire goes last.
@@ -59,7 +69,18 @@ public final class BuilderHelper {
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        HttpPipelinePolicy credentialPolicy = credentialPolicySupplier.get();
+        HttpPipelinePolicy credentialPolicy;
+        if (storageSharedKeyCredential != null) {
+            credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
+        } else if (tokenCredential != null) {
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential,
+                String.format("%s/.default", endpoint));
+        } else if (sasTokenCredential != null) {
+            credentialPolicy =  new SasTokenCredentialPolicy(sasTokenCredential);
+        } else {
+            credentialPolicy =  null;
+        }
+
         if (credentialPolicy != null) {
             policies.add(credentialPolicy);
         }
@@ -109,6 +130,18 @@ public final class BuilderHelper {
         }
     }
 
+    /**
+     * Validates that the client is properly configured for using cpk.
+     *
+     * @param customerProvidedKey The cpk object.
+     * @param endpoint The endpoint for the client.
+     */
+    public static void validateCpk(CpkInfo customerProvidedKey, String endpoint) {
+        if (customerProvidedKey != null && !BlobUrlParts.parse(endpoint).getScheme().equals(Constants.HTTPS)) {
+            throw new IllegalArgumentException("Using a customer provided key requires https");
+        }
+    }
+
     /*
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
@@ -119,7 +152,8 @@ public final class BuilderHelper {
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, BlobServiceVersion serviceVersion) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
-        return new UserAgentPolicy(DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration, serviceVersion);
+        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(), DEFAULT_USER_AGENT_NAME,
+            DEFAULT_USER_AGENT_VERSION, configuration, serviceVersion);
     }
 
     /*

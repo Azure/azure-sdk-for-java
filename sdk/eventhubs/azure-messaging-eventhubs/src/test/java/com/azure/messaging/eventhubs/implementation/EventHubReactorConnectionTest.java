@@ -13,15 +13,15 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -56,7 +56,7 @@ public class EventHubReactorConnectionTest {
     private ReactorHandlerProvider handlerProvider;
     private ConnectionOptions connectionOptions;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
 
@@ -67,7 +67,7 @@ public class EventHubReactorConnectionTest {
             .thenReturn(reactorConnection);
         when(reactor.process()).thenReturn(true);
 
-        final ProxyConfiguration proxy = ProxyConfiguration.SYSTEM_DEFAULTS;
+        final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-name",
             tokenCredential, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP, new RetryOptions(),
             proxy, scheduler);
@@ -90,11 +90,11 @@ public class EventHubReactorConnectionTest {
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())
-            .assertNext(node -> Assert.assertTrue(node instanceof ManagementChannel))
+            .assertNext(node -> Assertions.assertTrue(node instanceof ManagementChannel))
             .verifyComplete();
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
     }

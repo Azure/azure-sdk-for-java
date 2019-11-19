@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 /**
  * Pipeline policy that adds "User-Agent" header to a request.
  *
  * The format for the "User-Agent" string is outlined in
- * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy>Azure Core: Telemetry policy</a>.
+ * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>.
  */
 public class UserAgentPolicy implements HttpPipelinePolicy {
     private static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
@@ -22,6 +24,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     // From the design guidelines, the default user agent header format is:
     // azsdk-java-<client_lib>/<sdk_version> <platform_info>
     private static final String USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s (%s)";
+
+    // From the design guidelines, the application id user agent header format is:
+    // AzCopy/10.0.4-Preview azsdk-java-<client_lib>/<sdk_version> <platform_info>
+    private static final String APPLICATION_ID_USER_AGENT_FORMAT = "%s " + USER_AGENT_FORMAT;
 
     // When the AZURE_TELEMETRY_DISABLED configuration is true remove the <platform_info> portion of the user agent.
     private static final String DISABLED_TELEMETRY_USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s";
@@ -59,12 +65,45 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be included
      * in the user agent.
      *
+     * @param applicationId User specified application Id.
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
      * @param version {@link ServiceVersion} of the service to be used when making requests.
      * @param configuration Configuration store that will be checked for the AZURE_TELEMETRY_DISABLED.
+     * @throws NullPointerException if {@code configuration} is {@code null}.
+     */
+    public UserAgentPolicy(String applicationId, String sdkName, String sdkVersion, Configuration configuration,
+                           ServiceVersion version) {
+        Objects.requireNonNull(configuration, "'configuration' cannot be null.");
+        boolean telemetryDisabled = configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
+        if (telemetryDisabled) {
+            this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion,
+                version.getVersion());
+        } else {
+            if (applicationId == null) {
+                this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo(),
+                    version.getVersion());
+            } else {
+                this.userAgent = String.format(APPLICATION_ID_USER_AGENT_FORMAT, applicationId, sdkName, sdkVersion,
+                    getPlatformInfo(), version.getVersion());
+            }
+        }
+    }
+
+    /**
+     * Creates a UserAgentPolicy with the {@code sdkName} and {@code sdkVersion} in the User-Agent header value.
+     *
+     * If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be included
+     * in the user agent.
+     *
+     * @param sdkName Name of the client library.
+     * @param sdkVersion Version of the client library.
+     * @param version {@link ServiceVersion} of the service to be used when making requests.
+     * @param configuration Configuration store that will be checked for the AZURE_TELEMETRY_DISABLED.
+     * @throws NullPointerException if {@code configuration} is {@code null}.
      */
     public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration, ServiceVersion version) {
+        Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         boolean telemetryDisabled = configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
         if (telemetryDisabled) {
             this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion,
@@ -85,7 +124,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String header = context.getHttpRequest().getHeaders().getValue("User-Agent");
-        if (header == null || header.startsWith(DEFAULT_USER_AGENT_HEADER)) {
+        if (header == null || header.contains(DEFAULT_USER_AGENT_HEADER)) {
             header = userAgent;
         } else {
             header = userAgent + " " + header;

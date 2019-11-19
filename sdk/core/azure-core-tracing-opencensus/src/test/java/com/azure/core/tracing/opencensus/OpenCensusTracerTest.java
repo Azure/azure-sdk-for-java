@@ -15,10 +15,10 @@ import io.opencensus.trace.Tracing;
 import io.opencensus.trace.config.TraceConfig;
 import io.opencensus.trace.config.TraceParams;
 import io.opencensus.trace.samplers.Samplers;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
@@ -30,6 +30,7 @@ import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests OpenCensus tracing package using opencensus-impl
@@ -45,9 +46,8 @@ public class OpenCensusTracerTest {
     private Span parentSpan;
     private io.opencensus.common.Scope scope;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        System.out.println("Running: setUp");
         openCensusTracer = new OpenCensusTracer();
         // Configure 100% sample rate, otherwise, few traces will be sampled.
         final TraceConfig traceConfig = Tracing.getTraceConfig();
@@ -62,21 +62,20 @@ public class OpenCensusTracerTest {
         tracingContext = new Context(PARENT_SPAN_KEY, parentSpan);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
-        System.out.println("Running: tearDown");
         // Clear out tracer and tracingContext objects
         tracer = null;
         tracingContext = null;
-        Assert.assertNull(tracer);
-        Assert.assertNull(tracingContext);
+        Assertions.assertNull(tracer);
+        Assertions.assertNull(tracingContext);
         scope.close();
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void startSpanNullPointerException() {
         // Act
-        openCensusTracer.start("", null);
+        assertThrows(NullPointerException.class, () -> openCensusTracer.start("", null));
     }
 
     @Test
@@ -91,7 +90,7 @@ public class OpenCensusTracerTest {
         assertSpanWithExplicitParent(updatedContext, parentSpanId);
         final RecordEventsSpanImpl recordEventsSpan =
             (RecordEventsSpanImpl) updatedContext.getData(PARENT_SPAN_KEY).get();
-        Assert.assertNull(recordEventsSpan.getKind());
+        Assertions.assertNull(recordEventsSpan.getKind());
     }
 
     @Test
@@ -100,16 +99,16 @@ public class OpenCensusTracerTest {
         final Context updatedContext = openCensusTracer.start(METHOD_NAME, Context.NONE);
 
         // Assert
-        Assert.assertNotNull(updatedContext.getData(PARENT_SPAN_KEY));
+        Assertions.assertNotNull(updatedContext.getData(PARENT_SPAN_KEY));
 
         //verify still get a valid span implementation
-        Assert.assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof RecordEventsSpanImpl);
+        Assertions.assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof RecordEventsSpanImpl);
         final RecordEventsSpanImpl recordEventsSpan =
             (RecordEventsSpanImpl) updatedContext.getData(PARENT_SPAN_KEY).get();
 
-        Assert.assertEquals(METHOD_NAME, recordEventsSpan.getName());
-        Assert.assertFalse(recordEventsSpan.toSpanData().getHasRemoteParent());
-        Assert.assertNotNull(recordEventsSpan.toSpanData().getParentSpanId());
+        Assertions.assertEquals(METHOD_NAME, recordEventsSpan.getName());
+        Assertions.assertFalse(recordEventsSpan.toSpanData().getHasRemoteParent());
+        Assertions.assertNotNull(recordEventsSpan.toSpanData().getParentSpanId());
     }
 
     @Test
@@ -128,15 +127,15 @@ public class OpenCensusTracerTest {
         assertSpanWithExplicitParent(updatedContext, parentSpanId);
         final RecordEventsSpanImpl recordEventsSpan =
             (RecordEventsSpanImpl) updatedContext.getData(PARENT_SPAN_KEY).get();
-        Assert.assertEquals(Span.Kind.CLIENT, recordEventsSpan.getKind());
+        Assertions.assertEquals(Span.Kind.CLIENT, recordEventsSpan.getKind());
 
         // verify span attributes
         final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes()
             .getAttributeMap();
-        Assert.assertEquals(attributeMap.get(COMPONENT), AttributeValue.stringAttributeValue(COMPONENT_VALUE));
-        Assert.assertEquals(attributeMap.get(MESSAGE_BUS_DESTINATION),
+        Assertions.assertEquals(attributeMap.get(COMPONENT), AttributeValue.stringAttributeValue(COMPONENT_VALUE));
+        Assertions.assertEquals(attributeMap.get(MESSAGE_BUS_DESTINATION),
             AttributeValue.stringAttributeValue(ENTITY_PATH_VALUE));
-        Assert.assertEquals(attributeMap.get(PEER_ENDPOINT), AttributeValue.stringAttributeValue(HOSTNAME_VALUE));
+        Assertions.assertEquals(attributeMap.get(PEER_ENDPOINT), AttributeValue.stringAttributeValue(HOSTNAME_VALUE));
     }
 
     @Test
@@ -153,10 +152,10 @@ public class OpenCensusTracerTest {
         // verify no kind set on Span for message
         final RecordEventsSpanImpl recordEventsSpan =
             (RecordEventsSpanImpl) updatedContext.getData(PARENT_SPAN_KEY).get();
-        Assert.assertNull(recordEventsSpan.getKind());
+        Assertions.assertNull(recordEventsSpan.getKind());
         // verify diagnostic id and span context returned
-        Assert.assertNotNull(updatedContext.getData(SPAN_CONTEXT_KEY).get());
-        Assert.assertNotNull(updatedContext.getData(DIAGNOSTIC_ID_KEY).get());
+        Assertions.assertNotNull(updatedContext.getData(SPAN_CONTEXT_KEY).get());
+        Assertions.assertNotNull(updatedContext.getData(DIAGNOSTIC_ID_KEY).get());
     }
 
     @Test
@@ -168,15 +167,14 @@ public class OpenCensusTracerTest {
         final Context updatedContext = openCensusTracer.start(METHOD_NAME, tracingContext, ProcessKind.PROCESS);
 
         // verify no parent span passed
-        Assert.assertFalse("When no parent span passed in context information",
-            tracingContext.getData(SPAN_CONTEXT_KEY).isPresent());
+        Assertions.assertFalse(tracingContext.getData(SPAN_CONTEXT_KEY).isPresent(), "When no parent span passed in context information");
         // verify span created with explicit parent
         assertSpanWithExplicitParent(updatedContext, parentSpanId);
         // verify scope returned
-        Assert.assertNotNull(updatedContext.getData("scope").get());
+        Assertions.assertNotNull(updatedContext.getData("scope").get());
         final RecordEventsSpanImpl recordEventsSpan =
             (RecordEventsSpanImpl) updatedContext.getData(PARENT_SPAN_KEY).get();
-        Assert.assertEquals(Span.Kind.SERVER, recordEventsSpan.getKind());
+        Assertions.assertEquals(Span.Kind.SERVER, recordEventsSpan.getKind());
     }
 
     @Test
@@ -190,15 +188,15 @@ public class OpenCensusTracerTest {
         final Context updatedContext = openCensusTracer.start(METHOD_NAME, traceContext, ProcessKind.PROCESS);
 
         // Assert
-        Assert.assertNotNull(updatedContext.getData("scope").get());
+        Assertions.assertNotNull(updatedContext.getData("scope").get());
         // Assert new span created with remote parent context
         assertSpanWithRemoteParent(updatedContext, testSpanId);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void startSpanOverloadNullPointerException() {
         // Act
-        openCensusTracer.start("", Context.NONE, null);
+        assertThrows(NullPointerException.class, () -> openCensusTracer.start("", Context.NONE, null));
     }
 
     //add tests for number of child spans created and how parent span relation
@@ -218,8 +216,8 @@ public class OpenCensusTracerTest {
         //Assert
         // verify parent span has the expected Link
         Link createdLink = parentSpanImpl.toSpanData().getLinks().getLinks().get(0);
-        Assert.assertEquals(expectedLink.getTraceId(), createdLink.getTraceId());
-        Assert.assertEquals(expectedLink.getSpanId(), createdLink.getSpanId());
+        Assertions.assertEquals(expectedLink.getTraceId(), createdLink.getTraceId());
+        Assertions.assertEquals(expectedLink.getSpanId(), createdLink.getSpanId());
     }
 
     @Test
@@ -232,7 +230,7 @@ public class OpenCensusTracerTest {
         openCensusTracer.end(null, null, tracingContext);
 
         // Assert
-        Assert.assertEquals(expectedStatus, recordEventsSpan.getStatus().getCanonicalCode().toString());
+        Assertions.assertEquals(expectedStatus, recordEventsSpan.getStatus().getCanonicalCode().toString());
     }
 
     @Test
@@ -246,8 +244,8 @@ public class OpenCensusTracerTest {
         openCensusTracer.end(null, new Throwable(throwableMessage), tracingContext);
 
         // Assert
-        Assert.assertEquals(expectedStatus, recordEventsSpan.getStatus().getCanonicalCode().toString());
-        Assert.assertEquals(throwableMessage, recordEventsSpan.getStatus().getDescription());
+        Assertions.assertEquals(expectedStatus, recordEventsSpan.getStatus().getCanonicalCode().toString());
+        Assertions.assertEquals(throwableMessage, recordEventsSpan.getStatus().getDescription());
     }
 
     @Test
@@ -261,40 +259,40 @@ public class OpenCensusTracerTest {
         openCensusTracer.end(404, new Throwable(throwableMessage), tracingContext);
 
         // Assert
-        Assert.assertEquals(expectedStatus, recordEventsSpan.getStatus().getCanonicalCode().toString());
-        Assert.assertEquals(throwableMessage, recordEventsSpan.getStatus().getDescription());
+        Assertions.assertEquals(expectedStatus, recordEventsSpan.getStatus().getCanonicalCode().toString());
+        Assertions.assertEquals(throwableMessage, recordEventsSpan.getStatus().getDescription());
 
     }
 
     private static void assertSpanWithExplicitParent(Context updatedContext, SpanId parentSpanId) {
-        Assert.assertNotNull(updatedContext.getData(PARENT_SPAN_KEY));
+        Assertions.assertNotNull(updatedContext.getData(PARENT_SPAN_KEY));
 
         // verify instance created of openCensus-impl (test impl), span implementation
-        Assert.assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof RecordEventsSpanImpl);
+        Assertions.assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof RecordEventsSpanImpl);
 
         final RecordEventsSpanImpl recordEventsSpan =
             (RecordEventsSpanImpl) updatedContext.getData(PARENT_SPAN_KEY).get();
-        Assert.assertEquals(METHOD_NAME, recordEventsSpan.getName());
+        Assertions.assertEquals(METHOD_NAME, recordEventsSpan.getName());
 
         // verify span started with explicit parent
-        Assert.assertFalse(recordEventsSpan.toSpanData().getHasRemoteParent());
-        Assert.assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
+        Assertions.assertFalse(recordEventsSpan.toSpanData().getHasRemoteParent());
+        Assertions.assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
     }
 
     private static void assertSpanWithRemoteParent(Context updatedContext, SpanId parentSpanId) {
-        Assert.assertNotNull(updatedContext.getData(PARENT_SPAN_KEY));
+        Assertions.assertNotNull(updatedContext.getData(PARENT_SPAN_KEY));
 
         // verify instance created of openCensus-impl (test impl), span implementation
-        Assert.assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof RecordEventsSpanImpl);
+        Assertions.assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof RecordEventsSpanImpl);
 
         // verify span created with provided name and kind server
         final RecordEventsSpanImpl recordEventsSpan =
             (RecordEventsSpanImpl) updatedContext.getData(PARENT_SPAN_KEY).get();
-        Assert.assertEquals(METHOD_NAME, recordEventsSpan.getName());
-        Assert.assertEquals(Span.Kind.SERVER, recordEventsSpan.getKind());
+        Assertions.assertEquals(METHOD_NAME, recordEventsSpan.getName());
+        Assertions.assertEquals(Span.Kind.SERVER, recordEventsSpan.getKind());
 
         // verify span started with remote parent
-        Assert.assertTrue(recordEventsSpan.toSpanData().getHasRemoteParent());
-        Assert.assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
+        Assertions.assertTrue(recordEventsSpan.toSpanData().getHasRemoteParent());
+        Assertions.assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
     }
 }

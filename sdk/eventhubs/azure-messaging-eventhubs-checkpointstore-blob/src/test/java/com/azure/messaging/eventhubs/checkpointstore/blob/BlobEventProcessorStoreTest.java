@@ -18,8 +18,9 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -34,8 +35,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertNull;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -55,7 +55,7 @@ public class BlobEventProcessorStoreTest {
     @Mock
     private BlobAsyncClient blobAsyncClient;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
@@ -128,8 +128,8 @@ public class BlobEventProcessorStoreTest {
                 assertEquals("eh", partitionOwnership.getEventHubName());
                 assertEquals("cg", partitionOwnership.getConsumerGroupName());
                 assertEquals("etag2", partitionOwnership.getETag());
-                assertNull(partitionOwnership.getSequenceNumber());
-                assertNull(partitionOwnership.getOffset());
+                Assertions.assertNull(partitionOwnership.getSequenceNumber());
+                Assertions.assertNull(partitionOwnership.getOffset());
             }).verifyComplete();
     }
 

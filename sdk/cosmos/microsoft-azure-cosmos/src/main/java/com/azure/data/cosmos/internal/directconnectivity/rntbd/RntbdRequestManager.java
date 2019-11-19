@@ -246,7 +246,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (!this.closingExceptionally) {
             this.completeAllPendingRequestsExceptionally(context, ON_CHANNEL_UNREGISTERED);
         } else {
-            logger.warn("{} channelUnregistered exceptionally", context);
+            logger.debug("{} channelUnregistered exceptionally", context);
         }
 
         context.fireChannelUnregistered();

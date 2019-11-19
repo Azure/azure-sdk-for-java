@@ -15,6 +15,7 @@ import com.azure.storage.blob.models.BlobSignedIdentifier
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
+import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ListBlobsOptions
@@ -1350,21 +1351,25 @@ class ContainerAPITest extends APISpec {
         primaryBlobServiceClient.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
-    def "Get account info error"() {
-        when:
-        def serviceURL = getServiceClient(primaryBlobServiceClient.getAccountUrl())
-
-        serviceURL.getBlobContainerClient(generateContainerName()).getAccountInfo(null)
-
-        then:
-        thrown(IllegalArgumentException)
-    }
-
     def "Get Container Name"() {
         given:
         def containerName = generateContainerName()
         def newcc = primaryBlobServiceClient.getBlobContainerClient(containerName)
         expect:
         containerName == newcc.getBlobContainerName()
+    }
+
+    def "Builder cpk validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(cc.getBlobContainerUrl()).setScheme("http").toUrl()
+        def builder = new BlobContainerClientBuilder()
+            .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }

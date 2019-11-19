@@ -13,21 +13,21 @@ import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -82,7 +82,7 @@ public class EventHubProducerAsyncClientTest {
     @Mock
     private TokenCredential tokenCredential;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
@@ -90,7 +90,7 @@ public class EventHubProducerAsyncClientTest {
 
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, retryOptions, tracerProvider,
             messageSerializer, false);
@@ -98,7 +98,7 @@ public class EventHubProducerAsyncClientTest {
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
         sendLink = null;
@@ -137,9 +137,9 @@ public class EventHubProducerAsyncClientTest {
         verify(sendLink).send(messagesCaptor.capture());
 
         final List<Message> messagesSent = messagesCaptor.getValue();
-        Assert.assertEquals(count, messagesSent.size());
+        Assertions.assertEquals(count, messagesSent.size());
 
-        messagesSent.forEach(message -> Assert.assertEquals(Section.SectionType.Data, message.getBody().getType()));
+        messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
     }
 
     /**
@@ -168,7 +168,7 @@ public class EventHubProducerAsyncClientTest {
         verify(sendLink).send(singleMessageCaptor.capture());
 
         final Message message = singleMessageCaptor.getValue();
-        Assert.assertEquals(Section.SectionType.Data, message.getBody().getType());
+        Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType());
     }
 
     /**
@@ -364,15 +364,15 @@ public class EventHubProducerAsyncClientTest {
         // Act & Assert
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
-                Assert.assertNull(batch.getPartitionKey());
-                Assert.assertTrue(batch.tryAdd(event));
+                Assertions.assertNull(batch.getPartitionKey());
+                Assertions.assertTrue(batch.tryAdd(event));
             })
             .verifyComplete();
 
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
-                Assert.assertNull(batch.getPartitionKey());
-                Assert.assertFalse(batch.tryAdd(tooLargeEvent));
+                Assertions.assertNull(batch.getPartitionKey());
+                Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
             })
             .verifyComplete();
 
@@ -401,13 +401,13 @@ public class EventHubProducerAsyncClientTest {
 
         // This event is 1024 bytes when serialized.
         final EventData event = new EventData(new byte[eventPayload]);
-        final BatchOptions options = new BatchOptions().setPartitionKey("some-key");
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("some-key");
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
-                Assert.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
-                Assert.assertTrue(batch.tryAdd(event));
+                Assertions.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
+                Assertions.assertTrue(batch.tryAdd(event));
             })
             .verifyComplete();
     }
@@ -431,7 +431,7 @@ public class EventHubProducerAsyncClientTest {
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
-        final BatchOptions options = new BatchOptions().setMaximumSizeInBytes(batchSize);
+        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
@@ -441,7 +441,7 @@ public class EventHubProducerAsyncClientTest {
 
     /**
      * Verifies that the producer can create an {@link EventDataBatch} with a given {@link
-     * BatchOptions#getMaximumSizeInBytes()}.
+     * CreateBatchOptions#getMaximumSizeInBytes()}.
      */
     @Test
     public void createsEventDataBatchWithSize() {
@@ -467,21 +467,21 @@ public class EventHubProducerAsyncClientTest {
 
         // This event will be 1025 bytes when serialized.
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
-        final BatchOptions options = new BatchOptions().setMaximumSizeInBytes(batchSize);
+        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
 
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
-                Assert.assertNull(batch.getPartitionKey());
-                Assert.assertTrue(batch.tryAdd(event));
+                Assertions.assertNull(batch.getPartitionKey());
+                Assertions.assertTrue(batch.tryAdd(event));
             })
             .verifyComplete();
 
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
-                Assert.assertNull(batch.getPartitionKey());
-                Assert.assertFalse(batch.tryAdd(tooLargeEvent));
+                Assertions.assertNull(batch.getPartitionKey());
+                Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
             })
             .verifyComplete();
     }
@@ -540,13 +540,13 @@ public class EventHubProducerAsyncClientTest {
             .thenReturn(Mono.just(link));
 
         final String originalKey = "some-key";
-        final BatchOptions options = new BatchOptions().setPartitionKey(originalKey);
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey(originalKey);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
                 options.setPartitionKey("something-else");
-                Assert.assertEquals(originalKey, batch.getPartitionKey());
+                Assertions.assertEquals(originalKey, batch.getPartitionKey());
             })
             .verifyComplete();
     }
@@ -578,15 +578,15 @@ public class EventHubProducerAsyncClientTest {
         // Act & Assert
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
-                Assert.assertNull(batch.getPartitionKey());
-                Assert.assertTrue(batch.tryAdd(event));
+                Assertions.assertNull(batch.getPartitionKey());
+                Assertions.assertTrue(batch.tryAdd(event));
             })
             .verifyComplete();
 
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
-                Assert.assertNull(batch.getPartitionKey());
-                Assert.assertFalse(batch.tryAdd(tooLargeEvent));
+                Assertions.assertNull(batch.getPartitionKey());
+                Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
             })
             .verifyComplete();
 
@@ -656,7 +656,7 @@ public class EventHubProducerAsyncClientTest {
         verify(sendLink).send(messagesCaptor.capture());
 
         final List<Message> messagesSent = messagesCaptor.getValue();
-        Assert.assertEquals(count, messagesSent.size());
+        Assertions.assertEquals(count, messagesSent.size());
 
         verify(sendLink1, times(1)).send(anyList());
         verify(sendLink2, times(1)).send(anyList());

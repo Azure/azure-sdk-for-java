@@ -58,20 +58,23 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         //
+        if (httpLogOptions == null || httpLogOptions.getLogLevel() == HttpLogDetailLevel.NONE) {
+            // ideally, httpLogOptions should not be null but adding a null check now will be a breaking change
+            // nothing to log, continue with the next pipeline policy, if there is one
+            // "next" cannot be null here
+            return next.process();
+        }
+
         Optional<Object> data = context.getData("caller-method");
         String callerMethod = (String) data.orElse("");
-        //
+
         final ClientLogger logger = new ClientLogger(callerMethod);
         final long startNs = System.nanoTime();
-        if (httpLogOptions != null) {
-            Mono<Void> logRequest = logRequest(logger, context.getHttpRequest());
-            Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate =
-                logResponseDelegate(logger, context.getHttpRequest().getUrl(), startNs);
-            //
-            return logRequest.then(next.process()).flatMap(logResponseDelegate)
-                .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
-        }
-        return Mono.empty();
+        Mono<Void> logRequest = logRequest(logger, context.getHttpRequest());
+        Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate =
+            logResponseDelegate(logger, context.getHttpRequest().getUrl(), startNs);
+        return logRequest.then(next.process()).flatMap(logResponseDelegate)
+            .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
     }
 
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {

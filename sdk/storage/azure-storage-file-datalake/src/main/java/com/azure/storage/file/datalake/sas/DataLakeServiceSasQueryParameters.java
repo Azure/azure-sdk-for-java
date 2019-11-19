@@ -54,37 +54,37 @@ public final class DataLakeServiceSasQueryParameters extends BaseSasQueryParamet
      * Creates a new {@link DataLakeServiceSasQueryParameters} object.
      *
      * @param queryParamsMap All query parameters for the request as key-value pairs
-     * @param removeSASParametersFromMap When {@code true}, the SAS query parameters will be removed from
+     * @param removeSasParametersFromMap When {@code true}, the SAS query parameters will be removed from
      * queryParamsMap
      */
-    public DataLakeServiceSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
-        super(queryParamsMap, removeSASParametersFromMap);
+    public DataLakeServiceSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSasParametersFromMap) {
+        super(queryParamsMap, removeSasParametersFromMap);
         this.identifier = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.keyObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.keyTenantId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.keyStart = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_START,
-            removeSASParametersFromMap, Utility::parseDate);
+            removeSasParametersFromMap, Utility::parseDate);
         this.keyExpiry = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
-            removeSASParametersFromMap, Utility::parseDate);
+            removeSasParametersFromMap, Utility::parseDate);
         this.keyService = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.keyVersion = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.resource = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_RESOURCE,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.cacheControl = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CACHE_CONTROL,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.contentDisposition = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_DISPOSITION,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.contentEncoding = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_ENCODING,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.contentLanguage = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_LANGUAGE,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
         this.contentType = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_TYPE,
-            removeSASParametersFromMap);
+            removeSasParametersFromMap);
     }
 
     /**

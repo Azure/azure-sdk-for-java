@@ -14,6 +14,8 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
@@ -94,6 +96,20 @@ public final class BuilderHelper {
         return defaultOptions;
     }
 
+    /**
+     * Gets the endpoint for the data lake service based on the parsed URL.
+     *
+     * @param parts The {@link BlobUrlParts} from the parse URL.
+     * @return The endpoint for the data lake service.
+     */
+    public static String getEndpoint(BlobUrlParts parts) {
+        if (ModelHelper.IP_V4_URL_PATTERN.matcher(parts.getHost()).find()) {
+            return String.format("%s://%s/%s", parts.getScheme(), parts.getHost(), parts.getAccountName());
+        } else {
+            return String.format("%s://%s", parts.getScheme(), parts.getHost());
+        }
+    }
+
     /*
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
@@ -105,7 +121,8 @@ public final class BuilderHelper {
         DataLakeServiceVersion serviceVersion) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
-        return new UserAgentPolicy(DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration, serviceVersion);
+        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(),
+            DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration, serviceVersion);
     }
 
     /*
