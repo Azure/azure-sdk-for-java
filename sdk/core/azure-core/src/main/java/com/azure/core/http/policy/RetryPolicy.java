@@ -86,14 +86,6 @@ public class RetryPolicy implements HttpPipelinePolicy {
      *     otherwise the duration used during the construction of the policy.
      */
     private Duration determineDelayDuration(HttpResponse response, int tryCount) {
-        int code = response.getStatusCode();
-
-        // Response will not have a retry-after-ms header.
-        if (code != 429        // too many requests
-            && code != 503) {  // service unavailable
-            return retryStrategy.calculateRetryDelay(tryCount);
-        }
-
         return retryStrategy.calculateRetryDelay(response, tryCount);
     }
 }

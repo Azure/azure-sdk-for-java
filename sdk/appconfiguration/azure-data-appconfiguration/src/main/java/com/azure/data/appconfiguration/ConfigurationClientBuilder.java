@@ -80,6 +80,18 @@ public final class ConfigurationClientBuilder {
     private static final String NAME = "name";
     private static final String VERSION = "version";
 
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(new ExponentialBackoff() {
+        @Override
+        public Duration calculateRetryDelay(HttpResponse httpResponse, int retryAttempts) {
+            String delay = httpResponse.getHeaderValue(RETRY_AFTER_MS_HEADER);
+            if (delay != null) {
+                return Duration.ofMillis(Long.parseLong(delay));
+            } else {
+                return calculateRetryDelay(retryAttempts);
+            }
+        }
+    });
+
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
     private final HttpHeaders headers;
@@ -177,18 +189,7 @@ public final class ConfigurationClientBuilder {
         policies.add(new ConfigurationCredentialsPolicy(buildCredential));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        RetryPolicy defaultRetryPolicy = new RetryPolicy(new ExponentialBackoff() {
-            @Override
-            public Duration calculateRetryDelay(HttpResponse httpResponse, int retryAttempts) {
-                String delay = httpResponse.getHeaderValue(RETRY_AFTER_MS_HEADER);
-                if (delay != null) {
-                    return Duration.ofMillis(Long.parseLong(delay));
-                } else {
-                    return calculateRetryDelay(retryAttempts);
-                }
-            }
-        });
-        policies.add(retryPolicy == null ? defaultRetryPolicy : retryPolicy);
+        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
 
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);

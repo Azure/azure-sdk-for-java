@@ -14,7 +14,6 @@ import java.util.Objects;
 public interface RetryStrategy {
 
     int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
-    String RETRY_AFTER_MS_HEADER = "retry-after-ms";
     String X_MS_RETRY_AFTER_MS_HEADER = "x-ms-retry-after-ms";
 
     /**
@@ -33,20 +32,24 @@ public interface RetryStrategy {
     Duration calculateRetryDelay(int retryAttempts);
 
     /**
-     * Computes the delay between each retry by using {@link HttpResponse} headers.  The order of {@link HttpResponse}
-     * headers to find retry delay is 'x-ms-retry-after-ms' followed by 'retry-after-ms'. In absence of
-     * these headers it will use {@code retryAttempts} only. A client can customize this behaviour by overwriting
-     * {@code calculateRetryDelay} function.
+     * Computes the delay between each retry by using {@link HttpResponse} header 'x-ms-retry-after-ms'. In absence of
+     * this header, it will use {@code retryAttempts} only. A client can customize this behaviour by overwriting this
+     * function.
      *
      * @param httpResponse The {@link HttpResponse} from previous {@link com.azure.core.http.HttpRequest}.
      * @param retryAttempts The number of retry attempts completed so far.
      * @return The delay duration before the next retry.
      */
     default Duration calculateRetryDelay(HttpResponse httpResponse, int retryAttempts) {
-        String delayStringValue = httpResponse.getHeaderValue(X_MS_RETRY_AFTER_MS_HEADER);
-        if (Objects.isNull(delayStringValue)) {
-            delayStringValue = httpResponse.getHeaderValue(RETRY_AFTER_MS_HEADER);
+
+        int code = httpResponse.getStatusCode();
+
+        // Response will not have a X_MS_RETRY_AFTER_MS_HEADER header.
+        if (code != 429        // too many requests
+            && code != 503) {  // service unavailable
+            return calculateRetryDelay(retryAttempts);
         }
+        String delayStringValue = httpResponse.getHeaderValue(X_MS_RETRY_AFTER_MS_HEADER);
 
         return (!Objects.isNull(delayStringValue))
             ? Duration.ofMillis(Long.parseLong(delayStringValue)) : calculateRetryDelay(retryAttempts);
