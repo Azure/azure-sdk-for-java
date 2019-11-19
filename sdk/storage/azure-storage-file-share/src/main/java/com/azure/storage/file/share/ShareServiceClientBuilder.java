@@ -122,7 +122,7 @@ public final class ShareServiceClientBuilder {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
         AzureFileStorageImpl azureFileStorage = new AzureFileStorageBuilder()
             .url(endpoint)

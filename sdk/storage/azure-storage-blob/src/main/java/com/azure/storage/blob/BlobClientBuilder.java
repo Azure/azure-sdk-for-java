@@ -122,7 +122,7 @@ public final class BlobClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, serviceVersion);
+            httpClient, additionalPolicies, configuration);
 
         return new BlobAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, blobContainerName, blobName),
             serviceVersion, accountName, blobContainerName, blobName, snapshot, customerProvidedKey);
