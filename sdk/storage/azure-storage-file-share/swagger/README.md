@@ -656,6 +656,15 @@ directive:
     $.FileContentType["x-ms-client-name"] = "contentType";
 ```
 
+### Rename MD5 to Md5
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}/{directory}/{fileName}"]["get"]["responses"]["200"]
+  transform: >
+    $.headers["x-ms-content-md5"]["x-ms-client-name"] = "FileContentMd5";
+```
+
 ### Change StorageErrorException to StorageException
 ``` yaml
 directive:
