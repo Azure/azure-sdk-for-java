@@ -6,8 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.StringUtil;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
@@ -55,7 +55,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition-receiveoptions}
  */
-@Immutable
+@ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubConsumerAsyncClient implements Closeable {
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
 
@@ -149,7 +149,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
         return connection.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
     }
-
 
     /**
      * Begin consuming events from a single partition starting at {@code startingPosition}.

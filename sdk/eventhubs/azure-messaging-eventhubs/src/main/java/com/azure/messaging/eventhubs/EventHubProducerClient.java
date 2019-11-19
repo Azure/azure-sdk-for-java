@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
@@ -78,7 +78,7 @@ import java.util.Objects;
  * @see EventHubClient#createProducer()
  * @see EventHubProducerAsyncClient To asynchronously generate events to an Event Hub, see EventHubAsyncProducer.
  */
-@Immutable
+@ServiceClient(builder = EventHubClientBuilder.class)
 public class EventHubProducerClient implements Closeable {
     private final EventHubProducerAsyncClient producer;
     private final Duration tryTimeout;

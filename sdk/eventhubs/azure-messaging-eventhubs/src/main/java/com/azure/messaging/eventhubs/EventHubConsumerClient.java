@@ -3,6 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
@@ -33,6 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration}
  */
+@ServiceClient(builder = EventHubClientBuilder.class)
 public class EventHubConsumerClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerClient.class);
 
@@ -81,6 +85,7 @@ public class EventHubConsumerClient implements Closeable {
      *
      * @return The set of information for the Event Hub that this client is associated with.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public EventHubProperties getProperties() {
         return consumer.getProperties().block(timeout);
     }
@@ -90,6 +95,7 @@ public class EventHubConsumerClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<String> getPartitionIds() {
         return new IterableStream<>(consumer.getPartitionIds());
     }
@@ -102,6 +108,7 @@ public class EventHubConsumerClient implements Closeable {
      *
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionProperties getPartitionProperties(String partitionId) {
         return consumer.getPartitionProperties(partitionId).block(timeout);
     }
