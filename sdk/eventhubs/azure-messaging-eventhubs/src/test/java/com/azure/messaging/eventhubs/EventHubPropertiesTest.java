@@ -28,7 +28,7 @@ public class EventHubPropertiesTest {
         // Assert
         Assertions.assertEquals(name, eventHubProperties.getName());
         Assertions.assertEquals(instant, eventHubProperties.getCreatedAt());
-        Assertions.assertEquals(partitionIds.length, eventHubProperties.getPartitionIds().length);
+        Assertions.assertEquals(partitionIds.length, eventHubProperties.getPartitionIds().stream().count());
 
         final Set<String> actual = new HashSet<>(Arrays.asList(eventHubProperties.getPartitionIds()));
         for (String id : partitionIds) {
@@ -53,6 +53,6 @@ public class EventHubPropertiesTest {
         Assertions.assertEquals(name, eventHubProperties.getName());
         Assertions.assertEquals(instant, eventHubProperties.getCreatedAt());
         Assertions.assertNotNull(eventHubProperties.getPartitionIds());
-        Assertions.assertEquals(0, eventHubProperties.getPartitionIds().length);
+        Assertions.assertEquals(0, eventHubProperties.getPartitionIds().stream().count());
     }
 }

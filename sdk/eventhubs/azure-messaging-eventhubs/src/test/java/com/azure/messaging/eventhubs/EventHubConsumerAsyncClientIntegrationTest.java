@@ -301,7 +301,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                 .assertNext(properties -> {
                     Assertions.assertNotNull(properties);
                     Assertions.assertEquals(consumer.getEventHubName(), properties.getName());
-                    Assertions.assertEquals(2, properties.getPartitionIds().length);
+                    Assertions.assertEquals(2, properties.getPartitionIds().stream().count());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
