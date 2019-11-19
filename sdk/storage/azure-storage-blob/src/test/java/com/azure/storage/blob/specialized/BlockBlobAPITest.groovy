@@ -698,7 +698,8 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     def "Upload from file default no overwrite"() {
         when:
         def file = getRandomFile(50)
@@ -718,7 +719,8 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     def "Upload from file no overwrite interrupted"() {
         setup:
         def file = getRandomFile(257 * 1024 * 1024)
@@ -751,7 +753,8 @@ class BlockBlobAPITest extends APISpec {
         smallFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
+    @DoNotRecord
     def "Upload from file overwrite"() {
         when:
         def file = getRandomFile(50)
