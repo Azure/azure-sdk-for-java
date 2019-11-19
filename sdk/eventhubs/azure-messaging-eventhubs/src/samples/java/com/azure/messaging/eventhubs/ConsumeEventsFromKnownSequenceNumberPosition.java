@@ -80,7 +80,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
         // countDownLatch.
         final EventPosition position = EventPosition.fromSequenceNumber(lastEnqueuedSequenceNumber, false);
-        Disposable subscription = consumer.receive(lastEnqueuedSequencePartitionId, position).subscribe(partitionEvent -> {
+        Disposable subscription = consumer.receiveFromPartition(lastEnqueuedSequencePartitionId, position).subscribe(partitionEvent -> {
             EventData event = partitionEvent.getData();
             String contents = UTF_8.decode(event.getBody()).toString();
             // ex. The last enqueued sequence number is 99. If isInclusive is true, the received event starting from the same

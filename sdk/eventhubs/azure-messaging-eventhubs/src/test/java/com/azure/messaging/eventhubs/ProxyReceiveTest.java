@@ -97,7 +97,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     @Test
     public void testReceiverStartOfStreamFilters() {
         // Act & Assert
-        StepVerifier.create(consumer.receive(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
             .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();

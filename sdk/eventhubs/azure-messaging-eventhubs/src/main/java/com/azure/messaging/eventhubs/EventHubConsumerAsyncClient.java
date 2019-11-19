@@ -163,8 +163,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @throws NullPointerException if {@code partitionId}, {@code startingPosition}, {@code receiveOptions} is null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
-    public Flux<PartitionEvent> receive(String partitionId, EventPosition startingPosition) {
-        return receive(partitionId, startingPosition, defaultReceiveOptions);
+    public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition) {
+        return receiveFromPartition(partitionId, startingPosition, defaultReceiveOptions);
     }
 
     /**
@@ -190,7 +190,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @throws NullPointerException if {@code partitionId}, {@code startingPosition}, {@code receiveOptions} is null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
-    public Flux<PartitionEvent> receive(String partitionId, EventPosition startingPosition,
+    public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition,
         ReceiveOptions receiveOptions) {
         if (Objects.isNull(partitionId)) {
             return Flux.error(logger.logExceptionAsError(new NullPointerException("'partitionId' cannot be null.")));

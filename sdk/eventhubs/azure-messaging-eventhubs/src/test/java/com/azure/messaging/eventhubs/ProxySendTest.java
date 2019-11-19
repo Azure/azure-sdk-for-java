@@ -100,7 +100,7 @@ public class ProxySendTest extends IntegrationTestBase {
                 .verifyComplete();
 
             // Assert
-            StepVerifier.create(consumer.receive(PARTITION_ID, EventPosition.fromEnqueuedTime(sendTime))
+            StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(sendTime))
                 .filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
                 .expectNextCount(NUMBER_OF_EVENTS)
                 .verifyComplete();

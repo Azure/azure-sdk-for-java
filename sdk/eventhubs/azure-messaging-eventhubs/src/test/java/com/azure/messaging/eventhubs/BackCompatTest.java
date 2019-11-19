@@ -95,7 +95,7 @@ public class BackCompatTest extends IntegrationTestBase {
         final EventData eventData = serializer.deserialize(message, EventData.class);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive(PARTITION_ID, EventPosition.latest())
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.latest())
             .filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
             .then(() -> producer.send(eventData, sendOptions).block(TIMEOUT))
             .assertNext(event -> validateAmqpProperties(applicationProperties, event.getData()))

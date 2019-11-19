@@ -125,7 +125,7 @@ class PartitionPumpManager {
             .createConsumer(claimedOwnership.getConsumerGroupName(), EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
 
         partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
-        eventHubConsumer.receive(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
+        eventHubConsumer.receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
             .subscribe(partitionEvent -> {
                 EventData eventData = partitionEvent.getData();
                 try {

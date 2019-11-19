@@ -60,7 +60,7 @@ public class ConsumeEvent {
 
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
         // countDownLatch.
-        Disposable subscription = consumer.receive(firstPartition, EventPosition.latest()).subscribe(partitionEvent -> {
+        Disposable subscription = consumer.receiveFromPartition(firstPartition, EventPosition.latest()).subscribe(partitionEvent -> {
             EventData event = partitionEvent.getData();
             String contents = UTF_8.decode(event.getBody()).toString();
             System.out.println(String.format("[%s] Sequence Number: %s. Contents: %s", countDownLatch.getCount(),

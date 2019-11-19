@@ -145,7 +145,7 @@ public class EventHubConsumerAsyncClientTest {
         final int numberToReceive = 3;
 
         // Assert
-        StepVerifier.create(runtimeConsumer.receive(PARTITION_ID, EventPosition.earliest()).take(numberToReceive))
+        StepVerifier.create(runtimeConsumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberToReceive))
             .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
             .assertNext(event -> Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
             .assertNext(event -> Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
@@ -165,7 +165,7 @@ public class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 
         // Assert
-        StepVerifier.create(runtimeConsumer.receive(PARTITION_ID, EventPosition.earliest()).take(1))
+        StepVerifier.create(runtimeConsumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(1))
             .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
             .assertNext(event -> {
                 LastEnqueuedEventProperties properties = event.getPartitionContext().getLastEnqueuedEventProperties();
@@ -188,7 +188,7 @@ public class EventHubConsumerAsyncClientTest {
         final int numberOfEvents = 10;
 
         // Act & Assert
-        StepVerifier.create(consumer.receive(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
             .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
@@ -241,12 +241,12 @@ public class EventHubConsumerAsyncClientTest {
             eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
 
         // Act & Assert
-        StepVerifier.create(asyncClient.receive(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
+        StepVerifier.create(asyncClient.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
             .then(() -> sendMessages(processor2sink, numberOfEvents, PARTITION_ID))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.receive(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
+        StepVerifier.create(asyncClient.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
             .then(() -> sendMessages(processor3sink, numberOfEvents, PARTITION_ID))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
@@ -272,11 +272,11 @@ public class EventHubConsumerAsyncClientTest {
 
         // Act
         final Disposable.Composite subscriptions = Disposables.composite(
-            consumer.receive(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID)).take(numberOfEvents)
+            consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID)).take(numberOfEvents)
                 .subscribe(event -> firstConsumerCountDown.countDown()),
-            consumer.receive(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID)).take(numberOfEvents)
+            consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID)).take(numberOfEvents)
                 .subscribe(event -> secondConsumerCountDown.countDown()),
-            consumer.receive(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID)).take(numberOfEvents)
+            consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID)).take(numberOfEvents)
                 .subscribe(event -> thirdCountDownEvent.countDown())
         );
 
@@ -306,7 +306,7 @@ public class EventHubConsumerAsyncClientTest {
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
 
         when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
-        consumer.receive(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents).subscribe(new BaseSubscriber<>() {
+        consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents).subscribe(new BaseSubscriber<>() {
             final AtomicInteger count = new AtomicInteger();
 
             @Override
@@ -348,7 +348,7 @@ public class EventHubConsumerAsyncClientTest {
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
 
         when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
-        consumer.receive(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents).subscribe(new BaseSubscriber<>() {
+        consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents).subscribe(new BaseSubscriber<>() {
             final AtomicInteger count = new AtomicInteger();
 
             @Override
@@ -389,7 +389,7 @@ public class EventHubConsumerAsyncClientTest {
 
         when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
 
-        final Disposable subscription = consumer.receive(PARTITION_ID, EventPosition.earliest()).subscribe(
+        final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).subscribe(
             e -> logger.info("Event received"),
             error -> Assertions.fail(error.toString()),
             () -> logger.info("Complete"), sub -> {
@@ -420,7 +420,7 @@ public class EventHubConsumerAsyncClientTest {
 
         when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
 
-        final Disposable subscription = consumer.receive(PARTITION_ID, EventPosition.earliest()).subscribe(
+        final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).subscribe(
             e -> logger.info("Event received"),
             error -> Assertions.fail(error.toString()),
             () -> logger.info("Complete"),
@@ -454,7 +454,7 @@ public class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 
         final Disposable.Composite subscriptions = Disposables.composite(
-            consumer.receive(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID))
+            consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID))
                 .subscribe(
                     event -> logger.verbose("1. Received: {}", event.getData().getSequenceNumber()),
                     error -> Assertions.fail(error.toString()),
@@ -462,7 +462,7 @@ public class EventHubConsumerAsyncClientTest {
                         logger.info("1. Shutdown received");
                         shutdownReceived.countDown();
                     }),
-            consumer.receive(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID))
+            consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID))
                 .subscribe(
                     event -> logger.verbose("2. Received: {}", event.getData().getSequenceNumber()),
                     error -> Assertions.fail(error.toString()),
@@ -470,7 +470,7 @@ public class EventHubConsumerAsyncClientTest {
                         logger.info("2. Shutdown received");
                         shutdownReceived.countDown();
                     }),
-            consumer.receive(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID))
+            consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID))
                 .subscribe(
                     event -> logger.verbose("3. Received: {}", event.getData().getSequenceNumber()),
                     error -> Assertions.fail(error.toString()),

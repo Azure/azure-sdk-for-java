@@ -238,6 +238,6 @@ public class EventHubConsumerClient implements Closeable {
         SynchronousEventSubscriber syncSubscriber = new SynchronousEventSubscriber(work);
 
         logger.info("Started synchronous event subscriber for partition '{}'.", partitionId);
-        consumer.receive(partitionId, startingPosition, receiveOptions).subscribeWith(syncSubscriber);
+        consumer.receiveFromPartition(partitionId, startingPosition, receiveOptions).subscribeWith(syncSubscriber);
     }
 }

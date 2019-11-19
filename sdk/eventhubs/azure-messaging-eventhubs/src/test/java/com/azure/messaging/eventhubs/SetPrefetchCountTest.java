@@ -71,7 +71,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
 
         consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, 2000);
 
-        final Disposable subscription = consumer.receive(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
+        final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
             .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(eventCount).subscribe(event -> countDownLatch.countDown());
 
@@ -97,7 +97,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
 
         consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, 11);
 
-        final Disposable subscription = consumer.receive(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
+        final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
             .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(eventCount).subscribe(event -> countDownLatch.countDown());
 

@@ -81,7 +81,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final EventPosition startingPosition = EventPosition.fromEnqueuedTime(testData.getEnqueuedTime());
 
         // Act & Assert
-        StepVerifier.create(consumer.receive(PARTITION_ID, startingPosition)
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, startingPosition)
             .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
@@ -121,7 +121,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                 final EventHubConsumerAsyncClient consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
                 consumers.add(consumer);
 
-                consumer.receive(PARTITION_ID, EventPosition.latest())
+                consumer.receiveFromPartition(PARTITION_ID, EventPosition.latest())
                     .filter(partitionEvent -> TestUtils.isMatchingEvent(partitionEvent.getData(), messageTrackingValue))
                     .take(numberOfEvents).subscribe(partitionEvent -> {
                         EventData event = partitionEvent.getData();

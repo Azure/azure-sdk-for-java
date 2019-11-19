@@ -47,7 +47,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
 
         // Keep a reference to `subscription`. When the program is finished receiving events, call
         // subscription.dispose(). This will stop fetching events from the Event Hub.
-        Disposable subscription = consumer.receive(partitionId, startingPosition)
+        Disposable subscription = consumer.receiveFromPartition(partitionId, startingPosition)
             .subscribe(partitionEvent -> {
                 PartitionContext partitionContext = partitionEvent.getPartitionContext();
                 EventData event = partitionEvent.getData();
@@ -74,7 +74,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
             .buildAsyncConsumer();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber
-        consumer.receive(partitionId, EventPosition.latest()).subscribe(new BaseSubscriber<>() {
+        consumer.receiveFromPartition(partitionId, EventPosition.latest()).subscribe(new BaseSubscriber<>() {
             private static final int NUMBER_OF_EVENTS = 5;
             private final AtomicInteger currentNumberOfEvents = new AtomicInteger();
 

@@ -68,7 +68,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
             .buildAsyncConsumer();
 
         try {
-            StepVerifier.create(consumer.receive("1", EventPosition.earliest()).take(1))
+            StepVerifier.create(consumer.receiveFromPartition("1", EventPosition.earliest()).take(1))
                 .expectErrorSatisfies(error -> {
                     // The message can vary because it is returned from proton-j, so we don't want to compare against that.
                     // This is a transient error from ExceptionUtil.java: line 67.
