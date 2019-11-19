@@ -12,8 +12,8 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -109,7 +109,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  * </p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#eventDataBatch}
  */
-@Immutable
+@ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubProducerAsyncClient implements Closeable {
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
@@ -183,9 +183,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
-        return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
+        return getProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
 
     /**

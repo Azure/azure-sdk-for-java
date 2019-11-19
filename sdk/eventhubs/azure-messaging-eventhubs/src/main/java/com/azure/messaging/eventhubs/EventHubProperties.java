@@ -4,13 +4,17 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import reactor.core.publisher.Flux;
 
 import java.time.Instant;
 import java.util.Arrays;
 
 /**
  * Holds information about an Event Hub which can come handy while performing operations like
- * {@link EventHubConsumerAsyncClient#receive(String) receiving events from a specific partition}.
+ * {@link EventHubConsumerAsyncClient#receiveFromPartition(String, EventPosition) receiving events from a specific
+ * partition}.
  *
  * @see EventHubConsumerAsyncClient
  * @see EventHubConsumerClient
@@ -19,7 +23,7 @@ import java.util.Arrays;
 public final class EventHubProperties {
     private final String name;
     private final Instant createdAt;
-    private final String[] partitionIds;
+    private final IterableStream<String> partitionIds;
 
     EventHubProperties(
         final String name,
@@ -28,8 +32,8 @@ public final class EventHubProperties {
         this.name = name;
         this.createdAt = createdAt;
         this.partitionIds = partitionIds != null
-            ? Arrays.copyOf(partitionIds, partitionIds.length)
-            : new String[0];
+            ? new IterableStream<>(Flux.fromArray(Arrays.copyOf(partitionIds, partitionIds.length)))
+            : new IterableStream<>(Flux.empty());
     }
 
     /**
@@ -55,7 +59,7 @@ public final class EventHubProperties {
      *
      * @return The list of partition identifiers of the Event Hub.
      */
-    public String[] getPartitionIds() {
+    public IterableStream<String> getPartitionIds() {
         return partitionIds;
     }
 }
