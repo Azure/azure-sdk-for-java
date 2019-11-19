@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.ExponentialRetryPolicy;
 import com.azure.core.amqp.FixedRetryPolicy;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryMode;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
@@ -12,13 +13,12 @@ import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -105,7 +105,7 @@ public class EventHubConnectionTest {
     public void getReceiveLink() {
         // Arrange
         final AmqpReceiveLink receiveLink = mock(AmqpReceiveLink.class);
-        final EventHubConsumerOptions options = new EventHubConsumerOptions();
+        final ReceiveOptions options = new ReceiveOptions();
 
         final EventPosition position = EventPosition.fromOffset(10L);
         final String linkName = "some-link-name";

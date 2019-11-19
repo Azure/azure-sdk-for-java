@@ -343,7 +343,7 @@ public final class BlobProperties {
     }
 
     /**
-     * @return the metadata associated to this blob
+     * @return the metadata associated with this blob
      */
     public Map<String, String> getMetadata() {
         return metadata;

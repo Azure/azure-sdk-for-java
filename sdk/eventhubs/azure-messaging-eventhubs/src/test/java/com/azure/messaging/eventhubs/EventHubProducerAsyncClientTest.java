@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
@@ -13,7 +14,6 @@ import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
@@ -78,21 +78,21 @@ public class EventHubProducerAsyncClientTest {
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private final RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(10));
     private EventHubProducerAsyncClient producer;
-    private EventHubConnection linkProvider;
+    private EventHubConnection eventHubConnection;
     @Mock
     private TokenCredential tokenCredential;
+    private TracerProvider tracerProvider;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
+        tracerProvider = new TracerProvider(Collections.emptyList());
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
-        linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, retryOptions, tracerProvider,
+        eventHubConnection = new EventHubConnection(Mono.just(connection), connectionOptions);
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, eventHubConnection, retryOptions, tracerProvider,
             messageSerializer, false);
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -219,7 +219,7 @@ public class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions()
             .setPartitionId(partitionId);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
+            eventHubConnection, retryOptions, tracerProvider, messageSerializer, false);
 
         when(connection.createSession(argThat(name -> name.endsWith(partitionId))))
             .thenReturn(Mono.just(session));
@@ -273,7 +273,7 @@ public class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions()
             .setPartitionId(partitionId);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
+            eventHubConnection, retryOptions, tracerProvider, messageSerializer, false);
 
         when(connection.createSession(argThat(name -> name.endsWith(partitionId))))
             .thenReturn(Mono.just(session));
@@ -660,6 +660,41 @@ public class EventHubProducerAsyncClientTest {
 
         verify(sendLink1, times(1)).send(anyList());
         verify(sendLink2, times(1)).send(anyList());
+    }
+
+
+    /**
+     * Verifies that when we have a shared connection, the producer does not close that connection.
+     */
+    @Test
+    public void doesNotCloseSharedConnection() {
+        // Arrange
+        EventHubConnection hubConnection = mock(EventHubConnection.class);
+        EventHubProducerAsyncClient sharedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            hubConnection, retryOptions, tracerProvider, messageSerializer, true);
+
+        // Act
+        sharedProducer.close();
+
+        // Verify
+        verify(hubConnection, never()).close();
+    }
+
+    /**
+     * Verifies that when we have a non-shared connection, the producer closes that connection.
+     */
+    @Test
+    public void closesDedicatedConnection() {
+        // Arrange
+        EventHubConnection hubConnection = mock(EventHubConnection.class);
+        EventHubProducerAsyncClient sharedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            hubConnection, retryOptions, tracerProvider, messageSerializer, false);
+
+        // Act
+        sharedProducer.close();
+
+        // Verify
+        verify(hubConnection, times(1)).close();
     }
 
     static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"
