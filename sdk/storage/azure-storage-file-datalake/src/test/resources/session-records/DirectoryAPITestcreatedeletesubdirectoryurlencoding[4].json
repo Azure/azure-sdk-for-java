@@ -1,0 +1,126 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://gaprahns.blob.core.windows.net/jtfscreatedeletesubdirectoryurlencoding07581054dc7e09b?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "07a6f0e7-17e0-49ff-9604-415914d2f5db"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D766E71F1D8B3D",
+      "Last-Modified" : "Mon, 11 Nov 2019 20:38:34 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "1674ace1-101e-0100-0ecf-98082f000000",
+      "Date" : "Mon, 11 Nov 2019 20:38:34 GMT",
+      "x-ms-client-request-id" : "07a6f0e7-17e0-49ff-9604-415914d2f5db"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://gaprahns.dfs.core.windows.net/jtfscreatedeletesubdirectoryurlencoding07581054dc7e09b/javapathcreatedeletesubdirectoryurlencoding1546055a2a5bb?resource=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "3c5f7096-63a7-4b94-980f-2b31a3957128"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D766E71F2AD26E",
+      "Last-Modified" : "Mon, 11 Nov 2019 20:38:34 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ae937d00-501f-0080-35cf-98edd0000000",
+      "Date" : "Mon, 11 Nov 2019 20:38:33 GMT",
+      "x-ms-client-request-id" : "3c5f7096-63a7-4b94-980f-2b31a3957128"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://gaprahns.dfs.core.windows.net/jtfscreatedeletesubdirectoryurlencoding07581054dc7e09b/javapathcreatedeletesubdirectoryurlencoding2847318a7f2d3/%E6%96%91%E9%BB%9E?resource=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "7d66cebe-922a-43cf-9c13-a84d0d9e41f9"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D766E71F340DD2",
+      "Last-Modified" : "Mon, 11 Nov 2019 20:38:34 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ae937d01-501f-0080-36cf-98edd0000000",
+      "Date" : "Mon, 11 Nov 2019 20:38:34 GMT",
+      "x-ms-client-request-id" : "7d66cebe-922a-43cf-9c13-a84d0d9e41f9"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://gaprahns.dfs.core.windows.net/jtfscreatedeletesubdirectoryurlencoding07581054dc7e09b/javapathcreatedeletesubdirectoryurlencoding2847318a7f2d3/%E6%96%91%E9%BB%9E?recursive=false",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "6f08dfe6-e73a-4bff-909d-4acf883f5dce"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "ae937d02-501f-0080-37cf-98edd0000000",
+      "Date" : "Mon, 11 Nov 2019 20:38:34 GMT",
+      "x-ms-client-request-id" : "6f08dfe6-e73a-4bff-909d-4acf883f5dce"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://gaprahns.blob.core.windows.net?prefix=jtfscreatedeletesubdirectoryurlencoding&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "1705c5c9-e8b4-42d5-acc3-1440fecfa2da"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "1674ad61-101e-0100-03cf-98082f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://gaprahns.blob.core.windows.net/\"><Prefix>jtfscreatedeletesubdirectoryurlencoding</Prefix><Containers><Container><Name>jtfscreatedeletesubdirectoryurlencoding07581054dc7e09b</Name><Properties><Last-Modified>Mon, 11 Nov 2019 20:38:34 GMT</Last-Modified><Etag>\"0x8D766E71F1D8B3D\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Mon, 11 Nov 2019 20:38:34 GMT",
+      "x-ms-client-request-id" : "1705c5c9-e8b4-42d5-acc3-1440fecfa2da",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://gaprahns.blob.core.windows.net/jtfscreatedeletesubdirectoryurlencoding07581054dc7e09b?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "d1b0ac5f-ebc8-43e9-8a6f-7275c701c172"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "1674ad81-101e-0100-20cf-98082f000000",
+      "Date" : "Mon, 11 Nov 2019 20:38:34 GMT",
+      "x-ms-client-request-id" : "d1b0ac5f-ebc8-43e9-8a6f-7275c701c172"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfscreatedeletesubdirectoryurlencoding07581054dc7e09b", "javapathcreatedeletesubdirectoryurlencoding1546055a2a5bb", "javapathcreatedeletesubdirectoryurlencoding2847318a7f2d3" ]
+}

@@ -4,8 +4,10 @@
 package com.azure.storage.common.implementation.connectionstring;
 
 import com.azure.core.util.logging.ClientLogger;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageConnectionStringTest {
     private final ClientLogger logger = new ClientLogger(StorageConnectionStringTest.class);
@@ -29,28 +31,28 @@ public class StorageConnectionStringTest {
                 SAS_TOKEN);
 
         StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
-        Assert.assertNotNull(storageConnectionString);
+        Assertions.assertNotNull(storageConnectionString);
         StorageEndpoint blobEndpoint = storageConnectionString.getBlobEndpoint();
-        Assert.assertNotNull(blobEndpoint);
-        Assert.assertNotNull(blobEndpoint.getPrimaryUri());
-        Assert.assertTrue(blobEndpoint.getPrimaryUri().equalsIgnoreCase(blobEndpointStr));
+        Assertions.assertNotNull(blobEndpoint);
+        Assertions.assertNotNull(blobEndpoint.getPrimaryUri());
+        Assertions.assertTrue(blobEndpoint.getPrimaryUri().equalsIgnoreCase(blobEndpointStr));
 
         StorageEndpoint fileEndpoint = storageConnectionString.getFileEndpoint();
-        Assert.assertNotNull(fileEndpoint);
-        Assert.assertNotNull(fileEndpoint.getPrimaryUri());
-        Assert.assertTrue(fileEndpoint.getPrimaryUri().equalsIgnoreCase(fileEndpointStr));
+        Assertions.assertNotNull(fileEndpoint);
+        Assertions.assertNotNull(fileEndpoint.getPrimaryUri());
+        Assertions.assertTrue(fileEndpoint.getPrimaryUri().equalsIgnoreCase(fileEndpointStr));
 
-        Assert.assertNull(storageConnectionString.getQueueEndpoint());
-        Assert.assertNull(storageConnectionString.getTableEndpoint());
+        Assertions.assertNull(storageConnectionString.getQueueEndpoint());
+        Assertions.assertNull(storageConnectionString.getTableEndpoint());
 
         StorageAuthenticationSettings authSettings
                 = storageConnectionString.getStorageAuthSettings();
-        Assert.assertNotNull(authSettings);
-        Assert.assertEquals(StorageAuthenticationSettings.Type.SAS_TOKEN,
+        Assertions.assertNotNull(authSettings);
+        Assertions.assertEquals(StorageAuthenticationSettings.Type.SAS_TOKEN,
                 authSettings.getType());
-        Assert.assertNotNull(authSettings.getSasToken());
-        Assert.assertTrue(authSettings.getSasToken().equalsIgnoreCase(SAS_TOKEN));
-        Assert.assertNull(storageConnectionString.getAccountName());
+        Assertions.assertNotNull(authSettings.getSasToken());
+        Assertions.assertTrue(authSettings.getSasToken().equalsIgnoreCase(SAS_TOKEN));
+        Assertions.assertNull(storageConnectionString.getAccountName());
     }
 
     @Test
@@ -60,41 +62,41 @@ public class StorageConnectionStringTest {
                 ACCOUNT_KEY_VALUE);
 
         StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
-        Assert.assertNotNull(storageConnectionString);
+        Assertions.assertNotNull(storageConnectionString);
 
         StorageEndpoint blobEndpoint = storageConnectionString.getBlobEndpoint();
-        Assert.assertNotNull(blobEndpoint);
-        Assert.assertNotNull(blobEndpoint.getPrimaryUri());
-        Assert.assertTrue(blobEndpoint.getPrimaryUri()
+        Assertions.assertNotNull(blobEndpoint);
+        Assertions.assertNotNull(blobEndpoint.getPrimaryUri());
+        Assertions.assertTrue(blobEndpoint.getPrimaryUri()
                 .equalsIgnoreCase(String.format("https://%s.blob.core.windows.net", ACCOUNT_NAME_VALUE)));
 
         StorageEndpoint fileEndpoint = storageConnectionString.getFileEndpoint();
-        Assert.assertNotNull(fileEndpoint);
-        Assert.assertNotNull(fileEndpoint.getPrimaryUri());
-        Assert.assertTrue(fileEndpoint.getPrimaryUri()
+        Assertions.assertNotNull(fileEndpoint);
+        Assertions.assertNotNull(fileEndpoint.getPrimaryUri());
+        Assertions.assertTrue(fileEndpoint.getPrimaryUri()
                 .equalsIgnoreCase(String.format("https://%s.file.core.windows.net", ACCOUNT_NAME_VALUE)));
 
         StorageEndpoint queueEndpoint = storageConnectionString.getQueueEndpoint();
-        Assert.assertNotNull(queueEndpoint);
-        Assert.assertNotNull(queueEndpoint.getPrimaryUri());
-        Assert.assertTrue(queueEndpoint.getPrimaryUri()
+        Assertions.assertNotNull(queueEndpoint);
+        Assertions.assertNotNull(queueEndpoint.getPrimaryUri());
+        Assertions.assertTrue(queueEndpoint.getPrimaryUri()
                 .equalsIgnoreCase(String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME_VALUE)));
 
         StorageEndpoint tableEndpoint = storageConnectionString.getTableEndpoint();
-        Assert.assertNotNull(tableEndpoint);
-        Assert.assertNotNull(tableEndpoint.getPrimaryUri());
-        Assert.assertTrue(tableEndpoint.getPrimaryUri()
+        Assertions.assertNotNull(tableEndpoint);
+        Assertions.assertNotNull(tableEndpoint.getPrimaryUri());
+        Assertions.assertTrue(tableEndpoint.getPrimaryUri()
                 .equalsIgnoreCase(String.format("https://%s.table.core.windows.net", ACCOUNT_NAME_VALUE)));
 
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
-        Assert.assertNotNull(authSettings);
-        Assert.assertEquals(StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY,
+        Assertions.assertNotNull(authSettings);
+        Assertions.assertEquals(StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY,
                 authSettings.getType());
-        Assert.assertNotNull(authSettings.getAccount());
-        Assert.assertNotNull(authSettings.getAccount().getName());
-        Assert.assertNotNull(authSettings.getAccount().getAccessKey());
-        Assert.assertTrue(authSettings.getAccount().getName().equals(ACCOUNT_NAME_VALUE));
-        Assert.assertTrue(authSettings.getAccount().getAccessKey().equals(ACCOUNT_KEY_VALUE));
+        Assertions.assertNotNull(authSettings.getAccount());
+        Assertions.assertNotNull(authSettings.getAccount().getName());
+        Assertions.assertNotNull(authSettings.getAccount().getAccessKey());
+        Assertions.assertTrue(authSettings.getAccount().getName().equals(ACCOUNT_NAME_VALUE));
+        Assertions.assertTrue(authSettings.getAccount().getAccessKey().equals(ACCOUNT_KEY_VALUE));
     }
 
     @Test
@@ -106,50 +108,50 @@ public class StorageConnectionStringTest {
                         CHINA_CLOUD_ENDPOINT_SUFFIX);
 
         StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
-        Assert.assertNotNull(storageConnectionString);
+        Assertions.assertNotNull(storageConnectionString);
 
         StorageEndpoint blobEndpoint = storageConnectionString.getBlobEndpoint();
-        Assert.assertNotNull(blobEndpoint);
-        Assert.assertNotNull(blobEndpoint.getPrimaryUri());
-        Assert.assertTrue(blobEndpoint.getPrimaryUri()
+        Assertions.assertNotNull(blobEndpoint);
+        Assertions.assertNotNull(blobEndpoint.getPrimaryUri());
+        Assertions.assertTrue(blobEndpoint.getPrimaryUri()
                 .equalsIgnoreCase(String.format("https://%s.blob.%s",
                         ACCOUNT_NAME_VALUE,
                         CHINA_CLOUD_ENDPOINT_SUFFIX)));
 
         StorageEndpoint fileEndpoint = storageConnectionString.getFileEndpoint();
-        Assert.assertNotNull(fileEndpoint);
-        Assert.assertNotNull(fileEndpoint.getPrimaryUri());
-        Assert.assertTrue(fileEndpoint.getPrimaryUri()
+        Assertions.assertNotNull(fileEndpoint);
+        Assertions.assertNotNull(fileEndpoint.getPrimaryUri());
+        Assertions.assertTrue(fileEndpoint.getPrimaryUri()
                 .equalsIgnoreCase(String.format("https://%s.file.%s",
                         ACCOUNT_NAME_VALUE,
                         CHINA_CLOUD_ENDPOINT_SUFFIX)));
 
         StorageEndpoint queueEndpoint = storageConnectionString.getQueueEndpoint();
-        Assert.assertNotNull(queueEndpoint);
-        Assert.assertNotNull(queueEndpoint.getPrimaryUri());
-        Assert.assertTrue(queueEndpoint.getPrimaryUri()
+        Assertions.assertNotNull(queueEndpoint);
+        Assertions.assertNotNull(queueEndpoint.getPrimaryUri());
+        Assertions.assertTrue(queueEndpoint.getPrimaryUri()
                 .equalsIgnoreCase(String.format("https://%s.queue.%s",
                         ACCOUNT_NAME_VALUE,
                         CHINA_CLOUD_ENDPOINT_SUFFIX)));
 
         StorageEndpoint tableEndpoint = storageConnectionString.getTableEndpoint();
-        Assert.assertNotNull(tableEndpoint);
-        Assert.assertNotNull(tableEndpoint.getPrimaryUri());
-        Assert.assertTrue(tableEndpoint.getPrimaryUri()
+        Assertions.assertNotNull(tableEndpoint);
+        Assertions.assertNotNull(tableEndpoint.getPrimaryUri());
+        Assertions.assertTrue(tableEndpoint.getPrimaryUri()
                 .equalsIgnoreCase(String.format("https://%s.table.%s",
                         ACCOUNT_NAME_VALUE,
                         CHINA_CLOUD_ENDPOINT_SUFFIX)));
 
         StorageAuthenticationSettings authSettings =
                 storageConnectionString.getStorageAuthSettings();
-        Assert.assertNotNull(authSettings);
-        Assert.assertEquals(StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY,
+        Assertions.assertNotNull(authSettings);
+        Assertions.assertEquals(StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY,
                 authSettings.getType());
-        Assert.assertNotNull(authSettings.getAccount());
-        Assert.assertNotNull(authSettings.getAccount().getName());
-        Assert.assertNotNull(authSettings.getAccount().getAccessKey());
-        Assert.assertTrue(authSettings.getAccount().getName().equals(ACCOUNT_NAME_VALUE));
-        Assert.assertTrue(authSettings.getAccount().getAccessKey().equals(ACCOUNT_KEY_VALUE));
+        Assertions.assertNotNull(authSettings.getAccount());
+        Assertions.assertNotNull(authSettings.getAccount().getName());
+        Assertions.assertNotNull(authSettings.getAccount().getAccessKey());
+        Assertions.assertTrue(authSettings.getAccount().getName().equals(ACCOUNT_NAME_VALUE));
+        Assertions.assertTrue(authSettings.getAccount().getAccessKey().equals(ACCOUNT_KEY_VALUE));
     }
 
     @Test
@@ -163,39 +165,39 @@ public class StorageConnectionStringTest {
                 ACCOUNT_KEY_VALUE);
 
         StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
-        Assert.assertNotNull(storageConnectionString);
+        Assertions.assertNotNull(storageConnectionString);
         StorageEndpoint blobEndpoint = storageConnectionString.getBlobEndpoint();
-        Assert.assertNotNull(blobEndpoint);
-        Assert.assertNotNull(blobEndpoint.getPrimaryUri());
-        Assert.assertTrue(blobEndpoint.getPrimaryUri().equalsIgnoreCase(blobEndpointStr));
+        Assertions.assertNotNull(blobEndpoint);
+        Assertions.assertNotNull(blobEndpoint.getPrimaryUri());
+        Assertions.assertTrue(blobEndpoint.getPrimaryUri().equalsIgnoreCase(blobEndpointStr));
 
         StorageEndpoint fileEndpoint = storageConnectionString.getFileEndpoint();
-        Assert.assertNotNull(fileEndpoint);
-        Assert.assertNotNull(fileEndpoint.getPrimaryUri());
-        Assert.assertTrue(fileEndpoint.getPrimaryUri().equalsIgnoreCase(fileEndpointStr));
+        Assertions.assertNotNull(fileEndpoint);
+        Assertions.assertNotNull(fileEndpoint.getPrimaryUri());
+        Assertions.assertTrue(fileEndpoint.getPrimaryUri().equalsIgnoreCase(fileEndpointStr));
 
         StorageEndpoint queueEndpoint = storageConnectionString.getQueueEndpoint();
-        Assert.assertNotNull(queueEndpoint);
-        Assert.assertNotNull(queueEndpoint.getPrimaryUri());
-        Assert.assertTrue(queueEndpoint.getPrimaryUri()
+        Assertions.assertNotNull(queueEndpoint);
+        Assertions.assertNotNull(queueEndpoint.getPrimaryUri());
+        Assertions.assertTrue(queueEndpoint.getPrimaryUri()
                 .equalsIgnoreCase(String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME_VALUE)));
 
         StorageEndpoint tableEndpoint = storageConnectionString.getTableEndpoint();
-        Assert.assertNotNull(tableEndpoint);
-        Assert.assertNotNull(tableEndpoint.getPrimaryUri());
-        Assert.assertTrue(tableEndpoint.getPrimaryUri()
+        Assertions.assertNotNull(tableEndpoint);
+        Assertions.assertNotNull(tableEndpoint.getPrimaryUri());
+        Assertions.assertTrue(tableEndpoint.getPrimaryUri()
                 .equalsIgnoreCase(String.format("https://%s.table.core.windows.net", ACCOUNT_NAME_VALUE)));
 
         StorageAuthenticationSettings authSettings =
                 storageConnectionString.getStorageAuthSettings();
-        Assert.assertNotNull(authSettings);
-        Assert.assertEquals(StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY,
+        Assertions.assertNotNull(authSettings);
+        Assertions.assertEquals(StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY,
                 authSettings.getType());
-        Assert.assertNotNull(authSettings.getAccount());
-        Assert.assertNotNull(authSettings.getAccount().getName());
-        Assert.assertNotNull(authSettings.getAccount().getAccessKey());
-        Assert.assertTrue(authSettings.getAccount().getName().equals(ACCOUNT_NAME_VALUE));
-        Assert.assertTrue(authSettings.getAccount().getAccessKey().equals(ACCOUNT_KEY_VALUE));
+        Assertions.assertNotNull(authSettings.getAccount());
+        Assertions.assertNotNull(authSettings.getAccount().getName());
+        Assertions.assertNotNull(authSettings.getAccount().getAccessKey());
+        Assertions.assertTrue(authSettings.getAccount().getName().equals(ACCOUNT_NAME_VALUE));
+        Assertions.assertTrue(authSettings.getAccount().getAccessKey().equals(ACCOUNT_KEY_VALUE));
     }
 
     @Test
@@ -208,30 +210,30 @@ public class StorageConnectionStringTest {
                 fileEndpointStr);
 
         StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
-        Assert.assertNotNull(storageConnectionString);
+        Assertions.assertNotNull(storageConnectionString);
         StorageEndpoint blobEndpoint = storageConnectionString.getBlobEndpoint();
-        Assert.assertNotNull(blobEndpoint);
-        Assert.assertNotNull(blobEndpoint.getPrimaryUri());
-        Assert.assertTrue(blobEndpoint.getPrimaryUri().equalsIgnoreCase(blobEndpointStr));
+        Assertions.assertNotNull(blobEndpoint);
+        Assertions.assertNotNull(blobEndpoint.getPrimaryUri());
+        Assertions.assertTrue(blobEndpoint.getPrimaryUri().equalsIgnoreCase(blobEndpointStr));
 
         StorageEndpoint fileEndpoint = storageConnectionString.getFileEndpoint();
-        Assert.assertNotNull(fileEndpoint);
-        Assert.assertNotNull(fileEndpoint.getPrimaryUri());
-        Assert.assertTrue(fileEndpoint.getPrimaryUri().equalsIgnoreCase(fileEndpointStr));
+        Assertions.assertNotNull(fileEndpoint);
+        Assertions.assertNotNull(fileEndpoint.getPrimaryUri());
+        Assertions.assertTrue(fileEndpoint.getPrimaryUri().equalsIgnoreCase(fileEndpointStr));
 
         StorageEndpoint queueEndpoint = storageConnectionString.getQueueEndpoint();
-        Assert.assertNull(queueEndpoint);
+        Assertions.assertNull(queueEndpoint);
 
         StorageEndpoint tableEndpoint = storageConnectionString.getTableEndpoint();
-        Assert.assertNull(tableEndpoint);
+        Assertions.assertNull(tableEndpoint);
 
         StorageAuthenticationSettings authSettings
                 = storageConnectionString.getStorageAuthSettings();
-        Assert.assertNotNull(authSettings);
-        Assert.assertEquals(StorageAuthenticationSettings.Type.NONE,
+        Assertions.assertNotNull(authSettings);
+        Assertions.assertEquals(StorageAuthenticationSettings.Type.NONE,
                 authSettings.getType());
-        Assert.assertNull(authSettings.getAccount());
-        Assert.assertNull(authSettings.getSasToken());
+        Assertions.assertNull(authSettings.getAccount());
+        Assertions.assertNull(authSettings.getSasToken());
     }
 
     @Test
@@ -244,57 +246,59 @@ public class StorageConnectionStringTest {
         StorageConnectionString.create(connectionString, logger);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void nullOrEmpty() {
-        StorageConnectionString.create(null, logger);
-        StorageConnectionString.create("", logger);
+        assertThrows(IllegalArgumentException.class, () -> {
+            StorageConnectionString.create(null, logger);
+            StorageConnectionString.create("", logger);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void missingEqualDelimiter() {
         // A connection string with missing equal symbol between AccountKey and it's value
         final String connectionString =
                 String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey%s;EndpointSuffix=%s",
                         ACCOUNT_NAME_VALUE, ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
-        StorageConnectionString.create(connectionString, logger);
+        assertThrows(IllegalArgumentException.class, () -> StorageConnectionString.create(connectionString, logger));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void missingKey() {
         // A connection string with missing 'AccountName' key for it's value
         final String connectionString =
                 String.format("DefaultEndpointsProtocol=https;=%s;AccountKey=%s;EndpointSuffix=%s",
                         ACCOUNT_NAME_VALUE, ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
-        StorageConnectionString.create(connectionString, logger);
+        assertThrows(IllegalArgumentException.class, () -> StorageConnectionString.create(connectionString, logger));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void missingValue() {
         // A connection string with missing value for 'AccountName' key
         final String connectionString =
                 String.format("DefaultEndpointsProtocol=https;AccountName=;AccountKey%s;EndpointSuffix=%s",
                         ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
-        StorageConnectionString.create(connectionString, logger);
+        assertThrows(IllegalArgumentException.class, () -> StorageConnectionString.create(connectionString, logger));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void missingKeyValue() {
         // a connection string with key and value missing for equal (=) delimiter
         final String connectionString =
                 String.format("DefaultEndpointsProtocol=https;=;AccountName=%s;AccountKey%s;EndpointSuffix=%s",
                         ACCOUNT_NAME_VALUE, ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
-        StorageConnectionString.create(connectionString, logger);
+        assertThrows(IllegalArgumentException.class, () -> StorageConnectionString.create(connectionString, logger));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void missingAccountKey() {
         final String connectionString =
                 String.format("DefaultEndpointsProtocol=https;AccountName=%s;%s;EndpointSuffix=%s",
                         ACCOUNT_NAME_VALUE, ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
-        StorageConnectionString.create(connectionString, logger);
+        assertThrows(IllegalArgumentException.class, () -> StorageConnectionString.create(connectionString, logger));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void sasTokenAccountKeyMutuallyExclusive() {
         final String blobEndpointStr = "https://storagesample.blob.core.windows.net";
         final String fileEndpointStr = "https://storagesample.file.core.windows.net";
@@ -306,7 +310,7 @@ public class StorageConnectionStringTest {
                         SAS_TOKEN,
                         ACCOUNT_NAME_VALUE,
                         ACCOUNT_KEY_VALUE);
-        StorageConnectionString.create(connectionString, logger);
+        assertThrows(IllegalArgumentException.class, () -> StorageConnectionString.create(connectionString, logger));
     }
 
     @Test
@@ -333,12 +337,12 @@ public class StorageConnectionStringTest {
                         CHINA_CLOUD_ENDPOINT_SUFFIX);
 
         StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
-        Assert.assertNotNull(storageConnectionString);
+        Assertions.assertNotNull(storageConnectionString);
 
         StorageEndpoint blobEndpoint = storageConnectionString.getBlobEndpoint();
-        Assert.assertNotNull(blobEndpoint);
-        Assert.assertNotNull(blobEndpoint.getPrimaryUri());
-        Assert.assertTrue(blobEndpoint.getPrimaryUri()
+        Assertions.assertNotNull(blobEndpoint);
+        Assertions.assertNotNull(blobEndpoint.getPrimaryUri());
+        Assertions.assertTrue(blobEndpoint.getPrimaryUri()
                 .equalsIgnoreCase(String.format("http://%s.blob.%s", // http protocol
                         ACCOUNT_NAME_VALUE,
                         CHINA_CLOUD_ENDPOINT_SUFFIX)));

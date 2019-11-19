@@ -111,30 +111,30 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     /**
      * Generates code sample for creating a subdirectory with {@link ShareDirectoryAsyncClient}
      */
-    public void createSubDirectory() {
+    public void createSubdirectory() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubDirectory#string
-        shareDirectoryAsyncClient.createSubDirectory("subdir")
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectory#string
+        shareDirectoryAsyncClient.createSubdirectory("subdir")
             .doOnSuccess(response -> System.out.println("Completed creating the subdirectory."));
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubDirectory#string
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectory#string
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createSubDirectoryWithResponse(String, FileSmbProperties, String, Map)}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createSubdirectoryWithResponse(String, FileSmbProperties, String, Map)}
      */
-    public void createSubDirectoryAsyncMaxOverload() {
+    public void createSubdirectoryAsyncMaxOverload() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubDirectoryWithResponse#String-FileSmbProperties-String-Map
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
-        shareDirectoryAsyncClient.createSubDirectoryWithResponse("subdir", smbProperties, filePermission, metadata).subscribe(
+        shareDirectoryAsyncClient.createSubdirectoryWithResponse("subdir", smbProperties, filePermission, metadata).subscribe(
             response ->
                 System.out.println("Successfully creating the subdirectory with status code: "
                     + response.getStatusCode()),
             error -> System.err.println(error.toString())
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubDirectoryWithResponse#String-FileSmbProperties-String-Map
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map
     }
 
     /**
@@ -238,31 +238,31 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#deleteSubDirectory(String)} ()}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#deleteSubdirectory(String)} ()}
      */
-    public void deleteSubDirectoryAsync() {
+    public void deleteSubdirectoryAsync() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubDirectory#string
-        shareDirectoryAsyncClient.deleteSubDirectory("mysubdirectory").subscribe(
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectory#string
+        shareDirectoryAsyncClient.deleteSubdirectory("mysubdirectory").subscribe(
             response -> { },
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the subdirectory.")
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubDirectory#string
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectory#string
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#deleteSubDirectoryWithResponse(String)} ()}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#deleteSubdirectoryWithResponse(String)} ()}
      */
-    public void deleteSubDirectoryWithResponse() {
+    public void deleteSubdirectoryWithResponse() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubDirectoryWithResponse#string
-        shareDirectoryAsyncClient.deleteSubDirectoryWithResponse("mysubdirectory").subscribe(
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryWithResponse#string
+        shareDirectoryAsyncClient.deleteSubdirectoryWithResponse("mysubdirectory").subscribe(
             response ->  System.out.printf("Delete subdirectory completed with status code %d", response.getStatusCode()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the subdirectory.")
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubDirectoryWithResponse#string
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryWithResponse#string
     }
 
     /**

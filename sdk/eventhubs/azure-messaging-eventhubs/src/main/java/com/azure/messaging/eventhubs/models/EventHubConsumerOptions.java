@@ -3,14 +3,11 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.amqp.RetryOptions;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
-import reactor.core.scheduler.Scheduler;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -20,33 +17,25 @@ import java.util.Optional;
  * {@link EventHubConsumerAsyncClient} to configure its behavior.
  *
  * @see EventHubClientBuilder#buildAsyncConsumer()
- * @see EventHubClientBuilder#buildClient()
  */
 @Fluent
 public class EventHubConsumerOptions implements Cloneable {
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerOptions.class);
-
-    /**
-     * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumerAsyncClient}.
-     */
-    public static final int MAXIMUM_IDENTIFIER_LENGTH = 64;
     /**
      * The minimum value allowed for the prefetch count of the consumer.
      */
-    public static final int MINIMUM_PREFETCH_COUNT = 1;
+    static final int MINIMUM_PREFETCH_COUNT = 1;
     /**
      * The maximum value allowed for the prefetch count of the consumer.
      */
-    public static final int MAXIMUM_PREFETCH_COUNT = 8000;
+    static final int MAXIMUM_PREFETCH_COUNT = 8000;
+
+    private final ClientLogger logger = new ClientLogger(EventHubConsumerOptions.class);
 
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
 
     private boolean trackLastEnqueuedEventProperties;
-    private String identifier;
     private Long ownerLevel;
-    private RetryOptions retry;
-    private Scheduler scheduler;
     private int prefetchCount;
 
     /**
@@ -54,24 +43,6 @@ public class EventHubConsumerOptions implements Cloneable {
      */
     public EventHubConsumerOptions() {
         this.prefetchCount = DEFAULT_PREFETCH_COUNT;
-    }
-
-    /**
-     * Sets an optional text-based identifier label to assign to an event consumer.
-     *
-     * @param identifier The receiver name.
-     * @return The updated {@link EventHubConsumerOptions} object.
-     * @throws IllegalArgumentException if {@code identifier} is greater than {@link
-     *     #MAXIMUM_IDENTIFIER_LENGTH}.
-     */
-    public EventHubConsumerOptions setIdentifier(String identifier) {
-        if (!CoreUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                "identifier length cannot exceed %s", MAXIMUM_IDENTIFIER_LENGTH)));
-        }
-
-        this.identifier = identifier;
-        return this;
     }
 
     /**
@@ -146,16 +117,6 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Gets the optional text-based identifier label to assign to an event receiver. The identifier is used for
-     * informational purposes only. If not specified, the receiver will have no assigned identifier label.
-     *
-     * @return The identifier of the receiver.
-     */
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    /**
      * Gets the owner level for this consumer. If {@link Optional#isPresent()} is {@code false}, then this is not an
      * exclusive consumer. Otherwise, it is an exclusive consumer, and there can only be one active consumer for each
      * partition and consumer group combination.
@@ -202,9 +163,8 @@ public class EventHubConsumerOptions implements Cloneable {
             clone = new EventHubConsumerOptions();
         }
 
-        clone
-            .setIdentifier(this.getIdentifier())
-            .setPrefetchCount(this.getPrefetchCount())
+        clone.setPrefetchCount(this.getPrefetchCount())
+            .setTrackLastEnqueuedEventProperties(this.getTrackLastEnqueuedEventProperties())
             .setOwnerLevel(this.getOwnerLevel());
 
         return clone;

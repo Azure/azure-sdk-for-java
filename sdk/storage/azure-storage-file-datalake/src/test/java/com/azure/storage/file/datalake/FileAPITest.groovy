@@ -17,9 +17,9 @@ class FileAPITest extends APISpec {
     String fileName
 
     PathPermissions permissions = new PathPermissions()
-        .owner(new RolePermissions().read(true).write(true).execute(true))
-        .group(new RolePermissions().read(true).execute(true))
-        .other(new RolePermissions().read(true))
+        .setOwner(new RolePermissions().setReadPermission(true).setWritePermission(true).setExecutePermission(true))
+        .setGroup(new RolePermissions().setReadPermission(true).setExecutePermission(true))
+        .setOther(new RolePermissions().setReadPermission(true))
 
     List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
 
@@ -1384,6 +1384,23 @@ class FileAPITest extends APISpec {
 
         then:
         thrown(StorageErrorException)
+    }
+
+    def "Get File Name and Build Client"() {
+        when:
+        DataLakeFileClient client = fsc.getFileClient(originalFileName)
+
+        then:
+        // Note : Here I use Path because there is a test that tests the use of a /
+        client.getFilePath() == finalFileName
+
+        where:
+        originalFileName       | finalFileName
+        "file"                 | "file"
+        "path/to]a file"       | "path/to]a file"
+        "path%2Fto%5Da%20file" | "path/to]a file"
+        "斑點"                   | "斑點"
+        "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 
 }

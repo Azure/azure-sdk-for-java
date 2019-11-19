@@ -159,7 +159,8 @@ public final class EncryptedBlobClientBuilder {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
-        policies.add(new UserAgentPolicy(userAgentName, userAgentVersion, userAgentConfiguration, serviceVersion));
+        policies.add(new UserAgentPolicy(logOptions.getApplicationId(), userAgentName, userAgentVersion,
+            userAgentConfiguration, serviceVersion));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
@@ -405,7 +406,8 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a {@link HttpPipelinePolicy} to apply on each request sent. The policy will be added after the retry policy.
+     * If the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated EncryptedBlobClientBuilder object
