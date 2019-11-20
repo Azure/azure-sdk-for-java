@@ -13,6 +13,7 @@ import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.IndexerExecutionStatus;
 import com.azure.search.models.IndexerStatus;
 import com.azure.search.models.IndexingParameters;
+import com.azure.search.models.Skillset;
 import org.junit.Assert;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -38,9 +39,9 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         return client.createOrUpdateIndex(index).block();
     }
 
-    protected Indexer createIndexer(Indexer indexer) {
-        return client.createOrUpdateIndexer(indexer).block();
-    }
+    protected Indexer createIndexer(Indexer indexer) { return client.createOrUpdateIndexer(indexer).block(); }
+
+    protected Skillset createSkillset(Skillset skillset) { return client.createOrUpdateSkillset(skillset).block(); }
 
     @Override
     protected Indexer getIndexer(String indexerName) {

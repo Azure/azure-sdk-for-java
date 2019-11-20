@@ -12,6 +12,11 @@ import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexingParameters;
 import com.azure.search.models.IndexingSchedule;
+import com.azure.search.models.InputFieldMappingEntry;
+import com.azure.search.models.OcrSkill;
+import com.azure.search.models.OutputFieldMappingEntry;
+import com.azure.search.models.Skill;
+import com.azure.search.models.Skillset;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
 import org.junit.Test;
@@ -156,6 +161,57 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
             .setDataSourceName(dataSource.getName());
 
         createAndValidateIndexer(indexer);
+    }
+
+    @Test
+    public void canUpdateIndexerSkillset() {
+        DataSource datasource = createTestSqlDataSource();
+        createDatasource(datasource);
+
+        // Create a new skillset object
+        // todo: task 1544 - change all over the code that that the object creation and actual service creation will
+        // have meaningful and differentiated names
+        Skillset skillset = createSkillsetObject();
+
+        // create the skillset in the search service
+        createSkillset(skillset);
+        Indexer updatedExpected = createIndexerWithDifferentSkillset(skillset.getName());
+        createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+    }
+
+    /**
+     * Create a new valid skillset object
+     * @return the newly created skillset object
+     */
+    private Skillset createSkillsetObject() {
+        List<InputFieldMappingEntry> inputs = Arrays.asList(
+            new InputFieldMappingEntry()
+                .setName("url")
+                .setSource("/document/url"),
+            new InputFieldMappingEntry()
+                .setName("queryString")
+                .setSource("/document/queryString")
+        );
+
+        List<OutputFieldMappingEntry> outputs = Collections.singletonList(
+            new OutputFieldMappingEntry()
+                .setName("text")
+                .setTargetName("mytext")
+        );
+
+        List<Skill> skills = Collections.singletonList(
+            new OcrSkill()
+                .setShouldDetectOrientation(true)
+                .setName("myocr")
+                .setDescription("Tested OCR skill")
+                .setContext("/document")
+                .setInputs(inputs)
+                .setOutputs(outputs)
+        );
+        return new Skillset()
+            .setName("ocr-skillset")
+            .setDescription("Skillset for testing default configuration")
+            .setSkills(skills);
     }
 
     @Test
@@ -401,6 +457,18 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     }
 
     /**
+     * Create a new indexer and change its skillset
+     * @return the created indexer
+     */
+    Indexer createIndexerWithDifferentSkillset(String skillsetName) {
+        // create a new indexer object
+        Indexer indexer = createTestIndexer("indexer")
+            .setSkillsetName(skillsetName);
+
+        return indexer;
+    }
+
+    /**
      * Create a new indexer and change its indexing parameters
      * @return the created indexer
      */
@@ -467,4 +535,6 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     protected abstract Indexer getIndexer(String indexerName);
 
     protected abstract Response<Void> deleteIndexer(Indexer indexer);
+
+    protected abstract Skillset createSkillset(Skillset skillset);
 }
