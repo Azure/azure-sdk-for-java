@@ -101,7 +101,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageTrackingValue = UUID.randomUUID().toString();
         final Flux<EventData> events = Flux.range(0, numberOfEvents).map(number -> {
             final EventData eventData = new EventData("testString".getBytes(UTF_8));
-            eventData.addProperty(messageTrackingId, messageTrackingValue);
+            eventData.getProperties().put(messageTrackingId, messageTrackingValue);
             return eventData;
         });
 

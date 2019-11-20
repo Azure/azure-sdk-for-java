@@ -102,9 +102,8 @@ public class PartitionContext {
      * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
      * received from the Event Hubs service.
      *
-     * @return {@code null} if tracking last enqueued event properties was not set when
-     * creating the EventProcessorClient. Otherwise, the properties describing the most recently enqueued event in the
-     * partition.
+     * @return {@code null} if {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()} was not set when
+     * creating the consumer. Otherwise, the properties describing the most recently enqueued event in the partition.
      */
     public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
         return lastEnqueuedEventProperties;
