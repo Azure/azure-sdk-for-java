@@ -295,7 +295,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     @SuppressWarnings("unchecked")
     private <T> T getOrDefault(Object key, T defaultValue, Class<T> clazz, Context context) {
         final Optional<Object> optional = context.getData(key);
-        final Object result = optional.filter(value -> value.getClass().equals(clazz)).orElseGet(() -> {
+        final Object result = optional.filter(value -> clazz.isAssignableFrom(value.getClass())).orElseGet(() -> {
             logger.warning("Could not extract key '{}' of type '{}' from context.", key, clazz);
             return defaultValue;
         });
