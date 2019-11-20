@@ -30,8 +30,8 @@
 <tr>
 <td>createClient</td>
 <td>Gets an ADLStoreClient object.</td>
-<td><strong>DataLakeServiceClient.create</strong></td>
-<td></td>
+<td><strong>DataLakeServiceClientBuilder.buildClient</strong></td>
+<td>Set the appropriate <strong>endpoint</strong> and <strong>credential</strong></td>
 </tr>
 <tr>
 <td>createDirectory</td>
