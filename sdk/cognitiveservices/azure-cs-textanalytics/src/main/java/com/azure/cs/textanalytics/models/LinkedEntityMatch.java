@@ -8,10 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Match model.
+ * The LinkedEntityMatch model.
  */
 @Fluent
-public final class Match {
+public final class LinkedEntityMatch {
     /*
      * If a well-known item is recognized, a decimal number denoting the
      * confidence level between 0 and 1 will be returned.
@@ -20,7 +20,7 @@ public final class Match {
     private double score;
 
     /*
-     * Entity text as appears in the request.
+     * NamedEntity text as appears in the request.
      */
     @JsonProperty(value = "text", required = true)
     private String text;
@@ -52,15 +52,15 @@ public final class Match {
      * number denoting the confidence level between 0 and 1 will be returned.
      *
      * @param score the score value to set.
-     * @return the Match object itself.
+     * @return the LinkedEntityMatch object itself.
      */
-    public Match setScore(double score) {
+    public LinkedEntityMatch setScore(double score) {
         this.score = score;
         return this;
     }
 
     /**
-     * Get the text property: Entity text as appears in the request.
+     * Get the text property: NamedEntity text as appears in the request.
      *
      * @return the text value.
      */
@@ -69,12 +69,12 @@ public final class Match {
     }
 
     /**
-     * Set the text property: Entity text as appears in the request.
+     * Set the text property: NamedEntity text as appears in the request.
      *
      * @param text the text value to set.
-     * @return the Match object itself.
+     * @return the LinkedEntityMatch object itself.
      */
-    public Match setText(String text) {
+    public LinkedEntityMatch setText(String text) {
         this.text = text;
         return this;
     }
@@ -94,9 +94,9 @@ public final class Match {
      * entity match text.
      *
      * @param offset the offset value to set.
-     * @return the Match object itself.
+     * @return the LinkedEntityMatch object itself.
      */
-    public Match setOffset(int offset) {
+    public LinkedEntityMatch setOffset(int offset) {
         this.offset = offset;
         return this;
     }
@@ -116,9 +116,9 @@ public final class Match {
      * match text.
      *
      * @param length the length value to set.
-     * @return the Match object itself.
+     * @return the LinkedEntityMatch object itself.
      */
-    public Match setLength(int length) {
+    public LinkedEntityMatch setLength(int length) {
         this.length = length;
         return this;
     }

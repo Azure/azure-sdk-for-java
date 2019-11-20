@@ -3,17 +3,15 @@
 
 package com.azure.cs.textanalytics.models;
 
-import java.util.List;
+public class DocumentSentiment extends DocumentResult<TextSentiment> {
+    private TextSentiment documentTextSentiment;
 
-public class DocumentSentiment extends DocumentResult<Sentiment> {
-    private Sentiment documentSentiment;
-
-    public Sentiment getDocumentSentiment() {
-        return documentSentiment;
+    public TextSentiment getDocumentTextSentiment() {
+        return documentTextSentiment;
     }
 
-    public DocumentSentiment setDocumentSentiment(Sentiment documentSentiment) {
-        this.documentSentiment = documentSentiment;
+    public DocumentSentiment setDocumentTextSentiment(TextSentiment documentTextSentiment) {
+        this.documentTextSentiment = documentTextSentiment;
         return this;
     }
 }

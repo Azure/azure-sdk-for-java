@@ -8,7 +8,7 @@ import java.util.List;
 public class DocumentResult<T> {
 
     private String id;
-    private DocumentStatistics documentStatistics;
+    private TextDocumentStatistics textDocumentStatistics;
     private List<T> items;
 
     public String getId() {
@@ -20,12 +20,12 @@ public class DocumentResult<T> {
         return this;
     }
 
-    public DocumentStatistics getDocumentStatistics() {
-        return documentStatistics;
+    public TextDocumentStatistics getTextDocumentStatistics() {
+        return textDocumentStatistics;
     }
 
-    public DocumentResult setDocumentStatistics(DocumentStatistics documentStatistics) {
-        this.documentStatistics = documentStatistics;
+    public DocumentResult setTextDocumentStatistics(TextDocumentStatistics textDocumentStatistics) {
+        this.textDocumentStatistics = textDocumentStatistics;
         return this;
     }
 

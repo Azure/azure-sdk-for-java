@@ -4,9 +4,9 @@
 package com.azure.cs.textanalytics.models;
 
 /**
- * Sentiment enum: POSITIVE, NEGATIVE, NEUTRAL, MIXED.
+ * TextSentiment enum: POSITIVE, NEGATIVE, NEUTRAL, MIXED.
  */
-public enum SentimentClass {
+public enum TextSentimentClass {
     POSITIVE,
     NEGATIVE,
     NEUTRAL,

@@ -5,7 +5,7 @@
 //
 //
 //import com.azure.cs.textanalytics.implementation.models.DocumentEntities;
-//import com.azure.cs.textanalytics.models.Entity;
+//import com.azure.cs.textanalytics.models.NamedEntity;
 //
 //import java.util.List;
 //
@@ -26,10 +26,10 @@
 ////
 ////        final DocumentEntities documentEntitie = client.getHealthCareEntities(text, "US", false);
 ////
-////        List<Entity> entities = documentEntitie.getEntities();
-////        for (Entity entity : entities) {
-////            System.out.println(String.format(
-////                "Recognized Health Care Entity: %s, Entity Type: %s, Entity Subtype: %s, Offset: %s, Length: %s, Score: %s",
+////        List<NamedEntity> entities = documentEntitie.getEntities();
+////        for (NamedEntity entity : entities) {
+////            System.out.printf(
+////                "Recognized Health Care NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s",
 ////                entity.getText(), entity.getType(), entity.getSubType(), entity.getOffset(), entity.getLength(), entity.getScore()));
 ////        }
 ////    }

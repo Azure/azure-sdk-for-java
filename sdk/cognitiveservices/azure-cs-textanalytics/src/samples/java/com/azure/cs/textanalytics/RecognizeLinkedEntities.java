@@ -15,7 +15,7 @@ public class RecognizeLinkedEntities {
         String text = "Old Faithful is a geyser at Yellowstone Park";
 
         client.recognizeLinkedEntities(text, "US").stream().forEach(
-            linkedEntity -> System.out.println(String.format("Recognized Linked Entity: %s, URL: %s, Data Source: %s",
+            linkedEntity -> System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s",
                 linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource())));
     }
 }

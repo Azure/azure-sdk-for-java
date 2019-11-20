@@ -16,7 +16,7 @@ import java.util.List;
 @Fluent
 public final class SentimentResponse {
     /*
-     * Sentiment analysis per document.
+     * TextSentiment analysis per document.
      */
     @JsonProperty(value = "documents", required = true)
     private List<DocumentSentiment> documents;
@@ -40,7 +40,7 @@ public final class SentimentResponse {
     private String modelVersion;
 
     /**
-     * Get the documents property: Sentiment analysis per document.
+     * Get the documents property: TextSentiment analysis per document.
      *
      * @return the documents value.
      */
@@ -49,7 +49,7 @@ public final class SentimentResponse {
     }
 
     /**
-     * Set the documents property: Sentiment analysis per document.
+     * Set the documents property: TextSentiment analysis per document.
      *
      * @param documents the documents value to set.
      * @return the SentimentResponse object itself.

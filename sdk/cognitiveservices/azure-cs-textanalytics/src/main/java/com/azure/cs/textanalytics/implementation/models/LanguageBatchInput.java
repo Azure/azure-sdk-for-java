@@ -5,7 +5,7 @@
 package com.azure.cs.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.cs.textanalytics.models.LanguageInput;
+import com.azure.cs.textanalytics.models.UnknownLanguageInput;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,14 +18,14 @@ public final class LanguageBatchInput {
      * The documents property.
      */
     @JsonProperty(value = "documents", required = true)
-    private List<LanguageInput> documents;
+    private List<UnknownLanguageInput> documents;
 
     /**
      * Get the documents property: The documents property.
      *
      * @return the documents value.
      */
-    public List<LanguageInput> getDocuments() {
+    public List<UnknownLanguageInput> getDocuments() {
         return this.documents;
     }
 
@@ -35,7 +35,7 @@ public final class LanguageBatchInput {
      * @param documents the documents value to set.
      * @return the LanguageBatchInput object itself.
      */
-    public LanguageBatchInput setDocuments(List<LanguageInput> documents) {
+    public LanguageBatchInput setDocuments(List<UnknownLanguageInput> documents) {
         this.documents = documents;
         return this;
     }

@@ -6,14 +6,12 @@ package com.azure.cs.textanalytics.batch;
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.cs.textanalytics.models.DocumentBatchStatistics;
-import com.azure.cs.textanalytics.models.DocumentInput;
-import com.azure.cs.textanalytics.models.DocumentResult;
+import com.azure.cs.textanalytics.models.TextDocumentInput;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
-import com.azure.cs.textanalytics.models.DocumentStatistics;
-import com.azure.cs.textanalytics.models.Entity;
+import com.azure.cs.textanalytics.models.NamedEntity;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RecognizeEntitiesBatchDocuments {
@@ -24,40 +22,27 @@ public class RecognizeEntitiesBatchDocuments {
             .buildClient();
 
         // The texts that need be analysed.
-        List<DocumentInput> document = new ArrayList<>();
-        DocumentInput input = new DocumentInput();
-        input.setId("1").setText("Satya Nadella is the CEO of Microsoft").setLanguage("US");
-        DocumentInput input2 = new DocumentInput();
-        input2.setId("2").setText("Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("US");
-        document.add(input);
-        document.add(input2);
+        List<TextDocumentInput> inputs = Arrays.asList(
+            new TextDocumentInput("Satya Nadella is the CEO of Microsoft").setLanguage("US"),
+            new TextDocumentInput("Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("US")
+        );
 
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStats(true).setModelVersion("1.0");
-        DocumentResultCollection<Entity> detectedResult = client.recognizeEntities(document, requestOptions);
-        // Document level statistics
-        final String modelVersion = detectedResult.getModelVersion();
-        System.out.println(String.format("Model version: %s", modelVersion));
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
+        DocumentResultCollection<NamedEntity> detectedBatchResult = client.recognizeEntities(inputs, requestOptions);
 
-        final DocumentBatchStatistics documentBatchStatistics = detectedResult.getStatistics();
-        System.out.println(String.format("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
-            documentBatchStatistics.getDocumentsCount(),
-            documentBatchStatistics.getErroneousDocumentsCount(),
-            documentBatchStatistics.getTransactionsCount(),
-            documentBatchStatistics.getValidDocumentsCount()));
+        final String modelVersion = detectedBatchResult.getModelVersion();
+        System.out.printf("Model version: %s", modelVersion);
+        final DocumentBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
+        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
+            batchStatistics.getDocumentsCount(),
+            batchStatistics.getErroneousDocumentsCount(),
+            batchStatistics.getTransactionsCount(),
+            batchStatistics.getValidDocumentsCount());
 
         // Detecting entities for each of document from a batch of documents
-        for (DocumentResult<Entity> entitiesList : detectedResult) {
-            final DocumentStatistics documentStatistics = entitiesList.getDocumentStatistics();
-            System.out.println(String.format("One entity document statistics, character count: %s, transaction count: %s.",
-                documentStatistics.getCharactersCount(), documentStatistics.getTransactionsCount()));
-
-            final List<Entity> entities = entitiesList.getItems();
-            for (Entity entity : entities) {
-                System.out.println(String.format("Recognized Entity: %s, Entity Type: %s, Entity Subtype: %s, Offset: %s, Length: %s, Score: %s",
-                    entity.getText(), entity.getType(), entity.getSubType(), entity.getOffset(), entity.getLength(), entity.getScore()));
-            }
-        }
-
-
+        detectedBatchResult.stream().forEach(detectedEntityResult ->
+            detectedEntityResult.getItems().stream().forEach(entity ->
+                System.out.printf("Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s",
+                    entity.getText(), entity.getType(), entity.getSubType(), entity.getOffset(), entity.getLength(), entity.getScore())));
     }
 }

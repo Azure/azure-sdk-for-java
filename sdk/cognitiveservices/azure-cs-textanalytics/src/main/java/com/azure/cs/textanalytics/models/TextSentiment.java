@@ -6,10 +6,10 @@ package com.azure.cs.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The Sentiment model.
+ * The TextSentiment model.
  */
 @Fluent
-public class Sentiment {
+public class TextSentiment {
 
     // SentimentConfidenceScorePerLabel
     private double negativeScore;
@@ -24,13 +24,13 @@ public class Sentiment {
     private int offSet;
 
     // sentiment string
-    private SentimentClass sentimentClass;
+    private TextSentimentClass textSentimentClass;
 
     public String getLength() {
         return length;
     }
 
-    public Sentiment setLength(String length) {
+    public TextSentiment setLength(String length) {
         this.length = length;
         return this;
     }
@@ -39,7 +39,7 @@ public class Sentiment {
         return negativeScore;
     }
 
-    public Sentiment setNegativeScore(double negativeScore) {
+    public TextSentiment setNegativeScore(double negativeScore) {
         this.negativeScore = negativeScore;
         return this;
     }
@@ -48,7 +48,7 @@ public class Sentiment {
         return neutralScore;
     }
 
-    public Sentiment setNeutralScore(double neutralScore) {
+    public TextSentiment setNeutralScore(double neutralScore) {
         this.neutralScore = neutralScore;
         return this;
     }
@@ -57,7 +57,7 @@ public class Sentiment {
         return positiveScore;
     }
 
-    public Sentiment setPositiveScore(double positiveScore) {
+    public TextSentiment setPositiveScore(double positiveScore) {
         this.positiveScore = positiveScore;
         return this;
     }
@@ -66,17 +66,17 @@ public class Sentiment {
         return offSet;
     }
 
-    public Sentiment setOffSet(int offSet) {
+    public TextSentiment setOffSet(int offSet) {
         this.offSet = offSet;
         return this;
     }
 
-    public SentimentClass getSentimentClass() {
-        return sentimentClass;
+    public TextSentimentClass getTextSentimentClass() {
+        return textSentimentClass;
     }
 
-    public Sentiment setSentimentClass(SentimentClass sentimentClass) {
-        this.sentimentClass = sentimentClass;
+    public TextSentiment setTextSentimentClass(TextSentimentClass textSentimentClass) {
+        this.textSentimentClass = textSentimentClass;
         return this;
     }
 }

@@ -11,7 +11,6 @@ import java.util.List;
 
 public class DocumentResultCollection<T> extends IterableStream<DocumentResult<T>> {
 
-
     private List<DocumentError> errors;
     private String modelVersion;
     private DocumentBatchStatistics statistics;
@@ -41,11 +40,11 @@ public class DocumentResultCollection<T> extends IterableStream<DocumentResult<T
         this.modelVersion = modelVersion;
     }
 
-    public DocumentBatchStatistics getStatistics() {
+    public DocumentBatchStatistics getBatchStatistics() {
         return statistics;
     }
 
-    public void setStatistics(DocumentBatchStatistics statistics) {
+    public void setBatchStatistics(DocumentBatchStatistics statistics) {
         this.statistics = statistics;
     }
 }

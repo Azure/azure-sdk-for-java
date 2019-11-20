@@ -6,7 +6,7 @@ package com.azure.cs.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
-import com.azure.cs.textanalytics.models.DocumentStatistics;
+import com.azure.cs.textanalytics.models.TextDocumentStatistics;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public final class DocumentLanguage {
      * information about the document payload.
      */
     @JsonProperty(value = "statistics")
-    private DocumentStatistics statistics;
+    private TextDocumentStatistics statistics;
 
     /**
      * Get the id property: Unique, non-empty document identifier.
@@ -80,7 +80,7 @@ public final class DocumentLanguage {
      *
      * @return the statistics value.
      */
-    public DocumentStatistics getStatistics() {
+    public TextDocumentStatistics getStatistics() {
         return this.statistics;
     }
 
@@ -91,7 +91,7 @@ public final class DocumentLanguage {
      * @param statistics the statistics value to set.
      * @return the DocumentLanguage object itself.
      */
-    public DocumentLanguage setStatistics(DocumentStatistics statistics) {
+    public DocumentLanguage setStatistics(TextDocumentStatistics statistics) {
         this.statistics = statistics;
         return this;
     }

@@ -5,8 +5,8 @@
 package com.azure.cs.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.cs.textanalytics.models.DocumentStatistics;
-import com.azure.cs.textanalytics.models.Entity;
+import com.azure.cs.textanalytics.models.NamedEntity;
+import com.azure.cs.textanalytics.models.TextDocumentStatistics;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -25,14 +25,14 @@ public final class DocumentEntities {
      * Recognized entities in the document.
      */
     @JsonProperty(value = "entities", required = true)
-    private List<Entity> entities;
+    private List<NamedEntity> entities;
 
     /*
      * if showStats=true was specified in the request this field will contain
      * information about the document payload.
      */
     @JsonProperty(value = "statistics")
-    private DocumentStatistics statistics;
+    private TextDocumentStatistics statistics;
 
     /**
      * Get the id property: Unique, non-empty document identifier.
@@ -59,7 +59,7 @@ public final class DocumentEntities {
      *
      * @return the entities value.
      */
-    public List<Entity> getEntities() {
+    public List<NamedEntity> getEntities() {
         return this.entities;
     }
 
@@ -69,7 +69,7 @@ public final class DocumentEntities {
      * @param entities the entities value to set.
      * @return the DocumentEntities object itself.
      */
-    public DocumentEntities setEntities(List<Entity> entities) {
+    public DocumentEntities setEntities(List<NamedEntity> entities) {
         this.entities = entities;
         return this;
     }
@@ -80,7 +80,7 @@ public final class DocumentEntities {
      *
      * @return the statistics value.
      */
-    public DocumentStatistics getStatistics() {
+    public TextDocumentStatistics getStatistics() {
         return this.statistics;
     }
 
@@ -91,7 +91,7 @@ public final class DocumentEntities {
      * @param statistics the statistics value to set.
      * @return the DocumentEntities object itself.
      */
-    public DocumentEntities setStatistics(DocumentStatistics statistics) {
+    public DocumentEntities setStatistics(TextDocumentStatistics statistics) {
         this.statistics = statistics;
         return this;
     }

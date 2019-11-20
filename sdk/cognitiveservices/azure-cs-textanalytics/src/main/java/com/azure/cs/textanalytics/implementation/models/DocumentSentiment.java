@@ -5,7 +5,7 @@
 package com.azure.cs.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.cs.textanalytics.models.DocumentStatistics;
+import com.azure.cs.textanalytics.models.TextDocumentStatistics;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public final class DocumentSentiment {
      * The statistics property.
      */
     @JsonProperty(value = "statistics")
-    private DocumentStatistics statistics;
+    private TextDocumentStatistics statistics;
 
     /*
      * Document level sentiment confidence scores between 0 and 1 for each
@@ -96,7 +96,7 @@ public final class DocumentSentiment {
      *
      * @return the statistics value.
      */
-    public DocumentStatistics getStatistics() {
+    public TextDocumentStatistics getStatistics() {
         return this.statistics;
     }
 
@@ -106,7 +106,7 @@ public final class DocumentSentiment {
      * @param statistics the statistics value to set.
      * @return the DocumentSentiment object itself.
      */
-    public DocumentSentiment setStatistics(DocumentStatistics statistics) {
+    public DocumentSentiment setStatistics(TextDocumentStatistics statistics) {
         this.statistics = statistics;
         return this;
     }

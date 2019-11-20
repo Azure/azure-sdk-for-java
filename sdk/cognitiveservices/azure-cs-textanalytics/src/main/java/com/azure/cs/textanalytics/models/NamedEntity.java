@@ -8,24 +8,24 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Entity model.
+ * The NamedEntity model.
  */
 @Fluent
-public final class Entity {
+public final class NamedEntity {
     /*
-     * Entity text as appears in the request.
+     * NamedEntity text as appears in the request.
      */
     @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
-     * Entity type, such as Person/Location/Org/SSN etc
+     * NamedEntity type, such as Person/Location/Org/SSN etc
      */
     @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
-     * Entity sub type, such as Age/Year/TimeRange etc
+     * NamedEntity sub type, such as Age/Year/TimeRange etc
      */
     @JsonProperty(value = "subType")
     private String subType;
@@ -49,7 +49,7 @@ public final class Entity {
     private double score;
 
     /**
-     * Get the text property: Entity text as appears in the request.
+     * Get the text property: NamedEntity text as appears in the request.
      *
      * @return the text value.
      */
@@ -58,18 +58,18 @@ public final class Entity {
     }
 
     /**
-     * Set the text property: Entity text as appears in the request.
+     * Set the text property: NamedEntity text as appears in the request.
      *
      * @param text the text value to set.
-     * @return the Entity object itself.
+     * @return the NamedEntity object itself.
      */
-    public Entity setText(String text) {
+    public NamedEntity setText(String text) {
         this.text = text;
         return this;
     }
 
     /**
-     * Get the type property: Entity type, such as Person/Location/Org/SSN etc.
+     * Get the type property: NamedEntity type, such as Person/Location/Org/SSN etc.
      *
      * @return the type value.
      */
@@ -78,18 +78,18 @@ public final class Entity {
     }
 
     /**
-     * Set the type property: Entity type, such as Person/Location/Org/SSN etc.
+     * Set the type property: NamedEntity type, such as Person/Location/Org/SSN etc.
      *
      * @param type the type value to set.
-     * @return the Entity object itself.
+     * @return the NamedEntity object itself.
      */
-    public Entity setType(String type) {
+    public NamedEntity setType(String type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the subType property: Entity sub type, such as Age/Year/TimeRange
+     * Get the subType property: NamedEntity sub type, such as Age/Year/TimeRange
      * etc.
      *
      * @return the subType value.
@@ -99,13 +99,13 @@ public final class Entity {
     }
 
     /**
-     * Set the subType property: Entity sub type, such as Age/Year/TimeRange
+     * Set the subType property: NamedEntity sub type, such as Age/Year/TimeRange
      * etc.
      *
      * @param subType the subType value to set.
-     * @return the Entity object itself.
+     * @return the NamedEntity object itself.
      */
-    public Entity setSubType(String subType) {
+    public NamedEntity setSubType(String subType) {
         this.subType = subType;
         return this;
     }
@@ -125,9 +125,9 @@ public final class Entity {
      * entity text.
      *
      * @param offset the offset value to set.
-     * @return the Entity object itself.
+     * @return the NamedEntity object itself.
      */
-    public Entity setOffset(int offset) {
+    public NamedEntity setOffset(int offset) {
         this.offset = offset;
         return this;
     }
@@ -147,9 +147,9 @@ public final class Entity {
      * text.
      *
      * @param length the length value to set.
-     * @return the Entity object itself.
+     * @return the NamedEntity object itself.
      */
-    public Entity setLength(int length) {
+    public NamedEntity setLength(int length) {
         this.length = length;
         return this;
     }
@@ -169,9 +169,9 @@ public final class Entity {
      * extracted entity.
      *
      * @param score the score value to set.
-     * @return the Entity object itself.
+     * @return the NamedEntity object itself.
      */
-    public Entity setScore(double score) {
+    public NamedEntity setScore(double score) {
         this.score = score;
         return this;
     }

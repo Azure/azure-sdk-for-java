@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * information about the document payload.
  */
 @Fluent
-public final class DocumentStatistics {
+public final class TextDocumentStatistics {
     /*
      * Number of text elements recognized in the document.
      */
@@ -40,9 +40,9 @@ public final class DocumentStatistics {
      * the document.
      *
      * @param charactersCount the charactersCount value to set.
-     * @return the DocumentStatistics object itself.
+     * @return the TextDocumentStatistics object itself.
      */
-    public DocumentStatistics setCharactersCount(int charactersCount) {
+    public TextDocumentStatistics setCharactersCount(int charactersCount) {
         this.charactersCount = charactersCount;
         return this;
     }
@@ -62,9 +62,9 @@ public final class DocumentStatistics {
      * document.
      *
      * @param transactionsCount the transactionsCount value to set.
-     * @return the DocumentStatistics object itself.
+     * @return the TextDocumentStatistics object itself.
      */
-    public DocumentStatistics setTransactionsCount(int transactionsCount) {
+    public TextDocumentStatistics setTransactionsCount(int transactionsCount) {
         this.transactionsCount = transactionsCount;
         return this;
     }

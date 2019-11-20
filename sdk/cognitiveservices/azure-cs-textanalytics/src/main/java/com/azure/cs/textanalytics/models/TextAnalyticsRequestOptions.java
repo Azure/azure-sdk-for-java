@@ -16,11 +16,11 @@ public final class TextAnalyticsRequestOptions {
         return this;
     }
 
-    public boolean isShowStats() {
+    public boolean isShowStatistics() {
         return showStats;
     }
 
-    public TextAnalyticsRequestOptions setShowStats(boolean showStats) {
+    public TextAnalyticsRequestOptions setShowStatistics(boolean showStats) {
         this.showStats = showStats;
         return this;
     }

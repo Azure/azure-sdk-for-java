@@ -11,7 +11,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Contains an input document to be analyzed by the service.
  */
 @Fluent
-public final class DocumentInput {
+public final class TextDocumentInput {
+
+    public TextDocumentInput(String text) {
+        this.text = text;
+    }
+
     /*
      * A unique, non-empty document identifier.
      */
@@ -47,7 +52,7 @@ public final class DocumentInput {
      * @param id the id value to set.
      * @return the MultiLanguageInput object itself.
      */
-    public DocumentInput setId(String id) {
+    public TextDocumentInput setId(String id) {
         this.id = id;
         return this;
     }
@@ -67,7 +72,7 @@ public final class DocumentInput {
      * @param text the text value to set.
      * @return the MultiLanguageInput object itself.
      */
-    public DocumentInput setText(String text) {
+    public TextDocumentInput setText(String text) {
         this.text = text;
         return this;
     }
@@ -91,7 +96,7 @@ public final class DocumentInput {
      * @param language the language value to set.
      * @return the MultiLanguageInput object itself.
      */
-    public DocumentInput setLanguage(String language) {
+    public TextDocumentInput setLanguage(String language) {
         this.language = language;
         return this;
     }

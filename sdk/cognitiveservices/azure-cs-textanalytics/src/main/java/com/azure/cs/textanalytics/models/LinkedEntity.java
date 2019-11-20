@@ -14,7 +14,7 @@ import java.util.List;
 @Fluent
 public final class LinkedEntity {
     /*
-     * Entity Linking formal name.
+     * NamedEntity Linking formal name.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -22,8 +22,8 @@ public final class LinkedEntity {
     /*
      * List of instances this entity appears in the text.
      */
-    @JsonProperty(value = "matches", required = true)
-    private List<Match> matches;
+    @JsonProperty(value = "linkedEntityMatches", required = true)
+    private List<LinkedEntityMatch> linkedEntityMatches;
 
     /*
      * Language used in the data source.
@@ -50,7 +50,7 @@ public final class LinkedEntity {
     private String dataSource;
 
     /**
-     * Get the name property: Entity Linking formal name.
+     * Get the name property: NamedEntity Linking formal name.
      *
      * @return the name value.
      */
@@ -59,7 +59,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Set the name property: Entity Linking formal name.
+     * Set the name property: NamedEntity Linking formal name.
      *
      * @param name the name value to set.
      * @return the LinkedEntity object itself.
@@ -70,24 +70,24 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the matches property: List of instances this entity appears in the
+     * Get the linkedEntityMatches property: List of instances this entity appears in the
      * text.
      *
-     * @return the matches value.
+     * @return the linkedEntityMatches value.
      */
-    public List<Match> getMatches() {
-        return this.matches;
+    public List<LinkedEntityMatch> getLinkedEntityMatches() {
+        return this.linkedEntityMatches;
     }
 
     /**
-     * Set the matches property: List of instances this entity appears in the
+     * Set the linkedEntityMatches property: List of instances this entity appears in the
      * text.
      *
-     * @param matches the matches value to set.
+     * @param linkedEntityMatches the linkedEntityMatches value to set.
      * @return the LinkedEntity object itself.
      */
-    public LinkedEntity setMatches(List<Match> matches) {
-        this.matches = matches;
+    public LinkedEntity setLinkedEntityMatches(List<LinkedEntityMatch> linkedEntityMatches) {
+        this.linkedEntityMatches = linkedEntityMatches;
         return this;
     }
 

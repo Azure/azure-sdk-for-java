@@ -15,8 +15,8 @@ public class RecognizePII {
         String text = "My SSN is 555-55-5555";
 
         client.recognizePiiEntities(text, "US").stream().forEach(
-            entity -> System.out.println(String.format(
-                "Recognized PII Entity: %s, Entity Type: %s, Entity Subtype: %s, Offset: %s, Length: %s, Score: %s",
+            entity -> System.out.printf(
+                "Recognized PII NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s",
                 entity.getText(),
                 entity.getType(),
                 entity.getSubType(),

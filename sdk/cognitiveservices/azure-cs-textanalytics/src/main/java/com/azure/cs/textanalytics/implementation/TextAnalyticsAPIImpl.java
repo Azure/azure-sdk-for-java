@@ -118,8 +118,8 @@ public final class TextAnalyticsAPIImpl {
     }
 
     /**
-     * Named Entity Recognition
-     * The API returns a list of general named entities in a given document. For the list of supported entity types, check &lt;a href="https://aka.ms/taner"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. For the list of enabled languages, check &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt;.
+     * Named NamedEntity Recognition
+     * The API returns a list of general named entities in a given document. For the list of supported entity types, check &lt;a href="https://aka.ms/taner"&gt;Supported NamedEntity Types in Text Analytics API&lt;/a&gt;. For the list of enabled languages, check &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt;.
      *
      * @param multiLanguageBatchInput Collection of documents to analyze.
      * @param context The context to associate with this operation.
@@ -134,8 +134,8 @@ public final class TextAnalyticsAPIImpl {
     }
 
     /**
-     * Named Entity Recognition
-     * The API returns a list of general named entities in a given document. For the list of supported entity types, check &lt;a href="https://aka.ms/taner"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. For the list of enabled languages, check &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt;.
+     * Named NamedEntity Recognition
+     * The API returns a list of general named entities in a given document. For the list of supported entity types, check &lt;a href="https://aka.ms/taner"&gt;Supported NamedEntity Types in Text Analytics API&lt;/a&gt;. For the list of enabled languages, check &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt;.
      *
      * @param multiLanguageBatchInput Collection of documents to analyze.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
@@ -278,7 +278,7 @@ public final class TextAnalyticsAPIImpl {
     }
 
     /**
-     * Sentiment
+     * TextSentiment
      * The API returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and Neutral) for the document and each sentence within it. See the &amp;lt;a href="https://aka.ms/talangs"&amp;gt;Supported languages in Text Analytics API&amp;lt;/a&amp;gt; for the list of enabled languages.
      *
      * @param multiLanguageBatchInput Collection of documents to analyze.
@@ -294,7 +294,7 @@ public final class TextAnalyticsAPIImpl {
     }
 
     /**
-     * Sentiment
+     * TextSentiment
      * The API returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and Neutral) for the document and each sentence within it. See the &amp;lt;a href="https://aka.ms/talangs"&amp;gt;Supported languages in Text Analytics API&amp;lt;/a&amp;gt; for the list of enabled languages.
      *
      * @param multiLanguageBatchInput Collection of documents to analyze.

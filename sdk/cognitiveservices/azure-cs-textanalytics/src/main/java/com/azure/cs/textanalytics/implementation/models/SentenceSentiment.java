@@ -14,7 +14,7 @@ import java.util.List;
 @Fluent
 public final class SentenceSentiment {
     /*
-     * The predicted Sentiment for the sentence. Possible values include:
+     * The predicted TextSentiment for the sentence. Possible values include:
      * 'positive', 'neutral', 'negative'
      */
     @JsonProperty(value = "sentiment", required = true)
@@ -46,7 +46,7 @@ public final class SentenceSentiment {
     private List<String> warnings;
 
     /**
-     * Get the sentiment property: The predicted Sentiment for the sentence.
+     * Get the sentiment property: The predicted TextSentiment for the sentence.
      * Possible values include: 'positive', 'neutral', 'negative'.
      *
      * @return the sentiment value.
@@ -56,7 +56,7 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Set the sentiment property: The predicted Sentiment for the sentence.
+     * Set the sentiment property: The predicted TextSentiment for the sentence.
      * Possible values include: 'positive', 'neutral', 'negative'.
      *
      * @param sentiment the sentiment value to set.

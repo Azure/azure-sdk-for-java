@@ -15,8 +15,8 @@ public class RecognizeEntities {
         String text = "Satya Nadella is the CEO of Microsoft";
 
         client.recognizeEntities(text, "US").stream().forEach(
-            entity -> System.out.println(String.format(
-                "Recognized Entity: %s, Entity Type: %s, Entity Subtype: %s, Offset: %s, Length: %s, Score: %s",
+            entity -> System.out.printf(
+                "Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s",
                 entity.getText(),
                 entity.getType(),
                 entity.getSubType(),

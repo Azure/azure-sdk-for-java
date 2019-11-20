@@ -17,7 +17,7 @@ public class HelloWorld {
         String text = "hello world";
 
         DetectedLanguage detectedLanguage = client.detectLanguage(text, "US");
-        System.out.println(String.format("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
+        System.out.printf("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
             detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));
     }
 }

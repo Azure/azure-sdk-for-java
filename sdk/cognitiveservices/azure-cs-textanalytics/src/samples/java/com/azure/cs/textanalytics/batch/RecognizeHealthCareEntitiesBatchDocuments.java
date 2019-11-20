@@ -8,7 +8,7 @@
 //import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
 //import com.azure.cs.textanalytics.implementation.models.DocumentEntities;
 //import com.azure.cs.textanalytics.implementation.models.EntitiesResult;
-//import com.azure.cs.textanalytics.models.Entity;
+//import com.azure.cs.textanalytics.models.NamedEntity;
 //import com.azure.cs.textanalytics.models.MultiLanguageBatchInput;
 //import com.azure.cs.textanalytics.models.MultiLanguageInput;
 //
@@ -40,9 +40,9 @@
 //        EntitiesResult detectedResult = client.getHealthCareEntitiesWithResponse(batchInput, false, Context.NONE).getValue();
 //        List<DocumentEntities> documentEntities = detectedResult.getDocuments();
 //        for (DocumentEntities documentEntitie : documentEntities) {
-//            List<Entity> entities = documentEntitie.getEntities();
-//            for (Entity entity : entities) {
-//                System.out.println(String.format("Recognized Health Care Entity: %s, Entity Type: %s, Entity Subtype: %s, Offset: %s, Length: %s, Score: %s",
+//            List<NamedEntity> entities = documentEntitie.getEntities();
+//            for (NamedEntity entity : entities) {
+//                System.out.printf("Recognized Health Care NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s",
 //                    entity.getText(), entity.getType(), entity.getSubType(), entity.getOffset(), entity.getLength(), entity.getScore()));
 //            }
 //        }

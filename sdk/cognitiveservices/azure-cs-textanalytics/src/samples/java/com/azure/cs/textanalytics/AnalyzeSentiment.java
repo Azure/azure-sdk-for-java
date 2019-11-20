@@ -3,8 +3,8 @@
 
 package com.azure.cs.textanalytics;
 
-import com.azure.cs.textanalytics.models.Sentiment;
-import com.azure.cs.textanalytics.models.SentimentClass;
+import com.azure.cs.textanalytics.models.TextSentiment;
+import com.azure.cs.textanalytics.models.TextSentimentClass;
 
 public class AnalyzeSentiment {
 
@@ -16,14 +16,14 @@ public class AnalyzeSentiment {
         // The text that need be analysed.
         String text = "The hotel was dark and unclean.";
 
-        Sentiment sentenceSentiment = client.analyzeSentenceSentiment(text, "US");
-        final SentimentClass sentiment = sentenceSentiment.getSentimentClass();
-        final double positiveScore = sentenceSentiment.getPositiveScore();
-        final double neutralScore = sentenceSentiment.getNeutralScore();
-        final double negativeScore = sentenceSentiment.getNegativeScore();
+        TextSentiment sentenceTextSentiment = client.analyzeSentenceSentiment(text, "US");
+        final TextSentimentClass sentiment = sentenceTextSentiment.getTextSentimentClass();
+        final double positiveScore = sentenceTextSentiment.getPositiveScore();
+        final double neutralScore = sentenceTextSentiment.getNeutralScore();
+        final double negativeScore = sentenceTextSentiment.getNegativeScore();
 
-        System.out.println(String.format(
-            "Recognized Sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.",
+        System.out.printf(
+            "Recognized TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.",
             sentiment, positiveScore, neutralScore, negativeScore));
     }
 }
