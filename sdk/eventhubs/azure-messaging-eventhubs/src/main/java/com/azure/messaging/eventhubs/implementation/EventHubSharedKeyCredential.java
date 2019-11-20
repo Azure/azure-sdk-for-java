@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
@@ -10,7 +10,6 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;

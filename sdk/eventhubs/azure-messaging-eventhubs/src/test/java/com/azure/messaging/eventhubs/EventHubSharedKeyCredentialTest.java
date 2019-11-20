@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
