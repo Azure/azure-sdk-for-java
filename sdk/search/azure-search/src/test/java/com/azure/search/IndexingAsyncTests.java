@@ -38,6 +38,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+
 public class IndexingAsyncTests extends IndexingTestBase {
     private SearchIndexAsyncClient client;
 
@@ -145,21 +148,21 @@ public class IndexingAsyncTests extends IndexingTestBase {
         StepVerifier.create(client.getDocument(hotel1.hotelId()))
             .assertNext(result -> {
                 Hotel actual = convertToType(result, Hotel.class);
-                Assert.assertEquals(hotel1, actual);
+                assertReflectionEquals(hotel1, actual, IGNORE_DEFAULTS);
             })
             .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel2.hotelId()))
             .assertNext(result -> {
                 Hotel actual = convertToType(result, Hotel.class);
-                Assert.assertEquals(hotel2, actual);
+                assertReflectionEquals(hotel2, actual, IGNORE_DEFAULTS);
             })
             .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel3.hotelId()))
             .assertNext(result -> {
                 Hotel actual = convertToType(result, Hotel.class);
-                Assert.assertEquals(hotel3, actual);
+                assertReflectionEquals(hotel3, actual, IGNORE_DEFAULTS);
             })
             .verifyComplete();
     }
@@ -276,7 +279,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             StepVerifier.create(client.getDocument(expected.hotelId()))
                 .assertNext(d -> {
                     Hotel actual = convertToType(d, Hotel.class);
-                    Assert.assertEquals(expected, actual);
+                    assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
                 })
                 .verifyComplete();
         }
@@ -491,14 +494,14 @@ public class IndexingAsyncTests extends IndexingTestBase {
         client.mergeDocuments(updatedDocs).block();
 
         StepVerifier.create(client.getDocument("1"))
-            .assertNext(result -> Assert.assertEquals(expectedDoc, convertToType(result, Hotel.class)))
+            .assertNext(result -> assertReflectionEquals(expectedDoc, convertToType(result, Hotel.class), IGNORE_DEFAULTS))
             .verifyComplete();
 
         client.mergeDocuments(originalDocs).block();
 
         // Verify
         StepVerifier.create(client.getDocument("1"))
-            .assertNext(result -> Assert.assertEquals(originalDoc, convertToType(result, Hotel.class)))
+            .assertNext(result -> assertReflectionEquals(originalDoc, convertToType(result, Hotel.class), IGNORE_DEFAULTS))
             .verifyComplete();
     }
 
@@ -714,9 +717,9 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Mono<Document> mono = client.getDocument("1");
 
         StepVerifier.create(mono)
-            .expectNextMatches(result -> {
+            .assertNext(result -> {
                 LoudHotel actual = convertToType(result, LoudHotel.class);
-                return actual.equals(expectedDoc);
+                assertReflectionEquals(expectedDoc, actual, IGNORE_DEFAULTS);
             })
             .verifyComplete();
 
@@ -725,9 +728,9 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         mono = client.getDocument("1");
         StepVerifier.create(mono)
-            .expectNextMatches(result -> {
+            .assertNext(result -> {
                 LoudHotel actual = convertToType(result, LoudHotel.class);
-                return actual.equals(originalDoc);
+                assertReflectionEquals(originalDoc, actual, IGNORE_DEFAULTS);
             })
             .verifyComplete();
     }

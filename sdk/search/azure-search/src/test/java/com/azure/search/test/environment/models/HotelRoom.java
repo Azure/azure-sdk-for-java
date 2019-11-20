@@ -5,7 +5,6 @@ package com.azure.search.test.environment.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-import java.util.Objects;
 
 public class HotelRoom {
     @JsonProperty(value = "Description")
@@ -103,29 +102,5 @@ public class HotelRoom {
     public HotelRoom tags(List<String> tags) {
         this.tags = tags;
         return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof HotelRoom)) {
-            return false;
-        }
-        HotelRoom hotelRoom = (HotelRoom) o;
-        return Objects.equals(description, hotelRoom.description)
-            && Objects.equals(descriptionFr, hotelRoom.descriptionFr)
-            && Objects.equals(type, hotelRoom.type)
-            && Objects.equals(baseRate, hotelRoom.baseRate)
-            && Objects.equals(bedOptions, hotelRoom.bedOptions)
-            && Objects.equals(sleepsCount, hotelRoom.sleepsCount)
-            && Objects.equals(smokingAllowed, hotelRoom.smokingAllowed)
-            && ModelComparer.collectionEquals(tags, hotelRoom.tags);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(description, descriptionFr, type, baseRate, bedOptions, sleepsCount, smokingAllowed, tags);
     }
 }

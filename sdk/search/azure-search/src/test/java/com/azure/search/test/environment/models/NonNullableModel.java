@@ -4,9 +4,7 @@ package com.azure.search.test.environment.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Objects;
 
 public class NonNullableModel {
 
@@ -80,32 +78,5 @@ public class NonNullableModel {
     public NonNullableModel buckets(Bucket[] buckets) {
         this.buckets = buckets;
         return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof NonNullableModel)) {
-            return false;
-        }
-        NonNullableModel that = (NonNullableModel) o;
-        return rating == that.rating
-            && count == that.count
-            && isEnabled == that.isEnabled
-            && Double.compare(that.ratio, ratio) == 0
-            && key.equals(that.key)
-            && ((startDate == null && that.startDate == null) || (startDate.equals(that.startDate)))
-            && ((endDate == null && that.endDate == null) || (endDate.equals(that.endDate)))
-            && ((topLevelBucket == null && that.topLevelBucket == null) || (topLevelBucket.equals(that.topLevelBucket)))
-            && Arrays.equals(buckets, that.buckets);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(key, rating, count, isEnabled, ratio, startDate, endDate, topLevelBucket);
-        result = 31 * result + Arrays.hashCode(buckets);
-        return result;
     }
 }

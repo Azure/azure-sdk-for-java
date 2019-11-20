@@ -37,7 +37,8 @@ import java.util.stream.Collectors;
 
 import static com.azure.search.models.QueryType.SIMPLE;
 import static com.azure.search.models.SearchMode.ALL;
-
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 public class SearchAsyncTests extends SearchTestBase {
 
     private SearchIndexAsyncClient client;
@@ -426,7 +427,7 @@ public class SearchAsyncTests extends SearchTestBase {
         }).collect(Collectors.toList());
 
         Assert.assertEquals(hotelsList.size(), actualResults.size());
-        Assert.assertEquals(hotelsList, actualResults);
+        assertReflectionEquals(hotelsList, actualResults, IGNORE_DEFAULTS);
     }
 
     @Override
@@ -453,8 +454,8 @@ public class SearchAsyncTests extends SearchTestBase {
         Assert.assertNotNull(results);
         StepVerifier.create(results.byPage()).assertNext(res -> {
             Assert.assertEquals(2, res.getItems().size());
-            Assert.assertEquals(doc1, convertToType(res.getItems().get(0).getDocument(), NonNullableModel.class));
-            Assert.assertEquals(doc2, convertToType(res.getItems().get(1).getDocument(), NonNullableModel.class));
+            assertReflectionEquals(doc1, convertToType(res.getItems().get(0).getDocument(), NonNullableModel.class), IGNORE_DEFAULTS);
+            assertReflectionEquals(doc2, convertToType(res.getItems().get(1).getDocument(), NonNullableModel.class), IGNORE_DEFAULTS);
         }).verifyComplete();
     }
 

@@ -9,6 +9,8 @@ import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import org.junit.Assert;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 import java.text.ParseException;
 import java.time.OffsetDateTime;
@@ -33,7 +35,7 @@ public class LookupSyncTests extends LookupTestBase {
 
         Document result = client.getDocument(expected.hotelId());
         Hotel actual = convertToType(result, Hotel.class);
-        Assert.assertEquals(expected, actual);
+        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
     @Override
@@ -46,7 +48,7 @@ public class LookupSyncTests extends LookupTestBase {
 
         Document result = client.getDocument(expected.hotelId());
         Hotel actual = convertToType(result, Hotel.class);
-        Assert.assertEquals(expected, actual);
+        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
     @Override
@@ -59,7 +61,7 @@ public class LookupSyncTests extends LookupTestBase {
 
         Document result = client.getDocument(expected.hotelId());
         Hotel actual = convertToType(result, Hotel.class);
-        Assert.assertEquals(expected, actual);
+        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class LookupSyncTests extends LookupTestBase {
 
         Document result = client.getDocument(expected.key());
         ModelWithPrimitiveCollections actual = convertToType(result, ModelWithPrimitiveCollections.class);
-        Assert.assertEquals(expected, actual);
+        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
     @Override
@@ -92,7 +94,7 @@ public class LookupSyncTests extends LookupTestBase {
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
         Document result = client.getDocument(indexedDoc.hotelId(), selectedFields, new RequestOptions());
         Hotel actual = convertToType(result, Hotel.class);
-        Assert.assertEquals(expected, actual);
+        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
     @Override

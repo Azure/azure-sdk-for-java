@@ -4,8 +4,6 @@ package com.azure.search.test.environment.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Objects;
-
 public class HotelAddress {
     @JsonProperty(value = "StreetAddress")
     private String streetAddress;
@@ -66,26 +64,5 @@ public class HotelAddress {
     public HotelAddress postalCode(String postalCode) {
         this.postalCode = postalCode;
         return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof HotelAddress)) {
-            return false;
-        }
-        HotelAddress that = (HotelAddress) o;
-        return Objects.equals(streetAddress, that.streetAddress)
-            && Objects.equals(city, that.city)
-            && Objects.equals(stateProvince, that.stateProvince)
-            && Objects.equals(country, that.country)
-            && Objects.equals(postalCode, that.postalCode);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(streetAddress, city, stateProvince, country, postalCode);
     }
 }

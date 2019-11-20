@@ -6,8 +6,6 @@ import com.azure.search.models.GeoPoint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.Objects;
 
 public class ModelWithPrimitiveCollections {
 
@@ -77,37 +75,5 @@ public class ModelWithPrimitiveCollections {
     public ModelWithPrimitiveCollections strings(String[] strings) {
         this.strings = strings;
         return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ModelWithPrimitiveCollections)) {
-            return false;
-        }
-        ModelWithPrimitiveCollections that = (ModelWithPrimitiveCollections) o;
-        return Objects.equals(key, that.key)
-            && Arrays.equals(bools, that.bools)
-            && Arrays.equals(dates, that.dates)
-            && Arrays.equals(doubles, that.doubles)
-            && Arrays.equals(ints, that.ints)
-            && Arrays.equals(longs, that.longs)
-            && Arrays.equals(points, that.points)
-            && Arrays.equals(strings, that.strings);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(key);
-        result = 31 * result + Arrays.hashCode(bools);
-        result = 31 * result + Arrays.hashCode(dates);
-        result = 31 * result + Arrays.hashCode(doubles);
-        result = 31 * result + Arrays.hashCode(ints);
-        result = 31 * result + Arrays.hashCode(longs);
-        result = 31 * result + Arrays.hashCode(points);
-        result = 31 * result + Arrays.hashCode(strings);
-        return result;
     }
 }

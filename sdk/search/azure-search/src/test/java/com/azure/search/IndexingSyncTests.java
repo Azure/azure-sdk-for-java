@@ -36,6 +36,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;
@@ -203,13 +205,13 @@ public class IndexingSyncTests extends IndexingTestBase {
         }
 
         Hotel actualHotel1 = convertToType(client.getDocument(hotel1.hotelId()), Hotel.class);
-        Assert.assertEquals(hotel1, actualHotel1);
+        assertReflectionEquals(hotel1, actualHotel1, IGNORE_DEFAULTS);
 
         Hotel actualHotel2 = convertToType(client.getDocument(hotel2.hotelId()), Hotel.class);
-        Assert.assertEquals(hotel2, actualHotel2);
+        assertReflectionEquals(hotel2, actualHotel2, IGNORE_DEFAULTS);
 
         Hotel actualHotel3 = convertToType(client.getDocument(hotel3.hotelId()), Hotel.class);
-        Assert.assertEquals(hotel3, actualHotel3);
+        assertReflectionEquals(hotel3, actualHotel3, IGNORE_DEFAULTS);
     }
 
     @Override
@@ -313,9 +315,8 @@ public class IndexingSyncTests extends IndexingTestBase {
         for (Hotel expected : boundaryConditionDocs) {
             Document doc = client.getDocument(expected.hotelId());
             Hotel actual = convertToType(doc, Hotel.class);
-            Assert.assertEquals(expected, actual);
+            assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
         }
-
     }
 
     @Override
@@ -492,10 +493,10 @@ public class IndexingSyncTests extends IndexingTestBase {
         List<Hotel> updatedDocs = new ArrayList<>();
         updatedDocs.add(updatedDoc);
         client.mergeDocuments(updatedDocs);
-        Assert.assertEquals(expectedDoc, convertToType(client.getDocument("1"), Hotel.class));
+        assertReflectionEquals(expectedDoc, convertToType(client.getDocument("1"), Hotel.class), IGNORE_DEFAULTS);
 
         client.mergeDocuments(originalDocs);
-        Assert.assertEquals(originalDoc, convertToType(client.getDocument("1"), Hotel.class));
+        assertReflectionEquals(originalDoc, convertToType(client.getDocument("1"), Hotel.class), IGNORE_DEFAULTS);
     }
 
     @Override
@@ -629,14 +630,14 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         Document result = client.getDocument("1");
         LoudHotel actualDoc = convertToType(result, LoudHotel.class);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertReflectionEquals(expectedDoc, actualDoc, IGNORE_DEFAULTS);
 
         client.uploadDocuments(originalDocs);
         waitForIndexing();
 
         result = client.getDocument("1");
         actualDoc = convertToType(result, LoudHotel.class);
-        Assert.assertEquals(originalDoc, actualDoc);
+        assertReflectionEquals(originalDoc, actualDoc, IGNORE_DEFAULTS);
     }
 
     @Override

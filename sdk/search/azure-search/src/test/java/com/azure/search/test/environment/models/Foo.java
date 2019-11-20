@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.test.environment.models;
 
-import java.util.Objects;
-
 public class Foo {
     private int intValue;
     private String stringValue;
@@ -30,23 +28,5 @@ public class Foo {
 
     public void setStringValue(final String stringValue) {
         this.stringValue = stringValue;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final Foo foo = (Foo) o;
-        return intValue == foo.intValue
-            && Objects.equals(stringValue, foo.stringValue);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(intValue, stringValue);
     }
 }

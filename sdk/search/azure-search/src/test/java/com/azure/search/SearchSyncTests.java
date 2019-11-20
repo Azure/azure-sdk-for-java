@@ -12,9 +12,9 @@ import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.Jacks
 import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.models.CoordinateSystem;
 import com.azure.search.models.FacetResult;
-import com.azure.search.models.SearchOptions;
 import com.azure.search.models.QueryType;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.test.environment.models.Bucket;
 import com.azure.search.test.environment.models.Hotel;
@@ -39,6 +39,8 @@ import java.util.stream.Stream;
 
 import static com.azure.search.models.QueryType.SIMPLE;
 import static com.azure.search.models.SearchMode.ALL;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public class SearchSyncTests extends SearchTestBase {
 
@@ -190,7 +192,7 @@ public class SearchSyncTests extends SearchTestBase {
         }).collect(Collectors.toList());
 
         Assert.assertEquals(hotelsList.size(), actualResults.size());
-        Assert.assertEquals(hotelsList, actualResults);
+        assertReflectionEquals(hotelsList, actualResults, IGNORE_DEFAULTS);
     }
 
     @Override
@@ -220,8 +222,8 @@ public class SearchSyncTests extends SearchTestBase {
 
         PagedResponse<SearchResult> result = iterator.next();
         Assert.assertEquals(2, result.getItems().size());
-        Assert.assertEquals(doc1, convertToType(result.getItems().get(0).getDocument(), NonNullableModel.class));
-        Assert.assertEquals(doc2, convertToType(result.getItems().get(1).getDocument(), NonNullableModel.class));
+        assertReflectionEquals(doc1, convertToType(result.getItems().get(0).getDocument(), NonNullableModel.class), IGNORE_DEFAULTS);
+        assertReflectionEquals(doc2, convertToType(result.getItems().get(1).getDocument(), NonNullableModel.class), IGNORE_DEFAULTS);
     }
 
     @Override

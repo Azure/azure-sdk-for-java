@@ -19,9 +19,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static java.lang.Double.NEGATIVE_INFINITY;
-import static java.lang.Double.NaN;
-import static java.lang.Double.POSITIVE_INFINITY;
+import static java.lang.Double.*;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public class LookupAsyncTests extends LookupTestBase {
     private SearchIndexAsyncClient client;
@@ -36,7 +36,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Mono<Document> result = client.getDocument(expected.hotelId());
 
         StepVerifier.create(result)
-            .assertNext(res -> Assert.assertEquals(expected, convertToType(res, Hotel.class)))
+            .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
             .verifyComplete();
     }
 
@@ -50,7 +50,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Mono<Document> result = client.getDocument(expected.hotelId());
 
         StepVerifier.create(result)
-            .assertNext(res -> Assert.assertEquals(expected, convertToType(res, Hotel.class)))
+            .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
             .verifyComplete();
     }
 
@@ -64,7 +64,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Mono<Document> result = client.getDocument(expected.hotelId());
 
         StepVerifier.create(result)
-            .assertNext(res -> Assert.assertEquals(expected, convertToType(res, Hotel.class)))
+            .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
             .verifyComplete();
     }
 
@@ -78,7 +78,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Mono<Document> result = client.getDocument(expected.key());
 
         StepVerifier.create(result)
-            .assertNext(res -> Assert.assertEquals(expected, convertToType(res, ModelWithPrimitiveCollections.class)))
+            .assertNext(res -> assertReflectionEquals(expected, convertToType(res, ModelWithPrimitiveCollections.class), IGNORE_DEFAULTS))
             .verifyComplete();
     }
 
@@ -102,7 +102,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Mono<Document> result = client.getDocument(indexedDoc.hotelId(), selectedFields, new RequestOptions());
 
         StepVerifier.create(result)
-            .assertNext(res -> Assert.assertEquals(expected, convertToType(res, Hotel.class)))
+            .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
             .verifyComplete();
     }
 
