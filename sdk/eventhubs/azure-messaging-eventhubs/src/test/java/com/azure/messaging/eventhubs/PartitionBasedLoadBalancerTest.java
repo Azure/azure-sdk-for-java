@@ -19,9 +19,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
@@ -43,6 +41,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -298,7 +297,7 @@ public class PartitionBasedLoadBalancerTest {
         TracerProvider tracerProvider = new TracerProvider(tracers);
         PartitionProcessor partitionProcessor = mock(PartitionProcessor.class);
 
-        when(partitionProcessor.processEvent(any(PartitionEvent.class))).thenReturn(Mono.error(new IllegalStateException()));
+        doThrow(new IllegalStateException()).when(partitionProcessor).processEvent(any(PartitionEvent.class));
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
@@ -326,7 +325,7 @@ public class PartitionBasedLoadBalancerTest {
         when(eventProcessorStore.listOwnership(any(), any(), any())).thenReturn(Flux.error(new Exception("Listing "
             + "failed")));
         PartitionProcessor partitionProcessor = mock(PartitionProcessor.class);
-        when(partitionProcessor.processEvent(any(PartitionEvent.class))).thenReturn(Mono.error(new IllegalStateException()));
+        doThrow(new IllegalStateException()).when(partitionProcessor).processEvent(any(PartitionEvent.class));
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(eventProcessorStore,
@@ -351,7 +350,7 @@ public class PartitionBasedLoadBalancerTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         PartitionProcessor partitionProcessor = mock(PartitionProcessor.class);
-        when(partitionProcessor.processEvent(any(PartitionEvent.class))).thenReturn(Mono.error(new IllegalStateException()));
+        doThrow(new IllegalStateException()).when(partitionProcessor).processEvent(any(PartitionEvent.class));
         List<String> partitionIds = new ArrayList<>();
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(eventProcessorStore,
@@ -436,13 +435,20 @@ public class PartitionBasedLoadBalancerTest {
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(eventProcessorStore,
             () -> new PartitionProcessor() {
                 @Override
-                public Mono<Void> processEvent(PartitionEvent partitionEvent) {
+                public void processEvent(PartitionEvent partitionEvent) {
                     logger.info(
                         "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
                         partitionEvent.getPartitionContext().getEventHubName(), partitionEvent.getPartitionContext().getConsumerGroup(),
                         partitionEvent.getPartitionContext().getPartitionId(),
                         partitionEvent.getData().getSequenceNumber());
-                    return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData());
+                    partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData());
+                }
+
+                @Override
+                public void processError(EventProcessingErrorContext eventProcessingErrorContext) {
+                        logger.warning("Error occurred in partition processor for partition {}",
+                            eventProcessingErrorContext.getPartitionContext().getPartitionId(),
+                            eventProcessingErrorContext.getThrowable());
                 }
             }, EventPosition.earliest(), eventHubClientBuilder, tracerProvider);
         return new PartitionBasedLoadBalancer(eventProcessorStore, eventHubAsyncClient, fqNamespace,

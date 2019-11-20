@@ -128,19 +128,18 @@ class PartitionPumpManager {
         eventHubConsumer.receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
             .subscribe(partitionEvent -> {
                 EventData eventData = partitionEvent.getData();
+                Context processSpanContext = startProcessTracingSpan(eventData);
+                if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
+                    eventData.addContext(SPAN_CONTEXT_KEY, processSpanContext);
+                }
                 try {
-                    Context processSpanContext = startProcessTracingSpan(eventData);
-                    if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
-                        eventData.addContext(SPAN_CONTEXT_KEY, processSpanContext);
-                    }
-                    partitionProcessor.processEvent(new PartitionEvent(partitionContext, eventData)).doOnEach(signal ->
-                        endProcessTracingSpan(processSpanContext, signal)).subscribe(unused -> {
-                        },
-                            /* event processing returned error */
-                            ex -> handleProcessingError(claimedOwnership, partitionProcessor, ex, partitionContext));
+                    partitionProcessor.processEvent(new PartitionEvent(partitionContext, eventData));
+                    endProcessTracingSpan(processSpanContext, Signal.complete());
                 } catch (Exception ex) {
                     /* event processing threw an exception */
                     handleProcessingError(claimedOwnership, partitionProcessor, ex, partitionContext);
+                    endProcessTracingSpan(processSpanContext, Signal.error(ex));
+
                 }
             }, /* EventHubConsumer receive() returned an error */
                 ex -> handleReceiveError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),

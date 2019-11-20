@@ -3,10 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.Configuration;
@@ -17,13 +17,11 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-
 import java.util.Objects;
 import java.util.ServiceLoader;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
+import reactor.core.scheduler.Scheduler;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
@@ -37,7 +35,7 @@ import java.util.function.Supplier;
  * <li>{@link #consumerGroup(String) Consumer group name}.</li>
  * <li>{@link EventProcessorStore} - An implementation of EventProcessorStore that stores checkpoint and
  * partition ownership information to enable load balancing.</li>
- * <li>{@link #processEvent(Function)} - A callback that processes events received from the Event Hub.</li>
+ * <li>{@link #processEvent(Consumer)} - A callback that processes events received from the Event Hub.</li>
  * <li>Credentials -
  *  <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
  *  one of the following methods:
@@ -66,10 +64,10 @@ public class EventProcessorBuilder {
     private final EventHubClientBuilder eventHubClientBuilder;
     private String consumerGroup;
     private EventProcessorStore eventProcessorStore;
-    private Function<PartitionEvent, Mono<Void>> processEvent;
-    private Function<EventProcessingErrorContext, Mono<Void>> processError;
-    private Function<InitializationContext, Mono<Void>> initializePartition;
-    private Function<CloseContext, Mono<Void>> closePartition;
+    private Consumer<PartitionEvent> processEvent;
+    private Consumer<EventProcessingErrorContext> processError;
+    private Consumer<InitializationContext> initializePartition;
+    private Consumer<CloseContext> closePartition;
 
     /**
      * Creates a new instance of {@link EventProcessorBuilder}.
@@ -243,7 +241,7 @@ public class EventProcessorBuilder {
      * @return The updated {@link EventProcessorBuilder} instance.
      * @throws NullPointerException if {@code processEvent} is {@code null}.
      */
-    public EventProcessorBuilder processEvent(Function<PartitionEvent, Mono<Void>> processEvent) {
+    public EventProcessorBuilder processEvent(Consumer<PartitionEvent> processEvent) {
         this.processEvent = Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
         return this;
     }
@@ -255,7 +253,7 @@ public class EventProcessorBuilder {
      * @param processError The function to call when an error occurs while processing events.
      * @return The updated {@link EventProcessorBuilder} instance.
      */
-    public EventProcessorBuilder processError(Function<EventProcessingErrorContext, Mono<Void>> processError) {
+    public EventProcessorBuilder processError(Consumer<EventProcessingErrorContext> processError) {
         this.processError = processError;
         return this;
     }
@@ -270,7 +268,7 @@ public class EventProcessorBuilder {
      * @return The updated {@link EventProcessorBuilder} instance.
      */
     public EventProcessorBuilder initializePartition(
-        Function<InitializationContext, Mono<Void>> initializePartition) {
+        Consumer<InitializationContext> initializePartition) {
         this.initializePartition = initializePartition;
         return this;
     }
@@ -282,7 +280,7 @@ public class EventProcessorBuilder {
      * @param closePartition The function to call after processing for a partition stops.
      * @return The updated {@link EventProcessorBuilder} instance.
      */
-    public EventProcessorBuilder closePartition(Function<CloseContext, Mono<Void>> closePartition) {
+    public EventProcessorBuilder closePartition(Consumer<CloseContext> closePartition) {
         this.closePartition = closePartition;
         return this;
     }
@@ -316,34 +314,31 @@ public class EventProcessorBuilder {
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {
         return () -> new PartitionProcessor() {
             @Override
-            public Mono<Void> processEvent(PartitionEvent partitionEvent) {
-                return processEvent.apply(partitionEvent);
+            public void processEvent(PartitionEvent partitionEvent) {
+                processEvent.accept(partitionEvent);
             }
 
             @Override
-            public Mono<Void> initialize(InitializationContext initializationContext) {
+            public void initialize(InitializationContext initializationContext) {
                 if (initializePartition != null) {
-                    return initializePartition.apply(initializationContext);
+                    initializePartition.accept(initializationContext);
+                } else {
+                    super.initialize(initializationContext);
                 }
-                return super.initialize(initializationContext);
             }
 
             @Override
             public void processError(EventProcessingErrorContext eventProcessingErrorContext) {
-                if (processError != null) {
-                    processError.apply(eventProcessingErrorContext);
-                } else {
-                    super.processError(eventProcessingErrorContext);
-                }
-
+                processError.accept(eventProcessingErrorContext);
             }
 
             @Override
-            public Mono<Void> close(CloseContext closeContext) {
+            public void close(CloseContext closeContext) {
                 if (closePartition != null) {
-                    return closePartition.apply(closeContext);
+                    closePartition.accept(closeContext);
+                } else {
+                    super.close(closeContext);
                 }
-                return super.close(closeContext);
             }
         };
     }
