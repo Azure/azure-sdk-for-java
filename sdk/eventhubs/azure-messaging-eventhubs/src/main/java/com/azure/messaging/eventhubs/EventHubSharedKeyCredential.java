@@ -43,7 +43,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *     access with shared access signature.</a>
  */
 @Immutable
-class EventHubSharedKeyCredential implements TokenCredential {
+public class EventHubSharedKeyCredential implements TokenCredential {
     private static final String SHARED_ACCESS_SIGNATURE_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
     private static final String HASH_ALGORITHM = "HMACSHA256";
 
@@ -68,7 +68,7 @@ class EventHubSharedKeyCredential implements TokenCredential {
      * @throws AzureException If the hashing algorithm cannot be instantiated, which is used to generate
      *     the shared access signatures.
      */
-    EventHubSharedKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity) {
+    public EventHubSharedKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity) {
 
         Objects.requireNonNull(sharedAccessKey, "'sharedAccessKey' cannot be null.");
         this.policyName = Objects.requireNonNull(policyName, "'sharedAccessKey' cannot be null.");

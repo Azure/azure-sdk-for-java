@@ -11,8 +11,6 @@ import reactor.test.StepVerifier;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -54,7 +52,7 @@ public class EventHubSharedKeyCredentialTest {
     }
 
     @Test
-    public void constructsToken() throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    public void constructsToken() throws UnsupportedEncodingException {
         // Arrange
         final String signatureExpires = "se";
         final EventHubSharedKeyCredential credential =
