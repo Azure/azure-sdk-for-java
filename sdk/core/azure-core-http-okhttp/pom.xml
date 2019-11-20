@@ -65,6 +65,7 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
+      <version>4.2.2</version> <!-- {x-version-update;com.squareup.okhttp3:okhttp;external_dependency} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using OkHttp -->
@@ -84,23 +85,27 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
+      <version>3.3.0.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
+      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.github.tomakehurst</groupId>
       <artifactId>wiremock-standalone</artifactId>
+      <version>2.24.1</version> <!-- {x-version-update;com.github.tomakehurst:wiremock-standalone;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
