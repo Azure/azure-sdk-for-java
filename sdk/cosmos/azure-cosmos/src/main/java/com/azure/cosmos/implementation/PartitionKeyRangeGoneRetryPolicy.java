@@ -38,7 +38,7 @@ public class PartitionKeyRangeGoneRetryPolicy implements IDocumentClientRetryPol
         this.feedOptions = feedOptions;
     }
 
-    /// <summary> 
+    /// <summary>
     /// Should the caller retry the operation.
     /// </summary>
     /// <param name="exception">Exception that occured when the operation was tried</param>
@@ -46,7 +46,7 @@ public class PartitionKeyRangeGoneRetryPolicy implements IDocumentClientRetryPol
     /// <returns>True indicates caller should retry, False otherwise</returns>
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
         CosmosClientException clientException = Utils.as(exception, CosmosClientException.class);
-        if (clientException != null && 
+        if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.GONE) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
 
@@ -64,28 +64,30 @@ public class PartitionKeyRangeGoneRetryPolicy implements IDocumentClientRetryPol
             if (this.feedOptions != null) {
                 request.properties = this.feedOptions.properties();
             }
-            Mono<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
 
-            return collectionObs.flatMap(collection -> {
+            return collectionObs.flatMap(collectionValueHolder -> {
 
-                Mono<CollectionRoutingMap> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(collection.getResourceId(), null, request.properties);
+                Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(collectionValueHolder.v.getResourceId(),
+                    null, request.properties);
 
-                Mono<CollectionRoutingMap> refreshedRoutingMapObs = routingMapObs.flatMap(routingMap -> {
-                    // Force refresh.
-                    return this.partitionKeyRangeCache.tryLookupAsync(
-                            collection.getResourceId(),
-                            routingMap,
+                Mono<Utils.ValueHolder<CollectionRoutingMap>> refreshedRoutingMapObs = routingMapObs.flatMap(routingMapValueHolder -> {
+                    if (routingMapValueHolder.v != null) {
+                        // Force refresh.
+                        return this.partitionKeyRangeCache.tryLookupAsync(
+                            collectionValueHolder.v.getResourceId(),
+                            routingMapValueHolder.v,
                             request.properties);
-                }).switchIfEmpty(Mono.defer(Mono::empty));
+                    } else {
+                        return Mono.just(new Utils.ValueHolder<>(null));
+                    }
+                });
 
                 //  TODO: Check if this behavior can be replaced by doOnSubscribe
                 return refreshedRoutingMapObs.flatMap(rm -> {
                     this.retried = true;
                     return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
-                }).switchIfEmpty(Mono.defer(() -> {
-                    this.retried = true;
-                    return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
-                }));
+                });
 
             });
 
@@ -96,7 +98,7 @@ public class PartitionKeyRangeGoneRetryPolicy implements IDocumentClientRetryPol
 
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
-        this.nextRetryPolicy.onBeforeSendRequest(request);        
+        this.nextRetryPolicy.onBeforeSendRequest(request);
     }
 
 }

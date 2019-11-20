@@ -85,16 +85,16 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         if (feedOptions == null) {
             feedOptions = new FeedOptions();
         }
-        
+
         FeedOptions newFeedOptions = new FeedOptions(feedOptions);
-        
+
         // We can not go to backend with the composite continuation token,
         // but we still need the gateway for the query plan.
         // The workaround is to try and parse the continuation token as a composite continuation token.
         // If it is, then we send the query to the gateway with max degree of parallelism to force getting back the query plan
-        
+
         String originalContinuation = newFeedOptions.requestContinuation();
-        
+
         if (isClientSideContinuationToken(originalContinuation)) {
             // At this point we know we want back a query plan
             newFeedOptions.requestContinuation(null);
@@ -112,7 +112,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     			.getPaginatedQueryResultAsObservable(newFeedOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
     }
 
-    public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
+    public Mono<ValueHolder<List<PartitionKeyRange>>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
         // TODO: FIXME this needs to be revisited
 
         Range<String> r = new Range<>("", "FF", true, false);
@@ -222,7 +222,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
 
         return request;
     }
-    
+
     private static boolean isClientSideContinuationToken(String continuationToken) {
         if (continuationToken != null) {
             ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
