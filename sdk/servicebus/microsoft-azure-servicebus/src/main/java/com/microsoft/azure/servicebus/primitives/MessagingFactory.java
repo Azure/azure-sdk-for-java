@@ -212,7 +212,16 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
         TRACE_LOGGER.info("Started reactor");
     }
 
-    Connection getConnection() {
+    Connection getActiveConnectionOrNothing() {
+		if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED) {
+			return null;
+		}
+		else {
+			return this.connection;
+		}
+	}
+
+	Connection getActiveConnectionCreateIfNecessary() {
         if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED) {
             TRACE_LOGGER.info("Creating connection to host '{}:{}'", this.connectionHandler.getOutboundSocketHostName(), this.connectionHandler.getOutboundSocketPort());
             this.connection = this.getReactor().connectionToHost(
@@ -274,7 +283,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection {
 
     /**
      * Creates an instance of MessagingFactory from the given connection string builder. This is a non-blocking method.
-     * @param builder connection string builder to the  bus namespace or entity
+     * @param builder connection string builder to the bus namespace or entity
      * @return a <code>CompletableFuture</code> which completes when a connection is established to the namespace or when a connection couldn't be established.
      * @see java.util.concurrent.CompletableFuture
      */

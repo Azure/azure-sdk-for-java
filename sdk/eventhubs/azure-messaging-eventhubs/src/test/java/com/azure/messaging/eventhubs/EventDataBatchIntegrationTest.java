@@ -125,11 +125,11 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
             for (String id : partitionIds) {
                 final EventHubConsumerAsyncClient consumer =
-                    client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, EventPosition.latest());
+                    client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
 
                 consumers.add(consumer);
-                consumer.receive(id).subscribe(partitionEvent -> {
-                    EventData event = partitionEvent.getEventData();
+                consumer.receiveFromPartition(id, EventPosition.latest()).subscribe(partitionEvent -> {
+                    EventData event = partitionEvent.getData();
                     if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
                         return;
                     }

@@ -61,6 +61,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .buildEncryptedBlobClient()
     }
 
+    def cleanup() {
+        cc.delete()
+    }
+
     // Key and key resolver null
     @Requires({ liveMode() })
     def "Create encryption client fails"() {
@@ -417,6 +421,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
         then:
         notThrown(IllegalStateException)
         os.toByteArray() == defaultData.array()
+
+        cleanup:
+        cac.delete()
     }
 
     // Tests key resolver

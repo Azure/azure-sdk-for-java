@@ -14,9 +14,8 @@ import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.util.CoreUtils;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.engine.Session;
@@ -38,7 +37,6 @@ import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
  */
 class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
-    private static final Symbol RECEIVER_IDENTIFIER_NAME = Symbol.valueOf(VENDOR + ":receiver-name");
     private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
         Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
 
@@ -68,7 +66,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      */
     @Override
     public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout, RetryPolicy retry,
-                                                EventPosition eventPosition, EventHubConsumerOptions options) {
+                                                EventPosition eventPosition, ReceiveOptions options) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
@@ -91,9 +89,6 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         final Map<Symbol, Object> properties = new HashMap<>();
         if (options.getOwnerLevel() != null) {
             properties.put(EPOCH, options.getOwnerLevel());
-        }
-        if (!CoreUtils.isNullOrEmpty(options.getIdentifier())) {
-            properties.put(RECEIVER_IDENTIFIER_NAME, options.getIdentifier());
         }
 
         final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventProperties()

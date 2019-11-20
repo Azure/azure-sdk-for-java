@@ -125,12 +125,12 @@ ClientSecretCredential credential = new ClientSecretCredentialBuilder()
     .tenantId("<< DIRECTORY (TENANT) ID >>")
     .build();
 
-// The fully qualified domain name (FQDN) for the Event Hubs namespace. This is likely to be similar to:
+// The fully qualified namespace for the Event Hubs instance. This is likely to be similar to:
 // {your-namespace}.servicebus.windows.net
-String fullyQualifiedDomainName = "<< EVENT HUBS FULLY QUALIFIED DOMAIN NAME >>"
+String fullyQualifiedNamespace = "<< EVENT HUBS FULLY QUALIFIED NAMESPACE >>"
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
 EventHubProducerClient client = new EventHubClientBuilder()
-    .credential(host, eventHubName, credential)
+    .credential(fullyQualifiedNamespace, eventHubName, credential)
     .buildProducer();
 ```
 
@@ -196,19 +196,20 @@ EventHubProducerClient producer = new EventHubClientBuilder()
     .buildProducer();
 EventDataBatch eventDataBatch = producer.createBatch();
 for (EventData eventData : eventDataList) {
-  if (!eventDataBatch.tryAdd(eventData)) {
-    producer.send(eventDataBatch);
-    eventDataBatch = producer.createBatch();
-  }
+    if (!eventDataBatch.tryAdd(eventData)) {
+        producer.send(eventDataBatch);
+        eventDataBatch = producer.createBatch();
+    }
 }
+
 // send the last batch of remaining events
 if (eventDataBatch.getSize() > 0) {
-  producer.send(eventDataBatch);
+    producer.send(eventDataBatch);
 }
 ```
 
 To send events to a particular partition, set the optional parameter `partitionId` on
-[`BatchOptions`][source_batchOptions].
+[`CreateBatchOptions`][source_CreateBatchOptions].
 
 #### Partition identifier
 
@@ -227,7 +228,8 @@ Hubs service keep different events or batches of events together on the same par
 setting a `partition key` when publishing the events.
 
 ```java
-BatchOptions batchOptions = new BatchOptions().partitionKey("grouping-key");
+CreateBatchOptions batchOptions = new CreateBatchOptions()
+    .partitionKey("grouping-key");
 EventDataBatch eventDataBatch = producer.createBatch(batchOptions);
 // add events to eventDataBatch
 producer.send(eventDataBatch);
@@ -443,7 +445,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [source_eventhubclient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubClient.java
 [source_eventHubProducerClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducerClient.java
 [source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
-[source_batchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/BatchOptions.java
+[source_CreateBatchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/CreateBatchOptions.java
 [source_inmemoryeventprocessorstore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryEventProcessorStore.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java

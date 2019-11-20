@@ -611,30 +611,30 @@ public class BlobAsyncClientBase {
      * @param range {@link BlobRange}
      * @param options {@link DownloadRetryOptions}
      * @param requestConditions {@link BlobRequestConditions}
-     * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob data.
      */
     public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions requestConditions, boolean rangeGetContentMD5) {
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         try {
             return withContext(context ->
-                downloadWithResponse(range, options, requestConditions, rangeGetContentMD5, context));
+                downloadWithResponse(range, options, requestConditions, getRangeContentMd5, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions requestConditions, boolean rangeGetContentMD5, Context context) {
-        return downloadHelper(range, options, requestConditions, rangeGetContentMD5, context)
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
+        return downloadHelper(range, options, requestConditions, getRangeContentMd5, context)
             .map(response -> new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue(), response.getDeserializedHeaders()));
     }
 
     private Mono<ReliableDownload> downloadHelper(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Context context) {
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
         range = range == null ? new BlobRange(0) : range;
-        Boolean getMD5 = rangeGetContentMd5 ? rangeGetContentMd5 : null;
+        Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         HttpGetterInfo info = new HttpGetterInfo()
             .setOffset(range.getOffset())
