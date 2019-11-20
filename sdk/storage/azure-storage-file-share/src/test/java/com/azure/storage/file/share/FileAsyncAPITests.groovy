@@ -638,7 +638,7 @@ class FileAsyncAPITests extends APISpec {
             }.verifyComplete()
 
         cleanup:
-        FileTestHelper.deleteFilesIfExists(testFolder.toString())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "List ranges with range"() {
@@ -656,7 +656,7 @@ class FileAsyncAPITests extends APISpec {
             }.verifyComplete()
 
         cleanup:
-        FileTestHelper.deleteFilesIfExists(testFolder.toString())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "List handles"() {
