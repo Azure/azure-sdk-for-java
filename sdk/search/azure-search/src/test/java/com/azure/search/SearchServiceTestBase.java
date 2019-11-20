@@ -29,10 +29,14 @@ import com.azure.search.models.Index;
 import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.ResourceCounter;
 import com.azure.search.models.ScoringFunction;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.ScoringProfile;
+import com.azure.search.models.ServiceCounters;
+import com.azure.search.models.ServiceLimits;
+import com.azure.search.models.ServiceStatistics;
 import com.azure.search.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.models.Suggester;
 import com.azure.search.models.TagScoringFunction;
@@ -793,5 +797,26 @@ public abstract class SearchServiceTestBase extends TestBase {
                 Assert.assertTrue(ex.getMessage().contains(expectedMessage));
             }
         }
+    }
+
+    protected ServiceStatistics getExpectedServiceStatistics() {
+        ServiceCounters serviceCounters = new ServiceCounters()
+            .setDocumentCounter(new ResourceCounter().setUsage(0).setQuota(null))
+            .setIndexCounter(new ResourceCounter().setUsage(0).setQuota(3L))
+            .setIndexerCounter(new ResourceCounter().setUsage(0).setQuota(3L))
+            .setDataSourceCounter(new ResourceCounter().setUsage(0).setQuota(3L))
+            .setStorageSizeCounter(new ResourceCounter().setUsage(0).setQuota(52428800L))
+            .setSynonymMapCounter(new ResourceCounter().setUsage(0).setQuota(3L));
+
+        ServiceLimits serviceLimits = new ServiceLimits()
+            .setMaxFieldsPerIndex(1000)
+            .setMaxFieldNestingDepthPerIndex(10)
+            .setMaxComplexCollectionFieldsPerIndex(40)
+            .setMaxComplexObjectsInCollectionsPerDocument(3000);
+
+        return new ServiceStatistics()
+            .setCounters(serviceCounters)
+            .setLimits(serviceLimits);
+
     }
 }

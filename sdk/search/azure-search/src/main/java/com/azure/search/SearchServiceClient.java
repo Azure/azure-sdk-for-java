@@ -17,6 +17,7 @@ import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.ServiceStatistics;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.TokenInfo;
@@ -1359,10 +1360,57 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the synonym map exists; false otherwise.
      */
+
     public Response<Boolean> synonymMapExistsWithResponse(String synonymMapName,
                                                           RequestOptions requestOptions,
                                                           Context context) {
         return asyncClient
             .synonymMapExistsWithResponse(synonymMapName, requestOptions, context).block();
+    }
+
+    /**
+     * Returns service level statistics for a search service, including service counters and limits.
+     *
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the search service statistics result.
+     */
+    public ServiceStatistics getServiceStatistics() {
+        return asyncClient.getServiceStatistics().block();
+    }
+
+
+    /**
+     * Returns service level statistics for a search service, including service counters and limits.
+     *
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the search service statistics result.
+     */
+    public ServiceStatistics getServiceStatistics(RequestOptions requestOptions) {
+        return asyncClient.getServiceStatistics(requestOptions).block();
+    }
+
+    /**
+     * Returns service level statistics for a search service, including service counters and limits.
+     *
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the search service statistics result.
+     */
+    public Response<ServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
+        return asyncClient.getServiceStatisticsWithResponse(requestOptions).block();
+    }
+
+    /**
+     * Returns service level statistics for a search service, including service counters and limits.
+     *
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the search service statistics result.
+     */
+    public Response<ServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions,
+                                                                              Context context) {
+        return asyncClient.getServiceStatisticsWithResponse(requestOptions, context).block();
     }
 }

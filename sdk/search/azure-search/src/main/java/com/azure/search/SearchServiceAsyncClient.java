@@ -26,12 +26,12 @@ import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.ServiceStatistics;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.TokenInfo;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
-
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -1780,9 +1780,57 @@ public class SearchServiceAsyncClient {
                 });
     }
 
+    /**
+     * Returns service level statistics for a search service, including service counters and limits.
+     *
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the search service statistics result.
+     */
+    public Mono<ServiceStatistics> getServiceStatistics() {
+        return this.getServiceStatisticsWithResponse(null).map(Response::getValue);
+    }
+
+
+    /**
+     * Returns service level statistics for a search service, including service counters and limits.
+     *
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the search service statistics result.
+     */
+    public Mono<ServiceStatistics> getServiceStatistics(RequestOptions requestOptions) {
+        return this.getServiceStatisticsWithResponse(requestOptions).map(Response::getValue);
+    }
+
+    /**
+     * Returns service level statistics for a search service, including service counters and limits.
+     *
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return the search service statistics result.
+     */
+    public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
+        return withContext(context -> this.getServiceStatisticsWithResponse(requestOptions, context));
+    }
+
+    /**
+     * Returns service level statistics for a search service, including service counters and limits.
+     *
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the search service statistics result.
+     */
+    public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions,
+                                                                        Context context) {
+        return restClient.getServiceStatisticsWithRestResponseAsync(requestOptions, context).map(Function.identity());
+    }
+
+
     private static String deserializeHeaders(HttpHeaders headers) {
         return headers.toMap().entrySet().stream().map((entry) ->
             entry.getKey() + "," + entry.getValue()
         ).collect(Collectors.joining(","));
     }
+
 }
