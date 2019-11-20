@@ -12,6 +12,7 @@ import java.util.Objects;
 @Fluent
 public class PartitionOwnership {
 
+    private String fullyQualifiedNamespace;
     private String eventHubName;
     private String consumerGroup;
     private String partitionId;
@@ -21,6 +22,24 @@ public class PartitionOwnership {
     private Long sequenceNumber;
     private Long lastModifiedTime;
     private String eTag;
+
+    /**
+     * Returns the fully qualified namespace of the Event Hub.
+     *
+     * @return the fully qualified namespace of the Event Hub.
+     */
+    public String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
+    }
+
+    /**
+     * Sets the fully qualified namespace of the Event Hub.
+     *
+     * @param fullyQualifiedNamespace the fully qualified namespace of the Event Hub.
+     */
+    public void setFullyQualifiedNamespace(final String fullyQualifiedNamespace) {
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+    }
 
     /**
      * Gets the Event Hub name associated with this ownership record.

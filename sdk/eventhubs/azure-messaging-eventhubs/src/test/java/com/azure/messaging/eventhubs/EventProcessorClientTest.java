@@ -417,7 +417,7 @@ public class EventProcessorClientTest {
     }
 
     private PartitionEvent getEvent(EventData event) {
-        PartitionContext context = new PartitionContext("foo", "bar", "baz", "0", null,
+        PartitionContext context = new PartitionContext("ns", "foo", "bar", "baz", "0", null,
             new InMemoryCheckpointStore());
         return new PartitionEvent(context, event);
     }

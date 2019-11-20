@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import java.util.concurrent.atomic.AtomicReference;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -43,8 +44,8 @@ public class EventProcessorClient {
     private final PartitionBasedLoadBalancer partitionBasedLoadBalancer;
     private final CheckpointStore checkpointStore;
 
-    private Disposable runner;
-    private Scheduler scheduler;
+    private final AtomicReference<Disposable> runner = new AtomicReference<>();
+    private final AtomicReference<Scheduler> scheduler = new AtomicReference<>();
 
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
@@ -105,12 +106,12 @@ public class EventProcessorClient {
             return;
         }
         logger.info("Starting a new event processor instance with id {}", this.identifier);
-        scheduler = Schedulers.newElastic("EventProcessor");
+        scheduler.set(Schedulers.newElastic("EventProcessor"));
         Double jitterInMillis =
             ThreadLocalRandom.current().nextDouble() * TimeUnit.SECONDS.toMillis(BASE_JITTER_IN_SECONDS);
         // Add a bit of jitter to initialDelay to minimize contention if multiple EventProcessors start at the same time
-        runner = scheduler.schedulePeriodically(partitionBasedLoadBalancer::loadBalance, jitterInMillis.longValue(),
-            TimeUnit.SECONDS.toMillis(INTERVAL_IN_SECONDS) /* TODO: make this configurable */, TimeUnit.MILLISECONDS);
+        runner.set(scheduler.get().schedulePeriodically(partitionBasedLoadBalancer::loadBalance,
+            jitterInMillis.longValue(), TimeUnit.SECONDS.toMillis(INTERVAL_IN_SECONDS), TimeUnit.MILLISECONDS));
     }
 
     /**
@@ -128,8 +129,8 @@ public class EventProcessorClient {
             logger.info("Event processor has already stopped");
             return;
         }
-        runner.dispose();
-        scheduler.dispose();
+        runner.get().dispose();
+        scheduler.get().dispose();
         this.partitionPumpManager.stopAllPartitionPumps();
     }
 }

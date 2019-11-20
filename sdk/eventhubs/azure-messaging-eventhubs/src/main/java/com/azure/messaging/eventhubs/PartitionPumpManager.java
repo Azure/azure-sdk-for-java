@@ -103,8 +103,8 @@ class PartitionPumpManager {
             return;
         }
 
-        PartitionContext partitionContext = new PartitionContext(claimedOwnership.getPartitionId(),
-            claimedOwnership.getEventHubName(), claimedOwnership.getConsumerGroup(),
+        PartitionContext partitionContext = new PartitionContext(claimedOwnership.getFullyQualifiedNamespace(),
+            claimedOwnership.getPartitionId(), claimedOwnership.getEventHubName(), claimedOwnership.getConsumerGroup(),
             claimedOwnership.getOwnerId(), claimedOwnership.getETag(), checkpointStore);
         PartitionProcessor partitionProcessor = this.partitionProcessorFactory.get();
 
