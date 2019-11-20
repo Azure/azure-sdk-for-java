@@ -163,9 +163,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private void logHeaders(HttpHeaders requestResponseHeaders, ClientLogger logger) {
         // If the HttpHeaders shouldn't be logged or there are no headers to log quit out early.
-        if (!logDetailLevel.shouldLogHeaders() ||
-            requestResponseHeaders == null ||
-            requestResponseHeaders.getSize() == 0) {
+        if (!logDetailLevel.shouldLogHeaders()
+            || requestResponseHeaders == null
+            || requestResponseHeaders.getSize() == 0) {
             return;
         }
 
@@ -173,8 +173,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         for (HttpHeader header : requestResponseHeaders) {
             String headerName = header.getName();
             sb.append(headerName).append(":");
-            if (allowedHttpHeaderNames.contains(headerName.toLowerCase(Locale.ROOT)) ||
-                (allowedHeaderPattern != null && allowedHeaderPattern.matcher(headerName).find())) {
+            if (allowedHttpHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))
+                || (allowedHeaderPattern != null && allowedHeaderPattern.matcher(headerName).find())) {
                 sb.append(header.getValue());
             } else {
                 sb.append(REDACTED_PLACEHOLDER);

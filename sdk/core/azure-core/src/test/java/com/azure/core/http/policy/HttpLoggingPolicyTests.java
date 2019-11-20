@@ -13,7 +13,9 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,12 +72,13 @@ public class HttpLoggingPolicyTests {
 
     private PrintStream originalSystemErr;
     private ByteArrayOutputStream logCaptureStream;
+    private String originalLogLevel;
 
     public HttpLoggingPolicyTests() throws MalformedURLException {
     }
 
     @BeforeEach
-    public void prepareLogLocation() {
+    public void prepareForTest() {
         /*
          * The default configuration for SLF4J's SimpleLogger uses System.err to log. Inject a custom PrintStream to
          * log into for the duration of the test to capture the log messages.
@@ -83,11 +86,30 @@ public class HttpLoggingPolicyTests {
         originalSystemErr = System.err;
         logCaptureStream = new ByteArrayOutputStream();
         System.setErr(new PrintStream(logCaptureStream));
+
+        /*
+         * Change the logging level to verbose to ensure all messages are logged for testing purposes.
+         */
+        originalLogLevel = System.getProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+        System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, "1");
+
+        /*
+         * Indicate to SLF4J to enable trace level logging for a logger named HttpLoggingPolicyTests.
+         * Trace is the maximum level of logging supported by the ClientLogger.
+         */
+        System.setProperty("org.slf4j.simpleLogger.log.HttpLoggingPolicyTests", "trace");
     }
 
     @AfterEach
-    public void revertLogLocation() {
+    public void cleanupAfterTest() {
         System.setErr(originalSystemErr);
+        System.clearProperty("org.slf4j.simpleLogger.log.HttpLoggingPolicyTests");
+
+        if (CoreUtils.isNullOrEmpty(originalLogLevel)) {
+            System.clearProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+        } else {
+            System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+        }
     }
 
     /**
