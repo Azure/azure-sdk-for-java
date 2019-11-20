@@ -27,14 +27,13 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ServiceLoader;
@@ -92,11 +91,12 @@ public class EventHubClientBuilder {
     /**
      * The minimum value allowed for the prefetch count of the consumer.
      */
-    static final int MINIMUM_PREFETCH_COUNT = 1;
+    private static final int MINIMUM_PREFETCH_COUNT = 1;
     /**
      * The maximum value allowed for the prefetch count of the consumer.
      */
-    static final int MAXIMUM_PREFETCH_COUNT = 8000;
+    private static final int MAXIMUM_PREFETCH_COUNT = 8000;
+
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
 
@@ -156,14 +156,8 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder connectionString(String connectionString) {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        final TokenCredential tokenCredential;
-        try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(properties.getSharedAccessKeyName(),
-                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new AzureException(
-                "Could not create the EventHubSharedAccessKeyCredential.", e));
-        }
+        final TokenCredential tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
+            properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
 
         return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
     }
@@ -197,14 +191,8 @@ public class EventHubClientBuilder {
         }
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        final TokenCredential tokenCredential;
-        try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(properties.getSharedAccessKeyName(),
+        final TokenCredential tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
                 properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new AzureException(
-                "Could not create the EventHubSharedAccessKeyCredential.", e));
-        }
 
         if (!CoreUtils.isNullOrEmpty(properties.getEntityPath())
             && !eventHubName.equals(properties.getEntityPath())) {
@@ -553,7 +541,7 @@ public class EventHubClientBuilder {
             proxyOptions = getDefaultProxyConfiguration(configuration);
         }
 
-        final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedAccessKeyCredential
+        final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
             ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CBSAuthorizationType.JSON_WEB_TOKEN;
 

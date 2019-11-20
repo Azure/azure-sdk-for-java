@@ -500,7 +500,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
 
                 if (eventDiagnosticIdOptional.isPresent()) {
-                    event.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
+                    event.getProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
                     tracerProvider.endSpan(eventSpanContext, Signal.complete());
                     event.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
                 }
