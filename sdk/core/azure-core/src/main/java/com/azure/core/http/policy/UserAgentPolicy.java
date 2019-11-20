@@ -151,7 +151,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
 
         // Only add the platform telemetry if it is allowed as it is optional.
         if (!telemetryDisabled(configuration)) {
-            userAgentBuilder.append(" ").append(getPlatformInfo());
+            userAgentBuilder.append(" ")
+                .append("(")
+                .append(getPlatformInfo())
+                .append(")");
         }
 
         return userAgentBuilder.toString();

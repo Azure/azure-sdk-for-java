@@ -160,13 +160,13 @@ public class UserAgentTests {
 
             // Tests using SDK name and version with platform information and without application ID
             Arguments.of(new UserAgentPolicy(null, "sdkName", "sdkVersion", enabledTelemetryConfiguration),
-                String.format("%s %s", baseUserAgent, platformInfo)),
+                String.format("%s (%s)", baseUserAgent, platformInfo)),
             Arguments.of(new UserAgentPolicy(sdkName, sdkVersion, enabledTelemetryConfiguration, () -> "1.0"),
-                String.format("%s %s", baseUserAgent, platformInfo)),
+                String.format("%s (%s)", baseUserAgent, platformInfo)),
 
             // Tests using SDK name and version with platform information and application ID
             Arguments.of(new UserAgentPolicy("applicationId", "sdkName", "sdkVersion", enabledTelemetryConfiguration),
-                String.format("%s %s %s", applicationId, baseUserAgent, platformInfo))
+                String.format("%s %s (%s)", applicationId, baseUserAgent, platformInfo))
         );
     }
 

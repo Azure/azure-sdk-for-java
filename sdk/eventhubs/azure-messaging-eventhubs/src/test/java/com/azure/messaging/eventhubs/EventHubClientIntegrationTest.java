@@ -7,11 +7,12 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.Test;
 
 public class EventHubClientIntegrationTest extends IntegrationTestBase {
     private EventHubClient client;
@@ -65,7 +66,7 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
         Assertions.assertTrue(properties.getCreatedAt().isBefore(Instant.now()));
 
         Assertions.assertNotNull(properties.getPartitionIds());
-        Assertions.assertTrue(properties.getPartitionIds().length > 1);
+        Assertions.assertTrue(properties.getPartitionIds().stream().count() > 1);
     }
 
     /**
@@ -76,7 +77,10 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final ConnectionStringProperties connectionProperties = getConnectionStringProperties();
         final EventHubProperties properties = client.getProperties();
-        final String partitionId = properties.getPartitionIds()[0];
+        final Optional<String> firstPartition = properties.getPartitionIds().stream().findFirst();
+
+        Assertions.assertTrue(firstPartition.isPresent(), "Expect at least one partition returned.");
+        final String partitionId = firstPartition.get();
 
         // Act
         final PartitionProperties partitionProperties = client.getPartitionProperties(partitionId);
