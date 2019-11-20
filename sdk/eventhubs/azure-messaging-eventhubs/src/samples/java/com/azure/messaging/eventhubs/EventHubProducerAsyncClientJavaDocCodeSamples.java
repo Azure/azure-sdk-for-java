@@ -79,11 +79,16 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
         final EventHubProducerAsyncClient producer = builder.buildAsyncProducer();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#eventDataBatch
-        final Flux<EventData> telemetryEvents = Flux.just(
-            new EventData("92".getBytes(UTF_8)).addProperty("telemetry", "latency"),
-            new EventData("98".getBytes(UTF_8)).addProperty("telemetry", "cpu-temperature"),
-            new EventData("120".getBytes(UTF_8)).addProperty("telemetry", "fps")
-        );
+        final EventData firstEvent = new EventData("92".getBytes(UTF_8));
+        firstEvent.getProperties().put("telemetry", "latency");
+
+        final EventData secondEvent = new EventData("98".getBytes(UTF_8));
+        secondEvent.getProperties().put("telemetry", "cpu-temperature");
+
+        final EventData thirdEvent = new EventData("120".getBytes(UTF_8));
+        thirdEvent.getProperties().put("telemetry", "fps");
+
+        final Flux<EventData> telemetryEvents = Flux.just(firstEvent, secondEvent, thirdEvent);
 
         final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionKey("telemetry")

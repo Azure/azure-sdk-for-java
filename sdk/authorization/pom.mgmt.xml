@@ -9,9 +9,9 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-authorization/v2015_06_01</module>
-    <module>azure-mgmt-authorization/v2015_07_01</module>
-    <module>azure-mgmt-authorization/v2018_07_01_preview</module>
-    <module>azure-mgmt-authorization/v2018_09_01_preview</module>
+    <module>mgmt-v2015_06_01</module>
+    <module>mgmt-v2015_07_01</module>
+    <module>mgmt-v2018_07_01_preview</module>
+    <module>mgmt-v2018_09_01_preview</module>
   </modules>
 </project>

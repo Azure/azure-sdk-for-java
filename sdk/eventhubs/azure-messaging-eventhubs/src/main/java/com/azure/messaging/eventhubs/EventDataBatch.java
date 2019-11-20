@@ -30,8 +30,7 @@ import java.util.Objects;
  *
  * @see EventHubProducerClient#createBatch()
  * @see EventHubProducerAsyncClient#createBatch()
- * @see EventHubProducerClient See EventHubProducer for examples using the synchronous producer.
- * @see EventHubProducerAsyncClient See EventHubProducerAsyncClient for examples using the asynchronous producer.
+ * @see EventHubClientBuilder for examples of building an asynchronous or synchronous producer.
  */
 public final class EventDataBatch {
     private final ClientLogger logger = new ClientLogger(EventDataBatch.class);
@@ -222,9 +221,7 @@ public final class EventDataBatch {
             message.setMessageAnnotations(messageAnnotations);
         }
 
-        if (event.getBody() != null) {
-            message.setBody(new Data(Binary.create(event.getBody())));
-        }
+        message.setBody(new Data(new Binary(event.getBody())));
 
         return message;
     }

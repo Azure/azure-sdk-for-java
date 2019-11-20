@@ -9,13 +9,13 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-storage/v2016_01_01</module>
-    <module>azure-mgmt-storage/v2017_10_01</module>
-    <module>azure-mgmt-storage/v2018_02_01</module>
-    <module>azure-mgmt-storage/v2018_03_01_preview</module>
-    <module>azure-mgmt-storage/v2018_07_01</module>
-    <module>azure-mgmt-storage/v2018_11_01</module>
-    <module>azure-mgmt-storage/v2019_04_01</module>
-    <module>azure-mgmt-storage/v2019_06_01</module>
+    <module>mgmt-v2016_01_01</module>
+    <module>mgmt-v2017_10_01</module>
+    <module>mgmt-v2018_02_01</module>
+    <module>mgmt-v2018_03_01_preview</module>
+    <module>mgmt-v2018_07_01</module>
+    <module>mgmt-v2018_11_01</module>
+    <module>mgmt-v2019_04_01</module>
+    <module>mgmt-v2019_06_01</module>
   </modules>
 </project>

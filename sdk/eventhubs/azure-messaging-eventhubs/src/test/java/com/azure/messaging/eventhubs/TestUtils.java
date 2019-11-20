@@ -129,8 +129,8 @@ public final class TestUtils {
 
     static EventData getEvent(String body, String messageTrackingValue, int position) {
         final EventData eventData = new EventData(body.getBytes(UTF_8));
-        eventData.addProperty(MESSAGE_TRACKING_ID, messageTrackingValue);
-        eventData.addProperty(MESSAGE_POSITION_ID, position);
+        eventData.getProperties().put(MESSAGE_TRACKING_ID, messageTrackingValue);
+        eventData.getProperties().put(MESSAGE_POSITION_ID, position);
         return eventData;
     }
 

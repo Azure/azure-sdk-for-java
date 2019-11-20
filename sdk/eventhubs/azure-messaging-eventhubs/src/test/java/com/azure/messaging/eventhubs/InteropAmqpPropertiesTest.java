@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
 import static com.azure.messaging.eventhubs.TestUtils.getSymbol;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
@@ -55,7 +56,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
 
         client = createBuilder().buildAsyncClient();
         producer = client.createProducer();
-        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, EventPosition.latest());
+        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
     }
 
     @Override
@@ -109,7 +110,8 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         // Act & Assert
         // We're setting a tracking identifier because we don't want to receive some random operations. We want to
         // receive the event we sent.
-        StepVerifier.create(consumer.receive(PARTITION_ID).filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(x -> x.getData()))
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.latest())
+            .filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(x -> x.getData()))
             .then(() -> producer.send(msgEvent, sendOptions).block(TIMEOUT))
             .assertNext(event -> {
                 validateAmqpProperties(message, expectedAnnotations, applicationProperties, event);
@@ -119,7 +121,8 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
 
         Assertions.assertNotNull(receivedEventData.get());
 
-        StepVerifier.create(consumer.receive(PARTITION_ID).filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(x -> x.getData()))
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.latest())
+            .filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(x -> x.getData()))
             .then(() -> producer.send(receivedEventData.get(), sendOptions).block(TIMEOUT))
             .assertNext(event -> validateAmqpProperties(message, expectedAnnotations, applicationProperties, event))
             .verifyComplete();
@@ -163,7 +166,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         Assertions.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
         Assertions.assertEquals(message.getExpiryTime(), actual.getSystemProperties().get(MessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
 
-        Assertions.assertEquals(PAYLOAD, UTF_8.decode(actual.getBody()).toString());
+        Assertions.assertEquals(PAYLOAD, new String(actual.getBody(), UTF_8));
 
         messageAnnotations.forEach((key, value) -> {
             Assertions.assertTrue(actual.getSystemProperties().containsKey(key.toString()));
