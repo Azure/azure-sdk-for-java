@@ -92,7 +92,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     @Override
     public void end(int responseCode, Throwable throwable, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null.");
-        final Span span = getSpan(context);
+        final Span span = getOrDefault(PARENT_SPAN_KEY, null, Span.class, context);
         if (span == null) {
             return;
         }
@@ -114,7 +114,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             return;
         }
 
-        final Span span = getSpan(context);
+        final Span span = getOrDefault(PARENT_SPAN_KEY, null, Span.class, context);
         if (span != null) {
             span.setAttribute(key, AttributeValue.stringAttributeValue(value));
         } else {
@@ -135,7 +135,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public void end(String statusMessage, Throwable throwable, Context context) {
-        final Span span = getSpan(context);
+        final Span span = getOrDefault(PARENT_SPAN_KEY, null, Span.class, context);
         if (span == null) {
             logger.warning("Failed to find span to end it.");
             return;
@@ -150,13 +150,13 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
     @Override
     public void addLink(Context context) {
-        final Builder spanBuilder = getSharedSpanBuilder(context);
+        final Builder spanBuilder = getOrDefault(SPAN_BUILDER_KEY, null, Builder.class, context);
         if (spanBuilder == null) {
             logger.warning("Failed to find spanBuilder to link it.");
             return;
         }
 
-        final SpanContext spanContext = getSpanContext(context);
+        final SpanContext spanContext = getOrDefault(SPAN_CONTEXT_KEY, null, SpanContext.class, context);
         if (spanContext == null) {
             logger.warning("Failed to find span context to link it.");
             return;
@@ -186,7 +186,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private Context startScopedSpan(String spanName, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null.");
         Span span;
-        SpanContext spanContext = getSpanContext(context);
+        SpanContext spanContext = getOrDefault(SPAN_CONTEXT_KEY, null, SpanContext.class, context);
         if (spanContext != null) {
             span = startSpanWithRemoteParent(spanName, spanContext);
         } else {
@@ -238,10 +238,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         span.setAttribute(COMPONENT, AttributeValue.stringAttributeValue(parseComponentValue(spanName)));
         span.setAttribute(
             MESSAGE_BUS_DESTINATION,
-            AttributeValue.stringAttributeValue(getRequestKeyAttribute(context, ENTITY_PATH_KEY)));
+            AttributeValue.stringAttributeValue(getOrDefault(ENTITY_PATH_KEY, "", String.class, context)));
         span.setAttribute(
             PEER_ENDPOINT,
-            AttributeValue.stringAttributeValue(getRequestKeyAttribute(context, HOST_NAME_KEY)));
+            AttributeValue.stringAttributeValue(getOrDefault(HOST_NAME_KEY, "", String.class, context)));
     }
 
     /**
@@ -262,73 +262,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Extracts request attributes from the given {@code context} and provided key.
-     *
-     * @param context The context containing the specified attribute key.
-     * @param key The name of the attribute that needs to be extracted from the {@code Context}.
-     * @return The value for the provided key contained in the context.
-     */
-    private String getRequestKeyAttribute(Context context, String key) {
-        final Object value = getOptionalObject(context, key);
-        if (!(value instanceof String)) {
-            logger.warning("Could not extract {}. Data in context for key {} is not of type String.", key);
-            return "";
-        }
-
-        return value.toString();
-    }
-
-    /**
-     * Extracts a {@link Span} from the given {@code context}.
-     *
-     * @param context The context containing the span.
-     * @return The {@link Span} contained in the context, and {@code null} if it does not.
-     */
-    private Span getSpan(Context context) {
-        final Object value = getOptionalObject(context, PARENT_SPAN_KEY);
-        if (!(value instanceof Span)) {
-            logger.warning("Could not extract span. Data in context for key {} is not of type Span.", PARENT_SPAN_KEY);
-            return null;
-        }
-
-        return (Span) value;
-    }
-
-    /**
-     * Extracts the span name from the given {@code context}.
-     *
-     * @param context The context containing the span name.
-     * @return The span name contained in the context, and {@code null} if it does not.
-     */
-    private String getSpanName(Context context) {
-        final Object value = getOptionalObject(context, USER_SPAN_NAME_KEY);
-        if (!(value instanceof String)) {
-            logger.warning("Could not extract span name. Data in context for key {} is not of type String.",
-                USER_SPAN_NAME_KEY);
-            return null;
-        }
-
-        return value.toString();
-    }
-
-    /**
-     * Extracts a {@link SpanContext} from the given {@code context}.
-     *
-     * @param context The context containing the span context.
-     * @return The {@link SpanContext} contained in the context, and {@code null} if it does not.
-     */
-    private SpanContext getSpanContext(Context context) {
-        final Object value = getOptionalObject(context, SPAN_CONTEXT_KEY);
-        if (!(value instanceof SpanContext)) {
-            logger.warning("Could not extract span context. Data is in context for key {} not of type SpanContext.",
-                SPAN_CONTEXT_KEY);
-            return null;
-        }
-
-        return (SpanContext) value;
-    }
-
-    /**
      * Returns a {@link Builder} to create and start a new child {@link Span} with parent being
      * the designated {@code Span}.
      *
@@ -337,8 +270,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @return A {@code Span.Builder} to create and start a new {@code Span}.
      */
     private Builder getSpanBuilder(String spanName, Context context) {
-        Span parentSpan = getSpan(context);
-        String spanNameKey = getSpanName(context);
+        Span parentSpan =  getOrDefault(PARENT_SPAN_KEY, null, Span.class, context);
+        String spanNameKey =  getOrDefault(USER_SPAN_NAME_KEY, null, String.class, context);
 
         if (spanNameKey == null) {
             spanNameKey = spanName;
@@ -350,35 +283,23 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Extracts a {@link Span.Builder} from the given {@code context}.
-     *
-     * @param context The context containing the Span.Builder.
-     * @return The {@link Span.Builder} contained in the context, and {@code null} if it does not.
-     */
-    private Span.Builder getSharedSpanBuilder(Context context) {
-        final Object value = getOptionalObject(context, SPAN_BUILDER_KEY);
-        if (!(value instanceof Span.Builder)) {
-            logger.warning("Could not extract the shared span builder. Data in context for key {} "
-                + "is not of type Span.Builder.", SPAN_BUILDER_KEY);
-            return null;
-        }
-
-        return (Span.Builder) value;
-    }
-
-    /**
      * Returns the value of the specified key from the context.
      *
-     * @param context The context containing the specified key.
      * @param key The name of the attribute that needs to be extracted from the {@code Context}.
-     * @return The value for the provided key contained in the context.
+     * @param defaultValue the value to return in data not found.
+     * @param clazz clazz the type of raw class to find data for.
+     * @param context The context containing the specified key.
+     *
+     * @return The T type of raw class object
      */
-    private Object getOptionalObject(Context context, String key) {
-        final Optional<Object> optionalObject = context.getData(key);
-        if (!optionalObject.isPresent()) {
-            logger.warning("Failed to find {} in the context.", key);
-            return null;
-        }
-        return optionalObject.get();
+    @SuppressWarnings("unchecked")
+    private <T> T getOrDefault(Object key, T defaultValue, Class<T> clazz, Context context) {
+        final Optional<Object> optional = context.getData(key);
+        final Object result = optional.filter(value -> value.getClass().equals(clazz)).orElseGet(() -> {
+            logger.warning("Could not extract key '{}' of type '{}' from context.", key, clazz);
+            return defaultValue;
+        });
+
+        return (T) result;
     }
 }

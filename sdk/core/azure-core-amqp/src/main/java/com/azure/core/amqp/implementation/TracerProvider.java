@@ -84,6 +84,17 @@ public class TracerProvider {
     }
 
     /**
+     * For each tracer plugged into the SDK a link is created between the parent tracing span and
+     * the current service call.
+     *
+     * @param context Additional metadata that is passed through the call stack.
+     */
+    public void addSpanLinks(Context context) {
+        Objects.requireNonNull(context, "'context' cannot be null.");
+        tracers.forEach(tracer -> tracer.addLink(context));
+    }
+
+    /**
      * For each tracer plugged into the SDK a new context is extracted from the event's diagnostic Id.
      *
      * @param diagnosticId Unique identifier of an external call from producer to the queue.

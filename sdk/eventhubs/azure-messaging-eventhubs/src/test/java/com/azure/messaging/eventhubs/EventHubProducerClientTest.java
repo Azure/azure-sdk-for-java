@@ -44,6 +44,7 @@ import java.util.List;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -51,6 +52,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -175,6 +177,45 @@ public class EventHubProducerClientTest {
         verify(tracer1, times(1))
             .start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(2)).end(eq("success"), isNull(), any());
+    }
+
+    /**
+     * Verifies addLink method is not invoked and message/event is not stamped with context on retry (span context already present on event).
+     */
+    @Test
+    public void sendMessageRetrySpanTest() {
+        //Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
+
+        when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
+
+        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
+            eq(retryOptions.getTryTimeout()), any()))
+            .thenReturn(Mono.just(sendLink));
+
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+        final EventData eventData = new EventData("hello-world".getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE));
+
+        when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(PARENT_SPAN_KEY, "value");
+            }
+        );
+
+        //Act
+        producer.send(eventData);
+
+        //Assert
+        verify(tracer1, times(1)).start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
+        verify(tracer1, never()).start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
+        verify(tracer1, never()).addLink(any());
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
     /**

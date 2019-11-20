@@ -44,6 +44,7 @@ import java.util.List;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -253,6 +254,52 @@ public class EventHubProducerAsyncClientTest {
         verify(tracer1, times(2))
             .start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(3)).end(eq("success"), isNull(), any());
+    }
+
+    /**
+     * Verifies addLink method is not invoked and message/event is not stamped with context on retry (span context already present on event).
+     */
+    @Test
+    public void sendMessageRetrySpanTest() {
+        //Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
+        final Flux<EventData> testData = Flux.just(
+            new EventData(TEST_CONTENTS.getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE)),
+            new EventData(TEST_CONTENTS.getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE)));
+
+        final String partitionId = "my-partition-id";
+        final SendOptions sendOptions = new SendOptions()
+            .setPartitionId(partitionId);
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            eventHubConnection, retryOptions, tracerProvider, messageSerializer, false);
+
+        when(connection.createSession(argThat(name -> name.endsWith(partitionId))))
+            .thenReturn(Mono.just(session));
+        when(session.createProducer(
+            argThat(name -> name.startsWith("PS")),
+            argThat(name -> name.endsWith(partitionId)),
+            eq(retryOptions.getTryTimeout()), any()))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+
+        when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(PARENT_SPAN_KEY, "value");
+            }
+        );
+
+        //Act
+        StepVerifier.create(asyncProducer.send(testData, sendOptions)).verifyComplete();
+
+        //Assert
+        verify(tracer1, times(1))
+            .start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
+        verify(tracer1, never()).start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
+        verify(tracer1, never()).addLink(any());
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
     /**
