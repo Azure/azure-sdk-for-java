@@ -19,7 +19,7 @@
 <td>checkExists</td>
 <td>Check whether a file or directory exists.</td>
 <td>N/A</td>
-<td>Use Gen2 API methods <strong>createFileWithResponse</strong> and <strong>createDirectoryWithResponse</strong> and set <strong>BlobRequestConditions.setIfNoneMatch(true)</strong></td>
+<td>Use Gen2 API methods <strong>createFileWithResponse</strong> and <strong>createDirectoryWithResponse</strong> and set <strong>BlobRequestConditions.setIfNoneMatch("*")</strong></td>
 </tr>
 <tr>
 <td>concatenateFiles</td>
@@ -43,13 +43,13 @@
 <td>createEmptyFile</td>
 <td>Creates an empty file.</td>
 <td><strong>DataLakeFileClient.create</strong></td>
-<td>By default this method will override an existing file, set <strong>BlobRequestConditions.setIfNoneMatch(true)</strong> to prevent overwriting.</td>
+<td>By default this method will override an existing file, set <strong>BlobRequestConditions.setIfNoneMatch("*")</strong> to prevent overwriting.</td>
 </tr>
 <tr>
 <td>createFile</td>
 <td>Creates a file.</td>
 <td><strong>DataLakeFileClient.create</strong></td>
-<td>By default this method will override an existing file, set <strong>BlobRequestConditions.setIfNoneMatch(true)</strong> to prevent overwriting.</td>
+<td>By default this method will override an existing file, set <strong>BlobRequestConditions.setIfNoneMatch("*")</strong> to prevent overwriting.</td>
 </tr>
 <tr>
 <td>delete</td>
