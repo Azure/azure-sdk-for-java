@@ -10,6 +10,12 @@ The Azure SDK team is pleased to make available the November 2019 client library
 ## Getting started
 
 To get started with a specific library, see the **README.md** file located in the library's project folder. You can find service libraries in the `/sdk/storage/azure-storage-<subcomponent>` directory.
+- [Azure Storage Blob README](azure-storage-blob/README.md)
+- [Azure Storage Blob Cryptography README](azure-storage-blob-cryptography/README.md)
+- [Azure Storage Queue README](azure-storage-queue/README.md)
+- [Azure Storage Common README](azure-storage-common/README.md)
+- [Azure Storage File Share README](azure-storage-file-share/README.md)
+- [Azure Storage File Datalake README](azure-storage-file-datalake/README.md)
 
 For tutorials, samples, quick starts and other documentation, visit [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
 
