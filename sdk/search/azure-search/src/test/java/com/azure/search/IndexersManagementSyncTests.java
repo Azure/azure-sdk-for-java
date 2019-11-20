@@ -12,8 +12,10 @@ import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.IndexerExecutionStatus;
 import com.azure.search.models.IndexerStatus;
 import com.azure.search.models.IndexingParameters;
+import org.apache.http.HttpStatus;
 import com.azure.search.models.Skillset;
 import org.junit.Assert;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,5 +142,16 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
         Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
+    }
+
+    @Override
+    public void canRunIndexer() {
+        Indexer indexer = createTestDataSourceAndIndexer();
+
+        Response<Void> response = client.runIndexerWithResponse(indexer.getName(), null, null);
+        Assert.assertEquals(HttpStatus.SC_ACCEPTED, response.getStatusCode());
+
+        IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
+        Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 }

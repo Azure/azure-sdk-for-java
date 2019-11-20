@@ -13,6 +13,7 @@ import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.IndexerExecutionStatus;
 import com.azure.search.models.IndexerStatus;
 import com.azure.search.models.IndexingParameters;
+import org.apache.http.HttpStatus;
 import com.azure.search.models.Skillset;
 import org.junit.Assert;
 import reactor.core.publisher.Mono;
@@ -134,5 +135,22 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             () -> client.createOrUpdateIndexer(indexer).block(),
             HttpResponseException.class,
             "This indexer refers to a data source 'thisdatasourcedoesnotexist' that doesn't exist");
+    }
+
+    @Override
+    public void canRunIndexer() {
+        Indexer indexer = createTestDataSourceAndIndexer();
+
+        StepVerifier.create(client.runIndexerWithResponse(indexer.getName(), null, null))
+            .assertNext(response -> {
+                Assert.assertEquals(HttpStatus.SC_ACCEPTED, response.getStatusCode());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(client.getIndexerStatus(indexer.getName()))
+            .assertNext(indexerExecutionInfo -> {
+                Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
+            })
+            .verifyComplete();
     }
 }

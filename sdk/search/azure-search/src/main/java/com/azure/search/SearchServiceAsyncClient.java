@@ -29,7 +29,6 @@ import com.azure.search.models.RequestOptions;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.TokenInfo;
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 
@@ -656,7 +655,8 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> runIndexer(String indexerName) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return restClient.indexers().runWithRestResponseAsync(indexerName, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -668,7 +668,8 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> runIndexer(String indexerName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return restClient.indexers().runWithRestResponseAsync(indexerName, requestOptions, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -680,13 +681,17 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return withContext(context -> this.runIndexerWithResponse(
+            indexerName,
+            requestOptions,
+            context));
     }
 
     Mono<Response<Void>> runIndexerWithResponse(String indexerName,
                                                 RequestOptions requestOptions,
                                                 Context context) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return restClient.indexers().runWithRestResponseAsync(indexerName, requestOptions, context)
+            .map(Function.identity());
     }
 
     /**

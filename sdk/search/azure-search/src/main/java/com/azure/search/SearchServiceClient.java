@@ -484,7 +484,7 @@ public class SearchServiceClient {
      * @param indexerName the name of the indexer to run
      */
     public void runIndexer(String indexerName) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        asyncClient.runIndexer(indexerName).block();
     }
 
     /**
@@ -495,7 +495,7 @@ public class SearchServiceClient {
      * Contains the tracking ID sent with the request to help with debugging
      */
     public void runIndexer(String indexerName, RequestOptions requestOptions) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        asyncClient.runIndexer(indexerName, requestOptions).block();
     }
 
     /**
@@ -510,7 +510,7 @@ public class SearchServiceClient {
     public Response<Void> runIndexerWithResponse(String indexerName,
                                                  RequestOptions requestOptions,
                                                  Context context) {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+        return asyncClient.runIndexerWithResponse(indexerName, requestOptions, context).block();
     }
 
     /**

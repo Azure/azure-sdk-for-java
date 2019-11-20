@@ -48,6 +48,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public abstract void canResetIndexerAndGetIndexerStatus();
 
     @Test
+    public abstract void canRunIndexer();
+
+    @Test
     public void canUpdateIndexer() {
         DataSource datasource = createTestSqlDataSource();
         createDatasource(datasource);
@@ -349,6 +352,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     /**
      * Creates the index and indexer in the search service and then update the indexer
+     *
      * @param updatedIndexer the indexer to be updated
      * @param datasourceName the datasource name for this indexer
      */
@@ -377,6 +381,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     /**
      * Creates the index and indexer in the search service and then retrieves the indexer and validates it
+     *
      * @param indexer the indexer to be created
      */
     void createAndValidateIndexer(Indexer indexer) {
@@ -394,6 +399,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     /**
      * Create a new indexer and change its description property
+     *
      * @return the created indexer
      */
     Indexer createIndexerWithDifferentDescription() {
@@ -408,6 +414,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     /**
      * Create a new indexer and change its field mappings property
+     *
      * @return the created indexer
      */
     Indexer createIndexerWithDifferentFieldMapping() {
@@ -427,6 +434,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     /**
      * Create a new indexer and set the Disabled property to true
+     *
      * @return the created indexer
      */
     Indexer createDisabledIndexer() {
@@ -441,6 +449,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     /**
      * Create a new indexer and change its schedule property
+     *
      * @return the created indexer
      */
     Indexer createIndexerWithDifferentSchedule() {
@@ -470,6 +479,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     /**
      * Create a new indexer and change its indexing parameters
+     *
      * @return the created indexer
      */
     Indexer createIndexerWithDifferentIndexingParameters() {
