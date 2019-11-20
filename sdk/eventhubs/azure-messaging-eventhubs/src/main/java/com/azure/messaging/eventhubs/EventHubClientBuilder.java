@@ -91,11 +91,12 @@ public class EventHubClientBuilder {
     /**
      * The minimum value allowed for the prefetch count of the consumer.
      */
-    static final int MINIMUM_PREFETCH_COUNT = 1;
+    private static final int MINIMUM_PREFETCH_COUNT = 1;
     /**
      * The maximum value allowed for the prefetch count of the consumer.
      */
-    static final int MAXIMUM_PREFETCH_COUNT = 8000;
+    private static final int MAXIMUM_PREFETCH_COUNT = 8000;
+
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
 

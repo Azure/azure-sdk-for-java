@@ -83,7 +83,7 @@ public class EventHubSharedKeyCredential implements TokenCredential {
      * @throws AzureException If the hashing algorithm cannot be instantiated, which is used to generate
      *     the shared access signatures.
      */
-    EventHubSharedKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity) {
+    public EventHubSharedKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity) {
 
         Objects.requireNonNull(sharedAccessKey, "'sharedAccessKey' cannot be null.");
         this.policyName = Objects.requireNonNull(policyName, "'sharedAccessKey' cannot be null.");
