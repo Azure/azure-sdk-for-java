@@ -10,6 +10,7 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -54,6 +55,21 @@ public class EventHubSharedKeyCredential implements TokenCredential {
     private final Duration tokenValidity;
 
     /**
+     * Creates an instance that authorizes using the {@code policyName} and {@code sharedAccessKey}.
+     *
+     * @param policyName Name of the shared access key policy.
+     * @param sharedAccessKey Value of the shared access key.
+     * @throws IllegalArgumentException if {@code policyName}, {@code sharedAccessKey} is an empty string. If the
+     *     {@code sharedAccessKey} is an invalid value for the hashing algorithm.
+     * @throws NullPointerException if {@code policyName} or {@code sharedAccessKey} is null.
+     * @throws AzureException If the hashing algorithm cannot be instantiated, which is used to generate
+     *     the shared access signatures.
+     */
+    public EventHubSharedKeyCredential(String policyName, String sharedAccessKey) {
+        this(policyName, sharedAccessKey, ClientConstants.TOKEN_VALIDITY);
+    }
+
+    /**
      * Creates an instance that authorizes using the {@code policyName} and {@code sharedAccessKey}. The authorization
      * lasts for a period of {@code tokenValidity} before another token must be requested.
      *
@@ -68,7 +84,7 @@ public class EventHubSharedKeyCredential implements TokenCredential {
      * @throws AzureException If the hashing algorithm cannot be instantiated, which is used to generate
      *     the shared access signatures.
      */
-    public EventHubSharedKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity) {
+    EventHubSharedKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity) {
 
         Objects.requireNonNull(sharedAccessKey, "'sharedAccessKey' cannot be null.");
         this.policyName = Objects.requireNonNull(policyName, "'sharedAccessKey' cannot be null.");

@@ -133,11 +133,14 @@ public class EventData {
      * @param key The key for this context object
      * @param value The value for this context object.
      * @throws NullPointerException if {@code key} or {@code value} is null.
+     * @return The updated {@link EventData}.
      */
-    void addContext(String key, Object value) {
+    EventData addContext(String key, Object value) {
         Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
         Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
         this.context = context.addData(key, value);
+
+        return this;
     }
 
     /**

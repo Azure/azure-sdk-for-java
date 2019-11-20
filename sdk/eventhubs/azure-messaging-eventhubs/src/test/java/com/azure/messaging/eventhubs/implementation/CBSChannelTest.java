@@ -60,7 +60,7 @@ public class CBSChannelTest extends IntegrationTestBase {
             connectionString.getEndpoint().getHost(), ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
         TokenCredential tokenCredential = new EventHubSharedKeyCredential(connectionString.getSharedAccessKeyName(),
-                connectionString.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+                connectionString.getSharedAccessKey());
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionString.getEndpoint().getHost(),
             connectionString.getEntityPath(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
@@ -104,10 +104,9 @@ public class CBSChannelTest extends IntegrationTestBase {
     public void unsuccessfulAuthorize() {
         // Arrange
         final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEntityPath());
-        final Duration duration = Duration.ofMinutes(10);
 
         TokenCredential tokenProvider = new EventHubSharedKeyCredential(connectionString.getSharedAccessKeyName(),
-            "Invalid shared access key.", duration);
+            "Invalid shared access key.");
 
         final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 

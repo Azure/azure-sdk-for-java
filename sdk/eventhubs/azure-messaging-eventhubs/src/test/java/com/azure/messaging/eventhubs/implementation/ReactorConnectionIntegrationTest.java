@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
@@ -13,10 +14,9 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
+import com.azure.messaging.eventhubs.EventHubSharedKeyCredential;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,8 +25,6 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
@@ -49,13 +47,8 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
 
         ConnectionStringProperties connectionString = getConnectionStringProperties();
 
-        TokenCredential tokenCredential = null;
-        try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(connectionString.getSharedAccessKeyName(),
-                connectionString.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            Assertions.fail("Could not create tokenProvider :" + e);
-        }
+        TokenCredential tokenCredential = new EventHubSharedKeyCredential(connectionString.getSharedAccessKeyName(),
+            connectionString.getSharedAccessKey());
 
         final ConnectionOptions options = new ConnectionOptions(connectionString.getEndpoint().getHost(),
             connectionString.getEntityPath(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
