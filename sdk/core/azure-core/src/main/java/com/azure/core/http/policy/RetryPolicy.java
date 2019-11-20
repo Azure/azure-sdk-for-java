@@ -23,6 +23,7 @@ import java.time.Duration;
 public class RetryPolicy implements HttpPipelinePolicy {
 
     private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
+    private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
 
     private final RetryStrategy retryStrategy;
     private final String retryAfterHeader;
@@ -33,7 +34,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * 'retry-after-ms' in {@link HttpResponse} header for calculating retry delay.
      */
     public RetryPolicy() {
-        this(new ExponentialBackoff());
+        this(new ExponentialBackoff(), RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS);
     }
 
     /**
@@ -76,13 +77,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates a {@link RetryPolicy} with the provided {@link RetryStrategy}.
+     * Creates a {@link RetryPolicy} with the provided {@link RetryStrategy} and use 'retry-after-ms' in
+     * {@link HttpResponse} header for calculating retry delay.
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
      * @throws NullPointerException When {@code retryStrategy} is {@code null}.
      */
     public RetryPolicy(RetryStrategy retryStrategy) {
-        this(retryStrategy, null, null);
+        this(retryStrategy, RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS);
     }
 
     @Override
