@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,7 +48,11 @@ public class EventProcessorBuilderTest {
                 .processEvent(partitionEvent -> {
                     System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
                         + "sequence number of event = " + partitionEvent.getData().getSequenceNumber());
-                    return Mono.empty();
+                })
+                .processError(errorContext -> {
+                    System.out.printf("Error occurred in partition processor for partition {}, {}",
+                        errorContext.getPartitionContext().getPartitionId(),
+                        errorContext.getThrowable());
                 })
                 .buildEventProcessor();
         });
@@ -63,7 +66,11 @@ public class EventProcessorBuilderTest {
             .processEvent(partitionEvent -> {
                 System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
                     + "sequence number of event = " + partitionEvent.getData().getSequenceNumber());
-                return Mono.empty();
+            })
+            .processError(errorContext -> {
+                System.out.printf("Error occurred in partition processor for partition {}, {}",
+                    errorContext.getPartitionContext().getPartitionId(),
+                    errorContext.getThrowable());
             })
             .eventProcessorStore(new InMemoryEventProcessorStore())
             .buildEventProcessor();

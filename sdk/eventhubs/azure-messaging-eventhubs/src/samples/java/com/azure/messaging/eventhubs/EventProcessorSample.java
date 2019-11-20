@@ -4,12 +4,11 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 /**
  * Sample code to demonstrate how a customer might use {@link EventProcessor}.
@@ -27,14 +26,14 @@ public class EventProcessorSample {
     public static void main(String[] args) throws Exception {
 
         Logger logger = LoggerFactory.getLogger(EventProcessorSample.class);
-        Function<PartitionEvent, Mono<Void>> processEvent = partitionEvent -> {
+        Consumer<PartitionEvent> processEvent = partitionEvent -> {
             logger.info(
                 "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
                 partitionEvent.getPartitionContext().getEventHubName(),
                 partitionEvent.getPartitionContext().getConsumerGroup(),
                 partitionEvent.getPartitionContext().getPartitionId(),
                 partitionEvent.getData().getSequenceNumber());
-            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData());
+            partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData()).subscribe();
         };
 
         EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()

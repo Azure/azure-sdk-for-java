@@ -10,7 +10,6 @@ import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
-import reactor.core.publisher.Mono;
 
 /**
  * An abstract class defining all the operations that a partition processor can perform. Users of {@link EventProcessor}
@@ -40,12 +39,10 @@ public abstract class PartitionProcessor {
      * {@link InitializationContext#setInitialPosition(EventPosition)} to
      *
      * @param initializationContext The initialization context before events from the partition are processed.
-     * @return a representation of the deferred computation of this call.
      */
-    public Mono<Void> initialize(InitializationContext initializationContext) {
+    public void initialize(InitializationContext initializationContext) {
         logger.info("Initializing partition processor for partition {}",
             initializationContext.getPartitionContext().getPartitionId());
-        return Mono.empty();
     }
 
     /**
@@ -53,9 +50,8 @@ public abstract class PartitionProcessor {
      * asynchronously.
      *
      * @param partitionEvent The partition information and the next event data from this partition.
-     * @return a representation of the deferred computation of this call.
      */
-    public abstract Mono<Void> processEvent(PartitionEvent partitionEvent);
+    public abstract void processEvent(PartitionEvent partitionEvent);
 
     /**
      * This method is called when an error occurs while receiving events from Event Hub. An error also marks the end of
@@ -63,11 +59,7 @@ public abstract class PartitionProcessor {
      *
      * @param eventProcessingErrorContext The error details and partition information where the error occurred.
      */
-    public void processError(EventProcessingErrorContext eventProcessingErrorContext) {
-        logger.warning("Error occurred in partition processor for partition {}",
-            eventProcessingErrorContext.getPartitionContext().getPartitionId(),
-            eventProcessingErrorContext.getThrowable());
-    }
+    public abstract void processError(EventProcessingErrorContext eventProcessingErrorContext);
 
     /**
      * This method is called before the partition processor is closed. A partition processor could be closed for various
@@ -76,12 +68,10 @@ public abstract class PartitionProcessor {
      *
      * @param closeContext Contains the reason for closing and the partition information for which the processing of
      * events is closed.
-     * @return a representation of the deferred computation of this call.
      */
-    public Mono<Void> close(CloseContext closeContext) {
+    public void close(CloseContext closeContext) {
         logger.info("Closing partition processor for partition {} with close reason {}",
             closeContext.getPartitionContext().getPartitionId(), closeContext.getCloseReason());
-        return Mono.empty();
     }
 
 }
