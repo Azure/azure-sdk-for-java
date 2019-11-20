@@ -86,10 +86,7 @@ public class EventData {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(ByteBuffer body) {
-        this.body = Objects.requireNonNull(body, "'body' cannot be null.").array();
-        this.context = Context.NONE;
-        this.properties = new HashMap<>();
-        this.systemProperties = new SystemProperties();
+        this(Objects.requireNonNull(body, "'body' cannot be null.").array());
     }
 
     /**
