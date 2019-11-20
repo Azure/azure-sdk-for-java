@@ -6,10 +6,10 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -50,23 +50,24 @@ class EventHubPartitionAsyncConsumer implements Closeable {
     private volatile AmqpReceiveLink receiveLink;
 
     EventHubPartitionAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
-        String eventHubName, String consumerGroup, String partitionId, EventHubConsumerOptions options) {
+        String eventHubName, String consumerGroup, String partitionId, int prefetchCount,
+        boolean trackLastEnqueuedEventProperties) {
         this.messageSerializer = messageSerializer;
         this.eventHubName = eventHubName;
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
-        this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
-        this.trackLastEnqueuedEventProperties = options.getTrackLastEnqueuedEventProperties();
+        this.emitterProcessor = EmitterProcessor.create(prefetchCount, false);
+        this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
 
-        if (options.getTrackLastEnqueuedEventProperties()) {
+        if (trackLastEnqueuedEventProperties) {
             lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
         }
 
         // Caching the created link so we don't invoke another link creation.
         this.messageFlux = receiveLinkMono.cache().flatMapMany(link -> {
             if (RECEIVE_LINK_FIELD_UPDATER.compareAndSet(this, null, link)) {
-                logger.info("Created AMQP receive link. Initializing prefetch credits: {}", options.getPrefetchCount());
-                link.addCredits(options.getPrefetchCount());
+                logger.info("Created AMQP receive link. Initializing prefetch credits: {}", prefetchCount);
+                link.addCredits(prefetchCount);
 
                 link.setEmptyCreditListener(() -> {
                     if (emitterProcessor.hasDownstreams()) {
@@ -155,9 +156,11 @@ class EventHubPartitionAsyncConsumer implements Closeable {
 
     /**
      * On each message received from the service, it will try to:
-     * 1. Deserialize the message into an EventData
-     * 2. If {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} is true, then it will try to update
-     *    {@link LastEnqueuedEventProperties}
+     * <ol>
+     * <li>Deserialize the message into an {@link EventData}.</li>
+     * <li>If {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()} is true, then it will try to update
+     * {@link LastEnqueuedEventProperties}.</li>
+     * </ol>
      *
      * @param message AMQP message to deserialize.
      *

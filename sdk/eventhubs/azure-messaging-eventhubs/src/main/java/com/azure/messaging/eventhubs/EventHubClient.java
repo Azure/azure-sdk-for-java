@@ -7,8 +7,6 @@ import com.azure.core.amqp.RetryOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
-import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.io.Closeable;
 import java.util.Objects;
@@ -75,59 +73,19 @@ class EventHubClient implements Closeable {
     }
 
     /**
-     * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub partition, as a
-     * member of the specified consumer group, and begins reading events from the {@code eventPosition}.
-     *
-     * The consumer created is non-exclusive, allowing multiple consumers from the same consumer group to be actively
-     * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
-     * Consumers".
+     * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub, as a member of
+     * the configured consumer group.
      *
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      *     context of this group. The name of the consumer group that is created by default is {@link
      *     EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
-     * @param eventPosition The position within the partition where the consumer should begin reading events.
-     * @return A new {@link EventHubConsumerClient} that receives events from the partition at the given position.
-     * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
-     *     {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
+     * @param prefetchCount The set of options to apply when creating the consumer.
+     * @return An new {@link EventHubConsumerClient} that receives events.
+     * @throws NullPointerException If {@code consumerGroup} is null.
+     * @throws IllegalArgumentException If {@code consumerGroup} is an empty string.
      */
-    EventHubConsumerClient createConsumer(String consumerGroup, EventPosition eventPosition) {
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup, eventPosition);
-        return new EventHubConsumerClient(consumer, retry.getTryTimeout());
-    }
-
-    /**
-     * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub partition, as a
-     * member of the configured consumer group, and begins reading events from the specified {@code eventPosition}.
-     *
-     * <p>
-     * A consumer may be exclusive, which asserts ownership over the partition for the consumer group to ensure that
-     * only one consumer from that group is reading from the partition. These exclusive consumers are sometimes referred
-     * to as "Epoch Consumers."
-     *
-     * A consumer may also be non-exclusive, allowing multiple consumers from the same consumer group to be actively
-     * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
-     * Consumers."
-     *
-     * Designating a consumer as exclusive may be specified in the {@code options}, by setting {@link
-     * EventHubConsumerOptions#setOwnerLevel(Long)} to a non-null value. By default, consumers are created as
-     * non-exclusive.
-     * </p>
-     *
-     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
-     *     context of this group. The name of the consumer group that is created by default is {@link
-     *     EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
-     * @param eventPosition The position within the partition where the consumer should begin reading events.
-     * @param options The set of options to apply when creating the consumer.
-     * @return An new {@link EventHubConsumerClient} that receives events from the partition with all configured {@link
-     *     EventHubConsumerOptions}.
-     * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
-     *     {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
-     */
-    EventHubConsumerClient createConsumer(String consumerGroup, EventPosition eventPosition,
-            EventHubConsumerOptions options) {
-        final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup, eventPosition, options);
+    EventHubConsumerClient createConsumer(String consumerGroup, int prefetchCount) {
+        final EventHubConsumerAsyncClient consumer = client.createConsumer(consumerGroup, prefetchCount);
 
         return new EventHubConsumerClient(consumer, retry.getTryTimeout());
     }

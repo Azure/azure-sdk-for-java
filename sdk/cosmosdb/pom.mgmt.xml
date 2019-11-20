@@ -9,8 +9,8 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-cosmosdb/v2015_04_08</module>
-    <module>azure-mgmt-cosmosdb/v2019_08_01</module>
-    <module>azure-mgmt-cosmosdb/v2019_08_01_preview</module>
+    <module>mgmt-v2015_04_08</module>
+    <module>mgmt-v2019_08_01</module>
+    <module>mgmt-v2019_08_01_preview</module>
   </modules>
 </project>

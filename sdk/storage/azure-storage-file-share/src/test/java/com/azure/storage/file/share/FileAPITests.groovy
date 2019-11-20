@@ -324,7 +324,7 @@ class FileAPITests extends APISpec {
         ex.getCause() instanceof NoSuchFileException
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "Upload and download file exists"() {
@@ -347,7 +347,7 @@ class FileAPITests extends APISpec {
         ex.getCause() instanceof FileAlreadyExistsException
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "Upload and download to file does not exist"() {
@@ -371,7 +371,7 @@ class FileAPITests extends APISpec {
         scanner.close()
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "Upload range from URL"() {
@@ -586,7 +586,7 @@ class FileAPITests extends APISpec {
         given:
         def fileName = resourceNamer.randomName("file", 60)
         primaryFileClient.create(1024)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
 
         expect:
@@ -596,14 +596,14 @@ class FileAPITests extends APISpec {
         }
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "List ranges with range"() {
         given:
         def fileName = resourceNamer.randomName("file", 60)
         primaryFileClient.create(1024)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
 
         expect:
@@ -613,7 +613,7 @@ class FileAPITests extends APISpec {
         }
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "List handles"() {

@@ -9,7 +9,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-datalakestore/v2015_10_01_preview</module>
-    <module>azure-mgmt-datalakestore/v2016_11_01</module>
+    <module>mgmt-v2015_10_01_preview</module>
+    <module>mgmt-v2016_11_01</module>
   </modules>
 </project>
