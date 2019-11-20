@@ -178,7 +178,7 @@ public class EventData {
      * @return ByteBuffer representing the data.
      */
     public byte[] getBody() {
-        return body;
+        return Arrays.copyOf(body, body.length);
     }
 
     /**
