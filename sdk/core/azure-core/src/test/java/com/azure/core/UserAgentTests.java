@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -102,7 +103,7 @@ public class UserAgentTests {
         String javaVersion = Configuration.getGlobalConfiguration().get("java.version");
         String osName = Configuration.getGlobalConfiguration().get("os.name");
         String osVersion = Configuration.getGlobalConfiguration().get("os.version");
-        String testPlatformInfo = javaVersion + "; " + osName + " " + osVersion;
+        String testPlatformInfo = "(" + javaVersion + "; " + osName + " " + osVersion + ")";
         String expectedHeader = testAppId + " " + "azsdk-java-" + testSdkName + "/"
             + testPackageVersion + " " + testPlatformInfo;
 
@@ -129,6 +130,44 @@ public class UserAgentTests {
             .expectNextMatches(httpResponse -> {
                 assertEquals(200, httpResponse.getStatusCode());
                 assertEquals(expectedHeader, httpResponse.getRequest().getHeaders().getValue("User-Agent"));
+                return true;
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void platformInfoWithParentheses() throws MalformedURLException {
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    String header = request.getHeaders().getValue("User-Agent");
+                    String expectedHeaderPrefix = "azsdk-java-package.name";
+                    Assertions.assertTrue(header.startsWith(expectedHeaderPrefix));
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .policies(new UserAgentPolicy(
+                null,
+                "package.name",
+                "package_version",
+                Configuration.NONE,
+                () -> "1.0"))
+            .build();
+
+        Mono<HttpResponse> response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost")));
+        StepVerifier.create(response)
+            .expectNextMatches(httpResponse -> {
+                assertEquals(200, httpResponse.getStatusCode());
+                final String userAgentResponseValue =
+                    httpResponse.getRequest().getHeaders().getValue("User-Agent");
+                final int forwardSlashIndex = userAgentResponseValue.indexOf('/');
+                final int firstSpaceAfterSlash = userAgentResponseValue.indexOf(" ", forwardSlashIndex);
+                final String platformInfo = userAgentResponseValue.substring(firstSpaceAfterSlash).trim();
+
+                assertTrue(platformInfo.startsWith("("));
+                assertTrue(platformInfo.endsWith(")"));
                 return true;
             })
             .verifyComplete();

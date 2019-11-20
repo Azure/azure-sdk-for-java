@@ -14,6 +14,7 @@ import com.azure.storage.file.share.models.ShareServiceProperties
 import com.azure.storage.file.share.models.ShareStorageException
 
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 
 class FileTestHelper {
@@ -117,23 +118,24 @@ class FileTestHelper {
         }
     }
 
-    static String createRandomFileWithLength(int size, String folder, String fileName) {
-        def path = Paths.get(folder)
+    static String createRandomFileWithLength(int size, URL folder, String fileName) {
+        def path = folder.getPath()
         if (path == null) {
             throw logger.logExceptionAsError(new RuntimeException("The folder path does not exist."))
         }
 
-        if (!Files.exists(path)) {
-            Files.createDirectory(path)
+        Path folderPaths = new File(path).toPath()
+        if (!Files.exists(folderPaths)) {
+            Files.createDirectory(folderPaths)
         }
-        def randomFile = new File(folder, fileName)
+        def randomFile = new File(folderPaths.toString(), fileName)
         RandomAccessFile raf = new RandomAccessFile(randomFile, "rw")
         raf.setLength(size)
         raf.close()
         return randomFile.getPath()
     }
 
-    static void deleteFolderIfExists(String folder) {
+    static void deleteFilesIfExists(String folder) {
         // Clean up all temporary generated files
         def dir = new File(folder)
         if (dir.isDirectory()) {

@@ -22,7 +22,7 @@ trigger:
     include:
       - sdk/mediaservices/
     exclude:
-      - sdk/mediaservices/azure-mgmt-
+      - sdk/mediaservices/mgmt-
 
 pr:
   branches:
@@ -35,7 +35,7 @@ pr:
     include:
       - sdk/mediaservices/
     exclude:
-      - sdk/mediaservices/azure-mgmt-
+      - sdk/mediaservices/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
