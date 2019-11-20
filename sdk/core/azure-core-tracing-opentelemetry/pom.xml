@@ -25,13 +25,6 @@
     </site>
   </distributionManagement>
 
-  <repositories>
-    <repository>
-      <id>oss.sonatype.org-snapshot</id>
-      <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
-    </repository>
-  </repositories>
-
   <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
@@ -42,7 +35,6 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>0.2.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -54,7 +46,7 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>0.2.0-SNAPSHOT</version>
+      <version>0.2.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
