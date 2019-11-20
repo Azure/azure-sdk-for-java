@@ -3,8 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import reactor.core.publisher.Mono;
-
 /**
  * Code snippets for {@link EventProcessorBuilder}.
  */
@@ -26,7 +24,11 @@ public class EventProcessorBuilderJavaDocCodeSamples {
             .processEvent(partitionEvent -> {
                 System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
                     + "sequence number of event = " + partitionEvent.getData().getSequenceNumber());
-                return Mono.empty();
+            })
+            .processError(errorContext -> {
+                System.out.printf("Error occurred in partition processor for partition {}, {}",
+                    errorContext.getPartitionContext().getPartitionId(),
+                    errorContext.getThrowable());
             })
             .connectionString(connectionString)
             .buildEventProcessor();

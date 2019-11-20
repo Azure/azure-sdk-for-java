@@ -308,7 +308,9 @@ class Program {
             .processEvent(partitionEvent -> {
                 System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
                     + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
-                return Mono.empty();
+            })
+            .processError(errorContext -> {
+                System.out.println("Error occured while processing events " + errorContext.getThrowable().getMessage);
             })
             .buildEventProcessor();
 

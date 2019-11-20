@@ -429,16 +429,22 @@ public class EventProcessorTest {
         }
 
         @Override
-        public Mono<Void> processEvent(PartitionEvent partitionEvent) {
-            return Mono.error(new IllegalStateException());
+        public void processEvent(PartitionEvent partitionEvent) {
+            throw new IllegalStateException();
         }
     }
 
     private static final class TestPartitionProcessor extends PartitionProcessor {
 
         @Override
-        public Mono<Void> processEvent(PartitionEvent partitionEvent) {
-            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData());
+        public void processEvent(PartitionEvent partitionEvent) {
+            partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData()).subscribe();
+        }
+
+        @Override
+        public void processError(EventProcessingErrorContext eventProcessingErrorContext) {
+            // do nothing
+            return;
         }
     }
 
