@@ -174,6 +174,24 @@ directive:
 
 - from:
   - FacetResult.java
+  where: $
+  transform: >-
+    return $.replace(/(public FacetResult setAdditionalProperties)/g, "FacetResult setAdditionalProperties")
+
+- from:
+  - SearchResult.java
+  where: $
+  transform: >-
+    return $.replace(/(public SearchResult setAdditionalProperties)/g, "SearchResult setAdditionalProperties")
+
+- from:
+  - SuggestResult.java
+  where: $
+  transform: >-
+    return $.replace(/(public SuggestResult setAdditionalProperties)/g, "SuggestResult setAdditionalProperties")
+
+- from:
+  - FacetResult.java
   - SearchResult.java
   - SuggestResult.java
   where: $

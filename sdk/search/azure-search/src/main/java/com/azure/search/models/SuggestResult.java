@@ -44,7 +44,7 @@ public final class SuggestResult {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SuggestResult object itself.
      */
-    public SuggestResult setDocument(Document additionalProperties) {
+    SuggestResult setDocument(Document additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
