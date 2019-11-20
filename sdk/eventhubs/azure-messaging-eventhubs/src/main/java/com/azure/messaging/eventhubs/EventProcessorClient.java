@@ -54,7 +54,7 @@ public class EventProcessorClient {
      * @param consumerGroup The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param initialEventPosition Initial event position to start consuming events.
-     * @param checkpointStore The partition manager used for reading and updating partition ownership and checkpoint
+     * @param checkpointStore The store used for reading and updating partition ownership and checkpoints.
      * information.
      * @param tracerProvider The tracer implementation.
      */
