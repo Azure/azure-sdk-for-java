@@ -55,7 +55,6 @@ public class EventData {
     private final byte[] body;
     private final SystemProperties systemProperties;
     private Context context;
-    private volatile ByteBuffer bodyAsBuffer;
 
     static {
         final Set<String> properties = new HashSet<>();
@@ -87,8 +86,7 @@ public class EventData {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(ByteBuffer body) {
-        this.bodyAsBuffer = Objects.requireNonNull(body, "'body' cannot be null.");
-        this.body = body.array();
+        this.body = Objects.requireNonNull(body, "'body' cannot be null.").array();
         this.context = Context.NONE;
         this.properties = new HashMap<>();
         this.systemProperties = new SystemProperties();
@@ -192,7 +190,7 @@ public class EventData {
      * @return UTF-8 decoded string representation of the event data.
      */
     public String getBodyAsString() {
-        return UTF_8.decode(bodyAsBuffer).toString();
+        return new String(body, UTF_8);
     }
 
     /**
