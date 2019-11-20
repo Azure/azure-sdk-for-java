@@ -1,6 +1,3 @@
-
-
-
 <h1>Mapping from ADLS Gen1 API -> ADLS Gen2 API</h1>
 <table style="background:white">
 <thead>
