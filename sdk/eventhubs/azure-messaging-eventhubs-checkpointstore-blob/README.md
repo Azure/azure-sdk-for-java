@@ -103,7 +103,7 @@ class Program {
                     + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
-                System.out.println("Error occured while processing events " + errorContext.getThrowable().getMessage);
+                System.out.println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
             })
             .buildEventProcessor();
 
