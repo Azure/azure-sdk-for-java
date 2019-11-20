@@ -31,8 +31,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Implementation of {@link CheckpointStore} that uses
  * <a href="https://docs.microsoft.com/en-us/azure/storage/common/storage-introduction#blob-storage">Storage Blobs</a>
- * for persisting partition ownership and checkpoint information. {@link EventProcessorClient EventProcessors} can use this
- * implementation to load balance and update checkpoints.
+ * for persisting partition ownership and checkpoint information. {@link EventProcessorClient EventProcessors} can use
+ * this implementation to load balance and update checkpoints.
  *
  * @see EventProcessorClient
  */
@@ -62,8 +62,8 @@ public class BlobCheckpointStore implements CheckpointStore {
     }
 
     /**
-     * This method is called by the {@link EventProcessorClient} to get the list of all existing partition ownership from the
-     * Storage Blobs. Could return empty results if there are is no existing ownership information.
+     * This method is called by the {@link EventProcessorClient} to get the list of all existing partition ownership
+     * from the Storage Blobs. Could return empty results if there are is no existing ownership information.
      *
      * @param eventHubName The Event Hub name to get ownership information.
      * @param consumerGroupName The consumer group name.
@@ -83,8 +83,8 @@ public class BlobCheckpointStore implements CheckpointStore {
     }
 
     /**
-     * This method is called by the {@link EventProcessorClient} to claim ownership of a list of partitions. This will return
-     * the list of partitions that were owned successfully.
+     * This method is called by the {@link EventProcessorClient} to claim ownership of a list of partitions. This will
+     * return the list of partitions that were owned successfully.
      *
      * @param requestedPartitionOwnerships Array of partition ownerships this instance is requesting to own.
      * @return A flux of partitions this instance successfully claimed ownership.

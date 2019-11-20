@@ -77,24 +77,24 @@ BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuild
     .buildAsyncClient();
 ```
 
-### Consume events using an Event Processor
+### Consume events using an Event Processor Client
 
-To consume events for all partitions of an Event Hub, you'll create an [`EventProcessor`][source_eventprocessor] for a
+To consume events for all partitions of an Event Hub, you'll create an [`EventProcessorClient`][source_eventprocessorclient] for a
 specific consumer group. When an Event Hub is created, it provides a default consumer group that can be used to get
 started.
 
-The [`EventProcessor`][source_eventprocessor] will delegate processing of events to a callback function that you 
-provide, allowing your application to focus on the business logic needed to provide value while the processor 
-holds responsibility for managing the underlying consumer operations.
+The [`EventProcessorClient`][source_eventprocessorclient] will delegate processing of events to a callback function that you 
+provide, allowing you to focus on the logic needed to provide value while the processor holds responsibility for 
+managing the underlying consumer operations.
 
-In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the 
+In our example, we will focus on building the [`EventProcessor`][source_eventprocessorclient], use the 
 [`BlobCheckpointStore`][source_blobcheckpointstore], and a simple callback function to process the events 
 received from the Event Hubs, writes to console and updates the checkpoint in Blob storage after each event.
 
 ```java
 class Program {
     public static void main(String[] args) {
-        EventProcessor eventProcessorClient = new EventProcessorBuilder()
+        EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup("<< CONSUMER GROUP NAME >>")
             .connectionString("<< EVENT HUB CONNECTION STRING >>")
             .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
@@ -105,7 +105,7 @@ class Program {
             .processError(errorContext -> {
                 System.out.println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
             })
-            .buildEventProcessor();
+            .buildEventProcessorClient();
 
         // This will start the processor. It will start processing events from all partitions.
         eventProcessorClient.start();
@@ -150,10 +150,9 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [source_code]: ./
-[source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
+[source_eventprocessorclient]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessorClient.java
 [source_blobcheckpointstore]: ./src/main/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobCheckpointStore.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
-[source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs-checkpointstore-blob%2FREADME.png)

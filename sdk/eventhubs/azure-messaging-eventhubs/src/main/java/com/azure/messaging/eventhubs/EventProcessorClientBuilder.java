@@ -7,6 +7,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.Configuration;
@@ -26,11 +27,12 @@ import reactor.core.scheduler.Scheduler;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
- * EventProcessorClient}. Calling {@link #buildEventProcessorClient()} constructs a new instance of {@link EventProcessorClient}.
+ * EventProcessorClient}. Calling {@link #buildEventProcessorClient()} constructs a new instance of {@link
+ * EventProcessorClient}.
  *
  * <p>
- * To create an instance of {@link EventProcessorClient} that processes events with user-provided callback, configure the
- * following fields:
+ * To create an instance of {@link EventProcessorClient} that processes events with user-provided callback, configure
+ * the following fields:
  *
  * <ul>
  * <li>{@link #consumerGroup(String) Consumer group name}.</li>
@@ -57,7 +59,9 @@ import reactor.core.scheduler.Scheduler;
  *
  * @see EventProcessorClient
  * @see EventHubConsumerClient
+ * @see EventHubConsumerAsyncClient
  */
+@ServiceClientBuilder(serviceClients = EventProcessorClient.class)
 public class EventProcessorClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(EventProcessorClientBuilder.class);
@@ -95,8 +99,8 @@ public class EventProcessorClientBuilder {
      * that the Event Hub name and the shared access key properties are contained in this connection string.
      * @return The updated {@link EventProcessorClientBuilder} object.
      * @throws NullPointerException if {@code connectionString} is {@code null}.
-     * @throws IllegalArgumentException if {@code connectionString} is empty. Or, the {@code connectionString}
-     * does not contain the "EntityPath" key, which is the name of the Event Hub instance.
+     * @throws IllegalArgumentException if {@code connectionString} is empty. Or, the {@code connectionString} does not
+     * contain the "EntityPath" key, which is the name of the Event Hub instance.
      * @throws AzureException If the shared access signature token credential could not be created using the connection
      * string.
      */
@@ -221,8 +225,8 @@ public class EventProcessorClientBuilder {
      * checkpoint information.
      *
      * <p>
-     * Users can, optionally, provide their own implementation of {@link CheckpointStore} which will store ownership
-     * and checkpoint information.
+     * Users can, optionally, provide their own implementation of {@link CheckpointStore} which will store ownership and
+     * checkpoint information.
      * </p>
      *
      * @param checkpointStore Implementation of {@link CheckpointStore}.
@@ -287,20 +291,20 @@ public class EventProcessorClientBuilder {
     }
 
     /**
-     * This will create a new {@link EventProcessorClient} configured with the options set in this builder. Each call to this
-     * method will return a new instance of {@link EventProcessorClient}.
+     * This will create a new {@link EventProcessorClient} configured with the options set in this builder. Each call to
+     * this method will return a new instance of {@link EventProcessorClient}.
      *
      * <p>
      * All partitions processed by this {@link EventProcessorClient} will start processing from {@link
      * EventPosition#earliest() earliest} available event in the respective partitions.
      * </p>
      *
+     * @return A new instance of {@link EventProcessorClient}.
      * @throws NullPointerException if {@code processEvent} or {@code checkpointStore} or {@code consumerGroup} is
      * {@code null}.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
-     * @return A new instance of {@link EventProcessorClient}.
      */
     public EventProcessorClient buildEventProcessorClient() {
         Objects.requireNonNull(processEvent, "'processEvent' cannot be null");

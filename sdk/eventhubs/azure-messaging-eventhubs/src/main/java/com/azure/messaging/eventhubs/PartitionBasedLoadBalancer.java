@@ -28,10 +28,10 @@ import static java.util.stream.Collectors.toList;
  * This class is responsible for balancing the load of processing events from all partitions of an Event Hub by
  * distributing the number of partitions uniformly among all the  active {@link EventProcessorClient EventProcessors}.
  * <p>
- * This load balancer will retrieve partition ownership details from the {@link CheckpointStore} to find the number
- * of active {@link EventProcessorClient EventProcessors}. It uses the last modified time to decide if an EventProcessor is
- * active. If a partition ownership entry has not be updated for a specified duration of time, the owner of that
- * partition is considered inactive and the partition is available for other EventProcessors to own.
+ * This load balancer will retrieve partition ownership details from the {@link CheckpointStore} to find the number of
+ * active {@link EventProcessorClient EventProcessorCients}. It uses the last modified time to decide if an
+ * EventProcessor is active. If a partition ownership entry has not be updated for a specified duration of time, the
+ * owner of that partition is considered inactive and the partition is available for other EventProcessors to own.
  * </p>
  */
 final class PartitionBasedLoadBalancer {
@@ -51,8 +51,7 @@ final class PartitionBasedLoadBalancer {
     /**
      * Creates an instance of PartitionBasedLoadBalancer for the given Event Hub name and consumer group.
      *
-     * @param checkpointStore The partition manager that this load balancer will use to read/update ownership
-     * details.
+     * @param checkpointStore The partition manager that this load balancer will use to read/update ownership details.
      * @param eventHubAsyncClient The asynchronous Event Hub client used to consume events.
      * @param eventHubName The Event Hub name the {@link EventProcessorClient} is associated with.
      * @param consumerGroupName The consumer group name the {@link EventProcessorClient} is associated with.
@@ -78,8 +77,8 @@ final class PartitionBasedLoadBalancer {
 
     /**
      * This is the main method responsible for load balancing. This method is expected to be invoked by the {@link
-     * EventProcessorClient} periodically. Every call to this method will result in this {@link EventProcessorClient} owning <b>at
-     * most one</b> new partition.
+     * EventProcessorClient} periodically. Every call to this method will result in this {@link EventProcessorClient}
+     * owning <b>at most one</b> new partition.
      * <p>
      * The load is considered balanced when no active EventProcessor owns 2 partitions more than any other active
      * EventProcessor. Given that each invocation to this method results in ownership claim of at most one partition,
@@ -317,7 +316,7 @@ final class PartitionBasedLoadBalancer {
             .filter(entry -> {
                 return (System.currentTimeMillis() - entry.getValue().getLastModifiedTime() < TimeUnit.SECONDS
                     .toMillis(inactiveTimeLimitInSeconds))
-                           && !CoreUtils.isNullOrEmpty(entry.getValue().getOwnerId());
+                    && !CoreUtils.isNullOrEmpty(entry.getValue().getOwnerId());
             }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 

@@ -33,14 +33,14 @@ import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
- * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}. Each
- * partition pump is an {@link EventHubConsumerClient} that is receiving events from partitions this
+ * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}.
+ * Each partition pump is an {@link EventHubConsumerClient} that is receiving events from partitions this
  * {@link EventProcessorClient} has claimed ownership of.
  *
  * <p>
- * New partition pumps are created when this {@link EventProcessorClient} claims ownership of a new partition. When the {@link
- * EventProcessorClient} is requested to stop, this class is responsible for stopping all event processing tasks and closing
- * all connections to the Event Hub.
+ * New partition pumps are created when this {@link EventProcessorClient} claims ownership of a new partition. When the
+ * {@link EventProcessorClient} is requested to stop, this class is responsible for stopping all event processing tasks
+ * and closing all connections to the Event Hub.
  * </p>
  */
 class PartitionPumpManager {

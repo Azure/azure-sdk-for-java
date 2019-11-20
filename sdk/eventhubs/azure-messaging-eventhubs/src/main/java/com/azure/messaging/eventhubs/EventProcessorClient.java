@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -29,6 +30,7 @@ import java.util.function.Supplier;
  *
  * @see EventProcessorClientBuilder
  */
+@ServiceClient(builder = EventProcessorClientBuilder.class)
 public class EventProcessorClient {
 
     private static final long INTERVAL_IN_SECONDS = 10; // run the load balancer every 10 seconds

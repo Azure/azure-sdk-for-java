@@ -60,8 +60,13 @@ public class EventProcessorBlobCheckpointStoreSample {
             .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
 
         EventProcessorClient eventProcessorClient = eventProcessorClientBuilder.buildEventProcessorClient();
+        // Starts the event processor
         eventProcessorClient.start();
+
+        // Perform other tasks while the event processor is processing events in the background.
         TimeUnit.MINUTES.sleep(5);
+
+        // Stops the event processor
         eventProcessorClient.stop();
     }
 
