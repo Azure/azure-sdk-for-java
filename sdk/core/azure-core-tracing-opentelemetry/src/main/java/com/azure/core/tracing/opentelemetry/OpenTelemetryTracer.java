@@ -92,7 +92,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     @Override
     public void end(int responseCode, Throwable throwable, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null.");
-        final Span span = getOrDefault(PARENT_SPAN_KEY, null, Span.class, context);
+        final Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         if (span == null) {
             return;
         }
@@ -114,7 +114,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             return;
         }
 
-        final Span span = getOrDefault(PARENT_SPAN_KEY, null, Span.class, context);
+        final Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         if (span != null) {
             span.setAttribute(key, AttributeValue.stringAttributeValue(value));
         } else {
@@ -135,7 +135,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public void end(String statusMessage, Throwable throwable, Context context) {
-        final Span span = getOrDefault(PARENT_SPAN_KEY, null, Span.class, context);
+        final Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         if (span == null) {
             logger.warning("Failed to find span to end it.");
             return;
@@ -150,13 +150,13 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
     @Override
     public void addLink(Context context) {
-        final Builder spanBuilder = getOrDefault(SPAN_BUILDER_KEY, null, Builder.class, context);
+        final Builder spanBuilder = getOrDefault(context, SPAN_BUILDER_KEY, null, Builder.class);
         if (spanBuilder == null) {
             logger.warning("Failed to find spanBuilder to link it.");
             return;
         }
 
-        final SpanContext spanContext = getOrDefault(SPAN_CONTEXT_KEY, null, SpanContext.class, context);
+        final SpanContext spanContext = getOrDefault(context, SPAN_CONTEXT_KEY, null, SpanContext.class);
         if (spanContext == null) {
             logger.warning("Failed to find span context to link it.");
             return;
@@ -186,7 +186,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private Context startScopedSpan(String spanName, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null.");
         Span span;
-        SpanContext spanContext = getOrDefault(SPAN_CONTEXT_KEY, null, SpanContext.class, context);
+        SpanContext spanContext = getOrDefault(context, SPAN_CONTEXT_KEY, null, SpanContext.class);
         if (spanContext != null) {
             span = startSpanWithRemoteParent(spanName, spanContext);
         } else {
@@ -238,10 +238,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         span.setAttribute(COMPONENT, AttributeValue.stringAttributeValue(parseComponentValue(spanName)));
         span.setAttribute(
             MESSAGE_BUS_DESTINATION,
-            AttributeValue.stringAttributeValue(getOrDefault(ENTITY_PATH_KEY, "", String.class, context)));
+            AttributeValue.stringAttributeValue(getOrDefault(context, ENTITY_PATH_KEY, "", String.class)));
         span.setAttribute(
             PEER_ENDPOINT,
-            AttributeValue.stringAttributeValue(getOrDefault(HOST_NAME_KEY, "", String.class, context)));
+            AttributeValue.stringAttributeValue(getOrDefault(context, HOST_NAME_KEY, "", String.class)));
     }
 
     /**
@@ -270,8 +270,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @return A {@code Span.Builder} to create and start a new {@code Span}.
      */
     private Builder getSpanBuilder(String spanName, Context context) {
-        Span parentSpan =  getOrDefault(PARENT_SPAN_KEY, null, Span.class, context);
-        String spanNameKey =  getOrDefault(USER_SPAN_NAME_KEY, null, String.class, context);
+        Span parentSpan =  getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
+        String spanNameKey =  getOrDefault(context, USER_SPAN_NAME_KEY, null, String.class);
 
         if (spanNameKey == null) {
             spanNameKey = spanName;
@@ -293,7 +293,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @return The T type of raw class object
      */
     @SuppressWarnings("unchecked")
-    private <T> T getOrDefault(Object key, T defaultValue, Class<T> clazz, Context context) {
+    private <T> T getOrDefault(Context context, String key, T defaultValue, Class<T> clazz) {
         final Optional<Object> optional = context.getData(key);
         final Object result = optional.filter(value -> clazz.isAssignableFrom(value.getClass())).orElseGet(() -> {
             logger.warning("Could not extract key '{}' of type '{}' from context.", key, clazz);
