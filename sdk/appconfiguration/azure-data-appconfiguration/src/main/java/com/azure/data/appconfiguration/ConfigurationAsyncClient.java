@@ -444,7 +444,7 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Set the {@link ConfigurationSetting} to read-only or not read-only with a matching {@code key},
+     * Sets the read-only status for the {@link ConfigurationSetting}. If {@code isReadOnly} is {@code true} the configuration setting will be read-only, {@code false} will clear the read-only status.
      * and optional {@code label} combination. If the {@code isReadOnly} is true or null, the setting will be set to
      * read-only. If false, the setting will not be read-only.
      *
