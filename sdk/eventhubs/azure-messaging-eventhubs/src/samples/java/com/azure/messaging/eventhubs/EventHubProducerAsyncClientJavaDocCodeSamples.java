@@ -24,9 +24,12 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
      */
     public void instantiate() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation
-        // The required parameters is a way to authenticate with Event Hubs using credentials.
+        // The required parameter is a way to authenticate with Event Hubs using credentials.
+        // The connectionString provides a way to authenticate with Event Hub.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
+            .connectionString(
+                "Endpoint={fully-qualified-namespace}/;SharedAccessKeyName={policy-name};SharedAccessKey={key}",
+                "event-hub-name")
             .buildAsyncProducer();
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation
 

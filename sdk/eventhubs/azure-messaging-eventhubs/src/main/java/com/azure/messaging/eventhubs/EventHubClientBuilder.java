@@ -39,9 +39,9 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 
 /**
- * This class provides a fluent builder API to aid the instantiation of {@link EventHubAsyncClient} and {@link
- * EventHubClient}. Calling {@link #buildAsyncClient() buildAsyncClient()} or {@link #buildClient() buildClient()}
- * constructs an instance of the respective client.
+ * This class provides a fluent builder API to aid the instantiation of {@link EventHubProducerAsyncClient},
+ * {@link EventHubProducerClient}, {@link EventHubConsumerAsyncClient}, and {@link EventHubConsumerClient}. Calling any
+ * of the {@code .build*Client()} methods will create an instance of the respective client.
  *
  * <p>
  * <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
@@ -57,24 +57,28 @@ import java.util.ServiceLoader;
  * </ul>
  *
  * <p>
- * <strong>Starting position</strong>, <strong>consumer group</strong>, and <strong>credentials</strong> are
- * <strong>required</strong> when creating an {@link EventHubConsumerAsyncClient} or {@link EventHubConsumerClient}.
- * {@link EventHubClientBuilder#prefetchCount(int) Prefetch } can be supplied for customized to change default prefetch.
+ * <strong><strong>Consumer group</strong> and <strong>credentials</strong> are <strong>required</strong> when creating
+ * an {@link EventHubConsumerAsyncClient} or {@link EventHubConsumerClient}.
+ * {@link EventHubClientBuilder#prefetchCount(int) Prefetch} can be supplied to change the default prefetch.
  * </p>
  *
  * <p><strong>Creating an asynchronous {@link EventHubProducerAsyncClient} using Event Hubs namespace connection string
  * </strong></p>
+ * <p>In the sample, the namespace connection string is used to create an asynchronous Event Hub producer. Notice how
+ * {@code "EntityPath"} <b>is not</b> a component in the connection string.</p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation}
  *
  * <p><strong>Creating a synchronous {@link EventHubConsumerClient} using an Event Hub instance connection string
  * </strong></p>
+ * <p>In the sample, the namespace connection string is used to create a synchronous Event Hub consumer. Notice how
+ * {@code "EntityPath"} <b>is</b> in the connection string.</p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
  *
  * <p><strong>Creating producers and consumers that share the same connection</strong></p>
  * <p>By default, a dedicated connection is created for each producer and consumer created from the builder. If users
- * wish to leverage the same underlying connection, they can toggle {@link #shareConnection() shareConnection()}.</p>
+ * wish to use the same underlying connection, they can toggle {@link #shareConnection() shareConnection()}.</p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation}
  *
