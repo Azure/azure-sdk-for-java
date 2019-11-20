@@ -57,21 +57,20 @@ import java.util.ServiceLoader;
  * </ul>
  *
  * <p>
- * <strong><strong>Consumer group</strong> and <strong>credentials</strong> are <strong>required</strong> when creating
- * an {@link EventHubConsumerAsyncClient} or {@link EventHubConsumerClient}.
- * {@link EventHubClientBuilder#prefetchCount(int) Prefetch} can be supplied to change the default prefetch.
+ * In addition, <strong>consumer group</strong> is required when creating {@link EventHubConsumerAsyncClient} or
+ * {@link EventHubConsumerClient}.
  * </p>
  *
  * <p><strong>Creating an asynchronous {@link EventHubProducerAsyncClient} using Event Hubs namespace connection string
  * </strong></p>
- * <p>In the sample, the namespace connection string is used to create an asynchronous Event Hub producer. Notice how
+ * <p>In the sample, the namespace connection string is used to create an asynchronous Event Hub producer. Notice that
  * {@code "EntityPath"} <b>is not</b> a component in the connection string.</p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation}
  *
  * <p><strong>Creating a synchronous {@link EventHubConsumerClient} using an Event Hub instance connection string
  * </strong></p>
- * <p>In the sample, the namespace connection string is used to create a synchronous Event Hub consumer. Notice how
+ * <p>In the sample, the namespace connection string is used to create a synchronous Event Hub consumer. Notice that
  * {@code "EntityPath"} <b>is</b> in the connection string.</p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
@@ -367,7 +366,7 @@ public class EventHubClientBuilder {
      *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
      *     {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubConsumerAsyncClient buildAsyncConsumer() {
+    public EventHubConsumerAsyncClient buildAsyncConsumerClient() {
         if (CoreUtils.isNullOrEmpty(consumerGroup)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be null or an empty "
                 + "string. using EventHubClientBuilder.consumerGroup(String)"));
@@ -387,7 +386,7 @@ public class EventHubClientBuilder {
      *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
      *     {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubConsumerClient buildConsumer() {
+    public EventHubConsumerClient buildConsumerClient() {
         return buildClient().createConsumer(consumerGroup, prefetchCount);
     }
 
@@ -401,7 +400,7 @@ public class EventHubClientBuilder {
      * either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy
      * is specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubProducerAsyncClient buildAsyncProducer() {
+    public EventHubProducerAsyncClient buildAsyncProducerClient() {
         return buildAsyncClient().createProducer();
     }
 
@@ -415,7 +414,7 @@ public class EventHubClientBuilder {
      * either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy
      * is specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubProducerClient buildProducer() {
+    public EventHubProducerClient buildProducerClient() {
         return buildClient().createProducer();
     }
 

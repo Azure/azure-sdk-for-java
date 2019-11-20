@@ -25,7 +25,7 @@ public class EventHubConsumerJavaDocCodeSamples {
             .connectionString(
                 "Endpoint={eh-namespace}/;SharedAccessKeyName={policy-name};SharedAccessKey={key};Entity-Path={hub-name}")
             .consumerGroup("$DEFAULT")
-            .buildConsumer();
+            .buildConsumerClient();
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
 
         consumer.close();
@@ -38,7 +38,7 @@ public class EventHubConsumerJavaDocCodeSamples {
         EventHubConsumerClient consumer = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildConsumer();
+            .buildConsumerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration
         Instant twelveHoursAgo = Instant.now().minus(Duration.ofHours(12));

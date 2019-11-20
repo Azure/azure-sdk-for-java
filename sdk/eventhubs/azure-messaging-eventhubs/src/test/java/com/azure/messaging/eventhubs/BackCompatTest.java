@@ -54,7 +54,7 @@ public class BackCompatTest extends IntegrationTestBase {
     protected void beforeTest() {
         client = createBuilder().buildAsyncClient();
         consumer = createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         producer = client.createProducer();

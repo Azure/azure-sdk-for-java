@@ -82,11 +82,11 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             logger.info("Already pushed events to partition. Skipping.");
         } else {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(builder.buildAsyncProducer(), NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(builder.buildAsyncProducerClient(), NUMBER_OF_EVENTS, options);
         }
 
         consumer = builder.consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
     }
 
     @Override
