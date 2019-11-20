@@ -462,14 +462,14 @@ public final class ConfigurationAsyncClient {
      * @param label The label of configuration setting to read-only, or optionally, null if the label is not desired
      * in the request.
      * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
-     * If it is true or null, set the setting to read-only. If false, the setting won't set to read-only.
+     * If it is true, set the setting to read-only. If false, the setting won't set to read-only.
      * @return The {@link ConfigurationSetting} that is read-only, or an empty Mono if a key collision occurs or the
      * key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> setReadOnly(String key, String label, Boolean isReadOnly) {
+    public Mono<ConfigurationSetting> setReadOnly(String key, String label, boolean isReadOnly) {
         try {
             return withContext(context -> setReadOnly(
                 new ConfigurationSetting().setKey(key).setLabel(label), isReadOnly, context))
@@ -497,7 +497,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
      * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
-     * If it is true or null, set the setting to read-only. If false, the setting won't set to read-only.
+     * If it is true, set the setting to read-only. If false, the setting won't set to read-only.
      * @return A REST response containing the read-only or not read-only ConfigurationSetting if {@code isReadOnly}
      * is true or null, or false respectively. Or return {@code null} if the setting didn't exist.
      * {@code null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value.
@@ -507,7 +507,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setReadOnlyWithResponse(ConfigurationSetting setting,
-                                                                        Boolean isReadOnly) {
+                                                                        boolean isReadOnly) {
         try {
             return withContext(context -> setReadOnly(setting, isReadOnly, context));
         } catch (RuntimeException ex) {
@@ -515,12 +515,12 @@ public final class ConfigurationAsyncClient {
         }
     }
 
-    Mono<Response<ConfigurationSetting>> setReadOnly(ConfigurationSetting setting, Boolean isReadOnly,
+    Mono<Response<ConfigurationSetting>> setReadOnly(ConfigurationSetting setting, boolean isReadOnly,
                                                      Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        if (isReadOnly == null || isReadOnly == true) {
+        if (isReadOnly == true) {
             return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
                 null, context)
                 .doOnSubscribe(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))

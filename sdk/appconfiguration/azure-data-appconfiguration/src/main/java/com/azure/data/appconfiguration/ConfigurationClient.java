@@ -321,7 +321,7 @@ public final class ConfigurationClient {
      * @param label The label of configuration setting to set to read-only or not read-only based on the
      * {@code isReadOnly} value, or optionally, null if the label is not desired in the request.
      * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
-     * If it is true or null, set the setting to read-only. If false, the setting won't set to read-only.
+     * If it is true, set the setting to read-only. If false, the setting won't set to read-only.
      * @return The {@link ConfigurationSetting} that is read-only, or {@code null} is also returned if a key collision
      * occurs or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -351,7 +351,7 @@ public final class ConfigurationClient {
      *
      * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
      * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
-     * If it is true or null, set the setting to read-only. If false, the setting won't set to read-only.
+     * If it is true, set the setting to read-only. If false, the setting won't set to read-only.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the read-only or not read-only ConfigurationSetting if {@code isReadOnly}
      * is true or null, or false respectively. Or return {@code null} if the setting didn't exist.
