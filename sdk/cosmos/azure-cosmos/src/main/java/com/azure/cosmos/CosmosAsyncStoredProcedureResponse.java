@@ -8,12 +8,15 @@ import com.azure.cosmos.implementation.StoredProcedureResponse;
 
 public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosStoredProcedureProperties> {
 
+    @SuppressWarnings("EnforceFinalFields")
     private CosmosAsyncStoredProcedure storedProcedure;
+    @SuppressWarnings("EnforceFinalFields")
     private StoredProcedureResponse storedProcedureResponse;
 
-    CosmosAsyncStoredProcedureResponse(ResourceResponse<StoredProcedure> response, CosmosAsyncContainer cosmosContainer) {
+    CosmosAsyncStoredProcedureResponse(ResourceResponse<StoredProcedure> response,
+                                       CosmosAsyncContainer cosmosContainer) {
         super(response);
-        if(response.getResource() != null){
+        if (response.getResource() != null) {
             super.setProperties(new CosmosStoredProcedureProperties(response));
             storedProcedure = new CosmosAsyncStoredProcedure(this.getProperties().getId(), cosmosContainer);
         }
@@ -26,6 +29,7 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
 
     /**
      * Gets the stored procedure properties
+     *
      * @return the stored procedure properties or null
      */
     public CosmosStoredProcedureProperties getProperties() {
@@ -34,6 +38,7 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
 
     /**
      * Gets the stored procedure object
+     *
      * @return the stored procedure object or null
      */
     public CosmosAsyncStoredProcedure getStoredProcedure() {
@@ -47,7 +52,7 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
      */
     @Override
     public String getActivityId() {
-        if(storedProcedureResponse != null){
+        if (storedProcedureResponse != null) {
             return this.storedProcedureResponse.getActivityId();
         }
         return super.getActivityId();
@@ -60,7 +65,7 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
      */
     @Override
     public String getSessionToken() {
-        if(storedProcedureResponse != null){
+        if (storedProcedureResponse != null) {
             return this.storedProcedureResponse.getSessionToken();
         }
         return super.getSessionToken();
@@ -73,7 +78,7 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
      */
     @Override
     public int getStatusCode() {
-        if(storedProcedureResponse != null){
+        if (storedProcedureResponse != null) {
             return this.storedProcedureResponse.getStatusCode();
         }
         return super.getStatusCode();
@@ -86,7 +91,7 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
      */
     @Override
     public double getRequestCharge() {
-        if(storedProcedureResponse != null){
+        if (storedProcedureResponse != null) {
             return storedProcedureResponse.getRequestCharge();
         }
         return super.getRequestCharge();

@@ -7,12 +7,14 @@ import com.azure.cosmos.implementation.Trigger;
 
 public class CosmosAsyncTriggerResponse extends CosmosResponse<CosmosTriggerProperties> {
 
+    @SuppressWarnings("EnforceFinalFields")
     private CosmosTriggerProperties cosmosTriggerProperties;
+    @SuppressWarnings("EnforceFinalFields")
     private CosmosAsyncTrigger cosmosTrigger;
 
     CosmosAsyncTriggerResponse(ResourceResponse<Trigger> response, CosmosAsyncContainer container) {
         super(response);
-        if(response.getResource() != null) {
+        if (response.getResource() != null) {
             super.setProperties(new CosmosTriggerProperties(response));
             cosmosTriggerProperties = new CosmosTriggerProperties(response);
             cosmosTrigger = new CosmosAsyncTrigger(cosmosTriggerProperties.getId(), container);

@@ -29,20 +29,20 @@ public class CosmosScripts {
     /* CosmosAsyncStoredProcedure operations */
 
     /**
-     * Create stored procedure 
+     * Create stored procedure
      *
      * @param properties the properties
      * @return the cosmos sync stored procedure response
      * @throws CosmosClientException the cosmos client exception
      */
     public CosmosStoredProcedureResponse createStoredProcedure(CosmosStoredProcedureProperties properties)
-            throws CosmosClientException {
+        throws CosmosClientException {
         return mapStoredProcedureResponseAndBlock(asyncScripts.createStoredProcedure(properties,
-                new CosmosStoredProcedureRequestOptions()));
+            new CosmosStoredProcedureRequestOptions()));
     }
 
     /**
-     * Create stored procedure cosmos 
+     * Create stored procedure cosmos
      *
      * @param properties the properties
      * @param options the options
@@ -50,9 +50,10 @@ public class CosmosScripts {
      * @throws CosmosClientException the cosmos client exception
      */
     public CosmosStoredProcedureResponse createStoredProcedure(CosmosStoredProcedureProperties properties,
-                                                               CosmosStoredProcedureRequestOptions options) throws CosmosClientException {
+                                                               CosmosStoredProcedureRequestOptions options)
+                                                                throws CosmosClientException {
         return mapStoredProcedureResponseAndBlock(asyncScripts.createStoredProcedure(properties,
-                options));
+            options));
     }
 
     /**
@@ -98,21 +99,22 @@ public class CosmosScripts {
      */
     public CosmosStoredProcedure getStoredProcedure(String id) {
         return new CosmosStoredProcedure(id,
-                this.container,
-                asyncScripts.getStoredProcedure(id));
+            this.container,
+            asyncScripts.getStoredProcedure(id));
     }
 
 
     /* UDF Operations */
 
     /**
-     * Create user defined function 
+     * Create user defined function
      *
      * @param properties the properties
      * @return the cosmos sync user defined function response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserDefinedFunctionResponse createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties) throws CosmosClientException {
+    public CosmosUserDefinedFunctionResponse createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties)
+                                                                                        throws CosmosClientException {
         return mapUDFResponseAndBlock(asyncScripts.createUserDefinedFunction(properties));
     }
 
@@ -122,7 +124,8 @@ public class CosmosScripts {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> readAllUserDefinedFunctions(FeedOptions options) {
+    public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> readAllUserDefinedFunctions(
+                                                                                                FeedOptions options) {
         return getFeedIterator(asyncScripts.readAllUserDefinedFunctions(options));
     }
 
@@ -158,12 +161,12 @@ public class CosmosScripts {
      */
     public CosmosUserDefinedFunction getUserDefinedFunction(String id) {
         return new CosmosUserDefinedFunction(id,
-                this.container,
-                asyncScripts.getUserDefinedFunction(id));
+            this.container,
+            asyncScripts.getUserDefinedFunction(id));
     }
 
     /**
-     * Create trigger 
+     * Create trigger
      *
      * @param properties the properties
      * @return the cosmos sync trigger response
@@ -215,8 +218,8 @@ public class CosmosScripts {
      */
     public CosmosTrigger getTrigger(String id) {
         return new CosmosTrigger(id,
-                this.container,
-                asyncScripts.getTrigger(id));
+            this.container,
+            asyncScripts.getTrigger(id));
     }
 
     /**
@@ -226,12 +229,12 @@ public class CosmosScripts {
      * @return the cosmos sync stored procedure response
      * @throws CosmosClientException the cosmos client exception
      */
-    CosmosStoredProcedureResponse mapStoredProcedureResponseAndBlock(Mono<CosmosAsyncStoredProcedureResponse> storedProcedureResponseMono)
-            throws CosmosClientException {
+    CosmosStoredProcedureResponse mapStoredProcedureResponseAndBlock(
+        Mono<CosmosAsyncStoredProcedureResponse> storedProcedureResponseMono) throws CosmosClientException {
         try {
             return storedProcedureResponseMono
-                           .map(this::convertResponse)
-                           .block();
+                       .map(this::convertResponse)
+                       .block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
@@ -264,11 +267,11 @@ public class CosmosScripts {
      * @throws CosmosClientException the cosmos client exception
      */
     CosmosUserDefinedFunctionResponse mapUDFResponseAndBlock(Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono)
-            throws CosmosClientException {
+        throws CosmosClientException {
         try {
             return responseMono
-                           .map(this::convertResponse)
-                           .block();
+                       .map(this::convertResponse)
+                       .block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
@@ -304,11 +307,11 @@ public class CosmosScripts {
      * @throws CosmosClientException the cosmos client exception
      */
     CosmosTriggerResponse mapTriggerResponseAndBlock(Mono<CosmosAsyncTriggerResponse> responseMono)
-            throws CosmosClientException {
+        throws CosmosClientException {
         try {
             return responseMono
-                           .map(this::convertResponse)
-                           .block();
+                       .map(this::convertResponse)
+                       .block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {

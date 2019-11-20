@@ -63,7 +63,7 @@ public class Trigger extends Resource {
                     StringUtils.upperCase(super.getString(Constants.Properties.TRIGGER_TYPE)));
         } catch (IllegalArgumentException e) {
             // ignore the exception and return the default
-            this.getLogger().warn("INVALID triggerType value {}.", super.getString(Constants.Properties.TRIGGER_TYPE));
+            this.getLogger().warning("INVALID triggerType value {}.", super.getString(Constants.Properties.TRIGGER_TYPE));
         }
         return result;
     }
@@ -89,7 +89,7 @@ public class Trigger extends Resource {
                     StringUtils.upperCase(super.getString(Constants.Properties.TRIGGER_OPERATION)));
         } catch (IllegalArgumentException e) {
             // ignore the exception and return the default
-            this.getLogger().warn("INVALID triggerOperation value {}.", super.getString(Constants.Properties.TRIGGER_OPERATION));
+            this.getLogger().warning("INVALID triggerOperation value {}.", super.getString(Constants.Properties.TRIGGER_OPERATION));
         }
         return result;
     }

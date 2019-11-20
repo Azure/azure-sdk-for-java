@@ -26,16 +26,17 @@ import java.util.Set;
 
 class ClientSideRequestStatistics {
 
-    private final static int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
+    private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
 
-    private final static DateTimeFormatter responseTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss.SSS").withLocale(Locale.US);
+    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER = 
+        DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US);
 
-    private ZonedDateTime requestStartTime;
+    private final ZonedDateTime requestStartTime;
     private ZonedDateTime requestEndTime;
 
-    private List<StoreResponseStatistics> responseStatisticsList;
-    private List<StoreResponseStatistics> supplementalResponseStatisticsList;
-    private Map<String, AddressResolutionStatistics> addressResolutionStatistics;
+    private final List<StoreResponseStatistics> responseStatisticsList;
+    private final List<StoreResponseStatistics> supplementalResponseStatisticsList;
+    private final Map<String, AddressResolutionStatistics> addressResolutionStatistics;
 
     private List<URI> contactedReplicas;
     private Set<URI> failedReplicas;
@@ -88,8 +89,8 @@ class ClientSideRequestStatistics {
                 this.regionsContacted.add(locationEndPoint);
             }
 
-            if (storeResponseStatistics.requestOperationType == OperationType.Head ||
-                    storeResponseStatistics.requestOperationType == OperationType.HeadFeed) {
+            if (storeResponseStatistics.requestOperationType == OperationType.Head
+                    || storeResponseStatistics.requestOperationType == OperationType.HeadFeed) {
                 this.supplementalResponseStatisticsList.add(storeResponseStatistics);
             } else {
                 this.responseStatisticsList.add(storeResponseStatistics);
@@ -121,7 +122,9 @@ class ClientSideRequestStatistics {
 
         synchronized (this) {
             if (!this.addressResolutionStatistics.containsKey(identifier)) {
-                throw new IllegalArgumentException("Identifier " + identifier + " does not exist. Please call start before calling end");
+                throw new IllegalArgumentException("Identifier "
+                                                       + identifier
+                                                       + " does not exist. Please call start before calling end");
             }
 
             if (responseTime.isAfter(this.requestEndTime)) {
@@ -143,17 +146,17 @@ class ClientSideRequestStatistics {
 
             //  first trace request start time, as well as total non-head/headfeed requests made.
             stringBuilder.append("RequestStartTime: ")
-                    .append("\"").append(this.requestStartTime.format(responseTimeFormatter)).append("\"")
-                    .append(", ")
-                    .append("RequestEndTime: ")
-                    .append("\"").append(this.requestEndTime.format(responseTimeFormatter)).append("\"")
-                    .append(", ")
-                    .append("Duration: ")
-                    .append(Duration.between(requestStartTime, requestEndTime).toMillis())
-                    .append(" ms, ")
-                    .append("NUMBER of regions attempted: ")
-                    .append(this.regionsContacted.isEmpty() ? 1 : this.regionsContacted.size())
-                    .append(System.lineSeparator());
+                .append("\"").append(this.requestStartTime.format(RESPONSE_TIME_FORMATTER)).append("\"")
+                .append(", ")
+                .append("RequestEndTime: ")
+                .append("\"").append(this.requestEndTime.format(RESPONSE_TIME_FORMATTER)).append("\"")
+                .append(", ")
+                .append("Duration: ")
+                .append(Duration.between(requestStartTime, requestEndTime).toMillis())
+                .append(" ms, ")
+                .append("NUMBER of regions attempted: ")
+                .append(this.regionsContacted.isEmpty() ? 1 : this.regionsContacted.size())
+                .append(System.lineSeparator());
 
             //  take all responses here - this should be limited in number and each one contains relevant information.
             for (StoreResponseStatistics storeResponseStatistics : this.responseStatisticsList) {
@@ -166,17 +169,20 @@ class ClientSideRequestStatistics {
             }
 
             //  only take last 10 responses from this list - this has potential of having large number of entries.
-            //  since this is for establishing consistency, we can make do with the last responses to paint a meaningful picture.
+            //  since this is for establishing consistency, we can make do with the last responses to paint a 
+            //  meaningful picture.
             int supplementalResponseStatisticsListCount = this.supplementalResponseStatisticsList.size();
-            int initialIndex = Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
+            int initialIndex =
+                Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
             if (initialIndex != 0) {
                 stringBuilder.append("  -- Displaying only the last ")
-                        .append(MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING)
-                        .append(" head/headfeed requests. Total head/headfeed requests: ")
-                        .append(supplementalResponseStatisticsListCount);
+                    .append(MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING)
+                    .append(" head/headfeed requests. Total head/headfeed requests: ")
+                    .append(supplementalResponseStatisticsListCount);
             }
             for (int i = initialIndex; i < supplementalResponseStatisticsListCount; i++) {
-                stringBuilder.append(this.supplementalResponseStatisticsList.get(i).toString()).append(System.lineSeparator());
+                stringBuilder.append(this.supplementalResponseStatisticsList.get(i).toString())
+                    .append(System.lineSeparator());
             }
         }
         String requestStatsString = stringBuilder.toString();
@@ -214,7 +220,7 @@ class ClientSideRequestStatistics {
         if (dateTime == null) {
             return null;
         }
-        return dateTime.format(responseTimeFormatter);
+        return dateTime.format(RESPONSE_TIME_FORMATTER);
     }
 
     private class StoreResponseStatistics {
@@ -226,12 +232,17 @@ class ClientSideRequestStatistics {
 
         @Override
         public String toString() {
-            return "StoreResponseStatistics{" +
-                    "requestResponseTime=\"" + formatDateTime(requestResponseTime) + "\"" +
-                    ", storeResult=" + storeResult +
-                    ", requestResourceType=" + requestResourceType +
-                    ", requestOperationType=" + requestOperationType +
-                    '}';
+            return "StoreResponseStatistics{"
+                       + "requestResponseTime=\""
+                       + formatDateTime(requestResponseTime)
+                       + "\""
+                       + ", storeResult="
+                       + storeResult
+                       + ", requestResourceType="
+                       + requestResourceType 
+                       + ", requestOperationType="
+                       + requestOperationType
+                       + '}';
         }
     }
 
@@ -245,11 +256,13 @@ class ClientSideRequestStatistics {
 
         @Override
         public String toString() {
-            return "AddressResolutionStatistics{" +
-                    "startTime=\"" + formatDateTime(startTime) + "\"" +
-                    ", endTime=\"" + formatDateTime(endTime) + "\"" +
-                    ", targetEndpoint='" + targetEndpoint + '\'' +
-                    '}';
+            return "AddressResolutionStatistics{"
+                       + "startTime=\"" + formatDateTime(startTime) + "\""
+                       + ", endTime=\"" + formatDateTime(endTime)
+                       + "\""
+                       + ", targetEndpoint='" + targetEndpoint
+                       + '\''
+                       + '}';
         }
     }
 }

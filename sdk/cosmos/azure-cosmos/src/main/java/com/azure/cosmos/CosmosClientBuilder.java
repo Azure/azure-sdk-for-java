@@ -43,6 +43,7 @@ public class CosmosClientBuilder {
 
     /**
      * Gets the token resolver
+     *
      * @return the token resolver
      */
     public TokenResolver getTokenResolver() {
@@ -51,7 +52,8 @@ public class CosmosClientBuilder {
 
     /**
      * Sets the token resolver
-     * @param tokenResolver
+     *
+     * @param tokenResolver the token resolver
      * @return current builder
      */
     public CosmosClientBuilder setTokenResolver(TokenResolver tokenResolver) {
@@ -61,6 +63,7 @@ public class CosmosClientBuilder {
 
     /**
      * Gets the Azure Cosmos DB endpoint the SDK will connect to
+     *
      * @return the endpoint
      */
     public String getEndpoint() {
@@ -69,6 +72,7 @@ public class CosmosClientBuilder {
 
     /**
      * Sets the Azure Cosmos DB endpoint the SDK will connect to
+     *
      * @param endpoint the service endpoint
      * @return current Builder
      */
@@ -80,6 +84,7 @@ public class CosmosClientBuilder {
     /**
      * Gets either a master or readonly key used to perform authentication
      * for accessing resource.
+     *
      * @return the key
      */
     public String getKey() {
@@ -101,6 +106,7 @@ public class CosmosClientBuilder {
     /**
      * Sets a resource token used to perform authentication
      * for accessing resource.
+     *
      * @return the resourceToken
      */
     public String getResourceToken() {
@@ -122,6 +128,7 @@ public class CosmosClientBuilder {
     /**
      * Gets the permission list, which contains the
      * resource tokens needed to access resources.
+     *
      * @return the permission list
      */
     public List<Permission> getPermissions() {
@@ -142,6 +149,7 @@ public class CosmosClientBuilder {
 
     /**
      * Gets the {@link ConsistencyLevel} to be used
+     *
      * @return the consistency level
      */
     public ConsistencyLevel getConsistencyLevel() {
@@ -150,6 +158,7 @@ public class CosmosClientBuilder {
 
     /**
      * Sets the {@link ConsistencyLevel} to be used
+     *
      * @param desiredConsistencyLevel {@link ConsistencyLevel}
      * @return current Builder
      */
@@ -160,6 +169,7 @@ public class CosmosClientBuilder {
 
     /**
      * Gets the (@link ConnectionPolicy) to be used
+     *
      * @return the connection policy
      */
     public ConnectionPolicy getConnectionPolicy() {
@@ -168,6 +178,7 @@ public class CosmosClientBuilder {
 
     /**
      * Sets the {@link ConnectionPolicy} to be used
+     *
      * @param connectionPolicy {@link ConnectionPolicy}
      * @return current Builder
      */
@@ -178,6 +189,7 @@ public class CosmosClientBuilder {
 
     /**
      * Gets the {@link CosmosKeyCredential} to be used
+     *
      * @return cosmosKeyCredential
      */
     public CosmosKeyCredential getCosmosKeyCredential() {
@@ -186,6 +198,7 @@ public class CosmosClientBuilder {
 
     /**
      * Sets the {@link CosmosKeyCredential} to be used
+     *
      * @param cosmosKeyCredential {@link CosmosKeyCredential}
      * @return current builder
      */
@@ -196,6 +209,7 @@ public class CosmosClientBuilder {
 
     /**
      * Builds a cosmos configuration object with the provided properties
+     *
      * @return CosmosAsyncClient
      */
     public CosmosAsyncClient buildAsyncClient() {
@@ -205,17 +219,20 @@ public class CosmosClientBuilder {
     }
 
     private void validateConfig() {
-        ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
+        ifThrowIllegalArgException(this.serviceEndpoint == null,
+            "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
             this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty())
                 && this.tokenResolver == null && this.cosmosKeyCredential == null,
-            "cannot buildAsyncClient client without any one of key, resource token, permissions, token resolver, and cosmos key credential");
+            "cannot buildAsyncClient client without any one of key, resource token, permissions, token resolver, and "
+                + "cosmos key credential");
         ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
             "cannot buildAsyncClient client without key credential");
     }
 
     /**
      * Builds a cosmos sync client object with the provided properties
+     *
      * @return CosmosClient
      */
     public CosmosClient buildClient() {
@@ -230,7 +247,7 @@ public class CosmosClientBuilder {
 
     /**
      * Configs
-     * @param configs
+     *
      * @return current builder
      */
     CosmosClientBuilder configs(Configs configs) {

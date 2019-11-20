@@ -6,15 +6,16 @@ import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ResourceResponse;
 
 public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictProperties> {
-    private CosmosAsyncContainer container;
+    private final CosmosAsyncContainer container;
+    @SuppressWarnings("EnforceFinalFields")
     private CosmosAsyncConflict conflictClient;
 
     CosmosAsyncConflictResponse(ResourceResponse<Conflict> response, CosmosAsyncContainer container) {
         super(response);
         this.container = container;
-        if(response.getResource() == null){
+        if (response.getResource() == null) {
             super.setProperties(null);
-        }else{
+        } else {
             super.setProperties(new CosmosConflictProperties(response.getResource().toJson()));
             conflictClient = new CosmosAsyncConflict(response.getResource().getId(), container);
         }
@@ -26,6 +27,7 @@ public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictPr
 
     /**
      * Get conflict client
+     *
      * @return the cosmos conflict client
      */
     public CosmosAsyncConflict getConflict() {
@@ -34,6 +36,7 @@ public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictPr
 
     /**
      * Get conflict properties object representing the resource on the server
+     *
      * @return the conflict properties
      */
     public CosmosConflictProperties getProperties() {

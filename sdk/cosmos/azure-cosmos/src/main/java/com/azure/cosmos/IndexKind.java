@@ -23,9 +23,9 @@ public enum IndexKind {
     // The index entries are indexed to serve spatial queries like below:
     // SELECT * FROM Root r WHERE ST_DISTANCE({"type":"POINT","coordinates":[71.0589,42.3601]}, r.location) $LE 10000
     SPATIAL;
-    
+
     @Override
     public String toString() {
-        return WordUtils.capitalizeFully(this.name());        
-    }    
+        return WordUtils.capitalizeFully(this.name());
+    }
 }

@@ -891,7 +891,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
 
         PartitionKeyInternal partitionKeyInternal = null;
-        if (options != null && options.getPartitionKey() != null && options.getPartitionKey().equals(PartitionKey.None)){
+        if (options != null && options.getPartitionKey() != null && options.getPartitionKey().equals(PartitionKey.NONE)){
             partitionKeyInternal = BridgeInternal.getNonePartitionKey(partitionKeyDefinition);
         } else if (options != null && options.getPartitionKey() != null) {
             partitionKeyInternal = options.getPartitionKey().getInternalPartitionKey();

@@ -25,7 +25,8 @@ public class CosmosContainerProperties extends Resource {
     private PartitionKeyDefinition partitionKeyDefinition;
 
     /**
-     * Constructor 
+     * Constructor
+     *
      * @param id id of the Container
      * @param partitionKeyPath partition key path
      */
@@ -40,6 +41,7 @@ public class CosmosContainerProperties extends Resource {
 
     /**
      * Constructor
+     *
      * @param id id of the container
      * @param partitionKeyDefinition the {@link PartitionKeyDefinition}
      */
@@ -51,13 +53,13 @@ public class CosmosContainerProperties extends Resource {
     CosmosContainerProperties(ResourceResponse<DocumentCollection> response) {
         super(response.getResource().toJson());
     }
-    
+
     // Converting document collection to CosmosContainerProperties
-    CosmosContainerProperties(DocumentCollection collection){
+    CosmosContainerProperties(DocumentCollection collection) {
         super(collection.toJson());
     }
-    
-    static List<CosmosContainerProperties> getFromV2Results(List<DocumentCollection> results){
+
+    static List<CosmosContainerProperties> getFromV2Results(List<DocumentCollection> results) {
         return results.stream().map(CosmosContainerProperties::new).collect(Collectors.toList());
     }
 
@@ -95,7 +97,7 @@ public class CosmosContainerProperties extends Resource {
 
     /**
      * Gets the containers unique key policy
-     * 
+     *
      * @return the unique key policy
      */
     public UniqueKeyPolicy getUniqueKeyPolicy() {
@@ -114,7 +116,7 @@ public class CosmosContainerProperties extends Resource {
 
     /**
      * Sets the Containers unique key policy
-     * 
+     *
      * @param uniqueKeyPolicy the unique key policy
      * @return the CosmosContainerProperties.
      */
@@ -137,7 +139,8 @@ public class CosmosContainerProperties extends Resource {
         if (this.partitionKeyDefinition == null) {
 
             if (super.has(Constants.Properties.PARTITION_KEY)) {
-                this.partitionKeyDefinition = super.getObject(Constants.Properties.PARTITION_KEY, PartitionKeyDefinition.class);
+                this.partitionKeyDefinition = super.getObject(Constants.Properties.PARTITION_KEY,
+                    PartitionKeyDefinition.class);
             } else {
                 this.partitionKeyDefinition = new PartitionKeyDefinition();
             }
@@ -160,7 +163,7 @@ public class CosmosContainerProperties extends Resource {
         this.partitionKeyDefinition = partitionKeyDefinition;
         return this;
     }
-    
+
     /**
      * Gets the conflictResolutionPolicy that is used for resolving conflicting writes
      * on documents in different regions, in a collection in the Azure Cosmos DB service.
@@ -187,7 +190,7 @@ public class CosmosContainerProperties extends Resource {
         return this;
     }
 
-    DocumentCollection getV2Collection(){
+    DocumentCollection getV2Collection() {
         DocumentCollection collection = new DocumentCollection(this.toJson());
         collection.setPartitionKey(this.getPartitionKeyDefinition());
         collection.setIndexingPolicy(this.getIndexingPolicy());

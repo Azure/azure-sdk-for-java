@@ -13,20 +13,12 @@ import java.util.Iterator;
  * Provides a client-side logical representation of the Azure Cosmos database service.
  * SyncClient is used to perform operations in a synchronous way
  */
-@ServiceClient(builder=CosmosClientBuilder.class)
+@ServiceClient(builder = CosmosClientBuilder.class)
 public class CosmosClient implements AutoCloseable {
     private final CosmosAsyncClient asyncClientWrapper;
 
-    public CosmosClient(CosmosClientBuilder builder) {
+    CosmosClient(CosmosClientBuilder builder) {
         this.asyncClientWrapper = builder.buildAsyncClient();
-    }
-    
-    /**
-     * Instantiate the cosmos client builder to buildAsyncClient cosmos client
-     * @return {@link CosmosClientBuilder}
-     */
-    public static CosmosClientBuilder builder(){
-        return new CosmosClientBuilder();
     }
 
     /**
@@ -37,7 +29,7 @@ public class CosmosClient implements AutoCloseable {
      * @throws CosmosClientException the cosmos client exception.
      */
     public CosmosDatabaseResponse createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties)
-            throws CosmosClientException {
+        throws CosmosClientException {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(databaseProperties));
     }
 
@@ -73,7 +65,8 @@ public class CosmosClient implements AutoCloseable {
      * @return the {@link CosmosDatabaseResponse} with the created database.
      * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties) throws CosmosClientException {
+    public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties)
+                                                                    throws CosmosClientException {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties));
     }
 
@@ -131,11 +124,11 @@ public class CosmosClient implements AutoCloseable {
     }
 
     CosmosDatabaseResponse mapDatabaseResponseAndBlock(Mono<CosmosAsyncDatabaseResponse> databaseMono)
-            throws CosmosClientException {
+        throws CosmosClientException {
         try {
             return databaseMono
-                           .map(this::convertResponse)
-                           .block();
+                       .map(this::convertResponse)
+                       .block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
@@ -154,8 +147,8 @@ public class CosmosClient implements AutoCloseable {
      */
     public Iterator<FeedResponse<CosmosDatabaseProperties>> readAllDatabases(FeedOptions options) {
         return asyncClientWrapper.readAllDatabases(options)
-                       .toIterable()
-                       .iterator();
+                   .toIterable()
+                   .iterator();
     }
 
     /**
@@ -165,8 +158,8 @@ public class CosmosClient implements AutoCloseable {
      */
     public Iterator<FeedResponse<CosmosDatabaseProperties>> readAllDatabases() {
         return asyncClientWrapper.readAllDatabases()
-                       .toIterable()
-                       .iterator();
+                   .toIterable()
+                   .iterator();
     }
 
     /**
@@ -178,8 +171,8 @@ public class CosmosClient implements AutoCloseable {
      */
     public Iterator<FeedResponse<CosmosDatabaseProperties>> queryDatabases(String query, FeedOptions options) {
         return asyncClientWrapper.queryDatabases(query, options)
-                       .toIterable()
-                       .iterator();
+                   .toIterable()
+                   .iterator();
     }
 
     /**
@@ -189,10 +182,11 @@ public class CosmosClient implements AutoCloseable {
      * @param options the query
      * @return the iterator for feed response with the obtained databases.
      */
-    public Iterator<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
+    public Iterator<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec,
+                                                                           FeedOptions options) {
         return asyncClientWrapper.queryDatabases(querySpec, options)
-                       .toIterable()
-                       .iterator();
+                   .toIterable()
+                   .iterator();
     }
 
     /**

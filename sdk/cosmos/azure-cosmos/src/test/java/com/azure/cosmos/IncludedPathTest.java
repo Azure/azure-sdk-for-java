@@ -31,7 +31,7 @@ public class IncludedPathTest {
         IncludedPath path = new IncludedPath(json);
         Collection<Index> indexes = path.getIndexes();
         Assertions.assertThat(indexes).hasSize(2);
-        Assertions.assertThat(indexes).usingFieldByFieldElementComparator().contains(Index.Range(DataType.STRING, -1));
-        Assertions.assertThat(indexes).usingFieldByFieldElementComparator().contains(Index.Range(DataType.NUMBER, -1));
+        Assertions.assertThat(indexes).usingFieldByFieldElementComparator().contains(Index.range(DataType.STRING, -1));
+        Assertions.assertThat(indexes).usingFieldByFieldElementComparator().contains(Index.range(DataType.NUMBER, -1));
     }
 }

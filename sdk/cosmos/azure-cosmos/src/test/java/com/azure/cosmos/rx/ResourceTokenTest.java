@@ -273,7 +273,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             if (StringUtils.isNotEmpty(partitionKey)) {
                 options.setPartitionKey(new PartitionKey((String)partitionKey));
             } else {
-                options.setPartitionKey(PartitionKey.None);
+                options.setPartitionKey(PartitionKey.NONE);
             }
             Flux<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(documentUrl, options);
@@ -299,7 +299,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                     .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy()).withConsistencyLevel(ConsistencyLevel.SESSION)
                     .build();
             RequestOptions options = new RequestOptions();
-            options.setPartitionKey(PartitionKey.None);
+            options.setPartitionKey(PartitionKey.NONE);
             Flux<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(createdDocument.getSelfLink(), options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()

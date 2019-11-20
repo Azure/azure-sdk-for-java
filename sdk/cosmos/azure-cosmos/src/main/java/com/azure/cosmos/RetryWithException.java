@@ -12,7 +12,8 @@ import java.util.Map;
 
 public class RetryWithException extends CosmosClientException {
 
-    public RetryWithException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public RetryWithException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
+                              Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.RETRY_WITH, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -23,13 +24,17 @@ public class RetryWithException extends CosmosClientException {
     }
 
     RetryWithException(String message,
-                              Exception innerException,
-                              URI requestUri) {
+                       Exception innerException,
+                       URI requestUri) {
         this(message, innerException, null, requestUri);
     }
 
     public RetryWithException(String message, HttpHeaders headers, URI requestUri) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.RETRY_WITH, requestUri != null ? requestUri.toString() : null);
+        super(message,
+            null,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.RETRY_WITH,
+            requestUri != null ? requestUri.toString() : null);
     }
 
     RetryWithException(String message, HttpHeaders headers, String requestUriString) {
@@ -37,9 +42,10 @@ public class RetryWithException extends CosmosClientException {
     }
 
     RetryWithException(String message,
-                              Exception innerException,
-                              HttpHeaders headers,
-                              URI requestUri) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.RETRY_WITH, requestUri != null ? requestUri.toString() : null);
+                       Exception innerException,
+                       HttpHeaders headers,
+                       URI requestUri) {
+        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.RETRY_WITH,
+            requestUri != null ? requestUri.toString() : null);
     }
 }

@@ -85,17 +85,19 @@ public class IncludedPath extends JsonSerializable {
                 JsonNode jsonObject = jsonArray.get(i);
 
                 IndexKind indexKind = IndexKind.valueOf(StringUtils.upperCase(
-                        jsonObject.get(Constants.Properties.INDEX_KIND).asText()));
+                    jsonObject.get(Constants.Properties.INDEX_KIND).asText()));
                 switch (indexKind) {
-                case HASH:
-                    result.add(new HashIndex(jsonObject.toString()));
-                    break;
-                case RANGE:
-                    result.add(new RangeIndex(jsonObject.toString()));
-                    break;
-                case SPATIAL:
-                    result.add(new SpatialIndex(jsonObject.toString()));
-                    break;
+                    case HASH:
+                        result.add(new HashIndex(jsonObject.toString()));
+                        break;
+                    case RANGE:
+                        result.add(new RangeIndex(jsonObject.toString()));
+                        break;
+                    case SPATIAL:
+                        result.add(new SpatialIndex(jsonObject.toString()));
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + indexKind);
                 }
             }
 

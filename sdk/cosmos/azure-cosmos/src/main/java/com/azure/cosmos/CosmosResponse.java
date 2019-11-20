@@ -10,13 +10,14 @@ import java.util.Map;
 
 public class CosmosResponse<T extends Resource> {
     private T properties;
+    @SuppressWarnings("EnforceFinalFields")
     ResourceResponse resourceResponseWrapper;
 
-    CosmosResponse(ResourceResponse resourceResponse){
+    CosmosResponse(ResourceResponse resourceResponse) {
         this.resourceResponseWrapper = resourceResponse;
     }
 
-    CosmosResponse(T properties){
+    CosmosResponse(T properties) {
         this.properties = properties;
     }
 
@@ -33,7 +34,7 @@ public class CosmosResponse<T extends Resource> {
         return properties;
     }
 
-    CosmosResponse<T> setProperties(T resourceSettings){
+    CosmosResponse<T> setProperties(T resourceSettings) {
         this.properties = resourceSettings;
         return this;
     }
@@ -89,7 +90,7 @@ public class CosmosResponse<T extends Resource> {
      *
      * @return the session token.
      */
-    public String getSessionToken(){
+    public String getSessionToken() {
         return resourceResponseWrapper.getSessionToken();
     }
 

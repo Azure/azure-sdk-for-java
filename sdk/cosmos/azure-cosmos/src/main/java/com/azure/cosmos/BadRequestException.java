@@ -26,7 +26,8 @@ public class BadRequestException extends CosmosClientException {
         this(RMResources.BadRequest);
     }
 
-    public BadRequestException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public BadRequestException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
+                               Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.BADREQUEST, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -49,13 +50,13 @@ public class BadRequestException extends CosmosClientException {
     }
 
     BadRequestException(String message,
-                             Exception innerException,
-                             HttpHeaders headers,
-                             String requestUrlString) {
+                        Exception innerException,
+                        HttpHeaders headers,
+                        String requestUrlString) {
         super(String.format("%s: %s", RMResources.BadRequest, message),
-                innerException,
-                HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.BADREQUEST,
-                requestUrlString);
+            innerException,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.BADREQUEST,
+            requestUrlString);
     }
 }

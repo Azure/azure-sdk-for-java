@@ -5,15 +5,16 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
 
+@SuppressWarnings("enforcefinalfields")
 public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainerProperties> {
 
     private CosmosAsyncContainer container;
 
     CosmosAsyncContainerResponse(ResourceResponse<DocumentCollection> response, CosmosAsyncDatabase database) {
         super(response);
-        if(response.getResource() == null){
+        if (response.getResource() == null) {
             super.setProperties(null);
-        }else{
+        } else {
             super.setProperties(new CosmosContainerProperties(response));
             container = new CosmosAsyncContainer(this.getProperties().getId(), database);
         }
@@ -39,6 +40,7 @@ public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainer
 
     /**
      * Gets the container properties
+     *
      * @return the cosmos container properties
      */
     public CosmosContainerProperties getProperties() {
@@ -47,6 +49,7 @@ public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainer
 
     /**
      * Gets the Container object
+     *
      * @return the Cosmos container object
      */
     public CosmosAsyncContainer getContainer() {

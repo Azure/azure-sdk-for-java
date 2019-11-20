@@ -39,13 +39,14 @@ public enum ConsistencyLevel {
     EVENTUAL,
 
     /**
-     * CONSISTENT_PREFIX Consistency guarantees that reads will return some prefix of all writes with no gaps. ALL writes
+     * CONSISTENT_PREFIX Consistency guarantees that reads will return some prefix of all writes with no gaps. ALL 
+     * writes
      * will be eventually be available for reads.
      */
     CONSISTENT_PREFIX;
 
     @Override
     public String toString() {
-        return StringUtils.remove(WordUtils.capitalizeFully(this.name(), '_'), '_');        
+        return StringUtils.remove(WordUtils.capitalizeFully(this.name(), '_'), '_');
     }
 }

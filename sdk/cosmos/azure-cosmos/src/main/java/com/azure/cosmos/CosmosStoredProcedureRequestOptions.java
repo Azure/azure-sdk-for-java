@@ -32,6 +32,7 @@ public class CosmosStoredProcedureRequestOptions {
         this.accessCondition = accessCondition;
         return this;
     }
+
     /**
      * Gets the consistency level required for the request.
      *

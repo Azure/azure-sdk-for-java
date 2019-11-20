@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 public class CosmosAsyncTrigger {
 
-    private CosmosAsyncContainer container;
+    private final CosmosAsyncContainer container;
     private String id;
 
     CosmosAsyncTrigger(String id, CosmosAsyncContainer container) {
@@ -18,6 +18,7 @@ public class CosmosAsyncTrigger {
 
     /**
      * Get the id of the {@link CosmosAsyncTrigger}
+     *
      * @return the id of the {@link CosmosAsyncTrigger}
      */
     public String getId() {
@@ -26,6 +27,7 @@ public class CosmosAsyncTrigger {
 
     /**
      * Set the id of the {@link CosmosAsyncTrigger}
+     *
      * @param id the id of the {@link CosmosAsyncTrigger}
      * @return the same {@link CosmosAsyncTrigger} that had the id set
      */
@@ -45,10 +47,10 @@ public class CosmosAsyncTrigger {
      */
     public Mono<CosmosAsyncTriggerResponse> read() {
         return container.getDatabase()
-                .getDocClientWrapper()
-                .readTrigger(getLink(), null)
-                .map(response -> new CosmosAsyncTriggerResponse(response, container))
-                .single();
+                   .getDocClientWrapper()
+                   .readTrigger(getLink(), null)
+                   .map(response -> new CosmosAsyncTriggerResponse(response, container))
+                   .single();
     }
 
 
@@ -64,10 +66,10 @@ public class CosmosAsyncTrigger {
      */
     public Mono<CosmosAsyncTriggerResponse> replace(CosmosTriggerProperties triggerSettings) {
         return container.getDatabase()
-                .getDocClientWrapper()
-                .replaceTrigger(new Trigger(triggerSettings.toJson()), null)
-                .map(response -> new CosmosAsyncTriggerResponse(response, container))
-                .single();
+                   .getDocClientWrapper()
+                   .replaceTrigger(new Trigger(triggerSettings.toJson()), null)
+                   .map(response -> new CosmosAsyncTriggerResponse(response, container))
+                   .single();
     }
 
     /**
@@ -81,25 +83,25 @@ public class CosmosAsyncTrigger {
      */
     public Mono<CosmosAsyncTriggerResponse> delete() {
         return container.getDatabase()
-                .getDocClientWrapper()
-                .deleteTrigger(getLink(), null)
-                .map(response -> new CosmosAsyncTriggerResponse(response, container))
-                .single();
+                   .getDocClientWrapper()
+                   .deleteTrigger(getLink(), null)
+                   .map(response -> new CosmosAsyncTriggerResponse(response, container))
+                   .single();
     }
 
-    String URIPathSegment() {
+    String getURIPathSegment() {
         return Paths.TRIGGERS_PATH_SEGMENT;
     }
 
-    String parentLink() {
+    String getParentLink() {
         return container.getLink();
     }
 
     String getLink() {
         StringBuilder builder = new StringBuilder();
-        builder.append(parentLink());
+        builder.append(getParentLink());
         builder.append("/");
-        builder.append(URIPathSegment());
+        builder.append(getURIPathSegment());
         builder.append("/");
         builder.append(getId());
         return builder.toString();

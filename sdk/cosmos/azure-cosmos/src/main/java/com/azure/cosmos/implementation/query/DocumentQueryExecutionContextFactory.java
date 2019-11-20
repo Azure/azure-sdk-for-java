@@ -66,7 +66,7 @@ public class DocumentQueryExecutionContextFactory {
 
         Flux<ProxyDocumentQueryExecutionContext<T>> proxyQueryExecutionContext =
                 collectionObs.flatMap(collection -> {
-                    if (feedOptions != null && feedOptions.partitionKey() != null && feedOptions.partitionKey().equals(PartitionKey.None)) {
+                    if (feedOptions != null && feedOptions.partitionKey() != null && feedOptions.partitionKey().equals(PartitionKey.NONE)) {
                         feedOptions.partitionKey(BridgeInternal.getPartitionKey(BridgeInternal.getNonePartitionKey(collection.getPartitionKey())));
                     }
                     return ProxyDocumentQueryExecutionContext.createAsync(

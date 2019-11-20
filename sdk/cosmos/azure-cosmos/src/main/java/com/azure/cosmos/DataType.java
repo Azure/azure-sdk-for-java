@@ -34,14 +34,14 @@ public enum DataType {
      * Represent a polygon data type.
      */
     POLYGON,
-    
+
     /**
      * Represent a multi-polygon data type.
      */
     MULTI_POLYGON;
-    
+
     @Override
     public String toString() {
-        return StringUtils.remove(WordUtils.capitalizeFully(this.name(), '_'), '_');        
-    }    
+        return StringUtils.remove(WordUtils.capitalizeFully(this.name(), '_'), '_');
+    }
 }

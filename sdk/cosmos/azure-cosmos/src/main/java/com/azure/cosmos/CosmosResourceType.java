@@ -21,8 +21,8 @@ public enum CosmosResourceType {
     Trigger(110),
     User(4),
     UserDefinedFunction(111);
-    
-    final private int value;
+
+    private final int value;
 
     CosmosResourceType(int value) {
         this.value = value;

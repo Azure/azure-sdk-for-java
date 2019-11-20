@@ -20,12 +20,16 @@ public class CosmosBridgeInternal {
         return client.getDocClientWrapper();
     }
 
-    public static CosmosAsyncDatabase getCosmosDatabaseWithNewClient(CosmosAsyncDatabase cosmosDatabase, CosmosAsyncClient client) {
+    public static CosmosAsyncDatabase getCosmosDatabaseWithNewClient(CosmosAsyncDatabase cosmosDatabase,
+                                                                     CosmosAsyncClient client) {
         return new CosmosAsyncDatabase(cosmosDatabase.getId(), client);
     }
 
-    public static CosmosAsyncContainer getCosmosContainerWithNewClient(CosmosAsyncContainer cosmosContainer, CosmosAsyncDatabase cosmosDatabase, CosmosAsyncClient client) {
-        return new CosmosAsyncContainer(cosmosContainer.getId(), CosmosBridgeInternal.getCosmosDatabaseWithNewClient(cosmosDatabase, client));
+    public static CosmosAsyncContainer getCosmosContainerWithNewClient(CosmosAsyncContainer cosmosContainer,
+                                                                       CosmosAsyncDatabase cosmosDatabase,
+                                                                       CosmosAsyncClient client) {
+        return new CosmosAsyncContainer(cosmosContainer.getId(),
+            CosmosBridgeInternal.getCosmosDatabaseWithNewClient(cosmosDatabase, client));
     }
 
     public static Mono<DatabaseAccount> getDatabaseAccount(CosmosAsyncClient client) {

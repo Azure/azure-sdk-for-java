@@ -153,7 +153,7 @@ public class TokenResolverTest extends DocumentClientTest {
                         .build();
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.setProperties(properties);
-                requestOptions.setPartitionKey(PartitionKey.None);
+                requestOptions.setPartitionKey(PartitionKey.NONE);
                 Flux<ResourceResponse<Document>> readDocumentObservable = asyncClientWithTokenResolver
                         .readDocument(documentLink, requestOptions);
                 readDocumentObservable.collectList().block().forEach(capturedResponse::add);
@@ -192,7 +192,7 @@ public class TokenResolverTest extends DocumentClientTest {
 
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.setProperties(properties);
-                requestOptions.setPartitionKey(PartitionKey.None);
+                requestOptions.setPartitionKey(PartitionKey.NONE);
                 Flux<ResourceResponse<Document>> readDocumentObservable = asyncClientWithTokenResolver
                         .deleteDocument(documentLink, requestOptions);
                 readDocumentObservable.collectList().block().forEach(capturedResponse::add);

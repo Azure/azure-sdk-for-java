@@ -5,21 +5,24 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
 
-public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties>{
+public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties> {
+    @SuppressWarnings("EnforceFinalFields")
     private CosmosAsyncItem itemClient;
 
-    CosmosAsyncItemResponse(ResourceResponse<Document> response, PartitionKey partitionKey, CosmosAsyncContainer container) {
+    CosmosAsyncItemResponse(ResourceResponse<Document> response, PartitionKey partitionKey,
+                            CosmosAsyncContainer container) {
         super(response);
-        if(response.getResource() == null){
+        if (response.getResource() == null) {
             super.setProperties(null);
-        }else{
+        } else {
             super.setProperties(new CosmosItemProperties(response.getResource().toJson()));
-            itemClient = new CosmosAsyncItem(response.getResource().getId(),partitionKey, container);
+            itemClient = new CosmosAsyncItem(response.getResource().getId(), partitionKey, container);
         }
     }
 
     /**
      * Gets the itemSettings
+     *
      * @return the itemSettings
      */
     public CosmosItemProperties getProperties() {
@@ -28,6 +31,7 @@ public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties
 
     /**
      * Gets the CosmosAsyncItem
+     *
      * @return the cosmos item
      */
     public CosmosAsyncItem getItem() {

@@ -12,27 +12,29 @@ import java.util.function.Consumer;
 /**
  * Simple host for distributing change feed events across observers and thus allowing these observers scale.
  * It distributes the load across its instances and allows dynamic scaling:
- *   - Partitions in partitioned collections are distributed across instances/observers.
- *   - New instance takes leases from existing instances to make distribution equal.
- *   - If an instance dies, the leases are distributed across remaining instances.
- * It's useful for scenario when partition count is high so that one host/VM is not capable of processing that many change feed events.
- * Client application needs to implement {@link ChangeFeedObserver} and register processor implementation with {@link ChangeFeedProcessor}.
+ * - Partitions in partitioned collections are distributed across instances/observers.
+ * - New instance takes leases from existing instances to make distribution equal.
+ * - If an instance dies, the leases are distributed across remaining instances.
+ * It's useful for scenario when partition count is high so that one host/VM is not capable of processing that many 
+ * change feed events.
+ * Client application needs to implement {@link ChangeFeedObserver} and register processor implementation with
+ * {@link ChangeFeedProcessor}.
  * <p>
  * It uses auxiliary document collection for managing leases for a partition.
  * Every EventProcessorHost instance is performing the following two tasks:
- *     1) Renew Leases: It keeps track of leases currently owned by the host and continuously keeps on renewing the leases.
- *     2) Acquire Leases: Each instance continuously polls all leases to check if there are any leases it should acquire
- *     for the system to get into balanced state.
+ * 1) Renew Leases: It keeps track of leases currently owned by the host and continuously keeps on renewing the leases.
+ * 2) Acquire Leases: Each instance continuously polls all leases to check if there are any leases it should acquire
+ * for the system to get into balanced state.
  * <p>
  * {@code
  * ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.Builder()
- *     .setHostName(setHostName)
- *     .setFeedContainer(setFeedContainer)
- *     .setLeaseContainer(setLeaseContainer)
- *     .setHandleChanges(docs -> {
- *         // Implementation for handling and processing CosmosItemProperties list goes here
- *      })
- *     .buildAsyncClient();
+ * .setHostName(setHostName)
+ * .setFeedContainer(setFeedContainer)
+ * .setLeaseContainer(setLeaseContainer)
+ * .setHandleChanges(docs -> {
+ * // Implementation for handling and processing CosmosItemProperties list goes here
+ * })
+ * .buildAsyncClient();
  * }
  */
 public interface ChangeFeedProcessor {
@@ -55,16 +57,15 @@ public interface ChangeFeedProcessor {
      * Helper static method to buildAsyncClient {@link ChangeFeedProcessor} instances
      * as logical representation of the Azure Cosmos DB database service.
      * <p>
-     * {@code
-     *
-     *  ChangeFeedProcessor.Builder()
-     *       .setHostName("SampleHost")
-     *       .setFeedContainer(setFeedContainer)
-     *       .setLeaseContainer(setLeaseContainer)
-     *       .setHandleChanges(docs -> {
-     *           // Implementation for handling and processing CosmosItemProperties list goes here
-     *        })
-     *       .buildAsyncClient();
+     * {@codesnippet
+     * ChangeFeedProcessor.Builder()
+     * .setHostName("SampleHost")
+     * .setFeedContainer(setFeedContainer)
+     * .setLeaseContainer(setLeaseContainer)
+     * .setHandleChanges(docs -> {
+     * // Implementation for handling and processing CosmosItemProperties list goes here
+     * })
+     * .buildAsyncClient();
      * }
      *
      * @return a builder definition instance.
@@ -80,7 +81,8 @@ public interface ChangeFeedProcessor {
         /**
          * Sets the host name.
          *
-         * @param hostName the name to be used for the host. When using multiple hosts, each host must have a unique name.
+         * @param hostName the name to be used for the host. When using multiple hosts, each host must have a unique 
+         * name.
          * @return current Builder.
          */
         BuilderDefinition setHostName(String hostName);
@@ -97,12 +99,12 @@ public interface ChangeFeedProcessor {
          * Sets the {@link ChangeFeedProcessorOptions} to be used.
          * <p>
          * Unless specifically set the default values that will be used are:
-         *  - maximum items per page or FeedResponse: 100
-         *  - lease renew interval: 17 seconds
-         *  - lease acquire interval: 13 seconds
-         *  - lease expiration interval: 60 seconds
-         *  - feed poll delay: 5 seconds
-         *  - maximum scale count: unlimited
+         * - maximum items per page or FeedResponse: 100
+         * - lease renew interval: 17 seconds
+         * - lease acquire interval: 13 seconds
+         * - lease expiration interval: 60 seconds
+         * - feed poll delay: 5 seconds
+         * - maximum scale count: unlimited
          *
          * @param changeFeedProcessorOptions the change feed processor options to use.
          * @return current Builder.

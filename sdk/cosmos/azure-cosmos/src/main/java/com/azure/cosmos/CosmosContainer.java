@@ -126,7 +126,8 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) throws CosmosClientException {
-        return CosmosDatabase.throughputResponseToBlock(this.containerWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
+        return CosmosDatabase.throughputResponseToBlock(this.containerWrapper
+                                                            .replaceProvisionedThroughput(requestUnitsPerSecond));
     }
 
 
@@ -186,11 +187,11 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     CosmosItemResponse mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse> itemMono)
-            throws CosmosClientException {
+        throws CosmosClientException {
         try {
             return itemMono
-                           .map(this::convertResponse)
-                           .block();
+                       .map(this::convertResponse)
+                       .block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
@@ -252,9 +253,9 @@ public class CosmosContainer {
      */
     public CosmosItem getItem(String id, Object partitionKey) {
         return new CosmosItem(id,
-                partitionKey,
-                this,
-                containerWrapper.getItem(id, partitionKey));
+            partitionKey,
+            this,
+            containerWrapper.getItem(id, partitionKey));
     }
 
     /**
@@ -262,7 +263,7 @@ public class CosmosContainer {
      *
      * @return the cosmos sync scripts
      */
-    public CosmosScripts getScripts(){
+    public CosmosScripts getScripts() {
         if (this.scripts == null) {
             this.scripts = new CosmosScripts(this, containerWrapper.getScripts());
         }
@@ -270,6 +271,7 @@ public class CosmosContainer {
     }
 
     // TODO: should make partitionkey public in CosmosAsyncItem and fix the below call
+
     /**
      * Convert response cosmos sync item response.
      *
@@ -280,7 +282,8 @@ public class CosmosContainer {
         return new CosmosItemResponse(response, null, this);
     }
 
-    private Iterator<FeedResponse<CosmosItemProperties>> getFeedIterator(Flux<FeedResponse<CosmosItemProperties>> itemFlux) {
+    private Iterator<FeedResponse<CosmosItemProperties>> getFeedIterator(
+                                                            Flux<FeedResponse<CosmosItemProperties>> itemFlux) {
         return itemFlux.toIterable(1).iterator();
     }
 

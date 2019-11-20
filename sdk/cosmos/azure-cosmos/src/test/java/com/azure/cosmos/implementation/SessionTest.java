@@ -78,7 +78,7 @@ public class SessionTest extends TestSuiteBase {
             spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder());
         }
         options = new RequestOptions();
-        options.setPartitionKey(PartitionKey.None);
+        options.setPartitionKey(PartitionKey.NONE);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

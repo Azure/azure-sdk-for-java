@@ -14,7 +14,7 @@ public class CosmosUserDefinedFunctionProperties extends Resource {
     /**
      * Constructor
      */
-    public CosmosUserDefinedFunctionProperties(){
+    public CosmosUserDefinedFunctionProperties() {
         super();
     }
 
@@ -33,6 +33,7 @@ public class CosmosUserDefinedFunctionProperties extends Resource {
 
     /**
      * Sets the id
+     *
      * @param id the name of the resource.
      * @return the current instance of cosmos user defined function properties
      */
@@ -62,6 +63,7 @@ public class CosmosUserDefinedFunctionProperties extends Resource {
     }
 
     static List<CosmosUserDefinedFunctionProperties> getFromV2Results(List<UserDefinedFunction> results) {
-        return results.stream().map(udf -> new CosmosUserDefinedFunctionProperties(udf.toJson())).collect(Collectors.toList());
+        return results.stream().map(udf -> new CosmosUserDefinedFunctionProperties(udf.toJson()))
+                   .collect(Collectors.toList());
     }
 }

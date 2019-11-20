@@ -15,13 +15,9 @@ public final class HashIndex extends Index {
      * Specifies an instance of HashIndex class with specified DataType.
      * <p>
      * Here is an example to instantiate HashIndex class passing in the DataType:
-     * <pre>
-     * {@code
-     *
+     * {@codesnippet
      * HashIndex hashIndex = new HashIndex(DataType.STRING);
-     *
      * }
-     * </pre>
      *
      * @param dataType the data type.
      */
@@ -34,15 +30,9 @@ public final class HashIndex extends Index {
      * Initializes a new instance of the HashIndex class with specified DataType and precision.
      * <p>
      * Here is an example to instantiate HashIndex class passing in the DataType:
-     * <pre>
-     * {@code
+     * {@codesnippet HashIndex hashIndex = new HashIndex(DataType.STRING, 3);}
      *
-     * HashIndex hashIndex = new HashIndex(DataType.STRING, 3);
-     *
-     * }
-     * </pre>
-     *
-     * @param dataType  the data type.
+     * @param dataType the data type.
      * @param precision the precision.
      */
     public HashIndex(DataType dataType, int precision) {
@@ -74,7 +64,8 @@ public final class HashIndex extends Index {
             result = DataType.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.DATA_TYPE)));
         } catch (IllegalArgumentException e) {
             // Ignore exception and let the caller handle null value.
-            this.getLogger().warn("INVALID index dataType value {}.", super.getString(Constants.Properties.DATA_TYPE));
+            this.getLogger().warning("INVALID index dataType value {}.",
+                super.getString(Constants.Properties.DATA_TYPE));
         }
         return result;
     }
