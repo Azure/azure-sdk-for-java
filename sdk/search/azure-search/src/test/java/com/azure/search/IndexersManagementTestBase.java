@@ -78,6 +78,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void canUpdateIndexerSkillset();
 
+    @Test
+    public abstract void canCreateIndexerWithSkillset();
+
     /**
      * Create a new valid skillset object
      * @return the newly created skillset object
@@ -232,14 +235,13 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     /**
      * Create a new indexer and change its skillset
+     *
      * @return the created indexer
      */
     Indexer createIndexerWithDifferentSkillset(String skillsetName) {
         // create a new indexer object
-        Indexer indexer = createTestIndexer("indexer")
+        return createTestIndexer("indexer")
             .setSkillsetName(skillsetName);
-
-        return indexer;
     }
 
     /**

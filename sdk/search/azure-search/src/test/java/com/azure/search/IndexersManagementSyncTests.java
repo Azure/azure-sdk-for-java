@@ -15,12 +15,12 @@ import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.IndexerExecutionStatus;
 import com.azure.search.models.IndexerStatus;
 import com.azure.search.models.IndexingParameters;
-import org.apache.http.HttpStatus;
-import com.azure.search.models.Skillset;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.Skillset;
 import com.azure.search.test.AccessConditionTests;
 import com.azure.search.test.AccessOptions;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.junit.Assert;
 
 import java.util.Arrays;
@@ -625,5 +625,24 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createSkillset(skillset);
         Indexer updatedExpected = createIndexerWithDifferentSkillset(skillset.getName());
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
+    }
+
+    @Override
+    public void canCreateIndexerWithSkillset() {
+        DataSource dataSource = createTestSqlDataSource();
+        createDatasource(dataSource);
+
+        // Create a new skillset object
+        // todo: task 1544 - change all over the code that that the object creation and actual service creation will
+        // have meaningful and differentiated names
+        Skillset skillset = createSkillsetObject();
+
+        // create the skillset in the search service
+        createSkillset(skillset);
+
+        Indexer indexer = createIndexerWithDifferentSkillset(skillset.getName())
+            .setDataSourceName(dataSource.getName());
+
+        createAndValidateIndexer(indexer);
     }
 }
