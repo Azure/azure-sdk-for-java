@@ -3,7 +3,6 @@
 
 module com.azure.http.netty {
     requires transitive com.azure.core;
-    requires com.azure.core.test;
     requires reactor.netty;
     requires io.netty.buffer;
     requires io.netty.common;
