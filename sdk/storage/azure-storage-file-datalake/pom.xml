@@ -255,9 +255,6 @@
             <version>${maven-surefire-plugin.version}</version>
             <configuration>
               <argLine>
-                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
                 --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake=ALL-UNNAMED
                 --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake.models=ALL-UNNAMED

@@ -806,8 +806,6 @@
                 <!-- KeyVault tests fail without these exports. -->
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
 
                 <!-- Needed for JUnit offline instrumentation -->
                 --add-reads com.azure.core=ALL-UNNAMED
