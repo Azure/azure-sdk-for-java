@@ -413,7 +413,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         final EventHubProducerAsyncClient producer = client.createProducer();
         final Disposable producerEvents = getEvents(isActive).flatMap(event -> {
             final int partition = counter.getAndIncrement() % allPartitions.size();
-            event.addProperty(PARTITION_ID_HEADER, partition);
+            event.getProperties().put(PARTITION_ID_HEADER, partition);
             return producer.send(event, new SendOptions().setPartitionId(String.valueOf(partition)));
         }).subscribe(
             sent -> logger.info("Event sent."),

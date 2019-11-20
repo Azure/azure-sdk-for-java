@@ -104,7 +104,7 @@ public class BackCompatTest extends IntegrationTestBase {
 
     private void validateAmqpProperties(Map<String, Object> expected, EventData event) {
         Assertions.assertEquals(expected.size(), event.getProperties().size());
-        Assertions.assertEquals(PAYLOAD, UTF_8.decode(event.getBody()).toString());
+        Assertions.assertEquals(PAYLOAD, event.getBodyAsString());
 
         expected.forEach((key, value) -> {
             Assertions.assertTrue(event.getProperties().containsKey(key));

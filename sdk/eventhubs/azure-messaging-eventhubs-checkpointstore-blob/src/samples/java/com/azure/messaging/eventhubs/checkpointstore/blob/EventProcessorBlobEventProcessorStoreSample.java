@@ -7,13 +7,13 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.EventProcessorBuilder;
+import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import reactor.core.publisher.Mono;
+import java.util.function.Consumer;
 
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 /**
  * Sample for using {@link BlobEventProcessorStore} with {@link EventProcessor}.
@@ -24,14 +24,18 @@ public class EventProcessorBlobEventProcessorStoreSample {
     private static final String SAS_TOKEN_STRING = "";
     private static final String STORAGE_CONNECTION_STRING = "";
 
-    public static final Function<PartitionEvent, Mono<Void>> PARTITION_PROCESSOR = partitionEvent -> {
+    public static final Consumer<PartitionEvent> PARTITION_PROCESSOR = partitionEvent -> {
         System.out.printf("Processing event from partition %s with sequence number %d %n",
             partitionEvent.getPartitionContext().getPartitionId(), partitionEvent.getData().getSequenceNumber());
-
         if (partitionEvent.getData().getSequenceNumber() % 10 == 0) {
-            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData());
+            partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData()).subscribe();
         }
-        return Mono.empty();
+    };
+
+    public static final Consumer<EventProcessingErrorContext> ERROR_HANDLER = errorContext -> {
+        System.out.printf("Error occurred in partition processor for partition {}, {}",
+            errorContext.getPartitionContext().getPartitionId(),
+            errorContext.getThrowable());
     };
 
     /**
@@ -52,6 +56,7 @@ public class EventProcessorBlobEventProcessorStoreSample {
             .connectionString(EH_CONNECTION_STRING)
             .consumerGroup("<< CONSUMER GROUP NAME >>")
             .processEvent(PARTITION_PROCESSOR)
+            .processError(ERROR_HANDLER)
             .eventProcessorStore(new BlobEventProcessorStore(blobContainerAsyncClient));
 
         EventProcessor eventProcessor = eventProcessorBuilder.buildEventProcessor();

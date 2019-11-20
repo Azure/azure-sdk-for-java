@@ -94,20 +94,24 @@ received from the Event Hubs, writes to console and updates the checkpoint in Bl
 ```java
 class Program {
     public static void main(String[] args) {
-        Function<PartitionEvent, Mono<Void>> processEvent = partitionEvent -> {
-            System.out.printf("Event received. Sequence number: %s%n.", partitionEvent.getEventData().sequenceNumber());
-            return partitionEvent.getPartitionContext().updateCheckpoint(eventData);
-          };                 
-
         EventProcessor eventProcessor = new EventProcessorBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
-            .consumerGroupName("<< CONSUMER GROUP NAME >>")
-            .processEvent(processEvent)
+            .consumerGroup("<< CONSUMER GROUP NAME >>")
+            .connectionString("<< EVENT HUB CONNECTION STRING >>")
             .eventProcessorStore(new BlobEventProcessorStore(blobContainerAsyncClient))
+            .processEvent(partitionEvent -> {
+                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+            })
+            .processError(errorContext -> {
+                System.out.println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
+            })
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.
         eventProcessor.start();
+        
+        // (for demo purposes only - adding sleep to wait for receiving events)
+        TimeUnit.SECONDS.sleep(2); 
 
         // When the user wishes to stop processing events, they can call `stop()`.
         eventProcessor.stop();
