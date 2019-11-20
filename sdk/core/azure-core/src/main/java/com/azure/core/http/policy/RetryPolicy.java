@@ -18,20 +18,20 @@ import java.time.Duration;
 
 /**
  * A pipeline policy that retries when a recoverable HTTP error occurs.
- * @see RetryPolicyOptions
  */
 public class RetryPolicy implements HttpPipelinePolicy {
 
     private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
 
-    private final RetryPolicyOptions retryPolicyOptions;
+    private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
+    private final RetryStrategy retryStrategy;
 
     /**
      * Creates {@link RetryPolicy} with default {@link ExponentialBackoff} as {@link RetryStrategy}and use
      * 'retry-after-ms' in {@link HttpResponse} header for calculating retry delay.
      */
     public RetryPolicy() {
-        this(new RetryPolicyOptions(new ExponentialBackoff()));
+        this(new ExponentialBackoff());
     }
 
     /**
@@ -40,22 +40,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * @param retryStrategy The {@link RetryStrategy} used for retries.
      */
     public RetryPolicy(RetryStrategy retryStrategy) {
-        Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null");
-        this.retryPolicyOptions = new RetryPolicyOptions(retryStrategy);
-    }
-
-    /**
-     * Creates a {@link RetryPolicy} with the provided {@link RetryPolicyOptions}.
-     *
-     * @param retryPolicyOptions with given {@link RetryPolicyOptions}.
-     * @throws NullPointerException if {@code retryPolicyOptions} or  {@code retryPolicyOptions getRetryStrategy }
-     * is {@code null}.
-     */
-    public RetryPolicy(RetryPolicyOptions retryPolicyOptions) {
-        this.retryPolicyOptions = Objects.requireNonNull(retryPolicyOptions,
-            "'retryPolicyOptions' cannot be null.");
-        Objects.requireNonNull(retryPolicyOptions.getRetryStrategy(),
-            "'retryPolicyOptions.retryStrategy' cannot be null.");
+        this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null");
     }
 
     @Override
@@ -79,11 +64,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 }
             })
             .onErrorResume(err -> {
-                int maxRetries = retryPolicyOptions.getRetryStrategy().getMaxRetries();
+                int maxRetries = retryStrategy.getMaxRetries();
                 if (tryCount < maxRetries) {
                     logger.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
-                        .delaySubscription(retryPolicyOptions.getRetryStrategy().calculateRetryDelay(tryCount));
+                        .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
                 } else {
                     return Mono.error(new RuntimeException(
                         String.format("Max retries %d times exceeded. Error Details: %s", maxRetries, err.getMessage()),
@@ -93,8 +78,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private boolean shouldRetry(HttpResponse response, int tryCount) {
-        return tryCount < retryPolicyOptions.getRetryStrategy().getMaxRetries()
-            && retryPolicyOptions.getRetryStrategy().shouldRetry(response);
+        return tryCount < retryStrategy.getMaxRetries()
+            && retryStrategy.shouldRetry(response);
     }
 
     /**
@@ -109,21 +94,16 @@ public class RetryPolicy implements HttpPipelinePolicy {
         // Response will not have a retry-after-ms header.
         if (code != 429        // too many requests
             && code != 503) {  // service unavailable
-            return retryPolicyOptions.getRetryStrategy().calculateRetryDelay(tryCount);
+            return retryStrategy.calculateRetryDelay(tryCount);
         }
 
-        String retryHeaderValue = null;
+        String retryHeader = response.getHeaderValue(RETRY_AFTER_MS_HEADER);
 
-        if (!isNullOrEmpty(retryPolicyOptions.getRetryAfterHeader())) {
-            retryHeaderValue = response.getHeaderValue(retryPolicyOptions.getRetryAfterHeader());
-        }
-
-        // Retry header is missing or empty, return the default delay duration.
-        if (isNullOrEmpty(retryHeaderValue)) {
-            return retryPolicyOptions.getRetryStrategy().calculateRetryDelay(tryCount);
+        if (isNullOrEmpty(retryHeader)) {
+            return retryStrategy.calculateRetryDelay(tryCount);
         }
 
         // Use the response delay duration, the server returned it for a reason.
-        return Duration.of(Integer.parseInt(retryHeaderValue), retryPolicyOptions.getRetryAfterTimeUnit());
+        return Duration.ofMillis(Integer.parseInt(retryHeader));
     }
 }
