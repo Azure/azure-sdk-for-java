@@ -105,7 +105,9 @@ public final class BlockBlobClient extends BlobClientBase {
     /**
      * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
      * will be overwritten.
-     *
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * 
      * @param requestConditions A {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.
      *
@@ -170,6 +172,8 @@ public final class BlockBlobClient extends BlobClientBase {
      * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
      * and PutBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -415,6 +419,8 @@ public final class BlockBlobClient extends BlobClientBase {
      * and existing blocks together. Any blocks not specified in the block list and permanently deleted. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *

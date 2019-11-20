@@ -24,8 +24,8 @@ import java.util.Map;
 
 /**
  * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
- * the client are downloading and copying a blob, retrieving and setting metadata, retrieving and setting HTTP headers,
- * and deleting and un-deleting a blob.
+ * the client are uploading and downloading, copying a blob, retrieving and setting metadata, retrieving and setting
+ * HTTP headers, and deleting and un-deleting a blob.
  *
  * <p>
  * This client is instantiated through {@link BlobClientBuilder} or retrieved via
@@ -44,7 +44,14 @@ import java.util.Map;
 public class BlobClient extends BlobClientBase {
     private final ClientLogger logger = new ClientLogger(BlobClient.class);
 
+    /**
+     * The block size to use if none is specified in parallel operations.
+     */
     public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+
+    /**
+     * The number of buffers to use if none is specied on the buffered upload method.
+     */
     public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
     /**
      * If a blob is known to be greater than 100MB, using a larger block size will trigger some server-side
@@ -68,7 +75,7 @@ public class BlobClient extends BlobClientBase {
      * Creates a new {@link BlobClient} linked to the {@code snapshot} of this blob resource.
      *
      * @param snapshot the identifier for a specific snapshot of this blob
-     * @return a {@link BlobClient} used to interact with the specific snapshot.
+     * @return A {@link BlobClient} used to interact with the specific snapshot.
      */
     @Override
     public BlobClient getSnapshotClient(String snapshot) {
@@ -76,9 +83,9 @@ public class BlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates a new {@link AppendBlobClient} associated to this blob.
+     * Creates a new {@link AppendBlobClient} associated with this blob.
      *
-     * @return a {@link AppendBlobClient} associated to this blob.
+     * @return A {@link AppendBlobClient} associated with this blob.
      */
     public AppendBlobClient getAppendBlobClient() {
         return new SpecializedBlobClientBuilder()
@@ -87,9 +94,9 @@ public class BlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates a new {@link BlockBlobClient} associated to this blob.
+     * Creates a new {@link BlockBlobClient} associated with this blob.
      *
-     * @return a {@link BlockBlobClient} associated to this blob.
+     * @return A {@link BlockBlobClient} associated with this blob.
      */
     public BlockBlobClient getBlockBlobClient() {
         return new SpecializedBlobClientBuilder()
@@ -98,9 +105,9 @@ public class BlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates a new {@link PageBlobClient} associated to this blob.
+     * Creates a new {@link PageBlobClient} associated with this blob.
      *
-     * @return a {@link PageBlobClient} associated to this blob.
+     * @return A {@link PageBlobClient} associated with this blob.
      */
     public PageBlobClient getPageBlobClient() {
         return new SpecializedBlobClientBuilder()
@@ -148,7 +155,9 @@ public class BlobClient extends BlobClientBase {
 
     /**
      * Creates a new block blob, or updates the content of an existing block blob.
-     *
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * 
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration}

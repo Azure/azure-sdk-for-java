@@ -24,6 +24,7 @@ import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAc
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -672,8 +673,8 @@ public class DataLakePathAsyncClient {
      */
     SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationPath) {
         // Get current Blob URL and replace current path with user provided path
-        String newBlobEndpoint = BlobUrlParts.parse(Transforms.endpointToDesiredEndpoint(getPathUrl(), "blob", "dfs"))
-            .setBlobName(destinationPath).toUrl().toString();
+        String newBlobEndpoint = BlobUrlParts.parse(DataLakeImplUtils.endpointToDesiredEndpoint(getPathUrl(),
+            "blob", "dfs")).setBlobName(destinationPath).toUrl().toString();
 
         // TODO (gapra) : Investigate how to convert from datalake service version to blob service version
         return new SpecializedBlobClientBuilder()

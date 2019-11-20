@@ -14,6 +14,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import reactor.core.publisher.Mono;
@@ -441,7 +442,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return {@link SpecializedBlobClientBuilder}
      */
     SpecializedBlobClientBuilder prepareBuilderAppendPath(String pathName) {
-        String blobUrl = Transforms.endpointToDesiredEndpoint(getPathUrl(), "blob", "dfs");
+        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(getPathUrl(), "blob", "dfs");
 
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
