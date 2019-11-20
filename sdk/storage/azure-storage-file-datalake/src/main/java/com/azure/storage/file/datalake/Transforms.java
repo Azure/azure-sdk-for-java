@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.storage.blob.models.BlobAccessPolicy;
+import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerItemProperties;
 import com.azure.storage.blob.models.BlobContainerListDetails;
@@ -14,16 +16,20 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
 import com.azure.storage.file.datalake.models.CopyStatusType;
+import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.FileReadHeaders;
 import com.azure.storage.file.datalake.models.FileReadResponse;
+import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.FileSystemItemProperties;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
@@ -41,6 +47,8 @@ import com.azure.storage.file.datalake.models.UserDelegationKey;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 class Transforms {
 
@@ -297,4 +305,73 @@ class Transforms {
             .setContentCrc64(h.getContentCrc64())
             .setErrorCode(h.getErrorCode());
     }
+
+    static List<BlobSignedIdentifier> toBlobIdentifierList(List<DataLakeSignedIdentifier> identifiers) {
+        if (identifiers == null) {
+            return null;
+        }
+        List<BlobSignedIdentifier> blobIdentifiers = new ArrayList<>();
+        for(DataLakeSignedIdentifier identifier : identifiers) {
+            blobIdentifiers.add(Transforms.toBlobIdentifier(identifier));
+        }
+        return blobIdentifiers;
+    }
+
+    private static BlobSignedIdentifier toBlobIdentifier(DataLakeSignedIdentifier identifier) {
+        if (identifier == null) {
+            return null;
+        }
+        return new BlobSignedIdentifier()
+            .setId(identifier.getId())
+            .setAccessPolicy(Transforms.toBlobAccessPolicy(identifier.getAccessPolicy()));
+    }
+
+    private static BlobAccessPolicy toBlobAccessPolicy(DataLakeAccessPolicy accessPolicy) {
+        if (accessPolicy == null) {
+            return null;
+        }
+        return new BlobAccessPolicy()
+            .setExpiresOn(accessPolicy.getExpiresOn())
+            .setStartsOn(accessPolicy.getStartsOn())
+            .setPermissions(accessPolicy.getPermissions());
+    }
+
+    static FileSystemAccessPolicies FileSystemAccessPolicies(BlobContainerAccessPolicies accessPolicies) {
+        if (accessPolicies == null) {
+            return null;
+        }
+        return new FileSystemAccessPolicies(Transforms.toDataLakePublicAccessType(accessPolicies.getBlobAccessType()),
+            Transforms.toDataLakeIdentifierList(accessPolicies.getIdentifiers()));
+    }
+
+    static List<DataLakeSignedIdentifier> toDataLakeIdentifierList(List<BlobSignedIdentifier> identifiers) {
+        if (identifiers == null) {
+            return null;
+        }
+        List<DataLakeSignedIdentifier> dataLakeIdentifiers = new ArrayList<>();
+        for(BlobSignedIdentifier identifier : identifiers) {
+            dataLakeIdentifiers.add(Transforms.toDataLakeIdentifier(identifier));
+        }
+        return dataLakeIdentifiers;
+    }
+
+    private static DataLakeSignedIdentifier toDataLakeIdentifier(BlobSignedIdentifier identifier) {
+        if (identifier == null) {
+            return null;
+        }
+        return new DataLakeSignedIdentifier()
+            .setId(identifier.getId())
+            .setAccessPolicy(Transforms.toDataLakeAccessPolicy(identifier.getAccessPolicy()));
+    }
+
+    private static DataLakeAccessPolicy toDataLakeAccessPolicy(BlobAccessPolicy accessPolicy) {
+        if (accessPolicy == null) {
+            return null;
+        }
+        return new DataLakeAccessPolicy()
+            .setExpiresOn(accessPolicy.getExpiresOn())
+            .setStartsOn(accessPolicy.getStartsOn())
+            .setPermissions(accessPolicy.getPermissions());
+    }
+
 }
