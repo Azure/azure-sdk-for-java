@@ -81,7 +81,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSetting#string-string-string}
      *
      * @param key The key of the configuration setting to add.
-     * @param label The label of the configuration setting to add, or optionally, null if the label is not desired in
+     * @param label The label of the configuration setting to add. If {@code null} no label will be used.
      * the request.
      * @param value The value associated with this configuration setting key.
      * @return The {@link ConfigurationSetting} that was created, or {@code null} if a key collision occurs or the key
@@ -283,7 +283,7 @@ public final class ConfigurationAsyncClient {
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve, or optionally, null if the label is not desired
      * in the request.
-     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if the
+     * @param acceptDateTime To access a past state of the configuration setting. If {@code null} then the current state of the configuration setting will be returned.
      * {@code acceptDateTime} is not desired in the request.
      * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
      * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
@@ -444,7 +444,7 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Set the {@link ConfigurationSetting} to read-only or not read-only with a matching {@code key},
+     * Sets the read-only status for the {@link ConfigurationSetting}. If {@code isReadOnly} is {@code true} the configuration setting will be read-only, {@code false} will clear the read-only status.
      * and optional {@code label} combination. If the {@code isReadOnly} is true or null, the setting will be set to
      * read-only. If false, the setting will not be read-only.
      *
