@@ -336,7 +336,7 @@ class Transforms {
             .setPermissions(accessPolicy.getPermissions());
     }
 
-    static FileSystemAccessPolicies FileSystemAccessPolicies(BlobContainerAccessPolicies accessPolicies) {
+    static FileSystemAccessPolicies toFileSystemAccessPolicies(BlobContainerAccessPolicies accessPolicies) {
         if (accessPolicies == null) {
             return null;
         }

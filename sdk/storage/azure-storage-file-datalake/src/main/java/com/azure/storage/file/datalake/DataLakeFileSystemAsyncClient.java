@@ -701,7 +701,7 @@ public class DataLakeFileSystemAsyncClient {
         try {
             return blobContainerAsyncClient.getAccessPolicyWithResponse(leaseId)
                 .map(response -> new SimpleResponse<>(response,
-                Transforms.FileSystemAccessPolicies(response.getValue())));
+                Transforms.toFileSystemAccessPolicies(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

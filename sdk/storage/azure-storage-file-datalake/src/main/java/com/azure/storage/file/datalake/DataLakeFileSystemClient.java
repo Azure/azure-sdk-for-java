@@ -21,7 +21,6 @@ import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
@@ -522,7 +521,7 @@ public class DataLakeFileSystemClient {
         Context context) {
         Response<BlobContainerAccessPolicies> response = blobContainerClient.getAccessPolicyWithResponse(leaseId, timeout,
             context);
-        return new SimpleResponse<>(response, Transforms.FileSystemAccessPolicies(response.getValue()));
+        return new SimpleResponse<>(response, Transforms.toFileSystemAccessPolicies(response.getValue()));
     }
 
     /**
