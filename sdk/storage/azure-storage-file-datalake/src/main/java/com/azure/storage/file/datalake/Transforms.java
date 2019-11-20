@@ -311,7 +311,7 @@ class Transforms {
             return null;
         }
         List<BlobSignedIdentifier> blobIdentifiers = new ArrayList<>();
-        for(DataLakeSignedIdentifier identifier : identifiers) {
+        for (DataLakeSignedIdentifier identifier : identifiers) {
             blobIdentifiers.add(Transforms.toBlobIdentifier(identifier));
         }
         return blobIdentifiers;
@@ -349,7 +349,7 @@ class Transforms {
             return null;
         }
         List<DataLakeSignedIdentifier> dataLakeIdentifiers = new ArrayList<>();
-        for(BlobSignedIdentifier identifier : identifiers) {
+        for (BlobSignedIdentifier identifier : identifiers) {
             dataLakeIdentifiers.add(Transforms.toDataLakeIdentifier(identifier));
         }
         return dataLakeIdentifiers;
