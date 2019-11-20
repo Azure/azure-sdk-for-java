@@ -12,25 +12,61 @@ import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataContainer;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.models.SqlIntegratedChangeTrackingPolicy;
 import com.azure.search.models.DataSourceCredentials;
 import com.azure.search.models.DataSourceType;
+import com.azure.search.test.AccessConditionTests;
+import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
 
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import static com.azure.search.test.AccessConditionBase.*;
 
 public class DataSourceSyncTests extends DataSourceTestBase {
     private SearchServiceClient client;
+
+    // commonly used lambda definitions
+    private BiFunction<DataSource,
+        AccessOptions,
+        DataSource> createOrUpdateFunc =
+            (DataSource ds, AccessOptions ac) ->
+                createOrUpdateDataSource(ds, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private Supplier<DataSource> newDataSourceFunc =
+        () -> createTestBlobDataSource(null);
+
+    private Function<DataSource, DataSource> changeDataSourceFunc =
+        (DataSource ds) -> ds.setDescription("somethingnew");
+
+    private BiConsumer<String, AccessOptions> deleteDataSourceFunc =
+        (String name, AccessOptions ac) ->
+            deleteDataSource(name, ac.getAccessCondition(), ac.getRequestOptions());
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
         client = getSearchServiceClientBuilder().buildClient();
+    }
+
+    public DataSource createOrUpdateDataSource(DataSource datasource,
+                                               AccessCondition accessCondition,
+                                               RequestOptions requestOptions) {
+        return client.createOrUpdateDataSource(datasource, accessCondition, requestOptions);
+    }
+
+    public void deleteDataSource(String name, AccessCondition accessCondition, RequestOptions requestOptions) {
+        client.deleteDataSource(name, accessCondition, requestOptions);
     }
 
     @Override
@@ -121,18 +157,12 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
     @Override
     public void createOrUpdateDataSourceIfNotExistsFailsOnExistingResource() {
-        // Create a data source
-        DataSource initial = createTestBlobDataSource(null);
-        client.createOrUpdateDataSource(initial);
+        AccessConditionTests act = new AccessConditionTests();
 
-        // Create another data source with the same name
-        DataSource another = createTestBlobDataSource(null);
-
-        assertException(
-            () -> client.createOrUpdateDataSource(another,
-                generateIfNotExistsAccessCondition(), generateRequestOptions()),
-            HttpResponseException.class,
-            "The precondition given in one of the request headers evaluated to false");
+        act.createOrUpdateIfNotExistsFailsOnExistingResource(
+            createOrUpdateFunc,
+            newDataSourceFunc,
+            changeDataSourceFunc);
     }
 
     @Override
@@ -181,12 +211,12 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         // Try to delete the data source with the original eTag, and verify the exception
         assertException(
             () -> client.deleteDataSource(dataSourceName,
-                generateIfMatchAccessCondition(eTagOrig), generateRequestOptions()),
+                generateIfNotChangedAccessCondition(eTagOrig), generateRequestOptions()),
             HttpResponseException.class,
             "The precondition given in one of the request headers evaluated to false");
 
         // Delete the data source with the updated eTag:
-        client.deleteDataSource(dataSourceName, generateIfMatchAccessCondition(eTagUpdate), generateRequestOptions());
+        client.deleteDataSource(dataSourceName, generateIfNotChangedAccessCondition(eTagUpdate), generateRequestOptions());
     }
 
     @Override
@@ -233,7 +263,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
         assertException(
             () -> client.createOrUpdateDataSource(
-                updatedDataSource, generateIfMatchAccessCondition(createdETag), generateRequestOptions()),
+                updatedDataSource, generateIfNotChangedAccessCondition(createdETag), generateRequestOptions()),
             HttpResponseException.class,
             "The precondition given in one of the request headers evaluated to false"
         );
@@ -249,7 +279,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
         createdDataSource.setDescription("edited description");
         DataSource updatedDataSource = client.createOrUpdateDataSource(createdDataSource,
-            generateIfMatchAccessCondition(createdETag), generateRequestOptions());
+            generateIfNotChangedAccessCondition(createdETag), generateRequestOptions());
 
         Assert.assertTrue(StringUtils.isNotBlank(createdETag));
         Assert.assertTrue(StringUtils.isNoneBlank(updatedDataSource.getETag()));

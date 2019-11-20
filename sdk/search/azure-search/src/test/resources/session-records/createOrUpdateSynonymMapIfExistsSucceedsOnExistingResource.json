@@ -1,49 +1,49 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk60272505a674.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkdb87709979b3.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c65ca38a-8f56-490e-bbb7-84c8042e26da",
+      "request-id" : "0312c283-52dd-4978-a32b-7c5bc1924d88",
       "StatusCode" : "201",
-      "Date" : "Wed, 13 Nov 2019 19:54:00 GMT",
+      "Date" : "Tue, 19 Nov 2019 20:03:59 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D768733A39C195\"",
-      "elapsed-time" : "45",
+      "ETag" : "W/\"0x8D76D2B9E18D705\"",
+      "elapsed-time" : "37",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "210",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk60272505a674.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D768733A39C195\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\"}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkdb87709979b3.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D76D2B9E18D705\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\"}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk60272505a674.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkdb87709979b3.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk60272505a674.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkdb87709979b3.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "3172420e-41f9-4d46-b877-200e8971efba",
+      "request-id" : "b83b32c9-09c9-436f-a913-0568cc9cf9a0",
       "StatusCode" : "200",
-      "Date" : "Wed, 13 Nov 2019 19:54:00 GMT",
+      "Date" : "Tue, 19 Nov 2019 20:03:59 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D768733A4B2A6C\"",
-      "elapsed-time" : "18",
+      "ETag" : "W/\"0x8D76D2B9E34F080\"",
+      "elapsed-time" : "22",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "217",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk60272505a674.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D768733A4B2A6C\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"mutated1, mutated2\"}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkdb87709979b3.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D76D2B9E34F080\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"mutated1, mutated2\"}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

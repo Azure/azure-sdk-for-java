@@ -23,6 +23,10 @@ import reactor.test.StepVerifier;
 
 import java.util.UUID;
 
+import static com.azure.search.test.AccessConditionBase.generateIfNotChangedAccessCondition;
+import static com.azure.search.test.AccessConditionBase.generateIfExistsAccessCondition;
+import static com.azure.search.test.AccessConditionBase.generateIfNotExistsAccessCondition;
+
 public class DataSourceAsyncTests extends DataSourceTestBase {
     private SearchServiceAsyncClient client;
 
@@ -116,7 +120,8 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         StepVerifier
             .create(client.createOrUpdateDataSource(
-                another, generateIfNotExistsAccessCondition(), generateRequestOptions()))
+                another,
+                generateIfNotExistsAccessCondition(), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(
@@ -184,7 +189,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         StepVerifier
             .create(
                 client.deleteDataSource(dataSourceName,
-                    generateIfMatchAccessCondition(eTagOrig), generateRequestOptions())
+                    generateIfNotChangedAccessCondition(eTagOrig), generateRequestOptions())
             ).verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(
@@ -195,7 +200,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             });
 
         // Delete the data source with the updated eTag:
-        client.deleteDataSource(dataSourceName, generateIfMatchAccessCondition(eTagUpdate), generateRequestOptions())
+        client.deleteDataSource(dataSourceName, generateIfNotChangedAccessCondition(eTagUpdate), generateRequestOptions())
             .block();
     }
 
@@ -253,7 +258,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         StepVerifier
             .create(client.createOrUpdateDataSource(
-                updatedDataSource, generateIfMatchAccessCondition(createdETag), generateRequestOptions()))
+                updatedDataSource, generateIfNotChangedAccessCondition(createdETag), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(
@@ -275,7 +280,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         createdDataSource.setDescription("edited description");
         StepVerifier
             .create(client.createOrUpdateDataSource(createdDataSource,
-                generateIfMatchAccessCondition(createdETag), generateRequestOptions()))
+                generateIfNotChangedAccessCondition(createdETag), generateRequestOptions()))
             .assertNext(r -> {
                 Assert.assertTrue(StringUtils.isNotBlank(createdETag));
                 Assert.assertTrue(StringUtils.isNoneBlank(r.getETag()));

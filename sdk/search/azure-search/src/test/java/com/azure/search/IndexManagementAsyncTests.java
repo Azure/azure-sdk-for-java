@@ -29,6 +29,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.azure.search.test.AccessConditionBase.generateIfNotChangedAccessCondition;
+import static com.azure.search.test.AccessConditionBase.generateIfExistsAccessCondition;
+import static com.azure.search.test.AccessConditionBase.generateIfNotExistsAccessCondition;
+
 public class IndexManagementAsyncTests extends IndexManagementTestBase {
     private SearchServiceAsyncClient client;
 
@@ -151,14 +155,14 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.deleteIndex(index.getName(),
-                generateIfMatchAccessCondition(staleResource.getETag()), generateRequestOptions()))
+                generateIfNotChangedAccessCondition(staleResource.getETag()), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
             });
 
         Response<Void> response = client.deleteIndexWithResponse(index.getName(),
-            generateIfMatchAccessCondition(currentResource.getETag()),
+            generateIfNotChangedAccessCondition(currentResource.getETag()),
             null,
             null
             )
@@ -553,7 +557,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index createdResource = client.createOrUpdateIndex(index).block();
         Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
         Mono<Index> updatedResource = client.createOrUpdateIndex(mutatedResource,
-            false, generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions());
+            false, generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions());
 
         StepVerifier
             .create(updatedResource)
@@ -574,7 +578,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.createOrUpdateIndex(updatedResource,
-                false, generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions()))
+                false, generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());

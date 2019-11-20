@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk49d32553fc20.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk965193208604.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c0cc7d71-6dfc-4931-884b-24ba929c0c29",
+      "request-id" : "a3a8909e-b37d-4302-978e-69a300d37ccd",
       "StatusCode" : "404",
-      "Date" : "Wed, 13 Nov 2019 19:54:13 GMT",
+      "Date" : "Tue, 19 Nov 2019 20:04:06 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "25",
+      "elapsed-time" : "27",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "128",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonymMap with the name 'test-synonym' was found in a service named 'azs-sdk49d32553fc20'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonymMap with the name 'test-synonym' was found in a service named 'azs-sdk965193208604'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
@@ -23,62 +23,62 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk49d32553fc20.search-dogfood.windows-int.net/synonymmaps?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk965193208604.search-dogfood.windows-int.net/synonymmaps?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d908db23-1522-4feb-8921-c25680460bf5",
+      "request-id" : "20f26e63-c482-41b4-8e2f-cf321fc50a0e",
       "StatusCode" : "201",
-      "Date" : "Wed, 13 Nov 2019 19:54:13 GMT",
+      "Date" : "Tue, 19 Nov 2019 20:04:06 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7687342371051\"",
-      "elapsed-time" : "24",
+      "ETag" : "W/\"0x8D76D2BA228D3C3\"",
+      "elapsed-time" : "21",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "210",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk49d32553fc20.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7687342371051\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\"}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk965193208604.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D76D2BA228D3C3\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\"}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk49d32553fc20.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk965193208604.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk49d32553fc20.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk965193208604.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "20",
+      "elapsed-time" : "10",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "e3c35945-338d-4807-8101-603b9decad85",
+      "request-id" : "327d42ad-4ab5-4565-9899-09d5b9a85fc2",
       "StatusCode" : "204",
-      "Date" : "Wed, 13 Nov 2019 19:54:13 GMT"
+      "Date" : "Tue, 19 Nov 2019 20:04:06 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk49d32553fc20.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk965193208604.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c38dc14a-da93-47ca-9368-af402ae8bf58",
+      "request-id" : "691c8e3b-50d9-4713-8788-298b57d10d8b",
       "StatusCode" : "404",
-      "Date" : "Wed, 13 Nov 2019 19:54:13 GMT",
+      "Date" : "Tue, 19 Nov 2019 20:04:06 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "5",
+      "elapsed-time" : "4",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "128",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonymMap with the name 'test-synonym' was found in a service named 'azs-sdk49d32553fc20'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonymMap with the name 'test-synonym' was found in a service named 'azs-sdk965193208604'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

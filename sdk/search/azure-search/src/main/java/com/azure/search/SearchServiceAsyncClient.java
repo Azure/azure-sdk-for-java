@@ -548,7 +548,7 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Void> deleteIndexer(String indexerName) {
         return this.deleteIndexerWithResponse(indexerName, null, null)
-            .map(Response::getValue);
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -565,7 +565,7 @@ public class SearchServiceAsyncClient {
                                     AccessCondition accessCondition,
                                     RequestOptions requestOptions) {
         return this.deleteIndexerWithResponse(indexerName, accessCondition, requestOptions)
-            .map(Response::getValue);
+            .flatMap(FluxUtil::toMono);
     }
 
     /**

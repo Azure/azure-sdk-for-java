@@ -13,7 +13,6 @@ import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.Jacks
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.search.common.DataSources;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataChangeDetectionPolicy;
@@ -743,34 +742,6 @@ public abstract class SearchServiceTestBase extends TestBase {
         fields.add(field);
 
         index.setFields(fields);
-    }
-
-    /**
-     * Constructs an access condition such that an operation will be performed only if the resource's current ETag
-     * value matches the specified ETag value.
-     * @param eTag the ETag value to check against the resource's ETag
-     * @return An AccessCondition object that represents the If-Match condition
-     */
-    protected AccessCondition generateIfMatchAccessCondition(String eTag) {
-        return new AccessCondition().setIfMatch(eTag);
-    }
-
-    /**
-     * Constructs an access condition such that an operation will be performed only if the resource does not exist.
-     * @return an AccessCondition object that represents a condition where a resource does not exist
-     */
-    protected AccessCondition generateIfNotExistsAccessCondition() {
-        // Setting this access condition modifies the request to include the HTTP If-None-Match conditional header set to "*"
-        return new AccessCondition().setIfNoneMatch("*");
-    }
-
-    /**
-     * Constructs an access condition such that an operation will be performed only if the resource exists.
-     * @return an AccessCondition object that represents a condition where a resource exists
-     */
-    protected AccessCondition generateIfExistsAccessCondition() {
-        // Setting this access condition modifies the request to include the HTTP If-Match conditional header set to "*"
-        return new AccessCondition().setIfMatch("*");
     }
 
     /**

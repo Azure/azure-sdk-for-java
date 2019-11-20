@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk67534417ae4d.search-dogfood.windows-int.net/indexers('indexer')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkbb7138632058.search-dogfood.windows-int.net/indexers('name')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "59ef1c85-99f2-4bfe-aa2d-94750af6791f",
-      "StatusCode" : "400",
-      "Date" : "Wed, 20 Nov 2019 13:24:48 GMT",
+      "request-id" : "80150af2-5aa1-457b-b2e3-113c2c957110",
+      "StatusCode" : "412",
+      "Date" : "Wed, 20 Nov 2019 13:25:02 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "36",
+      "elapsed-time" : "29",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "118",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"This indexer refers to a data source 'thisdatasourcedoesnotexist' that doesn't exist\"}}",
+      "Content-Length" : "160",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The precondition given in one of the request headers evaluated to false. No change was made to the resource from this request.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

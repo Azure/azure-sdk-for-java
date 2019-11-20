@@ -18,6 +18,7 @@ import com.azure.search.models.Skillset;
 import com.azure.search.models.SplitSkillLanguage;
 import com.azure.search.models.TextExtractionAlgorithm;
 import com.azure.search.models.TextSplitMode;
+import com.azure.search.test.AccessConditionBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.core.publisher.Mono;
@@ -476,7 +477,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createOrUpdateSkillset(mutatedResource,
-                generateIfNotExistsAccessCondition(), generateRequestOptions()))
+                AccessConditionBase.generateIfNotExistsAccessCondition(), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
@@ -484,7 +485,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createOrUpdateSkillsetWithResponse(mutatedResource,
-                generateIfNotExistsAccessCondition(), generateRequestOptions()))
+                AccessConditionBase.generateIfNotExistsAccessCondition(), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
@@ -497,20 +498,20 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createOrUpdateSkillset(resource,
-                generateIfNotExistsAccessCondition(), generateRequestOptions()))
+                AccessConditionBase.generateIfNotExistsAccessCondition(), generateRequestOptions()))
             .assertNext(res -> Assert.assertFalse(res.getETag().isEmpty()))
             .verifyComplete();
 
 
         StepVerifier
             .create(client.createOrUpdateSkillset(resource.setName("test-skillset1"),
-                generateIfNotExistsAccessCondition(), generateRequestOptions()))
+                AccessConditionBase.generateIfNotExistsAccessCondition(), generateRequestOptions()))
             .assertNext(res -> Assert.assertFalse(res.getETag().isEmpty()))
             .verifyComplete();
 
         StepVerifier
             .create(client.createOrUpdateSkillsetWithResponse(resource.setName("test-skillset2"),
-                generateIfNotExistsAccessCondition(), generateRequestOptions()))
+                AccessConditionBase.generateIfNotExistsAccessCondition(), generateRequestOptions()))
             .assertNext(res -> Assert.assertFalse(res.getValue().getETag().isEmpty()))
             .verifyComplete();
 
@@ -523,7 +524,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         Skillset createdResource = client.createOrUpdateSkillset(skillset).block();
         Skillset mutatedResource = mutateSkillsInSkillset(createdResource);
         Mono<Skillset> updatedResource = client.createOrUpdateSkillset(mutatedResource,
-            generateIfExistsAccessCondition(), generateRequestOptions());
+            AccessConditionBase.generateIfExistsAccessCondition(), generateRequestOptions());
 
         StepVerifier
             .create(updatedResource)
@@ -562,7 +563,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createOrUpdateSkillset(resource,
-                generateIfExistsAccessCondition(), generateRequestOptions()))
+                AccessConditionBase.generateIfExistsAccessCondition(), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(),
@@ -579,7 +580,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         Skillset createdResource = client.createOrUpdateSkillset(skillset).block();
         Skillset mutatedResource = mutateSkillsInSkillset(createdResource);
         Mono<Skillset> updatedResource = client.createOrUpdateSkillset(mutatedResource,
-            generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions());
+            AccessConditionBase.generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions());
 
         StepVerifier
             .create(updatedResource)
@@ -600,7 +601,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createOrUpdateSkillset(updatedResource,
-                generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions()))
+                AccessConditionBase.generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
@@ -618,14 +619,14 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.deleteSkillset(skillset.getName(),
-                generateIfMatchAccessCondition(staleResource.getETag()), generateRequestOptions()))
+                AccessConditionBase.generateIfNotChangedAccessCondition(staleResource.getETag()), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
             });
 
         Response<Void> response = client.deleteSkillsetWithResponse(skillset.getName(),
-            generateIfMatchAccessCondition(currentResource.getETag()),
+            AccessConditionBase.generateIfNotChangedAccessCondition(currentResource.getETag()),
             null,
             null
         ).block();
@@ -637,9 +638,9 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
         client.createSkillset(skillset).block();
 
-        client.deleteSkillset(skillset.getName(), generateIfExistsAccessCondition(), generateRequestOptions()).block();
+        client.deleteSkillset(skillset.getName(), AccessConditionBase.generateIfExistsAccessCondition(), generateRequestOptions()).block();
         StepVerifier
-            .create(client.deleteSkillset(skillset.getName(), generateIfExistsAccessCondition(), generateRequestOptions()))
+            .create(client.deleteSkillset(skillset.getName(), AccessConditionBase.generateIfExistsAccessCondition(), generateRequestOptions()))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());

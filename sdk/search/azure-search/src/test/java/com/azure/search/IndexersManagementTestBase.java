@@ -2,13 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.Response;
-import com.azure.search.models.DataSource;
-import com.azure.search.models.DataType;
-import com.azure.search.models.Field;
 import com.azure.search.models.FieldMapping;
-import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexingParameters;
 import com.azure.search.models.IndexingSchedule;
@@ -17,8 +11,6 @@ import com.azure.search.models.OcrSkill;
 import com.azure.search.models.OutputFieldMappingEntry;
 import com.azure.search.models.Skill;
 import com.azure.search.models.Skillset;
-import org.apache.http.HttpStatus;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
@@ -31,7 +23,6 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
-
     @Test
     public abstract void createIndexerReturnsCorrectDefinition();
 
@@ -51,142 +42,47 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public abstract void canRunIndexer();
 
     @Test
-    public void canUpdateIndexer() {
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        Indexer updatedExpected = createIndexerWithDifferentDescription();
-
-        createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
-    }
+    public abstract void canUpdateIndexer();
 
     @Test
-    public void canUpdateIndexerFieldMapping() {
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        Indexer updatedExpected = createIndexerWithDifferentFieldMapping();
-
-        createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
-    }
+    public abstract void canUpdateIndexerFieldMapping();
 
     @Test
-    public void canCreateIndexerWithFieldMapping() {
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        Indexer indexer = createIndexerWithDifferentFieldMapping()
-            .setDataSourceName(SQL_DATASOURCE_NAME);
-
-        createAndValidateIndexer(indexer);
-    }
+    public abstract void canCreateIndexerWithFieldMapping();
 
     @Test
-    public void canUpdateIndexerDisabled() {
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        Indexer updatedExpected = createDisabledIndexer();
-
-        createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
-    }
+    public abstract void canUpdateIndexerDisabled();
 
     @Test
-    public void canUpdateIndexerSchedule() {
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        Indexer updatedExpected = createIndexerWithDifferentSchedule();
-
-        createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
-    }
+    public abstract void canUpdateIndexerSchedule();
 
     @Test
-    public void canCreateIndexerWithSchedule() {
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        Indexer indexer = createIndexerWithDifferentSchedule()
-            .setDataSourceName(SQL_DATASOURCE_NAME);
-
-        createAndValidateIndexer(indexer);
-    }
+    public abstract void canCreateIndexerWithSchedule();
 
     @Test
-    public void canUpdateIndexerBatchSizeMaxFailedItems() {
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        Indexer updatedExpected = createIndexerWithDifferentIndexingParameters();
-
-        createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
-    }
+    public abstract void canUpdateIndexerBatchSizeMaxFailedItems();
 
     @Test
-    public void canCreateIndexerWithBatchSizeMaxFailedItems() {
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        Indexer indexer = createIndexerWithDifferentIndexingParameters()
-            .setDataSourceName(SQL_DATASOURCE_NAME);
-
-        createAndValidateIndexer(indexer);
-    }
+    public abstract void canCreateIndexerWithBatchSizeMaxFailedItems();
 
     // This test currently does not pass on our Dogfood account, as the
     // Storage resource provider is not returning an answer.
     @Test
-    public void canUpdateIndexerBlobParams() {
-        // Create the needed Azure blob resources and datasource object
-        DataSource blobDataSource = createBlobDataSource();
-
-        // Create the datasource within the search service
-        createDatasource(blobDataSource);
-
-        // modify the indexer's blob params
-        Indexer updatedExpected = createIndexerWithStorageConfig();
-
-        createUpdateAndValidateIndexer(updatedExpected, BLOB_DATASOURCE_NAME);
-    }
+    public abstract void canUpdateIndexerBlobParams();
 
     // This test currently does not pass on our Dogfood account, as the
     // Storage resource provider is not returning an answer.
     @Test
-    public void canCreateIndexerWithBlobParams() {
-        // Create the needed Azure blob resources and datasource object
-        DataSource blobDataSource = createBlobDataSource();
-
-        // Create the datasource within the search service
-        DataSource dataSource = createDatasource(blobDataSource);
-
-        // modify the indexer's blob params
-        Indexer indexer = createIndexerWithStorageConfig()
-            .setDataSourceName(dataSource.getName());
-
-        createAndValidateIndexer(indexer);
-    }
+    public abstract void canCreateIndexerWithBlobParams();
 
     @Test
-    public void canUpdateIndexerSkillset() {
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        // Create a new skillset object
-        // todo: task 1544 - change all over the code that that the object creation and actual service creation will
-        // have meaningful and differentiated names
-        Skillset skillset = createSkillsetObject();
-
-        // create the skillset in the search service
-        createSkillset(skillset);
-        Indexer updatedExpected = createIndexerWithDifferentSkillset(skillset.getName());
-        createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
-    }
+    public abstract void canUpdateIndexerSkillset();
 
     /**
      * Create a new valid skillset object
      * @return the newly created skillset object
      */
-    private Skillset createSkillsetObject() {
+    Skillset createSkillsetObject() {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
                 .setName("url")
@@ -218,60 +114,39 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     }
 
     @Test
-    public void deleteIndexerIsIdempotent() {
-        // Create Datasource
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        createIndex(index);
-
-        // Create the indexer object
-        Indexer indexer = createTestIndexer("indexer");
-        indexer.setDataSourceName(SQL_DATASOURCE_NAME);
-
-        // Try delete before the indexer even exists.
-        Response<Void> result = deleteIndexer(indexer);
-
-        Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
-
-        // Actually create the indexer
-        createIndexer(indexer);
-
-        // Now delete twice.
-        result = deleteIndexer(indexer);
-        Assert.assertEquals(HttpStatus.SC_NO_CONTENT, result.getStatusCode());
-
-        result = deleteIndexer(indexer);
-        Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
-    }
+    public abstract void deleteIndexerIsIdempotent();
 
     @Test
-    public void canCreateAndGetIndexer() {
-        String indexerName = "indexer";
-
-        Index index = createTestIndexForLiveDatasource();
-        createIndex(index);
-
-        Indexer indexer = createTestIndexer(indexerName);
-
-        createIndexer(indexer);
-
-        Indexer indexerResult = getIndexer(indexerName);
-
-        assertIndexersEqual(indexer, indexerResult);
-    }
+    public abstract void canCreateAndGetIndexer();
 
     @Test
-    public void getIndexerThrowsOnNotFound() {
-        assertException(
-            () -> getIndexer("thisindexerdoesnotexist"),
-            HttpResponseException.class,
-            "Indexer 'thisindexerdoesnotexist' was not found");
-    }
+    public abstract void getIndexerThrowsOnNotFound();
 
-    protected void assertIndexersEqual(Indexer expected, Indexer actual) {
+    @Test
+    public abstract void createOrUpdateIndexerIfNotExistsFailsOnExistingResource();
+
+    @Test
+    public abstract void createOrUpdateIndexerIfNotExistsSucceedsOnNoResource();
+
+    @Test
+    public abstract void deleteIndexerIfExistsWorksOnlyWhenResourceExists();
+
+    @Test
+    public abstract void deleteIndexerIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException;
+
+    @Test
+    public abstract void updateIndexerIfExistsFailsOnNoResource() throws NoSuchFieldException, IllegalAccessException;
+
+    @Test
+    public abstract void updateIndexerIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException;
+
+    @Test
+    public abstract void updateIndexerIfNotChangedFailsWhenResourceChanged() throws NoSuchFieldException, IllegalAccessException;
+
+    @Test
+    public abstract void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged() throws NoSuchFieldException, IllegalAccessException;
+
+    void assertIndexersEqual(Indexer expected, Indexer actual) {
         expected.setETag("none");
         actual.setETag("none");
 
@@ -280,121 +155,11 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
-    protected Indexer createTestIndexer(String indexerName) {
+    Indexer createTestIndexer(String indexerName) {
         return new Indexer()
             .setName(indexerName)
             .setTargetIndexName("indexforindexers")
             .setSchedule(new IndexingSchedule().setInterval(Duration.ofDays(1)));
-    }
-
-    protected Indexer createTestDataSourceAndIndexer() {
-        // Create Datasource
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        createIndex(index);
-
-        // Create the indexer object
-        Indexer indexer = createTestIndexer("indexer");
-        indexer.setDataSourceName(SQL_DATASOURCE_NAME);
-        createIndexer(indexer);
-
-        return indexer;
-    }
-
-    static void expectSameStartTime(Indexer expected, Indexer actual) {
-        // There ought to be a start time in the response; We just can't know what it is because it would
-        // make the test timing-dependent.
-        expected.getSchedule().setStartTime(actual.getSchedule().getStartTime());
-    }
-
-    /**
-     * This index contains fields that are declared on the live datasource
-     * we use to test the indexers
-     *
-     * @return the newly created Index object
-     */
-    protected Index createTestIndexForLiveDatasource() {
-        return new Index()
-            .setName("indexforindexers")
-            .setFields(Arrays.asList(
-                new Field()
-                    .setName("county_name")
-                    .setType(DataType.EDM_STRING)
-                    .setSearchable(Boolean.FALSE)
-                    .setFilterable(Boolean.TRUE),
-                new Field()
-                    .setName("state")
-                    .setType(DataType.EDM_STRING)
-                    .setSearchable(Boolean.TRUE)
-                    .setFilterable(Boolean.TRUE),
-                new Field()
-                    .setName("feature_id")
-                    .setType(DataType.EDM_STRING)
-                    .setKey(Boolean.TRUE)
-                    .setSearchable(Boolean.TRUE)
-                    .setFilterable(Boolean.FALSE)));
-    }
-
-    void assertAllIndexerFieldsNullExceptName(Indexer indexer) {
-        Assert.assertNull(indexer.getParameters());
-        Assert.assertNull(indexer.getDataSourceName());
-        Assert.assertNull(indexer.getDescription());
-        Assert.assertNull(indexer.getETag());
-        Assert.assertNull(indexer.getFieldMappings());
-        Assert.assertNull(indexer.getOutputFieldMappings());
-        Assert.assertNull(indexer.getSchedule());
-        Assert.assertNull(indexer.getSkillsetName());
-        Assert.assertNull(indexer.getTargetIndexName());
-    }
-
-    /**
-     * Creates the index and indexer in the search service and then update the indexer
-     *
-     * @param updatedIndexer the indexer to be updated
-     * @param datasourceName the datasource name for this indexer
-     */
-    void createUpdateAndValidateIndexer(Indexer updatedIndexer, String datasourceName) {
-        updatedIndexer.setDataSourceName(datasourceName);
-
-        // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        createIndex(index);
-
-        Indexer initial =
-            createTestIndexer("indexer")
-                .setDataSourceName(datasourceName)
-                .setIsDisabled(true);
-
-        // create this indexer in the service
-        createIndexer(initial);
-
-        // create this indexer in the service
-        Indexer indexerResponse = createIndexer(updatedIndexer);
-
-        // verify the returned updated indexer is as expected
-        expectSameStartTime(updatedIndexer, indexerResponse);
-        assertIndexersEqual(updatedIndexer, indexerResponse);
-    }
-
-    /**
-     * Creates the index and indexer in the search service and then retrieves the indexer and validates it
-     *
-     * @param indexer the indexer to be created
-     */
-    void createAndValidateIndexer(Indexer indexer) {
-        // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        createIndex(index);
-
-        // create this indexer in the service
-        Indexer indexerResponse = createIndexer(indexer);
-
-        // verify the returned updated indexer is as expected
-        expectSameStartTime(indexer, indexerResponse);
-        assertIndexersEqual(indexer, indexerResponse);
     }
 
     /**
@@ -482,10 +247,8 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      *
      * @return the created indexer
      */
-    Indexer createIndexerWithDifferentIndexingParameters() {
+    Indexer createIndexerWithDifferentIndexingParameters(Indexer indexer) {
         // create a new indexer object
-        Indexer indexer = createTestIndexer("indexer");
-
         IndexingParameters ip = new IndexingParameters()
             .setMaxFailedItems(121)
             .setMaxFailedItemsPerBatch(11)
@@ -517,34 +280,4 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
         return updatedExpected;
     }
-
-    List<Indexer> prepareIndexersForCreateAndListIndexers() {
-        // Create the data source, note it is a valid DS with actual connection string
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        createIndex(index);
-
-        // Create two indexers
-        Indexer indexer1 = createTestIndexer("indexer1").setDataSourceName(datasource.getName());
-        Indexer indexer2 = createTestIndexer("indexer2").setDataSourceName(datasource.getName());
-        createIndexer(indexer1);
-        createIndexer(indexer2);
-
-        return Arrays.asList(indexer1, indexer2);
-    }
-
-    protected abstract Index createIndex(Index index);
-
-    protected abstract DataSource createDatasource(DataSource datasource);
-
-    protected abstract Indexer createIndexer(Indexer indexer);
-
-    protected abstract Indexer getIndexer(String indexerName);
-
-    protected abstract Response<Void> deleteIndexer(Indexer indexer);
-
-    protected abstract Skillset createSkillset(Skillset skillset);
 }

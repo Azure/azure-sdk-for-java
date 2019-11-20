@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase {
-
     @Test
     public abstract void createSynonymMapReturnsCorrectDefinition();
 
@@ -45,10 +44,10 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
     public abstract void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged();
 
     @Test
-    public abstract void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource();
+    public abstract void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException;
 
     @Test
-    public abstract void deleteSynonymMapIfExistsWorksOnlyWhenResourceExists();
+    public abstract void deleteSynonymMapIfExistsWorksOnlyWhenResourceExists() throws NoSuchFieldException, IllegalAccessException;
 
     @Test
     public abstract void deleteSynonymMapIsIdempotent();

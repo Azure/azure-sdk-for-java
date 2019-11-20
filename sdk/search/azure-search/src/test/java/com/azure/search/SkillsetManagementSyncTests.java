@@ -19,6 +19,7 @@ import com.azure.search.models.Skillset;
 import com.azure.search.models.SplitSkillLanguage;
 import com.azure.search.models.TextExtractionAlgorithm;
 import com.azure.search.models.TextSplitMode;
+import com.azure.search.test.AccessConditionBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 
@@ -413,7 +414,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Context context = new Context("key", "value");
 
         try {
-            client.createOrUpdateSkillset(mutatedResource, generateIfNotExistsAccessCondition(),
+            client.createOrUpdateSkillset(mutatedResource, AccessConditionBase.generateIfNotExistsAccessCondition(),
                 generateRequestOptions());
             Assert.fail("createOrUpdateSkillset did not throw an expected Exception");
         } catch (Exception ex) {
@@ -423,7 +424,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         }
 
         try {
-            client.createOrUpdateSkillsetWithResponse(mutatedResource, generateIfNotExistsAccessCondition(),
+            client.createOrUpdateSkillsetWithResponse(mutatedResource, AccessConditionBase.generateIfNotExistsAccessCondition(),
                 generateRequestOptions(), context);
             Assert.fail("createOrUpdateSkillset did not throw an expected Exception");
         } catch (Exception ex) {
@@ -438,17 +439,17 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset resource = createSkillsetWithOcrDefaultSettings(false);
         Context context = new Context("key", "value");
 
-        Skillset updatedResource = client.createOrUpdateSkillset(resource, generateIfNotExistsAccessCondition(),
+        Skillset updatedResource = client.createOrUpdateSkillset(resource, AccessConditionBase.generateIfNotExistsAccessCondition(),
             generateRequestOptions());
         Assert.assertFalse(updatedResource.getETag().isEmpty());
 
         updatedResource = client.createOrUpdateSkillset(resource.setName("test-skillset1"),
-            generateIfNotExistsAccessCondition(), generateRequestOptions());
+            AccessConditionBase.generateIfNotExistsAccessCondition(), generateRequestOptions());
         Assert.assertFalse(updatedResource.getETag().isEmpty());
 
         Response<Skillset> updatedResponse =
             client.createOrUpdateSkillsetWithResponse(resource.setName("test-skillset2"),
-            generateIfNotExistsAccessCondition(), generateRequestOptions(), context);
+                AccessConditionBase.generateIfNotExistsAccessCondition(), generateRequestOptions(), context);
         Assert.assertFalse(updatedResponse.getValue().getETag().isEmpty());
     }
 
@@ -457,7 +458,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
         Skillset createdResource = client.createOrUpdateSkillset(skillset);
         Skillset mutatedResource = mutateSkillsInSkillset(createdResource);
-        Skillset updatedResource = client.createOrUpdateSkillset(mutatedResource, generateIfExistsAccessCondition(),
+        Skillset updatedResource = client.createOrUpdateSkillset(mutatedResource, AccessConditionBase.generateIfExistsAccessCondition(),
             generateRequestOptions());
 
         Assert.assertFalse(updatedResource.getETag().isEmpty());
@@ -469,7 +470,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset resource = createSkillsetWithOcrDefaultSettings(false);
 
         try {
-            client.createOrUpdateSkillset(resource, generateIfExistsAccessCondition(), generateRequestOptions());
+            client.createOrUpdateSkillset(resource, AccessConditionBase.generateIfExistsAccessCondition(), generateRequestOptions());
             Assert.fail("createOrUpdateSkillset did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -485,7 +486,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
         Skillset createdResource = client.createOrUpdateSkillset(skillset);
         Skillset mutatedResource = mutateSkillsInSkillset(createdResource);
-        Skillset updatedResource = client.createOrUpdateSkillset(mutatedResource, generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions());
+        Skillset updatedResource = client.createOrUpdateSkillset(mutatedResource, AccessConditionBase.generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions());
 
         Assert.assertFalse(createdResource.getETag().isEmpty());
         Assert.assertFalse(updatedResource.getETag().isEmpty());
@@ -500,7 +501,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset updatedResource = client.createOrUpdateSkillset(mutatedResource);
 
         try {
-            client.createOrUpdateSkillset(updatedResource, generateIfMatchAccessCondition(createdResource.getETag()), generateRequestOptions());
+            client.createOrUpdateSkillset(updatedResource, AccessConditionBase.generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions());
             Assert.fail("createOrUpdateSkillset did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -518,7 +519,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset currentResource = client.createOrUpdateSkillset(staleResource.setDescription("description"));
 
         try {
-            client.deleteSkillset(skillset.getName(), generateIfMatchAccessCondition(staleResource.getETag()), generateRequestOptions());
+            client.deleteSkillset(skillset.getName(), AccessConditionBase.generateIfNotChangedAccessCondition(staleResource.getETag()), generateRequestOptions());
             Assert.fail("deleteSkillset did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -526,7 +527,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         }
 
         Response<Void> response = client.deleteSkillsetWithResponse(skillset.getName(),
-            generateIfMatchAccessCondition(currentResource.getETag()),
+            AccessConditionBase.generateIfNotChangedAccessCondition(currentResource.getETag()),
             null,
             null);
         Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), response.getStatusCode());
@@ -537,9 +538,9 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
         client.createSkillset(skillset);
 
-        client.deleteSkillset(skillset.getName(), generateIfExistsAccessCondition(), generateRequestOptions());
+        client.deleteSkillset(skillset.getName(), AccessConditionBase.generateIfExistsAccessCondition(), generateRequestOptions());
         try {
-            client.deleteSkillset(skillset.getName(), generateIfExistsAccessCondition(), generateRequestOptions());
+            client.deleteSkillset(skillset.getName(), AccessConditionBase.generateIfExistsAccessCondition(), generateRequestOptions());
             Assert.fail("deleteSkillset did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
