@@ -9,6 +9,6 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-advisor/v2017_04_19</module>
+    <module>mgmt-v2017_04_19</module>
   </modules>
 </project>

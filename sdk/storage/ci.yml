@@ -22,7 +22,7 @@ trigger:
     include:
       - sdk/storage/
     exclude:
-      - sdk/storage/azure-mgmt-
+      - sdk/storage/mgmt-
 
 pr:
   branches:
@@ -35,7 +35,7 @@ pr:
     include:
       - sdk/storage/
     exclude:
-      - sdk/storage/azure-mgmt-
+      - sdk/storage/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
