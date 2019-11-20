@@ -18,7 +18,7 @@
   "devDependencies": {
     "colors": "1.1.2",
     "execa": "^0.8.0",
-    "gulp": "^3.9.0",
+    "gulp": "^3.9.1",
     "gulp-exec": "2.1.2",
     "gulp-gh-pages": "^0.5.4",
     "gulp-if": "^2.0.0",
