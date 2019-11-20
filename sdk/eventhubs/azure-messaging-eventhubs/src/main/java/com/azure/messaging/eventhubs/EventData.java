@@ -42,6 +42,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * types) and Data section is not supported.
  * </p>
  *
+ * @see EventDataBatch
  * @see EventHubProducerClient
  * @see EventHubProducerAsyncClient
  */
@@ -68,9 +69,10 @@ public class EventData {
     }
 
     /**
-     * Creates an event containing the {@code data}.
+     * Creates an event containing the {@code body}.
      *
      * @param body The data to set for this event.
+     * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(byte[] body) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
@@ -93,9 +95,10 @@ public class EventData {
      * Creates an event by encoding the {@code body} using UTF-8 charset.
      *
      * @param body The string that will be UTF-8 encoded to create an event.
+     * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(String body) {
-        this(body.getBytes(UTF_8));
+        this(Objects.requireNonNull(body, "'body' cannot be null.").getBytes(UTF_8));
     }
 
     /**
@@ -114,35 +117,9 @@ public class EventData {
     }
 
     /**
-     * A specified key-value pair of type {@link Context} to set additional information on the event.
-     *
-     * @return the {@link Context} object set on the event
-     */
-    Context getContext() {
-        return context;
-    }
-
-    /**
-     * Adds a new key value pair to the existing context on Event Data.
-     *
-     * @param key The key for this context object
-     * @param value The value for this context object.
-     * @throws NullPointerException if {@code key} or {@code value} is null.
-     * @return The updated {@link EventData}.
-     */
-    EventData addContext(String key, Object value) {
-        Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
-        Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
-        this.context = context.addData(key, value);
-
-        return this;
-    }
-
-    /**
      * The set of free-form event properties which may be used for passing metadata associated with the event with the
-     * event body during Event Hubs operations. A common use case for {@code properties()} is to associate serialization
+     * event body during Event Hubs operations. A common use-case for {@code properties()} is to associate serialization
      * hints for the {@link #getBody()} as an aid to consumers who wish to deserialize the binary data.
-     * </p>
      *
      * <p><strong>Adding serialization hint using {@code getProperties()}</strong></p>
      * <p>In the sample, the type of telemetry is indicated by adding an application property with key "eventType".</p>
@@ -156,8 +133,8 @@ public class EventData {
     }
 
     /**
-     * Properties that are populated by EventHubService. As these are populated by Service, they are only present on a
-     * <b>received</b> EventData.
+     * Properties that are populated by Event Hubs service. As these are populated by the Event Hubs service, they are
+     * only present on a <b>received</b> {@link EventData}.
      *
      * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
      * the {@link EventData} is not received and is created by the public constructors.
@@ -193,8 +170,8 @@ public class EventData {
     /**
      * Gets the offset of the event when it was received from the associated Event Hub partition.
      *
-     * @return The offset within the Event Hub partition of the received event. {@code null} if the EventData was not
-     * received from Event Hub service.
+     * @return The offset within the Event Hub partition of the received event. {@code null} if the {@link EventData}
+     *     was not received from Event Hubs service.
      */
     public Long getOffset() {
         return systemProperties.getOffset();
@@ -204,8 +181,8 @@ public class EventData {
      * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to select
      * a partition to send the message to.
      *
-     * @return A partition key for this Event Data. {@code null} if the EventData was not received from Event Hub
-     * service or there was no partition key set when the event was sent to the Event Hub.
+     * @return A partition key for this Event Data. {@code null} if the {@link EventData} was not received from Event
+     *     Hubs service or there was no partition key set when the event was sent to the Event Hub.
      */
     public String getPartitionKey() {
         return systemProperties.getPartitionKey();
@@ -214,8 +191,8 @@ public class EventData {
     /**
      * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition.
      *
-     * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the EventData was not
-     * received from Event Hub service.
+     * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the {@link EventData}
+     *     was not received from Event Hubs service.
      */
     public Instant getEnqueuedTime() {
         return systemProperties.getEnqueuedTime();
@@ -225,8 +202,8 @@ public class EventData {
      * Gets the sequence number assigned to the event when it was enqueued in the associated Event Hub partition. This
      * is unique for every message received in the Event Hub partition.
      *
-     * @return The sequence number for this event. {@code null} if the EventData was not received from Event Hub
-     * service.
+     * @return The sequence number for this event. {@code null} if the {@link EventData} was not received from Event
+     *     Hubs service.
      */
     public Long getSequenceNumber() {
         return systemProperties.getSequenceNumber();
@@ -254,6 +231,31 @@ public class EventData {
     @Override
     public int hashCode() {
         return Arrays.hashCode(body);
+    }
+
+    /**
+     * A specified key-value pair of type {@link Context} to set additional information on the event.
+     *
+     * @return the {@link Context} object set on the event
+     */
+    Context getContext() {
+        return context;
+    }
+
+    /**
+     * Adds a new key value pair to the existing context on Event Data.
+     *
+     * @param key The key for this context object
+     * @param value The value for this context object.
+     * @throws NullPointerException if {@code key} or {@code value} is null.
+     * @return The updated {@link EventData}.
+     */
+    EventData addContext(String key, Object value) {
+        Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
+        Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
+        this.context = context.addData(key, value);
+
+        return this;
     }
 
     /**
