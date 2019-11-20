@@ -19,7 +19,7 @@
 <td>checkExists</td>
 <td>Check whether a file or directory exists.</td>
 <td>N/A</td>
-<td>Users can use Gen2 API methods <strong>createFileWithResponse</strong> and <strong>createDirectoryWithResponse</strong> and set <strong>BlobRequestConditions.setIfNoneMatch(true)</strong></td>
+<td>Use Gen2 API methods <strong>createFileWithResponse</strong> and <strong>createDirectoryWithResponse</strong> and set <strong>BlobRequestConditions.setIfNoneMatch(true)</strong></td>
 </tr>
 <tr>
 <td>concatenateFiles</td>
@@ -61,19 +61,19 @@
 <td>deleteRecursive</td>
 <td>Deletes a directory and all it's child directories and file recursively.</td>
 <td><strong>DataLakeDirectoryClient.delete</strong></td>
-<td>Users should set the <strong>recursive</strong> parameter to <strong>true</strong></td>
+<td>Set the <strong>recursive</strong> parameter to <strong>true</strong></td>
 </tr>
 <tr>
 <td>enumerateDirectory</td>
 <td>Enumerates the contents of a directory, returning a List of Directory Entry objects, one per file or directory in the specified directory.</td>
 <td><strong>DataLakeFileSystemClient.listPaths</strong></td>
-<td>Users should set <strong>ListPathsOptions.path</strong> to the desired path</td>
+<td>Set <strong>ListPathsOptions.path</strong> to the desired path</td>
 </tr>
 <tr>
 <td>getAclStatus</td>
 <td>Queries the ACLs and permissions for a file or directory.</td>
 <td><strong>DataLakeFileClient.getAccessControl</strong> and <strong>DataLakeDirectoryClient.getAccessControl</strong></td>
-<td>Users should set <strong>ListPathsOptions.path</strong> to the desired path</td>
+<td>Set <strong>ListPathsOptions.path</strong> to the desired path</td>
 </tr>
 <tr>
 <td>getAppendStream</td>
