@@ -20,7 +20,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
     <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
-    <relativePath>./parent/pom.xml</relativePath>
+    <relativePath>../parents/azure-sdk-parent</relativePath>
   </parent>
 
   <licenses>
@@ -539,18 +539,6 @@
       </modules>
     </profile>
 
-    <profile>
-      <id>template-module</id>
-      <activation>
-        <property>
-          <name>include-template</name>
-        </property>
-      </activation>
-      <modules>
-        <module>./sdk/template/azure-sdk-template</module>
-      </modules>
-    </profile>
-
     <!-- Skip overview generation unless -Dgenerate-overview is passed as an argument.
          This is specifically done to prevent requiring python as a pre-requisite since
          this is only needed by the build system. -->
@@ -601,22 +589,4 @@
       </build>
     </profile> 
   </profiles>
-
-  <modules>
-    <module>./sdk/batch/microsoft-azure-batch</module>
-    <module>./sdk/applicationinsights/microsoft-azure-applicationinsights-query</module>
-    <module>./sdk/cosmos</module>
-    <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>
-    <module>./sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>
-    <module>./sdk/eventhubs/microsoft-azure-eventhubs-extensions/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault-complete/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault-core/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault-cryptography/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault-extensions/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault-test/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault-webkey/pom.xml</module>
-    <module>./sdk/servicebus/microsoft-azure-servicebus</module>
-    <module>./sdk/storage/microsoft-azure-storage-blob</module>
-  </modules>
 </project>

@@ -1,6 +1,6 @@
 omitted_paths:
   - archive/*
-  - profiles/*
+  - sdk/profiles/*
   - loganalytics/data-plane/samples/*
   - sdk/*/azure-*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*

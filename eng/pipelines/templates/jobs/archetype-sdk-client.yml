@@ -99,9 +99,9 @@ jobs:
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
           goals: 'package'
-          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -225,7 +225,7 @@ jobs:
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
           options: ${{ parameters.TestOptions }}
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'

@@ -21,7 +21,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
     <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
-    <relativePath>./parent/pom.xml</relativePath>
+    <relativePath>../parents/azure-sdk-parent</relativePath>
   </parent>
 
   <licenses>
@@ -110,7 +110,8 @@
 
   <build>
     <plugins>
-      <plugin>
+      <plugin>    <relativePath>../parents/azure-sdk-parent</relativePath>
+
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
@@ -138,10 +139,10 @@
           </dependency>
         </dependencies>
         <configuration>
-          <configLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml
+          <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml
           </suppressionsLocation>
-          <headerLocation>eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+          <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
@@ -610,10 +611,10 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <configuration>
-          <configLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml
+          <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml
           </suppressionsLocation>
-          <headerLocation>eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+          <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
@@ -647,7 +648,7 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml
+          <excludeFilterFile>../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml
           </excludeFilterFile>
           <failOnError>true</failOnError>
           <fork>true</fork>
@@ -970,9 +971,9 @@
         </property>
       </activation>
       <modules>
-        <module>./eng/spotbugs-aggregate-report</module>
-        <module>./eng/code-quality-reports</module>
-        <module>./eng/jacoco-test-coverage</module>
+        <module>../../../eng/spotbugs-aggregate-report</module>
+        <module>../../../eng/code-quality-reports</module>
+        <module>../../../eng/jacoco-test-coverage</module>
       </modules>
     </profile>
 
@@ -985,7 +986,7 @@
         </property>
       </activation>
       <modules>
-        <module>./sdk/template/azure-sdk-template</module>
+        <module>../../template/azure-sdk-template</module>
       </modules>
     </profile>
 
@@ -1005,29 +1006,29 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>generate-overview-from-readme</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <executable>python</executable>
-              <workingDirectory>${project.basedir}</workingDirectory>
-              <arguments>
-                <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
-                <argument>--rf</argument>
-                <argument>${project.basedir}/README.md</argument>
-                <argument>--v</argument>
-                <argument>${project.version}</argument>
-              </arguments>
-            </configuration>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>exec-maven-plugin</artifactId>
+              <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+              <executions>
+                  <execution>
+                      <id>generate-overview-from-readme</id>
+                      <phase>prepare-package</phase>
+                      <goals>
+                          <goal>exec</goal>
+                      </goals>
+                  </execution>
+              </executions>
+              <configuration>
+                <executable>python3</executable>
+                <workingDirectory>${project.basedir}</workingDirectory>
+                <arguments>
+                      <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
+                      <argument>--rf</argument>
+                      <argument>${project.basedir}/README.md</argument>
+                      <argument>--v</argument>
+                      <argument>${project.version}</argument>
+                </arguments>
+              </configuration>
           </plugin>
           <!-- Add the overview argument to the javadoc args -->
           <plugin>
@@ -1220,31 +1221,4 @@
       </build>
     </profile>
   </profiles>
-
-  <modules>
-    <module>sdk/appconfiguration/azure-data-appconfiguration</module>
-    <module>sdk/core/azure-core</module>
-    <module>sdk/core/azure-core-amqp</module>
-<!--    <module>sdk/core/azure-core-management</module>--> <!-- Removed for now, as this library is unused -->
-    <module>sdk/core/azure-core-http-netty</module>
-    <module>sdk/core/azure-core-http-okhttp</module>
-    <module>sdk/core/azure-core-test</module>
-    <module>sdk/core/azure-core-tracing-opentelemetry</module>
-    <module>sdk/e2e</module>
-    <module>sdk/eventhubs/azure-messaging-eventhubs</module>
-    <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
-    <module>sdk/identity/azure-identity</module>
-    <module>sdk/keyvault/azure-security-keyvault-certificates</module>
-    <module>sdk/keyvault/azure-security-keyvault-keys</module>
-    <module>sdk/keyvault/azure-security-keyvault-secrets</module>
-    <module>sdk/storage/azure-storage-blob</module>
-    <module>sdk/storage/azure-storage-blob-batch</module>
-    <module>sdk/storage/azure-storage-blob-cryptography</module>
-    <module>sdk/storage/azure-storage-blob-nio</module>
-    <module>sdk/storage/azure-storage-common</module>
-    <module>sdk/storage/azure-storage-file-share</module>
-    <module>sdk/storage/azure-storage-file-datalake</module>
-    <module>sdk/storage/azure-storage-queue</module>
-    <module>sdk/textanalytics/azure-ai-textanalytics</module>
-  </modules>
 </project>

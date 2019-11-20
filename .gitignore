@@ -46,6 +46,7 @@ local.properties
 .loadpath
 
 # Other Tooling #
+.factorypath
 .classpath
 .project
 target

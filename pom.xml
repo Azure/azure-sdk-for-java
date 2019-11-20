@@ -20,7 +20,11 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
     <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
+<<<<<<< HEAD
     <relativePath>./parent/pom.xml</relativePath>
+=======
+    <relativePath>sdk/parents/azure-sdk-parent</relativePath>
+>>>>>>> Move root parent into its own folder in sdk/parents.
   </parent>
 
   <licenses>
@@ -264,21 +268,141 @@
     </profile>
 
     <profile>
-      <id>template-module</id>
-      <activation>
-        <property>
-          <name>include-template</name>
-        </property>
-      </activation>
+      <id>appconfiguration</id>
       <modules>
-        <module>./sdk/template/azure-sdk-template</module>
+        <module>sdk/appconfiguration</module>
       </modules>
     </profile>
-  </profiles>
+    <profile>
+      <id>applicationinsights</id>
+      <modules>
+        <module>sdk/applicationinsights</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>authorization</id>
+      <modules>
+        <module>sdk/authorization</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>batch</id>
+      <modules>
+        <module>sdk/batch</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>cognitiveservices</id>
+      <modules>
+        <module>sdk/cognitiveservices</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>core</id>
+      <modules>
+        <module>sdk/core</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>cosmos</id>
+      <modules>
+        <module>sdk/cosmos</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>eventgrid</id>
+      <modules>
+        <module>sdk/eventgrid</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>eventhubs</id>
+      <modules>
+        <module>sdk/eventhubs</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>identity</id>
+      <modules>
+        <module>sdk/identity</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>keyvault</id>
+      <modules>
+        <module>sdk/keyvault</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>loganalytics</id>
+      <modules>
+        <module>sdk/loganalytics</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>mediaservices</id>
+      <modules>
+        <module>sdk/mediaservices</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>parents</id>
+      <modules>
+        <module>sdk/parents</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>search</id>
+      <modules>
+        <module>sdk/search</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>servicebus</id>
+      <modules>
+        <module>sdk/servicebus</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>storage</id>
+      <modules>
+        <module>sdk/storage</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>template</id>
+      <modules>
+        <module>sdk/template</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>all</id>
+       <activation>
+         <activeByDefault>true</activeByDefault>
+       </activation>
+      <modules>
+        <module>sdk/appconfiguration</module>
+        <module>sdk/applicationinsights</module>
+        <module>sdk/authorization</module>
+        <module>sdk/batch</module>
+        <module>sdk/cognitiveservices</module>
+        <module>sdk/core</module>
+        <module>sdk/cosmos</module>
+        <module>sdk/eventgrid</module>
+        <module>sdk/eventhubs</module>
+        <module>sdk/identity</module>
+        <module>sdk/keyvault</module>
+        <module>sdk/loganalytics</module>
+        <module>sdk/mediaservices</module>
+        <module>sdk/parents</module>
+        <module>sdk/servicebus</module>
+        <module>sdk/storage</module>
+        <module>sdk/template</module>
+        <!--
+        <module>sdk/search</module>
+        -->
+      </modules>
+    </profile>
 
-  <modules>
-    <module>./pom.client.xml</module>
-    <module>./pom.data.xml</module>
-    <module>./pom.management.xml</module>
-  </modules>
+  </profiles>
 </project>

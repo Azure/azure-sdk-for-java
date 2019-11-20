@@ -30,7 +30,7 @@ jobs:
       - task: Maven@3
         displayName: 'Install reporting tools'
         inputs:
-          mavenPomFile: pom.client.xml
+          mavenPomFile: sdk/parents/azure-client-sdk-parent/pom.xml
           options: '$(DefaultOptions) -Djava-lts -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
@@ -42,7 +42,7 @@ jobs:
       - task: Maven@3
         displayName: 'Generate Doc Site'
         inputs:
-          mavenPomFile: pom.client.xml
+          mavenPomFile: sdk/parents/azure-client-sdk-parent/pom.xml
           options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
@@ -54,7 +54,7 @@ jobs:
       - task: Maven@3
         displayName: 'Install azure-sdk-parent'
         inputs:
-          mavenPomFile: parent/pom.xml
+          mavenPomFile: sdk/parents/azure-client-sdk-parent/pom.xml
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
@@ -87,7 +87,7 @@ jobs:
       - task: Maven@3
         displayName: 'Install client.xml to get spotbugs reporting'
         inputs:
-          mavenPomFile: pom.client.xml
+          mavenPomFile: sdk/parents/azure-client-sdk-parent/pom.xml
           options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dmaven.javadoc.skip=true -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
@@ -99,7 +99,7 @@ jobs:
       - task: Maven@3
         displayName: 'Install azure-sdk-parent'
         inputs:
-          mavenPomFile: parent/pom.xml
+          mavenPomFile: sdk/parents/azure-sdk-parent/pom.xml
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
@@ -111,7 +111,7 @@ jobs:
       - task: Maven@3
         displayName: 'Install Data Packages'
         inputs:
-          mavenPomFile: pom.data.xml
+          mavenPomFile: sdk/parents/azure-data-sdk-parent/pom.xml
           options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dmaven.javadoc.skip=true -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
@@ -123,7 +123,7 @@ jobs:
       - task: Maven@3
         displayName: 'Generate Doc Site'
         inputs:
-          mavenPomFile: pom.data.xml
+          mavenPomFile: sdk/parents/azure-data-sdk-parent/pom.xml
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'

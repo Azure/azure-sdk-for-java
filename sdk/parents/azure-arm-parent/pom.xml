@@ -22,7 +22,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
     <version>1.5.0</version> <!-- {x-version-exempt;com.azure:azure-sdk-parent;all of management needs to be updated in order for this to be at the latest} -->
-    <relativePath>./parent/pom.xml</relativePath>
+    <relativePath>../parents/azure-sdk-parent</relativePath>
   </parent>
 
   <properties>
@@ -758,8 +758,4 @@
       </build>
     </profile>
   </profiles>
-  <modules>
-    <module>./profiles/2018-03-01-hybrid</module>
-    <module>./profiles/2019-03-01-hybrid</module>
-  </modules>
 </project>

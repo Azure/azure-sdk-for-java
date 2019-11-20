@@ -92,7 +92,7 @@ jobs:
       - task: Maven@3
         displayName: $(DisplayName)
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 

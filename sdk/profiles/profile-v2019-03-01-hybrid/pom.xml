@@ -10,7 +10,7 @@
         <groupId>com.microsoft.azure.profile_2019_03_01_hybrid</groupId>
         <artifactId>azure-profile-parent</artifactId>
         <version>1.0.0-beta</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../profile-parent-v2019-03-01-hybrid</relativePath>
     </parent>
     <artifactId>azure</artifactId>
     <version>1.0.0-beta</version>

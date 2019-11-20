@@ -44,22 +44,22 @@ fewer changes requested. In particular, it is recommended to review:
 Open a command prompt/terminal:
 1. Execute `git clone https://github.com/Azure/azure-sdk-for-java.git`
 1. Traverse to the repository root.
-1. Execute `mvn compile -f pom.client.xml`
+1. Execute `mvn compile -f sdk/parents/azure-client-sdk-parent/pom.xml`
 1. Install the tooling and build the product by executing:
-    * `mvn install -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip -f pom.client.xml`
+    * `mvn install -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip -f sdk/parents/azure-client-sdk-parent/pom.xml`
 
 ## Building only the Azure SDK client library for Storage Blob Checkpoint Store
 
 After building the tooling and solution once from the section, 
 [Building all the client libraries](#building-all-the-client-libraries), you can build just the Azure SDK client library
  for Checkpoint store using Storage Blobs by executing:
-1. `mvn compile -f sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\pom.xml`
+1. `mvn compile -f sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml`
 
 ## Running tests
 
 After following instructions in [Building all the client libraries](#building-all-the-client-libraries), you can run the
 unit tests by executing:
-1. `mvn test -f sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\pom.xml`
+1. `mvn test -f sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml`
 
 For unit tests, there are no special considerations; these are self-contained and execute locally without any reliance
 on external resources. These tests are run for all PR validations.
