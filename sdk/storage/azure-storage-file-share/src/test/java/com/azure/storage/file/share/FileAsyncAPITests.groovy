@@ -350,7 +350,7 @@ class FileAsyncAPITests extends APISpec {
         uploadFromFileErrorVerifier.verifyErrorSatisfies({ it instanceof NoSuchFileException })
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "Upload and download file exists"() {
@@ -372,7 +372,7 @@ class FileAsyncAPITests extends APISpec {
         downloadToFileErrorVerifier.verifyErrorSatisfies({ it instanceof FileAlreadyExistsException })
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "Upload and download to file does not exist"() {
@@ -399,7 +399,7 @@ class FileAsyncAPITests extends APISpec {
         scanner.close()
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "Upload range from URL"() {
@@ -627,7 +627,7 @@ class FileAsyncAPITests extends APISpec {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
 
         expect:
@@ -638,14 +638,14 @@ class FileAsyncAPITests extends APISpec {
             }.verifyComplete()
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
+        FileTestHelper.deleteFilesIfExists(testFolder.toString())
     }
 
     def "List ranges with range"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
 
         expect:
@@ -656,7 +656,7 @@ class FileAsyncAPITests extends APISpec {
             }.verifyComplete()
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
+        FileTestHelper.deleteFilesIfExists(testFolder.toString())
     }
 
     def "List handles"() {
