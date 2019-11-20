@@ -221,9 +221,7 @@ public final class EventDataBatch {
             message.setMessageAnnotations(messageAnnotations);
         }
 
-        if (event.getBody() != null) {
-            message.setBody(new Data(new Binary(event.getBody())));
-        }
+        message.setBody(new Data(new Binary(event.getBody())));
 
         return message;
     }
