@@ -12,14 +12,14 @@
 <tr>
 <td>checkAccess</td>
 <td>Checks whether the calling user has the required permissions for the file/directory.</td>
-<td>N/A</td>
-<td></td>
+<td><strong>DataLakeFileClient.getAccessControl</strong> and <strong>DataLakeDirectoryClient.getAccessControl</strong></td>
+<td>In the response, check if the user/group is the Owner/Group, or has an entry in the ACL.</td>
 </tr>
 <tr>
 <td>checkExists</td>
 <td>Check whether a file or directory exists.</td>
-<td>N/A</td>
-<td>Use Gen2 API methods <strong>createFileWithResponse</strong> and <strong>createDirectoryWithResponse</strong> and set <strong>BlobRequestConditions.setIfNoneMatch("*")</strong></td>
+<td><strong>DataLakeFileClient.getProperties</strong> and <strong>DataLakeDirectoryClient.getProperties</strong></td>
+<td>An exception will be thrown if the file or directory does not exist.</td>
 </tr>
 <tr>
 <td>concatenateFiles</td>
@@ -43,13 +43,13 @@
 <td>createEmptyFile</td>
 <td>Creates an empty file.</td>
 <td><strong>DataLakeFileClient.create</strong></td>
-<td>By default this method will override an existing file, set <strong>BlobRequestConditions.setIfNoneMatch("*")</strong> to prevent overwriting.</td>
+<td>By default this method will overwrite an existing file, set <strong>BlobRequestConditions.setIfNoneMatch("*")</strong> to prevent overwriting.</td>
 </tr>
 <tr>
 <td>createFile</td>
 <td>Creates a file.</td>
 <td><strong>DataLakeFileClient.create</strong></td>
-<td>By default this method will override an existing file, set <strong>BlobRequestConditions.setIfNoneMatch("*")</strong> to prevent overwriting.</td>
+<td>By default this method will overwrite an existing file, set <strong>BlobRequestConditions.setIfNoneMatch("*")</strong> to prevent overwriting.</td>
 </tr>
 <tr>
 <td>delete</td>
@@ -73,7 +73,7 @@
 <td>getAclStatus</td>
 <td>Queries the ACLs and permissions for a file or directory.</td>
 <td><strong>DataLakeFileClient.getAccessControl</strong> and <strong>DataLakeDirectoryClient.getAccessControl</strong></td>
-<td>Set <strong>ListPathsOptions.path</strong> to the desired path</td>
+<td></td>
 </tr>
 <tr>
 <td>getAppendStream</td>
@@ -84,7 +84,7 @@
 <tr>
 <td>getContentSummary</td>
 <td>Gets the content summary of a file or directory.</td>
-<td>N/A</td>
+<td><strong>DataLakeFileClient.getProperties</strong> and <strong>DataLakeDirectoryClient.getProperties</strong></td>
 <td></td>
 </tr>
 <tr>
