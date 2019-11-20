@@ -7,7 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.exception.AzureException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -61,7 +60,7 @@ public class EventHubSharedKeyCredential implements TokenCredential {
      * @throws IllegalArgumentException if {@code policyName}, {@code sharedAccessKey} is an empty string. If the
      *     {@code sharedAccessKey} is an invalid value for the hashing algorithm.
      * @throws NullPointerException if {@code policyName} or {@code sharedAccessKey} is null.
-     * @throws AzureException If the hashing algorithm cannot be instantiated, which is used to generate
+     * @throws UnsupportedOperationException If the hashing algorithm cannot be instantiated, which is used to generate
      *     the shared access signatures.
      */
     public EventHubSharedKeyCredential(String policyName, String sharedAccessKey) {
@@ -80,7 +79,7 @@ public class EventHubSharedKeyCredential implements TokenCredential {
      *     value for the hashing algorithm.
      * @throws NullPointerException if {@code policyName}, {@code sharedAccessKey}, or {@code tokenValidity} is
      *     null.
-     * @throws AzureException If the hashing algorithm cannot be instantiated, which is used to generate
+     * @throws UnsupportedOperationException If the hashing algorithm cannot be instantiated, which is used to generate
      *     the shared access signatures.
      */
     public EventHubSharedKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity) {
@@ -100,7 +99,7 @@ public class EventHubSharedKeyCredential implements TokenCredential {
         try {
             hmac = Mac.getInstance(HASH_ALGORITHM);
         } catch (NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new AzureException(
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
                 String.format("Unable to create hashing algorithm '%s'", HASH_ALGORITHM), e));
         }
 
