@@ -3,15 +3,15 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.messaging.eventhubs.EventProcessor;
-import com.azure.messaging.eventhubs.EventProcessorBuilder;
-import com.azure.messaging.eventhubs.EventProcessorStore;
+import com.azure.messaging.eventhubs.CheckpointStore;
+import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * The initialization context that is supplied to {@link EventProcessorBuilder#initializePartition(Function)
- * initializePartition} before the {@link EventProcessor} instance begins processing events from a partition.
+ * The initialization context that is supplied to {@link EventProcessorClientBuilder#initializePartition(Function)
+ * initializePartition} before the {@link EventProcessorClient} instance begins processing events from a partition.
  */
 public class InitializationContext {
 
@@ -23,7 +23,7 @@ public class InitializationContext {
      *
      * @param partitionContext The partition information for which the event processing is going to start.
      * @param initialPosition The default initial event position from which the processing will start in the absence of
-     * a checkpoint in {@link EventProcessorStore}.
+     * a checkpoint in {@link CheckpointStore}.
      * @throws NullPointerException if {@code partitionContext} or {@code initialPosition}is {@code null}.
      */
     public InitializationContext(final PartitionContext partitionContext, final EventPosition initialPosition) {
@@ -42,10 +42,10 @@ public class InitializationContext {
 
     /**
      * Returns the default initial event position from which the processing will start in the absence of a checkpoint in
-     * {@link EventProcessorStore}.
+     * {@link CheckpointStore}.
      *
      * @return The default initial event position from which the processing will start in the absence of a checkpoint in
-     * {@link EventProcessorStore}.
+     * {@link CheckpointStore}.
      */
     public EventPosition getInitialPosition() {
         return initialPosition;
@@ -53,7 +53,7 @@ public class InitializationContext {
 
     /**
      * If a different initial position is desirable for this partition, setting the initial position will start the
-     * event processing from this position. Note that the checkpoint in {@link EventProcessorStore} is given the highest
+     * event processing from this position. Note that the checkpoint in {@link CheckpointStore} is given the highest
      * priority and if there's a checkpoint in the store, that will be used regardless of what is set in this method.
      *
      * @param initialPosition The initial event position to start the event processing from.

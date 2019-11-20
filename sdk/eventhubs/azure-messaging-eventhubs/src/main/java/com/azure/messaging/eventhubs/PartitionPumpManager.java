@@ -8,6 +8,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -32,20 +33,20 @@ import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
- * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessor}. Each
+ * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}. Each
  * partition pump is an {@link EventHubConsumerClient} that is receiving events from partitions this
- * {@link EventProcessor} has claimed ownership of.
+ * {@link EventProcessorClient} has claimed ownership of.
  *
  * <p>
- * New partition pumps are created when this {@link EventProcessor} claims ownership of a new partition. When the {@link
- * EventProcessor} is requested to stop, this class is responsible for stopping all event processing tasks and closing
+ * New partition pumps are created when this {@link EventProcessorClient} claims ownership of a new partition. When the {@link
+ * EventProcessorClient} is requested to stop, this class is responsible for stopping all event processing tasks and closing
  * all connections to the Event Hub.
  * </p>
  */
 class PartitionPumpManager {
 
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
-    private final EventProcessorStore eventProcessorStore;
+    private final CheckpointStore checkpointStore;
     private final Map<String, EventHubConsumerAsyncClient> partitionPumps = new ConcurrentHashMap<>();
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
     private final EventPosition initialEventPosition;
@@ -55,19 +56,19 @@ class PartitionPumpManager {
     /**
      * Creates an instance of partition pump manager.
      *
-     * @param eventProcessorStore The partition manager that is used to store and update checkpoints.
+     * @param checkpointStore The partition manager that is used to store and update checkpoints.
      * @param partitionProcessorFactory The partition processor factory that is used to create new instances of {@link
      * PartitionProcessor} when new partition pumps are started.
      * @param initialEventPosition The initial event position to use when a new partition pump is created and no
      * checkpoint for the partition is available.
      * @param eventHubClientBuilder The client builder used to create new clients (and new connections) for each
-     * partition processed by this {@link EventProcessor}.
+     * partition processed by this {@link EventProcessorClient}.
      */
-    PartitionPumpManager(EventProcessorStore eventProcessorStore,
+    PartitionPumpManager(CheckpointStore checkpointStore,
         Supplier<PartitionProcessor> partitionProcessorFactory,
         EventPosition initialEventPosition, EventHubClientBuilder eventHubClientBuilder,
         TracerProvider tracerProvider) {
-        this.eventProcessorStore = eventProcessorStore;
+        this.checkpointStore = checkpointStore;
         this.partitionProcessorFactory = partitionProcessorFactory;
         this.initialEventPosition = initialEventPosition;
         this.eventHubClientBuilder = eventHubClientBuilder;
@@ -76,7 +77,7 @@ class PartitionPumpManager {
 
     /**
      * Stops all partition pumps that are actively consuming events. This method is invoked when the {@link
-     * EventProcessor} is requested to stop.
+     * EventProcessorClient} is requested to stop.
      */
     void stopAllPartitionPumps() {
         this.partitionPumps.forEach((partitionId, eventHubConsumer) -> {
@@ -103,8 +104,8 @@ class PartitionPumpManager {
         }
 
         PartitionContext partitionContext = new PartitionContext(claimedOwnership.getPartitionId(),
-            claimedOwnership.getEventHubName(), claimedOwnership.getConsumerGroupName(),
-            claimedOwnership.getOwnerId(), claimedOwnership.getETag(), eventProcessorStore);
+            claimedOwnership.getEventHubName(), claimedOwnership.getConsumerGroup(),
+            claimedOwnership.getOwnerId(), claimedOwnership.getETag(), checkpointStore);
         PartitionProcessor partitionProcessor = this.partitionProcessorFactory.get();
 
         InitializationContext initializationContext = new InitializationContext(partitionContext,
@@ -122,7 +123,7 @@ class PartitionPumpManager {
 
         ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L);
         EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
-            .createConsumer(claimedOwnership.getConsumerGroupName(), EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
+            .createConsumer(claimedOwnership.getConsumerGroup(), EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
 
         partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
         eventHubConsumer.receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)

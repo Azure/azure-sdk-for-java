@@ -295,16 +295,16 @@ provide, allowing you to focus on the logic needed to provide value while the pr
 managing the underlying consumer operations.
 
 In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the 
-[`InMemoryEventProcessorStore`][source_inmemoryeventprocessorstore] available in samples, and a callback function that 
+[`InMemoryCheckpointStore`][source_inmemorycheckpointstore] available in samples, and a callback function that 
 processes events received from the Event Hub and writes to console.
 
 ```java
 class Program {
     public static void main(String[] args) {
-        EventProcessor eventProcessor = new EventProcessorBuilder()
+        EventProcessor eventProcessorClient = new EventProcessorBuilder()
             .consumerGroup("<< CONSUMER GROUP NAME >>")
             .connectionString("<< EVENT HUB CONNECTION STRING >>")
-            .eventProcessorStore(new InMemoryEventProcessorStore())
+            .checkpointStore(new InMemoryCheckpointStore())
             .processEvent(partitionEvent -> {
                 System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
                     + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
@@ -315,13 +315,13 @@ class Program {
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.
-        eventProcessor.start();
+        eventProcessorClient.start();
         
         // (for demo purposes only - adding sleep to wait for receiving events)
         TimeUnit.SECONDS.sleep(2); 
 
         // When the user wishes to stop processing events, they can call `stop()`.
-        eventProcessor.stop();
+        eventProcessorClient.stop();
     }
 }
 ```
@@ -448,7 +448,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [source_eventHubProducerClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducerClient.java
 [source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
 [source_CreateBatchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/CreateBatchOptions.java
-[source_inmemoryeventprocessorstore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryEventProcessorStore.java
+[source_inmemorycheckpointstore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryCheckpointStore.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java
 

@@ -2,7 +2,7 @@
 
 Azure Event Hubs Checkpoint Store can be used for storing checkpoints while processing events from Azure Event Hubs. 
 This package uses Storage Blobs as a persistent store for maintaining checkpoints and partition ownership information. 
-The `BlobEventProcessorStore` provided in this package can be plugged in to `EventProcessor`.
+The `BlobCheckpointStore` provided in this package can be plugged in to `EventProcessor`.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
 documentation][event_hubs_product_docs] | [Samples][sample_examples]
@@ -36,7 +36,7 @@ All client libraries, by default, use the Tomcat-native Boring SSL library to en
 [//]: # ({x-version-update-end})
 
 ### Authenticate the storage container client
-In order to create an instance of `BlobEventProcessorStore`, a `ContainerAsyncClient` should first be created with 
+In order to create an instance of `BlobCheckpointStore`, a `ContainerAsyncClient` should first be created with 
 appropriate SAS token with write access and connection string. To make this possible you'll need the Account SAS 
 (shared access signature) string of Storage account. Learn more at [SAS Token][sas_token].
 
@@ -88,16 +88,16 @@ provide, allowing your application to focus on the business logic needed to prov
 holds responsibility for managing the underlying consumer operations.
 
 In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the 
-[`BlobEventProcessorStore`][source_blobeventprocessorstore], and a simple callback function to process the events 
+[`BlobCheckpointStore`][source_blobcheckpointstore], and a simple callback function to process the events 
 received from the Event Hubs, writes to console and updates the checkpoint in Blob storage after each event.
 
 ```java
 class Program {
     public static void main(String[] args) {
-        EventProcessor eventProcessor = new EventProcessorBuilder()
+        EventProcessor eventProcessorClient = new EventProcessorBuilder()
             .consumerGroup("<< CONSUMER GROUP NAME >>")
             .connectionString("<< EVENT HUB CONNECTION STRING >>")
-            .eventProcessorStore(new BlobEventProcessorStore(blobContainerAsyncClient))
+            .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
             .processEvent(partitionEvent -> {
                 System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
                     + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
@@ -108,13 +108,13 @@ class Program {
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.
-        eventProcessor.start();
+        eventProcessorClient.start();
         
         // (for demo purposes only - adding sleep to wait for receiving events)
         TimeUnit.SECONDS.sleep(2); 
 
         // When the user wishes to stop processing events, they can call `stop()`.
-        eventProcessor.stop();
+        eventProcessorClient.stop();
     }
 }
 ```
@@ -144,14 +144,14 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [maven]: https://maven.apache.org/
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-[sample_container_client]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobEventProcessorStoreSample.java
+[sample_container_client]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobCheckpointStoreSample.java
 [sample_event_hubs]: ./src/samples/java/com/azure/messaging/eventhubs
-[sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorBlobEventProcessorStoreSample.java
+[sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorBlobCheckpointStoreSample.java
 [sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [source_code]: ./
 [source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
-[source_blobeventprocessorstore]: ./src/main/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobEventProcessorStore.java
+[source_blobcheckpointstore]: ./src/main/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobCheckpointStore.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal

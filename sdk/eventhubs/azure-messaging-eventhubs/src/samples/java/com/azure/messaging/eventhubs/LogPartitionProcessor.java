@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.slf4j.Logger;
@@ -10,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A sample implementation of {@link PartitionProcessor}. This implementation logs the APIs that are called by {@link
- * EventProcessor} while processing a partition.
+ * EventProcessorClient} while processing a partition.
  */
 public class LogPartitionProcessor extends PartitionProcessor {
 

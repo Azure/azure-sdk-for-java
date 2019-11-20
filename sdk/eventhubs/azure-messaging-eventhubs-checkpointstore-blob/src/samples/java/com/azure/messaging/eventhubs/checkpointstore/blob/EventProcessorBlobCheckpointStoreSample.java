@@ -5,8 +5,8 @@ package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.messaging.eventhubs.EventProcessor;
-import com.azure.messaging.eventhubs.EventProcessorBuilder;
+import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -16,9 +16,9 @@ import java.util.function.Consumer;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample for using {@link BlobEventProcessorStore} with {@link EventProcessor}.
+ * Sample for using {@link BlobCheckpointStore} with {@link EventProcessorClient}.
  */
-public class EventProcessorBlobEventProcessorStoreSample {
+public class EventProcessorBlobCheckpointStoreSample {
 
     private static final String EH_CONNECTION_STRING = "";
     private static final String SAS_TOKEN_STRING = "";
@@ -52,17 +52,17 @@ public class EventProcessorBlobEventProcessorStoreSample {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
-        EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()
+        EventProcessorClientBuilder eventProcessorClientBuilder = new EventProcessorClientBuilder()
             .connectionString(EH_CONNECTION_STRING)
             .consumerGroup("<< CONSUMER GROUP NAME >>")
             .processEvent(PARTITION_PROCESSOR)
             .processError(ERROR_HANDLER)
-            .eventProcessorStore(new BlobEventProcessorStore(blobContainerAsyncClient));
+            .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
 
-        EventProcessor eventProcessor = eventProcessorBuilder.buildEventProcessor();
-        eventProcessor.start();
+        EventProcessorClient eventProcessorClient = eventProcessorClientBuilder.buildEventProcessorClient();
+        eventProcessorClient.start();
         TimeUnit.MINUTES.sleep(5);
-        eventProcessor.stop();
+        eventProcessorClient.stop();
     }
 
 }

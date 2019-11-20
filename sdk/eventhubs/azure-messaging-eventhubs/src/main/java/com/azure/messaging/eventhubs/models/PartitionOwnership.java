@@ -13,7 +13,7 @@ import java.util.Objects;
 public class PartitionOwnership {
 
     private String eventHubName;
-    private String consumerGroupName;
+    private String consumerGroup;
     private String partitionId;
     private String ownerId;
     private long ownerLevel;
@@ -47,18 +47,18 @@ public class PartitionOwnership {
      *
      * @return The consumer group name associated with this ownership record.
      */
-    public String getConsumerGroupName() {
-        return consumerGroupName;
+    public String getConsumerGroup() {
+        return consumerGroup;
     }
 
     /**
      * Sets the consumer group name associated with this ownership record.
      *
-     * @param consumerGroupName The consumer group name associated with this ownership record.
+     * @param consumerGroup The consumer group name associated with this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership setConsumerGroupName(String consumerGroupName) {
-        this.consumerGroupName = Objects.requireNonNull(consumerGroupName, "consumerGroupName cannot be null.");
+    public PartitionOwnership setConsumerGroup(String consumerGroup) {
+        this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
         return this;
     }
 

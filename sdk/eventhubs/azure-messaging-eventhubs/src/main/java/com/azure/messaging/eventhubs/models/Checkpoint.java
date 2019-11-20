@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.eventhubs.PartitionProcessor;
+import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 
 /**
  * A model class to hold checkpoint data. A checkpoint represents the last successfully processed event by a {@link
@@ -14,7 +14,7 @@ import com.azure.messaging.eventhubs.PartitionProcessor;
 public class Checkpoint {
 
     private String eventHubName;
-    private String consumerGroupName;
+    private String consumerGroup;
     private String ownerId;
     private String partitionId;
     private Long offset;
@@ -46,18 +46,18 @@ public class Checkpoint {
      *
      * @return The consumer group name associated with this checkpoint.
      */
-    public String getConsumerGroupName() {
-        return consumerGroupName;
+    public String getConsumerGroup() {
+        return consumerGroup;
     }
 
     /**
      * Sets the consumer group name associated with this checkpoint.
      *
-     * @param consumerGroupName The consumer group name associated with this checkpoint.
+     * @param consumerGroup The consumer group name associated with this checkpoint.
      * @return The updated {@link Checkpoint} instance.
      */
-    public Checkpoint setConsumerGroupName(String consumerGroupName) {
-        this.consumerGroupName = consumerGroupName;
+    public Checkpoint setConsumerGroup(String consumerGroup) {
+        this.consumerGroup = consumerGroup;
         return this;
     }
 

@@ -6,8 +6,8 @@ package com.azure.messaging.eventhubs.checkpointstore.blob;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventProcessor;
-import com.azure.messaging.eventhubs.EventProcessorStore;
+import com.azure.messaging.eventhubs.CheckpointStore;
+import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -29,14 +29,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Implementation of {@link EventProcessorStore} that uses
+ * Implementation of {@link CheckpointStore} that uses
  * <a href="https://docs.microsoft.com/en-us/azure/storage/common/storage-introduction#blob-storage">Storage Blobs</a>
- * for persisting partition ownership and checkpoint information. {@link EventProcessor EventProcessors} can use this
+ * for persisting partition ownership and checkpoint information. {@link EventProcessorClient EventProcessors} can use this
  * implementation to load balance and update checkpoints.
  *
- * @see EventProcessor
+ * @see EventProcessorClient
  */
-public class BlobEventProcessorStore implements EventProcessorStore {
+public class BlobCheckpointStore implements CheckpointStore {
 
     private static final String SEQUENCE_NUMBER = "SequenceNumber";
     private static final String OFFSET = "Offset";
@@ -48,21 +48,21 @@ public class BlobEventProcessorStore implements EventProcessorStore {
     private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap("".getBytes(UTF_8));
 
     private final BlobContainerAsyncClient blobContainerAsyncClient;
-    private final ClientLogger logger = new ClientLogger(BlobEventProcessorStore.class);
+    private final ClientLogger logger = new ClientLogger(BlobCheckpointStore.class);
     private final Map<String, BlobAsyncClient> blobClients = new ConcurrentHashMap<>();
 
     /**
-     * Creates an instance of BlobEventProcessorStore.
+     * Creates an instance of BlobCheckpointStore.
      *
      * @param blobContainerAsyncClient The {@link BlobContainerAsyncClient} this instance will use to read and update
      * blobs in the storage container.
      */
-    public BlobEventProcessorStore(BlobContainerAsyncClient blobContainerAsyncClient) {
+    public BlobCheckpointStore(BlobContainerAsyncClient blobContainerAsyncClient) {
         this.blobContainerAsyncClient = blobContainerAsyncClient;
     }
 
     /**
-     * This method is called by the {@link EventProcessor} to get the list of all existing partition ownership from the
+     * This method is called by the {@link EventProcessorClient} to get the list of all existing partition ownership from the
      * Storage Blobs. Could return empty results if there are is no existing ownership information.
      *
      * @param eventHubName The Event Hub name to get ownership information.
@@ -83,7 +83,7 @@ public class BlobEventProcessorStore implements EventProcessorStore {
     }
 
     /**
-     * This method is called by the {@link EventProcessor} to claim ownership of a list of partitions. This will return
+     * This method is called by the {@link EventProcessorClient} to claim ownership of a list of partitions. This will return
      * the list of partitions that were owned successfully.
      *
      * @param requestedPartitionOwnerships Array of partition ownerships this instance is requesting to own.
@@ -95,7 +95,7 @@ public class BlobEventProcessorStore implements EventProcessorStore {
         return Flux.fromArray(requestedPartitionOwnerships).flatMap(partitionOwnership -> {
             String partitionId = partitionOwnership.getPartitionId();
             String blobName = getBlobName(partitionOwnership.getEventHubName(),
-                partitionOwnership.getConsumerGroupName(), partitionId);
+                partitionOwnership.getConsumerGroup(), partitionId);
 
             if (!blobClients.containsKey(blobName)) {
                 blobClients.put(blobName, blobContainerAsyncClient.getBlobAsyncClient(blobName));
@@ -150,7 +150,7 @@ public class BlobEventProcessorStore implements EventProcessorStore {
         }
 
         String partitionId = checkpoint.getPartitionId();
-        String blobName = getBlobName(checkpoint.getEventHubName(), checkpoint.getConsumerGroupName(), partitionId);
+        String blobName = getBlobName(checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), partitionId);
         if (!blobClients.containsKey(blobName)) {
             blobClients.put(blobName, blobContainerAsyncClient.getBlobAsyncClient(blobName));
         }
@@ -184,7 +184,7 @@ public class BlobEventProcessorStore implements EventProcessorStore {
 
         String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
         partitionOwnership.setEventHubName(names[0]);
-        partitionOwnership.setConsumerGroupName(names[1]);
+        partitionOwnership.setConsumerGroup(names[1]);
         partitionOwnership.setPartitionId(names[2]);
 
         if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
