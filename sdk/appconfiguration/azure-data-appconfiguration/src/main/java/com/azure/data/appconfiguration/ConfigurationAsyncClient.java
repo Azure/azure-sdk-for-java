@@ -81,7 +81,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSetting#string-string-string}
      *
      * @param key The key of the configuration setting to add.
-     * @param label The label of the configuration setting to add, or optionally, null if the label is not desired in
+     * @param label The label of the configuration setting to add. If {@code null} no label will be used.
      * the request.
      * @param value The value associated with this configuration setting key.
      * @return The {@link ConfigurationSetting} that was created, or {@code null} if a key collision occurs or the key
