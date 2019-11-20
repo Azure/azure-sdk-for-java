@@ -3,14 +3,10 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 /**
  * A truncated exponential backoff implementation of {@link RetryStrategy} that has a delay duration that exponentially
@@ -28,15 +24,13 @@ public class ExponentialBackoff implements RetryStrategy {
     private final int maxRetries;
     private final Duration baseDelay;
     private final Duration maxDelay;
-    private final String retryAfterHeader;
-    private final ChronoUnit retryAfterTimeUnit;
 
     /**
      * Creates an instance of {@link ExponentialBackoff} with a maximum of three retry attempts. This strategy starts
      * with a delay of 800 milliseconds and exponentially increases with each additional retry attempt.
      */
     public ExponentialBackoff() {
-        this(DEFAULT_MAX_RETRIES, DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY, X_MS_RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS);
+        this(DEFAULT_MAX_RETRIES, DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY);
     }
 
     /**
@@ -47,29 +41,11 @@ public class ExponentialBackoff implements RetryStrategy {
      * @param maxDelay The max delay duration for retry.
      */
     public ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay) {
-        this(maxRetries, baseDelay, maxDelay, X_MS_RETRY_AFTER_MS_HEADER, ChronoUnit.MILLIS);
-    }
-
-    /**
-     * Creates an instance of {@link ExponentialBackoff}.
-     *
-     * @param maxRetries The max retry attempts that can be made.
-     * @param baseDelay The base delay duration for retry.
-     * @param maxDelay The max delay duration for retry.
-     * @param retryAfterHeader The {@link com.azure.core.http.HttpHeader} to use in {@link HttpResponse}.
-     * @param retryAfterTimeUnit The {@link ChronoUnit} to use to calculate delay.
-     */
-    public ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay, String retryAfterHeader,
-                              ChronoUnit retryAfterTimeUnit) {
         if (maxRetries < 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
         }
         Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
-
-        if (!isNullOrEmpty(retryAfterHeader)) {
-            Objects.requireNonNull(retryAfterTimeUnit, "'retryAfterTimeUnit' cannot be null.");
-        }
 
         if (baseDelay.isZero()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be 0."));
@@ -82,20 +58,7 @@ public class ExponentialBackoff implements RetryStrategy {
         this.maxRetries = maxRetries;
         this.baseDelay = baseDelay;
         this.maxDelay = maxDelay;
-        this.retryAfterHeader = retryAfterHeader;
-        this.retryAfterTimeUnit = retryAfterTimeUnit;
     }
-
-    @Override
-    public String getRetryAfterHeader() {
-        return retryAfterHeader;
-    }
-
-    @Override
-    public ChronoUnit getRetryAfterTimeUnit() {
-        return retryAfterTimeUnit;
-    }
-
 
     @Override
     public int getMaxRetries() {
