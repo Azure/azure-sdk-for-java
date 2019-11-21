@@ -242,7 +242,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            final EventHubProperties properties = consumer.getProperties();
+            final EventHubProperties properties = consumer.getEventHubProperties();
             Assertions.assertNotNull(properties);
             Assertions.assertEquals(consumer.getEventHubName(), properties.getName());
             Assertions.assertEquals(2, properties.getPartitionIds().stream().count());

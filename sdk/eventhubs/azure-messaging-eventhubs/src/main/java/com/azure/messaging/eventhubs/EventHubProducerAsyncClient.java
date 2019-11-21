@@ -174,7 +174,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EventHubProperties> getProperties() {
+    public Mono<EventHubProperties> getEventHubProperties() {
         return connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
     }
 
@@ -184,7 +184,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
     public Flux<String> getPartitionIds() {
-        return getProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
+        return getEventHubProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
 
     /**
