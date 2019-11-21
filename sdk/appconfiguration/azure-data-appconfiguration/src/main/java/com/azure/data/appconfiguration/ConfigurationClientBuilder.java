@@ -169,7 +169,7 @@ public final class ConfigurationClientBuilder {
             buildEndpoint = getBuildEndpoint();
         }
         // endpoint cannot be null, which is required in request authentication
-        Objects.requireNonNull(buildEndpoint);
+        Objects.requireNonNull(buildEndpoint, "'Endpoint' is required and can not be null.");
 
         // if http pipeline is already defined
         if (pipeline != null) {

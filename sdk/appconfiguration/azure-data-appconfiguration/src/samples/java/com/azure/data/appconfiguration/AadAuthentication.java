@@ -24,7 +24,6 @@ public class AadAuthentication {
         // or other service authentication service.
         TokenCredential tokenCredential = null;
 
-
         final ConfigurationClient client = new ConfigurationClientBuilder()
             .credential(tokenCredential) // AAD authentication
             .endpoint(endpoint)
