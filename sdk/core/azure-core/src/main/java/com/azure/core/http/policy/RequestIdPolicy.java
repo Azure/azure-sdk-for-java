@@ -30,11 +30,11 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates default {@link RequestIdPolicy} with provided {@link Supplier} to dynamically generate
-     * request id for each {@link HttpRequest}.
+     * Creates {@link RequestIdPolicy} with provided {@link Supplier} to dynamically generate request id for each
+     * {@link HttpRequest}.
      *
      * @param requestIdSupplier to dynamically generate to request id for each {@link HttpRequest}. {@code null} is
-     * valid value. It is important to note that this {@link Supplier} should provide unique value every time
+     * valid value. It is suggested that this {@link Supplier} should provide unique value every time
      * it is called. Example of these headers are 'x-ms-client-request-id', 'x-ms-correlation-request-id'.
      */
     public RequestIdPolicy(Supplier<HttpHeaders> requestIdSupplier) {
@@ -56,7 +56,7 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
                 return next.process();
             }
         }
-        
+
         // If we were not able to set client provided Request ID header, we will set default 'REQUEST_ID_HEADER'.
         String requestId = context.getHttpRequest().getHeaders().getValue(REQUEST_ID_HEADER);
         if (requestId == null) {
