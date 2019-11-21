@@ -29,8 +29,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//FIXME beforeClass times out.
-@Ignore
 public class TriggerQueryTest extends TestSuiteBase {
 
     private CosmosAsyncContainer createdCollection;

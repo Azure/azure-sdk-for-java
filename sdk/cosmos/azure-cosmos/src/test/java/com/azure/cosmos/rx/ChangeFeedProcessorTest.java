@@ -336,7 +336,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
      }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
-    public void beforeClass() {
+    public void before_ChangeFeedProcessorTest() {
         client = clientBuilder().buildAsyncClient();
 
 //        try {

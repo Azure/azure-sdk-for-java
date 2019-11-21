@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//FIXME beforeClass times out inconsistently
-@Ignore
 public class ReadFeedStoredProceduresTest extends TestSuiteBase {
 
     private CosmosAsyncContainer createdCollection;

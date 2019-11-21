@@ -104,18 +104,18 @@ public class ChangeFeedTest extends TestSuiteBase {
                 .map(Resource::getId)
                 .collectList()
                 .block();
-        
+
         assertThat(partitionKeyRangeIds.size()).isGreaterThan(1);
 
         String pkRangeId = partitionKeyRangeIds.get(0);
-        
+
         ChangeFeedOptions changeFeedOption = new ChangeFeedOptions();
         changeFeedOption.setMaxItemCount(3);
         partitionKeyRangeIdInternal(changeFeedOption, pkRangeId);
         changeFeedOption.setStartFromBeginning(true);
         List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)
                 .collectList().block();
-        
+
         int count = 0;
         for(int i = 0; i < changeFeedResultList.size(); i++) {
             FeedResponse<Document> changeFeedPage = changeFeedResultList.get(i);
@@ -125,7 +125,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             assertThat(changeFeedPage.getResults().size())
             .as("change feed should contain all the previously created documents")
             .isLessThanOrEqualTo(changeFeedOption.getMaxItemCount());
-   
+
             assertThat(changeFeedPage.getContinuationToken()).as("Response continuation should not be null").isNotNull();
             assertThat(changeFeedPage.getContinuationToken()).as("Response continuation should not be empty").isNotEmpty();
         }
@@ -133,7 +133,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         assertThat(count).as("the number of changes").isGreaterThan(0);
         assertThat(count).as("the number of changes").isLessThan(partitionKeyToDocuments.size());
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void changeFeed_fromNow() throws Exception {
         // READ change feed from current.
@@ -253,7 +253,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition(), options);
 
         List<Document> docs = new ArrayList<>();
-        
+
         for (int i = 0; i < 200; i++) {
             String partitionKey = UUID.randomUUID().toString();
             for(int j = 0; j < 7; j++) {
@@ -268,7 +268,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_ChangeFeedTest() throws Exception {
         // set up the client
         client = clientBuilder().build();
         createdDatabase = SHARED_DATABASE;

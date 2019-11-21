@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//FIXME: beforeClass times out inconsistently
-@Ignore
 public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     private CosmosAsyncDatabase createdDatabase;
@@ -75,15 +73,17 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         validateQueryFailure(feedObservable, validator, FEED_TIMEOUT);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
-    public void beforeClass() {
+    // TODO (DANOBLE) ReadFeedDocumentsTest initialization consistently times out in CI environments.
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6379
+    @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT, alwaysRun = true)
+    public void before_ReadFeedDocumentsTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
         List<CosmosItemProperties> docDefList = new ArrayList<>();
 
-        for(int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             docDefList.add(getDocumentDefinition());
         }
 

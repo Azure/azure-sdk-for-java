@@ -15,14 +15,14 @@ public class TimeTokenTest {
     private Locale defaultLocale;
 
     @BeforeTest(groups = { "unit" })
-    public void beforeMethod() {
+    public void beforeTest() {
         defaultLocale = Locale.getDefault();
     }
 
     @Test(groups = { "unit" })
     public void nonLocaleUS() {
         Locale.setDefault(Locale.ITALIAN);
-        DateTimeFormatter RFC_1123_DATE_TIME = 
+        DateTimeFormatter RFC_1123_DATE_TIME =
                 DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         String time = Utils.nowAsRFC1123();
         Locale.setDefault(Locale.US);

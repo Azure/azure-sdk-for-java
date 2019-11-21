@@ -42,7 +42,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryCollectionsWithFilter() throws Exception {
-        
+
         String filterCollectionId = createdCollections.get(0).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterCollectionId);
 
@@ -110,9 +110,9 @@ public class CollectionQueryTest extends TestSuiteBase {
                 .build();
         validateQuerySuccess(queryObservable, validator);
     }
-    
+
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_CollectionQueryTest() throws Exception {
         client = clientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
 

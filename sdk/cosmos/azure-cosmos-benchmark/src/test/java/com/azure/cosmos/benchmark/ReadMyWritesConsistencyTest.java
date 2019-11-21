@@ -94,7 +94,6 @@ public class ReadMyWritesConsistencyTest {
         };
     }
 
-    // FIXME: Test is flaky, fails inconsistently
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "e2e")
     public void readMyWrites(boolean useNameLink) throws Exception {
 

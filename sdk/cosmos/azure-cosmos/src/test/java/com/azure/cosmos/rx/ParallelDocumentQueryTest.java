@@ -13,7 +13,6 @@ import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -22,18 +21,15 @@ import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.sun.management.OperatingSystemMXBean;
+import com.google.common.base.Strings;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
-import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +39,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.fail;
 
 public class ParallelDocumentQueryTest extends TestSuiteBase {
     private CosmosAsyncDatabase createdDatabase;
@@ -221,7 +218,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         assertThat(sum).isEqualTo(createdDocuments.size());
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void compositeContinuationTokenRoundTrip() throws Exception {
     	{
@@ -241,14 +238,14 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     		assertThat(range.isMinInclusive()).isEqualTo(false);
     		assertThat(range.isMaxInclusive()).isEqualTo(true);
     	}
-    	
+
     	{
     		// Negative
     		ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
     		boolean succeeed = CompositeContinuationToken.tryParse("{\"property\" : \"not a valid composite continuation token\"}", outCompositeContinuationToken);
     		assertThat(succeeed).isFalse();
     	}
-    	
+
     	{
     		// Negative - GATEWAY composite continuation token
     		ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
@@ -257,15 +254,14 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     	}
     }
 
-    //  TODO: This test has been timing out on buildAsyncClient, related work item - https://msdata.visualstudio.com/CosmosDB/_workitems/edit/402438/
     @Test(groups = { "non-emulator" }, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithCompositeContinuationTokens() throws Exception {
         String query = "SELECT * FROM c";
-        
+
         // Get Expected
         List<CosmosItemProperties> expectedDocs = new ArrayList<>(createdDocuments);
         assertThat(expectedDocs).isNotEmpty();
-        
+
         this.queryWithContinuationTokensAndPageSizes(query, new int[] {1, 10, 100}, expectedDocs);
     }
 
@@ -276,7 +272,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(2);
 
         List<String> expectedValues = createdDocuments.stream().map(d -> d.getId()).collect(Collectors.toList());
-        
+
         String query = "Select value c.id from c";
 
         Flux<FeedResponse<String>> queryObservable = createdCollection.queryItems(new SqlQuerySpec(query),
@@ -342,23 +338,42 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         System.out.println("fetchedResults = " + fetchedResults);
     }
 
-    @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 2 * SETUP_TIMEOUT)
-    public void beforeClass() {
+
+    // TODO (DANOBLE) ParallelDocumentQueryTest initialization intermittently fails in CI environments
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6398
+    @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 4 * SETUP_TIMEOUT)
+    public void before_ParallelDocumentQueryTest() {
+
         client = clientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+
+        try {
+            truncateCollection(createdCollection);
+        } catch (Throwable firstChanceException) {
+            try {
+                truncateCollection(createdCollection);
+            } catch (Throwable lastChanceException) {
+                String message = Strings.lenientFormat("container %s truncation failed due to first chance %s followed by last chance %s",
+                    createdCollection,
+                    firstChanceException,
+                    lastChanceException);
+                logger.error(message);
+                fail(message, lastChanceException);
+            }
+        }
+
         List<CosmosItemProperties> docDefList = new ArrayList<>();
-        for(int i = 0; i < 13; i++) {
+
+        for (int i = 0; i < 13; i++) {
             docDefList.add(getDocumentDefinition(i));
         }
 
-        for(int i = 0; i < 21; i++) {
+        for (int i = 0; i < 21; i++) {
             docDefList.add(getDocumentDefinition(99));
         }
 
         createdDocuments = bulkInsertBlocking(createdCollection, docDefList);
-
         waitIfNeededForReplicasToCatchUp(clientBuilder());
     }
 
@@ -449,7 +464,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
 		return cosmosContainer.createItem(docDefinition).block().getProperties();
 	}
-	
+
 	private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, List<CosmosItemProperties> expectedDocs) {
         for (int pageSize : pageSizes) {
             List<CosmosItemProperties> receivedDocuments = this.queryWithContinuationTokens(query, pageSize);
