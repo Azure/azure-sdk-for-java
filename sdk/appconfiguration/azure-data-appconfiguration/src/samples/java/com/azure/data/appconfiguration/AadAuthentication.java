@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * Sample demonstrates how to use AAD token to build a configuration client.
@@ -22,7 +23,7 @@ public class AadAuthentication {
 
         // Token Credential could be an AAD token which you can get from Identity
         // or other service authentication service.
-        TokenCredential tokenCredential = null;
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         final ConfigurationClient client = new ConfigurationClientBuilder()
             .credential(tokenCredential) // AAD authentication
