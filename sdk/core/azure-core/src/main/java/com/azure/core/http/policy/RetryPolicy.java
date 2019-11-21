@@ -54,8 +54,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates {@link RetryPolicy} with the provided {@link RetryStrategy} and default {@link ExponentialBackoff} as
-     * {@link RetryStrategy}. It will use provided {@code retryAfterHeader} in {@link HttpResponse} headers for
+     * Creates {@link RetryPolicy} with the provided {@link RetryStrategy} and default {@link ExponentialBackoff}
+     * as {@link RetryStrategy}. It will use provided {@code retryAfterHeader} in {@link HttpResponse} headers for
      * calculating retry delay.
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
