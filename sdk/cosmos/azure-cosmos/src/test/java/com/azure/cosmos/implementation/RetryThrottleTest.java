@@ -77,7 +77,7 @@ public class RetryThrottleTest extends TestSuiteBase {
         assertThat(successCount.get()).isEqualTo(TOTAL_DOCS);
         System.out.println("total count is " + totalCount.get());
     }
-    
+
     @Test(groups = { "long" }, timeOut = TIMEOUT, enabled = false)
     public void retryDocumentCreate() throws Exception {
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(createGatewayRxDocumentClient());
@@ -114,9 +114,9 @@ public class RetryThrottleTest extends TestSuiteBase {
     private void afterMethod() {
         safeClose(client);
     }
-    
+
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT, enabled = false)
-    public void beforeClass() {
+    public void before_RetryThrottleTest() {
         // set up the client
         database = SHARED_DATABASE;
         collection = SHARED_SINGLE_PARTITION_COLLECTION;
@@ -134,6 +134,6 @@ public class RetryThrottleTest extends TestSuiteBase {
     }
 
     @AfterClass(groups = { "long" }, timeOut = SHUTDOWN_TIMEOUT, enabled = false)
-    public void afterClass() {        
+    public void afterClass() {
     }
 }

@@ -32,7 +32,7 @@ public class ReplicatedResourceClientTest {
     private IAuthorizationTokenProvider authorizationTokenProvider;
 
     @BeforeClass(groups = "unit")
-    public void setup() throws Exception {
+    public void before_ReplicatedResourceClientTest() throws Exception {
         addressResolver = Mockito.mock(IAddressResolver.class);
         transportClient = Mockito.mock(TransportClient.class);
         serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);

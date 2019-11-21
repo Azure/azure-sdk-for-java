@@ -97,7 +97,7 @@ public class TriggerCrudTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_TriggerCrudTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }

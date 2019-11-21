@@ -15,6 +15,7 @@ jobs:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
         SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-secondary-key)
+        ACCOUNT_CONSISTENCY: "Session"
       MaxParallel: 1
       Matrix:
         # 59m 59s, timed out
@@ -66,6 +67,7 @@ jobs:
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
         ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
+        ACCOUNT_CONSISTENCY: "Session"
         SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-secondary-key)
         DESIRED_CONSISTENCIES: '["Session"]'
         PROTOCOLS: '["Tcp"]'
@@ -244,6 +246,7 @@ jobs:
         ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
         ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
         SECONDARY_ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-secondary-key)
+        ACCOUNT_CONSISTENCY: "Session"
         DESIRED_CONSISTENCIES: '["Session"]'
         PREFERRED_LOCATIONS: '["East US 2"]'
       MaxParallel: 1

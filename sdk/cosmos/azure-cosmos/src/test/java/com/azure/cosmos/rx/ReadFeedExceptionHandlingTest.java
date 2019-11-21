@@ -54,7 +54,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_ReadFeedExceptionHandlingTest() {
         client = clientBuilder().buildAsyncClient();
     }
 
