@@ -98,7 +98,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * {@inheritDoc}
      */
     @Override
-    public Mono<ClaimsBasedSecurityNode> getCBSNode() {
+    public Mono<ClaimsBasedSecurityNode> getClaimsBasedSecurityNode() {
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = RetryUtil.withRetry(
             getConnectionStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE),
             connectionOptions.getRetry().getTryTimeout(), retryPolicy)
@@ -168,7 +168,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * @return A new instance of AMQP session.
      */
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
+        return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getClaimsBasedSecurityNode(),
             tokenManagerProvider, messageSerializer, connectionOptions.getRetry().getTryTimeout());
     }
 
