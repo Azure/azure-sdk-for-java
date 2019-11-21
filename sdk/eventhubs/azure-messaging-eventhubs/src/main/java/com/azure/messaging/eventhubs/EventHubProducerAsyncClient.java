@@ -138,8 +138,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
-                                AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
-                                boolean isSharedConnection) {
+            AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
+            boolean isSharedConnection) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connection = connection;
