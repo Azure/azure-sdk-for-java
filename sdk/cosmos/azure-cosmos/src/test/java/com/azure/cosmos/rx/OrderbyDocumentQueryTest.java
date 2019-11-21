@@ -50,8 +50,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//FIXME beforeClass times out inconsistently.
-@Ignore
 public class OrderbyDocumentQueryTest extends TestSuiteBase {
     private final double minQueryRequestChargePerPartition = 2.0;
 
@@ -67,8 +65,6 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    //FIXME test times out inconsistently
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsValidateContent(boolean qmEnabled) throws Exception {
         CosmosItemProperties expectedDocument = createdDocuments.get(0);
