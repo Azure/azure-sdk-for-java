@@ -76,8 +76,6 @@ public class TriggerCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    //FIXME test is flaky
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteTrigger() throws Exception {
         // create a trigger

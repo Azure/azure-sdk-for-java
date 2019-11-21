@@ -17,7 +17,6 @@ import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -41,8 +40,7 @@ import static org.hamcrest.Matchers.notNullValue;
  * transform a flux to CompletableFuture. Please see
  * {@link #transformObservableToCompletableFuture()}
  */
-// FIXME: setup method times out inconsistently
-@Ignore
+
 public class ConflictAPITest extends DocumentClientTest {
     private final static int TIMEOUT = 60000;
 

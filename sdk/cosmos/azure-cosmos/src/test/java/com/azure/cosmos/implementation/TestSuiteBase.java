@@ -791,7 +791,7 @@ public class TestSuiteBase extends DocumentClientTest {
     private static Object[][] simpleClientBuildersWithDirect(Protocol... protocols) {
         logger.info("Max test consistency to use is [{}]", accountConsistency);
         List<ConsistencyLevel> testConsistencies = ImmutableList.of(ConsistencyLevel.EVENTUAL);
-        
+
         boolean isMultiMasterEnabled = preferredLocations != null && accountConsistency == ConsistencyLevel.SESSION;
 
         List<Builder> builders = new ArrayList<>();

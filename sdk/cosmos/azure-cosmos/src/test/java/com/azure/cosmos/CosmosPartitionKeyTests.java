@@ -53,7 +53,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws URISyntaxException, IOException {
+    public void before_CosmosPartitionKeyTests() throws URISyntaxException, IOException {
         assertThat(this.client).isNull();
         client = clientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
@@ -98,7 +98,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers));
         httpRequest.withBody(request.getContent());
         String body = httpClient.send(httpRequest).block().bodyAsString().block();
-        assertThat(body).contains("\"getId\":\"" + NON_PARTITIONED_CONTAINER_ID + "\"");
+        assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_ID + "\"");
 
         // CREATE a document in the non partitioned collection using the rest API and older getVersion
         resourceId = Paths.DATABASES_PATH_SEGMENT + "/" + createdDatabase.getId() + "/" + Paths.COLLECTIONS_PATH_SEGMENT + "/" + collection.getId();
@@ -123,8 +123,6 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_DOCUEMNT_ID + "\"");
     }
 
-    //FIXME test is flaky
-    @Ignore
     @Test(groups = { "simple" })
     public void testNonPartitionedCollectionOperations() throws Exception {
         createContainerWithoutPk();
@@ -205,7 +203,9 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         // Partiton Key value same as what is specified in the stored procedure body
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(PartitionKey.None);
-        int result = Integer.parseInt(createdSproc.execute(null, new CosmosStoredProcedureRequestOptions()).block().getResponseAsString());
+        CosmosStoredProcedureRequestOptions cosmosStoredProcedureRequestOptions = new CosmosStoredProcedureRequestOptions();
+        cosmosStoredProcedureRequestOptions.setPartitionKey(PartitionKey.None);
+        int result = Integer.parseInt(createdSproc.execute(null, cosmosStoredProcedureRequestOptions).block().getResponseAsString());
         assertThat(result).isEqualTo(1);
 
         // 3 previous items + 1 created from the sproc

@@ -98,15 +98,13 @@ public class SessionTest extends TestSuiteBase {
                 .map(r -> r.headers().value(HttpConstants.HttpHeaders.SESSION_TOKEN)).collect(Collectors.toList());
     }
 
-    //FIXME: Test flakes inconsistently with assertion error
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionConsistency_ReadYourWrites(boolean isNameBased) {
         spyClient.readCollection(getCollectionLink(isNameBased), null).blockFirst();
         spyClient.createDocument(getCollectionLink(isNameBased), new Document(), null, false).blockFirst();
 
         spyClient.clearCapturedRequests();
-        
+
         for (int i = 0; i < 10; i++) {
             Document documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), new Document(), null, false)
                     .blockFirst().getResource();
@@ -182,7 +180,7 @@ public class SessionTest extends TestSuiteBase {
         return isNameBased ? "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId():
             createdCollection.getSelfLink();
     }
-    
+
     private String getDocumentLink(Document doc, boolean isNameBased) {
         return isNameBased ? "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/docs/" + doc.getId() :
             "dbs/" + createdDatabase.getResourceId() + "/colls/" + createdCollection.getResourceId() + "/docs/" + doc.getResourceId() + "/";
