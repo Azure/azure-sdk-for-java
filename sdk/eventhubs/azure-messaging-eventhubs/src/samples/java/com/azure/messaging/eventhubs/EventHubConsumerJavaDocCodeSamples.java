@@ -23,7 +23,7 @@ public class EventHubConsumerJavaDocCodeSamples {
         // The required parameters are `consumerGroup` and a way to authenticate with Event Hubs using credentials.
         EventHubConsumerClient consumer = new EventHubClientBuilder()
             .connectionString(
-                "Endpoint={eh-namespace}/;SharedAccessKeyName={policy-name};SharedAccessKey={key};Entity-Path={hub-name}")
+                "Endpoint={eh-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key};Entity-Path={hub-name}")
             .consumerGroup("$DEFAULT")
             .buildConsumerClient();
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation

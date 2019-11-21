@@ -28,7 +28,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
         // The connectionString provides a way to authenticate with Event Hub.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(
-                "Endpoint={fully-qualified-namespace}/;SharedAccessKeyName={policy-name};SharedAccessKey={key}",
+                "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}",
                 "event-hub-name")
             .buildAsyncProducerClient();
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation
