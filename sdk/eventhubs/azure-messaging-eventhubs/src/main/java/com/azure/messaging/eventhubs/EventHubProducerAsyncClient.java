@@ -485,17 +485,8 @@ public class EventHubProducerAsyncClient implements Closeable {
     private EventData setSpanContext(EventData event, Context parentContext) {
         Optional<Object> eventContextData = event.getContext().getData(SPAN_CONTEXT_KEY);
         if (eventContextData.isPresent()) {
-            // if message has context (in case of retries), link it to the span
-            Object spanContextObject = eventContextData.get();
-            if (spanContextObject instanceof Context) {
-                tracerProvider.addSpanLinks((Context) eventContextData.get());
-
-                // TODO (samvaity): not supported in Opencensus yet
-                // builder.addLink((Context)eventContextData.get());
-            } else {
-                logger.warning("Event Data context type is not of type Context, but type: {}. Not adding span links.",
-                    spanContextObject.getClass());
-            }
+            // if message has context (in case of retries), don't start a message span or add a new context
+            return event;
         } else {
             // Starting the span makes the sampling decision (nothing is logged at this time)
             Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.MESSAGE);
@@ -509,7 +500,6 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }
             }
         }
-
         return event;
     }
 

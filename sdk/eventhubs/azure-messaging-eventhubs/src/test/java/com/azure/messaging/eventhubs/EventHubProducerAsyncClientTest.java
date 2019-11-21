@@ -257,10 +257,10 @@ public class EventHubProducerAsyncClientTest {
     }
 
     /**
-     * Verifies addLink method invoked when sending a single message on retry (span context already present on event).
+     * Verifies addLink method is not invoked and message/event is not stamped with context on retry (span context already present on event).
      */
     @Test
-    public void sendMessageAddLink() {
+    public void sendMessageRetrySpanTest() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
@@ -301,7 +301,7 @@ public class EventHubProducerAsyncClientTest {
         verify(tracer1, times(1))
             .start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, never()).start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(2)).addLink(any());
+        verify(tracer1, never()).addLink(any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
