@@ -3,7 +3,12 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.*;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
+import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.RetryMode;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
@@ -29,7 +34,10 @@ import java.time.Duration;
 
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class EventHubConnectionTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(2);
