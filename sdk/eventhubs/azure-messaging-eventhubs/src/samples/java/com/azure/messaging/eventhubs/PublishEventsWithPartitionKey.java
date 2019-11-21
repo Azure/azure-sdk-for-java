@@ -31,7 +31,7 @@ public class PublishEventsWithPartitionKey {
         // Create a producer.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncProducer();
+            .buildAsyncProducerClient();
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(

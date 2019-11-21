@@ -4,11 +4,14 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
+import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.ProcessKind;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -16,6 +19,7 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
+import reactor.core.publisher.Signal;
 
 import java.nio.BufferOverflowException;
 import java.util.HashMap;
@@ -23,6 +27,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
+
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
  * A class for aggregating {@link EventData} into a single, size-limited, batch. It is treated as a single message when
@@ -30,7 +38,8 @@ import java.util.Objects;
  *
  * @see EventHubProducerClient#createBatch()
  * @see EventHubProducerAsyncClient#createBatch()
- * @see EventHubClientBuilder for examples of building an asynchronous or synchronous producer.
+ * @see EventHubClientBuilder See EventHubClientBuilder for examples of building an asynchronous or synchronous
+ *     producer.
  */
 public final class EventDataBatch {
     private final ClientLogger logger = new ClientLogger(EventDataBatch.class);
@@ -42,8 +51,10 @@ public final class EventDataBatch {
     private final byte[] eventBytes;
     private final String partitionId;
     private int sizeInBytes;
+    private final TracerProvider tracerProvider;
 
-    EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider) {
+    EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
+        TracerProvider tracerProvider) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.partitionId = partitionId;
@@ -51,6 +62,7 @@ public final class EventDataBatch {
         this.events = new LinkedList<>();
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
         this.eventBytes = new byte[maxMessageSize];
+        this.tracerProvider = tracerProvider;
     }
 
     /**
@@ -58,7 +70,7 @@ public final class EventDataBatch {
      *
      * @return The number of {@link EventData events} in the batch.
      */
-    public int getSize() {
+    public int getCount() {
         return events.size();
     }
 
@@ -72,25 +84,25 @@ public final class EventDataBatch {
     }
 
     /**
-     * Tries to add an {@link EventData eventData} to the batch.
+     * Tries to add an {@link EventData event} to the batch.
      *
      * @param eventData The {@link EventData} to add to the batch.
      * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
      *     the batch.
      * @throws IllegalArgumentException if {@code eventData} is {@code null}.
-     * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link
-     *     EventDataBatch}.
+     * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link EventDataBatch}.
      */
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("eventData cannot be null"));
         }
+        EventData event = tracerProvider.isEnabled() ? traceMessageSpan(eventData) : eventData;
 
         final int size;
         try {
-            size = getSize(eventData, events.isEmpty());
+            size = getSize(event, events.isEmpty());
         } catch (BufferOverflowException exception) {
-            throw logger.logExceptionAsWarning(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+            throw logger.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                 String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
                     maxMessageSize / 1024),
                 contextProvider.getErrorContext()));
@@ -104,8 +116,33 @@ public final class EventDataBatch {
             this.sizeInBytes += size;
         }
 
-        this.events.add(eventData);
+        this.events.add(event);
         return true;
+    }
+
+    /**
+     * Method to start and end a "Azure.EventHubs.message" span and add the "DiagnosticId" as a property of the message.
+     *
+     * @param eventData The Event to add tracing span for.
+     * @return the updated event data object.
+     */
+    private EventData traceMessageSpan(EventData eventData) {
+        Optional<Object> eventContextData = eventData.getContext().getData(SPAN_CONTEXT_KEY);
+        if (eventContextData.isPresent()) {
+            // if message has context (in case of retries), don't start a message span or add a new context
+            return eventData;
+        } else {
+            // Starting the span makes the sampling decision (nothing is logged at this time)
+            Context eventSpanContext = tracerProvider.startSpan(eventData.getContext(), ProcessKind.MESSAGE);
+            Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+            if (eventDiagnosticIdOptional.isPresent()) {
+                eventData.getProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
+                tracerProvider.endSpan(eventSpanContext, Signal.complete());
+                eventData.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
+            }
+        }
+
+        return eventData;
     }
 
     List<EventData> getEvents() {
@@ -221,9 +258,7 @@ public final class EventDataBatch {
             message.setMessageAnnotations(messageAnnotations);
         }
 
-        if (event.getBody() != null) {
-            message.setBody(new Data(Binary.create(event.getBody())));
-        }
+        message.setBody(new Data(new Binary(event.getBody())));
 
         return message;
     }

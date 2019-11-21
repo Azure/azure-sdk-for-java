@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -103,7 +104,7 @@ public class ReactorReceiverTest {
         final Link link = mock(Link.class);
         final Session session = mock(Session.class);
         final Symbol symbol = Symbol.getSymbol(
-            com.azure.core.amqp.exception.ErrorCondition.UNAUTHORIZED_ACCESS.getErrorCondition());
+            AmqpErrorCondition.UNAUTHORIZED_ACCESS.getErrorCondition());
         final String description = "test-symbol-description";
         final ErrorCondition condition = new ErrorCondition(symbol, description);
         final ArgumentCaptor<ErrorCondition> captor = ArgumentCaptor.forClass(ErrorCondition.class);
@@ -137,7 +138,7 @@ public class ReactorReceiverTest {
         final Link link = mock(Link.class);
         final Session session = mock(Session.class);
         final Symbol symbol = Symbol.getSymbol(
-            com.azure.core.amqp.exception.ErrorCondition.NOT_IMPLEMENTED.getErrorCondition());
+            AmqpErrorCondition.NOT_IMPLEMENTED.getErrorCondition());
         final String description = "test-symbol-not implemented";
         final ErrorCondition condition = new ErrorCondition(symbol, description);
 

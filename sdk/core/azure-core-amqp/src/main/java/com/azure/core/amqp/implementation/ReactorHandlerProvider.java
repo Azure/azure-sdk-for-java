@@ -3,14 +3,14 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.reactor.Reactor;
 
@@ -42,8 +42,8 @@ public class ReactorHandlerProvider {
      * @param transportType Transport type used for the connection.
      * @return A new {@link ConnectionHandler}.
      */
-    public ConnectionHandler createConnectionHandler(String connectionId, String hostname, TransportType transportType,
-                                                     ProxyOptions proxyOptions) {
+    public ConnectionHandler createConnectionHandler(String connectionId, String hostname,
+            AmqpTransportType transportType, ProxyOptions proxyOptions) {
         switch (transportType) {
             case AMQP:
                 return new ConnectionHandler(connectionId, hostname);

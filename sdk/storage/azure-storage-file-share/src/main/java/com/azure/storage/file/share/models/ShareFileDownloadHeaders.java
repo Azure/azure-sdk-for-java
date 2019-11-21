@@ -6,8 +6,8 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -176,7 +176,7 @@ public final class ShareFileDownloadHeaders {
      * requested range.
      */
     @JsonProperty(value = "x-ms-content-md5")
-    private byte[] fileContentMD5;
+    private byte[] fileContentMd5;
 
     /*
      * The value of this header is set to true if the file data and application
@@ -749,30 +749,30 @@ public final class ShareFileDownloadHeaders {
     }
 
     /**
-     * Get the fileContentMD5 property: If the file has a MD5 hash, and if
+     * Get the fileContentMd5 property: If the file has a MD5 hash, and if
      * request contains range header (Range or x-ms-range), this response
      * header is returned with the value of the whole file's MD5 value. This
      * value may or may not be equal to the value returned in Content-MD5
      * header, with the latter calculated from the requested range.
      *
-     * @return the fileContentMD5 value.
+     * @return the fileContentMd5 value.
      */
-    public byte[] getFileContentMD5() {
-        return CoreUtils.clone(this.fileContentMD5);
+    public byte[] getFileContentMd5() {
+        return CoreUtils.clone(this.fileContentMd5);
     }
 
     /**
-     * Set the fileContentMD5 property: If the file has a MD5 hash, and if
+     * Set the fileContentMd5 property: If the file has a MD5 hash, and if
      * request contains range header (Range or x-ms-range), this response
      * header is returned with the value of the whole file's MD5 value. This
      * value may or may not be equal to the value returned in Content-MD5
      * header, with the latter calculated from the requested range.
      *
-     * @param fileContentMD5 the fileContentMD5 value to set.
+     * @param fileContentMd5 the fileContentMd5 value to set.
      * @return the ShareFileDownloadHeaders object itself.
      */
-    public ShareFileDownloadHeaders setFileContentMD5(byte[] fileContentMD5) {
-        this.fileContentMD5 = CoreUtils.clone(fileContentMD5);
+    public ShareFileDownloadHeaders setFileContentMd5(byte[] fileContentMd5) {
+        this.fileContentMd5 = CoreUtils.clone(fileContentMd5);
         return this;
     }
 

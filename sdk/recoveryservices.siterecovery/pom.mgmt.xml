@@ -9,6 +9,6 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-recoveryservices.siterecovery/v2018_01_10</module>
+    <module>mgmt-v2018_01_10</module>
   </modules>
 </project>

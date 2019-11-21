@@ -9,6 +9,6 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-locks/v2016_09_01</module>
+    <module>mgmt-v2016_09_01</module>
   </modules>
 </project>

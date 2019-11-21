@@ -4,10 +4,10 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpConnection;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -61,7 +61,7 @@ class EventHubConnection implements Closeable {
         return connectionOptions.getEntityPath();
     }
 
-    RetryOptions getRetryOptions() {
+    AmqpRetryOptions getRetryOptions() {
         return connectionOptions.getRetry();
     }
 
@@ -83,11 +83,11 @@ class EventHubConnection implements Closeable {
      * @param retryOptions Options to use when creating the link.
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
-    Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, RetryOptions retryOptions) {
+    Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions) {
         return currentConnection.flatMap(connection -> connection.createSession(entityPath))
             .flatMap(session -> {
                 logger.verbose("Creating producer for {}", entityPath);
-                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy)
                     .cast(AmqpSendLink.class);
@@ -109,7 +109,7 @@ class EventHubConnection implements Closeable {
         return currentConnection.flatMap(connection -> connection.createSession(entityPath).cast(EventHubSession.class))
             .flatMap(session -> {
                 logger.verbose("Creating consumer for path: {}", entityPath);
-                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
+                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
 
                 return session.createConsumer(linkName, entityPath, connectionOptions.getRetry().getTryTimeout(),
                     retryPolicy, eventPosition, options);
@@ -132,7 +132,7 @@ class EventHubConnection implements Closeable {
             } catch (IOException exception) {
                 throw logger.logExceptionAsError(
                     new AmqpException(false, "Unable to close connection to service", exception,
-                        new ErrorContext(connectionOptions.getFullyQualifiedNamespace())));
+                        new AmqpErrorContext(connectionOptions.getFullyQualifiedNamespace())));
             }
         }
     }

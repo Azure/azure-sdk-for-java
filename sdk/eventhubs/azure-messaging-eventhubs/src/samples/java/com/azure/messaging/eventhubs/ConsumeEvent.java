@@ -45,7 +45,7 @@ public class ConsumeEvent {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString(connectionString)
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         // To create a consumer, we need to know what partition to connect to. We take the first partition id.
         // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
@@ -60,18 +60,19 @@ public class ConsumeEvent {
 
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
         // countDownLatch.
-        Disposable subscription = consumer.receiveFromPartition(firstPartition, EventPosition.latest()).subscribe(partitionEvent -> {
-            EventData event = partitionEvent.getData();
-            String contents = UTF_8.decode(event.getBody()).toString();
-            System.out.println(String.format("[%s] Sequence Number: %s. Contents: %s", countDownLatch.getCount(),
-                event.getSequenceNumber(), contents));
+        Disposable subscription = consumer.receiveFromPartition(firstPartition, EventPosition.latest())
+            .subscribe(partitionEvent -> {
+                EventData event = partitionEvent.getData();
+                String contents = new String(event.getBody(), UTF_8);
+                System.out.println(String.format("[%s] Sequence Number: %s. Contents: %s", countDownLatch.getCount(),
+                    event.getSequenceNumber(), contents));
 
-            countDownLatch.countDown();
-        });
+                countDownLatch.countDown();
+            });
 
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncProducer();
+            .buildAsyncProducerClient();
 
         // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
         // We set the send options to send the events to `firstPartition`.

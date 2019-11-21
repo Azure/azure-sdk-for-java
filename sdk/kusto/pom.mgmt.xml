@@ -9,8 +9,8 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-kusto/v2018_09_07_preview</module>
-    <module>azure-mgmt-kusto/v2019_05_15</module>
-    <module>azure-mgmt-kusto/v2019_09_07</module>
+    <module>mgmt-v2018_09_07_preview</module>
+    <module>mgmt-v2019_05_15</module>
+    <module>mgmt-v2019_09_07</module>
   </modules>
 </project>
