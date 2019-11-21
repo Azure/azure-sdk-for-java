@@ -64,6 +64,15 @@ public final class EventDataBatch {
     }
 
     /**
+     * Gets the maximum size, in bytes, of the {@link EventDataBatch}.
+     *
+     * @return The maximum size, in bytes, of the {@link EventDataBatch}.
+     */
+    public int getMaxSizeInBytes() {
+        return maxMessageSize;
+    }
+
+    /**
      * Gets the size of the {@link EventDataBatch} in bytes.
      *
      * @return the size of the {@link EventDataBatch} in bytes.
