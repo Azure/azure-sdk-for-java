@@ -185,7 +185,7 @@ public class BridgeInternal {
         return new FeedResponse<>(results, headers);
     }
 
-    public static <T > FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
+    public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
             Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         return new FeedResponse<>(results, headers, queryMetricsMap);
     }

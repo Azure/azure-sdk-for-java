@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosAsyncItem;
 import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import reactor.core.publisher.Flux;
@@ -20,7 +19,6 @@ public class BasicDemo {
 
     private static final String DATABASE_NAME = "test_db";
     private static final String CONTAINER_NAME = "test_container";
-    int count = 0;
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase database;
     private CosmosAsyncContainer container;
