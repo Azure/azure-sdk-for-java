@@ -155,7 +155,8 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     /**
      * Static value MultipleConditionHeadersNotSupported for ShareErrorCode.
      */
-    public static final ShareErrorCode MULTIPLE_CONDITION_HEADERS_NOT_SUPPORTED = fromString("MultipleConditionHeadersNotSupported");
+    public static final ShareErrorCode MULTIPLE_CONDITION_HEADERS_NOT_SUPPORTED =
+        fromString("MultipleConditionHeadersNotSupported");
 
     /**
      * Static value OperationTimedOut for ShareErrorCode.
@@ -250,7 +251,8 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     /**
      * Static value InvalidFileOrDirectoryPathName for ShareErrorCode.
      */
-    public static final ShareErrorCode INVALID_FILE_OR_DIRECTORY_PATH_NAME = fromString("InvalidFileOrDirectoryPathName");
+    public static final ShareErrorCode INVALID_FILE_OR_DIRECTORY_PATH_NAME =
+        fromString("InvalidFileOrDirectoryPathName");
 
     /**
      * Static value ParentNotFound for ShareErrorCode.
@@ -300,7 +302,8 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     /**
      * Static value ShareSnapshotOperationNotSupported for ShareErrorCode.
      */
-    public static final ShareErrorCode SHARE_SNAPSHOT_OPERATION_NOT_SUPPORTED = fromString("ShareSnapshotOperationNotSupported");
+    public static final ShareErrorCode SHARE_SNAPSHOT_OPERATION_NOT_SUPPORTED =
+        fromString("ShareSnapshotOperationNotSupported");
 
     /**
      * Static value ShareHasSnapshots for ShareErrorCode.
@@ -310,7 +313,8 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     /**
      * Static value ContainerQuotaDowngradeNotAllowed for ShareErrorCode.
      */
-    public static final ShareErrorCode CONTAINER_QUOTA_DOWNGRADE_NOT_ALLOWED = fromString("ContainerQuotaDowngradeNotAllowed");
+    public static final ShareErrorCode CONTAINER_QUOTA_DOWNGRADE_NOT_ALLOWED =
+        fromString("ContainerQuotaDowngradeNotAllowed");
 
     /**
      * Static value AuthorizationSourceIPMismatch for ShareErrorCode.
@@ -325,7 +329,8 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     /**
      * Static value AuthorizationPermissionMismatch for ShareErrorCode.
      */
-    public static final ShareErrorCode AUTHORIZATION_PERMISSION_MISMATCH = fromString("AuthorizationPermissionMismatch");
+    public static final ShareErrorCode AUTHORIZATION_PERMISSION_MISMATCH =
+        fromString("AuthorizationPermissionMismatch");
 
     /**
      * Static value AuthorizationServiceMismatch for ShareErrorCode.
@@ -335,7 +340,8 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     /**
      * Static value AuthorizationResourceTypeMismatch for ShareErrorCode.
      */
-    public static final ShareErrorCode AUTHORIZATION_RESOURCE_TYPE_MISMATCH = fromString("AuthorizationResourceTypeMismatch");
+    public static final ShareErrorCode AUTHORIZATION_RESOURCE_TYPE_MISMATCH =
+        fromString("AuthorizationResourceTypeMismatch");
 
     /**
      * Static value FeatureVersionMismatch for ShareErrorCode.
