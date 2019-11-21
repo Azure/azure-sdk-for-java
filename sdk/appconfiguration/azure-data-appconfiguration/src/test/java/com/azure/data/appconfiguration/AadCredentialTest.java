@@ -30,7 +30,7 @@ public class AadCredentialTest extends TestBase {
             connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
 
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
-            // In playback mode, using connection string because CI environment does't set up to support AAD
+            // In playback mode use connection string because CI environment doesn't set up to support AAD
             client = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
