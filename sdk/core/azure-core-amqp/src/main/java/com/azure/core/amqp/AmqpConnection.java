@@ -14,14 +14,6 @@ import java.util.Map;
  */
 public interface AmqpConnection extends AutoCloseable {
     /**
-     * Gets the endpoint states for the AMQP connection. {@link AmqpException AmqpExceptions} that occur on the link are
-     * reported in the connection state. When the stream terminates, the connection is closed.
-     *
-     * @return A stream of endpoint states for the AMQP connection.
-     */
-    Flux<AmqpEndpointState> getEndpointStates();
-
-    /**
      * Gets the connection identifier.
      *
      * @return The connection identifier.
@@ -71,6 +63,21 @@ public interface AmqpConnection extends AutoCloseable {
      * @return {@code true} if a session with the name was removed; {@code false} otherwise.
      */
     boolean removeSession(String sessionName);
+
+    /**
+     * Gets the endpoint states for the AMQP connection. {@link AmqpException AmqpExceptions} that occur on the link are
+     * reported in the connection state. When the stream terminates, the connection is closed.
+     *
+     * @return A stream of endpoint states for the AMQP connection.
+     */
+    Flux<AmqpEndpointState> getEndpointStates();
+
+    /**
+     * Gets any shutdown signals that occur in the AMQP endpoint.
+     *
+     * @return A stream of shutdown signals that occur in the AMQP endpoint.
+     */
+    Flux<AmqpShutdownSignal> getShutdownSignals();
 
     /**
      * Closes the AMQP connection.

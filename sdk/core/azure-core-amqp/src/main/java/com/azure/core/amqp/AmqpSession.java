@@ -14,14 +14,6 @@ import java.time.Duration;
  */
 public interface AmqpSession extends AutoCloseable {
     /**
-     * Gets the endpoint states for the AMQP session. {@link AmqpException AmqpExceptions} that occur on the link are
-     * reported in the connection state. When the stream terminates, the session is closed.
-     *
-     * @return A stream of endpoint states for the AMQP session.
-     */
-    Flux<AmqpEndpointState> getEndpointStates();
-
-    /**
      * Gets the name for this AMQP session.
      *
      * @return The name for the AMQP session.
@@ -64,6 +56,14 @@ public interface AmqpSession extends AutoCloseable {
      * @return {@code true} if the link was removed; {@code false} otherwise.
      */
     boolean removeLink(String linkName);
+
+    /**
+     * Gets the endpoint states for the AMQP session. {@link AmqpException AmqpExceptions} that occur on the link are
+     * reported in the connection state. When the stream terminates, the session is closed.
+     *
+     * @return A stream of endpoint states for the AMQP session.
+     */
+    Flux<AmqpEndpointState> getEndpointStates();
 
     /**
      * Closes the AMQP session.

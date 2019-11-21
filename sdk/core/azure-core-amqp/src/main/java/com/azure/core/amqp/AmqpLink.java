@@ -11,14 +11,6 @@ import reactor.core.publisher.Flux;
  */
 public interface AmqpLink extends AutoCloseable {
     /**
-     * Gets the endpoint states for the AMQP link. {@link AmqpException AmqpExceptions} that occur on the link are
-     * reported in the connection state. When the stream terminates, the link is closed.
-     *
-     * @return A stream of endpoint states for the AMQP link.
-     */
-    Flux<AmqpEndpointState> getEndpointStates();
-
-    /**
      * Gets the name of the link.
      *
      * @return The name of the link.
@@ -38,6 +30,14 @@ public interface AmqpLink extends AutoCloseable {
      * @return The host name of the message broker that this link that is connected to.
      */
     String getHostname();
+
+    /**
+     * Gets the endpoint states for the AMQP link. {@link AmqpException AmqpExceptions} that occur on the link are
+     * reported in the connection state. When the stream terminates, the link is closed.
+     *
+     * @return A stream of endpoint states for the AMQP link.
+     */
+    Flux<AmqpEndpointState> getEndpointStates();
 
     /**
      * Closes the AMQP link.
