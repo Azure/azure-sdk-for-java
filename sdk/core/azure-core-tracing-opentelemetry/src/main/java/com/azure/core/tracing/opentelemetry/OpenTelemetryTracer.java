@@ -173,15 +173,13 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Starts a new child {@link Span} with parent being the remote and uses the {@link
-     * Span} is in the current Context, to return an object that represents that scope.
+     * Starts a new child {@link Span} with parent being the remote and uses the {@link Span} is in the current Context,
+     * to return an object that represents that scope.
      * <p>The scope is exited when the returned object is closed.</p>
      *
      * @param spanName The name of the returned Span.
-     * @param context The {@link com.azure.core.util.Context} containing the {@link
-     * SpanContext}.
-     * @return The returned {@link Span} and the scope in a {@link com.azure.core.util.Context}
-     * object.
+     * @param context The {@link Context} containing the {@link SpanContext}.
+     * @return The returned {@link Span} and the scope in a {@link Context} object.
      */
     private Context startScopedSpan(String spanName, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null.");
@@ -202,8 +200,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      * @param spanName The name of the returned Span.
      * @param spanContext The remote parent context of the returned Span.
-     * @return A {@link Span} with parent being the remote {@link Span}
-     * designated by the {@link SpanContext}.
+     * @return A {@link Span} with parent being the remote {@link Span} designated by the {@link SpanContext}.
      */
     private static Span startSpanWithRemoteParent(String spanName, SpanContext spanContext) {
         Builder spanBuilder = TRACER.spanBuilder(spanName).setParent(spanContext);
@@ -212,13 +209,12 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Extracts the {@link SpanContext trace identifiers} and the {@link
-     * SpanContext} of the current tracing span as text and returns in a {@link
-     * com.azure.core.util.Context} object.
+     * Extracts the {@link SpanContext trace identifiers} and the {@link SpanContext} of the current tracing span as
+     * text and returns in a {@link Context} object.
      *
      * @param span The current tracing span.
-     * @return The {@link com.azure.core.util.Context} containing the {@link SpanContext} and
-     * trace-parent of the current span.
+     * @return The {@link Context} containing the {@link SpanContext} and trace-parent of the
+     * current span.
      */
     private static Context setContextData(Span span) {
         SpanContext spanContext = span.getContext();
