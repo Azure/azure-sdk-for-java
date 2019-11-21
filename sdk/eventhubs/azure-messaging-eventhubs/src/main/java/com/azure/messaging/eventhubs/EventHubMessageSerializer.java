@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.MessageConstant;
+import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
@@ -193,19 +193,19 @@ class EventHubMessageSerializer implements MessageSerializer {
         }
 
         if (message.getProperties() != null) {
-            addMapEntry(receiveProperties, MessageConstant.MESSAGE_ID, message.getMessageId());
-            addMapEntry(receiveProperties, MessageConstant.USER_ID, message.getUserId());
-            addMapEntry(receiveProperties, MessageConstant.TO, message.getAddress());
-            addMapEntry(receiveProperties, MessageConstant.SUBJECT, message.getSubject());
-            addMapEntry(receiveProperties, MessageConstant.REPLY_TO, message.getReplyTo());
-            addMapEntry(receiveProperties, MessageConstant.CORRELATION_ID, message.getCorrelationId());
-            addMapEntry(receiveProperties, MessageConstant.CONTENT_TYPE, message.getContentType());
-            addMapEntry(receiveProperties, MessageConstant.CONTENT_ENCODING, message.getContentEncoding());
-            addMapEntry(receiveProperties, MessageConstant.ABSOLUTE_EXPIRY_TIME, message.getExpiryTime());
-            addMapEntry(receiveProperties, MessageConstant.CREATION_TIME, message.getCreationTime());
-            addMapEntry(receiveProperties, MessageConstant.GROUP_ID, message.getGroupId());
-            addMapEntry(receiveProperties, MessageConstant.GROUP_SEQUENCE, message.getGroupSequence());
-            addMapEntry(receiveProperties, MessageConstant.REPLY_TO_GROUP_ID, message.getReplyToGroupId());
+            addMapEntry(receiveProperties, AmqpMessageConstant.MESSAGE_ID, message.getMessageId());
+            addMapEntry(receiveProperties, AmqpMessageConstant.USER_ID, message.getUserId());
+            addMapEntry(receiveProperties, AmqpMessageConstant.TO, message.getAddress());
+            addMapEntry(receiveProperties, AmqpMessageConstant.SUBJECT, message.getSubject());
+            addMapEntry(receiveProperties, AmqpMessageConstant.REPLY_TO, message.getReplyTo());
+            addMapEntry(receiveProperties, AmqpMessageConstant.CORRELATION_ID, message.getCorrelationId());
+            addMapEntry(receiveProperties, AmqpMessageConstant.CONTENT_TYPE, message.getContentType());
+            addMapEntry(receiveProperties, AmqpMessageConstant.CONTENT_ENCODING, message.getContentEncoding());
+            addMapEntry(receiveProperties, AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME, message.getExpiryTime());
+            addMapEntry(receiveProperties, AmqpMessageConstant.CREATION_TIME, message.getCreationTime());
+            addMapEntry(receiveProperties, AmqpMessageConstant.GROUP_ID, message.getGroupId());
+            addMapEntry(receiveProperties, AmqpMessageConstant.GROUP_SEQUENCE, message.getGroupSequence());
+            addMapEntry(receiveProperties, AmqpMessageConstant.REPLY_TO_GROUP_ID, message.getReplyToGroupId());
         }
 
         final Section bodySection = message.getBody();
@@ -301,7 +301,7 @@ class EventHubMessageSerializer implements MessageSerializer {
                 return;
             }
 
-            final MessageConstant constant = MessageConstant.fromString(key);
+            final AmqpMessageConstant constant = AmqpMessageConstant.fromString(key);
 
             if (constant != null) {
                 switch (constant) {
@@ -430,7 +430,7 @@ class EventHubMessageSerializer implements MessageSerializer {
             obj.getClass()));
     }
 
-    private static void addMapEntry(Map<String, Object> map, MessageConstant key, Object content) {
+    private static void addMapEntry(Map<String, Object> map, AmqpMessageConstant key, Object content) {
         if (content == null) {
             return;
         }

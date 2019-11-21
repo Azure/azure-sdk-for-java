@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.MessageConstant;
+import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
@@ -156,7 +156,7 @@ public final class EventDataBatch {
                     return;
                 }
 
-                final MessageConstant constant = MessageConstant.fromString(key);
+                final AmqpMessageConstant constant = AmqpMessageConstant.fromString(key);
 
                 if (constant != null) {
                     switch (constant) {
