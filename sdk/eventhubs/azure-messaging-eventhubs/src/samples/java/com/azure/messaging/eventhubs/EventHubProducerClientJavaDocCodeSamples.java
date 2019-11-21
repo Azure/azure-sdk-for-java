@@ -27,7 +27,7 @@ public class EventHubProducerClientJavaDocCodeSamples {
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation
         EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
-            .buildProducer();
+            .buildProducerClient();
         // END: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation
 
         producer.close();
@@ -44,7 +44,7 @@ public class EventHubProducerClientJavaDocCodeSamples {
         SendOptions options = new SendOptions()
             .setPartitionId("foo");
 
-        EventHubProducerClient producer = builder.buildProducer();
+        EventHubProducerClient producer = builder.buildProducerClient();
         producer.send(eventData, options);
         // END: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation#partitionId
 
@@ -62,7 +62,7 @@ public class EventHubProducerClientJavaDocCodeSamples {
             new EventData("wheat".getBytes(UTF_8))
         );
 
-        final EventHubProducerClient producer = builder.buildProducer();
+        final EventHubProducerClient producer = builder.buildProducerClient();
         final SendOptions options = new SendOptions()
             .setPartitionKey("bread");
 
@@ -74,7 +74,7 @@ public class EventHubProducerClientJavaDocCodeSamples {
      * Code snippet demonstrating how to create an {@link EventDataBatch} and send it.
      */
     public void sendEventDataBatch() {
-        final EventHubProducerClient producer = builder.buildProducer();
+        final EventHubProducerClient producer = builder.buildProducerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.send#eventDataBatch
         final EventData firstEvent = new EventData("92".getBytes(UTF_8));

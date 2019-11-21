@@ -11,7 +11,6 @@
 # Service teams
 /sdk/appconfiguration/                            	@mssfang @alzimmermsft @conniey @sima-zhu
 /sdk/batch/                                      	@xingwu1 @bgklein @matthchr
-/sdk/cognitiveservices/ms-azure-cs-inkrecognizer	@minaltolpadi @olduroja @MAtifSaeed
 /sdk/core/                                        	@alzimmermsft @jianghaolu @srnagar @hemanttanwar
 /sdk/cosmos/                                      	@moderakh @christopheranderson @kushagraThapar
 /sdk/eventhubs/                                   	@conniey @srnagar @mssfang

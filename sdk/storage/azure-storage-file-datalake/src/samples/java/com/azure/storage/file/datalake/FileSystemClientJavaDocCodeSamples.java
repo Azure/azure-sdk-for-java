@@ -7,7 +7,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
+import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -16,6 +19,7 @@ import com.azure.storage.file.datalake.models.PublicAccessType;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -129,7 +133,7 @@ public class FileSystemClientJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.getProperties
         FileSystemProperties properties = client.getProperties();
         System.out.printf("Public Access Type: %s, Legal Hold? %b, Immutable? %b%n",
-            properties.getPublicAccess(),
+            properties.getDataLakePublicAccess(),
             properties.hasLegalHold(),
             properties.hasImmutabilityPolicy());
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.getProperties
@@ -145,7 +149,7 @@ public class FileSystemClientJavaDocCodeSamples {
         FileSystemProperties properties = client.getPropertiesWithResponse(leaseId, timeout, context)
             .getValue();
         System.out.printf("Public Access Type: %s, Legal Hold? %b, Immutable? %b%n",
-            properties.getPublicAccess(),
+            properties.getDataLakePublicAccess(),
             properties.hasLegalHold(),
             properties.hasImmutabilityPolicy());
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.getPropertiesWithResponse#String-Duration-Context
@@ -285,6 +289,88 @@ public class FileSystemClientJavaDocCodeSamples {
 
         client.listPaths(options, timeout).forEach(path -> System.out.printf("Name: %s%n", path.getName()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemClient#getAccessPolicy()}
+     */
+    public void getAccessPolicy() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.getAccessPolicy
+        FileSystemAccessPolicies accessPolicies = client.getAccessPolicy();
+        System.out.printf("Data Lake Access Type: %s%n", accessPolicies.getDataLakeAccessType());
+
+        for (DataLakeSignedIdentifier identifier : accessPolicies.getIdentifiers()) {
+            System.out.printf("Identifier Name: %s, Permissions %s%n",
+                identifier.getId(),
+                identifier.getAccessPolicy().getPermissions());
+        }
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.getAccessPolicy
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemClient#getAccessPolicyWithResponse(String, Duration, Context)}
+     */
+    public void getAccessPolicy2() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.getAccessPolicyWithResponse#String-Duration-Context
+        Context context = new Context("Key", "Value");
+        FileSystemAccessPolicies accessPolicies = client.getAccessPolicyWithResponse(leaseId, timeout, context)
+            .getValue();
+        System.out.printf("Data Lake Access Type: %s%n", accessPolicies.getDataLakeAccessType());
+
+        for (DataLakeSignedIdentifier identifier : accessPolicies.getIdentifiers()) {
+            System.out.printf("Identifier Name: %s, Permissions %s%n",
+                identifier.getId(),
+                identifier.getAccessPolicy().getPermissions());
+        }
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.getAccessPolicyWithResponse#String-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemClient#setAccessPolicy(PublicAccessType, List)}
+     */
+    public void setAccessPolicy() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicy#PublicAccessType-List
+        DataLakeSignedIdentifier identifier = new DataLakeSignedIdentifier()
+            .setId("name")
+            .setAccessPolicy(new DataLakeAccessPolicy()
+                .setStartsOn(OffsetDateTime.now())
+                .setExpiresOn(OffsetDateTime.now().plusDays(7))
+                .setPermissions("permissionString"));
+
+        try {
+            client.setAccessPolicy(PublicAccessType.CONTAINER, Collections.singletonList(identifier));
+            System.out.printf("Set Access Policy completed %n");
+        } catch (UnsupportedOperationException error) {
+            System.out.printf("Set Access Policy completed %s%n", error);
+        }
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicy#PublicAccessType-List
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemClient#setAccessPolicyWithResponse(PublicAccessType, List, DataLakeRequestConditions, Duration, Context)}
+     */
+    public void setAccessPolicy2() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions-Duration-Context
+        DataLakeSignedIdentifier identifier = new DataLakeSignedIdentifier()
+            .setId("name")
+            .setAccessPolicy(new DataLakeAccessPolicy()
+                .setStartsOn(OffsetDateTime.now())
+                .setExpiresOn(OffsetDateTime.now().plusDays(7))
+                .setPermissions("permissionString"));
+
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        Context context = new Context("Key", "Value");
+
+        System.out.printf("Set access policy completed with status %d%n",
+            client.setAccessPolicyWithResponse(PublicAccessType.CONTAINER,
+                Collections.singletonList(identifier),
+                requestConditions,
+                timeout,
+                context).getStatusCode());
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions-Duration-Context
     }
 
 }

@@ -3,10 +3,10 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -166,7 +166,7 @@ public class TracerProviderTest {
     @Test
     public void endSpanAmqpException() {
         // Arrange
-        final ErrorCondition errorCondition = ErrorCondition.NOT_FOUND;
+        final AmqpErrorCondition errorCondition = AmqpErrorCondition.NOT_FOUND;
         final Exception exception = new AmqpException(true, errorCondition, "", null);
         Context sendContext = new Context("test-span-key", "value");
 

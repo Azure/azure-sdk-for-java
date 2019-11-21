@@ -5,12 +5,12 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.RetryMode;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -93,10 +93,10 @@ public class ReactorConnectionTest {
 
         final ReactorHandlerProvider reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, connectionHandler, sessionHandler, null, null);
 
-        final RetryOptions retryOptions = new RetryOptions().setTryTimeout(TEST_DURATION);
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             CREDENTIAL_INFO.getEntityPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
-            TransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER);
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
             tokenManager, messageSerializer);
     }
@@ -286,14 +286,14 @@ public class ReactorConnectionTest {
             null, null);
 
         Duration timeout = Duration.ofSeconds(2);
-        RetryOptions retryOptions = new RetryOptions()
+        AmqpRetryOptions retryOptions = new AmqpRetryOptions()
             .setMaxRetries(2)
             .setDelay(Duration.ofMillis(200))
-            .setMode(RetryMode.FIXED)
+            .setMode(AmqpRetryMode.FIXED)
             .setTryTimeout(timeout);
         ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             CREDENTIAL_INFO.getEntityPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
-            TransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
 
         // Act and Assert
         try (ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,

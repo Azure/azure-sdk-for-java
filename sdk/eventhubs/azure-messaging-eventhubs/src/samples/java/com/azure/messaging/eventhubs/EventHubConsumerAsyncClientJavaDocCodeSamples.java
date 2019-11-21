@@ -27,7 +27,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
         // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
     }
 
@@ -38,7 +38,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("fake-string")
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition
         // Obtain partitionId from EventHubConsumerAsyncClient.getPartitionIds()
@@ -71,7 +71,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("fake-string")
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber
         consumer.receiveFromPartition(partitionId, EventPosition.latest()).subscribe(new BaseSubscriber<PartitionEvent>() {
@@ -106,7 +106,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("fake-string")
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition
         EventPosition startingPosition = EventPosition.fromEnqueuedTime(Instant.now().minus(Duration.ofHours(1)));
@@ -130,7 +130,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         // Receives events from all partitions as they come in.
         consumer.receive(EventPosition.latest(), receiveOptions).subscribe(partitionEvent -> {

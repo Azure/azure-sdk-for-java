@@ -11,7 +11,7 @@ import com.azure.messaging.eventhubs.EventData;
  * to the Event Hubs service.
  */
 @Fluent
-public class SendOptions implements Cloneable {
+public class SendOptions {
     private String partitionKey;
     private String partitionId;
 
@@ -72,22 +72,5 @@ public class SendOptions implements Cloneable {
     public SendOptions setPartitionId(String partitionId) {
         this.partitionId = partitionId;
         return this;
-    }
-
-    /**
-     * Creates a shallow clone of this instance.
-     *
-     * @return A shallow clone of this object.
-     */
-    @Override
-    public SendOptions clone() {
-        SendOptions clone;
-        try {
-            clone = (SendOptions) super.clone();
-        } catch (CloneNotSupportedException e) {
-            clone = new SendOptions();
-        }
-
-        return clone.setPartitionKey(partitionKey);
     }
 }

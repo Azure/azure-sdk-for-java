@@ -293,7 +293,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     public void getEventHubProperties() {
         final EventHubConsumerAsyncClient consumer = createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         // Act & Assert
         try {
@@ -315,7 +315,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     public void getPartitionIds() {
         final EventHubConsumerAsyncClient consumer = createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         // Act & Assert
         try {
@@ -334,7 +334,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     public void getPartitionProperties() {
         final EventHubConsumerAsyncClient consumer = createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         // Act & Assert
         try {

@@ -5,8 +5,8 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.junit.jupiter.api.AfterEach;
@@ -37,7 +37,7 @@ public class EndpointStateNotifierBaseTest {
     public void notifyError() {
         // Arrange
         final Throwable error1 = new IllegalStateException("bad state");
-        final Throwable error2 = new AmqpException(false, "test error", new ErrorContext("test-namespace2"));
+        final Throwable error2 = new AmqpException(false, "test error", new AmqpErrorContext("test-namespace2"));
 
         // Act & Assert
         StepVerifier.create(notifier.getErrors())
