@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-public class FixedRetryPolicyTest {
+public class FixedAmqpRetryPolicyTest {
     private final AmqpErrorContext errorContext = new AmqpErrorContext("test-namespace");
     private final AmqpException exception = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
     private final Duration minBackoff = Duration.ofSeconds(15);
     private final Duration maxBackoff = Duration.ofSeconds(60);
     private final Duration tolerance = Duration.ofSeconds(1);
     private final int retryAttempts = 5;
-    private final RetryOptions options = new RetryOptions()
+    private final AmqpRetryOptions options = new AmqpRetryOptions()
         .setDelay(minBackoff)
         .setMaxDelay(maxBackoff)
         .setMaxRetries(retryAttempts)
-        .setMode(RetryMode.FIXED);
+        .setMode(AmqpRetryMode.FIXED);
 
     /**
      * Verifies that when the service is busy and we retry an exception multiple times, the retry duration gets longer.
@@ -30,7 +30,7 @@ public class FixedRetryPolicyTest {
     @Test
     public void retryDurationIsTheSame() {
         // Arrange
-        final FixedRetryPolicy retry = new FixedRetryPolicy(options);
+        final FixedAmqpRetryPolicy retry = new FixedAmqpRetryPolicy(options);
 
         // Act
         final Duration firstRetryInterval = retry.calculateRetryDelay(exception, 1);
@@ -53,14 +53,14 @@ public class FixedRetryPolicyTest {
     @Test
     public void isEquals() {
         // Arrange
-        final FixedRetryPolicy policy = new FixedRetryPolicy(options);
+        final FixedAmqpRetryPolicy policy = new FixedAmqpRetryPolicy(options);
 
-        final RetryOptions otherOptions = new RetryOptions()
+        final AmqpRetryOptions otherOptions = new AmqpRetryOptions()
             .setDelay(minBackoff)
             .setMaxDelay(maxBackoff)
             .setMaxRetries(retryAttempts)
-            .setMode(RetryMode.FIXED);
-        final FixedRetryPolicy otherPolicy = new FixedRetryPolicy(otherOptions);
+            .setMode(AmqpRetryMode.FIXED);
+        final FixedAmqpRetryPolicy otherPolicy = new FixedAmqpRetryPolicy(otherOptions);
 
         // Assert
         Assertions.assertEquals(policy, otherPolicy);

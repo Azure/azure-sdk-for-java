@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-public class ExponentialRetryPolicyTest {
+public class ExponentialAmqpRetryPolicyTest {
     private final AmqpErrorContext errorContext = new AmqpErrorContext("test-namespace");
     private final AmqpException exception = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
     private final Duration minBackoff = Duration.ofSeconds(15);
     private final Duration maxBackoff = Duration.ofSeconds(60);
     private final Duration tolerance = Duration.ofSeconds(1);
     private final int retryAttempts = 5;
-    private final RetryOptions options = new RetryOptions()
+    private final AmqpRetryOptions options = new AmqpRetryOptions()
         .setDelay(minBackoff)
         .setMaxDelay(maxBackoff)
         .setMaxRetries(retryAttempts)
-        .setMode(RetryMode.EXPONENTIAL);
+        .setMode(AmqpRetryMode.EXPONENTIAL);
 
     /**
      * Verifies that when the service is busy and we retry an exception multiple times, the retry duration gets longer.
@@ -31,7 +31,7 @@ public class ExponentialRetryPolicyTest {
     public void retryDurationIncreases() {
         // Arrange
 
-        final ExponentialRetryPolicy retry = new ExponentialRetryPolicy(options);
+        final ExponentialAmqpRetryPolicy retry = new ExponentialAmqpRetryPolicy(options);
 
         // Act
         final Duration firstRetryInterval = retry.calculateRetryDelay(exception, 1);
@@ -49,14 +49,14 @@ public class ExponentialRetryPolicyTest {
     @Test
     public void isEquals() {
         // Arrange
-        final ExponentialRetryPolicy policy = new ExponentialRetryPolicy(options);
+        final ExponentialAmqpRetryPolicy policy = new ExponentialAmqpRetryPolicy(options);
 
-        final RetryOptions otherOptions = new RetryOptions()
+        final AmqpRetryOptions otherOptions = new AmqpRetryOptions()
             .setDelay(minBackoff)
             .setMaxDelay(maxBackoff)
             .setMaxRetries(retryAttempts)
-            .setMode(RetryMode.EXPONENTIAL);
-        final ExponentialRetryPolicy otherPolicy = new ExponentialRetryPolicy(otherOptions);
+            .setMode(AmqpRetryMode.EXPONENTIAL);
+        final ExponentialAmqpRetryPolicy otherPolicy = new ExponentialAmqpRetryPolicy(otherOptions);
 
         // Assert
         Assertions.assertEquals(policy, otherPolicy);

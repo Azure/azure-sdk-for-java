@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.RetryMode;
-import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.message.Message;
@@ -34,8 +34,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CBSChannelTest {
-    private final RetryOptions options = new RetryOptions()
-        .setMode(RetryMode.FIXED)
+    private final AmqpRetryOptions options = new AmqpRetryOptions()
+        .setMode(AmqpRetryMode.FIXED)
         .setTryTimeout(Duration.ofSeconds(45))
         .setMaxRetries(4);
 

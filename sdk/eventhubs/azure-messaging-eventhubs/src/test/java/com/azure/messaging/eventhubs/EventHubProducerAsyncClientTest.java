@@ -3,10 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
@@ -76,7 +76,7 @@ public class EventHubProducerAsyncClientTest {
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
-    private final RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(10));
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10));
     private EventHubProducerAsyncClient producer;
     private EventHubConnection eventHubConnection;
     @Mock
@@ -89,7 +89,7 @@ public class EventHubProducerAsyncClientTest {
 
         tracerProvider = new TracerProvider(Collections.emptyList());
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
+            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         eventHubConnection = new EventHubConnection(Mono.just(connection), connectionOptions);
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, eventHubConnection, retryOptions, tracerProvider,

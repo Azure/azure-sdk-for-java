@@ -3,10 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -106,15 +106,15 @@ public class EventHubClientBuilder {
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
-    private static final RetryOptions DEFAULT_RETRY = new RetryOptions()
+    private static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions()
         .setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
 
     private TokenCredential credentials;
     private Configuration configuration;
     private ProxyOptions proxyOptions;
-    private RetryOptions retryOptions;
+    private AmqpRetryOptions retryOptions;
     private Scheduler scheduler;
-    private TransportType transport;
+    private AmqpTransportType transport;
     private String fullyQualifiedNamespace;
     private String eventHubName;
     private String consumerGroup;
@@ -123,12 +123,12 @@ public class EventHubClientBuilder {
     private boolean isSharedConnection;
 
     /**
-     * Creates a new instance with the default transport {@link TransportType#AMQP} and a non-shared connection. A
+     * Creates a new instance with the default transport {@link AmqpTransportType#AMQP} and a non-shared connection. A
      * non-shared connection means that a dedicated AMQP connection is created for every Event Hub consumer or producer
      * created using the builder.
      */
     public EventHubClientBuilder() {
-        transport = TransportType.AMQP;
+        transport = AmqpTransportType.AMQP;
         prefetchCount = DEFAULT_PREFETCH_COUNT;
         isSharedConnection = false;
     }
@@ -268,7 +268,7 @@ public class EventHubClientBuilder {
 
     /**
      * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
-     * TransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
+     * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
      * @param proxyOptions The proxy configuration to use.
      *
@@ -293,13 +293,13 @@ public class EventHubClientBuilder {
 
     /**
      * Sets the transport type by which all the communication with Azure Event Hubs occurs. Default value is {@link
-     * TransportType#AMQP}.
+     * AmqpTransportType#AMQP}.
      *
      * @param transport The transport type to use.
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder transportType(TransportType transport) {
+    public EventHubClientBuilder transportType(AmqpTransportType transport) {
         this.transport = transport;
         return this;
     }
@@ -311,7 +311,7 @@ public class EventHubClientBuilder {
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder retry(RetryOptions retryOptions) {
+    public EventHubClientBuilder retry(AmqpRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -364,7 +364,7 @@ public class EventHubClientBuilder {
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
      *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Also, if
      *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
-     *     {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubConsumerAsyncClient buildAsyncConsumerClient() {
         if (CoreUtils.isNullOrEmpty(consumerGroup)) {
@@ -384,7 +384,7 @@ public class EventHubClientBuilder {
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
      *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Also, if
      *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
-     *     {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubConsumerClient buildConsumerClient() {
         return buildClient().createConsumer(consumerGroup, prefetchCount);
@@ -398,7 +398,7 @@ public class EventHubClientBuilder {
      *
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
      * either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy
-     * is specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     * is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubProducerAsyncClient buildAsyncProducerClient() {
         return buildAsyncClient().createProducer();
@@ -412,7 +412,7 @@ public class EventHubClientBuilder {
      *
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
      * either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy
-     * is specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     * is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubProducerClient buildProducerClient() {
         return buildClient().createProducer();
@@ -441,7 +441,7 @@ public class EventHubClientBuilder {
      *
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
-     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     * but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     EventHubAsyncClient buildAsyncClient() {
         if (retryOptions == null) {
@@ -490,7 +490,7 @@ public class EventHubClientBuilder {
      *
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
-     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     * but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     EventHubClient buildClient() {
         final EventHubAsyncClient client = buildAsyncClient();
@@ -535,7 +535,7 @@ public class EventHubClientBuilder {
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
         // is not AMQP_WEB_SOCKETS.
         if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()
-            && transport != TransportType.AMQP_WEB_SOCKETS) {
+            && transport != AmqpTransportType.AMQP_WEB_SOCKETS) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Cannot use a proxy when TransportType is not AMQP."));
         }

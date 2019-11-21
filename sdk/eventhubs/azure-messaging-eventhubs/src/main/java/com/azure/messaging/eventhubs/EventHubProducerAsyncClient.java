@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
@@ -127,7 +127,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
     private final EventHubConnection connection;
-    private final RetryOptions retryOptions;
+    private final AmqpRetryOptions retryOptions;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
     private final boolean isSharedConnection;
@@ -138,8 +138,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
-        RetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
-        boolean isSharedConnection) {
+            AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
+            boolean isSharedConnection) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connection = connection;

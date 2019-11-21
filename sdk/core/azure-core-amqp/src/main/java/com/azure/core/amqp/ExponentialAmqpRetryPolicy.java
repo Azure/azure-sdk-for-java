@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * A policy to govern retrying of messaging operations in which the delay between retries will grow in an exponential
  * manner, allowing more time to recover as the number of retries increases.
  */
-public final class ExponentialRetryPolicy extends RetryPolicy {
+public final class ExponentialAmqpRetryPolicy extends AmqpRetryPolicy {
     private final double retryFactor;
 
     /**
@@ -19,7 +19,7 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
      * @param retryOptions The options to apply to this retry policy.
      * @throws NullPointerException if {@code retryOptions} is {@code null}.
      */
-    public ExponentialRetryPolicy(RetryOptions retryOptions) {
+    public ExponentialAmqpRetryPolicy(AmqpRetryOptions retryOptions) {
         super(retryOptions);
 
         this.retryFactor = computeRetryFactor();
@@ -62,12 +62,12 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
             return true;
         }
 
-        return obj instanceof ExponentialRetryPolicy
+        return obj instanceof ExponentialAmqpRetryPolicy
             && super.equals(obj);
     }
 
     private double computeRetryFactor() {
-        final RetryOptions options = getRetryOptions();
+        final AmqpRetryOptions options = getRetryOptions();
         final Duration maxBackoff = options.getMaxDelay();
         final Duration minBackoff = options.getDelay();
         final int maximumRetries = options.getMaxRetries();

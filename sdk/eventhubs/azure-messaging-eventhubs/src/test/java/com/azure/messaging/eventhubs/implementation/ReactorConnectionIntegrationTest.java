@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.CBSChannel;
@@ -50,7 +50,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
             connectionString.getSharedAccessKey());
 
         final ConnectionOptions options = new ConnectionOptions(connectionString.getEndpoint().getHost(),
-            connectionString.getEntityPath(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
+            connectionString.getEntityPath(), tokenCredential, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
             RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.single());
 
         AzureTokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(options.getAuthorizationType(),

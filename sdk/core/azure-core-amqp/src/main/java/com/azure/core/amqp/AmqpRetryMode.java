@@ -6,7 +6,7 @@ package com.azure.core.amqp;
 /**
  * The type of approach to apply when calculating the delay between retry attempts.
  */
-public enum RetryMode {
+public enum AmqpRetryMode {
     /**
      * Retry attempts happen at fixed intervals; each delay is a consistent duration.
      */

@@ -3,28 +3,31 @@
 
 package com.azure.core.amqp;
 
+import com.azure.core.annotation.Fluent;
+
 import java.time.Duration;
 import java.util.Objects;
 
 /**
  * A set of options that can be specified to influence how retry attempts are made.
  */
-public class RetryOptions {
+@Fluent
+public class AmqpRetryOptions {
     private int maxRetries;
     private Duration delay;
     private Duration maxDelay;
     private Duration tryTimeout;
-    private RetryMode retryMode;
+    private AmqpRetryMode retryMode;
 
     /**
      * Creates an instance with the default retry options set.
      */
-    public RetryOptions() {
+    public AmqpRetryOptions() {
         maxRetries = 3;
         delay = Duration.ofMillis(800);
         maxDelay = Duration.ofMinutes(1);
         tryTimeout = Duration.ofMinutes(1);
-        retryMode = RetryMode.EXPONENTIAL;
+        retryMode = AmqpRetryMode.EXPONENTIAL;
     }
 
     /**
@@ -33,7 +36,7 @@ public class RetryOptions {
      * @param retryOptions Retry options to configure new instance with.
      * @throws NullPointerException if {@code retryOptions} is null.
      */
-    public RetryOptions(RetryOptions retryOptions) {
+    public AmqpRetryOptions(AmqpRetryOptions retryOptions) {
         this.maxDelay = retryOptions.getMaxDelay();
         this.delay = retryOptions.getDelay();
         this.maxRetries = retryOptions.getMaxRetries();
@@ -45,9 +48,9 @@ public class RetryOptions {
      * Sets the approach to use for calculating retry delays.
      *
      * @param retryMode The retry approach to use for calculating delays.
-     * @return The updated {@link RetryOptions} object.
+     * @return The updated {@link AmqpRetryOptions} object.
      */
-    public RetryOptions setMode(RetryMode retryMode) {
+    public AmqpRetryOptions setMode(AmqpRetryMode retryMode) {
         this.retryMode = retryMode;
         return this;
     }
@@ -56,9 +59,9 @@ public class RetryOptions {
      * Sets the maximum number of retry attempts before considering the associated operation to have failed.
      *
      * @param numberOfRetries The maximum number of retry attempts.
-     * @return The updated {@link RetryOptions} object.
+     * @return The updated {@link AmqpRetryOptions} object.
      */
-    public RetryOptions setMaxRetries(int numberOfRetries) {
+    public AmqpRetryOptions setMaxRetries(int numberOfRetries) {
         this.maxRetries = numberOfRetries;
         return this;
     }
@@ -68,9 +71,9 @@ public class RetryOptions {
      * backoff-approach.
      *
      * @param delay The delay between retry attempts.
-     * @return The updated {@link RetryOptions} object.
+     * @return The updated {@link AmqpRetryOptions} object.
      */
-    public RetryOptions setDelay(Duration delay) {
+    public AmqpRetryOptions setDelay(Duration delay) {
         this.delay = delay;
         return this;
     }
@@ -79,9 +82,9 @@ public class RetryOptions {
      * Sets the maximum permissible delay between retry attempts.
      *
      * @param maximumDelay The maximum permissible delay between retry attempts.
-     * @return The updated {@link RetryOptions} object.
+     * @return The updated {@link AmqpRetryOptions} object.
      */
-    public RetryOptions setMaxDelay(Duration maximumDelay) {
+    public AmqpRetryOptions setMaxDelay(Duration maximumDelay) {
         this.maxDelay = maximumDelay;
         return this;
     }
@@ -90,9 +93,9 @@ public class RetryOptions {
      * Sets the maximum duration to wait for completion of a single attempt, whether the initial attempt or a retry.
      *
      * @param tryTimeout The maximum duration to wait for completion.
-     * @return The updated {@link RetryOptions} object.
+     * @return The updated {@link AmqpRetryOptions} object.
      */
-    public RetryOptions setTryTimeout(Duration tryTimeout) {
+    public AmqpRetryOptions setTryTimeout(Duration tryTimeout) {
         this.tryTimeout = tryTimeout;
         return this;
     }
@@ -102,7 +105,7 @@ public class RetryOptions {
      *
      * @return The approach to use for calculating retry delays.
      */
-    public RetryMode getMode() {
+    public AmqpRetryMode getMode() {
         return retryMode;
     }
 
@@ -152,11 +155,11 @@ public class RetryOptions {
             return true;
         }
 
-        if (!(obj instanceof RetryOptions)) {
+        if (!(obj instanceof AmqpRetryOptions)) {
             return false;
         }
 
-        final RetryOptions other = (RetryOptions) obj;
+        final AmqpRetryOptions other = (AmqpRetryOptions) obj;
 
         return this.getMaxRetries() == other.getMaxRetries()
             && this.getMode() == other.getMode()
