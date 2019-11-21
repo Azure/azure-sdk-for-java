@@ -338,7 +338,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // read-only setting
-            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), null))
+            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), true))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -360,7 +360,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // read-only setting
-            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), null))
+            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), true))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -391,7 +391,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // read-only setting
-            StepVerifier.create(client.setReadOnlyWithResponse(expected, null))
+            StepVerifier.create(client.setReadOnlyWithResponse(expected, true))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -412,7 +412,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // read-only setting
-            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), null))
+            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), true))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
