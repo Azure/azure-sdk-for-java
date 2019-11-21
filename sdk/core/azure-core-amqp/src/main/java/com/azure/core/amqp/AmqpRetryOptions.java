@@ -3,18 +3,21 @@
 
 package com.azure.core.amqp;
 
+import com.azure.core.annotation.Fluent;
+
 import java.time.Duration;
 import java.util.Objects;
 
 /**
  * A set of options that can be specified to influence how retry attempts are made.
  */
+@Fluent
 public class AmqpRetryOptions implements Cloneable {
     private int maxRetries;
     private Duration delay;
     private Duration maxDelay;
     private Duration tryTimeout;
-    private RetryMode retryMode;
+    private AmqpRetryMode retryMode;
 
     /**
      * Creates an instance with the default retry options set.
@@ -24,7 +27,7 @@ public class AmqpRetryOptions implements Cloneable {
         delay = Duration.ofMillis(800);
         maxDelay = Duration.ofMinutes(1);
         tryTimeout = Duration.ofMinutes(1);
-        retryMode = RetryMode.EXPONENTIAL;
+        retryMode = AmqpRetryMode.EXPONENTIAL;
     }
 
     /**
@@ -33,7 +36,7 @@ public class AmqpRetryOptions implements Cloneable {
      * @param retryMode The retry approach to use for calculating delays.
      * @return The updated {@link AmqpRetryOptions} object.
      */
-    public AmqpRetryOptions setMode(RetryMode retryMode) {
+    public AmqpRetryOptions setMode(AmqpRetryMode retryMode) {
         this.retryMode = retryMode;
         return this;
     }
@@ -88,7 +91,7 @@ public class AmqpRetryOptions implements Cloneable {
      *
      * @return The approach to use for calculating retry delays.
      */
-    public RetryMode getMode() {
+    public AmqpRetryMode getMode() {
         return retryMode;
     }
 

@@ -22,7 +22,7 @@ public class ExponentialAmqpRetryPolicyTest {
         .setDelay(minBackoff)
         .setMaxDelay(maxBackoff)
         .setMaxRetries(retryAttempts)
-        .setMode(RetryMode.EXPONENTIAL);
+        .setMode(AmqpRetryMode.EXPONENTIAL);
 
     /**
      * Verifies that when the service is busy and we retry an exception multiple times, the retry duration gets longer.
@@ -76,7 +76,7 @@ public class ExponentialAmqpRetryPolicyTest {
             .setDelay(minBackoff)
             .setMaxDelay(maxBackoff)
             .setMaxRetries(retryAttempts)
-            .setMode(RetryMode.EXPONENTIAL);
+            .setMode(AmqpRetryMode.EXPONENTIAL);
         final ExponentialAmqpRetryPolicy otherPolicy = new ExponentialAmqpRetryPolicy(otherOptions);
 
         // Assert

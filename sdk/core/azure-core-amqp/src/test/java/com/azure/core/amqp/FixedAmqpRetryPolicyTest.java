@@ -22,7 +22,7 @@ public class FixedAmqpRetryPolicyTest {
         .setDelay(minBackoff)
         .setMaxDelay(maxBackoff)
         .setMaxRetries(retryAttempts)
-        .setMode(RetryMode.FIXED);
+        .setMode(AmqpRetryMode.FIXED);
 
     /**
      * Verifies that when the service is busy and we retry an exception multiple times, the retry duration gets longer.
@@ -82,7 +82,7 @@ public class FixedAmqpRetryPolicyTest {
             .setDelay(minBackoff)
             .setMaxDelay(maxBackoff)
             .setMaxRetries(retryAttempts)
-            .setMode(RetryMode.FIXED);
+            .setMode(AmqpRetryMode.FIXED);
         final FixedAmqpRetryPolicy otherPolicy = new FixedAmqpRetryPolicy(otherOptions);
 
         // Assert

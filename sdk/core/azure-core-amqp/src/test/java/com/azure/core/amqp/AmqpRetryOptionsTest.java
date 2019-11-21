@@ -23,7 +23,7 @@ public class AmqpRetryOptionsTest {
 
         // Assert
         Assertions.assertEquals(maxRetries, options.getMaxRetries());
-        Assertions.assertEquals(RetryMode.EXPONENTIAL, options.getMode());
+        Assertions.assertEquals(AmqpRetryMode.EXPONENTIAL, options.getMode());
         Assertions.assertEquals(defaultTimeout, options.getMaxDelay());
         Assertions.assertEquals(defaultTimeout, options.getTryTimeout());
     }
@@ -38,7 +38,7 @@ public class AmqpRetryOptionsTest {
         final Duration maxDelay = Duration.ofMinutes(10);
         final Duration tryTimeout = Duration.ofMinutes(2);
         final int retries = 10;
-        final RetryMode retryMode = RetryMode.FIXED;
+        final AmqpRetryMode retryMode = AmqpRetryMode.FIXED;
         final AmqpRetryOptions options = new AmqpRetryOptions();
 
         // Act
@@ -66,13 +66,13 @@ public class AmqpRetryOptionsTest {
         final Duration maxDelay = Duration.ofMinutes(10);
         final Duration tryTimeout = Duration.ofMinutes(2);
         final int retries = 10;
-        final RetryMode retryMode = RetryMode.FIXED;
+        final AmqpRetryMode retryMode = AmqpRetryMode.FIXED;
 
         final Duration newDelay = Duration.ofMillis(700);
         final Duration newMaxDelay = Duration.ofSeconds(90);
         final Duration newTryTimeout = Duration.ofMinutes(2);
         final int newRetries = 5;
-        final RetryMode newRetryMode = RetryMode.EXPONENTIAL;
+        final AmqpRetryMode newRetryMode = AmqpRetryMode.EXPONENTIAL;
 
         final AmqpRetryOptions original = new AmqpRetryOptions().setMode(retryMode)
             .setMaxDelay(maxDelay)
@@ -111,14 +111,14 @@ public class AmqpRetryOptionsTest {
     public void isEqual() {
         // Arrange
         final AmqpRetryOptions first = new AmqpRetryOptions()
-            .setMode(RetryMode.FIXED)
+            .setMode(AmqpRetryMode.FIXED)
             .setMaxDelay(Duration.ofMinutes(10))
             .setDelay(Duration.ofMillis(1000))
             .setMaxRetries(10)
             .setTryTimeout(Duration.ofMinutes(2));
 
         final AmqpRetryOptions second = new AmqpRetryOptions()
-            .setMode(RetryMode.FIXED)
+            .setMode(AmqpRetryMode.FIXED)
             .setMaxDelay(Duration.ofMinutes(10))
             .setDelay(Duration.ofMillis(1000))
             .setMaxRetries(10)

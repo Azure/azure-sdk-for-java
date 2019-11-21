@@ -3,12 +3,12 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryMode;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
@@ -85,7 +85,7 @@ public class EventHubConnectionTest {
         final AmqpRetryOptions options = new AmqpRetryOptions()
             .setTryTimeout(timeout)
             .setMaxRetries(2)
-            .setMode(RetryMode.FIXED);
+            .setMode(AmqpRetryMode.FIXED);
 
         final String linkName = "some-link-name";
         final String entityPath = "some-entity-path";
