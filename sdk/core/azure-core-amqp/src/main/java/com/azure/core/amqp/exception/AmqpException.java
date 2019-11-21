@@ -129,9 +129,9 @@ public class AmqpException extends AzureException {
     }
 
     /**
-     * Gets the ErrorCondition for this exception.
+     * Gets the {@link AmqpErrorCondition} for this exception.
      *
-     * @return The ErrorCondition for this exception, or {@code null} if nothing was set.
+     * @return The {@link AmqpErrorCondition} for this exception, or {@code null} if nothing was set.
      */
     public AmqpErrorCondition getErrorCondition() {
         return this.errorCondition;

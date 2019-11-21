@@ -28,7 +28,7 @@ public class RetryOptions {
     }
 
     /**
-     * Creates an instance configured with {@code retryOptions}.
+     * Creates an instance configured with {@code retryOptions}. This is not thread-safe.
      *
      * @param retryOptions Retry options to configure new instance with.
      * @throws NullPointerException if {@code retryOptions} is null.
