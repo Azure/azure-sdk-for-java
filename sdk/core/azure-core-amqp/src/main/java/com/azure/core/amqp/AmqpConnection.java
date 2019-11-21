@@ -73,7 +73,7 @@ public interface AmqpConnection extends AutoCloseable {
     boolean removeSession(String sessionName);
 
     /**
-     * {@inheritDoc}
+     * Closes the AMQP connection.
      */
     @Override
     void close();

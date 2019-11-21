@@ -3,15 +3,24 @@
 
 package com.azure.core.amqp;
 
+import com.azure.core.amqp.exception.AmqpException;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.Closeable;
 import java.time.Duration;
 
 /**
  * An AMQP session representing bidirectional communication that supports multiple {@link AmqpLink AMQP links}.
  */
-public interface AmqpSession extends EndpointStateNotifier, Closeable {
+public interface AmqpSession extends AutoCloseable {
+    /**
+     * Gets the endpoint states for the AMQP session. {@link AmqpException AmqpExceptions} that occur on the link are
+     * reported in the connection state. When the stream terminates, the session is closed.
+     *
+     * @return A stream of endpoint states for the AMQP session.
+     */
+    Flux<AmqpEndpointState> getEndpointStates();
+
     /**
      * Gets the name for this AMQP session.
      *
@@ -55,4 +64,10 @@ public interface AmqpSession extends EndpointStateNotifier, Closeable {
      * @return {@code true} if the link was removed; {@code false} otherwise.
      */
     boolean removeLink(String linkName);
+
+    /**
+     * Closes the AMQP session.
+     */
+    @Override
+    void close();
 }
