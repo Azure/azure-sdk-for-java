@@ -8,6 +8,12 @@ import com.azure.storage.file.datalake.implementation.models.StorageErrorExcepti
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
 
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
+import java.time.temporal.Temporal
+import java.time.temporal.TemporalUnit
+
 class FileSystemAPITest extends APISpec {
 
     def "Create all null"() {
@@ -66,7 +72,7 @@ class FileSystemAPITest extends APISpec {
 
         when:
         fsc.createWithResponse(null, publicAccess, null, null)
-        def access = fsc.getProperties().getPublicAccess()
+        def access = fsc.getProperties().getDataLakePublicAccess()
 
         then:
         access == publicAccess
@@ -95,7 +101,7 @@ class FileSystemAPITest extends APISpec {
 
         then:
         validateBasicHeaders(response.getHeaders())
-        response.getValue().getPublicAccess() == null
+        response.getValue().getDataLakePublicAccess() == null
         !response.getValue().hasImmutabilityPolicy()
         !response.getValue().hasLegalHold()
         response.getValue().getLeaseDuration() == null
@@ -932,6 +938,197 @@ class FileSystemAPITest extends APISpec {
         "hello%20world"                                          | _
         "hello%26world"                                          | _
         "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%3F%23%5B%5D"    | _
+    }
+
+    @Unroll
+    def "Set access policy"() {
+        setup:
+        def response = fsc.setAccessPolicyWithResponse(access, null, null, null, null)
+
+        expect:
+        validateBasicHeaders(response.getHeaders())
+        fsc.getProperties().getDataLakePublicAccess() == access
+
+        where:
+        access                     | _
+        PublicAccessType.BLOB      | _
+        PublicAccessType.CONTAINER | _
+        null                       | _
+    }
+
+    def "Set access policy min access"() {
+        when:
+        fsc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+
+        then:
+        fsc.getProperties().getDataLakePublicAccess() == PublicAccessType.CONTAINER
+    }
+
+    def "Set access policy min ids"() {
+        setup:
+        def identifier = new DataLakeSignedIdentifier()
+            .setId("0000")
+            .setAccessPolicy(new DataLakeAccessPolicy()
+                .setStartsOn(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                    .plusDays(1))
+                .setPermissions("r"))
+
+        def ids = [identifier] as List
+
+        when:
+        fsc.setAccessPolicy(null, ids)
+
+        then:
+        fsc.getAccessPolicy().getIdentifiers().get(0).getId() == "0000"
+    }
+
+    def "Set access policy ids"() {
+        setup:
+        def identifier = new DataLakeSignedIdentifier()
+            .setId("0000")
+            .setAccessPolicy(new DataLakeAccessPolicy()
+                .setStartsOn(getUTCNow())
+                .setExpiresOn(getUTCNow().plusDays(1))
+                .setPermissions("r"))
+        def identifier2 = new DataLakeSignedIdentifier()
+            .setId("0001")
+            .setAccessPolicy(new DataLakeAccessPolicy()
+                .setStartsOn(getUTCNow())
+                .setExpiresOn(getUTCNow().plusDays(2))
+                .setPermissions("w"))
+        def ids = [identifier, identifier2] as List
+
+        when:
+        def response = fsc.setAccessPolicyWithResponse(null, ids, null, null, null)
+        def receivedIdentifiers = fsc.getAccessPolicyWithResponse(null, null, null).getValue().getIdentifiers()
+
+        then:
+        response.getStatusCode() == 200
+        validateBasicHeaders(response.getHeaders())
+        receivedIdentifiers.get(0).getAccessPolicy().getExpiresOn() == identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS)
+        receivedIdentifiers.get(0).getAccessPolicy().getStartsOn() == identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS)
+        receivedIdentifiers.get(0).getAccessPolicy().getPermissions() == identifier.getAccessPolicy().getPermissions()
+        receivedIdentifiers.get(1).getAccessPolicy().getExpiresOn() == identifier2.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS)
+        receivedIdentifiers.get(1).getAccessPolicy().getStartsOn() == identifier2.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS)
+        receivedIdentifiers.get(1).getAccessPolicy().getPermissions() == identifier2.getAccessPolicy().getPermissions()
+    }
+
+    @Unroll
+    def "Set access policy AC"() {
+        setup:
+        leaseID = setupFileSystemLeaseCondition(fsc, leaseID)
+        def cac = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        expect:
+        fsc.setAccessPolicyWithResponse(null, null, cac, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | leaseID
+        null     | null       | null
+        oldDate  | null       | null
+        null     | newDate    | null
+        null     | null       | receivedLeaseID
+    }
+
+    @Unroll
+    def "Set access policy AC fail"() {
+        setup:
+        def cac = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        when:
+        fsc.setAccessPolicyWithResponse(null, null, cac, null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | leaseID
+        newDate  | null       | null
+        null     | oldDate    | null
+        null     | null       | garbageLeaseID
+    }
+
+    @Unroll
+    def "Set access policy AC illegal"() {
+        setup:
+        def mac = new DataLakeRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+
+        when:
+        fsc.setAccessPolicyWithResponse(null, null, mac, null, null)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        match        | noneMatch
+        receivedEtag | null
+        null         | garbageEtag
+    }
+
+    def "Set access policy error"() {
+        setup:
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        when:
+        fsc.setAccessPolicy(null, null)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Get access policy"() {
+        setup:
+        def identifier = new DataLakeSignedIdentifier()
+            .setId("0000")
+            .setAccessPolicy(new DataLakeAccessPolicy()
+                .setStartsOn(getUTCNow())
+                .setExpiresOn(getUTCNow().plusDays(1))
+                .setPermissions("r"))
+        def ids = [identifier] as List
+        fsc.setAccessPolicy(PublicAccessType.BLOB, ids)
+        def response = fsc.getAccessPolicyWithResponse(null, null, null)
+
+        expect:
+        response.getStatusCode() == 200
+        response.getValue().getDataLakeAccessType() == PublicAccessType.BLOB
+        validateBasicHeaders(response.getHeaders())
+        response.getValue().getIdentifiers().get(0).getAccessPolicy().getExpiresOn() == identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS)
+        response.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn() == identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS)
+        response.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions() == identifier.getAccessPolicy().getPermissions()
+    }
+
+    def "Get access policy lease"() {
+        setup:
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
+
+        expect:
+        fsc.getAccessPolicyWithResponse(leaseID, null, null).getStatusCode() == 200
+    }
+
+    def "Get access policy lease fail"() {
+        when:
+        fsc.getAccessPolicyWithResponse(garbageLeaseID, null, null)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Get access policy error"() {
+        setup:
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        when:
+        fsc.getAccessPolicy()
+
+        then:
+        thrown(BlobStorageException)
     }
 
 }
