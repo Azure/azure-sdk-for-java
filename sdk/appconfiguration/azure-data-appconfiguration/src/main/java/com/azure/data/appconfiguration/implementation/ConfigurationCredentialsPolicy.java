@@ -36,7 +36,7 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public ConfigurationCredentialsPolicy(ConfigurationClientCredentials credentials) {
-        Objects.requireNonNull(credentials);
+        Objects.requireNonNull(credentials, "'credential' can not be a null value.");
         this.credentials = credentials;
     }
 
