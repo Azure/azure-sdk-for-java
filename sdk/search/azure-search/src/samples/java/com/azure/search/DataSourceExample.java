@@ -40,9 +40,9 @@ public class DataSourceExample {
             .buildClient();
 
         /*
-        * Store the names of the created data sources so that we can delete them later
-        * without affecting other resources.
-        * */
+         * Store the names of the created data sources so that we can delete them later
+         * without affecting other resources.
+         * */
         Collection<String> names = new HashSet<String>();
 
         names.add(createSqlDataSource(client));
@@ -51,8 +51,8 @@ public class DataSourceExample {
         names.add(createTableStorageDataSource(client));
 
         /*
-        * Get all existing data sources; list should include the ones we just created.
-        * */
+         * Get all existing data sources; list should include the ones we just created.
+         * */
         PagedIterable<DataSource> dataSources = client.listDataSources();
         for (DataSource dataSource: dataSources) {
             if (names.contains(dataSource.getName())) {
@@ -61,8 +61,8 @@ public class DataSourceExample {
         }
 
         /*
-        * Delete the data sources we just created.
-        * */
+         * Delete the data sources we just created.
+         * */
         for (String name: names) {
             deleteDataSource(client, name);
         }
@@ -76,6 +76,19 @@ public class DataSourceExample {
         }
     }
 
+    private static DataSource createSampleDatasource(DataSourceType type,
+                                                     String connectionString,
+                                                     DataContainer container,
+                                                     DataChangeDetectionPolicy dataChangeDetectionPolicy) {
+        return new DataSource()
+            .setName(generateDataSourceName())
+            .setType(type)
+            .setCredentials(new DataSourceCredentials()
+                .setConnectionString(connectionString))
+            .setContainer(container)
+            .setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
+    }
+
     private static String createDataSource(
         SearchServiceClient client,
         DataSourceType type,
@@ -83,22 +96,13 @@ public class DataSourceExample {
         DataContainer container,
         DataChangeDetectionPolicy dataChangeDetectionPolicy) {
 
-        String name = generateDataSourceName();
+        DataSource dataSource = createSampleDatasource(type, connectionString, container, dataChangeDetectionPolicy);
         try {
-            DataSource dataSource = new DataSource()
-                .setName(name)
-                .setType(type)
-                .setCredentials(new DataSourceCredentials()
-                    .setConnectionString(connectionString))
-                .setContainer(container)
-                .setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
-
-            DataSource createdDataSource = client.createOrUpdateDataSource(dataSource);
-            return createdDataSource.getName();
+            client.createOrUpdateDataSource(dataSource);
         } catch (Exception ex) {
             System.err.println(ex.toString());
         } finally {
-            return name;
+            return dataSource.getName();
         }
     }
 
@@ -145,7 +149,7 @@ public class DataSourceExample {
             SQL_CONNECTION_STRING,
             new DataContainer()
                 .setName("testtable"),  // Replace your table or view name here
-             null); // Or new SqlIntegratedChangeTrackingPolicy() if your database has change tracking enabled
+            null); // Or new SqlIntegratedChangeTrackingPolicy() if your database has change tracking enabled
     }
 
     private static String generateDataSourceName() {
