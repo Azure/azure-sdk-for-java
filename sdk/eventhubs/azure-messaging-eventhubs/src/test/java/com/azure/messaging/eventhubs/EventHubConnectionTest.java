@@ -34,7 +34,7 @@ import static org.mockito.Mockito.*;
 public class EventHubConnectionTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(2);
     private static final String HOST_NAME = "Some-host-name";
-    private final RetryOptions retryOptions = new RetryOptions()
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setTryTimeout(Duration.ofSeconds(5))
         .setMaxRetries(0);
 
@@ -74,7 +74,7 @@ public class EventHubConnectionTest {
         // Arrange
         final Duration timeout = Duration.ofSeconds(4);
         final AmqpSendLink sendLink = mock(AmqpSendLink.class);
-        final RetryOptions options = new RetryOptions()
+        final AmqpRetryOptions options = new AmqpRetryOptions()
             .setTryTimeout(timeout)
             .setMaxRetries(2)
             .setMode(RetryMode.FIXED);
@@ -84,7 +84,7 @@ public class EventHubConnectionTest {
         when(connection.createSession(entityPath)).thenReturn(Mono.just(session));
         when(session.createProducer(eq(linkName), eq(entityPath), eq(timeout),
             argThat(matcher -> options.getMaxRetries() == matcher.getMaxRetries()
-                && matcher instanceof FixedRetryPolicy)))
+                && matcher instanceof FixedAmqpRetryPolicy)))
             .thenReturn(Mono.just(sendLink));
 
         // Act & Assert
@@ -107,7 +107,7 @@ public class EventHubConnectionTest {
         when(session.createConsumer(
             eq(linkName), eq(entityPath), eq(retryOptions.getTryTimeout()),
             argThat(matcher -> retryOptions.getMaxRetries() == matcher.getMaxRetries()
-                && matcher instanceof ExponentialRetryPolicy),
+                && matcher instanceof ExponentialAmqpRetryPolicy),
             eq(position), eq(options)))
             .thenReturn(Mono.just(receiveLink));
 

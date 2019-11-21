@@ -98,7 +98,7 @@ public class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
+            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         eventHubConnection = new EventHubConnection(Mono.just(connection), connectionOptions);
         when(connection.createSession(any())).thenReturn(Mono.just(session));

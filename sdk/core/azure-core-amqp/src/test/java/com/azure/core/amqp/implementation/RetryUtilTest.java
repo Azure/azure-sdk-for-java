@@ -18,38 +18,38 @@ public class RetryUtilTest {
     @Test
     public void getCorrectModeFixed() {
         // Act
-        final RetryOptions retryOptions = new RetryOptions()
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
             .setMode(RetryMode.FIXED);
-        final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         // Assert
         Assertions.assertNotNull(retryPolicy);
-        Assertions.assertEquals(FixedRetryPolicy.class, retryPolicy.getClass());
+        Assertions.assertEquals(FixedAmqpRetryPolicy.class, retryPolicy.getClass());
     }
 
     @Test
     public void getCorrectModeExponential() {
         // Act
-        final RetryOptions retryOptions = new RetryOptions()
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
             .setMode(RetryMode.EXPONENTIAL);
-        final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         // Assert
         Assertions.assertNotNull(retryPolicy);
-        Assertions.assertEquals(ExponentialRetryPolicy.class, retryPolicy.getClass());
+        Assertions.assertEquals(ExponentialAmqpRetryPolicy.class, retryPolicy.getClass());
     }
 
     @Test
     public void withRetryFlux() {
         // Arrange
-        final RetryOptions options = new RetryOptions()
+        final AmqpRetryOptions options = new AmqpRetryOptions()
             .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2);
         final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
         final Duration timeout = Duration.ofMillis(500);
 
         final AtomicInteger resubscribe = new AtomicInteger();
-        final RetryPolicy retryPolicy = new FixedRetryPolicy(options);
+        final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(options);
         final Flux<AmqpTransportType> neverFlux = Flux.<AmqpTransportType>never()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
@@ -66,14 +66,14 @@ public class RetryUtilTest {
     @Test
     public void withRetryMono() {
         // Arrange
-        final RetryOptions options = new RetryOptions()
+        final AmqpRetryOptions options = new AmqpRetryOptions()
             .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2);
         final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
         final Duration timeout = Duration.ofMillis(500);
 
         final AtomicInteger resubscribe = new AtomicInteger();
-        final RetryPolicy retryPolicy = new FixedRetryPolicy(options);
+        final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(options);
         final Mono<AmqpTransportType> neverFlux = Mono.<AmqpTransportType>never()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 

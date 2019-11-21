@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.*;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.credential.TokenCredential;
@@ -63,7 +63,7 @@ public class EventHubReactorConnectionTest {
 
         final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-name",
-            tokenCredential, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new RetryOptions(),
+            tokenCredential, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
             proxy, scheduler);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);

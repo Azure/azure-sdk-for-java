@@ -12,12 +12,12 @@ import java.time.Duration;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 
-public class RetryPolicyTest {
+public class AmqpRetryPolicyTest {
     private final ErrorContext errorContext = new ErrorContext("test-namespace");
     private final int maxRetries = 10;
     private final Duration maxDelay = Duration.ofSeconds(120);
     private final Duration delay = Duration.ofSeconds(20);
-    private final RetryOptions options = new RetryOptions()
+    private final AmqpRetryOptions options = new AmqpRetryOptions()
         .setMaxRetries(maxRetries)
         .setMaxDelay(maxDelay)
         .setDelay(delay);
@@ -31,7 +31,7 @@ public class RetryPolicyTest {
         final Exception exception = new AmqpException(true, "error message", errorContext);
         final Duration expected = Duration.ofSeconds(40);
         final int count = 2;
-        final RetryPolicy policy = new MockRetryPolicy(options, expected);
+        final AmqpRetryPolicy policy = new MockAmqpRetryPolicy(options, expected);
 
         // Act
         final Duration actual = policy.calculateRetryDelay(exception, count);
@@ -50,7 +50,7 @@ public class RetryPolicyTest {
         final Exception exception = new TimeoutException("test-message-timeout");
         final Duration expected = Duration.ofSeconds(40);
         final int count = 2;
-        final RetryPolicy policy = new MockRetryPolicy(options, expected);
+        final AmqpRetryPolicy policy = new MockAmqpRetryPolicy(options, expected);
 
         // Act
         final Duration actual = policy.calculateRetryDelay(exception, count);
@@ -68,7 +68,7 @@ public class RetryPolicyTest {
         final Exception invalidException = new RuntimeException("invalid exception");
         final Duration expected = Duration.ofSeconds(40);
         final int count = 2;
-        final RetryPolicy policy = new MockRetryPolicy(options, expected);
+        final AmqpRetryPolicy policy = new MockAmqpRetryPolicy(options, expected);
 
         // Act
         final Duration actual = policy.calculateRetryDelay(invalidException, count);
@@ -86,7 +86,7 @@ public class RetryPolicyTest {
         final Exception invalidException = new AmqpException(false, "Some test exception", errorContext);
         final Duration expected = Duration.ofSeconds(40);
         final int count = 2;
-        final RetryPolicy policy = new MockRetryPolicy(options, expected);
+        final AmqpRetryPolicy policy = new MockAmqpRetryPolicy(options, expected);
 
         // Act
         final Duration actual = policy.calculateRetryDelay(invalidException, count);
@@ -96,7 +96,7 @@ public class RetryPolicyTest {
     }
 
     /**
-     * Verifies that we return {@link RetryOptions#getMaxDelay()} if the returned delay is larger than the maximum.
+     * Verifies that we return {@link AmqpRetryOptions#getMaxDelay()} if the returned delay is larger than the maximum.
      */
     @Test
     public void returnsMaxDelayIfDelayLarger() {
@@ -104,7 +104,7 @@ public class RetryPolicyTest {
         final Exception exception = new AmqpException(true, "error message", errorContext);
         final Duration returnedDelay = maxDelay.plus(Duration.ofMillis(50));
         final int count = 2;
-        final RetryPolicy policy = new MockRetryPolicy(options, returnedDelay);
+        final AmqpRetryPolicy policy = new MockAmqpRetryPolicy(options, returnedDelay);
 
         // Act
         final Duration actual = policy.calculateRetryDelay(exception, count);
@@ -114,7 +114,7 @@ public class RetryPolicyTest {
         Assertions.assertEquals(maxRetries, policy.getMaxRetries());
     }
 
-    private class MockRetryPolicy extends RetryPolicy {
+    private class MockAmqpRetryPolicy extends AmqpRetryPolicy {
         private final Duration expectedDuration;
 
         /**
@@ -122,7 +122,7 @@ public class RetryPolicyTest {
          *
          * @param retryOptions The options to set on this retry policy.
          */
-        MockRetryPolicy(RetryOptions retryOptions, Duration expectedDuration) {
+        MockAmqpRetryPolicy(AmqpRetryOptions retryOptions, Duration expectedDuration) {
             super(retryOptions);
             this.expectedDuration = expectedDuration;
         }
@@ -133,8 +133,8 @@ public class RetryPolicyTest {
         }
 
         @Override
-        public RetryPolicy clone() {
-            return new MockRetryPolicy(getRetryOptions(), expectedDuration);
+        public AmqpRetryPolicy clone() {
+            return new MockAmqpRetryPolicy(getRetryOptions(), expectedDuration);
         }
     }
 }

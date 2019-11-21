@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
@@ -58,7 +58,7 @@ public class EventHubProducerClientTest {
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
     private EventHubProducerAsyncClient asyncProducer;
-    private RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(30));
+    private AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(30));
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConnection linkProvider;
     @Mock

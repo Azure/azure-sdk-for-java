@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -65,7 +65,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      * {@inheritDoc}
      */
     @Override
-    public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout, RetryPolicy retry,
+    public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
                                                 EventPosition eventPosition, ReceiveOptions options) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");

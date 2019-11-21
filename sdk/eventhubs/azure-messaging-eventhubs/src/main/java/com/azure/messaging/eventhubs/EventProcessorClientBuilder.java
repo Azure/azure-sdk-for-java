@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
@@ -202,7 +202,7 @@ public class EventProcessorClientBuilder {
      * @param retryOptions The retry policy to use.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
-    public EventProcessorClientBuilder retry(RetryOptions retryOptions) {
+    public EventProcessorClientBuilder retry(AmqpRetryOptions retryOptions) {
         eventHubClientBuilder.retry(retryOptions);
         return this;
     }

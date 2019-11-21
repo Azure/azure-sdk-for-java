@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
@@ -142,7 +142,7 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
      * {@inheritDoc}
      */
     @Override
-    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, RetryPolicy retry) {
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
         final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
 
         return RetryUtil.withRetry(
@@ -188,7 +188,7 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
      * {@inheritDoc}
      */
     @Override
-    public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, RetryPolicy retry) {
+    public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
         return createConsumer(linkName, entityPath, timeout, retry, null, null, null)
             .cast(AmqpLink.class);
     }
@@ -219,7 +219,7 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
      * @return A new instance of an {@link AmqpReceiveLink} with the correct properties set.
      */
     protected Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
-                                                   RetryPolicy retry, Map<Symbol, UnknownDescribedType> sourceFilters,
+                                                   AmqpRetryPolicy retry, Map<Symbol, UnknownDescribedType> sourceFilters,
                                                    Map<Symbol, Object> receiverProperties,
                                                    Symbol[] receiverDesiredCapabilities) {
         final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);

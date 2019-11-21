@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
@@ -45,7 +45,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
     private final ConnectionOptions connectionOptions;
     private final ReactorProvider reactorProvider;
     private final Disposable.Composite subscriptions;
-    private final RetryPolicy retryPolicy;
+    private final AmqpRetryPolicy retryPolicy;
 
     private ReactorExecutor executor;
     //TODO (conniey): handle failures and recreating the Reactor. Resubscribing the handlers, etc.

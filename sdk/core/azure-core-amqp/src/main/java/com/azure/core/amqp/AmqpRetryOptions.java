@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * A set of options that can be specified to influence how retry attempts are made.
  */
-public class RetryOptions implements Cloneable {
+public class AmqpRetryOptions implements Cloneable {
     private int maxRetries;
     private Duration delay;
     private Duration maxDelay;
@@ -19,7 +19,7 @@ public class RetryOptions implements Cloneable {
     /**
      * Creates an instance with the default retry options set.
      */
-    public RetryOptions() {
+    public AmqpRetryOptions() {
         maxRetries = 3;
         delay = Duration.ofMillis(800);
         maxDelay = Duration.ofMinutes(1);
@@ -31,9 +31,9 @@ public class RetryOptions implements Cloneable {
      * Sets the approach to use for calculating retry delays.
      *
      * @param retryMode The retry approach to use for calculating delays.
-     * @return The updated {@link RetryOptions} object.
+     * @return The updated {@link AmqpRetryOptions} object.
      */
-    public RetryOptions setMode(RetryMode retryMode) {
+    public AmqpRetryOptions setMode(RetryMode retryMode) {
         this.retryMode = retryMode;
         return this;
     }
@@ -42,9 +42,9 @@ public class RetryOptions implements Cloneable {
      * Sets the maximum number of retry attempts before considering the associated operation to have failed.
      *
      * @param numberOfRetries The maximum number of retry attempts.
-     * @return The updated {@link RetryOptions} object.
+     * @return The updated {@link AmqpRetryOptions} object.
      */
-    public RetryOptions setMaxRetries(int numberOfRetries) {
+    public AmqpRetryOptions setMaxRetries(int numberOfRetries) {
         this.maxRetries = numberOfRetries;
         return this;
     }
@@ -54,9 +54,9 @@ public class RetryOptions implements Cloneable {
      * backoff-approach.
      *
      * @param delay The delay between retry attempts.
-     * @return The updated {@link RetryOptions} object.
+     * @return The updated {@link AmqpRetryOptions} object.
      */
-    public RetryOptions setDelay(Duration delay) {
+    public AmqpRetryOptions setDelay(Duration delay) {
         this.delay = delay;
         return this;
     }
@@ -65,9 +65,9 @@ public class RetryOptions implements Cloneable {
      * Sets the maximum permissible delay between retry attempts.
      *
      * @param maximumDelay The maximum permissible delay between retry attempts.
-     * @return The updated {@link RetryOptions} object.
+     * @return The updated {@link AmqpRetryOptions} object.
      */
-    public RetryOptions setMaxDelay(Duration maximumDelay) {
+    public AmqpRetryOptions setMaxDelay(Duration maximumDelay) {
         this.maxDelay = maximumDelay;
         return this;
     }
@@ -76,9 +76,9 @@ public class RetryOptions implements Cloneable {
      * Sets the maximum duration to wait for completion of a single attempt, whether the initial attempt or a retry.
      *
      * @param tryTimeout The maximum duration to wait for completion.
-     * @return The updated {@link RetryOptions} object.
+     * @return The updated {@link AmqpRetryOptions} object.
      */
-    public RetryOptions setTryTimeout(Duration tryTimeout) {
+    public AmqpRetryOptions setTryTimeout(Duration tryTimeout) {
         this.tryTimeout = tryTimeout;
         return this;
     }
@@ -132,16 +132,16 @@ public class RetryOptions implements Cloneable {
     /**
      * Creates a new copy of the current instance, cloning its attributes into a new instance.
      *
-     * @return A new copy of {@link RetryOptions}.
+     * @return A new copy of {@link AmqpRetryOptions}.
      */
     @Override
-    public RetryOptions clone() {
+    public AmqpRetryOptions clone() {
 
-        RetryOptions clone;
+        AmqpRetryOptions clone;
         try {
-            clone = (RetryOptions) super.clone();
+            clone = (AmqpRetryOptions) super.clone();
         } catch (CloneNotSupportedException e) {
-            clone = new RetryOptions();
+            clone = new AmqpRetryOptions();
         }
 
         return clone.setDelay(delay)
@@ -160,11 +160,11 @@ public class RetryOptions implements Cloneable {
             return true;
         }
 
-        if (!(obj instanceof RetryOptions)) {
+        if (!(obj instanceof AmqpRetryOptions)) {
             return false;
         }
 
-        final RetryOptions other = (RetryOptions) obj;
+        final AmqpRetryOptions other = (AmqpRetryOptions) obj;
 
         return this.getMaxRetries() == other.getMaxRetries()
             && this.getMode() == other.getMode()

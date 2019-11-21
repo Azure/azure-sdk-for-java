@@ -15,25 +15,25 @@ import static com.azure.core.amqp.exception.ErrorCondition.SERVER_BUSY_ERROR;
 /**
  * An abstract representation of a policy to govern retrying of messaging operations.
  */
-public abstract class RetryPolicy implements Cloneable {
+public abstract class AmqpRetryPolicy implements Cloneable {
     static final long NANOS_PER_SECOND = 1000_000_000L;
 
     private static final double JITTER_FACTOR = 0.08;
     // Base sleep wait time.
     private static final Duration SERVER_BUSY_WAIT_TIME = Duration.ofSeconds(4);
 
-    private final RetryOptions retryOptions;
+    private final AmqpRetryOptions retryOptions;
     private final Duration baseJitter;
 
     /**
-     * Creates an instance with the given retry options. If {@link RetryOptions#getMaxDelay()}, {@link
-     * RetryOptions#getDelay()}, or {@link RetryOptions#getMaxRetries()} is equal to {@link Duration#ZERO} or zero,
+     * Creates an instance with the given retry options. If {@link AmqpRetryOptions#getMaxDelay()}, {@link
+     * AmqpRetryOptions#getDelay()}, or {@link AmqpRetryOptions#getMaxRetries()} is equal to {@link Duration#ZERO} or zero,
      * requests failing with a retriable exception will not be retried.
      *
      * @param retryOptions The options to set on this retry policy.
      * @throws NullPointerException if {@code retryOptions} is {@code null}.
      */
-    protected RetryPolicy(RetryOptions retryOptions) {
+    protected AmqpRetryPolicy(AmqpRetryOptions retryOptions) {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
 
         this.retryOptions = retryOptions;
@@ -48,7 +48,7 @@ public abstract class RetryPolicy implements Cloneable {
      *
      * @return The set of options used to configure this retry policy.
      */
-    protected RetryOptions getRetryOptions() {
+    protected AmqpRetryOptions getRetryOptions() {
         return retryOptions;
     }
 
@@ -119,8 +119,8 @@ public abstract class RetryPolicy implements Cloneable {
      * @return A new clone of the retry policy.
      */
     @Override
-    public RetryPolicy clone() throws CloneNotSupportedException {
-        return (RetryPolicy) super.clone();
+    public AmqpRetryPolicy clone() throws CloneNotSupportedException {
+        return (AmqpRetryPolicy) super.clone();
     }
 
     @Override
@@ -134,11 +134,11 @@ public abstract class RetryPolicy implements Cloneable {
             return true;
         }
 
-        if (!(obj instanceof RetryPolicy)) {
+        if (!(obj instanceof AmqpRetryPolicy)) {
             return false;
         }
 
-        final RetryPolicy other = (RetryPolicy) obj;
+        final AmqpRetryPolicy other = (AmqpRetryPolicy) obj;
         return retryOptions.equals(other.retryOptions);
     }
 

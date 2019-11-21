@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -41,7 +41,7 @@ import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
  */
 public abstract class IntegrationTestBase extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(30);
-    protected static final RetryOptions RETRY_OPTIONS = new RetryOptions().setTryTimeout(TIMEOUT);
+    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";

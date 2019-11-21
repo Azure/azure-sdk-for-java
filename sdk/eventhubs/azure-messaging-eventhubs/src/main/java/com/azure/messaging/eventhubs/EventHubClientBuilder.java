@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.*;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
@@ -97,13 +97,13 @@ public class EventHubClientBuilder {
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
-    private static final RetryOptions DEFAULT_RETRY = new RetryOptions()
+    private static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions()
         .setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
 
     private TokenCredential credentials;
     private Configuration configuration;
     private ProxyOptions proxyOptions;
-    private RetryOptions retryOptions;
+    private AmqpRetryOptions retryOptions;
     private Scheduler scheduler;
     private AmqpTransportType transport;
     private String fullyQualifiedNamespace;
@@ -302,7 +302,7 @@ public class EventHubClientBuilder {
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder retry(RetryOptions retryOptions) {
+    public EventHubClientBuilder retry(AmqpRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }

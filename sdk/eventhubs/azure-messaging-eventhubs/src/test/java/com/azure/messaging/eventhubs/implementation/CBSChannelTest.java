@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.*;
@@ -55,7 +55,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionString.getEndpoint().getHost(),
             connectionString.getEntityPath(), tokenCredential, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
             RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.elastic());
-        final RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofMinutes(5));
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(5));
 
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
@@ -101,7 +101,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 
         final CBSNode node = new CBSChannel(requestResponseChannel, tokenProvider, SHARED_ACCESS_SIGNATURE,
-            new RetryOptions().setTryTimeout(Duration.ofMinutes(5)));
+            new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(5)));
 
         // Act & Assert
         StepVerifier.create(node.authorize(tokenAudience, tokenAudience))
