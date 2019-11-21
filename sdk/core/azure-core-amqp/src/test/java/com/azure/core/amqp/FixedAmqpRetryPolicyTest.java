@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-public class FixedRetryPolicyTest {
+public class FixedAmqpRetryPolicyTest {
     private final AmqpErrorContext errorContext = new AmqpErrorContext("test-namespace");
     private final AmqpException exception = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
     private final Duration minBackoff = Duration.ofSeconds(15);

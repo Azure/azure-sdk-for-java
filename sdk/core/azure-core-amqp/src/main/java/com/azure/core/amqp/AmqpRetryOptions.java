@@ -11,6 +11,7 @@ import java.util.Objects;
 /**
  * A set of options that can be specified to influence how retry attempts are made.
  */
+@Fluent
 public class AmqpRetryOptions {
     private int maxRetries;
     private Duration delay;
@@ -35,7 +36,7 @@ public class AmqpRetryOptions {
      * @param retryOptions Retry options to configure new instance with.
      * @throws NullPointerException if {@code retryOptions} is null.
      */
-    public RetryOptions(RetryOptions retryOptions) {
+    public AmqpRetryOptions(AmqpRetryOptions retryOptions) {
         this.maxDelay = retryOptions.getMaxDelay();
         this.delay = retryOptions.getDelay();
         this.maxRetries = retryOptions.getMaxRetries();
