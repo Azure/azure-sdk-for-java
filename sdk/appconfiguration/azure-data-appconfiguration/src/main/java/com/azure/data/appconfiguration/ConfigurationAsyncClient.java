@@ -37,7 +37,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
  * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, deleting, set read-only
- * and clear read-only ConfigurationSettings, and listing settings or revision of a setting based on a
+ * status ConfigurationSettings, and listing settings or revision of a setting based on a
  * {@link SettingSelector filter}.
  *
  * <p><strong>Instantiating an asynchronous Configuration Client</strong></p>
@@ -82,7 +82,6 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the configuration setting to add.
      * @param label The label of the configuration setting to add. If {@code null} no label will be used.
-     * the request.
      * @param value The value associated with this configuration setting key.
      * @return The {@link ConfigurationSetting} that was created, or {@code null} if a key collision occurs or the key
      * is an invalid value (which will also throw HttpResponseException described below).
@@ -280,9 +279,8 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve. If {@code null} no label will be used.
-     * @param acceptDateTime Datetime to access a past state of the configuration setting. If {@code null} then the current state
-     * of the configuration setting will be returned.
-     * {@code acceptDateTime} is not desired in the request.
+     * @param acceptDateTime Datetime to access a past state of the configuration setting. If {@code null}
+     * then the current state of the configuration setting will be returned.
      * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
      * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -311,8 +309,8 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean}
      *
      * @param setting The setting to retrieve.
-     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if the
-     * {@code acceptDateTime} is not desired in the request.
+     * @param acceptDateTime Datetime to access a past state of the configuration setting. If {@code null}
+     * then the current state of the configuration setting will be returned.
      * @param ifChanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
      * If-None-Match header.
      * @return A REST response containing the {@link ConfigurationSetting} stored in the service, or {@code null} if
@@ -441,10 +439,8 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Sets the read-only status for the {@link ConfigurationSetting}. If {@code isReadOnly} is {@code true} the
-     * configuration setting will be read-only, {@code false} will clear the read-only status.and optional
-     * {@code label} combination. If the {@code isReadOnly} is true or null, the setting will be set to read-only.
-     * If false, the setting will not be read-only.
+     * Sets the read-only status for the {@link ConfigurationSetting} that matches the {@code key}, the optional
+     * {@code label}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -458,8 +454,8 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of configuration setting to set to be read-only.
      * @param label The label of configuration setting to read-only. If {@code null} no label will be used.
-     * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
-     * If it is true, set the setting to read-only. If false, the setting won't set to read-only.
+     * @param isReadOnly Flag used to set the read-only status of the configuration. {@code true} will put the
+     * configuration into a read-only state, {@code false} will clear the state.
      * @return The {@link ConfigurationSetting} that is read-only, or an empty Mono if a key collision occurs or the
      * key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -477,10 +473,7 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Set the {@link ConfigurationSetting} to read-only or not read-only with a matching
-     * {@link ConfigurationSetting#getKey() key}, and optional {@link ConfigurationSetting#getLabel() label}
-     * combination. If the {@code isReadOnly} is true or null, the setting will be set to read-only.
-     * If false, the setting will not be read-only.
+     * Sets the read-only status for the {@link ConfigurationSetting}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -493,8 +486,8 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-clearReadOnly}
      *
      * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
-     * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
-     * If it is true, set the setting to read-only. If false, the setting won't set to read-only.
+     * @param isReadOnly Flag used to set the read-only status of the configuration. {@code true} will put the
+     * configuration into a read-only state, {@code false} will clear the state.
      * @return A REST response containing the read-only or not read-only ConfigurationSetting if {@code isReadOnly}
      * is true or null, or false respectively. Or return {@code null} if the setting didn't exist.
      * {@code null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value.
