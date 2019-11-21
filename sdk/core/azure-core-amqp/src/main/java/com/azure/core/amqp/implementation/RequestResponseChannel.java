@@ -77,8 +77,8 @@ public class RequestResponseChannel implements Closeable {
      * @param provider The reactor provider that the request will be sent with.
      */
     public RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
-                                  String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
-                                  ReactorProvider provider, MessageSerializer messageSerializer) {
+            String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
+            ReactorProvider provider, MessageSerializer messageSerializer) {
         this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);

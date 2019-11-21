@@ -27,8 +27,8 @@ public abstract class AmqpRetryPolicy implements Cloneable {
 
     /**
      * Creates an instance with the given retry options. If {@link AmqpRetryOptions#getMaxDelay()}, {@link
-     * AmqpRetryOptions#getDelay()}, or {@link AmqpRetryOptions#getMaxRetries()} is equal to {@link Duration#ZERO} or zero,
-     * requests failing with a retriable exception will not be retried.
+     * AmqpRetryOptions#getDelay()}, or {@link AmqpRetryOptions#getMaxRetries()} is equal to {@link Duration#ZERO} or
+     * zero, requests failing with a retriable exception will not be retried.
      *
      * @param retryOptions The options to set on this retry policy.
      * @throws NullPointerException if {@code retryOptions} is {@code null}.

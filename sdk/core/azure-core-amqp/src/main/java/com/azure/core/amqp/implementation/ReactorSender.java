@@ -85,8 +85,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private volatile int maxMessageSize;
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
-                  TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, AmqpRetryPolicy retry,
-                  int maxMessageSize) {
+            TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, AmqpRetryPolicy retry,
+            int maxMessageSize) {
         super(new ClientLogger(ReactorSender.class));
         this.entityPath = entityPath;
         this.sender = sender;

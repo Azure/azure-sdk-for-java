@@ -42,8 +42,8 @@ public class ReactorHandlerProvider {
      * @param transportType Transport type used for the connection.
      * @return A new {@link ConnectionHandler}.
      */
-    public ConnectionHandler createConnectionHandler(String connectionId, String hostname, AmqpTransportType transportType,
-                                                     ProxyOptions proxyOptions) {
+    public ConnectionHandler createConnectionHandler(String connectionId, String hostname,
+            AmqpTransportType transportType, ProxyOptions proxyOptions) {
         switch (transportType) {
             case AMQP:
                 return new ConnectionHandler(connectionId, hostname);

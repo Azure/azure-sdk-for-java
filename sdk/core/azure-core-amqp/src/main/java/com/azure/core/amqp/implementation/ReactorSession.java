@@ -5,9 +5,9 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpLink;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
@@ -219,9 +219,8 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
      * @return A new instance of an {@link AmqpReceiveLink} with the correct properties set.
      */
     protected Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
-                                                   AmqpRetryPolicy retry, Map<Symbol, UnknownDescribedType> sourceFilters,
-                                                   Map<Symbol, Object> receiverProperties,
-                                                   Symbol[] receiverDesiredCapabilities) {
+            AmqpRetryPolicy retry, Map<Symbol, UnknownDescribedType> sourceFilters,
+            Map<Symbol, Object> receiverProperties, Symbol[] receiverDesiredCapabilities) {
         final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
 
         return RetryUtil.withRetry(

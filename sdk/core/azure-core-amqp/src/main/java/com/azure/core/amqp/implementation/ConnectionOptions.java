@@ -3,9 +3,9 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
 import reactor.core.scheduler.Scheduler;
@@ -27,8 +27,8 @@ public class ConnectionOptions {
     private final CBSAuthorizationType authorizationType;
 
     public ConnectionOptions(String fullyQualifiedNamespace, String entityPath, TokenCredential tokenCredential,
-                             CBSAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
-                             ProxyOptions proxyOptions, Scheduler scheduler) {
+            CBSAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
+            ProxyOptions proxyOptions, Scheduler scheduler) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' is required.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' is required.");
