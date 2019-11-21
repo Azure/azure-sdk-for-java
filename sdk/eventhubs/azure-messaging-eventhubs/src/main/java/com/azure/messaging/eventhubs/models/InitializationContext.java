@@ -7,10 +7,10 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 /**
- * The initialization context that is supplied to {@link EventProcessorClientBuilder#initializePartition(Function)
+ * The initialization context that is supplied to {@link EventProcessorClientBuilder#initializePartition(Consumer)
  * initializePartition} before the {@link EventProcessorClient} instance begins processing events from a partition.
  */
 public class InitializationContext {

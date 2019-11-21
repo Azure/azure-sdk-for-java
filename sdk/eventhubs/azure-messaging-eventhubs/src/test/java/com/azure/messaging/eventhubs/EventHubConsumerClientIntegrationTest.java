@@ -238,7 +238,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
     public void getEventHubProperties() {
         final EventHubConsumerClient consumer = createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildConsumer();
+            .buildConsumerClient();
 
         // Act & Assert
         try {
@@ -258,7 +258,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
     public void getPartitionIds() {
         final EventHubConsumerClient consumer = createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildConsumer();
+            .buildConsumerClient();
 
         // Act & Assert
         try {
@@ -278,7 +278,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
     public void getPartitionProperties() {
         final EventHubConsumerClient consumer = createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildConsumer();
+            .buildConsumerClient();
 
         // Act & Assert
         try {
