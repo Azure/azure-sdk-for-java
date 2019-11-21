@@ -28,7 +28,7 @@ import java.util.stream.Stream;
  * @see PagedResponse
  * @see IterableStream
  */
-public class PagedIterableBase<T, P extends PagedResponse<T>> extends PagedIterableCore<T, P> {
+public class PagedIterableBase<T, P extends PagedResponse<T>> extends PagedIterableCore<Void, T, P> {
     /**
      * Creates instance given {@link PagedFluxBase}.
      * @param pagedFluxBase to use as iterable

@@ -12,19 +12,20 @@ import java.util.stream.Stream;
  * This class provides utility to iterate over pages that extend {@link Page} using {@link Stream} and
  * {@link Iterable} interfaces.
  *
+ * @param <S> The type of state.
  * @param <T> The type of value contained in this {@link IterableStream}.
  * @param <P> The page extending from {@link Page}
  * @see Page
  * @see IterableStream
  */
-public class PagedIterableCore<T, P extends Page<T>> extends IterableStream<T> {
-    private final PagedFluxCore<T, P> pagedFluxCore;
+public class PagedIterableCore<S, T, P extends Page<T>> extends IterableStream<T> {
+    private final PagedFluxCore<S, T, P> pagedFluxCore;
 
     /**
      * Creates instance given {@link PagedIterableCore}.
      * @param pagedFlux to use as iterable
      */
-    public PagedIterableCore(PagedFluxCore<T, P> pagedFlux) {
+    public PagedIterableCore(PagedFluxCore<S, T, P> pagedFlux) {
         super(pagedFlux);
         this.pagedFluxCore = pagedFlux;
     }

@@ -9,8 +9,6 @@ import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
@@ -18,22 +16,19 @@ import java.util.function.BiFunction;
  * This class is a Flux that can operate on any type that extends {@link Page} and
  * also provides the ability to operate on individual items.
  *
+ * @param <S> The type of state
  * @param <T> The type of items in a {@link Page}
  * @param <P> The {@link Page} holding items of type {@code T}.
  *
  * @see Page
  * @see Flux
  */
-public class PagedFluxCore<T, P extends Page<T>> extends Flux<T> {
-    private final BiFunction<Map<String, Object>, String, Flux<P>> pageRetriever;
-    private final Map<String, Object> initialState;
+public abstract class PagedFluxCore<S, T, P extends Page<T>> extends Flux<T> {
+    private final BiFunction<S, String, Flux<P>> pageRetriever;
 
     /**
      * Creates an instance of {@link PagedFluxCore}.
      *
-     * @param state the initial state, a copy of this state will be created per subscription,
-     *              it will be shared across multiple {@code pageRetriever} calls during the
-     *              life time of the subscription.
      * @param pageRetriever Function that returns Flux of pages. The pageRetriever can get
      *                      called multiple times. The continuation-token from the last Page
      *                      emitted by the pageRetriever returned Flux will be provided to
@@ -41,10 +36,7 @@ public class PagedFluxCore<T, P extends Page<T>> extends Flux<T> {
      *                      the pageRetriever returned Flux has null continuation-token then
      *                      final completion signal will be send to the downstream subscriber.
      */
-    public PagedFluxCore(Map<String, Object> state,
-                         BiFunction<Map<String, Object>, String, Flux<P>> pageRetriever) {
-        Objects.requireNonNull(state, "'state' cannot be null.");
-        this.initialState = new HashMap<>(state);
+    public PagedFluxCore(BiFunction<S, String, Flux<P>> pageRetriever) {
         this.pageRetriever = Objects.requireNonNull(pageRetriever,
             "'pageRetriever' function cannot be null.");
     }
@@ -67,10 +59,9 @@ public class PagedFluxCore<T, P extends Page<T>> extends Flux<T> {
      */
     public Flux<P> byPage(String continuationToken) {
         final String [] lastPageContinuationToken = { continuationToken };
-        final Map<String, Object> state = new HashMap<>(this.initialState);
         return Mono.just(true)
             .repeat()
-            .concatMap(b -> pageRetriever.apply(state, lastPageContinuationToken[0])
+            .concatMap(b -> pageRetriever.apply(getState(), lastPageContinuationToken[0])
                 .doOnNext(page -> lastPageContinuationToken[0] = page.getContinuationToken()))
             .takeUntil(page -> page.getContinuationToken() == null);
     }
@@ -88,4 +79,13 @@ public class PagedFluxCore<T, P extends Page<T>> extends Flux<T> {
             .flatMap(page -> Flux.fromIterable(page.getItems()))
             .subscribe(coreSubscriber);
     }
+
+    /**
+     * Get a state for a subscription to this flux. For each subscription, this method will
+     * be called for the state instance to be associated with it, such a state instance will
+     * be shared across multiple pageRetriever calls during the life time of that subscription.
+     *
+     * @return get state object
+     */
+    protected abstract S getState();
 }
