@@ -1,0 +1,11 @@
+# Docker
+**/Dockerfile
+.dockerignore
+
+# Build Outputs
+**/target
+
+# Misc
+**/.idea
+**/*.iml
+**/*.ps1
