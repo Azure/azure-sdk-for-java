@@ -34,7 +34,7 @@ public class ReceiveOptions {
      * intended to be the only reader of events for the requested partition and an associated consumer group. To do so,
      * this consumer will attempt to assert ownership over the partition; in the case where more than one exclusive
      * consumer attempts to assert ownership for the same partition/consumer group pair, the one having a larger {@link
-     * EventHubConsumerOptions#getOwnerLevel()} value will "win".
+     * ReceiveOptions#getOwnerLevel()} value will "win".
      *
      * <p>
      * When an exclusive consumer is used, those consumers which are not exclusive or which have a lower priority will

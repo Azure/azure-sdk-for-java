@@ -9,9 +9,9 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-recoveryservices.backup/v2016_06_01</module>
-    <module>azure-mgmt-recoveryservices.backup/v2016_08_10</module>
-    <module>azure-mgmt-recoveryservices.backup/v2016_12_01</module>
-    <module>azure-mgmt-recoveryservices.backup/v2017_07_01</module>
+    <module>mgmt-v2016_06_01</module>
+    <module>mgmt-v2016_08_10</module>
+    <module>mgmt-v2016_12_01</module>
+    <module>mgmt-v2017_07_01</module>
   </modules>
 </project>

@@ -82,7 +82,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         final EventPosition position = EventPosition.fromSequenceNumber(lastEnqueuedSequenceNumber, false);
         Disposable subscription = consumer.receiveFromPartition(lastEnqueuedSequencePartitionId, position).subscribe(partitionEvent -> {
             EventData event = partitionEvent.getData();
-            String contents = UTF_8.decode(event.getBody()).toString();
+            String contents = new String(event.getBody(), UTF_8);
             // ex. The last enqueued sequence number is 99. If isInclusive is true, the received event starting from the same
             // event with sequence number of '99'. Otherwise, the event with sequence number of '100' will be the first
             // event received.

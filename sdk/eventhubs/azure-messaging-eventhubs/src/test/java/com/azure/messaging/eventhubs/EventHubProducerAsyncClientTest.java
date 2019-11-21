@@ -265,9 +265,12 @@ public class EventHubProducerAsyncClientTest {
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
-        final Flux<EventData> testData = Flux.just(
-            new EventData(TEST_CONTENTS.getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE)),
-            new EventData(TEST_CONTENTS.getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE)));
+
+        final EventData eventData = new EventData(TEST_CONTENTS.getBytes(UTF_8))
+            .addContext(SPAN_CONTEXT_KEY, Context.NONE);
+        final EventData eventData2 =  new EventData(TEST_CONTENTS.getBytes(UTF_8))
+            .addContext(SPAN_CONTEXT_KEY, Context.NONE);
+        final Flux<EventData> testData = Flux.just(eventData, eventData2);
 
         final String partitionId = "my-partition-id";
         final SendOptions sendOptions = new SendOptions()

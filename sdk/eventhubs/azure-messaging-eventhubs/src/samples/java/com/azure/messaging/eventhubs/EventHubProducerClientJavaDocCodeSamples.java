@@ -77,12 +77,16 @@ public class EventHubProducerClientJavaDocCodeSamples {
         final EventHubProducerClient producer = builder.buildProducer();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.send#eventDataBatch
-        final List<EventData> telemetryEvents = Arrays.asList(
-            new EventData("92".getBytes(UTF_8)).addProperty("telemetry", "latency"),
-            new EventData("98".getBytes(UTF_8)).addProperty("telemetry", "cpu-temperature"),
-            new EventData("120".getBytes(UTF_8)).addProperty("telemetry", "fps")
-        );
+        final EventData firstEvent = new EventData("92".getBytes(UTF_8));
+        firstEvent.getProperties().put("telemetry", "latency");
 
+        final EventData secondEvent = new EventData("98".getBytes(UTF_8));
+        secondEvent.getProperties().put("telemetry", "cpu-temperature");
+
+        final EventData thirdEvent = new EventData("120".getBytes(UTF_8));
+        thirdEvent.getProperties().put("telemetry", "fps");
+
+        final List<EventData> telemetryEvents = Arrays.asList(firstEvent, secondEvent, thirdEvent);
         final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionKey("telemetry")
             .setMaximumSizeInBytes(256);

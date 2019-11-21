@@ -302,7 +302,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
             connection.createReceiveLink(linkName, entityPath, startingPosition, receiveOptions)
                 .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
 
-        return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer,
+        return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, prefetchCount,
             receiveOptions.getTrackLastEnqueuedEventProperties());
     }

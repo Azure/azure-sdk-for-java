@@ -199,7 +199,8 @@ public class EventHubProducerClientTest {
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             linkProvider, retryOptions, tracerProvider, messageSerializer, false);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
-        final EventData eventData = new EventData("hello-world".getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE));
+        final EventData eventData = new EventData("hello-world".getBytes(UTF_8))
+            .addContext(SPAN_CONTEXT_KEY, Context.NONE);
 
         when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
