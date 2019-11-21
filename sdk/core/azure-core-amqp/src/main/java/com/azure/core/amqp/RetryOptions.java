@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * A set of options that can be specified to influence how retry attempts are made.
  */
-public class RetryOptions implements Cloneable {
+public class RetryOptions {
     private int maxRetries;
     private Duration delay;
     private Duration maxDelay;
@@ -25,6 +25,20 @@ public class RetryOptions implements Cloneable {
         maxDelay = Duration.ofMinutes(1);
         tryTimeout = Duration.ofMinutes(1);
         retryMode = RetryMode.EXPONENTIAL;
+    }
+
+    /**
+     * Creates an instance configured with {@code retryOptions}.
+     *
+     * @param retryOptions Retry options to configure new instance with.
+     * @throws NullPointerException if {@code retryOptions} is null.
+     */
+    public RetryOptions(RetryOptions retryOptions) {
+        this.maxDelay = retryOptions.getMaxDelay();
+        this.delay = retryOptions.getDelay();
+        this.maxRetries = retryOptions.getMaxRetries();
+        this.retryMode = retryOptions.getMode();
+        this.tryTimeout = retryOptions.getTryTimeout();
     }
 
     /**
@@ -127,28 +141,6 @@ public class RetryOptions implements Cloneable {
      */
     public Duration getTryTimeout() {
         return tryTimeout;
-    }
-
-    /**
-     * Creates a new copy of the current instance, cloning its attributes into a new instance.
-     *
-     * @return A new copy of {@link RetryOptions}.
-     */
-    @Override
-    public RetryOptions clone() {
-
-        RetryOptions clone;
-        try {
-            clone = (RetryOptions) super.clone();
-        } catch (CloneNotSupportedException e) {
-            clone = new RetryOptions();
-        }
-
-        return clone.setDelay(delay)
-            .setMaxDelay(maxDelay)
-            .setMaxRetries(maxRetries)
-            .setTryTimeout(tryTimeout)
-            .setMode(retryMode);
     }
 
     /**
