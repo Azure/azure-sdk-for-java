@@ -271,7 +271,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         lockUnlockRunner((expected) -> {
             // read-only setting
             client.addConfigurationSettingWithResponse(expected, Context.NONE);
-            client.setReadOnly(expected.getKey(), expected.getLabel(), null);
+            client.setReadOnly(expected.getKey(), expected.getLabel(), true);
 
             // unsuccessfully delete
             assertRestException(() ->
@@ -288,7 +288,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         lockUnlockRunner((expected) -> {
             // read-only setting
             client.addConfigurationSettingWithResponse(expected, Context.NONE);
-            client.setReadOnlyWithResponse(expected, null, Context.NONE).getValue();
+            client.setReadOnlyWithResponse(expected, true, Context.NONE).getValue();
 
             // unsuccessfully delete
             assertRestException(() ->
@@ -312,7 +312,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         lockUnlockRunner((expected) -> {
             // lock setting
             client.addConfigurationSettingWithResponse(expected, Context.NONE);
-            client.setReadOnlyWithResponse(expected, null, Context.NONE);
+            client.setReadOnlyWithResponse(expected, true, Context.NONE);
 
             // unsuccessfully delete
             assertRestException(() ->
@@ -330,7 +330,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             // lock setting
             client.addConfigurationSettingWithResponse(expected, Context.NONE);
-            client.setReadOnlyWithResponse(expected, null, Context.NONE);
+            client.setReadOnlyWithResponse(expected, true, Context.NONE);
 
             // unsuccessfully deleted
             assertRestException(() ->

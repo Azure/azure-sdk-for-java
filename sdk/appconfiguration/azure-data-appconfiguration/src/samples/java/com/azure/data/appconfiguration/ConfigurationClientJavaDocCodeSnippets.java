@@ -204,14 +204,14 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#setReadOnly(String, String, Boolean)}
+     * Generates code sample for using {@link ConfigurationClient#setReadOnly(String, String, boolean)}
      */
     public void lockSettingsCodeSnippet() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-Boolean
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean
         ConfigurationSetting result = configurationClient.setReadOnly("prodDBConnection", "westUS", true);
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-Boolean
+        // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean
 
         /**
          * Generates code sample for using {@link ConfigurationClient#setReadOnlyWithResponse(ConfigurationSetting, Boolean, Context)}
@@ -225,27 +225,27 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#setReadOnly(String, String, Boolean)}
+     * Generates code sample for using {@link ConfigurationClient#setReadOnly(String, String, boolean)}
      */
     public void unlockSettingsCodeSnippet() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-Boolean-clearReadOnly
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean-clearReadOnly
         ConfigurationSetting result = configurationClient.setReadOnly("prodDBConnection", "westUS", false);
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-Boolean-clearReadOnly
+        // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean-clearReadOnly
 
         /**
          * Generates code sample for using
          * {@link ConfigurationClient#setReadOnlyWithResponse(ConfigurationSetting, Boolean, Context)}
          */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context-ClearReadOnly
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-Context-ClearReadOnly
         Response<ConfigurationSetting> responseSetting = configurationClient
             .setConfigurationSettingWithResponse(
                 new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false,
                 new Context(key2, value2));
         System.out.printf("Key: %s, Value: %s", responseSetting.getValue().getKey(),
             responseSetting.getValue().getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context-ClearReadOnly
+        // END: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-Context-ClearReadOnly
     }
 
     /**

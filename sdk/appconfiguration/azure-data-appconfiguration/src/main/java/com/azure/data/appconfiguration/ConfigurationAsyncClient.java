@@ -441,19 +441,20 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Sets the read-only status for the {@link ConfigurationSetting}. If {@code isReadOnly} is {@code true} the configuration setting will be read-only, {@code false} will clear the read-only status.
-     * and optional {@code label} combination. If the {@code isReadOnly} is true or null, the setting will be set to
-     * read-only. If false, the setting will not be read-only.
+     * Sets the read-only status for the {@link ConfigurationSetting}. If {@code isReadOnly} is {@code true} the
+     * configuration setting will be read-only, {@code false} will clear the read-only status.and optional
+     * {@code label} combination. If the {@code isReadOnly} is true or null, the setting will be set to read-only.
+     * If false, the setting will not be read-only.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-Boolean}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-boolean}
      *
      * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-Boolean-clearReadOnly}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-boolean-clearReadOnly}
      *
      * @param key The key of configuration setting to set to be read-only.
      * @param label The label of configuration setting to read-only. If {@code null} no label will be used.
@@ -485,11 +486,11 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-boolean}
      *
      * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-clearReadOnly}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-clearReadOnly}
      *
      * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
      * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
@@ -516,12 +517,13 @@ public final class ConfigurationAsyncClient {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        if (isReadOnly == true) {
+        if (isReadOnly) {
             return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
                 null, context)
                 .doOnSubscribe(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
                 .doOnSuccess(response -> logger.info("Set read only ConfigurationSetting - {}", response.getValue()))
-                .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting, error));
+                .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting,
+                    error));
         } else {
             return service.unlockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(),
                 null, null, context)

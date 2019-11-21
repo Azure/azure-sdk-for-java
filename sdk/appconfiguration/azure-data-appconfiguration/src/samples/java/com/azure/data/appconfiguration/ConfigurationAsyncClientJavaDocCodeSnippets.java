@@ -157,21 +157,21 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#setReadOnly(String, String, Boolean)} set to read-only setting
+     * Code snippets for {@link ConfigurationAsyncClient#setReadOnly(String, String, boolean)} set to read-only setting
      */
     public void lockSettingsCodeSnippet() {
         ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-Boolean
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-boolean
         client.setReadOnly("prodDBConnection", "westUS", true)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
-        // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-Boolean
+        // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-boolean
 
         /**
          * Code snippets for {@link ConfigurationAsyncClient#setReadOnlyWithResponse(ConfigurationSetting, Boolean)}
          */
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-boolean
         client.setReadOnlyWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), true)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
@@ -179,31 +179,31 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Key: %s, Label: %s, Value: %s",
                     result.getKey(), result.getLabel(), result.getValue());
             });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean
+        // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-boolean
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#setReadOnly(String, String, Boolean)} set to not read-only setting
+     * Code snippets for {@link ConfigurationAsyncClient#setReadOnly(String, String, boolean)} set to not read-only setting
      */
     public void unlockSettingsCodeSnippet() {
         ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-Boolean-clearReadOnly
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-boolean-clearReadOnly
         client.setReadOnly("prodDBConnection", "westUS", false)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue()));
-        // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-Boolean-clearReadOnly
+        // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-boolean-clearReadOnly
 
         /**
          * Code snippets for {@link ConfigurationAsyncClient#setReadOnlyWithResponse(ConfigurationSetting, Boolean)}
          */
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-clearReadOnly
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-clearReadOnly
         client.setReadOnlyWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 ConfigurationSetting result = response.getValue();
                 System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
             });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-clearReadOnly
+        // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-clearReadOnly
     }
 
 
