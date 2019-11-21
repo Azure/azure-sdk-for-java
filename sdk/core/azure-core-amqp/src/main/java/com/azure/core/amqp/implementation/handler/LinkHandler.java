@@ -4,9 +4,9 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.ClientConstants;
+import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
