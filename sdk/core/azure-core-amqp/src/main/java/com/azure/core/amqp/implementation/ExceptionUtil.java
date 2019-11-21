@@ -28,7 +28,8 @@ public final class ExceptionUtil {
      * @param errorContext The context that this error occurred in.
      * @return An exception that maps to the {@code errorCondition} provided.
      * @throws IllegalArgumentException when 'errorCondition' is {@code null} or empty, cannot be translated into an
-     *     {@link AmqpErrorCondition}, or cannot be determined whether the {@link AmqpErrorCondition} is transient or not.
+     *     {@link AmqpErrorCondition}, or cannot be determined whether the {@link AmqpErrorCondition} is transient or
+     *     not.
      * @see AmqpErrorCondition
      */
     public static Exception toException(String errorCondition, String description, AmqpErrorContext errorContext) {

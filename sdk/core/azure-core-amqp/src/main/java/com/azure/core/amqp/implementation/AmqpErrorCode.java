@@ -18,7 +18,8 @@ public final class AmqpErrorCode {
     public static final Symbol NOT_ALLOWED = Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition());
     public static final Symbol INTERNAL_ERROR = Symbol.getSymbol(AmqpErrorCondition.INTERNAL_ERROR.getErrorCondition());
     public static final Symbol ILLEGAL_STATE = Symbol.getSymbol(AmqpErrorCondition.ILLEGAL_STATE.getErrorCondition());
-    public static final Symbol NOT_IMPLEMENTED = Symbol.getSymbol(AmqpErrorCondition.NOT_IMPLEMENTED.getErrorCondition());
+    public static final Symbol NOT_IMPLEMENTED = Symbol.getSymbol(
+        AmqpErrorCondition.NOT_IMPLEMENTED.getErrorCondition());
 
     // link errors
     public static final Symbol LINK_STOLEN = Symbol.getSymbol(AmqpErrorCondition.LINK_STOLEN.getErrorCondition());

@@ -48,29 +48,6 @@ public class FixedRetryPolicyTest {
     }
 
     /**
-     * Verifies that we can clone the retry instance and it behaves the same as its original.
-     */
-    @Test
-    public void retryCloneBehavesSame() {
-        // Arrange
-        final FixedRetryPolicy retry = new FixedRetryPolicy(options);
-        final FixedRetryPolicy clone = (FixedRetryPolicy) retry.clone();
-
-        final Duration retryInterval = retry.calculateRetryDelay(exception, 1);
-        final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, 4);
-
-        // Assert
-        Assertions.assertNotNull(retryInterval);
-        Assertions.assertNotNull(cloneRetryInterval);
-
-        // Assert that the cloned retry interval is within our jitter threshold.
-        final Duration minValue = retryInterval.minus(tolerance);
-        final Duration maxValue = retryInterval.plus(tolerance);
-        Assertions.assertTrue(minValue.compareTo(cloneRetryInterval) < 0
-            && maxValue.compareTo(cloneRetryInterval) > 0);
-    }
-
-    /**
      * Verify that two instances created with the same set of RetryOptions are equal.
      */
     @Test
@@ -88,31 +65,5 @@ public class FixedRetryPolicyTest {
         // Assert
         Assertions.assertEquals(policy, otherPolicy);
         Assertions.assertEquals(policy.hashCode(), otherPolicy.hashCode());
-    }
-
-    @Test
-    public void retryClone() {
-        // Arrange
-        final FixedRetryPolicy retry = new FixedRetryPolicy(options);
-        final FixedRetryPolicy clone = (FixedRetryPolicy) retry.clone();
-        final int retryCount = 1;
-
-        // Act
-        final Duration retryInterval = retry.calculateRetryDelay(exception, retryCount);
-        final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, retryCount);
-
-        // Assert
-        Assertions.assertNotSame(retry, clone);
-        Assertions.assertEquals(retry, clone);
-        Assertions.assertEquals(retry.hashCode(), clone.hashCode());
-
-        Assertions.assertNotNull(retryInterval);
-        Assertions.assertNotNull(cloneRetryInterval);
-
-        // Assert that the cloned interval is within our jitter threshold.
-        final Duration minValue = retryInterval.minus(tolerance);
-        final Duration maxValue = retryInterval.plus(tolerance);
-        Assertions.assertTrue(minValue.compareTo(cloneRetryInterval) < 0
-            && maxValue.compareTo(cloneRetryInterval) > 0);
     }
 }

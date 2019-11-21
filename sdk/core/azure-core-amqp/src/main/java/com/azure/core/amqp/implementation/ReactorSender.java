@@ -144,8 +144,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                 String.format(Locale.US,
                     "Error sending. Size of the payload exceeded maximum message size: %s kb",
                     maxMessageSize / 1024);
-            final Throwable error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage,
-                exception, handler.getErrorContext(sender));
+            final Throwable error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                errorMessage, exception, handler.getErrorContext(sender));
 
             return Mono.error(error);
         }
@@ -191,8 +191,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                     String.format(Locale.US,
                         "Size of the payload exceeded maximum message size: %s kb",
                         maxMessageSizeTemp / 1024);
-                final AmqpException error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
-                    exception, handler.getErrorContext(sender));
+                final AmqpException error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                    message, exception, handler.getErrorContext(sender));
 
                 return Mono.error(error);
             }
