@@ -136,7 +136,7 @@ public final class EventDataBatch {
             Context eventSpanContext = tracerProvider.startSpan(eventData.getContext(), ProcessKind.MESSAGE);
             Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
             if (eventDiagnosticIdOptional.isPresent()) {
-                eventData.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
+                eventData.getProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
                 tracerProvider.endSpan(eventSpanContext, Signal.complete());
                 eventData.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
             }

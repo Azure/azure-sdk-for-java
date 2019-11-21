@@ -250,8 +250,8 @@ public class EventHubProducerAsyncClient implements Closeable {
                         ? batchMaxSize
                         : maximumLinkSize;
 
-                    return Mono.just(new EventDataBatch(batchSize, clone.getPartitionId(), clone.getPartitionKey(),
-                        link::getErrorContext, tracerProvider));
+                    return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext,
+                        tracerProvider));
                 }));
     }
 
@@ -446,9 +446,11 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
-        final SendOptions clone = options.clone();
-        if (!CoreUtils.isNullOrEmpty(clone.getPartitionKey())
-                && !CoreUtils.isNullOrEmpty(clone.getPartitionId())) {
+        final String partitionKey = options.getPartitionKey();
+        final String partitionId = options.getPartitionId();
+
+        if (!CoreUtils.isNullOrEmpty(partitionKey)
+                && !CoreUtils.isNullOrEmpty(partitionId)) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "SendOptions.getPartitionKey() and SendOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",

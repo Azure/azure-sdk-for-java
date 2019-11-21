@@ -44,6 +44,7 @@ import java.util.List;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -419,7 +420,8 @@ public class EventHubProducerAsyncClientTest {
 
         verify(tracer1, times(1))
             .start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(1)).end(eq("success"), isNull(), any());    }
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
+    }
 
     /**
      * Verifies we can create an EventDataBatch with partition key and link size.
