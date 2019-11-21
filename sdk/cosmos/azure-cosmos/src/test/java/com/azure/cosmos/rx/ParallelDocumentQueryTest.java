@@ -275,8 +275,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         String query = "Select value c.id from c";
 
-        Flux<FeedResponse<String>> queryObservable = createdCollection.queryItems(new SqlQuerySpec(query),
-            options, String.class);
+        Flux<FeedResponse<String>> queryObservable = createdCollection.queryItems(query, options, String.class);
 
         List<String> fetchedResults = new ArrayList<>();
         queryObservable.map(stringFeedResponse -> fetchedResults.addAll(stringFeedResponse.getResults())).blockLast();
