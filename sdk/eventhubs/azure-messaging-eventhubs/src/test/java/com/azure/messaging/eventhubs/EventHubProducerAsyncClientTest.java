@@ -7,8 +7,10 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -257,10 +259,10 @@ public class EventHubProducerAsyncClientTest {
     }
 
     /**
-     * Verifies addLink method invoked when sending a single message on retry (span context already present on event).
+     * Verifies addLink method is not invoked and message/event is not stamped with context on retry (span context already present on event).
      */
     @Test
-    public void sendMessageAddLink() {
+    public void sendMessageRetrySpanTest() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
@@ -301,7 +303,7 @@ public class EventHubProducerAsyncClientTest {
         verify(tracer1, times(1))
             .start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, never()).start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(2)).addLink(any());
+        verify(tracer1, never()).addLink(any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
@@ -331,7 +333,7 @@ public class EventHubProducerAsyncClientTest {
         // Act & Assert
         StepVerifier.create(producer.send(testData))
             .verifyErrorMatches(error -> error instanceof AmqpException
-                && ((AmqpException) error).getErrorCondition() == ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
+                && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
 
         verify(link, times(0)).send(any(Message.class));
     }

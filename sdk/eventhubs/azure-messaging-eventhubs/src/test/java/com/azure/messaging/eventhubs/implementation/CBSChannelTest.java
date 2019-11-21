@@ -7,8 +7,10 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CBSChannel;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -118,7 +120,7 @@ public class CBSChannelTest extends IntegrationTestBase {
                 Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
-                Assertions.assertEquals(ErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
+                Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
                 Assertions.assertFalse(exception.isTransient());
                 Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })

@@ -1,13 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.amqp.exception;
+package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.AmqpResponseCode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ExceptionUtilTest {
-    private final ErrorContext context = new ErrorContext("test-namespace");
+    private final AmqpErrorContext context = new AmqpErrorContext("test-namespace");
     private final String message = "an-error-message";
 
     /**
@@ -16,7 +20,7 @@ public class ExceptionUtilTest {
     @Test
     public void createsCorrectException() {
         // Arrange
-        ErrorCondition condition = ErrorCondition.ARGUMENT_OUT_OF_RANGE_ERROR;
+        AmqpErrorCondition condition = AmqpErrorCondition.ARGUMENT_OUT_OF_RANGE_ERROR;
 
         // Act
         Exception exception = ExceptionUtil.toException(condition.getErrorCondition(), message, context);
@@ -39,7 +43,7 @@ public class ExceptionUtilTest {
     public void createsNotFoundException() {
         // Arrange
         AmqpResponseCode notFound = AmqpResponseCode.NOT_FOUND;
-        ErrorCondition condition = ErrorCondition.NOT_FOUND;
+        AmqpErrorCondition condition = AmqpErrorCondition.NOT_FOUND;
         String entityName = "some-name";
         String message = "The messaging entity " + entityName + " could not be found";
 
@@ -65,7 +69,7 @@ public class ExceptionUtilTest {
     public void createsNotFoundExceptionNotMatches() {
         // Arrange
         AmqpResponseCode notFound = AmqpResponseCode.NOT_FOUND;
-        ErrorCondition condition = ErrorCondition.NOT_FOUND;
+        AmqpErrorCondition condition = AmqpErrorCondition.NOT_FOUND;
         String message = "An entity was not found.";
 
         // Act
@@ -89,7 +93,7 @@ public class ExceptionUtilTest {
     public void createsFromStatusCode() {
         // Arrange
         AmqpResponseCode responseCode = AmqpResponseCode.FORBIDDEN;
-        ErrorCondition actualCondition = ErrorCondition.RESOURCE_LIMIT_EXCEEDED;
+        AmqpErrorCondition actualCondition = AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED;
 
         // Act
         Exception exception = ExceptionUtil.amqpResponseCodeToException(responseCode.getValue(), message, context);

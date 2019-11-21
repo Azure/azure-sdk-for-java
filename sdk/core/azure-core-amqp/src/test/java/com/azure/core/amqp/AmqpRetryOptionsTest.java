@@ -60,7 +60,7 @@ public class AmqpRetryOptionsTest {
      * Verifies that we can clone the RetryOptions object, and its fields change independent of the original.
      */
     @Test
-    public void canClone() {
+    public void copyConstructor() {
         // Arrange
         final Duration delay = Duration.ofMillis(1000);
         final Duration maxDelay = Duration.ofMinutes(10);
@@ -81,7 +81,7 @@ public class AmqpRetryOptionsTest {
             .setTryTimeout(tryTimeout);
 
         // Act
-        final AmqpRetryOptions clone = original.clone();
+        final AmqpRetryOptions clone = new AmqpRetryOptions(original);
         Assertions.assertNotNull(clone);
         Assertions.assertEquals(original, clone);
 

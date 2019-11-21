@@ -4,8 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.util.logging.ClientLogger;
@@ -90,7 +90,7 @@ public final class EventDataBatch {
         try {
             size = getSize(eventData, events.isEmpty());
         } catch (BufferOverflowException exception) {
-            throw logger.logExceptionAsWarning(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+            throw logger.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                 String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
                     maxMessageSize / 1024),
                 contextProvider.getErrorContext()));

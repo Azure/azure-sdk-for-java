@@ -15,7 +15,7 @@ import java.util.Objects;
  * @see <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions">Azure Messaging
  *     Exceptions</a>
  */
-public enum ErrorCondition {
+public enum AmqpErrorCondition {
     /**
      * A peer attempted to work with a remote entity that does not exist.
      */
@@ -104,16 +104,16 @@ public enum ErrorCondition {
      */
     PROTON_IO("proton:io");
 
-    private static final Map<String, ErrorCondition> ERROR_CONSTANT_MAP = new HashMap<>();
+    private static final Map<String, AmqpErrorCondition> ERROR_CONSTANT_MAP = new HashMap<>();
     private final String errorCondition;
 
     static {
-        for (ErrorCondition error : ErrorCondition.values()) {
+        for (AmqpErrorCondition error : AmqpErrorCondition.values()) {
             ERROR_CONSTANT_MAP.put(error.getErrorCondition(), error);
         }
     }
 
-    ErrorCondition(String errorCondition) {
+    AmqpErrorCondition(String errorCondition) {
         this.errorCondition = errorCondition;
     }
 
@@ -133,7 +133,7 @@ public enum ErrorCondition {
      * @return the parsed ErrorCondition object, or null if unable to parse.
      * @throws NullPointerException if {@code errorCondition} is {@code null}.
      */
-    public static ErrorCondition fromString(String errorCondition) {
+    public static AmqpErrorCondition fromString(String errorCondition) {
         Objects.requireNonNull(errorCondition);
 
         return ERROR_CONSTANT_MAP.get(errorCondition);

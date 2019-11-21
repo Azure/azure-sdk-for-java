@@ -5,11 +5,12 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -86,7 +87,7 @@ public class EventHubProducerClientTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
-        when(sendLink.getErrorContext()).thenReturn(new ErrorContext("test-namespace"));
+        when(sendLink.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
@@ -180,10 +181,10 @@ public class EventHubProducerClientTest {
     }
 
     /**
-     * Verifies start and end span invoked when linking a single message on retry.
+     * Verifies addLink method is not invoked and message/event is not stamped with context on retry (span context already present on event).
      */
     @Test
-    public void sendMessageAddLink() {
+    public void sendMessageRetrySpanTest() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
@@ -215,7 +216,7 @@ public class EventHubProducerClientTest {
         //Assert
         verify(tracer1, times(1)).start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, never()).start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(1)).addLink(any());
+        verify(tracer1, never()).addLink(any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
@@ -399,7 +400,7 @@ public class EventHubProducerClientTest {
         try {
             batch.tryAdd(event);
         } catch (AmqpException e) {
-            Assertions.assertEquals(ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
+            Assertions.assertEquals(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
         }
     }
 }

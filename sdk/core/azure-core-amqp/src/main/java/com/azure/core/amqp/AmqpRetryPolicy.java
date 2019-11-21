@@ -10,12 +10,12 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 
-import static com.azure.core.amqp.exception.ErrorCondition.SERVER_BUSY_ERROR;
+import static com.azure.core.amqp.exception.AmqpErrorCondition.SERVER_BUSY_ERROR;
 
 /**
  * An abstract representation of a policy to govern retrying of messaging operations.
  */
-public abstract class AmqpRetryPolicy implements Cloneable {
+public abstract class AmqpRetryPolicy {
     static final long NANOS_PER_SECOND = 1000_000_000L;
 
     private static final double JITTER_FACTOR = 0.08;
@@ -112,16 +112,6 @@ public abstract class AmqpRetryPolicy implements Cloneable {
      */
     protected abstract Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
         ThreadLocalRandom random);
-
-    /**
-     * Creates a clone of the retry policy.
-     *
-     * @return A new clone of the retry policy.
-     */
-    @Override
-    public AmqpRetryPolicy clone() throws CloneNotSupportedException {
-        return (AmqpRetryPolicy) super.clone();
-    }
 
     @Override
     public int hashCode() {

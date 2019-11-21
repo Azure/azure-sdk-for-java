@@ -11,8 +11,7 @@ import java.util.Objects;
 /**
  * A set of options that can be specified to influence how retry attempts are made.
  */
-@Fluent
-public class AmqpRetryOptions implements Cloneable {
+public class AmqpRetryOptions {
     private int maxRetries;
     private Duration delay;
     private Duration maxDelay;
@@ -28,6 +27,20 @@ public class AmqpRetryOptions implements Cloneable {
         maxDelay = Duration.ofMinutes(1);
         tryTimeout = Duration.ofMinutes(1);
         retryMode = AmqpRetryMode.EXPONENTIAL;
+    }
+
+    /**
+     * Creates an instance configured with {@code retryOptions}. This is not thread-safe.
+     *
+     * @param retryOptions Retry options to configure new instance with.
+     * @throws NullPointerException if {@code retryOptions} is null.
+     */
+    public RetryOptions(RetryOptions retryOptions) {
+        this.maxDelay = retryOptions.getMaxDelay();
+        this.delay = retryOptions.getDelay();
+        this.maxRetries = retryOptions.getMaxRetries();
+        this.retryMode = retryOptions.getMode();
+        this.tryTimeout = retryOptions.getTryTimeout();
     }
 
     /**
@@ -130,28 +143,6 @@ public class AmqpRetryOptions implements Cloneable {
      */
     public Duration getTryTimeout() {
         return tryTimeout;
-    }
-
-    /**
-     * Creates a new copy of the current instance, cloning its attributes into a new instance.
-     *
-     * @return A new copy of {@link AmqpRetryOptions}.
-     */
-    @Override
-    public AmqpRetryOptions clone() {
-
-        AmqpRetryOptions clone;
-        try {
-            clone = (AmqpRetryOptions) super.clone();
-        } catch (CloneNotSupportedException e) {
-            clone = new AmqpRetryOptions();
-        }
-
-        return clone.setDelay(delay)
-            .setMaxDelay(maxDelay)
-            .setMaxRetries(maxRetries)
-            .setTryTimeout(tryTimeout)
-            .setMode(retryMode);
     }
 
     /**

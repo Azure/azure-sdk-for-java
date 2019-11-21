@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ErrorContextTest {
+public class AmqpErrorContextTest {
     /**
      * Verifies properties set correctly.
      */
@@ -18,7 +18,7 @@ public class ErrorContextTest {
         String namespace = "an-namespace-test";
 
         // Act
-        ErrorContext context = new ErrorContext(namespace);
+        AmqpErrorContext context = new AmqpErrorContext(namespace);
 
         // Assert
         Assertions.assertEquals(namespace, context.getNamespace());
@@ -31,7 +31,7 @@ public class ErrorContextTest {
     public void constructorEmptyString() {
         // Act
         assertThrows(IllegalArgumentException.class, () -> {
-            ErrorContext context = new ErrorContext("");
+            AmqpErrorContext context = new AmqpErrorContext("");
         });
     }
 
@@ -42,7 +42,7 @@ public class ErrorContextTest {
     public void constructorNull() {
         // Act
         assertThrows(IllegalArgumentException.class, () -> {
-            ErrorContext context = new ErrorContext(null);
+            AmqpErrorContext context = new AmqpErrorContext(null);
         });
     }
 }

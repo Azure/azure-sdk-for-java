@@ -18,7 +18,7 @@ import java.util.Locale;
  * @see SessionErrorContext
  * @see LinkErrorContext
  */
-public class ErrorContext implements Serializable {
+public class AmqpErrorContext implements Serializable {
     static final String MESSAGE_PARAMETER_DELIMITER = ", ";
 
     private static final long serialVersionUID = -2819764407122954922L;
@@ -31,7 +31,7 @@ public class ErrorContext implements Serializable {
      * @param namespace The service namespace of the error.
      * @throws IllegalArgumentException when {@code namespace} is {@code null} or empty.
      */
-    public ErrorContext(String namespace) {
+    public AmqpErrorContext(String namespace) {
         if (CoreUtils.isNullOrEmpty(namespace)) {
             throw new IllegalArgumentException("'namespace' cannot be null or empty");
         }

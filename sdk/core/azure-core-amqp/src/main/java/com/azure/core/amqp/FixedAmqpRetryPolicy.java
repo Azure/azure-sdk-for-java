@@ -58,15 +58,4 @@ public final class FixedAmqpRetryPolicy extends AmqpRetryPolicy {
         return obj instanceof FixedAmqpRetryPolicy
             && super.equals(obj);
     }
-
-    /**
-     * Creates a clone of this instance.
-     *
-     * @return A clone of the {@link FixedAmqpRetryPolicy} instance.
-     */
-    @Override
-    public AmqpRetryPolicy clone() {
-        final AmqpRetryOptions cloned = getRetryOptions().clone();
-        return new FixedAmqpRetryPolicy(cloned);
-    }
 }

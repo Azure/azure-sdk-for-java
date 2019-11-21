@@ -66,17 +66,6 @@ public final class ExponentialAmqpRetryPolicy extends AmqpRetryPolicy {
             && super.equals(obj);
     }
 
-    /**
-     * Creates a clone of this instance.
-     *
-     * @return A clone of the {@link ExponentialAmqpRetryPolicy} instance.
-     */
-    @Override
-    public AmqpRetryPolicy clone() {
-        final AmqpRetryOptions cloned = getRetryOptions().clone();
-        return new ExponentialAmqpRetryPolicy(cloned);
-    }
-
     private double computeRetryFactor() {
         final AmqpRetryOptions options = getRetryOptions();
         final Duration maxBackoff = options.getMaxDelay();
