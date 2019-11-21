@@ -4,7 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
@@ -28,10 +28,10 @@ public class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
     private final TokenCredential credential;
     private final Mono<RequestResponseChannel> cbsChannelMono;
     private final CBSAuthorizationType authorizationType;
-    private final RetryOptions retryOptions;
+    private final AmqpRetryOptions retryOptions;
 
     public CBSChannel(Mono<RequestResponseChannel> responseChannelMono, TokenCredential tokenCredential,
-               CBSAuthorizationType authorizationType, RetryOptions retryOptions) {
+               CBSAuthorizationType authorizationType, AmqpRetryOptions retryOptions) {
         super(new ClientLogger(CBSChannel.class));
 
         this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' cannot be null.");

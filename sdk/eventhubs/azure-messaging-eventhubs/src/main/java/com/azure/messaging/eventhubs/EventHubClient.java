@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
@@ -22,9 +22,9 @@ import java.util.Objects;
  */
 class EventHubClient implements Closeable {
     private final EventHubAsyncClient client;
-    private final RetryOptions retry;
+    private final AmqpRetryOptions retry;
 
-    EventHubClient(EventHubAsyncClient client, RetryOptions retry) {
+    EventHubClient(EventHubAsyncClient client, AmqpRetryOptions retry) {
         this.client = Objects.requireNonNull(client, "'client' cannot be null.");
         this.retry = retry;
     }

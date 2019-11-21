@@ -29,7 +29,7 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
             .scheduler(Schedulers.parallel())
-            .buildProducer();
+            .buildProducerClient();
     }
 
     @Override

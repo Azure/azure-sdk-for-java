@@ -23,7 +23,7 @@ trigger:
       - sdk/keyvault/
     exclude:
       - sdk/keyvault/microsoft-azure
-      - sdk/keyvault/azure-mgmt-
+      - sdk/keyvault/mgmt-
 
 pr:
   branches:
@@ -37,7 +37,7 @@ pr:
       - sdk/keyvault/
     exclude:
       - sdk/keyvault/microsoft-azure
-      - sdk/keyvault/azure-mgmt-
+      - sdk/keyvault/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

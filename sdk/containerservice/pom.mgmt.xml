@@ -9,14 +9,14 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-containerservice/package_2017_09</module>
-    <module>azure-mgmt-containerservice/v2017_07_01</module>
-    <module>azure-mgmt-containerservice/v2017_08_31</module>
-    <module>azure-mgmt-containerservice/v2017_09_30</module>
-    <module>azure-mgmt-containerservice/v2018_09_30_preview</module>
-    <module>azure-mgmt-containerservice/v2019_02_01</module>
-    <module>azure-mgmt-containerservice/v2019_04_01</module>
-    <module>azure-mgmt-containerservice/v2019_06_01</module>
-    <module>azure-mgmt-containerservice/v2019_08_01</module>
+    <module>mgmt-package_2017_09</module>
+    <module>mgmt-v2017_07_01</module>
+    <module>mgmt-v2017_08_31</module>
+    <module>mgmt-v2017_09_30</module>
+    <module>mgmt-v2018_09_30_preview</module>
+    <module>mgmt-v2019_02_01</module>
+    <module>mgmt-v2019_04_01</module>
+    <module>mgmt-v2019_06_01</module>
+    <module>mgmt-v2019_08_01</module>
   </modules>
 </project>

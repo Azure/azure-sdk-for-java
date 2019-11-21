@@ -33,7 +33,7 @@ public class PublishEventsToSpecificPartition {
         // Instantiate a client that will be used to call the service.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncProducer();
+            .buildAsyncProducerClient();
 
         // To send our events, we need to know what partition to send it to. For the sake of this example, we take the
         // first partition id.

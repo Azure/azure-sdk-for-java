@@ -54,7 +54,7 @@ public class BackCompatTest extends IntegrationTestBase {
     protected void beforeTest() {
         client = createBuilder().buildAsyncClient();
         consumer = createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         producer = client.createProducer();
@@ -104,7 +104,7 @@ public class BackCompatTest extends IntegrationTestBase {
 
     private void validateAmqpProperties(Map<String, Object> expected, EventData event) {
         Assertions.assertEquals(expected.size(), event.getProperties().size());
-        Assertions.assertEquals(PAYLOAD, UTF_8.decode(event.getBody()).toString());
+        Assertions.assertEquals(PAYLOAD, event.getBodyAsString());
 
         expected.forEach((key, value) -> {
             Assertions.assertTrue(event.getProperties().containsKey(key));

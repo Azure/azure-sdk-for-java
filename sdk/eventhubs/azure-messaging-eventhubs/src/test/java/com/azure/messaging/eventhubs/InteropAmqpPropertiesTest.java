@@ -166,7 +166,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         Assertions.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
         Assertions.assertEquals(message.getExpiryTime(), actual.getSystemProperties().get(MessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
 
-        Assertions.assertEquals(PAYLOAD, UTF_8.decode(actual.getBody()).toString());
+        Assertions.assertEquals(PAYLOAD, new String(actual.getBody(), UTF_8));
 
         messageAnnotations.forEach((key, value) -> {
             Assertions.assertTrue(actual.getSystemProperties().containsKey(key.toString()));

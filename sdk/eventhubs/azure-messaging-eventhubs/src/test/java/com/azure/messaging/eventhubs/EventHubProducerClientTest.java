@@ -3,18 +3,18 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
@@ -76,7 +76,7 @@ public class EventHubProducerClientTest {
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
     private EventHubProducerAsyncClient asyncProducer;
-    private RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(30));
+    private AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(30));
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConnection linkProvider;
     @Mock
@@ -86,14 +86,14 @@ public class EventHubProducerClientTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
-        when(sendLink.getErrorContext()).thenReturn(new ErrorContext("test-namespace"));
+        when(sendLink.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
+            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
         asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, linkProvider, retryOptions,
@@ -180,10 +180,10 @@ public class EventHubProducerClientTest {
     }
 
     /**
-     * Verifies start and end span invoked when linking a single message on retry.
+     * Verifies addLink method is not invoked and message/event is not stamped with context on retry (span context already present on event).
      */
     @Test
-    public void sendMessageAddLink() {
+    public void sendMessageRetrySpanTest() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
@@ -199,7 +199,8 @@ public class EventHubProducerClientTest {
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             linkProvider, retryOptions, tracerProvider, messageSerializer, false);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
-        final EventData eventData = new EventData("hello-world".getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE));
+        final EventData eventData = new EventData("hello-world".getBytes(UTF_8))
+            .addContext(SPAN_CONTEXT_KEY, Context.NONE);
 
         when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
@@ -214,7 +215,7 @@ public class EventHubProducerClientTest {
         //Assert
         verify(tracer1, times(1)).start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, never()).start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(1)).addLink(any());
+        verify(tracer1, never()).addLink(any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
@@ -291,6 +292,46 @@ public class EventHubProducerClientTest {
         Assertions.assertTrue(batch.tryAdd(event));
 
         verify(link, times(1)).getLinkSize();
+    }
+
+    /**
+     * Verifies that message spans are started and ended on tryAdd when creating batches to send in
+     * {@link EventDataBatch}.
+     */
+    @Test
+    public void startsMessageSpanOnEventBatch() {
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        final TracerProvider tracerProvider = new TracerProvider(tracers);
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            linkProvider, retryOptions, tracerProvider, messageSerializer, false);
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
+        when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
+
+        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
+            eq(retryOptions.getTryTimeout()), any()))
+            .thenReturn(Mono.just(link));
+
+        when(tracer1.start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+            }
+        );
+
+        // Act & Assert
+        final EventDataBatch batch = producer.createBatch();
+        Assertions.assertTrue(batch.tryAdd(new EventData("Hello World".getBytes(UTF_8))));
+        Assertions.assertTrue(batch.tryAdd(new EventData("Test World".getBytes(UTF_8))));
+
+        verify(tracer1, times(2))
+            .start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
+        verify(tracer1, times(2)).end(eq("success"), isNull(), any());
     }
 
     /**
@@ -398,7 +439,7 @@ public class EventHubProducerClientTest {
         try {
             batch.tryAdd(event);
         } catch (AmqpException e) {
-            Assertions.assertEquals(ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
+            Assertions.assertEquals(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
         }
     }
 }

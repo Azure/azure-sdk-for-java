@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.jproxy.ProxyServer;
 import com.azure.messaging.eventhubs.jproxy.SimpleProxy;
@@ -75,18 +75,18 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         EventHubClientBuilder builder = new EventHubClientBuilder()
-            .transportType(TransportType.AMQP_WEB_SOCKETS)
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .connectionString(getConnectionString());
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.info("Already pushed events to partition. Skipping.");
         } else {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(builder.buildAsyncProducer(), NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(builder.buildAsyncProducerClient(), NUMBER_OF_EVENTS, options);
         }
 
         consumer = builder.consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
     }
 
     @Override

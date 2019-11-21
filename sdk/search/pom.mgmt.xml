@@ -9,6 +9,6 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-search/v2015_02_28</module>
+    <module>mgmt-v2015_02_28</module>
   </modules>
 </project>

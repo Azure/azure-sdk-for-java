@@ -9,8 +9,8 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-datamigration/v2017_11_15_preview</module>
-    <module>azure-mgmt-datamigration/v2018_03_31_preview</module>
-    <module>azure-mgmt-datamigration/v2018_07_15_preview</module>
+    <module>mgmt-v2017_11_15_preview</module>
+    <module>mgmt-v2018_03_31_preview</module>
+    <module>mgmt-v2018_07_15_preview</module>
   </modules>
 </project>
