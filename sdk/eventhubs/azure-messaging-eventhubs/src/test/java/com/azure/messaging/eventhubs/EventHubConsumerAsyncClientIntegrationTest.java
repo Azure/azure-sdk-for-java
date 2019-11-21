@@ -395,7 +395,6 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     @Test
     public void receivesMultiplePartitions() {
         // Arrange
-        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 1);
 
         final AtomicBoolean isActive = new AtomicBoolean(true);
@@ -422,7 +421,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(position)
+            StepVerifier.create(consumer.receive(false)
                 .filter(x -> TestUtils.isMatchingEvent(x.getData(), MESSAGE_TRACKING_ID))
                 .take(expectedNumber))
                 .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions, expectedPartitions))
