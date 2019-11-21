@@ -36,7 +36,7 @@ public abstract class Index extends JsonSerializable {
      * Returns an instance of RangeIndex class with specified DataType.
      * <p>
      * Here is an example to create RangeIndex instance passing in the DataType:
-     * {@codesnippet RangeIndex rangeIndex = Index.range(DataType.NUMBER); }
+     * {@code RangeIndex rangeIndex = Index.range(DataType.NUMBER); }
      *
      * @param dataType the data type.
      * @return an instance of RangeIndex type.
@@ -49,7 +49,7 @@ public abstract class Index extends JsonSerializable {
      * Returns an instance of RangeIndex class with specified DataType and precision.
      * <p>
      * Here is an example to create RangeIndex instance passing in the DataType and precision:
-     * {@codesnippet RangeIndex rangeIndex = Index.RANGE(DataType.NUMBER, -1);}
+     * {@code RangeIndex rangeIndex = Index.RANGE(DataType.NUMBER, -1);}
      *
      * @param dataType specifies the target data type for the index path specification.
      * @param precision specifies the precision to be used for the data type associated with this index.
@@ -63,8 +63,8 @@ public abstract class Index extends JsonSerializable {
      * Returns an instance of HashIndex class with specified DataType.
      * <p>
      * Here is an example to create HashIndex instance passing in the DataType:
-     * 
-     * {@codesnippet  HashIndex hashIndex = Index.HASH(DataType.STRING);}
+     *
+     * {@code  HashIndex hashIndex = Index.HASH(DataType.STRING);}
      *
      * @param dataType specifies the target data type for the index path specification.
      * @return an instance of HashIndex type.

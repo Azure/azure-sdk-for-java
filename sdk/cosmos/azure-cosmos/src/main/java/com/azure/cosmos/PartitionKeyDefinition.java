@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -12,11 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a partition key definition in the Azure Cosmos DB database service. A partition key definition 
+ * Represents a partition key definition in the Azure Cosmos DB database service. A partition key definition
  * specifies which
  * document property is used as the partition key in a collection that has multiple partitions.
  */
 public final class PartitionKeyDefinition extends JsonSerializable {
+    private final ClientLogger logger = new ClientLogger(PartitionKeyDefinition.class);
     private List<String> paths;
     private PartitionKind kind;
     private PartitionKeyDefinitionVersion version;
@@ -115,7 +117,7 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      */
     public PartitionKeyDefinition setPaths(List<String> paths) {
         if (paths == null || paths.size() == 0) {
-            throw new IllegalArgumentException("getPaths must not be null or empty.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("getPaths must not be null or empty."));
         }
 
         this.paths = paths;

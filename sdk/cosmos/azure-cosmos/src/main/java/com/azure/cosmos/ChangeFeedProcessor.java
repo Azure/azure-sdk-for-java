@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * - Partitions in partitioned collections are distributed across instances/observers.
  * - New instance takes leases from existing instances to make distribution equal.
  * - If an instance dies, the leases are distributed across remaining instances.
- * It's useful for scenario when partition count is high so that one host/VM is not capable of processing that many 
+ * It's useful for scenario when partition count is high so that one host/VM is not capable of processing that many
  * change feed events.
  * Client application needs to implement {@link ChangeFeedObserver} and register processor implementation with
  * {@link ChangeFeedProcessor}.
@@ -26,16 +26,7 @@ import java.util.function.Consumer;
  * 2) Acquire Leases: Each instance continuously polls all leases to check if there are any leases it should acquire
  * for the system to get into balanced state.
  * <p>
- * {@code
- * ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.Builder()
- * .setHostName(setHostName)
- * .setFeedContainer(setFeedContainer)
- * .setLeaseContainer(setLeaseContainer)
- * .setHandleChanges(docs -> {
- * // Implementation for handling and processing CosmosItemProperties list goes here
- * })
- * .buildAsyncClient();
- * }
+ * {@codesnippet com.azure.cosmos.changeFeedProcessor.builder}
  */
 public interface ChangeFeedProcessor {
 
@@ -57,31 +48,22 @@ public interface ChangeFeedProcessor {
      * Helper static method to buildAsyncClient {@link ChangeFeedProcessor} instances
      * as logical representation of the Azure Cosmos DB database service.
      * <p>
-     * {@codesnippet
-     * ChangeFeedProcessor.Builder()
-     * .setHostName("SampleHost")
-     * .setFeedContainer(setFeedContainer)
-     * .setLeaseContainer(setLeaseContainer)
-     * .setHandleChanges(docs -> {
-     * // Implementation for handling and processing CosmosItemProperties list goes here
-     * })
-     * .buildAsyncClient();
-     * }
+     * @codesnippet com.azure.cosmos.changeFeedProcessor.builder}
      *
-     * @return a builder definition instance.
+     * @return a changeFeedProcessorBuilder definition instance.
      */
-    static BuilderDefinition Builder() {
+    static BuilderDefinition changeFeedProcessorBuilder() {
         return new ChangeFeedProcessorBuilderImpl();
     }
 
     /**
-     * The {@link ChangeFeedProcessor} builder definitions for setting the properties.
+     * The {@link ChangeFeedProcessor} changeFeedProcessorBuilder definitions for setting the properties.
      */
     interface BuilderDefinition {
         /**
          * Sets the host name.
          *
-         * @param hostName the name to be used for the host. When using multiple hosts, each host must have a unique 
+         * @param hostName the name to be used for the host. When using multiple hosts, each host must have a unique
          * name.
          * @return current Builder.
          */

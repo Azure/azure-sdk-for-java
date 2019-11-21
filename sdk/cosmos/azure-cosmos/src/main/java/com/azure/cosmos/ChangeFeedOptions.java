@@ -19,10 +19,11 @@ public final class ChangeFeedOptions {
     private Integer maxItemCount;
     private String requestContinuation;
     private PartitionKey partitionkey;
-    private boolean populateQueryMetrics;
+    private final boolean populateQueryMetrics;
     private Map<String, Object> properties;
 
     public ChangeFeedOptions() {
+        this.populateQueryMetrics = false;
     }
 
     public ChangeFeedOptions(ChangeFeedOptions options) {

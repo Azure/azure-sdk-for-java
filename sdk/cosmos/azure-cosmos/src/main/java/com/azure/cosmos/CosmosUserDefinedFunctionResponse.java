@@ -9,7 +9,7 @@ package com.azure.cosmos;
 public class CosmosUserDefinedFunctionResponse extends CosmosResponse<CosmosUserDefinedFunctionProperties> {
 
     private final CosmosUserDefinedFunction userDefinedFunction;
-    private CosmosAsyncUserDefinedFunctionResponse asyncResponse;
+    private final CosmosAsyncUserDefinedFunctionResponse asyncResponse;
 
     /**
      * Instantiates a new Cosmos sync user defined function response.

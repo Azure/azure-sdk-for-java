@@ -6,14 +6,14 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
 
 public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties> {
-    @SuppressWarnings("EnforceFinalFields")
-    private CosmosAsyncItem itemClient;
+    private final CosmosAsyncItem itemClient;
 
     CosmosAsyncItemResponse(ResourceResponse<Document> response, PartitionKey partitionKey,
                             CosmosAsyncContainer container) {
         super(response);
         if (response.getResource() == null) {
             super.setProperties(null);
+            itemClient = null;
         } else {
             super.setProperties(new CosmosItemProperties(response.getResource().toJson()));
             itemClient = new CosmosAsyncItem(response.getResource().getId(), partitionKey, container);

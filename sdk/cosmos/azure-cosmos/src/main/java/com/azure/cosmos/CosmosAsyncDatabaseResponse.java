@@ -6,12 +6,13 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.ResourceResponse;
 
 public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabaseProperties> {
-    private CosmosAsyncDatabase database;
+    private final CosmosAsyncDatabase database;
 
     CosmosAsyncDatabaseResponse(ResourceResponse<Database> response, CosmosAsyncClient client) {
         super(response);
         if (response.getResource() == null) {
             super.setProperties(null);
+            database = null;
         } else {
             super.setProperties(new CosmosDatabaseProperties(response));
             database = new CosmosAsyncDatabase(this.getProperties().getId(), client);

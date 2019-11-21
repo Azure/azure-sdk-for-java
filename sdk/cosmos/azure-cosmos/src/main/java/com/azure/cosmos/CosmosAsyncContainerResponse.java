@@ -8,12 +8,13 @@ import com.azure.cosmos.implementation.ResourceResponse;
 @SuppressWarnings("enforcefinalfields")
 public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainerProperties> {
 
-    private CosmosAsyncContainer container;
+    private final CosmosAsyncContainer container;
 
     CosmosAsyncContainerResponse(ResourceResponse<DocumentCollection> response, CosmosAsyncDatabase database) {
         super(response);
         if (response.getResource() == null) {
             super.setProperties(null);
+            container = null;
         } else {
             super.setProperties(new CosmosContainerProperties(response));
             container = new CosmosAsyncContainer(this.getProperties().getId(), database);

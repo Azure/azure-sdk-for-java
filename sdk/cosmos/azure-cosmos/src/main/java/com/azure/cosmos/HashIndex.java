@@ -15,9 +15,8 @@ public final class HashIndex extends Index {
      * Specifies an instance of HashIndex class with specified DataType.
      * <p>
      * Here is an example to instantiate HashIndex class passing in the DataType:
-     * {@codesnippet
-     * HashIndex hashIndex = new HashIndex(DataType.STRING);
-     * }
+     * <p>
+     * {@code HashIndex hashIndex = new HashIndex(DataType.STRING);}
      *
      * @param dataType the data type.
      */
@@ -30,7 +29,7 @@ public final class HashIndex extends Index {
      * Initializes a new instance of the HashIndex class with specified DataType and precision.
      * <p>
      * Here is an example to instantiate HashIndex class passing in the DataType:
-     * {@codesnippet HashIndex hashIndex = new HashIndex(DataType.STRING, 3);}
+     * {@code HashIndex hashIndex = new HashIndex(DataType.STRING, 3);}
      *
      * @param dataType the data type.
      * @param precision the precision.

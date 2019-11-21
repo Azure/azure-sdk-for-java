@@ -186,7 +186,7 @@ Licensed under the MIT License.
         <artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
           <includeTestSourceDirectory>false</includeTestSourceDirectory>
-          <excludes>**/implementation/**</excludes>
+          <excludes>**/implementation/**,**/BridgeInternal.java,**/CosmosBridgeInternal.java</excludes>
           <failsOnError>true</failsOnError>
           <failOnViolation>true</failOnViolation>
         </configuration>

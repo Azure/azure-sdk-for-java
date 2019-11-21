@@ -15,7 +15,7 @@ public final class RangeIndex extends Index {
      * Initializes a new instance of the RangeIndex class with specified DataType.
      * <p>
      * Here is an example to instantiate RangeIndex class passing in the DataType:
-     * {@codesnippet RangeIndex rangeIndex = new RangeIndex(DataType.NUMBER);}
+     * {@code RangeIndex rangeIndex = new RangeIndex(DataType.NUMBER);}
      *
      * @param dataType the data type.
      */
@@ -26,7 +26,7 @@ public final class RangeIndex extends Index {
 
     /**
      * Initializes a new instance of the RangeIndex class with specified DataType and precision.
-     * {@codesnippet RangeIndex rangeIndex = new RangeIndex(DataType.NUMBER, -1);}
+     * {@code RangeIndex rangeIndex = new RangeIndex(DataType.NUMBER, -1);}
      *
      * @param dataType the data type of the RangeIndex
      * @param precision the precision of the RangeIndex

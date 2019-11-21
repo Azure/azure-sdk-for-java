@@ -15,13 +15,7 @@ final class SpatialIndex extends Index {
      * Initializes a new instance of the SpatialIndex class.
      * <p>
      * Here is an example to instantiate SpatialIndex class passing in the DataType
-     * <pre>
-     * {@code
-     *
-     * SpatialIndex spatialIndex = new SpatialIndex(DataType.POINT);
-     *
-     * }
-     * </pre>
+     * <pre>{@code SpatialIndex spatialIndex = new SpatialIndex(DataType.POINT);}</pre>
      *
      * @param dataType specifies the target data type for the index path specification.
      */

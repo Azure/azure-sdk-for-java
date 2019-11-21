@@ -36,21 +36,9 @@ public final class IndexingPolicy extends JsonSerializable {
      * default index specifications for the root path.
      * <p>
      * The following example shows how to override the default indexingPolicy for root path:
-     * {@codesnippet
-     * HashIndex hashIndexOverride = Index.HASH(DataType.STRING, 5);
-     * RangeIndex rangeIndexOverride = Index.RANGE(DataType.NUMBER, 2);
-     * SpatialIndex spatialIndexOverride = Index.SPATIAL(DataType.POINT);
-     *
-     * IndexingPolicy indexingPolicy = new IndexingPolicy(hashIndexOverride, rangeIndexOverride, spatialIndexOverride);
-     * }
      * <p>
-     * If you would like to just override the indexingPolicy for Numbers you can specify just that:
-     * {@codesnippet
-     * RangeIndex rangeIndexOverride = Index.RANGE(DataType.NUMBER, 2);
-     *
-     * IndexingPolicy indexingPolicy = new IndexingPolicy(rangeIndexOverride);
-     * }
-     *
+     * {@codesnippet com.azure.cosmos.indexingPolicy.defaultOverride)}
+     * <p>
      * @param defaultIndexOverrides comma separated set of indexes that serve as default index specifications for the
      * root path.
      * @throws IllegalArgumentException thrown if an error occurs

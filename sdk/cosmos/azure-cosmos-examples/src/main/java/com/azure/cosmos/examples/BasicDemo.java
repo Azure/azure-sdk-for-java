@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncItem;
 import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosItemProperties;
@@ -32,7 +33,7 @@ public class BasicDemo {
 
     private void start(){
         // Get client
-        client = CosmosAsyncClient.builder()
+        client = new CosmosClientBuilder()
                 .setEndpoint(AccountSettings.HOST)
                 .setKey(AccountSettings.MASTER_KEY)
                 .buildAsyncClient();
@@ -65,11 +66,11 @@ public class BasicDemo {
         }
 
         createAndReplaceItem();
-        
+
         queryItems();
 
         queryWithContinuationToken();
-        
+
         //Close client
         client.close();
         log("Completed");
@@ -121,13 +122,13 @@ public class BasicDemo {
 
         queryFlux.publishOn(Schedulers.elastic())
                 .toIterable()
-                .forEach(cosmosItemFeedResponse -> 
+                .forEach(cosmosItemFeedResponse ->
                          {
                              log(cosmosItemFeedResponse.getResults());
                          });
 
     }
-    
+
     private void queryWithContinuationToken(){
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
@@ -146,11 +147,11 @@ public class BasicDemo {
         }while(continuation!= null);
 
     }
-    
+
     private void log(Object object) {
         System.out.println(object);
     }
-    
+
     private void log(String msg, Throwable throwable){
         if (throwable instanceof CosmosClientException) {
             log(msg + ": " + ((CosmosClientException) throwable).getStatusCode());

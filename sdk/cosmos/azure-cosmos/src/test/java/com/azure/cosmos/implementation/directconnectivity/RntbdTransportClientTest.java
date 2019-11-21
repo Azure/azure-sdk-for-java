@@ -664,7 +664,7 @@ public final class RntbdTransportClientTest {
      * These are the exceptions that cannot be derived from server responses. They are mapped from Netty channel
      * failures simulated by {@link FakeChannel}.
      *
-     * @param builder   A feature validator builder to confirm that response is correctly mapped to an exception
+     * @param builder   A feature validator changeFeedProcessorBuilder to confirm that response is correctly mapped to an exception
      * @param request   An RNTBD request instance
      * @param exception An exception mapping
      */
@@ -683,7 +683,7 @@ public final class RntbdTransportClientTest {
     /**
      * Validates the error handling behavior of the {@link RntbdTransportClient} for HTTP status codes >= 400
      *
-     * @param builder   A feature validator builder to confirm that response is correctly mapped to an exception
+     * @param builder   A feature validator changeFeedProcessorBuilder to confirm that response is correctly mapped to an exception
      * @param request   An RNTBD request instance
      * @param response  The RNTBD response instance to be returned as a result of the request
      */

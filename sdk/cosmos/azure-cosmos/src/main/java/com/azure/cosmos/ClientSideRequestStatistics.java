@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -26,9 +27,10 @@ import java.util.Set;
 
 class ClientSideRequestStatistics {
 
+    private final ClientLogger logger = new ClientLogger(ClientSideRequestStatistics.class);
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
 
-    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER = 
+    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
         DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US);
 
     private final ZonedDateTime requestStartTime;
@@ -76,7 +78,7 @@ class ClientSideRequestStatistics {
             try {
                 locationEndPoint = request.requestContext.locationEndpointToRoute.toURI();
             } catch (URISyntaxException e) {
-                throw new IllegalArgumentException(e);
+                throw logger.logExceptionAsError(new IllegalArgumentException(e));
             }
         }
 
@@ -122,9 +124,9 @@ class ClientSideRequestStatistics {
 
         synchronized (this) {
             if (!this.addressResolutionStatistics.containsKey(identifier)) {
-                throw new IllegalArgumentException("Identifier "
+                throw logger.logExceptionAsError(new IllegalArgumentException("Identifier "
                                                        + identifier
-                                                       + " does not exist. Please call start before calling end");
+                                                       + " does not exist. Please call start before calling end"));
             }
 
             if (responseTime.isAfter(this.requestEndTime)) {
@@ -169,7 +171,7 @@ class ClientSideRequestStatistics {
             }
 
             //  only take last 10 responses from this list - this has potential of having large number of entries.
-            //  since this is for establishing consistency, we can make do with the last responses to paint a 
+            //  since this is for establishing consistency, we can make do with the last responses to paint a
             //  meaningful picture.
             int supplementalResponseStatisticsListCount = this.supplementalResponseStatisticsList.size();
             int initialIndex =
@@ -239,7 +241,7 @@ class ClientSideRequestStatistics {
                        + ", storeResult="
                        + storeResult
                        + ", requestResourceType="
-                       + requestResourceType 
+                       + requestResourceType
                        + ", requestOperationType="
                        + requestOperationType
                        + '}';

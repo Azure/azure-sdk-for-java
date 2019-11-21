@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.Strings;
 
 /**
  * Represents the conflict resolution policy configuration for specifying how to resolve conflicts
- * in case writes from different regions result in conflicts on documents in the collection in the Azure Cosmos DB 
+ * in case writes from different regions result in conflicts on documents in the collection in the Azure Cosmos DB
  * service.
  * <p>
  * A collection with custom conflict resolution with no user-registered stored procedure.
@@ -100,7 +100,7 @@ public class ConflictResolutionPolicy extends JsonSerializable {
      * Creates a CUSTOM {@link ConflictResolutionPolicy} which uses the specified stored procedure
      * to perform conflict resolution
      * <p>
-     * This stored procedure may be created after the {@link DocumentCollection} is created and can be changed as 
+     * This stored procedure may be created after the {@link DocumentCollection} is created and can be changed as
      * required.
      *
      * <ul>
@@ -181,10 +181,10 @@ public class ConflictResolutionPolicy extends JsonSerializable {
     }
 
     /**
-     * Gets the path which is present in each document in the Azure Cosmos DB service for last writer wins 
+     * Gets the path which is present in each document in the Azure Cosmos DB service for last writer wins
      * conflict-resolution.
      * This path must be present in each document and must be an integer value.
-     * In case of a conflict occurring on a document, the document with the higher integer value in the specified 
+     * In case of a conflict occurring on a document, the document with the higher integer value in the specified
      * path will be picked.
      * If the path is unspecified, by default the {@link Resource#getTimestamp()} ()} path will be used.
      * <p>
@@ -198,10 +198,10 @@ public class ConflictResolutionPolicy extends JsonSerializable {
     }
 
     /**
-     * Sets the path which is present in each document in the Azure Cosmos DB service for last writer wins 
+     * Sets the path which is present in each document in the Azure Cosmos DB service for last writer wins
      * conflict-resolution.
      * This path must be present in each document and must be an integer value.
-     * In case of a conflict occurring on a document, the document with the higher integer value in the specified 
+     * In case of a conflict occurring on a document, the document with the higher integer value in the specified
      * path will be picked.
      * If the path is unspecified, by default the {@link Resource#getTimestamp()} ()} path will be used.
      * <p>
@@ -217,7 +217,7 @@ public class ConflictResolutionPolicy extends JsonSerializable {
 
     /**
      * Gets the {@link StoredProcedure} which is used for conflict resolution in the Azure Cosmos DB service.
-     * This stored procedure may be created after the {@link DocumentCollection} is created and can be changed as 
+     * This stored procedure may be created after the {@link DocumentCollection} is created and can be changed as
      * required.
      *
      * <ul>

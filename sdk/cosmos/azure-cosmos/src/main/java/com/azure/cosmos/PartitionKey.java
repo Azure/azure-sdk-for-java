@@ -51,7 +51,7 @@ public class PartitionKey {
     }
 
     // TODO: make private
-    public PartitionKeyInternal getInternalPartitionKey() {
+    PartitionKeyInternal getInternalPartitionKey() {
         return internalPartitionKey;
     }
 
@@ -80,5 +80,5 @@ public class PartitionKey {
     public int hashCode() {
         return super.hashCode();
     }
-    
+
 }

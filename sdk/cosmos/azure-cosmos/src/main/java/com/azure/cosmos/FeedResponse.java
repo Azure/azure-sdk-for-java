@@ -22,8 +22,7 @@ public class FeedResponse<T> {
     private final HashMap<String, Long> usageHeaders;
     private final HashMap<String, Long> quotaHeaders;
     private final boolean useEtagAsContinuation;
-    @SuppressWarnings("EnforceFinalFields")
-    boolean nochanges;
+    final boolean nochanges;
     private final ConcurrentMap<String, QueryMetrics> queryMetricsMap;
     private final String defaultPartition = "0";
     private final FeedResponseDiagnostics feedResponseDiagnostics;
@@ -333,7 +332,7 @@ public class FeedResponse<T> {
     }
 
     private long maxQuotaHeader(String headerName) {
-        if (this.quotaHeaders.size() == 0 
+        if (this.quotaHeaders.size() == 0
                 && !StringUtils.isEmpty(this.getMaxResourceQuota())
                 && !StringUtils.isEmpty(this.getCurrentResourceQuotaUsage())) {
             this.populateQuotaHeader(this.getMaxResourceQuota(), this.getCurrentResourceQuotaUsage());

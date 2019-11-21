@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,6 +16,7 @@ import java.util.Iterator;
  */
 public class CosmosContainer {
 
+    private final ClientLogger logger = new ClientLogger(CosmosContainer.class);
     private final CosmosAsyncContainer containerWrapper;
     private final CosmosDatabase database;
     private final String id;
@@ -115,7 +117,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public Integer readProvisionedThroughput() throws CosmosClientException {
-        return CosmosDatabase.throughputResponseToBlock(this.containerWrapper.readProvisionedThroughput());
+        return database.throughputResponseToBlock(this.containerWrapper.readProvisionedThroughput());
     }
 
     /**
@@ -126,7 +128,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) throws CosmosClientException {
-        return CosmosDatabase.throughputResponseToBlock(this.containerWrapper
+        return database.throughputResponseToBlock(this.containerWrapper
                                                             .replaceProvisionedThroughput(requestUnitsPerSecond));
     }
 
@@ -195,9 +197,9 @@ public class CosmosContainer {
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+                throw logger.logExceptionAsError((CosmosClientException) throwable);
             } else {
-                throw ex;
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         }
     }

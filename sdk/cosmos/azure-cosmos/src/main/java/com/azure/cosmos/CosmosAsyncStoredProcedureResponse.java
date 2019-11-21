@@ -8,10 +8,8 @@ import com.azure.cosmos.implementation.StoredProcedureResponse;
 
 public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosStoredProcedureProperties> {
 
-    @SuppressWarnings("EnforceFinalFields")
-    private CosmosAsyncStoredProcedure storedProcedure;
-    @SuppressWarnings("EnforceFinalFields")
-    private StoredProcedureResponse storedProcedureResponse;
+    private final CosmosAsyncStoredProcedure storedProcedure;
+    private final StoredProcedureResponse storedProcedureResponse;
 
     CosmosAsyncStoredProcedureResponse(ResourceResponse<StoredProcedure> response,
                                        CosmosAsyncContainer cosmosContainer) {
@@ -19,12 +17,18 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
         if (response.getResource() != null) {
             super.setProperties(new CosmosStoredProcedureProperties(response));
             storedProcedure = new CosmosAsyncStoredProcedure(this.getProperties().getId(), cosmosContainer);
+            storedProcedureResponse = null;
+        } else {
+            storedProcedureResponse = null;
+            storedProcedure = null;
         }
     }
 
     CosmosAsyncStoredProcedureResponse(StoredProcedureResponse response, CosmosAsyncContainer cosmosContainer) {
         super(response);
         this.storedProcedureResponse = response;
+        this.storedProcedure = null;
+
     }
 
     /**

@@ -7,14 +7,14 @@ import com.azure.cosmos.implementation.ResourceResponse;
 
 public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictProperties> {
     private final CosmosAsyncContainer container;
-    @SuppressWarnings("EnforceFinalFields")
-    private CosmosAsyncConflict conflictClient;
+    private final CosmosAsyncConflict conflictClient;
 
     CosmosAsyncConflictResponse(ResourceResponse<Conflict> response, CosmosAsyncContainer container) {
         super(response);
         this.container = container;
         if (response.getResource() == null) {
             super.setProperties(null);
+            conflictClient = null;
         } else {
             super.setProperties(new CosmosConflictProperties(response.getResource().toJson()));
             conflictClient = new CosmosAsyncConflict(response.getResource().getId(), container);

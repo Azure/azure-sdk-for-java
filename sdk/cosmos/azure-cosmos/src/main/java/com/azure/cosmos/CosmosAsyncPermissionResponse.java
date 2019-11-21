@@ -6,13 +6,13 @@ import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.ResourceResponse;
 
 public class CosmosAsyncPermissionResponse extends CosmosResponse<CosmosPermissionProperties> {
-    @SuppressWarnings("EnforceFinalFields")
-    private CosmosAsyncPermission permissionClient;
+    private final CosmosAsyncPermission permissionClient;
 
     CosmosAsyncPermissionResponse(ResourceResponse<Permission> response, CosmosAsyncUser cosmosUser) {
         super(response);
         if (response.getResource() == null) {
             super.setProperties(null);
+            permissionClient = null;
         } else {
             super.setProperties(new CosmosPermissionProperties(response.getResource().toJson()));
             permissionClient = new CosmosAsyncPermission(response.getResource().getId(), cosmosUser);

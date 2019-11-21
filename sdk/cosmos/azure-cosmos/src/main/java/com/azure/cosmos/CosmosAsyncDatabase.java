@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
@@ -17,6 +18,7 @@ import static com.azure.cosmos.Resource.validateResource;
  * Perform read and delete databases, update database throughput, and perform operations on child resources
  */
 public class CosmosAsyncDatabase {
+    private final ClientLogger logger = new ClientLogger(CosmosAsyncDatabase.class);
     private final CosmosAsyncClient client;
     private String id;
 
@@ -143,7 +145,7 @@ public class CosmosAsyncDatabase {
     public Mono<CosmosAsyncContainerResponse> createContainer(CosmosContainerProperties containerProperties,
                                                               int throughput) {
         if (containerProperties == null) {
-            throw new IllegalArgumentException("containerProperties");
+            throw logger.logExceptionAsError(new IllegalArgumentException("containerProperties"));
         }
         validateResource(containerProperties);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
@@ -167,7 +169,7 @@ public class CosmosAsyncDatabase {
     public Mono<CosmosAsyncContainerResponse> createContainer(CosmosContainerProperties containerProperties,
                                                               CosmosContainerRequestOptions options) {
         if (containerProperties == null) {
-            throw new IllegalArgumentException("containerProperties");
+            throw logger.logExceptionAsError(new IllegalArgumentException("containerProperties"));
         }
         validateResource(containerProperties);
         if (options == null) {

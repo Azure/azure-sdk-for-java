@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -15,7 +16,7 @@ import java.util.Collection;
  * Represents an included path of the IndexingPolicy in the Azure Cosmos DB database service.
  */
 public class IncludedPath extends JsonSerializable {
-
+    private final ClientLogger logger = new ClientLogger(IncludedPath.class);
     private Collection<Index> indexes;
 
     /**
@@ -97,7 +98,7 @@ public class IncludedPath extends JsonSerializable {
                         result.add(new SpatialIndex(jsonObject.toString()));
                         break;
                     default:
-                        throw new IllegalStateException("Unexpected value: " + indexKind);
+                        throw logger.logExceptionAsError(new IllegalStateException("Unexpected value: " + indexKind));
                 }
             }
 

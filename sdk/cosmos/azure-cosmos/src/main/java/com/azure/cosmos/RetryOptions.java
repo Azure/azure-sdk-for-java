@@ -3,10 +3,13 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.logging.ClientLogger;
+
 /**
  * Encapsulates retry options in the Azure Cosmos DB database service.
  */
 public class RetryOptions {
+    private final ClientLogger logger = new ClientLogger(RetryOptions.class);
     private int maxRetryAttemptsOnThrottledRequests;
     private int maxRetryWaitTimeInSeconds;
 
@@ -50,7 +53,8 @@ public class RetryOptions {
      */
     public RetryOptions setMaxRetryAttemptsOnThrottledRequests(int maxRetryAttemptsOnThrottledRequests) {
         if (maxRetryAttemptsOnThrottledRequests < 0) {
-            throw new IllegalArgumentException("maxRetryAttemptsOnThrottledRequests value must be a positive integer.");
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "maxRetryAttemptsOnThrottledRequests value must be a positive integer."));
         }
 
         this.maxRetryAttemptsOnThrottledRequests = maxRetryAttemptsOnThrottledRequests;
@@ -84,8 +88,8 @@ public class RetryOptions {
      */
     public RetryOptions setMaxRetryWaitTimeInSeconds(int maxRetryWaitTimeInSeconds) {
         if (maxRetryWaitTimeInSeconds < 0 || maxRetryWaitTimeInSeconds > Integer.MAX_VALUE / 1000) {
-            throw new IllegalArgumentException(
-                "value must be a positive integer between the range of 0 to " + Integer.MAX_VALUE / 1000);
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "value must be a positive integer between the range of 0 to " + Integer.MAX_VALUE / 1000));
         }
 
         this.maxRetryWaitTimeInSeconds = maxRetryWaitTimeInSeconds;

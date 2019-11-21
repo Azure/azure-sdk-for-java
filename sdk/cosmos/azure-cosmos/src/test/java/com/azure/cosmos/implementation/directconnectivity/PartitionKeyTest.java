@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.RMResources;
@@ -56,7 +57,7 @@ public class PartitionKeyTest {
         PartitionKey pk = PartitionKey.fromJsonString("[\"PartitionKeyValue\"]");
 
         try {
-            PartitionKeyInternalHelper.getEffectivePartitionKeyString(pk.getInternalPartitionKey(), pkd);
+            PartitionKeyInternalHelper.getEffectivePartitionKeyString(BridgeInternal.getPartitionKeyInternal(pk), pkd);
             fail("should throw");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage()).isEqualTo(RMResources.TooFewPartitionKeyComponents);
@@ -73,7 +74,7 @@ public class PartitionKeyTest {
         PartitionKey pk = PartitionKey.fromJsonString("[true, false]");
 
         try {
-            PartitionKeyInternalHelper.getEffectivePartitionKeyString(pk.getInternalPartitionKey(), pkd);
+            PartitionKeyInternalHelper.getEffectivePartitionKeyString(BridgeInternal.getPartitionKeyInternal(pk), pkd);
             fail("should throw");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage()).isEqualTo(RMResources.TooManyPartitionKeyComponents);

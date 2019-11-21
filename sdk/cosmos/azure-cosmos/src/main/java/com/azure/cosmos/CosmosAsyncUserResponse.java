@@ -8,12 +8,13 @@ import com.azure.cosmos.implementation.User;
 
 public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties> {
     @SuppressWarnings("EnforceFinalFields")
-    private CosmosAsyncUser user;
+    private final CosmosAsyncUser user;
 
     CosmosAsyncUserResponse(ResourceResponse<User> response, CosmosAsyncDatabase database) {
         super(response);
         if (response.getResource() == null) {
             super.setProperties(null);
+            this.user = null;
         } else {
             super.setProperties(new CosmosUserProperties(response));
             this.user = new CosmosAsyncUser(this.getProperties().getId(), database);

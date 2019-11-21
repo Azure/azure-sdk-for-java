@@ -194,7 +194,7 @@ public class BridgeInternal {
     }
 
     public static <E extends CosmosClientException> E setResourceAddress(E e, String resourceAddress) {
-        e.resourceAddress = resourceAddress;
+        e.setResourceAddress(resourceAddress);
         return e;
     }
 
@@ -207,7 +207,7 @@ public class BridgeInternal {
     }
 
     public static <E extends CosmosClientException> String getResourceAddress(E e) {
-        return e.resourceAddress;
+        return e.getResourceAddress();
     }
 
     public static <E extends CosmosClientException> E setLSN(E e, long lsn) {
@@ -360,7 +360,7 @@ public class BridgeInternal {
                                                                     Map<String, String> responseHeaders) {
         CosmosClientException cosmosClientException = new CosmosClientException(statusCode,
             cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, null);
-        cosmosClientException.resourceAddress = resourceAddress;
+        cosmosClientException.setResourceAddress(resourceAddress);
         cosmosClientException.setError(cosmosErrorResource);
         return cosmosClientException;
     }
@@ -372,7 +372,7 @@ public class BridgeInternal {
                                                                     String resourceAddress) {
         CosmosClientException cosmosClientException = new CosmosClientException(statusCode, message, responseHeaders,
             exception);
-        cosmosClientException.resourceAddress = resourceAddress;
+        cosmosClientException.setResourceAddress(resourceAddress);
         return cosmosClientException;
     }
 
@@ -442,5 +442,9 @@ public class BridgeInternal {
 
     public static ConcurrentMap<String, QueryMetrics> queryMetricsFromFeedResponse(FeedResponse feedResponse) {
         return feedResponse.queryMetrics();
+    }
+
+    public static PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
+        return partitionKey.getInternalPartitionKey();
     }
 }

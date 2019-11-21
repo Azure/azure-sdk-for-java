@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -15,6 +16,7 @@ import java.util.Iterator;
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
 public class CosmosClient implements AutoCloseable {
+    private final ClientLogger logger = new ClientLogger(CosmosClient.class);
     private final CosmosAsyncClient asyncClientWrapper;
 
     CosmosClient(CosmosClientBuilder builder) {
@@ -132,9 +134,9 @@ public class CosmosClient implements AutoCloseable {
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+                throw logger.logExceptionAsError((CosmosClientException) throwable);
             } else {
-                throw ex;
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         }
     }

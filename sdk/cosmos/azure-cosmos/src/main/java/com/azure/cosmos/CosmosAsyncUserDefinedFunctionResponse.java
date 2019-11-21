@@ -7,8 +7,8 @@ import com.azure.cosmos.implementation.UserDefinedFunction;
 
 public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<CosmosUserDefinedFunctionProperties> {
 
-    private CosmosUserDefinedFunctionProperties cosmosUserDefinedFunctionProperties;
-    private CosmosAsyncUserDefinedFunction cosmosUserDefinedFunction;
+    private final CosmosUserDefinedFunctionProperties cosmosUserDefinedFunctionProperties;
+    private final CosmosAsyncUserDefinedFunction cosmosUserDefinedFunction;
 
     CosmosAsyncUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response,
                                            CosmosAsyncContainer container) {
@@ -18,6 +18,9 @@ public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<Cosmo
             cosmosUserDefinedFunctionProperties = new CosmosUserDefinedFunctionProperties(response);
             cosmosUserDefinedFunction =
                 new CosmosAsyncUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId(), container);
+        } else {
+            cosmosUserDefinedFunctionProperties = null;
+            cosmosUserDefinedFunction = null;
         }
     }
 

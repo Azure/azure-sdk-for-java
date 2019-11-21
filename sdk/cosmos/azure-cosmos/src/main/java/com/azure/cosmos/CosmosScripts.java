@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,6 +14,7 @@ import java.util.Iterator;
  * The type Cosmos sync scripts.
  */
 public class CosmosScripts {
+    private final ClientLogger logger = new ClientLogger(CosmosScripts.class);
     private final CosmosContainer container;
     private final CosmosAsyncScripts asyncScripts;
 
@@ -238,9 +240,9 @@ public class CosmosScripts {
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+                throw logger.logExceptionAsError((CosmosClientException) throwable);
             } else {
-                throw ex;
+                throw logger.logExceptionAsError((RuntimeException) ex);
             }
         }
     }
@@ -275,9 +277,9 @@ public class CosmosScripts {
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+                throw logger.logExceptionAsError((CosmosClientException) throwable);
             } else {
-                throw ex;
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         }
     }
@@ -315,9 +317,9 @@ public class CosmosScripts {
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+                throw logger.logExceptionAsError((CosmosClientException) throwable);
             } else {
-                throw ex;
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         }
     }

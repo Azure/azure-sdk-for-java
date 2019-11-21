@@ -239,9 +239,9 @@ public class CosmosDatabase {
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+                throw logger.logExceptionAsError((CosmosClientException) throwable);
             } else {
-                throw ex;
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         }
     }
@@ -442,9 +442,9 @@ public class CosmosDatabase {
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+                throw logger.logExceptionAsError((CosmosClientException) throwable);
             } else {
-                throw ex;
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         }
     }
@@ -474,15 +474,15 @@ public class CosmosDatabase {
         return throughputResponseToBlock(databaseWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
     }
 
-    static Integer throughputResponseToBlock(Mono<Integer> throughputResponse) throws CosmosClientException {
+    Integer throughputResponseToBlock(Mono<Integer> throughputResponse) throws CosmosClientException {
         try {
             return throughputResponse.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
-                throw (CosmosClientException) throwable;
+                throw logger.logExceptionAsError((CosmosClientException) throwable);
             } else {
-                throw ex;
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         }
     }

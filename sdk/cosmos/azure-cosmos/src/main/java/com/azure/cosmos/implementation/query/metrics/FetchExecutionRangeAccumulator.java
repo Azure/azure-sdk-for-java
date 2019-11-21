@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Accumlator that acts as a builder of FetchExecutionRanges
+ * Accumlator that acts as a changeFeedProcessorBuilder of FetchExecutionRanges
  */
 public class FetchExecutionRangeAccumulator {
     private final String partitionKeyRangeId;

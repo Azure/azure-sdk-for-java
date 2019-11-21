@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Permission;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +18,7 @@ import java.util.List;
  * {@code
  * ConnectionPolicy getConnectionPolicy = new ConnectionPolicy();
  * getConnectionPolicy.getConnectionMode(ConnectionMode.DIRECT);
- * CosmonsClient client = new CosmosAsyncClient.builder()
+ * CosmonsClient client = new CosmosAsyncClient.changeFeedProcessorBuilder()
  *         .getEndpoint(serviceEndpoint)
  *         .getKey(getKey)
  *         .getConnectionPolicy(getConnectionPolicy)
@@ -28,7 +29,7 @@ import java.util.List;
  */
 @ServiceClientBuilder(serviceClients = {CosmosClient.class, CosmosAsyncClient.class})
 public class CosmosClientBuilder {
-
+    private final ClientLogger logger = new ClientLogger(CosmosClientBuilder.class);
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
@@ -54,7 +55,7 @@ public class CosmosClientBuilder {
      * Sets the token resolver
      *
      * @param tokenResolver the token resolver
-     * @return current builder
+     * @return current changeFeedProcessorBuilder
      */
     public CosmosClientBuilder setTokenResolver(TokenResolver tokenResolver) {
         this.tokenResolver = tokenResolver;
@@ -200,7 +201,7 @@ public class CosmosClientBuilder {
      * Sets the {@link CosmosKeyCredential} to be used
      *
      * @param cosmosKeyCredential {@link CosmosKeyCredential}
-     * @return current builder
+     * @return current changeFeedProcessorBuilder
      */
     public CosmosClientBuilder setCosmosKeyCredential(CosmosKeyCredential cosmosKeyCredential) {
         this.cosmosKeyCredential = cosmosKeyCredential;
@@ -248,7 +249,7 @@ public class CosmosClientBuilder {
     /**
      * Configs
      *
-     * @return current builder
+     * @return current changeFeedProcessorBuilder
      */
     CosmosClientBuilder configs(Configs configs) {
         this.configs = configs;
@@ -257,7 +258,7 @@ public class CosmosClientBuilder {
 
     private void ifThrowIllegalArgException(boolean value, String error) {
         if (value) {
-            throw new IllegalArgumentException(error);
+            throw logger.logExceptionAsError(new IllegalArgumentException(error));
         }
     }
 }

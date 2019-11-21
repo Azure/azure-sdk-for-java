@@ -27,7 +27,7 @@ import java.util.Map;
  * When a transport level error happens that request is not able to reach the
  * service, an IllegalStateException is thrown instead of CosmosClientException.
  */
-public class CosmosClientException extends Exception {
+public class CosmosClientException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     private final int statusCode;
@@ -35,12 +35,13 @@ public class CosmosClientException extends Exception {
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
     private CosmosError cosmosError;
+    private String resourceAddress;
 
     long lsn;
     String partitionKeyRangeId;
     Map<String, String> requestHeaders;
     URI requestUri;
-    String resourceAddress;
+
 
     CosmosClientException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
@@ -233,6 +234,10 @@ public class CosmosClientException extends Exception {
         return this.resourceAddress;
     }
 
+    void setResourceAddress(String resourceAddress) {
+        this.resourceAddress = resourceAddress;
+    }
+
     /**
      * Gets the Cosmos Response Diagnostic Statistics associated with this exception.
      *
@@ -250,7 +255,7 @@ public class CosmosClientException extends Exception {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" + "error=" + cosmosError + ", resourceAddress='"
-                   + resourceAddress + '\'' + ", statusCode=" + statusCode + ", message=" + getMessage() 
+                   + resourceAddress + '\'' + ", statusCode=" + statusCode + ", message=" + getMessage()
                    + ", causeInfo=" + causeInfo() + ", responseHeaders=" + responseHeaders + ", requestHeaders="
                    + requestHeaders + '}';
     }

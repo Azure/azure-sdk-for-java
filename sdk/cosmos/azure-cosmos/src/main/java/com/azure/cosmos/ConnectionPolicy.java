@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
  * Represents the Connection policy associated with a DocumentClient in the Azure Cosmos DB database service.
  */
 public final class ConnectionPolicy {
-
+    private final ClientLogger logger = new ClientLogger(ConnectionPolicy.class);
     private static final int DEFAULT_REQUEST_TIMEOUT_IN_MILLIS = 60 * 1000;
     // defaultMediaRequestTimeout is based upon the blob client timeout and the
     // retry policy.
@@ -189,7 +191,7 @@ public final class ConnectionPolicy {
      */
     public ConnectionPolicy setRetryOptions(RetryOptions retryOptions) {
         if (retryOptions == null) {
-            throw new IllegalArgumentException("retryOptions value must not be null.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("retryOptions value must not be null."));
         }
 
         this.retryOptions = retryOptions;
@@ -223,7 +225,7 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the flag to enable writes on any locations (regions) for geo-replicated database accounts in the Azure 
+     * Gets the flag to enable writes on any locations (regions) for geo-replicated database accounts in the Azure
      * Cosmos DB service.
      * <p>
      * When the value of this property is true, the SDK will direct write operations to
@@ -258,7 +260,7 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Sets the flag to enable writes on any locations (regions) for geo-replicated database accounts in the Azure 
+     * Sets the flag to enable writes on any locations (regions) for geo-replicated database accounts in the Azure
      * Cosmos DB service.
      * <p>
      * When the value of this property is true, the SDK will direct write operations to
@@ -270,7 +272,7 @@ public final class ConnectionPolicy {
      * DEFAULT value is false indicating that writes are only directed to
      * first region in PreferredLocations property.
      *
-     * @param usingMultipleWriteLocations flag to enable writes on any locations (regions) for geo-replicated 
+     * @param usingMultipleWriteLocations flag to enable writes on any locations (regions) for geo-replicated
      * database accounts.
      * @return the ConnectionPolicy.
      */
@@ -289,7 +291,7 @@ public final class ConnectionPolicy {
      * 1. {@link #enableEndpointDiscovery} is true
      * 2. the Azure Cosmos DB account has more than one region
      *
-     * @param enableReadRequestsFallback flag to enable reads to go to multiple regions configured on an account of 
+     * @param enableReadRequestsFallback flag to enable reads to go to multiple regions configured on an account of
      * Azure Cosmos DB service.
      * @return the ConnectionPolicy.
      */
