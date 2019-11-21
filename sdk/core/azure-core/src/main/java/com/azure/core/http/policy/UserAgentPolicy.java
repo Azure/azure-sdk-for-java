@@ -24,13 +24,13 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
 
     /**
      * Key for {@link Context} to add a value which will override the User-Agent supplied in this policy in an ad-hoc
-     * manor.
+     * manner.
      */
     public static final String OVERRIDE_USER_AGENT_CONTEXT_KEY = "Override-User-Agent";
 
     /**
      * Key for {@link Context} to add a value which will be appended to the User-Agent supplied in this policy in an
-     * ad-hoc manor.
+     * ad-hoc manner.
      */
     public static final String APPEND_USER_AGENT_CONTEXT_KEY = "Append-User-Agent";
 
