@@ -37,6 +37,8 @@ import java.util.function.Supplier;
  * @see Flux
  */
 public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
+    private final Supplier<Mono<PagedResponse<T>>> firstPageRetriever;
+    private final Function<String, Mono<PagedResponse<T>>> nextPageRetriever;
 
     /**
      * Creates an instance of {@link PagedFlux} that consists of only a single page of results. The only argument to
@@ -49,6 +51,8 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      */
     public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever) {
         super(firstPageRetriever);
+        this.firstPageRetriever = firstPageRetriever;
+        this.nextPageRetriever = continuationToken -> Mono.empty();
     }
 
     /**
@@ -65,6 +69,8 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
                      Function<String, Mono<PagedResponse<T>>> nextPageRetriever) {
         super(firstPageRetriever, nextPageRetriever);
+        this.firstPageRetriever = firstPageRetriever;
+        this.nextPageRetriever = nextPageRetriever;
     }
 
     /**
@@ -75,9 +81,9 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * @return A PagedFlux of type S.
      */
     public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
-        return new PagedFlux<S>(() -> getFirstPageRetriever().get()
+        return new PagedFlux<S>(() -> this.firstPageRetriever.get()
             .map(mapPagedResponse(mapper)),
-            continuationToken -> getNextPageRetriever().apply(continuationToken)
+            continuationToken -> this.nextPageRetriever.apply(continuationToken)
                 .map(mapPagedResponse(mapper)));
     }
 
