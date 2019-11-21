@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 
-import static com.azure.core.amqp.exception.ErrorCondition.SERVER_BUSY_ERROR;
+import static com.azure.core.amqp.exception.AmqpErrorCondition.SERVER_BUSY_ERROR;
 
 /**
  * An abstract representation of a policy to govern retrying of messaging operations.

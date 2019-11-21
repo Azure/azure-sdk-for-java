@@ -3,17 +3,17 @@
 
 package com.azure.core.amqp;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.amqp.exception.ErrorContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
 public class FixedRetryPolicyTest {
-    private final ErrorContext errorContext = new ErrorContext("test-namespace");
-    private final AmqpException exception = new AmqpException(true, ErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
+    private final AmqpErrorContext errorContext = new AmqpErrorContext("test-namespace");
+    private final AmqpException exception = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
     private final Duration minBackoff = Duration.ofSeconds(15);
     private final Duration maxBackoff = Duration.ofSeconds(60);
     private final Duration tolerance = Duration.ofSeconds(1);

@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.amqp.exception.ErrorContext;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.util.logging.ClientLogger;
@@ -248,8 +248,8 @@ public class ConnectionHandler extends Handler {
         close();
     }
 
-    public ErrorContext getErrorContext() {
-        return new ErrorContext(getHostname());
+    public AmqpErrorContext getErrorContext() {
+        return new AmqpErrorContext(getHostname());
     }
 
     private static SslDomain createSslDomain(SslDomain.Mode mode) {

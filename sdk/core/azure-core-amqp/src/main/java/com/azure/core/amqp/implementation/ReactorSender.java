@@ -4,9 +4,9 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
@@ -145,7 +145,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                 String.format(Locale.US,
                     "Error sending. Size of the payload exceeded maximum message size: %s kb",
                     maxMessageSize / 1024);
-            final Throwable error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage,
+            final Throwable error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage,
                 exception, handler.getErrorContext(sender));
 
             return Mono.error(error);
@@ -192,7 +192,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                     String.format(Locale.US,
                         "Size of the payload exceeded maximum message size: %s kb",
                         maxMessageSizeTemp / 1024);
-                final AmqpException error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
+                final AmqpException error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
                     exception, handler.getErrorContext(sender));
 
                 return Mono.error(error);
@@ -205,7 +205,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     }
 
     @Override
-    public ErrorContext getErrorContext() {
+    public AmqpErrorContext getErrorContext() {
         return handler.getErrorContext(sender);
     }
 
@@ -353,7 +353,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                     delivery.free();
                 }
 
-                final ErrorContext context = handler.getErrorContext(sender);
+                final AmqpErrorContext context = handler.getErrorContext(sender);
                 final Throwable exception = sendException != null
                     ? new OperationCancelledException(String.format(Locale.US,
                     "Entity(%s): send operation failed. Please see cause for more details", entityPath),
@@ -521,7 +521,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             if (exceptionUsed instanceof AmqpException) {
                 exception = (AmqpException) exceptionUsed;
             } else {
-                exception = new AmqpException(true, ErrorCondition.TIMEOUT_ERROR,
+                exception = new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR,
                     String.format(Locale.US, "Entity(%s): Send operation timed out", entityPath),
                     handler.getErrorContext(sender));
             }

@@ -7,8 +7,8 @@ import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -331,7 +331,7 @@ public class EventHubProducerAsyncClientTest {
         // Act & Assert
         StepVerifier.create(producer.send(testData))
             .verifyErrorMatches(error -> error instanceof AmqpException
-                && ((AmqpException) error).getErrorCondition() == ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
+                && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
 
         verify(link, times(0)).send(any(Message.class));
     }
