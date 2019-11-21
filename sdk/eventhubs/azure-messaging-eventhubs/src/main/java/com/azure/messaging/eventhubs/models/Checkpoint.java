@@ -36,8 +36,9 @@ public class Checkpoint {
      *
      * @param fullyQualifiedNamespace the fully qualified namespace of the Event Hub.
      */
-    public void setFullyQualifiedNamespace(final String fullyQualifiedNamespace) {
+    public Checkpoint setFullyQualifiedNamespace(final String fullyQualifiedNamespace) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+        return this;
     }
 
     /**

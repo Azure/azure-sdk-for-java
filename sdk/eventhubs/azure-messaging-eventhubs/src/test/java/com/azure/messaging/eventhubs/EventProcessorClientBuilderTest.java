@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Unit tests for {@link EventProcessorClientBuilder}.
  */
-public class EventProcessorClientClientBuilderTest {
+public class EventProcessorClientBuilderTest {
 
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";

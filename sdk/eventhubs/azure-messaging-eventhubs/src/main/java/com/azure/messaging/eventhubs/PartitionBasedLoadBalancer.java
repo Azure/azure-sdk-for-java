@@ -342,6 +342,7 @@ final class PartitionBasedLoadBalancer {
         final String partitionIdToClaim) {
         PartitionOwnership previousPartitionOwnership = partitionOwnershipMap.get(partitionIdToClaim);
         PartitionOwnership partitionOwnershipRequest = new PartitionOwnership()
+            .setFullyQualifiedNamespace(this.fullyQualifiedNamespace)
             .setOwnerId(this.ownerId)
             .setPartitionId(partitionIdToClaim)
             .setConsumerGroup(this.consumerGroupName)
