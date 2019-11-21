@@ -128,7 +128,7 @@ public class Configuration implements Cloneable {
     private static final Configuration GLOBAL_CONFIGURATION = new Configuration();
 
     private static final String LOADED_FROM_RUNTIME = "Loaded {} from runtime parameters with value {}.";
-    private static final String LOADED_FROM_ENVIRONMENT = "Loaded {} from environment variables with value {}.";
+    private static final String LOADED_FROM_ENVIRONMENT = "Loaded {} from environment variables.";
 
     private final ClientLogger logger = new ClientLogger(Configuration.class);
 
@@ -347,7 +347,7 @@ public class Configuration implements Cloneable {
         } else {
             // Value changed, log it!
             configurations.put(name, value);
-            logger.info(logMessage, name, value);
+            logger.verbose(logMessage, name);
             return true;
         }
     }
