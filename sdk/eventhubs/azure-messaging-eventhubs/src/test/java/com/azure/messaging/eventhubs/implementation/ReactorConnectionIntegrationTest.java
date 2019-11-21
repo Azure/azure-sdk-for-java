@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
-import com.azure.core.amqp.implementation.CBSChannel;
+import com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -72,7 +72,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
     public void getCbsNode() {
         // Act & Assert
         StepVerifier.create(connection.getCBSNode())
-            .assertNext(node -> Assertions.assertTrue(node instanceof CBSChannel))
+            .assertNext(node -> Assertions.assertTrue(node instanceof ClaimsBasedSecurityChannel))
             .verifyComplete();
     }
 

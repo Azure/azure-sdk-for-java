@@ -271,7 +271,7 @@ public class ReactorConnectionTest {
         // Act and Assert
         StepVerifier.create(this.connection.getCBSNode())
             .assertNext(node -> {
-                Assertions.assertTrue(node instanceof CBSChannel);
+                Assertions.assertTrue(node instanceof ClaimsBasedSecurityChannel);
             }).verifyComplete();
     }
 
@@ -324,7 +324,7 @@ public class ReactorConnectionTest {
 
         StepVerifier.create(connection.getCBSNode())
             .assertNext(node -> {
-                Assertions.assertTrue(node instanceof CBSChannel);
+                Assertions.assertTrue(node instanceof ClaimsBasedSecurityChannel);
             }).verifyComplete();
 
         verify(transport, times(1)).unbind();

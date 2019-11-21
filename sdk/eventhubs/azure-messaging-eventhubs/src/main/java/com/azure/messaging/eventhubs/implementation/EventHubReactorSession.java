@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -48,14 +48,14 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      * @param sessionName Name of the session.
      * @param provider Provides reactor instances for messages to sent with.
      * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
-     * @param cbsNodeSupplier Mono that returns a reference to the {@link CBSNode}.
+     * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
      * @param openTimeout Timeout to wait for the session operation to complete.
      */
     EventHubReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
                            ReactorProvider provider, ReactorHandlerProvider handlerProvider,
-                           Mono<CBSNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
+                           Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
                            Duration openTimeout, MessageSerializer messageSerializer) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
             messageSerializer, openTimeout);

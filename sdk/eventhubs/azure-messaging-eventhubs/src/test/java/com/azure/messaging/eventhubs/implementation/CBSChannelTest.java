@@ -5,12 +5,12 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CBSChannel;
+import com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -40,7 +40,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
 
     private TestReactorConnection connection;
-    private CBSChannel cbsChannel;
+    private ClaimsBasedSecurityChannel cbsChannel;
     private ConnectionStringProperties connectionString;
     private AzureTokenManagerProvider azureTokenManagerProvider;
     @Mock
@@ -73,7 +73,7 @@ public class CBSChannelTest extends IntegrationTestBase {
 
         final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 
-        cbsChannel = new CBSChannel(requestResponseChannel, tokenCredential, connectionOptions.getAuthorizationType(),
+        cbsChannel = new ClaimsBasedSecurityChannel(requestResponseChannel, tokenCredential, connectionOptions.getAuthorizationType(),
             retryOptions);
     }
 
@@ -109,7 +109,7 @@ public class CBSChannelTest extends IntegrationTestBase {
 
         final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 
-        final CBSNode node = new CBSChannel(requestResponseChannel, tokenProvider, SHARED_ACCESS_SIGNATURE,
+        final ClaimsBasedSecurityNode node = new ClaimsBasedSecurityChannel(requestResponseChannel, tokenProvider, SHARED_ACCESS_SIGNATURE,
             new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(5)));
 
         // Act & Assert
