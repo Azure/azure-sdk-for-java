@@ -16,7 +16,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 
@@ -137,7 +137,7 @@ public final class SecretClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
             buildConfiguration, serviceVersion));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
@@ -274,7 +274,7 @@ public final class SecretClientBuilder {
         }
 
         String configEndpoint = configuration.get("AZURE_KEYVAULT_ENDPOINT");
-        if (ImplUtils.isNullOrEmpty(configEndpoint)) {
+        if (CoreUtils.isNullOrEmpty(configEndpoint)) {
             return null;
         }
 

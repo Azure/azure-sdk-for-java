@@ -23,6 +23,9 @@ public class CustomIOHandler extends IOHandler {
         // amount of time to get detected. In practice, we saw 15-20 minutes, on Linux docker containers when 
         // simulating packet drops with iptables rules.
         transport.setIdleTimeout(AmqpConstants.TRANSPORT_IDLE_TIMEOUT_MILLIS);
+        // We are creating transport, we should also set the max frame size
+        // Only if transport is created by qpid handler will it set max frame size from reactor options.
+        transport.setMaxFrameSize(event.getReactor().getOptions().getMaxFrameSize());
         transport.sasl();
         transport.setEmitFlowEventOnSend(false);
         transport.bind(connection);

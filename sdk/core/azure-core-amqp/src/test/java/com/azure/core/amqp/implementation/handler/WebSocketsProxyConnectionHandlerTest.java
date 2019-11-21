@@ -3,12 +3,12 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.amqp.models.ProxyAuthenticationType;
-import com.azure.core.amqp.models.ProxyConfiguration;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyOptions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.net.InetSocketAddress;
@@ -16,6 +16,7 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
@@ -31,8 +32,8 @@ public class WebSocketsProxyConnectionHandlerTest {
     private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, PROXY_ADDRESS);
     private static final String USERNAME = "test-user";
     private static final String PASSWORD = "test-password";
-    private static final ProxyConfiguration PROXY_CONFIGURATION =
-        new ProxyConfiguration(ProxyAuthenticationType.DIGEST, PROXY, USERNAME, PASSWORD);
+    private static final ProxyOptions PROXY_CONFIGURATION =
+        new ProxyOptions(ProxyAuthenticationType.DIGEST, PROXY, USERNAME, PASSWORD);
 
     private ProxySelector originalProxySelector;
     private ProxySelector proxySelector;
@@ -40,7 +41,7 @@ public class WebSocketsProxyConnectionHandlerTest {
     /**
      * Creates mocks of the proxy selector and authenticator and sets them as defaults.
      */
-    @Before
+    @BeforeEach
     public void setup() {
         originalProxySelector = ProxySelector.getDefault();
 
@@ -48,19 +49,19 @@ public class WebSocketsProxyConnectionHandlerTest {
         ProxySelector.setDefault(proxySelector);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         ProxySelector.setDefault(originalProxySelector);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void nullProxyConfiguration() {
-        new WebSocketsProxyConnectionHandler(CONNECTION_ID, HOSTNAME, null);
+        assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID, HOSTNAME, null));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void nullHostname() {
-        new WebSocketsProxyConnectionHandler(CONNECTION_ID, null, PROXY_CONFIGURATION);
+        assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID, null, PROXY_CONFIGURATION));
     }
 
     /**
@@ -76,8 +77,8 @@ public class WebSocketsProxyConnectionHandlerTest {
             PROXY_CONFIGURATION);
 
         // Act and Assert
-        Assert.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
-        Assert.assertEquals(PROXY_ADDRESS.getPort(), handler.getProtocolPort());
+        Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
+        Assertions.assertEquals(PROXY_ADDRESS.getPort(), handler.getProtocolPort());
     }
 
     /**
@@ -90,11 +91,11 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.singletonList(PROXY));
 
         final WebSocketsProxyConnectionHandler handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, HOSTNAME,
-            ProxyConfiguration.SYSTEM_DEFAULTS);
+            ProxyOptions.SYSTEM_DEFAULTS);
 
         // Act and Assert
-        Assert.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
-        Assert.assertEquals(PROXY_ADDRESS.getPort(), handler.getProtocolPort());
+        Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
+        Assertions.assertEquals(PROXY_ADDRESS.getPort(), handler.getProtocolPort());
 
         verify(proxySelector, times(2))
             .select(argThat(u -> u.getHost().equals(HOSTNAME)));
@@ -108,7 +109,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         // Arrange
         final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
-        final ProxyConfiguration configuration = new ProxyConfiguration(ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
+        final ProxyOptions configuration = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
         final String host = "foo.eventhubs.azure.com";
 
         when(proxySelector.select(any())).thenReturn(Collections.singletonList(PROXY));
@@ -116,8 +117,8 @@ public class WebSocketsProxyConnectionHandlerTest {
         final WebSocketsProxyConnectionHandler handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, host, configuration);
 
         // Act and Assert
-        Assert.assertEquals(address.getHostName(), handler.getHostname());
-        Assert.assertEquals(address.getPort(), handler.getProtocolPort());
+        Assertions.assertEquals(address.getHostName(), handler.getHostname());
+        Assertions.assertEquals(address.getPort(), handler.getProtocolPort());
 
         verifyZeroInteractions(proxySelector);
     }
@@ -131,12 +132,12 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.emptyList());
 
         // Act and Assert
-        Assert.assertFalse(WebSocketsProxyConnectionHandler.shouldUseProxy(host));
+        Assertions.assertFalse(WebSocketsProxyConnectionHandler.shouldUseProxy(host));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldUseProxyHostNull() {
-        WebSocketsProxyConnectionHandler.shouldUseProxy(null);
+        assertThrows(NullPointerException.class, () -> WebSocketsProxyConnectionHandler.shouldUseProxy(null));
     }
 
     @Test
@@ -146,6 +147,6 @@ public class WebSocketsProxyConnectionHandlerTest {
         ProxySelector.setDefault(null);
 
         // Act and Assert
-        Assert.assertFalse(WebSocketsProxyConnectionHandler.shouldUseProxy(host));
+        Assertions.assertFalse(WebSocketsProxyConnectionHandler.shouldUseProxy(host));
     }
 }

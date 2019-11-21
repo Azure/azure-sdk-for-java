@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import reactor.core.Exceptions;
@@ -26,12 +26,12 @@ import static java.util.stream.Collectors.toList;
 
 /**
  * This class is responsible for balancing the load of processing events from all partitions of an Event Hub by
- * distributing the number of partitions uniformly among all the  active {@link EventProcessor EventProcessors}.
+ * distributing the number of partitions uniformly among all the  active {@link EventProcessorClient EventProcessors}.
  * <p>
- * This load balancer will retrieve partition ownership details from the {@link EventProcessorStore} to find the number
- * of active {@link EventProcessor EventProcessors}. It uses the last modified time to decide if an EventProcessor is
- * active. If a partition ownership entry has not be updated for a specified duration of time, the owner of that
- * partition is considered inactive and the partition is available for other EventProcessors to own.
+ * This load balancer will retrieve partition ownership details from the {@link CheckpointStore} to find the number of
+ * active {@link EventProcessorClient EventProcessorCients}. It uses the last modified time to decide if an
+ * EventProcessor is active. If a partition ownership entry has not be updated for a specified duration of time, the
+ * owner of that partition is considered inactive and the partition is available for other EventProcessors to own.
  * </p>
  */
 final class PartitionBasedLoadBalancer {
@@ -41,7 +41,7 @@ final class PartitionBasedLoadBalancer {
 
     private final String eventHubName;
     private final String consumerGroupName;
-    private final EventProcessorStore eventProcessorStore;
+    private final CheckpointStore checkpointStore;
     private final EventHubAsyncClient eventHubAsyncClient;
     private final String ownerId;
     private final long inactiveTimeLimitInSeconds;
@@ -51,22 +51,21 @@ final class PartitionBasedLoadBalancer {
     /**
      * Creates an instance of PartitionBasedLoadBalancer for the given Event Hub name and consumer group.
      *
-     * @param eventProcessorStore The partition manager that this load balancer will use to read/update ownership
-     * details.
+     * @param checkpointStore The partition manager that this load balancer will use to read/update ownership details.
      * @param eventHubAsyncClient The asynchronous Event Hub client used to consume events.
-     * @param eventHubName The Event Hub name the {@link EventProcessor} is associated with.
-     * @param consumerGroupName The consumer group name the {@link EventProcessor} is associated with.
-     * @param ownerId The identifier of the {@link EventProcessor} that owns this load balancer.
+     * @param eventHubName The Event Hub name the {@link EventProcessorClient} is associated with.
+     * @param consumerGroupName The consumer group name the {@link EventProcessorClient} is associated with.
+     * @param ownerId The identifier of the {@link EventProcessorClient} that owns this load balancer.
      * @param inactiveTimeLimitInSeconds The time in seconds to wait for an update on an ownership record before
      * assuming the owner of the partition is inactive.
      * @param partitionPumpManager The partition pump manager that keeps track of all EventHubConsumers and partitions
-     * that this {@link EventProcessor} is processing.
+     * that this {@link EventProcessorClient} is processing.
      */
-    PartitionBasedLoadBalancer(final EventProcessorStore eventProcessorStore,
+    PartitionBasedLoadBalancer(final CheckpointStore checkpointStore,
         final EventHubAsyncClient eventHubAsyncClient, final String fullyQualifiedNamespace,
         final String eventHubName, final String consumerGroupName, final String ownerId,
         final long inactiveTimeLimitInSeconds, final PartitionPumpManager partitionPumpManager) {
-        this.eventProcessorStore = eventProcessorStore;
+        this.checkpointStore = checkpointStore;
         this.eventHubAsyncClient = eventHubAsyncClient;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
@@ -78,8 +77,8 @@ final class PartitionBasedLoadBalancer {
 
     /**
      * This is the main method responsible for load balancing. This method is expected to be invoked by the {@link
-     * EventProcessor} periodically. Every call to this method will result in this {@link EventProcessor} owning <b>at
-     * most one</b> new partition.
+     * EventProcessorClient} periodically. Every call to this method will result in this {@link EventProcessorClient}
+     * owning <b>at most one</b> new partition.
      * <p>
      * The load is considered balanced when no active EventProcessor owns 2 partitions more than any other active
      * EventProcessor. Given that each invocation to this method results in ownership claim of at most one partition,
@@ -92,7 +91,7 @@ final class PartitionBasedLoadBalancer {
         /*
          * Retrieve current partition ownership details from the datastore.
          */
-        final Mono<Map<String, PartitionOwnership>> partitionOwnershipMono = eventProcessorStore
+        final Mono<Map<String, PartitionOwnership>> partitionOwnershipMono = checkpointStore
             .listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroupName)
             .timeout(Duration.ofSeconds(2)) // TODO: configurable by the user
             .collectMap(PartitionOwnership::getPartitionId, Function.identity());
@@ -123,7 +122,7 @@ final class PartitionBasedLoadBalancer {
 
             List<String> partitionIds = tuple.getT2();
 
-            if (ImplUtils.isNullOrEmpty(partitionIds)) {
+            if (CoreUtils.isNullOrEmpty(partitionIds)) {
                 // This may be due to an error when getting Event Hub metadata.
                 throw logger.logExceptionAsError(Exceptions.propagate(
                     new IllegalStateException("There are no partitions in Event Hub " + eventHubName)));
@@ -135,7 +134,7 @@ final class PartitionBasedLoadBalancer {
             if (!isValid(partitionOwnershipMap)) {
                 // User data is corrupt.
                 throw logger.logExceptionAsError(Exceptions.propagate(
-                    new IllegalStateException("Invalid partitionOwnership data from EventProcessorStore")));
+                    new IllegalStateException("Invalid partitionOwnership data from CheckpointStore")));
             }
 
             /*
@@ -147,7 +146,7 @@ final class PartitionBasedLoadBalancer {
                 partitionOwnershipMap);
             logger.info("Number of active ownership records {}", activePartitionOwnershipMap.size());
 
-            if (ImplUtils.isNullOrEmpty(activePartitionOwnershipMap)) {
+            if (CoreUtils.isNullOrEmpty(activePartitionOwnershipMap)) {
                 /*
                  * If the active partition ownership map is empty, this is the first time an event processor is
                  * running or all Event Processors are down for this Event Hub, consumer group combination. All
@@ -238,8 +237,8 @@ final class PartitionBasedLoadBalancer {
             .noneMatch(partitionOwnership -> {
                 return partitionOwnership.getEventHubName() == null
                     || !partitionOwnership.getEventHubName().equals(this.eventHubName)
-                    || partitionOwnership.getConsumerGroupName() == null
-                    || !partitionOwnership.getConsumerGroupName().equals(this.consumerGroupName)
+                    || partitionOwnership.getConsumerGroup() == null
+                    || !partitionOwnership.getConsumerGroup().equals(this.consumerGroupName)
                     || partitionOwnership.getPartitionId() == null
                     || partitionOwnership.getLastModifiedTime() == null
                     || partitionOwnership.getETag() == null;
@@ -305,7 +304,7 @@ final class PartitionBasedLoadBalancer {
 
     /*
      * This method will create a new map of partition id and PartitionOwnership containing only those partitions
-     * that are actively owned. All entries in the original map returned by EventProcessorStore that haven't been
+     * that are actively owned. All entries in the original map returned by CheckpointStore that haven't been
      * modified for a duration of time greater than the allowed inactivity time limit are assumed to be owned by
      * dead event processors. These will not be included in the map returned by this method.
      */
@@ -316,7 +315,8 @@ final class PartitionBasedLoadBalancer {
             .stream()
             .filter(entry -> {
                 return (System.currentTimeMillis() - entry.getValue().getLastModifiedTime() < TimeUnit.SECONDS
-                    .toMillis(inactiveTimeLimitInSeconds)) && !ImplUtils.isNullOrEmpty(entry.getValue().getOwnerId());
+                    .toMillis(inactiveTimeLimitInSeconds))
+                    && !CoreUtils.isNullOrEmpty(entry.getValue().getOwnerId());
             }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
@@ -326,7 +326,7 @@ final class PartitionBasedLoadBalancer {
         PartitionOwnership ownershipRequest = createPartitionOwnershipRequest(partitionOwnershipMap,
             partitionIdToClaim);
 
-        eventProcessorStore
+        checkpointStore
             .claimOwnership(ownershipRequest)
             .timeout(Duration.ofSeconds(1)) // TODO: configurable
             .doOnNext(partitionOwnership -> logger.info("Successfully claimed ownership of partition {}",
@@ -342,9 +342,10 @@ final class PartitionBasedLoadBalancer {
         final String partitionIdToClaim) {
         PartitionOwnership previousPartitionOwnership = partitionOwnershipMap.get(partitionIdToClaim);
         PartitionOwnership partitionOwnershipRequest = new PartitionOwnership()
+            .setFullyQualifiedNamespace(this.fullyQualifiedNamespace)
             .setOwnerId(this.ownerId)
             .setPartitionId(partitionIdToClaim)
-            .setConsumerGroupName(this.consumerGroupName)
+            .setConsumerGroup(this.consumerGroupName)
             .setEventHubName(this.eventHubName)
             .setSequenceNumber(previousPartitionOwnership == null
                 ? null

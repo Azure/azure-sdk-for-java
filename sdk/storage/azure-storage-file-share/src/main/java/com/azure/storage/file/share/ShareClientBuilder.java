@@ -8,7 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -192,7 +192,7 @@ public class ShareClientBuilder {
             // Attempt to get the SAS token from the URL passed
             String sasToken = new ShareServiceSasQueryParameters(
                 StorageImplUtils.parseQueryStringSplitValues(fullUrl.getQuery()), false).encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
@@ -301,7 +301,8 @@ public class ShareClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated ShareClientBuilder object

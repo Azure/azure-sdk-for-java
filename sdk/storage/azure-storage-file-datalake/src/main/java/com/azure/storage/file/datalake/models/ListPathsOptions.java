@@ -17,9 +17,12 @@ public class ListPathsOptions {
 
     private String path;
     private boolean recursive;
-    private boolean returnUpn;
+    private boolean userPrincipalNameReturned;
     private Integer maxResults;
 
+    /**
+     * Constructs an unpopulated {@link ListPathsOptions}.
+     */
     public ListPathsOptions() {
     }
 
@@ -33,6 +36,11 @@ public class ListPathsOptions {
         return path;
     }
 
+    /**
+     * Specifies if the call to listContainersSegment should recursively include all paths.
+     *
+     * @return {@code true} if the call to listContainerSegment recursively includes all paths.
+     */
     public boolean isRecursive() {
         return recursive;
     }
@@ -45,10 +53,10 @@ public class ListPathsOptions {
      * The default value is false. Note that group and application Object IDs are not translated because they do not
      * have unique friendly names.
      *
-     * @return the returnUpn value.
+     * @return the userPrincipalNameReturned value.
      */
-    public boolean isReturnUpn() {
-        return returnUpn;
+    public boolean isUserPrincipalNameReturned() {
+        return userPrincipalNameReturned;
     }
 
     /**
@@ -63,6 +71,12 @@ public class ListPathsOptions {
         return this;
     }
 
+    /**
+     * Specifies if the call to listContainersSegment should recursively include all paths.
+     *
+     * @param recursive {@code true} if the call to listContainerSegment recursively includes all paths.
+     * @return the updated ListPathsOptions object.
+     */
     public ListPathsOptions setRecursive(boolean recursive) {
         this.recursive = recursive;
         return this;
@@ -75,11 +89,11 @@ public class ListPathsOptions {
      * The default value is false. Note that group and application Object IDs are not translated because they do not
      * have unique friendly names.
      *
-     * @param returnUpn The returnUpn value
+     * @param isUserPrincipalNameReturned The userPrincipalNameReturned value
      * @return the updated ListPathsOptions object
      */
-    public ListPathsOptions setReturnUpn(boolean returnUpn) {
-        this.returnUpn = returnUpn;
+    public ListPathsOptions setUserPrincipalNameReturned(boolean isUserPrincipalNameReturned) {
+        this.userPrincipalNameReturned = isUserPrincipalNameReturned;
         return this;
     }
 

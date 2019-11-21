@@ -15,6 +15,9 @@ public final class FileSystemListDetails {
 
     private boolean retrieveMetadata;
 
+    /**
+     * Creates a new instance of {@link FileSystemListDetails}.
+     */
     public FileSystemListDetails() {
 
     }

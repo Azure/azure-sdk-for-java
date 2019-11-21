@@ -68,6 +68,9 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
     .build();
 ```
 
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
 ### Prerequisites
 
 - Java Development Kit (JDK) with version 8 or above
@@ -456,7 +459,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [source_code]:  src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/identity/client
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/quick-create-portal
@@ -468,5 +471,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_keyvault_cli_full]:https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
 [keys_samples]: src/samples/java/com/azure/security/keyvault/keys
 [samples_readme]: src/samples/README.md
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-keys/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-keys%2FREADME.png)

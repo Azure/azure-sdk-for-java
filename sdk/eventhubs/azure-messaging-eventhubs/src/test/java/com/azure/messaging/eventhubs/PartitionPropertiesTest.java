@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 
@@ -28,12 +28,12 @@ public class PartitionPropertiesTest {
             lastEnqueuedOffset, lastEnqueuedTime, isEmpty);
 
         // Assert
-        Assert.assertEquals(eventHub, properties.getEventHubName());
-        Assert.assertEquals(id, properties.getId());
-        Assert.assertEquals(beginningSequence, properties.getBeginningSequenceNumber());
-        Assert.assertEquals(endSequence, properties.getLastEnqueuedSequenceNumber());
-        Assert.assertEquals(lastEnqueuedOffset, properties.getLastEnqueuedOffset());
-        Assert.assertEquals(lastEnqueuedTime, properties.getLastEnqueuedTime());
-        Assert.assertEquals(isEmpty, properties.isEmpty());
+        Assertions.assertEquals(eventHub, properties.getEventHubName());
+        Assertions.assertEquals(id, properties.getId());
+        Assertions.assertEquals(beginningSequence, properties.getBeginningSequenceNumber());
+        Assertions.assertEquals(endSequence, properties.getLastEnqueuedSequenceNumber());
+        Assertions.assertEquals(lastEnqueuedOffset, properties.getLastEnqueuedOffset());
+        Assertions.assertEquals(lastEnqueuedTime, properties.getLastEnqueuedTime());
+        Assertions.assertEquals(isEmpty, properties.isEmpty());
     }
 }

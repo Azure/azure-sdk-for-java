@@ -66,17 +66,6 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
             && super.equals(obj);
     }
 
-    /**
-     * Creates a clone of this instance.
-     *
-     * @return A clone of the {@link ExponentialRetryPolicy} instance.
-     */
-    @Override
-    public RetryPolicy clone() {
-        final RetryOptions cloned = getRetryOptions().clone();
-        return new ExponentialRetryPolicy(cloned);
-    }
-
     private double computeRetryFactor() {
         final RetryOptions options = getRetryOptions();
         final Duration maxBackoff = options.getMaxDelay();

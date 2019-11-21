@@ -5,7 +5,10 @@
 package com.azure.storage.blob.implementation;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.RestProxy;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.storage.blob.models.PathRenameMode;
 
 /**
@@ -200,7 +203,12 @@ public final class AzureBlobStorageImpl {
      * Initializes an instance of AzureBlobStorage client.
      */
     public AzureBlobStorageImpl() {
-        this(RestProxy.createDefaultPipeline());
+        this(new HttpPipelineBuilder()
+                 .policies(
+                     new UserAgentPolicy(),
+                     new RetryPolicy(),
+                     new CookiePolicy())
+                 .build());
     }
 
     /**

@@ -16,16 +16,14 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 public class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
-    private static final String PUT_TOKEN_OPERATION = "operation";
-    private static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
-    private static final String PUT_TOKEN_TYPE = "type";
-    private static final String PUT_TOKEN_TYPE_VALUE_FORMAT = "servicebus.windows.net:%s";
-    private static final String PUT_TOKEN_AUDIENCE = "name";
+    static final String PUT_TOKEN_OPERATION = "operation";
+    static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
+    static final String PUT_TOKEN_TYPE = "type";
+    static final String PUT_TOKEN_AUDIENCE = "name";
 
     private final TokenCredential credential;
     private final Mono<RequestResponseChannel> cbsChannelMono;
@@ -44,17 +42,17 @@ public class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
     }
 
     @Override
-    public Mono<OffsetDateTime> authorize(final String tokenAudience) {
+    public Mono<OffsetDateTime> authorize(String tokenAudience, String scopes) {
         final Message request = Proton.message();
         final Map<String, Object> properties = new HashMap<>();
         properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
-        properties.put(PUT_TOKEN_TYPE, String.format(Locale.ROOT, PUT_TOKEN_TYPE_VALUE_FORMAT,
-            authorizationType.getTokenType()));
+        properties.put(PUT_TOKEN_TYPE, authorizationType.getTokenType());
         properties.put(PUT_TOKEN_AUDIENCE, tokenAudience);
+
         final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
         request.setApplicationProperties(applicationProperties);
 
-        return credential.getToken(new TokenRequestContext().addScopes(tokenAudience)).flatMap(accessToken -> {
+        return credential.getToken(new TokenRequestContext().addScopes(scopes)).flatMap(accessToken -> {
             request.setBody(new AmqpValue(accessToken.getToken()));
 
             return cbsChannelMono.flatMap(x -> x.sendWithAck(request))

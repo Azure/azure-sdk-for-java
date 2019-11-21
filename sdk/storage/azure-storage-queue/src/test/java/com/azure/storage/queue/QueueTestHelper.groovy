@@ -4,7 +4,7 @@
 package com.azure.storage.queue
 
 import com.azure.core.http.rest.Response
-import com.azure.core.implementation.util.ImplUtils
+import com.azure.core.util.CoreUtils
 import com.azure.core.util.Configuration
 import com.azure.storage.queue.models.QueueAnalyticsLogging
 import com.azure.storage.queue.models.QueueCorsRule
@@ -36,7 +36,7 @@ class QueueTestHelper {
             if (!Objects.equals(expected.getName(), actual.getName())) {
                 return false
             }
-            if (expected.getMetadata() != null && !ImplUtils.isNullOrEmpty(actual.getMetadata())) {
+            if (expected.getMetadata() != null && !CoreUtils.isNullOrEmpty(actual.getMetadata())) {
                 return expected.getMetadata() == actual.getMetadata()
             }
             return true

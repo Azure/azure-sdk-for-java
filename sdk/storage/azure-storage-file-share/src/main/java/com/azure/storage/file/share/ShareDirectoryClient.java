@@ -89,11 +89,11 @@ public class ShareDirectoryClient {
      * <p>If the file doesn't exist in this directory {@link ShareDirectoryClient#create()} create} in the client will
      * need to be called before interaction with the directory can happen.</p>
      *
-     * @param subDirectoryName Name of the directory
+     * @param subdirectoryName Name of the directory
      * @return a ShareDirectoryClient that interacts with the specified directory
      */
-    public ShareDirectoryClient getSubDirectoryClient(String subDirectoryName) {
-        return new ShareDirectoryClient(shareDirectoryAsyncClient.getSubDirectoryClient(subDirectoryName));
+    public ShareDirectoryClient getSubdirectoryClient(String subdirectoryName) {
+        return new ShareDirectoryClient(shareDirectoryAsyncClient.getSubdirectoryClient(subdirectoryName));
     }
 
     /**
@@ -492,18 +492,18 @@ public class ShareDirectoryClient {
      *
      * <p>Create the sub directory "subdir" </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createSubDirectory#string}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createSubdirectory#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
-     * @param subDirectoryName Name of the subdirectory
+     * @param subdirectoryName Name of the subdirectory
      * @return The subdirectory client.
      * @throws ShareStorageException If the subdirectory has already existed, the parent directory does not exist or
      * directory is an invalid resource name.
      */
-    public ShareDirectoryClient createSubDirectory(String subDirectoryName) {
-        return createSubDirectoryWithResponse(subDirectoryName, null, null, null,
+    public ShareDirectoryClient createSubdirectory(String subdirectoryName) {
+        return createSubdirectoryWithResponse(subdirectoryName, null, null, null,
             null, Context.NONE).getValue();
     }
 
@@ -515,12 +515,12 @@ public class ShareDirectoryClient {
      *
      * <p>Create the subdirectory named "subdir", with metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createSubDirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
-     * @param subDirectoryName Name of the subdirectory
+     * @param subdirectoryName Name of the subdirectory
      * @param smbProperties The SMB properties of the directory.
      * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the subdirectory
@@ -532,10 +532,10 @@ public class ShareDirectoryClient {
      * subdirectory is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareDirectoryClient> createSubDirectoryWithResponse(String subDirectoryName,
+    public Response<ShareDirectoryClient> createSubdirectoryWithResponse(String subdirectoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
         Context context) {
-        ShareDirectoryClient shareDirectoryClient = getSubDirectoryClient(subDirectoryName);
+        ShareDirectoryClient shareDirectoryClient = getSubdirectoryClient(subdirectoryName);
         return new SimpleResponse<>(shareDirectoryClient
             .createWithResponse(smbProperties, filePermission, metadata, timeout, context), shareDirectoryClient);
     }
@@ -548,17 +548,17 @@ public class ShareDirectoryClient {
      *
      * <p>Delete the subdirectory named "subdir"</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.deleteSubDirectory#string}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectory#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
-     * @param subDirectoryName Name of the subdirectory
+     * @param subdirectoryName Name of the subdirectory
      * @throws ShareStorageException If the subdirectory doesn't exist, the parent directory does not exist or
      * subdirectory name is an invalid resource name.
      */
-    public void deleteSubDirectory(String subDirectoryName) {
-        deleteSubDirectoryWithResponse(subDirectoryName, null, Context.NONE);
+    public void deleteSubdirectory(String subdirectoryName) {
+        deleteSubdirectoryWithResponse(subdirectoryName, null, Context.NONE);
     }
 
     /**
@@ -569,12 +569,12 @@ public class ShareDirectoryClient {
      *
      * <p>Delete the subdirectory named "subdir"</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.deleteSubDirectoryWithResponse#string-duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryWithResponse#string-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
-     * @param subDirectoryName Name of the subdirectory
+     * @param subdirectoryName Name of the subdirectory
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
@@ -583,8 +583,8 @@ public class ShareDirectoryClient {
      * subdirectory name is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<Void> deleteSubDirectoryWithResponse(String subDirectoryName, Duration timeout, Context context) {
-        Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteSubDirectoryWithResponse(subDirectoryName,
+    public Response<Void> deleteSubdirectoryWithResponse(String subdirectoryName, Duration timeout, Context context) {
+        Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteSubdirectoryWithResponse(subdirectoryName,
             context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

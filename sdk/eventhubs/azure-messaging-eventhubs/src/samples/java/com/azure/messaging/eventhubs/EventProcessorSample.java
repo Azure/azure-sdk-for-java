@@ -4,63 +4,63 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.PartitionEvent;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Mono;
+
+import java.util.concurrent.TimeUnit;
 
 /**
- * Sample code to demonstrate how a customer might use {@link EventProcessor}.
+ * Sample code to demonstrate how a customer might use {@link EventProcessorClient}.
  */
 public class EventProcessorSample {
 
     private static final String EH_CONNECTION_STRING = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
     /**
-     * Main method to demonstrate starting and stopping a {@link EventProcessor}.
+     * Main method to demonstrate starting and stopping a {@link EventProcessorClient}.
      *
      * @param args The input arguments to this executable.
-     * @throws Exception If there are any errors while running the {@link EventProcessor}.
+     * @throws Exception If there are any errors while running the {@link EventProcessorClient}.
      */
     public static void main(String[] args) throws Exception {
 
         Logger logger = LoggerFactory.getLogger(EventProcessorSample.class);
-        Function<PartitionEvent, Mono<Void>> processEvent = partitionEvent -> {
+        Consumer<PartitionEvent> processEvent = partitionEvent -> {
             logger.info(
                 "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
                 partitionEvent.getPartitionContext().getEventHubName(),
                 partitionEvent.getPartitionContext().getConsumerGroup(),
                 partitionEvent.getPartitionContext().getPartitionId(),
-                partitionEvent.getEventData().getSequenceNumber());
-            return partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getEventData());
+                partitionEvent.getData().getSequenceNumber());
+            partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData()).subscribe();
         };
 
-        EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()
+        EventProcessorClientBuilder eventProcessorClientBuilder = new EventProcessorClientBuilder()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .connectionString(EH_CONNECTION_STRING)
             .processEvent(processEvent)
-            .eventProcessorStore(new InMemoryEventProcessorStore());
+            .checkpointStore(new InMemoryCheckpointStore());
 
-        EventProcessor eventProcessor = eventProcessorBuilder.buildEventProcessor();
+        EventProcessorClient eventProcessorClient = eventProcessorClientBuilder.buildEventProcessorClient();
         System.out.println("Starting event processor");
-        eventProcessor.start();
-        eventProcessor.start(); // should be a no-op
+        eventProcessorClient.start();
+        eventProcessorClient.start(); // should be a no-op
 
         // Continue to perform other tasks while the processor is running in the background.
         Thread.sleep(TimeUnit.MINUTES.toMillis(1));
 
         System.out.println("Stopping event processor");
-        eventProcessor.stop();
+        eventProcessorClient.stop();
 
         Thread.sleep(TimeUnit.SECONDS.toMillis(40));
         System.out.println("Starting a new instance of event processor");
-        eventProcessor = eventProcessorBuilder.buildEventProcessor();
-        eventProcessor.start();
+        eventProcessorClient = eventProcessorClientBuilder.buildEventProcessorClient();
+        eventProcessorClient.start();
         // Continue to perform other tasks while the processor is running in the background.
         Thread.sleep(TimeUnit.MINUTES.toMillis(1));
         System.out.println("Stopping event processor");
-        eventProcessor.stop();
+        eventProcessorClient.stop();
         System.out.println("Exiting process");
     }
 }

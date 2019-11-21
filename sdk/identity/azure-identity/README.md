@@ -282,12 +282,12 @@ ChainedTokenCredential credentialChain = new ChainedTokenCredentialBuilder()
 
 // the chain can be used anywhere a credential is required
 
-// The fully qualified host name for the Event Hubs namespace. This is likely to be similar to:
+// The fully qualified name for the Event Hubs namespace. This is likely to be similar to:
 // {your-namespace}.servicebus.windows.net
-String host = "<< EVENT HUBS HOST >>"
-String eventHubPath = "<< NAME OF THE EVENT HUB >>";
+String fullyQualifiedNamespace = "<< EVENT HUBS FULLY QUALIFIED NAMESPACE >>";
+String eventHubName = "<< NAME OF THE EVENT HUB >>";
 EventHubAsyncClient client = new EventHubClientBuilder()
-    .credential(host, eventHubPath, credentialChain)
+    .credential(fullyQualifiedNamespace, eventHubName, credentialChain)
     .buildAsyncClient();
 ```
 
@@ -321,4 +321,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_core_library]: ../../core
 [javadoc]: http://azure.github.io/azure-sdk-for-java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/identity/azure-identity/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)

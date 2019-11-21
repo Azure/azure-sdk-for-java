@@ -88,7 +88,7 @@ For more extensive documentation on Azure Key Vault, see the [API reference docu
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[[KEYS_SDK_README]: ../../README.md
+[KEYS_SDK_README]: ../../README.md
 [SDK_README_CONTRIBUTING]: ../../README.md#contributing
 [SDK_README_GETTING_STARTED]: ../../README.md#getting-started
 [SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
@@ -108,4 +108,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_wrapUnwrap]: java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperations.java
 [sample_wrapUnwrapAsync]: java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperationsAsync.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-keys/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-keys%2Fsrc%2Fsamples%2FREADME.png)

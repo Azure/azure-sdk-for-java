@@ -22,6 +22,9 @@ import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * BlobOutputStream allows for the uploading of data to a blob using a stream-like approach.
+ */
 public abstract class BlobOutputStream extends StorageOutputStream {
 
     BlobOutputStream(final int writeThreshold) {
@@ -34,13 +37,13 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     static BlobOutputStream blockBlobOutputStream(final BlockBlobAsyncClient client,
-        final BlobRequestConditions accessConditions) {
-        return new BlockBlobOutputStream(client, accessConditions);
+        final BlobRequestConditions requestConditions) {
+        return new BlockBlobOutputStream(client, requestConditions);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
-        final BlobRequestConditions accessConditions) {
-        return new PageBlobOutputStream(client, pageRange, accessConditions);
+        final BlobRequestConditions requestConditions) {
+        return new PageBlobOutputStream(client, pageRange, requestConditions);
     }
 
     abstract void commit();
@@ -131,15 +134,16 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     private static final class BlockBlobOutputStream extends BlobOutputStream {
-        private final BlobRequestConditions accessConditions;
+        private final BlobRequestConditions requestConditions;
         private final String blockIdPrefix;
         private final List<String> blockList;
         private final BlockBlobAsyncClient client;
 
-        private BlockBlobOutputStream(final BlockBlobAsyncClient client, final BlobRequestConditions accessConditions) {
+        private BlockBlobOutputStream(final BlockBlobAsyncClient client,
+            final BlobRequestConditions requestConditions) {
             super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
             this.client = client;
-            this.accessConditions = (accessConditions == null) ? new BlobRequestConditions() : accessConditions;
+            this.requestConditions = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
             this.blockIdPrefix = UUID.randomUUID().toString() + '-';
             this.blockList = new ArrayList<>();
         }
@@ -157,7 +161,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private Mono<Void> writeBlock(Flux<ByteBuffer> blockData, String blockId, long writeLength) {
             return client.stageBlockWithResponse(blockId, blockData, writeLength, null,
-                this.accessConditions.getLeaseId())
+                this.requestConditions.getLeaseId())
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
@@ -185,7 +189,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
          */
         @Override
         synchronized void commit() {
-            client.commitBlockListWithResponse(this.blockList, null, null, null, this.accessConditions).block();
+            client.commitBlockListWithResponse(this.blockList, null, null, null, this.requestConditions).block();
         }
     }
 

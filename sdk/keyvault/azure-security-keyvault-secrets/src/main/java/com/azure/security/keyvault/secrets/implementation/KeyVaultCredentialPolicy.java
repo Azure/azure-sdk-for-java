@@ -9,7 +9,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -94,7 +94,7 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
      * @return A boolean indicating tha challenge is valid or not.
      */
     private static boolean isValidChallenge(String authenticateHeader, String authChallengePrefix) {
-        return (!ImplUtils.isNullOrEmpty(authenticateHeader)
+        return (!CoreUtils.isNullOrEmpty(authenticateHeader)
             && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
     }
 }

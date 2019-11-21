@@ -1264,3 +1264,6 @@ directive:
   transform: >
     delete $.LeaseIdOptional["x-ms-parameter-grouping"];
 ```
+
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

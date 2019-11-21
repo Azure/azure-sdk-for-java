@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import reactor.core.publisher.Flux;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -36,10 +36,10 @@ public class PublishEventDataBatch {
         // Create a producer.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncProducer();
+            .buildAsyncProducerClient();
 
         // Creating a batch where we want the events ending up in the same partition by setting the partition key.
-        final BatchOptions options = new BatchOptions()
+        final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionKey("sandwiches")
             .setMaximumSizeInBytes(256);
         final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
@@ -61,7 +61,7 @@ public class PublishEventDataBatch {
                     producer.send(batch).block();
                 }
 
-                // Disposing of our producer and client.
+                // Disposing of our producer.
                 producer.close();
             });
     }

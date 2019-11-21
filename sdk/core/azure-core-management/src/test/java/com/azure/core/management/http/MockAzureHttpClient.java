@@ -9,7 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.management.AsyncOperationResource;
 import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.management.MockResource;

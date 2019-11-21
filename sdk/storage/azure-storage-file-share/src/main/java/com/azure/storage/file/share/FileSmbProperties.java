@@ -10,6 +10,9 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.EnumSet;
 
+/**
+ * A class used to represent the SMB properties of a file.
+ */
 public class FileSmbProperties {
 
     private String filePermissionKey;

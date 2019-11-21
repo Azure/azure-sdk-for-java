@@ -6,7 +6,7 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.util.UrlBuilder;
 
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -36,7 +36,7 @@ public class HostPolicy implements HttpPipelinePolicy {
         Mono<HttpResponse> result;
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         try {
-            context.getHttpRequest().setUrl(urlBuilder.setHost(host).toURL());
+            context.getHttpRequest().setUrl(urlBuilder.setHost(host).toUrl());
             result = next.process();
         } catch (MalformedURLException e) {
             result = Mono.error(new RuntimeException(String.format("Host URL '%s' is invalid.",

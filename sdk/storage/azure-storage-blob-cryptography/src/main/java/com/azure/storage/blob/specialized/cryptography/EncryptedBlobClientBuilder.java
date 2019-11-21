@@ -18,7 +18,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -136,7 +136,7 @@ public final class EncryptedBlobClientBuilder {
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        if (ImplUtils.isNullOrEmpty(containerName)) {
+        if (CoreUtils.isNullOrEmpty(containerName)) {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
@@ -159,7 +159,8 @@ public final class EncryptedBlobClientBuilder {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
-        policies.add(new UserAgentPolicy(userAgentName, userAgentVersion, userAgentConfiguration, serviceVersion));
+        policies.add(new UserAgentPolicy(logOptions.getApplicationId(), userAgentName, userAgentVersion,
+            userAgentConfiguration, serviceVersion));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
@@ -337,13 +338,13 @@ public final class EncryptedBlobClientBuilder {
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.accountName = parts.getAccountName();
-            this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.endpoint = BuilderHelper.getEndpoint(parts);
             this.containerName = parts.getBlobContainerName();
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
 
             String sasToken = parts.getSasQueryParameters().encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
@@ -405,7 +406,8 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a {@link HttpPipelinePolicy} to apply on each request sent. The policy will be added after the retry policy.
+     * If the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated EncryptedBlobClientBuilder object

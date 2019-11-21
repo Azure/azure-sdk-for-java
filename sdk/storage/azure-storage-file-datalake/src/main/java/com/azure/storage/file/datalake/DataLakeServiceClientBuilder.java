@@ -10,8 +10,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
@@ -21,6 +21,7 @@ import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -110,15 +111,17 @@ public class DataLakeServiceClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
     public DataLakeServiceClientBuilder endpoint(String endpoint) {
-        blobServiceClientBuilder.endpoint(Transforms.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
+        // Ensure endpoint provided is dfs endpoint
+        endpoint = DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "dfs", "blob");
+        blobServiceClientBuilder.endpoint(DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
         try {
             BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint));
 
             this.accountName = parts.getAccountName();
-            this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.endpoint = BuilderHelper.getEndpoint(parts);
 
             String sasToken = parts.getSasQueryParameters().encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
@@ -192,7 +195,8 @@ public class DataLakeServiceClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated DataLakeServiceClientBuilder object

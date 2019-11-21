@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.specialized
 
-import com.azure.core.implementation.util.FluxUtil
+import com.azure.core.util.FluxUtil
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.HttpGetterInfo
 import com.azure.storage.blob.models.BlobStorageException

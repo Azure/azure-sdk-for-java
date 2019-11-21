@@ -9,7 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -180,7 +180,7 @@ public final class QueueClientBuilder {
         this.accountName = parts.getAccountName();
         this.queueName = parts.getQueueName();
 
-        if (!ImplUtils.isNullOrEmpty(parts.getSasToken())) {
+        if (!CoreUtils.isNullOrEmpty(parts.getSasToken())) {
             sasToken(parts.getSasToken());
         }
 
@@ -288,7 +288,8 @@ public final class QueueClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated QueueClientBuilder object

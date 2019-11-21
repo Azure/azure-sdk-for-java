@@ -4,8 +4,8 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -198,7 +198,7 @@ public final class FileReadHeaders {
      * @return the contentMd5 value.
      */
     public byte[] getContentMd5() {
-        return ImplUtils.clone(this.contentMd5);
+        return CoreUtils.clone(this.contentMd5);
     }
 
     /**
@@ -210,7 +210,7 @@ public final class FileReadHeaders {
      * @return the FileReadHeaders object itself.
      */
     public FileReadHeaders setContentMd5(byte[] contentMd5) {
-        this.contentMd5 = ImplUtils.clone(contentMd5);
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
     }
 
@@ -744,7 +744,7 @@ public final class FileReadHeaders {
      * @return the fileContentMD5 value.
      */
     public byte[] getFileContentMD5() {
-        return ImplUtils.clone(this.fileContentMD5);
+        return CoreUtils.clone(this.fileContentMD5);
     }
 
     /**
@@ -758,7 +758,7 @@ public final class FileReadHeaders {
      * @return the FileReadHeaders object itself.
      */
     public FileReadHeaders setFileContentMD5(byte[] fileContentMD5) {
-        this.fileContentMD5 = ImplUtils.clone(fileContentMD5);
+        this.fileContentMD5 = CoreUtils.clone(fileContentMD5);
         return this;
     }
 
@@ -773,7 +773,7 @@ public final class FileReadHeaders {
      * @return the contentCrc64 value.
      */
     public byte[] getContentCrc64() {
-        return ImplUtils.clone(this.contentCrc64);
+        return CoreUtils.clone(this.contentCrc64);
     }
 
     /**
@@ -788,7 +788,7 @@ public final class FileReadHeaders {
      * @return the FileReadHeaders object itself.
      */
     public FileReadHeaders setContentCrc64(byte[] contentCrc64) {
-        this.contentCrc64 = ImplUtils.clone(contentCrc64);
+        this.contentCrc64 = CoreUtils.clone(contentCrc64);
         return this;
     }
 

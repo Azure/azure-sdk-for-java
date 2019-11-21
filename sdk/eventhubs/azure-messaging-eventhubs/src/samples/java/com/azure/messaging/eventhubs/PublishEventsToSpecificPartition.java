@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.exception.AmqpException;
-import com.azure.messaging.eventhubs.models.SendOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -17,8 +17,8 @@ public class PublishEventsToSpecificPartition {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
-     * Main method to invoke this demo about how to send a list of events with partition ID configured in producer option
-     * to an Azure Event Hub instance.
+     * Main method to invoke this demo about how to send a batch of events with partition ID configured in producer
+     * option to an Azure Event Hub instance.
      *
      * @param args Unused arguments to the program.
      */
@@ -31,17 +31,16 @@ public class PublishEventsToSpecificPartition {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         // Instantiate a client that will be used to call the service.
-        EventHubProducerAsyncClient client = new EventHubClientBuilder()
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncProducer();
+            .buildAsyncProducerClient();
 
         // To send our events, we need to know what partition to send it to. For the sake of this example, we take the
         // first partition id.
         // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
         // time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
         // TimeoutException is thrown.
-        String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
-        SendOptions sendOptions = new SendOptions().setPartitionId(firstPartition);
+        String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(
@@ -49,22 +48,33 @@ public class PublishEventsToSpecificPartition {
             new EventData("EventData Sample 2".getBytes(UTF_8)),
             new EventData("EventData Sample 3".getBytes(UTF_8)));
 
-        // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
-        // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
-        // the event.
-        // We use the
-        client.send(data, sendOptions).subscribe(
-            (ignored) -> System.out.println("Events sent."),
-            error -> {
-                System.err.println("There was an error sending the event: " + error.toString());
+        // Create a batch to send the events.
+        final CreateBatchOptions options = new CreateBatchOptions()
+            .setPartitionId(firstPartition)
+            .setMaximumSizeInBytes(256);
+        final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
+            producer.createBatch(options).block());
 
-                if (error instanceof AmqpException) {
-                    AmqpException amqpException = (AmqpException) error;
-                    System.err.println(String.format("Is send operation retriable? %s. Error condition: %s",
-                        amqpException.isTransient(), amqpException.getErrorCondition()));
+        // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
+        // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
+        // are sent.
+        data.subscribe(event -> {
+            final EventDataBatch batch = currentBatch.get();
+            if (!batch.tryAdd(event)) {
+                producer.createBatch(options).map(newBatch -> {
+                    currentBatch.set(newBatch);
+                    return producer.send(batch);
+                }).block();
+            }
+        }, error -> System.err.println("Error received:" + error),
+            () -> {
+                final EventDataBatch batch = currentBatch.getAndSet(null);
+                if (batch != null) {
+                    producer.send(batch).block();
                 }
-            }, () -> {
-                client.close();
+
+                // Disposing of our producer.
+                producer.close();
             });
     }
 }

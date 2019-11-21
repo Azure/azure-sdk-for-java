@@ -4,10 +4,14 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
-import com.azure.storage.file.datalake.models.PathAccessControl;
+import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.models.PathPermissions;
+import com.azure.storage.file.datalake.models.RolePermissions;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +22,31 @@ public class PathAsyncClientJavaDocCodeSamples {
     private String fileName = "fileName";
     private DataLakeFileAsyncClient client = JavaDocCodeSnippetsHelpers.getFileAsyncClient(fileName);
     private String leaseId = "leaseId";
+
+    /**
+     * Code snippets for {@link DataLakePathAsyncClient#create()} and
+     * {@link DataLakePathAsyncClient#createWithResponse(String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
+     */
+    public void createCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.create
+        client.create().subscribe(response ->
+            System.out.printf("Last Modified Time:%s", response.getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.create
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        String permissions = "permissions";
+        String umask = "umask";
+
+        client.createWithResponse(permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"),
+            requestConditions)
+            .subscribe(response -> System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions
+    }
 
     /**
      * Code snippets for {@link DataLakePathAsyncClient#setMetadata(Map)}
@@ -34,9 +63,9 @@ public class PathAsyncClientJavaDocCodeSamples {
      */
     public void setMetadataWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setMetadata#Map-DataLakeRequestConditions
-        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
 
-        client.setMetadataWithResponse(Collections.singletonMap("metadata", "value"), accessConditions)
+        client.setMetadataWithResponse(Collections.singletonMap("metadata", "value"), requestConditions)
             .subscribe(response -> System.out.printf("Set metadata completed with status %d%n",
                 response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.setMetadata#Map-DataLakeRequestConditions
@@ -58,11 +87,11 @@ public class PathAsyncClientJavaDocCodeSamples {
      */
     public void setHTTPHeadersWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions
-        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
 
         client.setHttpHeadersWithResponse(new PathHttpHeaders()
             .setContentLanguage("en-US")
-            .setContentType("binary"), accessConditions).subscribe(response ->
+            .setContentType("binary"), requestConditions).subscribe(response ->
             System.out.printf("Set HTTP headers completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions
     }
@@ -82,38 +111,84 @@ public class PathAsyncClientJavaDocCodeSamples {
      */
     public void getPropertiesWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions
-        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
 
-        client.getPropertiesWithResponse(accessConditions).subscribe(
+        client.getPropertiesWithResponse(requestConditions).subscribe(
             response -> System.out.printf("Creation Time: %s, Size: %d%n", response.getValue().getCreationTime(),
                 response.getValue().getFileSize()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions
     }
 
     /**
-     * Code snippets for {@link DataLakePathAsyncClient#setAccessControl(PathAccessControl)}
+     * Code snippets for {@link DataLakePathAsyncClient#setAccessControlList(List, String, String)}
      */
     public void setAccessControlCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControl#PathAccessControl
-        PathAccessControl control = new PathAccessControl()
-            .setPermissions("0766");
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlList#List-String-String
+        PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
+            .entityID("entityId")
+            .permissions(new RolePermissions().setReadPermission(true));
+        List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
+        pathAccessControlEntries.add(pathAccessControlEntry);
+        String group = "group";
+        String owner = "owner";
 
-        client.setAccessControl(control).subscribe(
+        client.setAccessControlList(pathAccessControlEntries, group, owner).subscribe(
             response -> System.out.printf("Last Modified Time: %s", response.getLastModified()));
-        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControl#PathAccessControl
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlList#List-String-String
     }
 
     /**
-     * Code snippets for {@link DataLakePathAsyncClient#setAccessControlWithResponse(PathAccessControl, DataLakeRequestConditions)}
+     * Code snippets for {@link DataLakePathAsyncClient#setAccessControlListWithResponse(List, String, String, DataLakeRequestConditions)}
      */
     public void setAccessControlWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlWithResponse#PathAccessControl-DataLakeRequestConditions
-        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
-        PathAccessControl control = new PathAccessControl().setPermissions("0766");
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlListWithResponse#List-String-String-DataLakeRequestConditions
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+        PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
+            .entityID("entityId")
+            .permissions(new RolePermissions().setReadPermission(true));
+        List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
+        pathAccessControlEntries.add(pathAccessControlEntry);
+        String group = "group";
+        String owner = "owner";
 
-        client.setAccessControlWithResponse(control, accessConditions).subscribe(
+        client.setAccessControlListWithResponse(pathAccessControlEntries, group, owner, requestConditions).subscribe(
             response -> System.out.printf("Last Modified Time: %s", response.getValue().getLastModified()));
-        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlWithResponse#PathAccessControl-DataLakeRequestConditions
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlListWithResponse#List-String-String-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathAsyncClient#setPermissions(PathPermissions, String, String)}
+     */
+    public void setPermissionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissions#PathPermissions-String-String
+        PathPermissions permissions = new PathPermissions()
+            .setGroup(new RolePermissions().setExecutePermission(true).setReadPermission(true))
+            .setOwner(new RolePermissions().setExecutePermission(true).setReadPermission(true).setWritePermission(true))
+            .setOther(new RolePermissions().setReadPermission(true));
+        String group = "group";
+        String owner = "owner";
+
+        client.setPermissions(permissions, group, owner).subscribe(
+            response -> System.out.printf("Last Modified Time: %s", response.getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissions#PathPermissions-String-String
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathAsyncClient#setPermissionsWithResponse(PathPermissions, String, String, DataLakeRequestConditions)}
+     */
+    public void setPermissionsWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissionsWithResponse#PathPermissions-String-String-DataLakeRequestConditions
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+        PathPermissions permissions = new PathPermissions()
+            .setGroup(new RolePermissions().setExecutePermission(true).setReadPermission(true))
+            .setOwner(new RolePermissions().setExecutePermission(true).setReadPermission(true).setWritePermission(true))
+            .setOther(new RolePermissions().setReadPermission(true));
+        String group = "group";
+        String owner = "owner";
+
+        client.setPermissionsWithResponse(permissions, group, owner, requestConditions).subscribe(
+            response -> System.out.printf("Last Modified Time: %s", response.getValue().getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissionsWithResponse#PathPermissions-String-String-DataLakeRequestConditions
     }
 
     /**
@@ -123,7 +198,8 @@ public class PathAsyncClientJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControl
         client.getAccessControl().subscribe(
             response -> System.out.printf("Access Control List: %s, Group: %s, Owner: %s, Permissions: %s",
-                response.getAcl(), response.getGroup(), response.getOwner(), response.getPermissions()));
+                PathAccessControlEntry.serializeList(response.getAccessControlList()), response.getGroup(),
+                response.getOwner(), response.getPermissions()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControl
     }
 
@@ -132,13 +208,13 @@ public class PathAsyncClientJavaDocCodeSamples {
      */
     public void getAccessControlWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions
-        DataLakeRequestConditions accessConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
-        boolean returnUpn = false;
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+        boolean userPrincipalNameReturned = false;
 
-        client.getAccessControlWithResponse(returnUpn, accessConditions).subscribe(
+        client.getAccessControlWithResponse(userPrincipalNameReturned, requestConditions).subscribe(
             response -> System.out.printf("Access Control List: %s, Group: %s, Owner: %s, Permissions: %s",
-                response.getValue().getAcl(), response.getValue().getGroup(), response.getValue().getOwner(),
-                response.getValue().getPermissions()));
+                PathAccessControlEntry.serializeList(response.getValue().getAccessControlList()),
+                response.getValue().getGroup(), response.getValue().getOwner(), response.getValue().getPermissions()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions
     }
 

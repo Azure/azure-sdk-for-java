@@ -3,13 +3,12 @@
 
 package com.azure.messaging.eventhubs;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class EventHubPropertiesTest {
     /**
@@ -26,13 +25,13 @@ public class EventHubPropertiesTest {
         final EventHubProperties eventHubProperties = new EventHubProperties(name, instant, partitionIds);
 
         // Assert
-        Assert.assertEquals(name, eventHubProperties.getName());
-        Assert.assertEquals(instant, eventHubProperties.getCreatedAt());
-        Assert.assertEquals(partitionIds.length, eventHubProperties.getPartitionIds().length);
+        Assertions.assertEquals(name, eventHubProperties.getName());
+        Assertions.assertEquals(instant, eventHubProperties.getCreatedAt());
+        Assertions.assertEquals(partitionIds.length, eventHubProperties.getPartitionIds().stream().count());
 
-        final Set<String> actual = new HashSet<>(Arrays.asList(eventHubProperties.getPartitionIds()));
+        final Set<String> actual = eventHubProperties.getPartitionIds().stream().collect(Collectors.toSet());
         for (String id : partitionIds) {
-            Assert.assertTrue(actual.contains(id));
+            Assertions.assertTrue(actual.contains(id));
         }
     }
 
@@ -50,9 +49,9 @@ public class EventHubPropertiesTest {
         final EventHubProperties eventHubProperties = new EventHubProperties(name, instant, null);
 
         // Assert
-        Assert.assertEquals(name, eventHubProperties.getName());
-        Assert.assertEquals(instant, eventHubProperties.getCreatedAt());
-        Assert.assertNotNull(eventHubProperties.getPartitionIds());
-        Assert.assertEquals(0, eventHubProperties.getPartitionIds().length);
+        Assertions.assertEquals(name, eventHubProperties.getName());
+        Assertions.assertEquals(instant, eventHubProperties.getCreatedAt());
+        Assertions.assertNotNull(eventHubProperties.getPartitionIds());
+        Assertions.assertEquals(0, eventHubProperties.getPartitionIds().stream().count());
     }
 }

@@ -8,6 +8,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
+/**
+ * An HttpClient instance that does not do anything.
+ */
 public class NoOpHttpClient implements HttpClient {
 
     @Override

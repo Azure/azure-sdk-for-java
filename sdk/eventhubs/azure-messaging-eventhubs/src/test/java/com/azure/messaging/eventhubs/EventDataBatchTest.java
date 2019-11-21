@@ -3,17 +3,18 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class EventDataBatchTest {
@@ -22,15 +23,17 @@ public class EventDataBatchTest {
     @Mock
     private ErrorContextProvider errorContextProvider;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void nullEventData() {
-        final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, null);
-        batch.tryAdd(null);
+        assertThrows(IllegalArgumentException.class, () -> {
+            final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, null);
+            batch.tryAdd(null);
+        });
     }
 
     /**
@@ -38,16 +41,16 @@ public class EventDataBatchTest {
      */
     @Test
     public void payloadExceededException() {
-        when(errorContextProvider.getErrorContext()).thenReturn(new ErrorContext("test-namespace"));
+        when(errorContextProvider.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
 
         final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, errorContextProvider);
         final EventData tooBig = new EventData(new byte[1024 * 1024 * 2]);
         try {
             batch.tryAdd(tooBig);
-            Assert.fail("Expected an exception");
+            Assertions.fail("Expected an exception");
         } catch (AmqpException e) {
-            Assert.assertFalse(e.isTransient());
-            Assert.assertEquals(ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
+            Assertions.assertFalse(e.isTransient());
+            Assertions.assertEquals(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
         }
     }
 
@@ -59,8 +62,8 @@ public class EventDataBatchTest {
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, null);
         final EventData within = new EventData(new byte[1024]);
 
-        Assert.assertTrue(batch.tryAdd(within));
-        Assert.assertEquals(1, batch.getSize());
+        Assertions.assertTrue(batch.tryAdd(within));
+        Assertions.assertEquals(1, batch.getCount());
     }
 
 
@@ -76,8 +79,8 @@ public class EventDataBatchTest {
             PARTITION_KEY, null);
 
         // Assert
-        Assert.assertEquals(PARTITION_KEY, batch.getPartitionKey());
-        Assert.assertEquals(partitionId, batch.getPartitionId());
-        Assert.assertEquals(0, batch.getEvents().size());
+        Assertions.assertEquals(PARTITION_KEY, batch.getPartitionKey());
+        Assertions.assertEquals(partitionId, batch.getPartitionId());
+        Assertions.assertEquals(0, batch.getEvents().size());
     }
 }

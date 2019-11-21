@@ -195,9 +195,7 @@ final class StorageServiceConnectionString {
         if (primary != null) {
             return true;
         }
-        if (secondary == null) {
-            return true;
-        }
-        return false;
+
+        return secondary == null;
     }
 }

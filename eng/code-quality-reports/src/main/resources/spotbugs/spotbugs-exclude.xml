@@ -60,7 +60,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.core.implementation.Base64Url"/>
+    <Class name="com.azure.core.util.Base64Url"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -68,10 +68,18 @@
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
     <Or>
+      <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
   <!-- These KeyVaultClientBase methods are made synchronous by blocking and waiting for a result. They do not return
@@ -116,6 +124,7 @@
     <Or>
       <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
       <Class name="~com\.azure\.(.+)Impl"/>
+      <Class name="com.azure.core.util.CoreUtils"/>
     </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
   </Match>
@@ -194,6 +203,12 @@
   <Match>
     <Class name="~com\.microsoft\.azure\.eventhubs\.impl\.(EventDataImpl|PartitionReceiverImpl)"/>
     <Method name="~(getBytes|getDesiredCapabilities)"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- TEMPORARY -->
+  <Match>
+    <Class name="com.azure.core.util.CoreUtils"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -280,13 +295,13 @@
 
   <!-- Uninitialized subscription property will be initialized on onSubscribe(). Spotbugs is unaware of reactor execution orders. -->
   <Match>
-    <Class name="com.azure.core.implementation.util.FluxUtil"/>
+    <Class name="com.azure.core.util.FluxUtil"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
   <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
   <Match>
-    <Class name="~com\.azure\.core\.implementation\.(Base64Url|util\.ImplUtils|serializer\.HttpResponseDecodeData)"/>
+    <Class name="~com\.azure\.core\.implementation\.(Base64Url|util\.CoreUtils|serializer\.HttpResponseDecodeData)"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -300,7 +315,7 @@
 
   <!-- The casting problems do not exist in Azure use cases -->
   <Match>
-    <Class name="com.azure.core.implementation.util.TypeUtil"/>
+    <Class name="com.azure.core.implementation.TypeUtil"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 
@@ -441,7 +456,7 @@
 
   <!-- Incorrect flagging, the surrounding hasValue() checks that get() isn't null -->
   <Match>
-    <Class name="com.azure.core.implementation.RestProxy"/>
+    <Class name="com.azure.core.http.rest.RestProxy"/>
     <Method name="endTracingSpan"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
@@ -544,6 +559,7 @@
     <Or>
       <Class name="~.*JavaDoc(CodeSnippets|CodeSamples|Samples)"/>
       <Class name="com.azure.storage.blob.batch.ReadmeCodeSamples"/>
+      <Class name="com.azure.storage.file.datalake.GetSetAccessControlExample"/>
     </Or>
     <Bug pattern="DLS_DEAD_LOCAL_STORE,
                   URF_UNREAD_FIELD,
@@ -579,7 +595,7 @@
 
   <!-- This is a false positive, the subscribe method will be called before onNext, onCancelled, or onError. -->
   <Match>
-    <Class name="com.azure.core.implementation.util.FluxUtil$1"/>
+    <Class name="com.azure.core.util.FluxUtil$1"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
@@ -594,10 +610,14 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
   </Match>
 
-  <!-- FlatteningSerializer defines non-transient non-serializable instance field logger,
-  but logger is required for logging-->
+  <!-- Serializers define non-transient non-serializable instance field -->
   <Match>
-    <Class name="com.azure.core.implementation.serializer.jackson.FlatteningSerializer"/>
+    <Or>
+      <Class name="com.azure.core.util.serializer.FlatteningSerializer"/>
+      <Class name="com.azure.core.util.serializer.FlatteningDeserializer"/>
+      <Class name="com.azure.core.util.serializer.AdditionalPropertiesSerializer"/>
+      <Class name="com.azure.core.util.serializer.AdditionalPropertiesDeserializer"/>
+    </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 

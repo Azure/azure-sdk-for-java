@@ -3,7 +3,7 @@
 
 package com.azure.storage.file.share;
 
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageInputStream;

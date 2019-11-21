@@ -171,7 +171,9 @@ class QueueAysncAPITests extends APISpec {
         when:
         def getAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.getAccessPolicy())
         then:
-        getAccessPolicyVerifier.verifyComplete()
+        getAccessPolicyVerifier
+            .expectNextCount(0)
+            .verifyComplete()
     }
 
     def "Get access policy does error"() {
@@ -289,7 +291,7 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
         peekMsgVerifier.assertNext {
             assert expectMsg == it.getMessageText()
-        }
+        }.verifyComplete()
     }
 
     def "Enqueue empty message"() {
@@ -304,7 +306,7 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
         peekMsgVerifier.assertNext {
             assert it.getMessageText() == null
-        }
+        }.verifyComplete()
     }
 
     def "Enqueue time to live"() {

@@ -4,14 +4,14 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
-import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.exception.AzureException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -27,17 +27,18 @@ import static org.mockito.Mockito.when;
 
 public class ActiveClientTokenManagerTest {
     private static final String AUDIENCE = "an-audience-test";
+    private static final String SCOPES = "scopes-test";
     private static final Duration TIMEOUT = Duration.ofSeconds(4);
 
     @Mock
     private CBSNode cbsNode;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
         cbsNode = null;
@@ -50,9 +51,9 @@ public class ActiveClientTokenManagerTest {
     public void getAuthorizationResults() {
         // Arrange
         final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
-        when(cbsNode.authorize(any())).thenReturn(getNextExpiration(3));
+        when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(3));
 
-        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE);
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
 
         // Act & Assert
         StepVerifier.create(tokenManager.getAuthorizationResults())
@@ -74,11 +75,11 @@ public class ActiveClientTokenManagerTest {
         final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
         final IllegalArgumentException error = new IllegalArgumentException("Some error");
 
-        when(cbsNode.authorize(any())).thenReturn(getNextExpiration(2),
+        when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(2),
             getNextExpiration(2), Mono.error(error));
 
         // Act & Assert
-        try (ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE)) {
+        try (ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES)) {
             StepVerifier.create(tokenManager.getAuthorizationResults())
                 .then(() -> tokenManager.authorize().block(TIMEOUT))
                 .expectNext(AmqpResponseCode.ACCEPTED)
@@ -97,9 +98,9 @@ public class ActiveClientTokenManagerTest {
     public void cannotAuthorizeDisposedInstance() {
         // Arrange
         final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
-        when(cbsNode.authorize(any())).thenReturn(getNextExpiration(2));
+        when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(2));
 
-        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE);
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
         tokenManager.authorize().then(Mono.fromRunnable(tokenManager::close)).block();
 
         // Act & Assert
@@ -116,15 +117,15 @@ public class ActiveClientTokenManagerTest {
     public void getAuthorizationResultsRetriableError() {
         // Arrange
         final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
-        final AmqpException error = new AmqpException(true, ErrorCondition.TIMEOUT_ERROR, "Timed out",
-            new ErrorContext("Test-context-namespace"));
+        final AmqpException error = new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR, "Timed out",
+            new AmqpErrorContext("Test-context-namespace"));
 
-        when(cbsNode.authorize(any())).thenReturn(getNextExpiration(3), Mono.error(error),
+        when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(3), Mono.error(error),
             getNextExpiration(5), getNextExpiration(10),
             getNextExpiration(45));
 
         // Act & Assert
-        try (ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE)) {
+        try (ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES)) {
             StepVerifier.create(tokenManager.getAuthorizationResults())
                 .then(() -> tokenManager.authorize().block(TIMEOUT))
                 .expectError(AmqpException.class)

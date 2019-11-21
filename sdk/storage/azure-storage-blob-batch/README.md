@@ -74,6 +74,9 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
     .build();
 ```
 
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
 ### Create a Storage Account
 To create a Storage Account you can use the Azure Portal or [Azure CLI][storage_account_create_cli].
 
@@ -144,7 +147,7 @@ Response<Void> deleteSnapshotResponse =
         
 // Delete a blob that has a lease.
 Response<Void> deleteWithLeaseResponse =
-    blobBatch.deleteBlob(blobUrlWithLease, DeleteSnapshotsOptionType.INCLUDE, new BlobAccessConditions()
+    blobBatch.deleteBlob(blobUrlWithLease, DeleteSnapshotsOptionType.INCLUDE, new BlobRequestConditions()
         .setLeaseId("leaseId"));
 
 blobBatchClient.submitBatch(blobBatch);
@@ -208,5 +211,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-blob-batch/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob-batch%2FREADME.png)

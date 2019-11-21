@@ -2,22 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.Response;
-
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.test.TestBase;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-
 import java.lang.reflect.Field;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -33,13 +34,8 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public abstract class ConfigurationClientTestBase extends TestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
@@ -54,21 +50,13 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     String keyPrefix;
     String labelPrefix;
 
-    @Rule
-    public TestName testName = new TestName();
-
-    @Override
-    public String getTestName() {
-        return testName.getMethodName();
-    }
-
     void beforeTestSetup() {
         keyPrefix = testResourceNamer.randomName(KEY_PREFIX, PREFIX_LENGTH);
         labelPrefix = testResourceNamer.randomName(LABEL_PREFIX, PREFIX_LENGTH);
     }
 
     <T> T clientSetup(Function<ConfigurationClientCredentials, T> clientBuilder) {
-        if (ImplUtils.isNullOrEmpty(connectionString)) {
+        if (CoreUtils.isNullOrEmpty(connectionString)) {
             connectionString = interceptorManager.isPlaybackMode()
                 ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
                 : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
@@ -370,13 +358,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listRevisionsWithRange();
-
-    @Test
-    @Ignore
-    public abstract void listRevisionsInvalidRange();
-
-    @Test
     public abstract void listRevisionsAcceptDateTime();
 
     @Test
@@ -394,7 +375,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void getConfigurationSettingWhenValueNotUpdated();
 
-    @Ignore("This test exists to clean up resources missed due to 429s.")
+    @Disabled("This test exists to clean up resources missed due to 429s.")
     @Test
     public abstract void deleteAllSettings();
 
@@ -434,7 +415,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         } else if (expected == actual) {
             return;
         } else if (expected == null || actual == null) {
-            assertFalse("One of input settings is null", true);
+            assertFalse(true, "One of input settings is null");
         }
 
         equals(expected, actual);
@@ -532,11 +513,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             || !Objects.equals(o1.getLastModified(), o2.getLastModified())
             || !Objects.equals(o1.isReadOnly(), o2.isReadOnly())
             || !Objects.equals(o1.getContentType(), o2.getContentType())
-            || ImplUtils.isNullOrEmpty(o1.getTags()) != ImplUtils.isNullOrEmpty(o2.getTags())) {
+            || CoreUtils.isNullOrEmpty(o1.getTags()) != CoreUtils.isNullOrEmpty(o2.getTags())) {
             return false;
         }
 
-        if (!ImplUtils.isNullOrEmpty(o1.getTags())) {
+        if (!CoreUtils.isNullOrEmpty(o1.getTags())) {
             return Objects.equals(o1.getTags(), o2.getTags());
         }
 

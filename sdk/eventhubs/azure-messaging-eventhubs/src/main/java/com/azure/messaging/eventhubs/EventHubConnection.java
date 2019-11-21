@@ -6,8 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -16,8 +16,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Class that manages the connection to Azure Event Hubs.
  */
-public class EventHubConnection implements Closeable {
+class EventHubConnection implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConnection.class);
     private final AtomicBoolean hasConnection = new AtomicBoolean();
     private final ConnectionOptions connectionOptions;
@@ -43,11 +43,21 @@ public class EventHubConnection implements Closeable {
             .cache();
     }
 
-    String getFullyQualifiedDomainName() {
-        return connectionOptions.getHostname();
+    /**
+     * Gets the fully qualified namespace for the connection.
+     *
+     * @return The fully qualified namespace this is connection.
+     */
+    public String getFullyQualifiedNamespace() {
+        return connectionOptions.getFullyQualifiedNamespace();
     }
 
-    String getEventHubName() {
+    /**
+     * Gets the name of the Event Hub.
+     *
+     * @return The name of the Event Hub.
+     */
+    public String getEventHubName() {
         return connectionOptions.getEntityPath();
     }
 
@@ -95,7 +105,7 @@ public class EventHubConnection implements Closeable {
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
-            EventHubConsumerOptions options) {
+            ReceiveOptions options) {
         return currentConnection.flatMap(connection -> connection.createSession(entityPath).cast(EventHubSession.class))
             .flatMap(session -> {
                 logger.verbose("Creating consumer for path: {}", entityPath);
@@ -122,7 +132,7 @@ public class EventHubConnection implements Closeable {
             } catch (IOException exception) {
                 throw logger.logExceptionAsError(
                     new AmqpException(false, "Unable to close connection to service", exception,
-                        new ErrorContext(connectionOptions.getHostname())));
+                        new AmqpErrorContext(connectionOptions.getFullyQualifiedNamespace())));
             }
         }
     }

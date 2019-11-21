@@ -381,7 +381,6 @@ class BatchAPITest extends APISpec {
         def blobUrls = new ArrayList<String>()
         for (def i = 0; i < 257; i++) {
             def pageBlobClient = cc.getBlobClient(generateBlobName()).getPageBlobClient()
-            pageBlobClient.create(512)
             blobUrls.add(pageBlobClient.getBlobUrl())
         }
 

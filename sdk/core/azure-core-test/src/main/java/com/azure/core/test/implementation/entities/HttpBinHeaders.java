@@ -3,7 +3,7 @@
 
 package com.azure.core.test.implementation.entities;
 
-import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

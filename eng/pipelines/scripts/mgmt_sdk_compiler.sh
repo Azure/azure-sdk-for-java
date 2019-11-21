@@ -46,7 +46,7 @@ mvn --version
 #change to the root of the sources repo
 cd ../../..
 
-for i in `ls -d */*/v20* | grep -v "node_modules/*/*"`; 
+for i in `ls -d sdk/*/mgmt-v20* | grep -v "node_modules/*/*"`; 
 do 
   echo "######## building folder $i"
   cd $i; 

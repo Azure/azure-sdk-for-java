@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * A set of options that can be specified to influence how retry attempts are made.
  */
-public class RetryOptions implements Cloneable {
+public class RetryOptions {
     private int maxRetries;
     private Duration delay;
     private Duration maxDelay;
@@ -28,12 +28,26 @@ public class RetryOptions implements Cloneable {
     }
 
     /**
+     * Creates an instance configured with {@code retryOptions}. This is not thread-safe.
+     *
+     * @param retryOptions Retry options to configure new instance with.
+     * @throws NullPointerException if {@code retryOptions} is null.
+     */
+    public RetryOptions(RetryOptions retryOptions) {
+        this.maxDelay = retryOptions.getMaxDelay();
+        this.delay = retryOptions.getDelay();
+        this.maxRetries = retryOptions.getMaxRetries();
+        this.retryMode = retryOptions.getMode();
+        this.tryTimeout = retryOptions.getTryTimeout();
+    }
+
+    /**
      * Sets the approach to use for calculating retry delays.
      *
      * @param retryMode The retry approach to use for calculating delays.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions setRetryMode(RetryMode retryMode) {
+    public RetryOptions setMode(RetryMode retryMode) {
         this.retryMode = retryMode;
         return this;
     }
@@ -88,7 +102,7 @@ public class RetryOptions implements Cloneable {
      *
      * @return The approach to use for calculating retry delays.
      */
-    public RetryMode getRetryMode() {
+    public RetryMode getMode() {
         return retryMode;
     }
 
@@ -130,28 +144,6 @@ public class RetryOptions implements Cloneable {
     }
 
     /**
-     * Creates a new copy of the current instance, cloning its attributes into a new instance.
-     *
-     * @return A new copy of {@link RetryOptions}.
-     */
-    @Override
-    public RetryOptions clone() {
-
-        RetryOptions clone;
-        try {
-            clone = (RetryOptions) super.clone();
-        } catch (CloneNotSupportedException e) {
-            clone = new RetryOptions();
-        }
-
-        return clone.setDelay(delay)
-            .setMaxDelay(maxDelay)
-            .setMaxRetries(maxRetries)
-            .setTryTimeout(tryTimeout)
-            .setRetryMode(retryMode);
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -167,7 +159,7 @@ public class RetryOptions implements Cloneable {
         final RetryOptions other = (RetryOptions) obj;
 
         return this.getMaxRetries() == other.getMaxRetries()
-            && this.getRetryMode() == other.getRetryMode()
+            && this.getMode() == other.getMode()
             && Objects.equals(this.getMaxDelay(), other.getMaxDelay())
             && Objects.equals(this.getDelay(), other.getDelay())
             && Objects.equals(this.getTryTimeout(), other.getTryTimeout());

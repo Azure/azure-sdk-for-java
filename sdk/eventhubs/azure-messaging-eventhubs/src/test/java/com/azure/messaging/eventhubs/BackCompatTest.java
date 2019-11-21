@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.Proton;
@@ -15,10 +14,8 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
@@ -53,20 +50,11 @@ public class BackCompatTest extends IntegrationTestBase {
         super(new ClientLogger(BackCompatTest.class));
     }
 
-    @Rule
-    public TestName testName = new TestName();
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
-    }
-
     @Override
     protected void beforeTest() {
         client = createBuilder().buildAsyncClient();
         consumer = createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .startingPosition(EventPosition.latest())
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         producer = client.createProducer();
@@ -107,19 +95,20 @@ public class BackCompatTest extends IntegrationTestBase {
         final EventData eventData = serializer.deserialize(message, EventData.class);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive(PARTITION_ID).filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.latest())
+            .filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
             .then(() -> producer.send(eventData, sendOptions).block(TIMEOUT))
-            .assertNext(event -> validateAmqpProperties(applicationProperties, event.getEventData()))
+            .assertNext(event -> validateAmqpProperties(applicationProperties, event.getData()))
             .verifyComplete();
     }
 
     private void validateAmqpProperties(Map<String, Object> expected, EventData event) {
-        Assert.assertEquals(expected.size(), event.getProperties().size());
-        Assert.assertEquals(PAYLOAD, UTF_8.decode(event.getBody()).toString());
+        Assertions.assertEquals(expected.size(), event.getProperties().size());
+        Assertions.assertEquals(PAYLOAD, event.getBodyAsString());
 
         expected.forEach((key, value) -> {
-            Assert.assertTrue(event.getProperties().containsKey(key));
-            Assert.assertEquals(value, event.getProperties().get(key));
+            Assertions.assertTrue(event.getProperties().containsKey(key));
+            Assertions.assertEquals(value, event.getProperties().get(key));
         });
     }
 }

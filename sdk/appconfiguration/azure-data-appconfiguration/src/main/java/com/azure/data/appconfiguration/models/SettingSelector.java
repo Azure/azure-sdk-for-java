@@ -5,8 +5,7 @@ package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
-import com.azure.core.implementation.util.ImplUtils;
-import com.azure.data.appconfiguration.ConfigurationClient;
+import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -37,7 +36,6 @@ public class SettingSelector {
     private String[] labels;
     private SettingFields[] fields;
     private String acceptDatetime;
-    private Range range;
 
     /**
      * Creates a setting selector that will populate responses with all of the {@link ConfigurationSetting
@@ -61,7 +59,7 @@ public class SettingSelector {
      * @return The expressions to filter ConfigurationSetting keys on.
      */
     public String[] getKeys() {
-        return keys == null ? new String[0] : ImplUtils.clone(keys);
+        return keys == null ? new String[0] : CoreUtils.clone(keys);
     }
 
     /**
@@ -108,7 +106,7 @@ public class SettingSelector {
      * @return labels The labels used to filter GET requests from the service.
      */
     public String[] getLabels() {
-        return labels == null ? new String[0] : ImplUtils.clone(labels);
+        return labels == null ? new String[0] : CoreUtils.clone(labels);
     }
 
     /**
@@ -164,7 +162,7 @@ public class SettingSelector {
      * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
      */
     public SettingFields[] getFields() {
-        return fields == null ? new SettingFields[0] : ImplUtils.clone(fields);
+        return fields == null ? new SettingFields[0] : CoreUtils.clone(fields);
     }
 
     /**
@@ -180,43 +178,19 @@ public class SettingSelector {
         return this;
     }
 
-    /**
-     * Gets the {@link Range} used to select a specific range of revisions with {@code listRevisions}. If
-     * {@code null}, the service returns all revisions.
-     *
-     * @return The {@link Range} used to select a range of revisions.
-     * @see ConfigurationAsyncClient#listRevisions(SettingSelector)
-     * @see ConfigurationClient#listRevisions(SettingSelector)
-     */
-    public Range getRange() {
-        return range;
-    }
-
-    /**
-     * Sets the {@link Range} used to select a specific range of revisions. If null, the service returns all revisions.
-     *
-     * @param range The range of revisions to select.
-     * @return The updated SettingSelector object.
-     */
-    public SettingSelector setRange(Range range) {
-        this.range = range;
-        return this;
-    }
-
     @Override
     public String toString() {
         String fields;
-        if (ImplUtils.isNullOrEmpty(this.fields)) {
+        if (CoreUtils.isNullOrEmpty(this.fields)) {
             fields = "ALL_FIELDS";
         } else {
-            fields = ImplUtils.arrayToString(this.fields, SettingFields::toStringMapper);
+            fields = CoreUtils.arrayToString(this.fields, SettingFields::toStringMapper);
         }
 
         return String.format("SettingSelector(keys=%s, labels=%s, acceptDateTime=%s, fields=%s, range=%s)",
-            ImplUtils.arrayToString(this.keys, key -> key),
-            ImplUtils.arrayToString(this.labels, label -> label),
+            CoreUtils.arrayToString(this.keys, key -> key),
+            CoreUtils.arrayToString(this.labels, label -> label),
             this.acceptDatetime,
-            fields,
-            this.range);
+            fields);
     }
 }

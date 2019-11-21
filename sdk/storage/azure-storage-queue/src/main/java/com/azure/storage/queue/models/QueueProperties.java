@@ -18,8 +18,8 @@ public final class QueueProperties {
     /**
      * Creates an instance that contains properties of a queue.
      *
-     * @param metadata Metadata associated with the queue
-     * @param approximateMessagesCount Approximate number of messages contained in the queue
+     * @param metadata Metadata associated with the queue.
+     * @param approximateMessagesCount Approximate number of messages contained in the queue.
      */
     public QueueProperties(Map<String, String> metadata, int approximateMessagesCount) {
         this.metadata = metadata;
@@ -27,14 +27,18 @@ public final class QueueProperties {
     }
 
     /**
-     * @return the user-defined metadata associated with the queue
+     * Gets the user-defined metadata associated with the queue.
+     *
+     * @return The user-defined metadata associated with the queue.
      */
     public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
     /**
-     * @return the approximate number of messages contained in the queue at the time of properties retrieval
+     * Gets the approximate number of messages contained in the queue at the time of properties retrieval.
+     *
+     * @return the approximate number of messages contained in the queue at the time of properties retrieval.
      */
     public int getApproximateMessagesCount() {
         return approximateMessagesCount;

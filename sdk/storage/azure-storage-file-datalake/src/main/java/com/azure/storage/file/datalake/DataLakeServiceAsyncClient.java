@@ -9,8 +9,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.common.Utility;
@@ -27,9 +27,8 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
-
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link DataLakeServiceClientBuilder}. This class
@@ -96,7 +95,7 @@ public class DataLakeServiceAsyncClient {
      * @return A {@link DataLakeFileSystemAsyncClient} object pointing to the specified file system
      */
     public DataLakeFileSystemAsyncClient getFileSystemAsyncClient(String fileSystemName) {
-        if (ImplUtils.isNullOrEmpty(fileSystemName)) {
+        if (CoreUtils.isNullOrEmpty(fileSystemName)) {
             fileSystemName = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
         }
         return new DataLakeFileSystemAsyncClient(getHttpPipeline(),
@@ -202,13 +201,13 @@ public class DataLakeServiceAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.deleteFileSystemWithResponse#String-DataLakeRequestConditions}
      *
      * @param fileSystemName Name of the file system to delete
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
     public Mono<Response<Void>> deleteFileSystemWithResponse(String fileSystemName,
-        DataLakeRequestConditions accessConditions) {
+        DataLakeRequestConditions requestConditions) {
         try {
-            return getFileSystemAsyncClient(fileSystemName).deleteWithResponse(accessConditions);
+            return getFileSystemAsyncClient(fileSystemName).deleteWithResponse(requestConditions);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

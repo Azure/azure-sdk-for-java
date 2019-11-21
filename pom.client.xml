@@ -108,6 +108,16 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+        <configuration>
+          <showWarnings>true</showWarnings>
+          <failOnWarning>true</failOnWarning>
+        </configuration>
+      </plugin>
+
       <!-- This plugin scans checkstyle issues in the code -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -293,25 +303,22 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco-maven-plugin.version}</version>
         <executions>
-          <!--
-              Prepares the property pointing to the JaCoCo runtime agent which
-              is passed as VM argument when Maven the Surefire plugin is executed.
-          -->
-          <execution>
-            <id>pre-unit-test</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-            <configuration>
-              <!--Sets the name of the property containing the settings for JaCoCo runtime agent.-->
-              <propertyName>surefireArgLine</propertyName>
-            </configuration>
-          </execution>
+        <execution>
+          <id>default-instrument</id>
+          <goals>
+            <goal>instrument</goal>
+          </goals>
+        </execution>
+        <execution>
+          <id>default-restore-instrumented-classes</id>
+          <goals>
+            <goal>restore-instrumented-classes</goal>
+          </goals>
+        </execution>
           <execution>
             <!-- This generates the unit test reports for individual modules.
               jacoco-test-coverage generates aggregate reports for all modules -->
             <id>post-unit-test</id>
-            <phase>test</phase>
             <goals>
               <goal>report</goal>
             </goals>
@@ -339,10 +346,8 @@
             <source>1.8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
-            <failOnError>false</failOnError>
             <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
-              for more Java documentation, including quick starts, tutorials, and code samples.
-            </footer>
+              for more Java documentation, including quick starts, tutorials, and code samples.</footer>
             <linksource>false</linksource>
             <excludePackageNames>
               *.impl*:
@@ -505,6 +510,17 @@
 
   </build>
 
+  <dependencies>
+    <dependency>
+      <!-- must be on the classpath -->
+      <groupId>org.jacoco</groupId>
+      <artifactId>org.jacoco.agent</artifactId>
+      <classifier>runtime</classifier>
+      <version>${jacoco-maven-plugin.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <reporting>
     <plugins>
       <plugin>
@@ -631,7 +647,17 @@
       <activation>
         <jdk>[1.8,9)</jdk>
       </activation>
+      <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+      </properties>
       <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
         <plugins>
           <!-- Don't compile module-info.java, see java 9+ profile -->
           <plugin>
@@ -641,17 +667,33 @@
             <configuration>
               <source>1.8</source>
               <target>1.8</target>
-              <showWarnings>true</showWarnings>
-              <failOnWarning>true</failOnWarning>
-              <compilerArgs>
-                <arg>-Xlint:all</arg>
-                <arg>-Xlint:-serial</arg>
-                <arg>-Xlint:-deprecation</arg>
-                <arg>-Xlint:-processing</arg>
-              </compilerArgs>
               <excludes>
                 <exclude>module-info.java</exclude>
               </excludes>
+              <compilerArgs>
+                <!-- Turn off annotation processing -->
+                <arg>-proc:none</arg>
+
+                <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
+                <arg>-Xlint:cast</arg>
+                <arg>-Xlint:classfile</arg>
+                <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
+                <arg>-Xlint:dep-ann</arg>
+                <arg>-Xlint:divzero</arg>
+                <arg>-Xlint:empty</arg>
+                <arg>-Xlint:fallthrough</arg>
+                <arg>-Xlint:finally</arg>
+                <arg>-Xlint:options</arg>
+                <arg>-Xlint:overrides</arg>
+                <arg>-Xlint:path</arg>
+                <!-- <arg>-Xlint:processing</arg> -->
+                <arg>-Xlint:rawtypes</arg>
+                <!-- <arg>-Xlint:serial</arg> -->
+                <arg>-Xlint:static</arg>
+                <arg>-Xlint:try</arg>
+                <arg>-Xlint:unchecked</arg>
+                <arg>-Xlint:varargs</arg>
+              </compilerArgs>
             </configuration>
           </plugin>
           <!-- Avoid errors from module-info -->
@@ -684,31 +726,75 @@
       </reporting>
     </profile>
 
-    <!-- Setup for Java 9+ -->
+    <!-- Setup for Java 11+ -->
     <profile>
       <id>java-lts</id>
       <activation>
-        <jdk>[9,)</jdk>
+        <jdk>[11,)</jdk>
       </activation>
       <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>${maven-compiler-plugin.version}</version>
-            <!-- setup defaults for compile and testCompile -->
             <configuration>
-              <source>9</source>
-              <target>9</target>
-              <showWarnings>true</showWarnings>
-              <failOnWarning>false</failOnWarning> <!-- FIXME: this is false for now as it introduces a build failure -->
+              <testRelease>11</testRelease>
               <compilerArgs>
-                <arg>-Xlint:all</arg>
-                <arg>-Xlint:-serial</arg>
-                <arg>-Xlint:-deprecation</arg>
-                <arg>-Xlint:-processing</arg>
+                <!-- Turn off annotation processing -->
+                <arg>-proc:none</arg>
+
+                <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
+                <arg>-Xlint:cast</arg>
+                <arg>-Xlint:classfile</arg>
+                <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
+                <arg>-Xlint:dep-ann</arg>
+                <arg>-Xlint:divzero</arg>
+                <arg>-Xlint:empty</arg>
+                <arg>-Xlint:fallthrough</arg>
+                <arg>-Xlint:finally</arg>
+                <arg>-Xlint:options</arg>
+                <arg>-Xlint:overrides</arg>
+                <arg>-Xlint:path</arg>
+                <!-- <arg>-Xlint:processing</arg> -->
+                <arg>-Xlint:rawtypes</arg>
+                <!-- <arg>-Xlint:serial</arg> -->
+                <arg>-Xlint:static</arg>
+                <arg>-Xlint:try</arg>
+                <arg>-Xlint:unchecked</arg>
+                <arg>-Xlint:varargs</arg>
+                <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+                <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
               </compilerArgs>
             </configuration>
+            <executions>
+              <!-- compile first with module-info for Java 9+ -->
+              <execution>
+                <id>default-compile</id>
+                <configuration>
+                  <release>11</release>
+                </configuration>
+              </execution>
+              <!-- then compile without module-info for Java 8 -->
+              <execution>
+                <id>base-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>8</release>
+                  <excludes>
+                    <exclude>module-info.java</exclude>
+                  </excludes>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
           <!-- Surefire plugin is broken, https://issues.apache.org/jira/browse/SUREFIRE-1501 -->
           <plugin>
@@ -723,6 +809,11 @@
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
 
+                <!-- Needed for JUnit offline instrumentation -->
+                --add-reads com.azure.core=ALL-UNNAMED
+                --add-reads com.azure.core.test=ALL-UNNAMED
+                --add-reads com.azure.core.amqp=ALL-UNNAMED
+
                 <!-- Mockito uses reflection to create PollResponses in tests. -->
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
 
@@ -732,61 +823,18 @@
 
                 <!-- Checkpoint store tests fail without this -->
                 --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
+                --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
 
                 <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
                 --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
+                --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
               </argLine>
               <useSystemClassLoader>false</useSystemClassLoader>
               <forkCount>1</forkCount>
               <testFailureIgnore>false</testFailureIgnore>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Customise the javadoc plugin to not include module directories in links. We don't
-         currently use modules, so search results were being directed to an 'undefined'
-         directory (for an 'undefined' module). This no-module-directories flag fixes
-         this, but it is only required for JDK 9+ -->
-    <profile>
-      <id>javadoc-no-modules-fix</id>
-      <activation>
-        <jdk>[9,11)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-              <additionalJOption>--no-module-directories</additionalJOption>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Add Automatic-Module-Name -->
-    <profile>
-      <id>modulename</id>
-      <activation>
-        <file>
-          <missing>src/main/java/module-info.java</missing>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <configuration>
-              <archive>
-                <manifestEntries>
-                  <!-- This value will be read out of each projects properties and inserted into its manifest -->
-                  <Automatic-Module-Name>${project.automatic.module.name}</Automatic-Module-Name>
-                </manifestEntries>
-              </archive>
+              <systemPropertyVariables>
+                <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -869,6 +917,9 @@
         <property>
           <name>generate-overview</name>
         </property>
+        <file>
+          <exists>../../../eng/pipelines/scripts/generate_overview_from_readme.py</exists>
+        </file>
       </activation>
       <build>
         <plugins>
@@ -891,6 +942,8 @@
                       <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
                       <argument>--rf</argument>
                       <argument>${project.basedir}/README.md</argument>
+                      <argument>--v</argument>
+                      <argument>${project.version}</argument>
                 </arguments>
               </configuration>
           </plugin>
@@ -912,11 +965,12 @@
     <module>sdk/appconfiguration/azure-data-appconfiguration</module>
     <module>sdk/core/azure-core</module>
     <module>sdk/core/azure-core-amqp</module>
-    <module>sdk/core/azure-core-management</module>
+<!--    <module>sdk/core/azure-core-management</module>--> <!-- Removed for now, as this library is unused -->
     <module>sdk/core/azure-core-http-netty</module>
     <module>sdk/core/azure-core-http-okhttp</module>
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opencensus</module>
+    <module>sdk/core/azure-core-tracing-opentelemetry</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
     <module>sdk/identity/azure-identity</module>

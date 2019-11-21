@@ -4,7 +4,7 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.http.HttpRequest;
-import com.azure.core.implementation.http.PagedResponseBase;
+
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
