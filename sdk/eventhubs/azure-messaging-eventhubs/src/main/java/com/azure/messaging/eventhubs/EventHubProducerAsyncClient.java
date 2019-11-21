@@ -220,41 +220,42 @@ public class EventHubProducerAsyncClient implements Closeable {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
 
-        final CreateBatchOptions clone = options.clone();
+        final String partitionKey = options.getPartitionKey();
+        final String partitionId = options.getPartitionId();
+        final int batchMaxSize = options.getMaximumSizeInBytes();
 
-        if (!CoreUtils.isNullOrEmpty(clone.getPartitionKey())
-                && !CoreUtils.isNullOrEmpty(clone.getPartitionId())) {
+        if (!CoreUtils.isNullOrEmpty(partitionKey)
+                && !CoreUtils.isNullOrEmpty(partitionId)) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
-                "BatchOptions.getPartitionKey() and BatchOptions.getPartitionId() are both set. Only one or the"
-                    + " other can be used. partitionKey: '%s'. partitionId: '%s'",
-                clone.getPartitionKey(), clone.getPartitionId())));
-        } else if (!CoreUtils.isNullOrEmpty(clone.getPartitionKey())
-            && clone.getPartitionKey().length() > MAX_PARTITION_KEY_LENGTH) {
+                "CreateBatchOptions.getPartitionKey() and CreateBatchOptions.getPartitionId() are both set. "
+                    + "Only one or the other can be used. partitionKey: '%s'. partitionId: '%s'",
+                partitionKey, partitionId)));
+        } else if (!CoreUtils.isNullOrEmpty(partitionKey)
+            && partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
-                "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", clone.getPartitionKey(),
+                "Partition key '%s' exceeds the maximum allowed length: '%s'.", partitionKey,
                 MAX_PARTITION_KEY_LENGTH)));
         }
 
-        return getSendLink(clone.getPartitionId())
+        return getSendLink(partitionId)
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int maximumLinkSize = size > 0
                         ? size
                         : MAX_MESSAGE_LENGTH_BYTES;
 
-                    if (clone.getMaximumSizeInBytes() > maximumLinkSize) {
+                    if (batchMaxSize > maximumLinkSize) {
                         return monoError(logger,
                             new IllegalArgumentException(String.format(Locale.US,
                                 "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
-                                clone.getMaximumSizeInBytes(), maximumLinkSize)));
+                                batchMaxSize, maximumLinkSize)));
                     }
 
-                    final int batchSize = clone.getMaximumSizeInBytes() > 0
-                        ? clone.getMaximumSizeInBytes()
+                    final int batchSize = batchMaxSize > 0
+                        ? batchMaxSize
                         : maximumLinkSize;
 
-                    return Mono.just(new EventDataBatch(batchSize, clone.getPartitionId(), clone.getPartitionKey(),
-                        link::getErrorContext));
+                    return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext));
                 }));
     }
 
