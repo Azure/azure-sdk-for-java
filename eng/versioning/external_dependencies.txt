@@ -15,6 +15,7 @@ com.microsoft.azure:azure-arm-client-runtime;1.6.15
 com.microsoft.azure:azure-client-authentication;1.6.15
 com.microsoft.azure:azure-client-runtime;1.6.15
 com.microsoft.azure:azure-core;0.9.8
+com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:azure-mgmt-keyvault;1.11.1
 com.microsoft.azure:client-runtime;1.6.15
 com.microsoft.azure:qpid-proton-j-extensions;1.2.1
@@ -35,8 +36,8 @@ io.netty:netty-tcnative-boringssl-static;2.0.26.Final
 io.opencensus:opencensus-api;0.24.0
 io.opencensus:opencensus-impl;0.24.0
 # SNAPSHOTS should not be allowed
-io.opentelemetry:opentelemetry-api;0.2.0-SNAPSHOT
-io.opentelemetry:opentelemetry-sdk;0.2.0-SNAPSHOT
+io.opentelemetry:opentelemetry-api;0.2.0
+io.opentelemetry:opentelemetry-sdk;0.2.0
 io.projectreactor.netty:reactor-netty;0.9.0.RELEASE
 io.projectreactor:reactor-core;3.3.0.RELEASE
 io.reactivex:rxjava;1.2.4
@@ -125,6 +126,7 @@ org.apache.maven.plugins:maven-failsafe-plugin;2.22.0
 org.apache.maven.plugins:maven-help-plugin;2.1.1
 org.apache.maven.plugins:maven-jar-plugin;3.1.2
 org.apache.maven.plugins:maven-javadoc-plugin;3.1.1
+org.apache.maven.plugins:maven-jxr-plugin;3.0.0
 org.apache.maven.plugins:maven-project-info-reports-plugin;3.0.0
 org.apache.maven.plugins:maven-release-plugin;2.5.3
 org.apache.maven.plugins:maven-resources-plugin;2.4.3
@@ -143,7 +145,7 @@ org.jacoco:org.jacoco.agent;0.8.4
 org.mockito:mockito-core;3.0.0
 org.nanohttpd:nanohttpd;2.3.1
 
-# Snowflakes
+# External Dependency Exceptions
 # This section is for external dependencies whose versions were different than 
 # what was defined in the parent pom.
 # Format;

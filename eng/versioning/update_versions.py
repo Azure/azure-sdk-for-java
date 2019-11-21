@@ -17,7 +17,9 @@
 # Use case: Update the external_dependencies
 #
 #    python utilities/update_versions.py --update-type [library|external_dependency|all] -build-type [client|data|management] --target-file pom-file-to-update
-# For example: To update all versions for the client track for a given pom file
+# For example: To update all versions for the client track for a given pom file. While the skip readme flag isn't entirely
+# necessary here, since our README.md files don't contain externaly dependency versions, there's no point in scanning files
+# that shouldn't require changes.
 #    python eng/versioning/update_versions.py --ut external_dependency --sr
 # 
 # The script must be run at the root of azure-sdk-for-java.

@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
@@ -165,6 +165,7 @@
             <!-- Skip maven compiler and use gmavenplus plugin instead -->
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <source>9</source>
               <target>9</target>
@@ -197,7 +198,7 @@
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-eclipse-compiler</artifactId>
-                <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+                <version>3.4.0-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
               </dependency>
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>

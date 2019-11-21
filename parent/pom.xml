@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
+  <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
 
   <name>Microsoft Azure SDK for Java Parent</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -16,13 +16,14 @@
     <url>http://microsoft.com</url>
   </organization>
 
+<!--
   <parent>
     <groupId>com.microsoft.maven</groupId>
     <artifactId>java-8-parent</artifactId>
     <version>8.0.2</version>
     <relativePath/>
   </parent>
-
+-->
   <licenses>
     <license>
       <name>The MIT License (MIT)</name>
