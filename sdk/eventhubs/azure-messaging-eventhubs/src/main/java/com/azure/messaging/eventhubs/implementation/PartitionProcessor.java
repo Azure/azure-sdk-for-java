@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
 import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
@@ -12,9 +13,9 @@ import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 
 /**
- * An abstract class defining all the operations that a partition processor can perform. Users of {@link EventProcessor}
- * should extend from this class and implement {@link #processEvent(PartitionEvent)} for processing events.
- * Additionally, users can override:
+ * An abstract class defining all the operations that a partition processor can perform. Users of {@link
+ * EventProcessorClient} should extend from this class and implement {@link #processEvent(PartitionEvent)} for
+ * processing events. Additionally, users can override:
  * <ul>
  *     <li>{@link #initialize(InitializationContext)} - This method is called before at the beginning of processing a
  *     partition.</li>
@@ -33,10 +34,10 @@ public abstract class PartitionProcessor {
     private final ClientLogger logger = new ClientLogger(PartitionProcessor.class);
 
     /**
-     * This method is called when this {@link EventProcessor} takes ownership of a new partition and before any events
-     * from this partition are received. By default, each partition is processed from
-     * {@link EventPosition#earliest()}. To start processing from a different position, use
-     * {@link InitializationContext#setInitialPosition(EventPosition)} to
+     * This method is called when this {@link EventProcessorClient} takes ownership of a new partition and before any
+     * events from this partition are received. By default, each partition is processed from {@link
+     * EventPosition#earliest()}. To start processing from a different position, use {@link
+     * InitializationContext#setInitialPosition(EventPosition)} to
      *
      * @param initializationContext The initialization context before events from the partition are processed.
      */

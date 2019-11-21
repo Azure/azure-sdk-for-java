@@ -48,7 +48,7 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
             .retry(new RetryOptions().setMaxRetries(0))
             .proxyOptions(proxyOptions)
             .transportType(TransportType.AMQP_WEB_SOCKETS)
-            .buildProducer();
+            .buildProducerClient();
 
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
     }
@@ -75,11 +75,11 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
         final int numberOfEvents = 15;
         final String messageId = UUID.randomUUID().toString();
         final EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString(getConnectionString()).buildAsyncProducer();
+            .connectionString(getConnectionString()).buildAsyncProducerClient();
         final EventHubConsumerClient receiver = new EventHubClientBuilder()
                 .connectionString(getConnectionString())
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-                .buildConsumer();
+                .buildConsumerClient();
 
         producer.send(TestUtils.getEvents(numberOfEvents, messageId), sendOptions).block();
 

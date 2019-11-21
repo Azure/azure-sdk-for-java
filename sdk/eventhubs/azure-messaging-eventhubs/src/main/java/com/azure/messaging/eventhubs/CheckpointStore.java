@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
  * An interface that defines the operations for storing and retrieving partition ownership information and checkpoint
  * details for each partition.
  */
-public interface EventProcessorStore {
+public interface CheckpointStore {
 
     /**
      * Called to get the list of all existing partition ownership from the underlying data store. Could return empty

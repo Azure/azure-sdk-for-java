@@ -65,7 +65,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .transportType(TransportType.AMQP_WEB_SOCKETS)
             .retry(new RetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         try {
             StepVerifier.create(consumer.receiveFromPartition("1", EventPosition.earliest()).take(1))

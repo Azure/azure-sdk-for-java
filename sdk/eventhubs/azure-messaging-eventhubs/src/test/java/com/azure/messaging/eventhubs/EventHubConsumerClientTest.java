@@ -305,7 +305,7 @@ public class EventHubConsumerClientTest {
             .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath=dummy-event-hub")
             .consumerGroup(CONSUMER_GROUP)
             .prefetchCount(100)
-            .buildConsumer();
+            .buildConsumerClient();
 
         Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
         Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());

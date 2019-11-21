@@ -4,10 +4,10 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventProcessor;
-import com.azure.messaging.eventhubs.EventProcessorStore;
-import com.azure.messaging.eventhubs.PartitionProcessor;
+import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import reactor.core.publisher.Mono;
@@ -18,58 +18,73 @@ import reactor.core.publisher.Mono;
 @Immutable
 public class PartitionContext {
 
+    private final String fullyQualifiedNamespace;
     private final String partitionId;
     private final String eventHubName;
     private final String consumerGroup;
     private final LastEnqueuedEventProperties lastEnqueuedEventProperties;
     private final String ownerId;
     private final AtomicReference<String> eTag;
-    private final EventProcessorStore eventProcessorStore;
+    private final CheckpointStore checkpointStore;
 
     /**
      * Creates an instance of PartitionContext that contains partition information available to each {@link
      * PartitionProcessor}.
      *
+     * @param fullyQualifiedNamespace The fully qualified namespace of the Event Hub.
      * @param partitionId The partition id of the partition processed by the {@link PartitionProcessor}.
-     * @param eventHubName The Event Hub name associated with the {@link EventProcessor}.
-     * @param consumerGroup The consumer group name associated with the {@link EventProcessor}.
-     * @param ownerId The unique identifier of the {@link EventProcessor} instance.
-     * @param eTag The last known ETag stored in {@link EventProcessorStore} for this partition.
-     * @param eventProcessorStore A {@link EventProcessorStore} implementation to read and update partition ownership
-     * and checkpoint information.
-     * @throws NullPointerException if {@code partitionId} or {@code eventHubName} or {@code consumerGroup}
-     * or {@code ownerId} or {@code eTag} or {@code eventProcessorStore} is {@code null}.
+     * @param eventHubName The Event Hub name associated with the {@link EventProcessorClient}.
+     * @param consumerGroup The consumer group name associated with the {@link EventProcessorClient}.
+     * @param ownerId The unique identifier of the {@link EventProcessorClient} instance.
+     * @param eTag The last known ETag stored in {@link CheckpointStore} for this partition.
+     * @param checkpointStore A {@link CheckpointStore} implementation to read and update partition ownership and
+     * checkpoint information.
+     * @throws NullPointerException if {@code partitionId} or {@code eventHubName} or {@code consumerGroup} or
+     * {@code ownerId} or {@code eTag} or {@code checkpointStore} is {@code null}.
      */
-    public PartitionContext(String partitionId, String eventHubName, String consumerGroup,
-        String ownerId, String eTag, EventProcessorStore eventProcessorStore) {
+    public PartitionContext(String fullyQualifiedNamespace, String partitionId, String eventHubName,
+        String consumerGroup, String ownerId, String eTag, CheckpointStore checkpointStore) {
+        this.fullyQualifiedNamespace = Objects
+            .requireNonNull(fullyQualifiedNamespace, "fullyQualifiedNamespace cannot be null");
         this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null.");
         this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
         this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null.");
         this.eTag = new AtomicReference<>(eTag);
-        this.eventProcessorStore = Objects.requireNonNull(eventProcessorStore, "eventProcessorStore cannot be null.");
+        this.checkpointStore = Objects.requireNonNull(checkpointStore, "checkpointStore cannot be null.");
         this.lastEnqueuedEventProperties = null;
     }
 
     /**
      * Creates an instance of PartitionContext that contains partition information available for each event.
      *
+     * @param fullyQualifiedNamespace The fully qualified namespace of the Event Hub.
      * @param partitionId The partition id of the partition.
      * @param eventHubName The Event Hub name that the event originated from.
      * @param consumerGroup The consumer group name the event originated from.
      * @param lastEnqueuedEventProperties Set of information about the last enqueued event of a partition.
      */
-    public PartitionContext(String partitionId, String eventHubName, String consumerGroup,
-        LastEnqueuedEventProperties lastEnqueuedEventProperties) {
+    public PartitionContext(String fullyQualifiedNamespace, String partitionId, String eventHubName,
+        String consumerGroup, LastEnqueuedEventProperties lastEnqueuedEventProperties) {
+        this.fullyQualifiedNamespace = Objects
+            .requireNonNull(fullyQualifiedNamespace, "fullyQualifiedNamespace cannot be null");
         this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null.");
         this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
         this.lastEnqueuedEventProperties = lastEnqueuedEventProperties;
         this.ownerId = null;
         this.eTag = new AtomicReference<>();
-        this.eventProcessorStore = null;
+        this.checkpointStore = null;
     }
 
+    /**
+     * Returns the fully qualified namespace of the Event Hub.
+     *
+     * @return the fully qualified namespace of the Event Hub.
+     */
+    public String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
+    }
 
     /**
      * Gets the partition id associated to an instance of {@link PartitionProcessor}.
@@ -119,14 +134,14 @@ public class PartitionContext {
     public Mono<Void> updateCheckpoint(EventData eventData) {
         String previousETag = this.eTag.get();
         Checkpoint checkpoint = new Checkpoint()
-            .setConsumerGroupName(consumerGroup)
+            .setConsumerGroup(consumerGroup)
             .setEventHubName(eventHubName)
             .setOwnerId(ownerId)
             .setPartitionId(partitionId)
             .setSequenceNumber(eventData.getSequenceNumber())
             .setOffset(eventData.getOffset())
             .setETag(previousETag);
-        return this.eventProcessorStore.updateCheckpoint(checkpoint)
+        return this.checkpointStore.updateCheckpoint(checkpoint)
             .map(eTag -> this.eTag.compareAndSet(previousETag, eTag))
             .then();
     }
@@ -142,7 +157,7 @@ public class PartitionContext {
     public Mono<Void> updateCheckpoint(long sequenceNumber, Long offset) {
         String previousETag = this.eTag.get();
         Checkpoint checkpoint = new Checkpoint()
-            .setConsumerGroupName(consumerGroup)
+            .setConsumerGroup(consumerGroup)
             .setEventHubName(eventHubName)
             .setOwnerId(ownerId)
             .setPartitionId(partitionId)
@@ -150,7 +165,7 @@ public class PartitionContext {
             .setOffset(offset)
             .setETag(previousETag);
 
-        return this.eventProcessorStore.updateCheckpoint(checkpoint)
+        return this.checkpointStore.updateCheckpoint(checkpoint)
             .map(eTag -> this.eTag.compareAndSet(previousETag, eTag))
             .then();
     }

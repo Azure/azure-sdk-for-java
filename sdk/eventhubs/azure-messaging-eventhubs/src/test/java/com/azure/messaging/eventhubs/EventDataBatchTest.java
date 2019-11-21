@@ -63,7 +63,7 @@ public class EventDataBatchTest {
         final EventData within = new EventData(new byte[1024]);
 
         Assertions.assertTrue(batch.tryAdd(within));
-        Assertions.assertEquals(1, batch.getSize());
+        Assertions.assertEquals(1, batch.getCount());
     }
 
 

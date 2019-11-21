@@ -87,12 +87,12 @@ public class ProxySendTest extends IntegrationTestBase {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-        final EventHubProducerAsyncClient producer = builder.buildAsyncProducer();
+        final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
         final Instant sendTime = Instant.now();
         final EventHubConsumerAsyncClient consumer = builder
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         try {
             // Act

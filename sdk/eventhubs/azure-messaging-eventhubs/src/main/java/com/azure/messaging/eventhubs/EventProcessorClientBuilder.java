@@ -7,11 +7,13 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
@@ -25,15 +27,16 @@ import reactor.core.scheduler.Scheduler;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
- * EventProcessor}. Calling {@link #buildEventProcessor()} constructs a new instance of {@link EventProcessor}.
+ * EventProcessorClient}. Calling {@link #buildEventProcessorClient()} constructs a new instance of {@link
+ * EventProcessorClient}.
  *
  * <p>
- * To create an instance of {@link EventProcessor} that processes events with user-provided callback, configure the
- * following fields:
+ * To create an instance of {@link EventProcessorClient} that processes events with user-provided callback, configure
+ * the following fields:
  *
  * <ul>
  * <li>{@link #consumerGroup(String) Consumer group name}.</li>
- * <li>{@link EventProcessorStore} - An implementation of EventProcessorStore that stores checkpoint and
+ * <li>{@link CheckpointStore} - An implementation of CheckpointStore that stores checkpoint and
  * partition ownership information to enable load balancing.</li>
  * <li>{@link #processEvent(Consumer)} - A callback that processes events received from the Event Hub.</li>
  * <li>Credentials -
@@ -51,28 +54,30 @@ import reactor.core.scheduler.Scheduler;
  *  </li>
  * </ul>
  *
- * <p><strong>Creating an {@link EventProcessor}</strong></p>
+ * <p><strong>Creating an {@link EventProcessorClient}</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation}
  *
- * @see EventProcessor
+ * @see EventProcessorClient
  * @see EventHubConsumerClient
+ * @see EventHubConsumerAsyncClient
  */
-public class EventProcessorBuilder {
+@ServiceClientBuilder(serviceClients = EventProcessorClient.class)
+public class EventProcessorClientBuilder {
 
-    private final ClientLogger logger = new ClientLogger(EventProcessorBuilder.class);
+    private final ClientLogger logger = new ClientLogger(EventProcessorClientBuilder.class);
 
     private final EventHubClientBuilder eventHubClientBuilder;
     private String consumerGroup;
-    private EventProcessorStore eventProcessorStore;
+    private CheckpointStore checkpointStore;
     private Consumer<PartitionEvent> processEvent;
     private Consumer<EventProcessingErrorContext> processError;
     private Consumer<InitializationContext> initializePartition;
     private Consumer<CloseContext> closePartition;
 
     /**
-     * Creates a new instance of {@link EventProcessorBuilder}.
+     * Creates a new instance of {@link EventProcessorClientBuilder}.
      */
-    public EventProcessorBuilder() {
+    public EventProcessorClientBuilder() {
         eventHubClientBuilder = new EventHubClientBuilder();
     }
 
@@ -92,14 +97,14 @@ public class EventProcessorBuilder {
      *
      * @param connectionString The connection string to use for connecting to the Event Hub instance. It is expected
      * that the Event Hub name and the shared access key properties are contained in this connection string.
-     * @return The updated {@link EventProcessorBuilder} object.
+     * @return The updated {@link EventProcessorClientBuilder} object.
      * @throws NullPointerException if {@code connectionString} is {@code null}.
-     * @throws IllegalArgumentException if {@code connectionString} is empty. Or, the {@code connectionString}
-     * does not contain the "EntityPath" key, which is the name of the Event Hub instance.
+     * @throws IllegalArgumentException if {@code connectionString} is empty. Or, the {@code connectionString} does not
+     * contain the "EntityPath" key, which is the name of the Event Hub instance.
      * @throws AzureException If the shared access signature token credential could not be created using the connection
      * string.
      */
-    public EventProcessorBuilder connectionString(String connectionString) {
+    public EventProcessorClientBuilder connectionString(String connectionString) {
         eventHubClientBuilder.connectionString(connectionString);
         return this;
     }
@@ -111,14 +116,14 @@ public class EventProcessorBuilder {
      * @param connectionString The connection string to use for connecting to the Event Hubs namespace; it is expected
      * that the shared access key properties are contained in this connection string, but not the Event Hub name.
      * @param eventHubName The name of the Event Hub to connect the client to.
-     * @return The updated {@link EventProcessorBuilder} object.
+     * @return The updated {@link EventProcessorClientBuilder} object.
      * @throws NullPointerException if {@code connectionString} or {@code eventHubName} is null.
      * @throws IllegalArgumentException if {@code connectionString} or {@code eventHubName} is an empty string. Or, if
      * the {@code connectionString} contains the Event Hub name.
      * @throws AzureException If the shared access signature token credential could not be created using the connection
      * string.
      */
-    public EventProcessorBuilder connectionString(String connectionString, String eventHubName) {
+    public EventProcessorClientBuilder connectionString(String connectionString, String eventHubName) {
         eventHubClientBuilder.connectionString(connectionString, eventHubName);
         return this;
     }
@@ -130,9 +135,9 @@ public class EventProcessorBuilder {
      * {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to configure the {@link EventHubAsyncClient}.
-     * @return The updated {@link EventProcessorBuilder} object.
+     * @return The updated {@link EventProcessorClientBuilder} object.
      */
-    public EventProcessorBuilder configuration(Configuration configuration) {
+    public EventProcessorClientBuilder configuration(Configuration configuration) {
         eventHubClientBuilder.configuration(configuration);
         return this;
     }
@@ -145,12 +150,12 @@ public class EventProcessorBuilder {
      * @param eventHubName The name of the Event Hub to connect the client to.
      * @param credential The token credential to use for authorization. Access controls may be specified by the Event
      * Hubs namespace or the requested Event Hub, depending on Azure configuration.
-     * @return The updated {@link EventProcessorBuilder} object.
+     * @return The updated {@link EventProcessorClientBuilder} object.
      * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} or {@code eventHubName} is an empty string.
      * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
      * null.
      */
-    public EventProcessorBuilder credential(String fullyQualifiedNamespace, String eventHubName,
+    public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         TokenCredential credential) {
         eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
         return this;
@@ -161,9 +166,9 @@ public class EventProcessorBuilder {
      * TransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
      * @param proxyOptions The proxy configuration to use.
-     * @return The updated {@link EventProcessorBuilder} object.
+     * @return The updated {@link EventProcessorClientBuilder} object.
      */
-    public EventProcessorBuilder proxyConfiguration(ProxyOptions proxyOptions) {
+    public EventProcessorClientBuilder proxyConfiguration(ProxyOptions proxyOptions) {
         eventHubClientBuilder.proxyOptions(proxyOptions);
         return this;
     }
@@ -173,9 +178,9 @@ public class EventProcessorBuilder {
      * specified, an elastic pool is used.
      *
      * @param scheduler The scheduler for operations such as connecting to and receiving or sending data to Event Hubs.
-     * @return The updated {@link EventProcessorBuilder} object.
+     * @return The updated {@link EventProcessorClientBuilder} object.
      */
-    public EventProcessorBuilder scheduler(Scheduler scheduler) {
+    public EventProcessorClientBuilder scheduler(Scheduler scheduler) {
         eventHubClientBuilder.scheduler(scheduler);
         return this;
     }
@@ -185,9 +190,9 @@ public class EventProcessorBuilder {
      * TransportType#AMQP}.
      *
      * @param transport The transport type to use.
-     * @return The updated {@link EventProcessorBuilder} object.
+     * @return The updated {@link EventProcessorClientBuilder} object.
      */
-    public EventProcessorBuilder transportType(TransportType transport) {
+    public EventProcessorClientBuilder transportType(TransportType transport) {
         eventHubClientBuilder.transportType(transport);
         return this;
     }
@@ -196,52 +201,52 @@ public class EventProcessorBuilder {
      * Sets the retry policy for {@link EventHubAsyncClient}. If not specified, the default retry options are used.
      *
      * @param retryOptions The retry policy to use.
-     * @return The updated {@link EventProcessorBuilder} object.
+     * @return The updated {@link EventProcessorClientBuilder} object.
      */
-    public EventProcessorBuilder retryOptions(RetryOptions retryOptions) {
+    public EventProcessorClientBuilder retry(RetryOptions retryOptions) {
         eventHubClientBuilder.retry(retryOptions);
         return this;
     }
 
     /**
-     * Sets the consumer group name from which the {@link EventProcessor} should consume events.
+     * Sets the consumer group name from which the {@link EventProcessorClient} should consume events.
      *
-     * @param consumerGroup The consumer group name this {@link EventProcessor} should consume events.
-     * @return The updated {@link EventProcessorBuilder} instance.
+     * @param consumerGroup The consumer group name this {@link EventProcessorClient} should consume events.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
      * @throws NullPointerException if {@code consumerGroup} is {@code null}.
      */
-    public EventProcessorBuilder consumerGroup(String consumerGroup) {
+    public EventProcessorClientBuilder consumerGroup(String consumerGroup) {
         this.consumerGroup = Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null");
         return this;
     }
 
     /**
-     * Sets the {@link EventProcessorStore} the {@link EventProcessor} will use for storing partition ownership and
+     * Sets the {@link CheckpointStore} the {@link EventProcessorClient} will use for storing partition ownership and
      * checkpoint information.
      *
      * <p>
-     * Users can, optionally, provide their own implementation of {@link EventProcessorStore} which will store ownership
-     * and checkpoint information.
+     * Users can, optionally, provide their own implementation of {@link CheckpointStore} which will store ownership and
+     * checkpoint information.
      * </p>
      *
-     * @param eventProcessorStore Implementation of {@link EventProcessorStore}.
-     * @return The updated {@link EventProcessorBuilder} instance.
-     * @throws NullPointerException if {@code eventProcessorStore} is {@code null}.
+     * @param checkpointStore Implementation of {@link CheckpointStore}.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
+     * @throws NullPointerException if {@code checkpointStore} is {@code null}.
      */
-    public EventProcessorBuilder eventProcessorStore(EventProcessorStore eventProcessorStore) {
-        this.eventProcessorStore = Objects.requireNonNull(eventProcessorStore, "'eventProcessorStore' cannot be null");
+    public EventProcessorClientBuilder checkpointStore(CheckpointStore checkpointStore) {
+        this.checkpointStore = Objects.requireNonNull(checkpointStore, "'checkpointStore' cannot be null");
         return this;
     }
 
     /**
-     * The function that is called for each event received by this {@link EventProcessor}. The input contains the
+     * The function that is called for each event received by this {@link EventProcessorClient}. The input contains the
      * partition context and the event data.
      *
-     * @param processEvent The function to call when an event is received by this {@link EventProcessor}.
-     * @return The updated {@link EventProcessorBuilder} instance.
+     * @param processEvent The callback that's called when an event is received by this {@link EventProcessorClient}.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
      * @throws NullPointerException if {@code processEvent} is {@code null}.
      */
-    public EventProcessorBuilder processEvent(Consumer<PartitionEvent> processEvent) {
+    public EventProcessorClientBuilder processEvent(Consumer<PartitionEvent> processEvent) {
         this.processEvent = Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
         return this;
     }
@@ -250,10 +255,10 @@ public class EventProcessorBuilder {
      * The function that is called when an error occurs while processing events. The input contains the partition
      * information where the error happened.
      *
-     * @param processError The function to call when an error occurs while processing events.
-     * @return The updated {@link EventProcessorBuilder} instance.
+     * @param processError The callback that's called when an error occurs while processing events.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
      */
-    public EventProcessorBuilder processError(Consumer<EventProcessingErrorContext> processError) {
+    public EventProcessorClientBuilder processError(Consumer<EventProcessingErrorContext> processError) {
         this.processError = processError;
         return this;
     }
@@ -261,13 +266,13 @@ public class EventProcessorBuilder {
     /**
      * The function that is called before processing starts for a partition. The input contains the partition
      * information along with a default starting position for processing events that will be used in the case of a
-     * checkpoint unavailable in {@link EventProcessorStore}. Users can update this position if a different starting
+     * checkpoint unavailable in {@link CheckpointStore}. Users can update this position if a different starting
      * position is preferred.
      *
-     * @param initializePartition The function to call before processing starts for a partition
-     * @return The updated {@link EventProcessorBuilder} instance.
+     * @param initializePartition The callback that's called before processing starts for a partition
+     * @return The updated {@link EventProcessorClientBuilder} instance.
      */
-    public EventProcessorBuilder initializePartition(
+    public EventProcessorClientBuilder processPartitionInitialization(
         Consumer<InitializationContext> initializePartition) {
         this.initializePartition = initializePartition;
         return this;
@@ -277,38 +282,38 @@ public class EventProcessorBuilder {
      * The function that is called when a processing for a partition stops. The input contains the partition information
      * along with the reason for stopping the event processing for this partition.
      *
-     * @param closePartition The function to call after processing for a partition stops.
-     * @return The updated {@link EventProcessorBuilder} instance.
+     * @param closePartition The callback that's called after processing for a partition stops.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
      */
-    public EventProcessorBuilder closePartition(Consumer<CloseContext> closePartition) {
+    public EventProcessorClientBuilder processPartitionClose(Consumer<CloseContext> closePartition) {
         this.closePartition = closePartition;
         return this;
     }
 
     /**
-     * This will create a new {@link EventProcessor} configured with the options set in this builder. Each call to this
-     * method will return a new instance of {@link EventProcessor}.
+     * This will create a new {@link EventProcessorClient} configured with the options set in this builder. Each call to
+     * this method will return a new instance of {@link EventProcessorClient}.
      *
      * <p>
-     * All partitions processed by this {@link EventProcessor} will start processing from {@link
+     * All partitions processed by this {@link EventProcessorClient} will start processing from {@link
      * EventPosition#earliest() earliest} available event in the respective partitions.
      * </p>
      *
-     * @throws NullPointerException if {@code processEvent} or {@code eventProcessorStore} or {@code consumerGroup} is
+     * @return A new instance of {@link EventProcessorClient}.
+     * @throws NullPointerException if {@code processEvent} or {@code checkpointStore} or {@code consumerGroup} is
      * {@code null}.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
-     * @return A new instance of {@link EventProcessor}.
      */
-    public EventProcessor buildEventProcessor() {
+    public EventProcessorClient buildEventProcessorClient() {
         Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
-        Objects.requireNonNull(eventProcessorStore, "'eventProcessStore' cannot be null");
+        Objects.requireNonNull(checkpointStore, "'checkpointStore' cannot be null");
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null");
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-        return new EventProcessor(eventHubClientBuilder, this.consumerGroup,
-            getPartitionProcessorSupplier(), EventPosition.earliest(), eventProcessorStore, tracerProvider);
+        return new EventProcessorClient(eventHubClientBuilder, this.consumerGroup,
+            getPartitionProcessorSupplier(), EventPosition.earliest(), checkpointStore, tracerProvider);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {

@@ -14,14 +14,14 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A simple in-memory implementation of a {@link EventProcessorStore}. This implementation keeps track of partition
+ * A simple in-memory implementation of a {@link CheckpointStore}. This implementation keeps track of partition
  * ownership details including checkpointing information in-memory. Using this implementation will only facilitate
  * checkpointing and load balancing of Event Processors running within this process.
  */
-public class InMemoryEventProcessorStore implements EventProcessorStore {
+public class InMemoryCheckpointStore implements CheckpointStore {
 
     private final Map<String, PartitionOwnership> partitionOwnershipMap = new ConcurrentHashMap<>();
-    private final ClientLogger logger = new ClientLogger(InMemoryEventProcessorStore.class);
+    private final ClientLogger logger = new ClientLogger(InMemoryCheckpointStore.class);
 
     /**
      * {@inheritDoc}
