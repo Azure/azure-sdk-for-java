@@ -429,15 +429,16 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
-        final SendOptions clone = options.clone();
+        final String partitionKey = options.getPartitionKey();
+        final String partitionId = options.getPartitionId();
         final boolean isTracingEnabled = tracerProvider.isEnabled();
 
-        if (!CoreUtils.isNullOrEmpty(clone.getPartitionKey())
-                && !CoreUtils.isNullOrEmpty(clone.getPartitionId())) {
+        if (!CoreUtils.isNullOrEmpty(partitionKey)
+                && !CoreUtils.isNullOrEmpty(partitionId)) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
-                "BatchOptions.getPartitionKey() and BatchOptions.getPartitionId() are both set. Only one or the"
+                "SendOptions.getPartitionKey() and SendOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",
-                clone.getPartitionKey(), clone.getPartitionId())));
+                partitionKey, partitionId)));
         }
 
         return getSendLink(options.getPartitionId())
