@@ -3,12 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.ExponentialRetryPolicy;
-import com.azure.core.amqp.FixedRetryPolicy;
-import com.azure.core.amqp.RetryMode;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.RetryPolicy;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -55,7 +50,7 @@ public class RetryUtilTest {
 
         final AtomicInteger resubscribe = new AtomicInteger();
         final RetryPolicy retryPolicy = new FixedRetryPolicy(options);
-        final Flux<TransportType> neverFlux = Flux.<TransportType>never()
+        final Flux<AmqpTransportType> neverFlux = Flux.<AmqpTransportType>never()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
@@ -79,7 +74,7 @@ public class RetryUtilTest {
 
         final AtomicInteger resubscribe = new AtomicInteger();
         final RetryPolicy retryPolicy = new FixedRetryPolicy(options);
-        final Mono<TransportType> neverFlux = Mono.<TransportType>never()
+        final Mono<AmqpTransportType> neverFlux = Mono.<AmqpTransportType>never()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert

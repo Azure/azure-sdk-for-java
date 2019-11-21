@@ -3,24 +3,13 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.AmqpConnection;
-import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.RetryMode;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.*;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.engine.Connection;
-import org.apache.qpid.proton.engine.EndpointState;
-import org.apache.qpid.proton.engine.Event;
-import org.apache.qpid.proton.engine.Handler;
-import org.apache.qpid.proton.engine.Record;
-import org.apache.qpid.proton.engine.Session;
-import org.apache.qpid.proton.engine.Transport;
+import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.jupiter.api.AfterEach;
@@ -40,10 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ReactorConnectionTest {
     private static final String CONNECTION_ID = "test-connection-id";
@@ -96,7 +82,7 @@ public class ReactorConnectionTest {
         final RetryOptions retryOptions = new RetryOptions().setTryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             CREDENTIAL_INFO.getEntityPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
-            TransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER);
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
             tokenManager, messageSerializer);
     }
@@ -293,7 +279,7 @@ public class ReactorConnectionTest {
             .setTryTimeout(timeout);
         ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             CREDENTIAL_INFO.getEntityPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
-            TransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
 
         // Act and Assert
         try (ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,

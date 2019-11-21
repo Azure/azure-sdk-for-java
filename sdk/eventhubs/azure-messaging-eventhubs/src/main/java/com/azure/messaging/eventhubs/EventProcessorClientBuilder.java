@@ -3,9 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
@@ -23,7 +23,6 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import reactor.core.scheduler.Scheduler;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
@@ -163,7 +162,7 @@ public class EventProcessorClientBuilder {
 
     /**
      * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
-     * TransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
+     * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
      * @param proxyOptions The proxy configuration to use.
      * @return The updated {@link EventProcessorClientBuilder} object.
@@ -187,12 +186,12 @@ public class EventProcessorClientBuilder {
 
     /**
      * Sets the transport type by which all the communication with Azure Event Hubs occurs. Default value is {@link
-     * TransportType#AMQP}.
+     * AmqpTransportType#AMQP}.
      *
      * @param transport The transport type to use.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
-    public EventProcessorClientBuilder transportType(TransportType transport) {
+    public EventProcessorClientBuilder transportType(AmqpTransportType transport) {
         eventHubClientBuilder.transportType(transport);
         return this;
     }

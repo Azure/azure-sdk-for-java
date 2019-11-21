@@ -3,11 +3,11 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
-import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -162,7 +162,7 @@ public abstract class IntegrationTestBase extends TestBase {
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .scheduler(scheduler)
             .retry(RETRY_OPTIONS)
-            .transportType(TransportType.AMQP);
+            .transportType(AmqpTransportType.AMQP);
 
         if (useCredentials) {
             final String fqdn = getFullyQualifiedDomainName();

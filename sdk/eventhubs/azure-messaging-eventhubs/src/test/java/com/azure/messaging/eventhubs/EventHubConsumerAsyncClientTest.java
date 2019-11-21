@@ -3,11 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.AmqpShutdownSignal;
-import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.*;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -26,20 +22,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
-import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.EmitterProcessor;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.*;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -60,12 +47,7 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit tests to verify functionality of {@link EventHubConsumerAsyncClient}.
@@ -116,7 +98,7 @@ public class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
+            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         eventHubConnection = new EventHubConnection(Mono.just(connection), connectionOptions);
         when(connection.createSession(any())).thenReturn(Mono.just(session));

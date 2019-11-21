@@ -3,12 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.ExponentialRetryPolicy;
-import com.azure.core.amqp.FixedRetryPolicy;
-import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryMode;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.*;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
@@ -34,10 +29,7 @@ import java.time.Duration;
 
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class EventHubConnectionTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(2);
@@ -59,7 +51,7 @@ public class EventHubConnectionTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         ConnectionOptions connectionOptions = new ConnectionOptions(HOST_NAME, "event-hub-path", tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
+            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         provider = new EventHubConnection(Mono.just(connection), connectionOptions);
     }

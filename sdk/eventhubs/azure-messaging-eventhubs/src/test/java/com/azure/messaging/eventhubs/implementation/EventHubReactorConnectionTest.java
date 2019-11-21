@@ -3,17 +3,11 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
-import com.azure.core.amqp.implementation.CBSAuthorizationType;
-import com.azure.core.amqp.implementation.ConnectionOptions;
-import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.ReactorDispatcher;
-import com.azure.core.amqp.implementation.ReactorHandlerProvider;
-import com.azure.core.amqp.implementation.ReactorProvider;
-import com.azure.core.amqp.implementation.TokenManagerProvider;
-import com.azure.core.amqp.implementation.handler.ConnectionHandler;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.*;
+import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -69,7 +63,7 @@ public class EventHubReactorConnectionTest {
 
         final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-name",
-            tokenCredential, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP, new RetryOptions(),
+            tokenCredential, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new RetryOptions(),
             proxy, scheduler);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
@@ -78,7 +72,7 @@ public class EventHubReactorConnectionTest {
         when(reactorProvider.createReactor(connectionHandler.getConnectionId(), connectionHandler.getMaxFrameSize()))
             .thenReturn(reactor);
 
-        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, TransportType.AMQP, proxy))
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, AmqpTransportType.AMQP, proxy))
             .thenReturn(connectionHandler);
     }
 
