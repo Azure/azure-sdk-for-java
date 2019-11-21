@@ -280,7 +280,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve. If {@code null} no label will be used.
-     * @param acceptDateTime To access a past state of the configuration setting. If {@code null} then the current state
+     * @param acceptDateTime Datetime to access a past state of the configuration setting. If {@code null} then the current state
      * of the configuration setting will be returned.
      * {@code acceptDateTime} is not desired in the request.
      * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
