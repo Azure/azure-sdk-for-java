@@ -210,35 +210,75 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     /**
-     * Begin consuming events from all partitions starting at {@code startingPosition}.
+     * Consumes events from all partitions starting from the beginning of each partition.
      *
-     * @param startingPosition Position within each Event Hub partition to begin consuming events.
+     * <p>
+     * This method is not recommended for production use; the {@link EventProcessorClient} should be used for reading
+     * events from all partitions in a production scenario, as it offers a much more robust experience with higher
+     * throughput.
+     *
+     * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
+     * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
+     * given partition or subset of partitions.
+     * </p>
      *
      * @return A stream of events for every partition in the Event Hub starting from {@code startingPosition}.
-     *
-     * @throws NullPointerException if {@code startingPosition} is null.
      */
-    public Flux<PartitionEvent> receive(EventPosition startingPosition) {
-        return receive(startingPosition, defaultReceiveOptions);
+    public Flux<PartitionEvent> receive() {
+        return receive(true, defaultReceiveOptions);
     }
 
     /**
-     * Begin consuming events from all partitions starting at {@code startingPosition}.
+     * Consumes events from all partitions.
      *
-     * @param startingPosition Position within each Event Hub partition to begin consuming events.
+     * <p>
+     * This method is not recommended for production use; the {@link EventProcessorClient} should be used for reading
+     * events from all partitions in a production scenario, as it offers a much more robust experience with higher
+     * throughput.
+     *
+     * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
+     * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
+     * given partition or subset of partitions.
+     * </p>
+     *
+     * @param startReadingAtEarliestEvent {@code true} to begin reading at the first events available in each partition;
+     *     otherwise, reading will begin at the end of each partition seeing only new events as they are published.
+     *
+     * @return A stream of events for every partition in the Event Hub.
+     */
+    public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent) {
+        return receive(startReadingAtEarliestEvent, defaultReceiveOptions);
+    }
+
+    /**
+     * Consumes events from all partitions.
+     *
+     * <p>
+     * This method is not recommended for production use; the {@link EventProcessorClient} should be used for reading
+     * events from all partitions in a production scenario, as it offers a much more robust experience with higher
+     * throughput.
+     *
+     * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
+     * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
+     * given partition or subset of partitions.
+     * </p>
+     *
+     * @param startReadingAtEarliestEvent {@code true} to begin reading at the first events available in each partition;
+     *     otherwise, reading will begin at the end of each partition seeing only new events as they are published.
      * @param receiveOptions Options when receiving events from each Event Hub partition.
      *
-     * @return A stream of events for every partition in the Event Hub starting from {@code startingPosition}.
+     * @return A stream of events for every partition in the Event Hub.
      *
-     * @throws NullPointerException if {@code startingPosition} or {@code receiveOptions} is null.
+     * @throws NullPointerException if {@code receiveOptions} is null.
      */
-    public Flux<PartitionEvent> receive(EventPosition startingPosition, ReceiveOptions receiveOptions) {
-        if (Objects.isNull(startingPosition)) {
-            return fluxError(logger, new NullPointerException("'startingPosition' cannot be null."));
-        } else if (Objects.isNull(receiveOptions)) {
+    public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent, ReceiveOptions receiveOptions) {
+        if (Objects.isNull(receiveOptions)) {
             return fluxError(logger, new NullPointerException("'receiveOptions' cannot be null."));
         }
 
+        final EventPosition startingPosition = startReadingAtEarliestEvent
+            ? EventPosition.earliest()
+            : EventPosition.latest();
         final String prefix = StringUtil.getRandomString("all");
         final Flux<PartitionEvent> allPartitionEvents = getPartitionIds().flatMap(partitionId -> {
             final String linkName = prefix + "-" + partitionId;
