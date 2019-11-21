@@ -20,7 +20,7 @@ public class BasicDemo {
 
     private static final String DATABASE_NAME = "test_db";
     private static final String CONTAINER_NAME = "test_container";
-
+    int count = 0;
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase database;
     private CosmosAsyncContainer container;
@@ -30,12 +30,12 @@ public class BasicDemo {
         demo.start();
     }
 
-    private void start(){
+    private void start() {
         // Get client
         client = CosmosAsyncClient.builder()
-                .setEndpoint(AccountSettings.HOST)
-                .setKey(AccountSettings.MASTER_KEY)
-                .buildAsyncClient();
+                     .setEndpoint(AccountSettings.HOST)
+                     .setKey(AccountSettings.MASTER_KEY)
+                     .buildAsyncClient();
 
         //CREATE a database and a container
         createDbAndContainerBlocking();
@@ -55,40 +55,40 @@ public class BasicDemo {
         //Wait for completion
         try {
             itemResponseMono.doOnError(throwable -> log("CREATE item 1", throwable))
-                    .mergeWith(itemResponseMono1)
-                    .doOnError(throwable -> log("CREATE item 2 ", throwable))
-                    .doOnComplete(() -> log("Items created"))
-                    .publishOn(Schedulers.elastic())
-                    .blockLast();
-        }catch (RuntimeException e){
+                .mergeWith(itemResponseMono1)
+                .doOnError(throwable -> log("CREATE item 2 ", throwable))
+                .doOnComplete(() -> log("Items created"))
+                .publishOn(Schedulers.elastic())
+                .blockLast();
+        } catch (RuntimeException e) {
             log("Couldn't create items due to above exceptions");
         }
 
         createAndReplaceItem();
-        
+
         queryItems();
 
         queryWithContinuationToken();
-        
+
         //Close client
         client.close();
         log("Completed");
     }
 
     private void createAndReplaceItem() {
-        TestObject replaceObject =  new TestObject("item_new_id_3", "test3", "test description3", "JP");
+        TestObject replaceObject = new TestObject("item_new_id_3", "test3", "test description3", "JP");
         CosmosAsyncItem cosmosItem = null;
         //CREATE item sync
         try {
             cosmosItem = container.createItem(replaceObject)
-                    .doOnError(throwable -> log("CREATE 3", throwable))
-                    .publishOn(Schedulers.elastic())
-                    .block()
-                    .getItem();
-        }catch (RuntimeException e){
+                             .doOnError(throwable -> log("CREATE 3", throwable))
+                             .publishOn(Schedulers.elastic())
+                             .block()
+                             .getItem();
+        } catch (RuntimeException e) {
             log("Couldn't create items due to above exceptions");
         }
-        if(cosmosItem != null) {
+        if (cosmosItem != null) {
             replaceObject.setName("new name test3");
 
             //REPLACE the item and wait for completion
@@ -98,37 +98,39 @@ public class BasicDemo {
 
     private void createDbAndContainerBlocking() {
         client.createDatabaseIfNotExists(DATABASE_NAME)
-                .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + cosmosDatabaseResponse.getDatabase().getId()))
-                .flatMap(dbResponse -> dbResponse.getDatabase().createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME, "/country")))
-                .doOnSuccess(cosmosContainerResponse -> log("Container: " + cosmosContainerResponse.getContainer().getId()))
-                .doOnError(throwable -> log(throwable.getMessage()))
-                .publishOn(Schedulers.elastic())
-                .block();
+            .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + cosmosDatabaseResponse.getDatabase().getId()))
+            .flatMap(dbResponse -> dbResponse.getDatabase().createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME, "/country")))
+            .doOnSuccess(cosmosContainerResponse -> log("Container: " + cosmosContainerResponse.getContainer().getId()))
+            .doOnError(throwable -> log(throwable.getMessage()))
+            .publishOn(Schedulers.elastic())
+            .block();
     }
 
-    int count = 0;
-    private void queryItems(){
+    private void queryItems() {
         log("+ Querying the collection ");
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         options.setMaxDegreeOfParallelism(2);
-        Flux<FeedResponse<CosmosItemProperties>> queryFlux = container.queryItems(query, options);
+        Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class);
 
-        queryFlux.publishOn(Schedulers.elastic()).subscribe(cosmosItemFeedResponse -> {},
-                            throwable -> {},
-                            () -> {});
+        queryFlux.publishOn(Schedulers.elastic()).subscribe(cosmosItemFeedResponse -> {
+            },
+            throwable -> {
+            },
+            () -> {
+            });
 
         queryFlux.publishOn(Schedulers.elastic())
-                .toIterable()
-                .forEach(cosmosItemFeedResponse -> 
-                         {
-                             log(cosmosItemFeedResponse.getResults());
-                         });
+            .toIterable()
+            .forEach(cosmosItemFeedResponse ->
+            {
+                log(cosmosItemFeedResponse.getResults());
+            });
 
     }
-    
-    private void queryWithContinuationToken(){
+
+    private void queryWithContinuationToken() {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
         FeedOptions options = new FeedOptions();
@@ -136,22 +138,22 @@ public class BasicDemo {
         options.populateQueryMetrics(true);
         options.maxItemCount(1);
         String continuation = null;
-        do{
+        do {
             options.requestContinuation(continuation);
-            Flux<FeedResponse<CosmosItemProperties>> queryFlux = container.queryItems(query, options);
-            FeedResponse<CosmosItemProperties> page = queryFlux.blockFirst();
+            Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class);
+            FeedResponse<TestObject> page = queryFlux.blockFirst();
             assert page != null;
             log(page.getResults());
             continuation = page.getContinuationToken();
-        }while(continuation!= null);
+        } while (continuation != null);
 
     }
-    
+
     private void log(Object object) {
         System.out.println(object);
     }
-    
-    private void log(String msg, Throwable throwable){
+
+    private void log(String msg, Throwable throwable) {
         if (throwable instanceof CosmosClientException) {
             log(msg + ": " + ((CosmosClientException) throwable).getStatusCode());
         }

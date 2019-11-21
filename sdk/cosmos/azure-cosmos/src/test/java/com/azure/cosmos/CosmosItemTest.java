@@ -127,7 +127,7 @@ public class CosmosItemTest extends TestSuiteBase {
         FeedOptions feedOptions = new FeedOptions();
         feedOptions.setEnableCrossPartitionQuery(true);
         Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
-                container.readAllItems(feedOptions);
+                container.readAllItems(feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.hasNext()).isTrue();
     }
 
@@ -141,13 +141,13 @@ public class CosmosItemTest extends TestSuiteBase {
         FeedOptions feedOptions = new FeedOptions().setEnableCrossPartitionQuery(true);
 
         Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator1 =
-                container.queryItems(query, feedOptions);
+                container.queryItems(query, feedOptions, CosmosItemProperties.class);
         // Very basic validation
         assertThat(feedResponseIterator1.hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
-                container.queryItems(querySpec, feedOptions);
+                container.queryItems(querySpec, feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.hasNext()).isTrue();
     }
     

@@ -11,13 +11,16 @@ import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.sun.management.OperatingSystemMXBean;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class AggregateQueryTests extends TestSuiteBase {
@@ -75,7 +78,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
         for (QueryConfig queryConfig : queryConfigs) {
 
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(queryConfig.query, options);
+            Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(queryConfig.query, options, CosmosItemProperties.class);
 
             FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .withAggregateValue(queryConfig.expected)
