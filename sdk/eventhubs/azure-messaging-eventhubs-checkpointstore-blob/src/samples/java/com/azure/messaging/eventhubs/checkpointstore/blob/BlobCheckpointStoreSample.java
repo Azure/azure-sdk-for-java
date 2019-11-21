@@ -12,10 +12,10 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.util.StringJoiner;
 
 /**
- * Sample that demonstrates the use {@link BlobEventProcessorStore} for storing and updating partition ownership records
+ * Sample that demonstrates the use {@link BlobCheckpointStore} for storing and updating partition ownership records
  * in Storage Blobs.
  */
-public class BlobEventProcessorStoreSample {
+public class BlobCheckpointStoreSample {
 
     /**
      * The main method to run the sample.
@@ -32,20 +32,20 @@ public class BlobEventProcessorStoreSample {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
-        BlobEventProcessorStore blobEventProcessorStore = new BlobEventProcessorStore(blobContainerAsyncClient);
-        blobEventProcessorStore.listOwnership("namespace", "abc", "xyz")
-            .subscribe(BlobEventProcessorStoreSample::printPartitionOwnership);
+        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
+        blobCheckpointStore.listOwnership("namespace", "abc", "xyz")
+            .subscribe(BlobCheckpointStoreSample::printPartitionOwnership);
 
         System.out.println("Updating checkpoint");
         Checkpoint checkpoint = new Checkpoint()
-            .setConsumerGroupName("xyz")
+            .setConsumerGroup("xyz")
             .setEventHubName("abc")
             .setOwnerId("owner1")
             .setPartitionId("0")
             .setETag("")
             .setSequenceNumber(2L)
             .setOffset(250L);
-        blobEventProcessorStore.updateCheckpoint(checkpoint)
+        blobCheckpointStore.updateCheckpoint(checkpoint)
             .subscribe(etag -> System.out.println(etag), error -> System.out
                 .println(error.getMessage()));
 
@@ -53,13 +53,13 @@ public class BlobEventProcessorStoreSample {
         for (int i = 0; i < 5; i++) {
             PartitionOwnership po = new PartitionOwnership()
                 .setEventHubName("abc")
-                .setConsumerGroupName("xyz")
+                .setConsumerGroup("xyz")
                 .setOwnerId("owner1")
                 .setPartitionId(String.valueOf(i))
                 .setOwnerLevel(0);
             pos[i] = po;
         }
-        blobEventProcessorStore.claimOwnership(pos).subscribe(BlobEventProcessorStoreSample::printPartitionOwnership,
+        blobCheckpointStore.claimOwnership(pos).subscribe(BlobCheckpointStoreSample::printPartitionOwnership,
             System.out::println);
     }
 
@@ -68,7 +68,7 @@ public class BlobEventProcessorStoreSample {
             new StringJoiner(",")
                 .add("pid=" + partitionOwnership.getPartitionId())
                 .add("ownerId=" + partitionOwnership.getOwnerId())
-                .add("cg=" + partitionOwnership.getConsumerGroupName())
+                .add("cg=" + partitionOwnership.getConsumerGroup())
                 .add("eh=" + partitionOwnership.getEventHubName())
                 .add("offset=" + partitionOwnership.getOffset())
                 .add("etag=" + partitionOwnership.getETag())

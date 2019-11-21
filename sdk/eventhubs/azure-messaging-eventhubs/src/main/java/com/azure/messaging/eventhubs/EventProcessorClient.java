@@ -4,8 +4,11 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import java.util.concurrent.atomic.AtomicReference;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -24,24 +27,25 @@ import java.util.function.Supplier;
  * instances and track progress when events are processed. Based on the number of instances running, each Event
  * Processor may own zero or more partitions to balance the workload among all the instances.
  *
- * <p>To create an instance of EventProcessor, use the fluent {@link EventProcessorBuilder}.</p>
+ * <p>To create an instance of EventProcessor, use the fluent {@link EventProcessorClientBuilder}.</p>
  *
- * @see EventProcessorBuilder
+ * @see EventProcessorClientBuilder
  */
-public class EventProcessor {
+@ServiceClient(builder = EventProcessorClientBuilder.class)
+public class EventProcessorClient {
 
     private static final long INTERVAL_IN_SECONDS = 10; // run the load balancer every 10 seconds
     private static final long BASE_JITTER_IN_SECONDS = 2; // the initial delay jitter before starting the processor
-    private final ClientLogger logger = new ClientLogger(EventProcessor.class);
+    private final ClientLogger logger = new ClientLogger(EventProcessorClient.class);
 
     private final String identifier;
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final PartitionPumpManager partitionPumpManager;
     private final PartitionBasedLoadBalancer partitionBasedLoadBalancer;
-    private final EventProcessorStore eventProcessorStore;
+    private final CheckpointStore checkpointStore;
 
-    private Disposable runner;
-    private Scheduler scheduler;
+    private final AtomicReference<Disposable> runner = new AtomicReference<>();
+    private final AtomicReference<Scheduler> scheduler = new AtomicReference<>();
 
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
@@ -50,27 +54,27 @@ public class EventProcessor {
      * @param consumerGroup The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param initialEventPosition Initial event position to start consuming events.
-     * @param eventProcessorStore The partition manager used for reading and updating partition ownership and checkpoint
+     * @param checkpointStore The store used for reading and updating partition ownership and checkpoints.
      * information.
      * @param tracerProvider The tracer implementation.
      */
-    EventProcessor(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
+    EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
         Supplier<PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
-        EventProcessorStore eventProcessorStore, TracerProvider tracerProvider) {
+        CheckpointStore checkpointStore, TracerProvider tracerProvider) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
         Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null.");
         Objects.requireNonNull(initialEventPosition, "initialEventPosition cannot be null.");
 
-        this.eventProcessorStore = Objects.requireNonNull(eventProcessorStore, "eventProcessorStore cannot be null");
+        this.checkpointStore = Objects.requireNonNull(checkpointStore, "checkpointStore cannot be null");
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
-        this.partitionPumpManager = new PartitionPumpManager(eventProcessorStore, partitionProcessorFactory,
+        this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
             initialEventPosition, eventHubClientBuilder, tracerProvider);
         EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
         this.partitionBasedLoadBalancer =
-            new PartitionBasedLoadBalancer(this.eventProcessorStore, eventHubAsyncClient,
+            new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
                 eventHubAsyncClient.getFullyQualifiedNamespace(), eventHubAsyncClient.getEventHubName(),
                 consumerGroup, identifier, TimeUnit.MINUTES.toSeconds(1), partitionPumpManager);
     }
@@ -102,12 +106,12 @@ public class EventProcessor {
             return;
         }
         logger.info("Starting a new event processor instance with id {}", this.identifier);
-        scheduler = Schedulers.newElastic("EventProcessor");
+        scheduler.set(Schedulers.newElastic("EventProcessor"));
         Double jitterInMillis =
             ThreadLocalRandom.current().nextDouble() * TimeUnit.SECONDS.toMillis(BASE_JITTER_IN_SECONDS);
         // Add a bit of jitter to initialDelay to minimize contention if multiple EventProcessors start at the same time
-        runner = scheduler.schedulePeriodically(partitionBasedLoadBalancer::loadBalance, jitterInMillis.longValue(),
-            TimeUnit.SECONDS.toMillis(INTERVAL_IN_SECONDS) /* TODO: make this configurable */, TimeUnit.MILLISECONDS);
+        runner.set(scheduler.get().schedulePeriodically(partitionBasedLoadBalancer::loadBalance,
+            jitterInMillis.longValue(), TimeUnit.SECONDS.toMillis(INTERVAL_IN_SECONDS), TimeUnit.MILLISECONDS));
     }
 
     /**
@@ -125,8 +129,8 @@ public class EventProcessor {
             logger.info("Event processor has already stopped");
             return;
         }
-        runner.dispose();
-        scheduler.dispose();
+        runner.get().dispose();
+        scheduler.get().dispose();
         this.partitionPumpManager.stopAllPartitionPumps();
     }
 }

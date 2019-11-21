@@ -7,6 +7,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -53,9 +54,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link EventProcessor}.
+ * Unit tests for {@link EventProcessorClient}.
  */
-public class EventProcessorTest {
+public class EventProcessorClientTest {
 
     @Mock
     private EventHubClientBuilder eventHubClientBuilder;
@@ -91,7 +92,7 @@ public class EventProcessorTest {
     }
 
     /**
-     * Tests all the happy cases for {@link EventProcessor}.
+     * Tests all the happy cases for {@link EventProcessorClient}.
      *
      * @throws Exception if an error occurs while running the test.
      */
@@ -115,7 +116,7 @@ public class EventProcessorTest {
         when(eventData1.getOffset()).thenReturn(1L);
         when(eventData2.getOffset()).thenReturn(100L);
 
-        final InMemoryEventProcessorStore eventProcessorStore = new InMemoryEventProcessorStore();
+        final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
         final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
 
         final long beforeTest = System.currentTimeMillis();
@@ -137,26 +138,26 @@ public class EventProcessorTest {
         );
 
         // Act
-        final EventProcessor eventProcessor = new EventProcessor(eventHubClientBuilder, "test-consumer",
-            () -> testPartitionProcessor, EventPosition.earliest(), eventProcessorStore, tracerProvider);
-        eventProcessor.start();
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
+            () -> testPartitionProcessor, EventPosition.earliest(), checkpointStore, tracerProvider);
+        eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
-        eventProcessor.stop();
+        eventProcessorClient.stop();
 
         // Assert
-        assertNotNull(eventProcessor.getIdentifier());
+        assertNotNull(eventProcessorClient.getIdentifier());
 
-        StepVerifier.create(eventProcessorStore.listOwnership("ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership("ns", "test-eh", "test-consumer"))
             .expectNextCount(1).verifyComplete();
 
-        StepVerifier.create(eventProcessorStore.listOwnership("ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership("ns", "test-eh", "test-consumer"))
             .assertNext(partitionOwnership -> {
                 assertEquals("1", partitionOwnership.getPartitionId(), "Partition");
-                assertEquals("test-consumer", partitionOwnership.getConsumerGroupName(), "Consumer");
+                assertEquals("test-consumer", partitionOwnership.getConsumerGroup(), "Consumer");
                 assertEquals("test-eh", partitionOwnership.getEventHubName(), "EventHub name");
                 assertEquals(2, (long) partitionOwnership.getSequenceNumber(), "Sequence number");
                 assertEquals(Long.valueOf(100), partitionOwnership.getOffset(), "Offset");
-                assertEquals(eventProcessor.getIdentifier(), partitionOwnership.getOwnerId(), "OwnerId");
+                assertEquals(eventProcessorClient.getIdentifier(), partitionOwnership.getOwnerId(), "OwnerId");
                 assertTrue(partitionOwnership.getLastModifiedTime() >= beforeTest, "LastModifiedTime");
                 assertTrue(partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis(), "LastModifiedTime");
                 assertNotNull(partitionOwnership.getETag());
@@ -171,7 +172,7 @@ public class EventProcessorTest {
     }
 
     /**
-     * Tests {@link EventProcessor} with a partition processor that throws an exception when processing an event.
+     * Tests {@link EventProcessorClient} with a partition processor that throws an exception when processing an event.
      *
      * @throws Exception if an error occurs while running the test.
      */
@@ -191,7 +192,7 @@ public class EventProcessorTest {
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class))).thenReturn(Flux.just(getEvent(eventData1)));
         String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
 
-        final InMemoryEventProcessorStore eventProcessorStore = new InMemoryEventProcessorStore();
+        final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
         final FaultyPartitionProcessor faultyPartitionProcessor = new FaultyPartitionProcessor();
 
         when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
@@ -210,19 +211,19 @@ public class EventProcessorTest {
             }
         );
         // Act
-        final EventProcessor eventProcessor = new EventProcessor(eventHubClientBuilder, "test-consumer",
-            () -> faultyPartitionProcessor, EventPosition.earliest(), eventProcessorStore, tracerProvider);
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
+            () -> faultyPartitionProcessor, EventPosition.earliest(), checkpointStore, tracerProvider);
 
-        eventProcessor.start();
+        eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
-        eventProcessor.stop();
+        eventProcessorClient.stop();
 
         // Assert
         assertTrue(faultyPartitionProcessor.error);
     }
 
     /**
-     * Tests process start spans error messages invoked for {@link EventProcessor}.
+     * Tests process start spans error messages invoked for {@link EventProcessorClient}.
      *
      * @throws Exception if an error occurs while running the test.
      */
@@ -266,14 +267,14 @@ public class EventProcessorTest {
             }
         );
 
-        final InMemoryEventProcessorStore eventProcessorStore = new InMemoryEventProcessorStore();
+        final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
 
         //Act
-        final EventProcessor eventProcessor = new EventProcessor(eventHubClientBuilder, "test-consumer",
-            FaultyPartitionProcessor::new, EventPosition.earliest(), eventProcessorStore, tracerProvider);
-        eventProcessor.start();
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
+            FaultyPartitionProcessor::new, EventPosition.earliest(), checkpointStore, tracerProvider);
+        eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
-        eventProcessor.stop();
+        eventProcessorClient.stop();
 
         //Assert
         verify(tracer1, times(1)).extractContext(eq(diagnosticId), any());
@@ -282,7 +283,7 @@ public class EventProcessorTest {
     }
 
     /**
-     * Tests process start spans invoked for {@link EventProcessor}.
+     * Tests process start spans invoked for {@link EventProcessorClient}.
      *
      * @throws Exception if an error occurs while running the test.
      */
@@ -325,15 +326,15 @@ public class EventProcessorTest {
             }
         );
 
-        final InMemoryEventProcessorStore eventProcessorStore = new InMemoryEventProcessorStore();
+        final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
 
         //Act
-        final EventProcessor eventProcessor = new EventProcessor(eventHubClientBuilder, "test-consumer",
-            TestPartitionProcessor::new, EventPosition.earliest(), eventProcessorStore, tracerProvider);
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
+            TestPartitionProcessor::new, EventPosition.earliest(), checkpointStore, tracerProvider);
 
-        eventProcessor.start();
+        eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
-        eventProcessor.stop();
+        eventProcessorClient.stop();
 
         //Assert
         verify(tracer1, times(1)).extractContext(eq(diagnosticId), any());
@@ -342,7 +343,7 @@ public class EventProcessorTest {
     }
 
     /**
-     * Tests {@link EventProcessor} that processes events from an Event Hub configured with multiple partitions.
+     * Tests {@link EventProcessorClient} that processes events from an Event Hub configured with multiple partitions.
      *
      * @throws Exception if an error occurs while running the test.
      */
@@ -385,20 +386,20 @@ public class EventProcessorTest {
         when(eventData4.getSequenceNumber()).thenReturn(1L);
         when(eventData4.getOffset()).thenReturn(1L);
 
-        final InMemoryEventProcessorStore eventProcessorStore = new InMemoryEventProcessorStore();
+        final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
         // Act
-        final EventProcessor eventProcessor = new EventProcessor(eventHubClientBuilder,
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
             "test-consumer",
-            TestPartitionProcessor::new, position, eventProcessorStore, tracerProvider);
-        eventProcessor.start();
+            TestPartitionProcessor::new, position, checkpointStore, tracerProvider);
+        eventProcessorClient.start();
         final boolean completed = count.await(10, TimeUnit.SECONDS);
-        eventProcessor.stop();
+        eventProcessorClient.stop();
 
         // Assert
         Assertions.assertTrue(completed);
-        StepVerifier.create(eventProcessorStore.listOwnership("ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership("ns", "test-eh", "test-consumer"))
             .expectNextCount(1).verifyComplete();
 
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
@@ -408,7 +409,7 @@ public class EventProcessorTest {
         // We expected one to be removed.
         Assertions.assertEquals(2, identifiers.size());
 
-        StepVerifier.create(eventProcessorStore.listOwnership("ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership("ns", "test-eh", "test-consumer"))
             .assertNext(po -> {
                 String partitionId = po.getPartitionId();
                 verify(consumer1, atLeastOnce()).receiveFromPartition(eq(partitionId), any(EventPosition.class), any());
@@ -416,8 +417,8 @@ public class EventProcessorTest {
     }
 
     private PartitionEvent getEvent(EventData event) {
-        PartitionContext context = new PartitionContext("foo", "bar", "baz", "0", null,
-            new InMemoryEventProcessorStore());
+        PartitionContext context = new PartitionContext("ns", "foo", "bar", "baz", "0", null,
+            new InMemoryCheckpointStore());
         return new PartitionEvent(context, event);
     }
 
