@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 public class PerfStressProgram {
     private static int[] _completedOperations;
@@ -165,7 +166,12 @@ public class PerfStressProgram {
             }
         }
         else {
-            Flux.range(0, parallel).flatMap(i -> RunLoopAsync(tests[i], i, endNanoTime)).blockLast();
+            Flux.range(0, parallel)
+                .parallel()
+                .runOn(Schedulers.boundedElastic())
+                .flatMap(i -> RunLoopAsync(tests[i], i, endNanoTime))
+                .then()
+                .block();
         }
 
         progressStatus.dispose();
@@ -174,7 +180,7 @@ public class PerfStressProgram {
 
         int totalOperations = IntStream.of(_completedOperations).sum();
         double operationsPerSecond = IntStream.range(0, parallel)
-                .mapToDouble(i -> ((double)_completedOperations[i]) / (_lastCompletionNanoTimes[i] / 1000000000))
+                .mapToDouble(i -> _completedOperations[i] / (((double)_lastCompletionNanoTimes[i]) / 1000000000))
                 .sum();
         double secondsPerOperation = 1 / operationsPerSecond;
         double weightedAverageSeconds = totalOperations / operationsPerSecond;
