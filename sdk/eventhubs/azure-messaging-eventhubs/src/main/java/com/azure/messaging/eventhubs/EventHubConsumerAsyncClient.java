@@ -41,9 +41,6 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <p><strong>Consuming events a single partition from Event Hub</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition}
  *
- * <p><strong>Receiving from all partitions</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition}
- *
  * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
  * <p>For event consumers that need to limit the number of events they receive at a given time, they can use {@link
  * BaseSubscriber#request(long)}.</p>
@@ -53,8 +50,11 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <p>Latest partition information as events are received can by setting
  * {@link ReceiveOptions#setTrackLastEnqueuedEventProperties(boolean) setTrackLastEnqueuedEventProperties} to
  * {@code true}. As events come in, explore the {@link PartitionContext} object.
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean-receiveoptions}
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition-receiveoptions}
+ * <p><strong>Receiving from all partitions</strong></p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean}
+ *
  */
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubConsumerAsyncClient implements Closeable {
@@ -156,7 +156,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     /**
-     * Begin consuming events from a single partition starting at {@code startingPosition}.
+     * Consumes events from a single partition starting at {@code startingPosition}.
      *
      * @param partitionId Identifier of the partition to read events from.
      * @param startingPosition Position within the Event Hub partition to begin consuming events.
@@ -171,7 +171,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     /**
-     * Begin consuming events from a single partition starting at {@code startingPosition} with a set of
+     * Consumes events from a single partition starting at {@code startingPosition} with a set of
      * {@link ReceiveOptions receive options}.
      *
      * <ul>
