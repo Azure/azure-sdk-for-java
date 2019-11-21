@@ -4,8 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
@@ -561,7 +561,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * Collects EventData into EventDataBatch to send to Event Hubs. If {@code maxNumberOfBatches} is {@code null} then
      * it'll collect as many batches as possible. Otherwise, if there are more events than can fit into {@code
      * maxNumberOfBatches}, then the collector throws a {@link AmqpException} with {@link
-     * ErrorCondition#LINK_PAYLOAD_SIZE_EXCEEDED}.
+     * AmqpErrorCondition#LINK_PAYLOAD_SIZE_EXCEEDED}.
      */
     private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>,
         List<EventDataBatch>> {
@@ -603,7 +603,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                     final String message = String.format(Locale.US,
                         "EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches);
 
-                    throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
+                    throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
                         contextProvider.getErrorContext());
                 }
 

@@ -60,7 +60,7 @@ public class RetryOptionsTest {
      * Verifies that we can clone the RetryOptions object, and its fields change independent of the original.
      */
     @Test
-    public void canClone() {
+    public void copyConstructor() {
         // Arrange
         final Duration delay = Duration.ofMillis(1000);
         final Duration maxDelay = Duration.ofMinutes(10);
@@ -81,7 +81,7 @@ public class RetryOptionsTest {
             .setTryTimeout(tryTimeout);
 
         // Act
-        final RetryOptions clone = original.clone();
+        final RetryOptions clone = new RetryOptions(original);
         Assertions.assertNotNull(clone);
         Assertions.assertEquals(original, clone);
 

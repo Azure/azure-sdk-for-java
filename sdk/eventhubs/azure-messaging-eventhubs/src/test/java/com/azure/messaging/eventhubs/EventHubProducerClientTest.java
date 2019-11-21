@@ -4,17 +4,17 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
@@ -86,7 +86,7 @@ public class EventHubProducerClientTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
-        when(sendLink.getErrorContext()).thenReturn(new ErrorContext("test-namespace"));
+        when(sendLink.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
@@ -399,7 +399,7 @@ public class EventHubProducerClientTest {
         try {
             batch.tryAdd(event);
         } catch (AmqpException e) {
-            Assertions.assertEquals(ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
+            Assertions.assertEquals(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
         }
     }
 }

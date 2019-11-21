@@ -58,15 +58,4 @@ public final class FixedRetryPolicy extends RetryPolicy {
         return obj instanceof FixedRetryPolicy
             && super.equals(obj);
     }
-
-    /**
-     * Creates a clone of this instance.
-     *
-     * @return A clone of the {@link FixedRetryPolicy} instance.
-     */
-    @Override
-    public RetryPolicy clone() {
-        final RetryOptions cloned = getRetryOptions().clone();
-        return new FixedRetryPolicy(cloned);
-    }
 }
