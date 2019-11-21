@@ -1,5 +1,13 @@
 # Change Log azure-storage-blob
 
+## Version XX.X.X (XXXX-XX-XX)
+This package's
+[documentation](LINK)
+and
+[samples](LINK)
+
+- Optimized downloadToFile to avoid an unnecessary getProperties call and to lock on an etag once the operation has started.
+
 ## Version 12.0.0 (2019-10-31)
 
 - Removed BaseBlobClientBuilder
