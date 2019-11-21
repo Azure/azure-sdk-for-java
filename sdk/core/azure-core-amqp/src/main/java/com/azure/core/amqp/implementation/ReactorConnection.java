@@ -168,8 +168,9 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * @return A new instance of AMQP session.
      */
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getClaimsBasedSecurityNode(),
-            tokenManagerProvider, messageSerializer, connectionOptions.getRetry().getTryTimeout());
+        return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
+            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
+            connectionOptions.getRetry().getTryTimeout());
     }
 
     /**
