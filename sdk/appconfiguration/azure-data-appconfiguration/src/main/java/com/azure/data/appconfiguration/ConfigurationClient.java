@@ -56,8 +56,7 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#String-String-String}
      *
      * @param key The key of the configuration setting to add.
-     * @param label The label of the configuration setting to create, or optionally, null if the label is not desired
-     * in the request.
+     * @param label The label of the configuration setting to create. If {@code null} no label will be used.
      * @param value The value associated with this configuration setting key.
      * @return The {@link ConfigurationSetting} that was created, or {@code null} if a key collision occurs or the key
      * is an invalid value (which will also throw ServiceRequestException described below).
@@ -108,8 +107,7 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String}
      *
      * @param key The key of the configuration setting to create or update.
-     * @param label The label of the configuration setting to create or update, or optionally, null if the label
-     * is not desired in the request.
+     * @param label The label of the configuration setting to create or update. If {@code null} no label will be used.
      * @param value The value of this configuration setting.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null} if the key is an invalid
      * value (which will also throw ServiceRequestException described below).
@@ -169,8 +167,7 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string}
      *
      * @param key The key of the setting to retrieve.
-     * @param label The label of the configuration setting to retrieve, or optionally, null if the label is not desired
-     * in the request.
+     * @param label The label of the configuration setting to retrieve. If {@code null} no label will be used.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -193,8 +190,7 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime}
      *
      * @param key The key of the setting to retrieve.
-     * @param label The label of the configuration setting to create or update, or optionally, null if the label is not
-     * desired in the request.
+     * @param label The label of the configuration setting to create or update. If {@code null} no label will be used.
      * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if the
      * {@code acceptDateTime} is not desired in the request.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
@@ -252,8 +248,7 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string}
      *
      * @param key The key of configuration setting to delete.
-     * @param label The label of configuration setting to delete, or optionally, null if the label is not desired in the
-     * request.
+     * @param label The label of configuration setting to delete. If {@code null} no label will be used.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if the
      * {@code key} is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -319,7 +314,7 @@ public final class ConfigurationClient {
      *
      * @param key The key of configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
      * @param label The label of configuration setting to set to read-only or not read-only based on the
-     * {@code isReadOnly} value, or optionally, null if the label is not desired in the request.
+     * {@code isReadOnly} value, or optionally. If {@code null} no label will be used.
      * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
      * If it is true, set the setting to read-only. If false, the setting won't set to read-only.
      * @return The {@link ConfigurationSetting} that is read-only, or {@code null} is also returned if a key collision

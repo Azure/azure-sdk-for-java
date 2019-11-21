@@ -165,8 +165,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setConfigurationSetting#string-string-string}
      *
      * @param key The key of the configuration setting to create or update.
-     * @param label The label of the configuration setting to create or update, or optionally, null if the label is
-     * not desired in the request.
+     * @param label The label of the configuration setting to create or update, If {@code null} no label will be used.
      * @param value The value of this configuration setting.
      * @return The {@link ConfigurationSetting} that was created or updated, or an empty Mono if the key is an invalid
      * value (which will also throw HttpResponseException described below).
@@ -253,8 +252,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string}
 
      * @param key The key of the setting to retrieve.
-     * @param label The label of the configuration setting to retrieve, or optionally, null if the label is not desired
-     * in the request.
+     * @param label The label of the configuration setting to retrieve. If {@code null} no label will be used.
      * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
      * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -281,9 +279,9 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string-OffsetDateTime}
      *
      * @param key The key of the setting to retrieve.
-     * @param label The label of the configuration setting to retrieve, or optionally, null if the label is not desired
-     * in the request.
-     * @param acceptDateTime To access a past state of the configuration setting. If {@code null} then the current state of the configuration setting will be returned.
+     * @param label The label of the configuration setting to retrieve. If {@code null} no label will be used.
+     * @param acceptDateTime To access a past state of the configuration setting. If {@code null} then the current state
+     * of the configuration setting will be returned.
      * {@code acceptDateTime} is not desired in the request.
      * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
      * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
@@ -374,8 +372,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#string-string}
      *
      * @param key The key of configuration setting to delete.
-     * @param label The label of configuration setting to delete, or optionally, null if the label is not desired in
-     * the request.
+     * @param label The label of configuration setting to delete. If {@code null} no label will be used.
      * @return The deleted ConfigurationSetting or an empty Mono is also returned if the {@code key} is an invalid value
      * (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -459,8 +456,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-Boolean-clearReadOnly}
      *
      * @param key The key of configuration setting to set to be read-only.
-     * @param label The label of configuration setting to read-only, or optionally, null if the label is not desired
-     * in the request.
+     * @param label The label of configuration setting to read-only. If {@code null} no label will be used.
      * @param isReadOnly The boolean value to set the setting to read-only or not read-only.
      * If it is true, set the setting to read-only. If false, the setting won't set to read-only.
      * @return The {@link ConfigurationSetting} that is read-only, or an empty Mono if a key collision occurs or the
