@@ -296,6 +296,10 @@ directive:
         op.get.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         op.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
         op.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+        delete op.get.responses["200"].headers["x-ms-content-md5"]["x-ms-client-name"];
+        delete op.get.responses["206"].headers["x-ms-content-md5"]["x-ms-client-name"];
+        op.get.responses["200"].headers["x-ms-content-md5"]["x-ms-client-name"] = "FileContentMd5";
+        op.get.responses["206"].headers["x-ms-content-md5"]["x-ms-client-name"] = "FileContentMd5";
         op.head.parameters.splice(0, 0, { "$ref": path + "ShareName" });
         op.head.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete op.head.responses.default.schema;
@@ -654,15 +658,6 @@ directive:
     $.FileContentMD5["x-ms-client-name"] = "contentMd5";
     $.FileContentType["x-ms-parameter-grouping"].name = "share-file-http-headers";
     $.FileContentType["x-ms-client-name"] = "contentType";
-```
-
-### Rename MD5 to Md5
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}/{directory}/{fileName}"]["get"]["responses"]["200"]
-  transform: >
-    $.headers["x-ms-content-md5"]["x-ms-client-name"] = "FileContentMd5";
 ```
 
 ### Change StorageErrorException to StorageException
