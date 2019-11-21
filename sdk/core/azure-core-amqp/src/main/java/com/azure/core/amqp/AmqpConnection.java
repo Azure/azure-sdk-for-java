@@ -3,15 +3,24 @@
 
 package com.azure.core.amqp;
 
+import com.azure.core.amqp.exception.AmqpException;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.Closeable;
 import java.util.Map;
 
 /**
  * Represents a TCP connection between the client and a service that uses the AMQP protocol.
  */
-public interface AmqpConnection extends EndpointStateNotifier, Closeable {
+public interface AmqpConnection extends AutoCloseable {
+    /**
+     * Gets the endpoint states for the AMQP connection. {@link AmqpException AmqpExceptions} that occur on the link are
+     * reported in the connection state. When the stream terminates, the connection is closed.
+     *
+     * @return A stream of endpoint states for the AMQP connection.
+     */
+    Flux<AmqpEndpointState> getEndpointStates();
+
     /**
      * Gets the connection identifier.
      *
@@ -62,4 +71,10 @@ public interface AmqpConnection extends EndpointStateNotifier, Closeable {
      * @return {@code true} if a session with the name was removed; {@code false} otherwise.
      */
     boolean removeSession(String sessionName);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void close();
 }
