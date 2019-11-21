@@ -66,7 +66,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_ReadFeedCollectionsTest() {
         client = clientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
 

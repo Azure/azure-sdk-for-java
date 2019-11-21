@@ -45,7 +45,7 @@ public class LogLevelTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_LogLevelTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
@@ -53,7 +53,7 @@ public class LogLevelTest extends TestSuiteBase {
     /**
      * This test will try to create document with netty wire DEBUG logging and
      * validate it.
-     * 
+     *
      * @throws Exception
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -82,7 +82,7 @@ public class LogLevelTest extends TestSuiteBase {
     /**
      * This test will try to create document with netty wire WARN logging and
      * validate it.
-     * 
+     *
      * @throws Exception
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -111,11 +111,9 @@ public class LogLevelTest extends TestSuiteBase {
     /**
      * This test will try to create document with netty wire TRACE logging and
      * validate it.
-     * 
+     *
      * @throws Exception
      */
-    //FIXME test is flaky
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithTraceLevel() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);
@@ -143,8 +141,6 @@ public class LogLevelTest extends TestSuiteBase {
         }
     }
 
-    //FIXME test is flaky
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithTraceLevelAtRoot() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);
@@ -197,7 +193,7 @@ public class LogLevelTest extends TestSuiteBase {
     /**
      * This test will try to create document with netty wire ERROR logging and
      * validate it.
-     * 
+     *
      * @throws Exception
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -226,7 +222,7 @@ public class LogLevelTest extends TestSuiteBase {
     /**
      * This test will try to create document with netty wire INFO logging and
      * validate it.
-     * 
+     *
      * @throws Exception
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

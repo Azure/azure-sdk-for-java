@@ -32,12 +32,12 @@ public class DatabaseQueryTest extends TestSuiteBase {
     private List<CosmosAsyncDatabase> createdDatabases = new ArrayList<>();
 
     private CosmosAsyncClient client;
-    
+
     @Factory(dataProvider = "clientBuilders")
     public DatabaseQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDatabaseWithFilter() throws Exception {
         String query = String.format("SELECT * from c where c.id = '%s'", databaseId1);
@@ -110,7 +110,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_DatabaseQueryTest() throws Exception {
         client = clientBuilder().buildAsyncClient();
         createdDatabases.add(createDatabase(client, databaseId1));
         createdDatabases.add(createDatabase(client, databaseId2));

@@ -55,7 +55,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws URISyntaxException {
+    public void before_ReadFeedDatabasesTest() throws URISyntaxException {
         client = clientBuilder().buildAsyncClient();
         allDatabases = client.readAllDatabases(null)
                              .map(frp -> frp.getResults())

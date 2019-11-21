@@ -65,7 +65,7 @@ public class DocumentClientResourceLeakTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_DocumentClientResourceLeakTest() {
         CosmosAsyncClient client = this.clientBuilder().buildAsyncClient();
         try {
             createdDatabase = getSharedCosmosDatabase(client);

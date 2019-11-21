@@ -26,8 +26,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//FIXME beforeCLass times out inconsistently
-@Ignore
 public class StoredProcedureQueryTest extends TestSuiteBase {
 
     private CosmosAsyncContainer createdCollection;

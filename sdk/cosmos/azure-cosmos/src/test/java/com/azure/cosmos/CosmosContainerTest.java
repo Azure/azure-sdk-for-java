@@ -33,7 +33,7 @@ public class CosmosContainerTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_CosmosContainerTest() {
         client = clientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
