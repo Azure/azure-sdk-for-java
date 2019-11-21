@@ -36,6 +36,7 @@ public class PartitionOwnership {
      * Sets the fully qualified namespace of the Event Hub.
      *
      * @param fullyQualifiedNamespace the fully qualified namespace of the Event Hub.
+     * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership setFullyQualifiedNamespace(final String fullyQualifiedNamespace) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;

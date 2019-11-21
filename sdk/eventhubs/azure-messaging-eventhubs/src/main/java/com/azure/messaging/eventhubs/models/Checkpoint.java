@@ -35,6 +35,7 @@ public class Checkpoint {
      * Sets the fully qualified namespace of the Event Hub.
      *
      * @param fullyQualifiedNamespace the fully qualified namespace of the Event Hub.
+     * @return The updated {@link Checkpoint} instance.
      */
     public Checkpoint setFullyQualifiedNamespace(final String fullyQualifiedNamespace) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
