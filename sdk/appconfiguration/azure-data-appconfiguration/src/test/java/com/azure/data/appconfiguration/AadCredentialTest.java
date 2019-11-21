@@ -28,7 +28,7 @@ public class AadCredentialTest extends TestBase {
     public void setup() throws InvalidKeyException, NoSuchAlgorithmException {
         if (interceptorManager.isPlaybackMode()) {
             connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
-            tokenCredential = null;
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
 
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
             client = new ConfigurationClientBuilder()
