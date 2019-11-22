@@ -84,7 +84,7 @@ public final class BlobServiceClientBuilder {
      * @throws IllegalArgumentException If no credentials are provided.
      */
     public BlobServiceAsyncClient buildAsyncClient() {
-        BuilderHelper.validateCpk(customerProvidedKey, endpoint);
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint);
 
         if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)
             && Objects.isNull(sasTokenCredential)) {

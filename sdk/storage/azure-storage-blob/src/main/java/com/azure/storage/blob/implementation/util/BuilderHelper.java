@@ -71,6 +71,7 @@ public final class BuilderHelper {
         if (storageSharedKeyCredential != null) {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
+            httpsValidation(tokenCredential, "bearer token", endpoint);
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential,
                 String.format("%s/.default", endpoint));
         } else if (sasTokenCredential != null) {
@@ -129,14 +130,15 @@ public final class BuilderHelper {
     }
 
     /**
-     * Validates that the client is properly configured for using cpk.
+     * Validates that the client is properly configured to use https.
      *
-     * @param customerProvidedKey The cpk object.
+     * @param objectToCheck The object to check for.
+     * @param objectName The name of the object.
      * @param endpoint The endpoint for the client.
      */
-    public static void validateCpk(CpkInfo customerProvidedKey, String endpoint) {
-        if (customerProvidedKey != null && !BlobUrlParts.parse(endpoint).getScheme().equals(Constants.HTTPS)) {
-            throw new IllegalArgumentException("Using a customer provided key requires https");
+    public static void httpsValidation(Object objectToCheck, String objectName, String endpoint) {
+        if (objectToCheck != null && !BlobUrlParts.parse(endpoint).getScheme().equals(Constants.HTTPS)) {
+            throw new IllegalArgumentException("Using a(n) " + objectName + " requires https");
         }
     }
 

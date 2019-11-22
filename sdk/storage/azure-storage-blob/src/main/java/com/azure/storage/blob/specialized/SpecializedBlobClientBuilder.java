@@ -173,7 +173,7 @@ public final class SpecializedBlobClientBuilder {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
-        BuilderHelper.validateCpk(customerProvidedKey, endpoint);
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint);
     }
 
     /*
