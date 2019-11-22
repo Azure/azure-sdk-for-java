@@ -114,7 +114,7 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
