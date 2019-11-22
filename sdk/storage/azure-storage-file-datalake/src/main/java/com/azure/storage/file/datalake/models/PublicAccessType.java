@@ -13,12 +13,12 @@ import java.util.Collection;
  */
 public final class PublicAccessType extends ExpandableStringEnum<PublicAccessType> {
     /**
-     * Static value container for PublicAccessType.
+     * Static value file system for PublicAccessType.
      */
     public static final PublicAccessType CONTAINER = fromString("container");
 
     /**
-     * Static value blob for PublicAccessType.
+     * Static value path for PublicAccessType.
      */
     public static final PublicAccessType BLOB = fromString("blob");
 

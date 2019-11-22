@@ -93,7 +93,7 @@ public final class FileSystemProperties {
     /**
      * @return the access type for the file system
      */
-    public PublicAccessType getPublicAccess() {
+    public PublicAccessType getDataLakePublicAccess() {
         return dataLakePublicAccess;
     }
 
