@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
@@ -26,7 +27,10 @@ import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -50,7 +54,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Handles scheduling and transmitting events through proton-j to Event Hubs service.
  */
-class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
+class ReactorSender implements AmqpSendLink {
     private final String entityPath;
     private final Sender sender;
     private final SendLinkHandler handler;
@@ -65,6 +69,11 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private final ConcurrentHashMap<String, RetriableWorkItem> pendingSendsMap = new ConcurrentHashMap<>();
     private final PriorityQueue<WeightedDeliveryTag> pendingSendsQueue =
         new PriorityQueue<>(1000, new DeliveryTagComparator());
+    private final ClientLogger logger = new ClientLogger(ReactorReceiver.class);
+    private final ReplayProcessor<AmqpEndpointState> connectionStates =
+        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
+    private FluxSink<AmqpEndpointState> connectionStateSink = connectionStates.sink(FluxSink.OverflowStrategy.BUFFER);
+
 
     private final TokenManager tokenManager;
     private final MessageSerializer messageSerializer;
@@ -86,7 +95,6 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
             TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, AmqpRetryPolicy retry,
             int maxMessageSize) {
-        super(new ClientLogger(ReactorSender.class));
         this.entityPath = entityPath;
         this.sender = sender;
         this.handler = handler;
@@ -98,25 +106,31 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         this.maxMessageSize = maxMessageSize;
 
         this.subscriptions = Disposables.composite(
-            handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
+            this.handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
 
-            handler.getLinkCredits().subscribe(credit -> {
+            this.handler.getLinkCredits().subscribe(credit -> {
                 logger.verbose("Credits on link: {}", credit);
                 this.scheduleWorkOnDispatcher();
             }),
 
-            handler.getEndpointStates().subscribe(
+            this.handler.getEndpointStates().subscribe(
                 state -> {
-                    this.hasConnected.set(state == EndpointState.ACTIVE);
-                    this.notifyEndpointState(state);
-                },
-                error -> logger.error("Error encountered getting endpointState", error),
-                () -> {
-                    logger.verbose("getLinkCredits completed.");
-                    hasConnected.set(false);
+                    logger.verbose("Connection state: {}", state);
+                    connectionStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
+                }, error -> {
+                    logger.error("Error occurred in connection.", error);
+                    connectionStateSink.error(error);
+                }, () -> {
+                    connectionStateSink.next(AmqpEndpointState.CLOSED);
+                    connectionStateSink.complete();
                 }),
 
-            tokenManager.getAuthorizationResults().subscribe(
+            this.handler.getErrors().subscribe(error -> {
+                logger.error("Error occurred in connection.", error);
+                connectionStateSink.error(error);
+            }),
+
+            this.tokenManager.getAuthorizationResults().subscribe(
                 response -> {
                     logger.verbose("Token refreshed: {}", response);
                     hasAuthorized.set(true);
@@ -127,6 +141,11 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                     hasAuthorized.set(false);
                 }, () -> hasAuthorized.set(false))
         );
+    }
+
+    @Override
+    public Flux<AmqpEndpointState> getEndpointStates() {
+        return connectionStates;
     }
 
     @Override
@@ -246,14 +265,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     @Override
     public void close() {
         subscriptions.dispose();
-
-        try {
-            tokenManager.close();
-        } catch (IOException e) {
-            logger.warning("IOException occurred trying to close tokenManager for {}.", entityPath, e);
-        }
-
-        super.close();
+        connectionStateSink.complete();
+        tokenManager.close();
     }
 
     private Mono<Void> send(byte[] bytes, int arrayOffset, int messageFormat) {
@@ -436,7 +449,6 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             reactorProvider.getReactorDispatcher().invoke(this::processSendWork);
         } catch (IOException e) {
             logger.error("Error scheduling work on reactor.", e);
-            notifyError(e);
         }
     }
 

@@ -40,11 +40,11 @@ public class ReactorConnection implements AmqpConnection {
     private final ClientLogger logger = new ClientLogger(ReactorConnection.class);
     private final ConcurrentMap<String, AmqpSession> sessionMap = new ConcurrentHashMap<>();
     private final AtomicBoolean hasConnection = new AtomicBoolean();
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final DirectProcessor<AmqpShutdownSignal> shutdownSignals = DirectProcessor.create();
     private final ReplayProcessor<AmqpEndpointState> connectionStates =
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private final FluxSink<AmqpEndpointState> connectionStateSink =
-        connectionStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private FluxSink<AmqpEndpointState> connectionStateSink = connectionStates.sink(FluxSink.OverflowStrategy.BUFFER);
 
     private final String connectionId;
     private final Mono<Connection> connectionMono;
@@ -103,7 +103,12 @@ public class ReactorConnection implements AmqpConnection {
                 }, () -> {
                     connectionStateSink.next(AmqpEndpointState.CLOSED);
                     connectionStateSink.complete();
-                }));
+                }),
+
+            this.handler.getErrors().subscribe(error -> {
+                logger.error("Error occurred in connection.", error);
+                connectionStateSink.error(error);
+            }));
     }
 
     /**
@@ -211,11 +216,16 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public void close() {
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+
         if (executor != null) {
             executor.close();
         }
 
         subscriptions.dispose();
+        connectionStateSink.complete();
 
         final HashMap<String, AmqpSession> map = new HashMap<>(sessionMap);
 
