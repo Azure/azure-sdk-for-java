@@ -269,9 +269,9 @@ public class ReactorConnectionTest {
         connectionHandler.onConnectionRemoteOpen(mock);
 
         // Act and Assert
-        StepVerifier.create(this.connection.getCBSNode())
+        StepVerifier.create(this.connection.getClaimsBasedSecurityNode())
             .assertNext(node -> {
-                Assertions.assertTrue(node instanceof CBSChannel);
+                Assertions.assertTrue(node instanceof ClaimsBasedSecurityChannel);
             }).verifyComplete();
     }
 
@@ -298,7 +298,7 @@ public class ReactorConnectionTest {
         // Act and Assert
         try (ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,
             provider, tokenManager, messageSerializer)) {
-            StepVerifier.create(connectionBad.getCBSNode())
+            StepVerifier.create(connectionBad.getClaimsBasedSecurityNode())
                 .verifyError(TimeoutException.class);
         }
     }
@@ -322,9 +322,9 @@ public class ReactorConnectionTest {
 
         connectionHandler.onTransportError(event);
 
-        StepVerifier.create(connection.getCBSNode())
+        StepVerifier.create(connection.getClaimsBasedSecurityNode())
             .assertNext(node -> {
-                Assertions.assertTrue(node instanceof CBSChannel);
+                Assertions.assertTrue(node instanceof ClaimsBasedSecurityChannel);
             }).verifyComplete();
 
         verify(transport, times(1)).unbind();
