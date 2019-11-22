@@ -3,10 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -52,6 +52,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private ConnectionStringProperties properties;
     private Scheduler scheduler;
+    private String testName;
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
@@ -61,6 +62,7 @@ public abstract class IntegrationTestBase extends TestBase {
     public void setupTest(TestInfo testInfo) {
         logger.info("[{}]: Performing integration test set-up.", testInfo.getDisplayName());
 
+        testName = testInfo.getDisplayName();
         skipIfNotRecordMode();
 
         scheduler = Schedulers.single();
@@ -247,8 +249,8 @@ public abstract class IntegrationTestBase extends TestBase {
             try {
                 closeable.close();
             } catch (IOException error) {
-                logger.error(String.format("[%s]: %s didn't close properly.",
-                    getTestName(), closeable.getClass().getSimpleName()), error);
+                logger.error(String.format("[%s]: %s didn't close properly.", testName,
+                    closeable.getClass().getSimpleName()), error);
             }
         }
     }

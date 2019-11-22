@@ -111,9 +111,7 @@ public class EventHubConsumerAsyncClientTest {
         MockitoAnnotations.initMocks(this);
 
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
-        when(amqpReceiveLink.getErrors()).thenReturn(errorProcessor);
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
-        when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
@@ -223,15 +221,11 @@ public class EventHubConsumerAsyncClientTest {
         EventHubSession session3 = mock(EventHubSession.class);
 
         when(link2.receive()).thenReturn(processor2);
-        when(link2.getErrors()).thenReturn(Flux.never());
         when(link2.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
-        when(link2.getShutdownSignals()).thenReturn(Flux.never());
         when(link2.getCredits()).thenReturn(numberOfEvents);
 
         when(link3.receive()).thenReturn(processor3);
-        when(link3.getErrors()).thenReturn(Flux.never());
         when(link3.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
-        when(link3.getShutdownSignals()).thenReturn(Flux.never());
         when(link3.getCredits()).thenReturn(numberOfEvents);
 
         when(connection1.createSession(any())).thenReturn(Mono.just(session2), Mono.just(session3));
@@ -541,15 +535,11 @@ public class EventHubConsumerAsyncClientTest {
         EventHubSession session3 = mock(EventHubSession.class);
 
         when(link2.receive()).thenReturn(processor2);
-        when(link2.getErrors()).thenReturn(Flux.never());
         when(link2.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
-        when(link2.getShutdownSignals()).thenReturn(Flux.never());
         when(link2.getCredits()).thenReturn(numberOfEvents);
 
         when(link3.receive()).thenReturn(processor3);
-        when(link3.getErrors()).thenReturn(Flux.never());
         when(link3.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
-        when(link3.getShutdownSignals()).thenReturn(Flux.never());
         when(link3.getCredits()).thenReturn(numberOfEvents);
 
         when(connection1.createSession(any())).thenAnswer(invocation -> {
@@ -619,15 +609,11 @@ public class EventHubConsumerAsyncClientTest {
         EventHubSession session3 = mock(EventHubSession.class);
 
         when(link2.receive()).thenReturn(processor2);
-        when(link2.getErrors()).thenReturn(Flux.never());
         when(link2.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
-        when(link2.getShutdownSignals()).thenReturn(Flux.never());
         when(link2.getCredits()).thenReturn(numberOfEvents);
 
         when(link3.receive()).thenReturn(processor3);
-        when(link3.getErrors()).thenReturn(Flux.never());
         when(link3.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
-        when(link3.getShutdownSignals()).thenReturn(Flux.never());
         when(link3.getCredits()).thenReturn(numberOfEvents);
 
         when(connection1.createSession(any())).thenAnswer(invocation -> {
