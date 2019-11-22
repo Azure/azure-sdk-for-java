@@ -228,6 +228,7 @@
                 --add-reads com.azure.core.test=ALL-UNNAMED
                 --add-reads com.azure.core.amqp=ALL-UNNAMED
                 --add-reads com.azure.storage.common=ALL-UNNAMED
+                --add-reads com.azure.storage.blob=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

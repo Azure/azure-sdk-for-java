@@ -35,7 +35,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 /**
@@ -81,7 +80,7 @@ public final class BuilderHelper {
                 parts.setEndpoint(String.format("%s://%s/%s", url.getProtocol(), url.getAuthority(),
                     parts.getAccountName()));
             } else {
-                // URL is using a pattern of http://accountName.blob.core.windows.net/queueName
+                // URL is using a pattern of http://accountName.queue.core.windows.net/queueName
                 String host = url.getHost();
 
                 String accountName = null;
