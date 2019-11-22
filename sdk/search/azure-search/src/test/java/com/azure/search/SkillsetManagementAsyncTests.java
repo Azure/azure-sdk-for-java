@@ -45,6 +45,18 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .create(client.createSkillset(expectedSkillset))
             .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
             .verifyComplete();
+
+        StepVerifier
+            .create(client.createSkillset(expectedSkillset.setName("image-analysis-key-phrase-skillset1"),
+                generateRequestOptions()))
+            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.createSkillsetWithResponse(expectedSkillset.setName("image-analysis-key-phrase-skillset2"),
+                generateRequestOptions()))
+            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset.getValue()))
+            .verifyComplete();
     }
 
     @Override
@@ -205,6 +217,16 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .create(client.getSkillset(expected.getName()))
             .assertNext(actual -> assertSkillsetsEqual(expected, actual))
             .verifyComplete();
+
+        StepVerifier
+            .create(client.getSkillset(expected.getName(), generateRequestOptions()))
+            .assertNext(actual -> assertSkillsetsEqual(expected, actual))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.getSkillsetWithResponse(expected.getName(), generateRequestOptions()))
+            .assertNext(actual -> assertSkillsetsEqual(expected, actual.getValue()))
+            .verifyComplete();
     }
 
     @Override
@@ -318,6 +340,26 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
                 Assert.assertEquals(skillset2.getName(), result.get(1).getName());
             })
             .verifyComplete();
+
+        listResponse = client.listSkillsets("name", generateRequestOptions());
+
+        StepVerifier
+            .create(listResponse.collectList())
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.size());
+                Assert.assertEquals(skillset1.getName(), result.get(0).getName());
+                Assert.assertEquals(skillset2.getName(), result.get(1).getName());
+            })
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.listSkillsetsWithResponse("name", generateRequestOptions()))
+            .assertNext(result -> {
+                Assert.assertEquals(2, result.getItems().size());
+                Assert.assertEquals(skillset1.getName(), result.getValue().get(0).getName());
+                Assert.assertEquals(skillset2.getName(), result.getValue().get(1).getName());
+            })
+            .verifyComplete();
     }
 
     @Override
@@ -329,6 +371,19 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         client.createSkillset(skillset2).block();
 
         PagedFlux<Skillset> listResponse = client.listSkillsets("name", generateRequestOptions());
+
+        StepVerifier
+            .create(listResponse.collectList())
+            .assertNext(result -> {
+                result.forEach(res -> {
+                    Assert.assertNotNull(res.getName());
+                    Assert.assertNull(res.getCognitiveServices());
+                    Assert.assertNull(res.getDescription());
+                    Assert.assertNull(res.getSkills());
+                    Assert.assertNull(res.getETag());
+                });
+            })
+            .verifyComplete();
 
         StepVerifier
             .create(listResponse.collectList())
@@ -345,7 +400,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
 
         StepVerifier
-            .create(client.deleteSkillsetWithResponse(skillset.getName(), null, null))
+            .create(client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(), generateRequestOptions()))
             .assertNext(deleteResponse -> {
                 Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
             })
@@ -354,14 +409,14 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         client.createSkillset(skillset).block();
 
         StepVerifier
-            .create(client.deleteSkillsetWithResponse(skillset.getName(), null, null))
+            .create(client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(), generateRequestOptions()))
             .assertNext(deleteResponse -> {
                 Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
             })
             .verifyComplete();
 
         StepVerifier
-            .create(client.deleteSkillsetWithResponse(skillset.getName(), null, null))
+            .create(client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(), generateRequestOptions()))
             .assertNext(deleteResponse -> {
                 Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
             })
@@ -369,12 +424,37 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     }
 
     @Override
-    public void createOrUpdateCreatesWhenSkillsetDoesNotExist() {
-        Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED, false);
+    public void canCreateAndDeleteSkillset() {
+        Skillset expected = createSkillsetWithOcrDefaultSettings(false);
+        client.createSkillset(expected).block();
+        client.deleteSkillset(expected.getName()).block();
 
         StepVerifier
-            .create(client.createOrUpdateSkillsetWithResponse(skillset, new AccessCondition(),
+            .create(client.skillsetExists(expected.getName()))
+            .assertNext(response -> {
+                Assert.assertFalse(response);
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void createOrUpdateCreatesWhenSkillsetDoesNotExist() {
+        Skillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED, false);
+
+        StepVerifier
+            .create(client.createOrUpdateSkillset(expected))
+            .assertNext(res -> assertSkillsetsEqual(expected, res))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.createOrUpdateSkillset(expected.setName("testskillset1"), new AccessCondition(),
                 generateRequestOptions()))
+            .assertNext(res -> assertSkillsetsEqual(expected, res))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.createOrUpdateSkillsetWithResponse(expected.setName("testskillset2"), new AccessCondition(),
+                    generateRequestOptions()))
             .assertNext(res -> Assert.assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode()))
             .verifyComplete();
     }
@@ -413,6 +493,16 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         StepVerifier
             .create(client.skillsetExists(skillset.getName()))
             .assertNext(res -> Assert.assertTrue(res))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.skillsetExists(skillset.getName(), generateRequestOptions()))
+            .assertNext(res -> Assert.assertTrue(res))
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.skillsetExistsWithResponse(skillset.getName(), generateRequestOptions()))
+            .assertNext(res -> Assert.assertTrue(res.getValue()))
             .verifyComplete();
     }
 
@@ -626,10 +716,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             });
 
         Response<Void> response = client.deleteSkillsetWithResponse(skillset.getName(),
-            AccessConditionBase.generateIfNotChangedAccessCondition(currentResource.getETag()),
-            null,
-            null
-        ).block();
+            AccessConditionBase.generateIfNotChangedAccessCondition(currentResource.getETag()), generateRequestOptions()).block();
         Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), response.getStatusCode());
     }
 

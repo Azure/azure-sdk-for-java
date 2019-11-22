@@ -1,52 +1,52 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk6401398958f7.search-dogfood.windows-int.net/synonymmaps?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk6b832717307a.search-dogfood.windows-int.net/synonymmaps?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "32c7836a-ed7e-4f57-bb08-bd244893ba76",
+      "request-id" : "c124a8a3-157e-4456-b4cc-906fc371e995",
       "StatusCode" : "201",
-      "Date" : "Wed, 13 Nov 2019 22:20:16 GMT",
+      "Date" : "Fri, 22 Nov 2019 03:37:43 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D76887A915C003\"",
-      "elapsed-time" : "85",
+      "ETag" : "W/\"0x8D76EFD55B0E552\"",
+      "elapsed-time" : "39",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "203",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk6401398958f7.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D76887A915C003\\\"\",\"name\":\"names\",\"format\":\"solr\",\"synonyms\":\"hotel,motel\"}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk6b832717307a.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D76EFD55B0E552\\\"\",\"name\":\"names\",\"format\":\"solr\",\"synonyms\":\"hotel,motel\"}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk6401398958f7.search-dogfood.windows-int.net/synonymmaps('names')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk6b832717307a.search-dogfood.windows-int.net/synonymmaps('names')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk6401398958f7.search-dogfood.windows-int.net/indexes?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk6b832717307a.search-dogfood.windows-int.net/indexes?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b904c69d-4b25-433a-ae07-0f07a4ebc37c",
+      "request-id" : "0179efe9-8447-47cc-8615-8809c0228151",
       "StatusCode" : "201",
-      "Date" : "Wed, 13 Nov 2019 22:20:16 GMT",
+      "Date" : "Fri, 22 Nov 2019 03:37:43 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D76887A98429E2\"",
-      "elapsed-time" : "652",
+      "ETag" : "W/\"0x8D76EFD561DC7E1\"",
+      "elapsed-time" : "651",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "759",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk6401398958f7.search-dogfood.windows-int.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D76887A98429E2\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[\"names\"]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk6b832717307a.search-dogfood.windows-int.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D76EFD561DC7E1\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[\"names\"]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk6401398958f7.search-dogfood.windows-int.net/indexes('hotels')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk6b832717307a.search-dogfood.windows-int.net/indexes('hotels')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

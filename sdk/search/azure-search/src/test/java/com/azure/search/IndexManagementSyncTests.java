@@ -46,8 +46,13 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     public void createIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
         Index createdIndex = client.createIndex(index);
-
         assertIndexesEqual(index, createdIndex);
+
+        createdIndex = client.createIndex(index.setName("hotel1"), generateRequestOptions());
+        assertIndexesEqual(index, createdIndex);
+
+        Response<Index> createIndexResponse = client.createIndexWithResponse(index.setName("hotel2"), generateRequestOptions(), Context.NONE);
+        assertIndexesEqual(index, createIndexResponse.getValue());
     }
 
     @Override
@@ -102,8 +107,13 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createIndex(index);
         Index createdIndex = client.getIndex(index.getName());
-
         assertIndexesEqual(index, createdIndex);
+
+        createdIndex = client.getIndex(index.getName(), generateRequestOptions());
+        assertIndexesEqual(index, createdIndex);
+
+        Response<Index> getIndexResponse = client.getIndexWithResponse(index.getName(), generateRequestOptions(), Context.NONE);
+        assertIndexesEqual(index, getIndexResponse.getValue());
     }
 
     @Override
@@ -124,6 +134,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         client.createIndex(index);
 
         Assert.assertTrue(client.indexExists(index.getName()));
+        Assert.assertTrue(client.indexExists(index.getName(), generateRequestOptions()));
+        Assert.assertTrue(client.indexExistsWithResponse(index.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
     @Override
@@ -146,9 +158,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         }
 
         Response<Void> response = client.deleteIndexWithResponse(index.getName(),
-            generateIfNotChangedAccessCondition(currentResource.getETag()),
-            null,
-            null);
+            generateIfNotChangedAccessCondition(currentResource.getETag()), generateRequestOptions(), Context.NONE);
+
         Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), response.getStatusCode());
     }
 
@@ -177,17 +188,17 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
                     .setType(DataType.EDM_STRING)
                     .setKey(true)
             ));
-        Response<Void> deleteResponse = client.deleteIndexWithResponse(index.getName(), null, null, null);
+        Response<Void> deleteResponse = client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
         Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
-        Response<Index> createResponse = client.createIndexWithResponse(index, null, null);
+        Response<Index> createResponse = client.createIndexWithResponse(index, generateRequestOptions(), Context.NONE);
         Assert.assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
 
         // Delete the same index twice
-        deleteResponse = client.deleteIndexWithResponse(index.getName(), null, null, null);
+        deleteResponse = client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
         Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
-        deleteResponse = client.deleteIndexWithResponse(index.getName(), null, null, null);
+        deleteResponse = client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
         Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
@@ -221,9 +232,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertEquals(index1.getName(), result.get(0).getName());
         Assert.assertEquals(index2.getName(), result.get(1).getName());
 
-        Context context = new Context("key", "value");
         PagedResponse<Index> listResponse = client.listIndexesWithResponse("name",
-            generateRequestOptions(), context);
+            generateRequestOptions(), Context.NONE);
         result = listResponse.getItems();
 
         Assert.assertEquals(2, result.size());
@@ -416,14 +426,17 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExist() {
-        Index index = createTestIndex();
+        Index expected = createTestIndex();
 
-        Response<Index> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(index,
-            false,
-            null,
-            null,
-            Context.NONE);
+        Index actual = client.createOrUpdateIndex(expected);
+        assertIndexesEqual(expected, actual);
 
+        actual = client.createOrUpdateIndex(expected.setName("hotel1"),
+            false, new AccessCondition(), generateRequestOptions());
+        assertIndexesEqual(expected, actual);
+
+        Response<Index> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(expected.setName("hotel2"),
+            false, new AccessCondition(), generateRequestOptions(), Context.NONE);
         Assert.assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
 
@@ -516,11 +529,19 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     @Override
     public void canCreateAndGetIndexStats() {
         Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index);
+        client.createOrUpdateIndex(index);
         IndexGetStatisticsResult indexStatistics = client.getIndexStatistics(index.getName());
-
         Assert.assertEquals(0, indexStatistics.getDocumentCount());
         Assert.assertEquals(0, indexStatistics.getStorageSize());
+
+        indexStatistics = client.getIndexStatistics(index.getName(), generateRequestOptions());
+        Assert.assertEquals(0, indexStatistics.getDocumentCount());
+        Assert.assertEquals(0, indexStatistics.getStorageSize());
+
+        Response<IndexGetStatisticsResult> indexStatisticsResponse = client.getIndexStatisticsWithResponse(index.getName(),
+            generateRequestOptions(), Context.NONE);
+        Assert.assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
+        Assert.assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
 
 
     }

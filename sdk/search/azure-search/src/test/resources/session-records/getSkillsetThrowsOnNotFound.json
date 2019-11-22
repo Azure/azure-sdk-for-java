@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk72f61597ef5e.search.windows.net/skillsets('thisdoesnotexist')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk11898338c2e5.search-dogfood.windows-int.net/skillsets('thisdoesnotexist')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "e57d62e2-58d7-4b08-8b59-e303e001f3d7",
+      "request-id" : "378d2b45-f4c1-4c7e-9056-7719f1641b5a",
       "StatusCode" : "404",
-      "Date" : "Fri, 15 Nov 2019 01:04:05 GMT",
+      "Date" : "Fri, 22 Nov 2019 03:41:07 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "40",
+      "elapsed-time" : "30",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "122",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'thisdoesnotexist' was found in service 'azs-sdk72f61597ef5e'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'thisdoesnotexist' was found in service 'azs-sdk11898338c2e5'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

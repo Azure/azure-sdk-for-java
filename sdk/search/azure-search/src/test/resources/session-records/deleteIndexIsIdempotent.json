@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdkd4625331143d.search-dogfood.windows-int.net/indexes('hotels')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkeed54519f10c.search-dogfood.windows-int.net/indexes('hotels')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "efe831d5-0393-4361-9d8c-7ac1740568ed",
+      "request-id" : "efaf1f1c-93c1-47d3-a334-edc9aa2c414d",
       "StatusCode" : "404",
-      "Date" : "Wed, 13 Nov 2019 22:23:11 GMT",
+      "Date" : "Fri, 22 Nov 2019 03:40:23 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "46",
+      "elapsed-time" : "37",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "117",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdkd4625331143d'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdkeed54519f10c'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
@@ -23,62 +23,62 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdkd4625331143d.search-dogfood.windows-int.net/indexes?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkeed54519f10c.search-dogfood.windows-int.net/indexes?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "1002b1ef-50cb-46a6-bf15-bdb0ae15b696",
+      "request-id" : "998bd13a-cdc7-44a1-8a77-12c1bc62d400",
       "StatusCode" : "201",
-      "Date" : "Wed, 13 Nov 2019 22:23:17 GMT",
+      "Date" : "Fri, 22 Nov 2019 03:40:24 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D768881535BABE\"",
-      "elapsed-time" : "6067",
+      "ETag" : "W/\"0x8D76EFDB5B2F927\"",
+      "elapsed-time" : "774",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "535",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkd4625331143d.search-dogfood.windows-int.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D768881535BABE\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkeed54519f10c.search-dogfood.windows-int.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D76EFDB5B2F927\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdkd4625331143d.search-dogfood.windows-int.net/indexes('hotels')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkeed54519f10c.search-dogfood.windows-int.net/indexes('hotels')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdkd4625331143d.search-dogfood.windows-int.net/indexes('hotels')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkeed54519f10c.search-dogfood.windows-int.net/indexes('hotels')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "358",
+      "elapsed-time" : "401",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "e47ebd2a-1387-4871-a4aa-fb939ac4661e",
+      "request-id" : "ed9e0eb3-5ed8-48a7-9f84-eeb3d20d74cc",
       "StatusCode" : "204",
-      "Date" : "Wed, 13 Nov 2019 22:23:17 GMT"
+      "Date" : "Fri, 22 Nov 2019 03:40:24 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdkd4625331143d.search-dogfood.windows-int.net/indexes('hotels')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkeed54519f10c.search-dogfood.windows-int.net/indexes('hotels')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "4e409cd1-32da-4486-a465-bd4316c1e979",
+      "request-id" : "a04d1d04-8daa-4105-b294-a232506889a2",
       "StatusCode" : "404",
-      "Date" : "Wed, 13 Nov 2019 22:23:17 GMT",
+      "Date" : "Fri, 22 Nov 2019 03:40:24 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "12",
+      "elapsed-time" : "15",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "117",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdkd4625331143d'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdkeed54519f10c'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

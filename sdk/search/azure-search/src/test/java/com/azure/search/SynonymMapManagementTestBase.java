@@ -53,6 +53,9 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
     public abstract void deleteSynonymMapIsIdempotent();
 
     @Test
+    public abstract void canCreateAndDeleteSynonymMap();
+
+    @Test
     public abstract void canCreateAndListSynonymMaps();
 
     @Test

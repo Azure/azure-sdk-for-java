@@ -69,6 +69,20 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
                 assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
             })
             .verifyComplete();
+
+        StepVerifier
+            .create(client.createSynonymMap(expectedSynonymMap.setName("test-synonym1"), generateRequestOptions()))
+            .assertNext(actualSynonymMap -> {
+                assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
+            })
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.createSynonymMapWithResponse(expectedSynonymMap.setName("test-synonym2"), generateRequestOptions()))
+            .assertNext(actualSynonymMap -> {
+                assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap.getValue());
+            })
+            .verifyComplete();
     }
 
     @Override
@@ -286,30 +300,46 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
         SynonymMap synonymMap = createTestSynonymMap();
 
         StepVerifier
-            .create(client.deleteSynonymMapWithResponse(synonymMap.getName(), null, null, null))
+            .create(client.deleteSynonymMapWithResponse(synonymMap.getName(), new AccessCondition(), generateRequestOptions()))
             .assertNext(synonymMapResponse -> {
                 Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), synonymMapResponse.getStatusCode());
             })
             .verifyComplete();
 
         StepVerifier
-            .create(client.createSynonymMapWithResponse(synonymMap, null, null))
+            .create(client.createSynonymMapWithResponse(synonymMap, generateRequestOptions()))
             .assertNext(synonymMapResponse -> {
                 Assert.assertEquals(HttpResponseStatus.CREATED.code(), synonymMapResponse.getStatusCode());
             })
             .verifyComplete();
 
         StepVerifier
-            .create(client.deleteSynonymMapWithResponse(synonymMap.getName(), null, null, null))
+            .create(client.deleteSynonymMapWithResponse(synonymMap.getName(),
+                new AccessCondition(), generateRequestOptions()))
             .assertNext(synonymMapResponse -> {
                 Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), synonymMapResponse.getStatusCode());
             })
             .verifyComplete();
 
         StepVerifier
-            .create(client.deleteSynonymMapWithResponse(synonymMap.getName(), null, null, null))
+            .create(client.deleteSynonymMapWithResponse(synonymMap.getName(),
+                new AccessCondition(), generateRequestOptions()))
             .assertNext(synonymMapResponse -> {
                 Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), synonymMapResponse.getStatusCode());
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void canCreateAndDeleteSynonymMap() {
+        SynonymMap synonymMap = createTestSynonymMap();
+        client.createSynonymMap(synonymMap).block();
+        client.deleteSynonymMap(synonymMap.getName()).block();
+
+        StepVerifier
+            .create(client.synonymMapExists(synonymMap.getName()))
+            .assertNext(response -> {
+                Assert.assertFalse(response);
             })
             .verifyComplete();
     }

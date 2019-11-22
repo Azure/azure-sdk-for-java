@@ -111,6 +111,9 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     public abstract void deleteSkillsetIsIdempotent();
 
     @Test
+    public abstract void canCreateAndDeleteSkillset();
+
+    @Test
     public abstract void createOrUpdateCreatesWhenSkillsetDoesNotExist();
 
     @Test
