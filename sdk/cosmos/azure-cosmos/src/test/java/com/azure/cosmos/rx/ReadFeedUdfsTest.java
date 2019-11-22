@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//FIXME beforeClass times out.
-@Ignore
 public class ReadFeedUdfsTest extends TestSuiteBase {
 
     private Database createdDatabase;

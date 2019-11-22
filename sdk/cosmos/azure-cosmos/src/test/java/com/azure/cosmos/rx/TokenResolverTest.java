@@ -154,8 +154,6 @@ public class TokenResolverTest extends TestSuiteBase {
         }
     }
 
-    //FIXME test is flaky
-    @Ignore
     @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void writeDocumentWithAllPermission(ConnectionMode connectionMode) {
         AsyncDocumentClient asyncClientWithTokenResolver = null;

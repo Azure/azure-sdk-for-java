@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RetryPolicy;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
@@ -519,7 +520,7 @@ public class DocumentProducerTest {
         IDocumentQueryClient client = Mockito.mock(IDocumentQueryClient.class);
         RxPartitionKeyRangeCache cache = Mockito.mock(RxPartitionKeyRangeCache.class);
         doReturn(cache).when(client).getPartitionKeyRangeCache();
-        doReturn(Mono.just(replacementRanges)).when(cache).
+        doReturn(Mono.just(new Utils.ValueHolder<>(replacementRanges))).when(cache).
                 tryGetOverlappingRangesAsync(anyString(), any(Range.class), anyBoolean(), Matchers.anyMap());
         return client;
     }

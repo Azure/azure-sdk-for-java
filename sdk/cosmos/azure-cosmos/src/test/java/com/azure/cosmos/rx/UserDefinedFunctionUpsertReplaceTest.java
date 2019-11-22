@@ -17,8 +17,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-//FIXME beforeClass times out inconsistently.
-@Ignore
 public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
 
     private CosmosAsyncContainer createdCollection;
@@ -53,7 +51,7 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
                 .notNullEtag()
                 .build();
         validateSuccess(readObservable, validatorForRead);
-        
+
         //update udf
         readBackUdf.setBody("function() {var x = 11;}");
 
@@ -65,11 +63,13 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
                 .withUserDefinedFunctionBody("function() {var x = 11;}")
                 .notNullEtag()
                 .build();
-        validateSuccess(replaceObservable, validatorForReplace);   
+        validateSuccess(replaceObservable, validatorForReplace);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    // TODO (DANOBLE) UserDefinedFunctionUpsertReplaceTest initialization consistently times out in CI environments.
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6383
+    @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
+    public void before_UserDefinedFunctionUpsertReplaceTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);

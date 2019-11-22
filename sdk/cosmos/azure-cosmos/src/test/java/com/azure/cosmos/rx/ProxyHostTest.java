@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * This class help to test proxy host feature scenarios where user can provide proxy
  * host server during AsyncDocumentClient initialization and all its request will
- * go through that particular host. 
+ * go through that particular host.
  *
  */
 public class ProxyHostTest extends TestSuiteBase {
@@ -55,7 +55,7 @@ public class ProxyHostTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_ProxyHostTest() throws Exception {
         client = clientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
@@ -67,7 +67,7 @@ public class ProxyHostTest extends TestSuiteBase {
 
     /**
      * This test will try to create document via http proxy server and validate it.
-     * 
+     *
      * @throws Exception
      */
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -97,8 +97,6 @@ public class ProxyHostTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    //FIXME test is flaky
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithValidHttpProxyWithNettyWireLogging() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);

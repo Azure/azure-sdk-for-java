@@ -41,11 +41,9 @@ public class UserQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    //FIXME test times out inconsistently
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryUsersWithFilter() throws Exception {
-        
+
         String filterUserId = createdUsers.get(0).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterUserId);
 

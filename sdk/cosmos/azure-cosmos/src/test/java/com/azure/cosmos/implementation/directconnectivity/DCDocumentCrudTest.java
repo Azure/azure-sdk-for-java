@@ -33,7 +33,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -52,7 +51,7 @@ import static org.mockito.Mockito.spy;
  * The tests in other test classes validate the actual behaviour and different scenarios.
  */
 public class DCDocumentCrudTest extends TestSuiteBase {
-    
+
     private final static int QUERY_TIMEOUT = 40000;
     private final static String PARTITION_KEY_FIELD_NAME = "mypk";
 
@@ -191,17 +190,15 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         String propName = "newProp";
         String propValue = "hello";
         BridgeInternal.setProperty(document, propName, propValue);
-        
+
         ResourceResponseValidator<Document> validator = ResourceResponseValidator.builder()
-                .withProperty(propName, propValue)
-                .build();
+            .withProperty(propName, propValue)
+            .build();
         validateSuccess(client.upsertDocument(getCollectionLink(), document, options, false), validator, TIMEOUT);
 
         validateNoDocumentOperationThroughGateway();
     }
 
-    //FIXME: Times out
-    @Ignore
     @Test(groups = { "direct" }, timeOut = QUERY_TIMEOUT)
     public void crossPartitionQuery() {
 
@@ -287,7 +284,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "direct" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_DCDocumentCrudTest() {
 
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(10100);
@@ -319,5 +316,5 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         BridgeInternal.setProperty(doc, "name", "Hafez");
         return doc;
     }
-    
+
 }
