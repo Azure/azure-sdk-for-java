@@ -97,7 +97,7 @@ public class ReactorSessionTest {
     public void verifyEndpointStates() {
         when(session.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
-        StepVerifier.create(reactorSession.getConnectionStates())
+        StepVerifier.create(reactorSession.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> handler.onSessionRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)

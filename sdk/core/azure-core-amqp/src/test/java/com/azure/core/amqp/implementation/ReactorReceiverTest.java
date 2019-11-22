@@ -85,7 +85,7 @@ public class ReactorReceiverTest {
      */
     @Test
     public void updateEndpointState() {
-        StepVerifier.create(reactorReceiver.getConnectionStates())
+        StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)

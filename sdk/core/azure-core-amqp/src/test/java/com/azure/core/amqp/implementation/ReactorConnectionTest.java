@@ -216,14 +216,10 @@ public class ReactorConnectionTest {
     @Test
     public void initialConnectionState() {
         // Assert
-        StepVerifier.create(connection.getConnectionStates())
+        StepVerifier.create(connection.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> {
-                try {
-                    connection.close();
-                } catch (IOException e) {
-                    Assertions.fail("Should not have thrown an error.");
-                }
+                connection.close();
             })
             .verifyComplete();
     }
@@ -241,18 +237,14 @@ public class ReactorConnectionTest {
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
 
         // Act & Assert
-        StepVerifier.create(connection.getConnectionStates())
+        StepVerifier.create(connection.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> connectionHandler.onConnectionRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             // getConnectionStates is distinct. We don't expect to see another event with the same status.
             .then(() -> connectionHandler.onConnectionRemoteOpen(event))
             .then(() -> {
-                try {
-                    connection.close();
-                } catch (IOException e) {
-                    Assertions.fail("Should not have thrown an error.");
-                }
+                connection.close();
             })
             .verifyComplete();
     }

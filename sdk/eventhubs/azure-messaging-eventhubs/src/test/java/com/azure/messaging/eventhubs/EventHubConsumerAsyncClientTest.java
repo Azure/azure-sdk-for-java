@@ -112,7 +112,7 @@ public class EventHubConsumerAsyncClientTest {
 
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
         when(amqpReceiveLink.getErrors()).thenReturn(errorProcessor);
-        when(amqpReceiveLink.getConnectionStates()).thenReturn(endpointProcessor);
+        when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
@@ -224,13 +224,13 @@ public class EventHubConsumerAsyncClientTest {
 
         when(link2.receive()).thenReturn(processor2);
         when(link2.getErrors()).thenReturn(Flux.never());
-        when(link2.getConnectionStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
+        when(link2.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
         when(link2.getShutdownSignals()).thenReturn(Flux.never());
         when(link2.getCredits()).thenReturn(numberOfEvents);
 
         when(link3.receive()).thenReturn(processor3);
         when(link3.getErrors()).thenReturn(Flux.never());
-        when(link3.getConnectionStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
+        when(link3.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
         when(link3.getShutdownSignals()).thenReturn(Flux.never());
         when(link3.getCredits()).thenReturn(numberOfEvents);
 
@@ -542,13 +542,13 @@ public class EventHubConsumerAsyncClientTest {
 
         when(link2.receive()).thenReturn(processor2);
         when(link2.getErrors()).thenReturn(Flux.never());
-        when(link2.getConnectionStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
+        when(link2.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
         when(link2.getShutdownSignals()).thenReturn(Flux.never());
         when(link2.getCredits()).thenReturn(numberOfEvents);
 
         when(link3.receive()).thenReturn(processor3);
         when(link3.getErrors()).thenReturn(Flux.never());
-        when(link3.getConnectionStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
+        when(link3.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
         when(link3.getShutdownSignals()).thenReturn(Flux.never());
         when(link3.getCredits()).thenReturn(numberOfEvents);
 
@@ -620,13 +620,13 @@ public class EventHubConsumerAsyncClientTest {
 
         when(link2.receive()).thenReturn(processor2);
         when(link2.getErrors()).thenReturn(Flux.never());
-        when(link2.getConnectionStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
+        when(link2.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
         when(link2.getShutdownSignals()).thenReturn(Flux.never());
         when(link2.getCredits()).thenReturn(numberOfEvents);
 
         when(link3.receive()).thenReturn(processor3);
         when(link3.getErrors()).thenReturn(Flux.never());
-        when(link3.getConnectionStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
+        when(link3.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
         when(link3.getShutdownSignals()).thenReturn(Flux.never());
         when(link3.getCredits()).thenReturn(numberOfEvents);
 
