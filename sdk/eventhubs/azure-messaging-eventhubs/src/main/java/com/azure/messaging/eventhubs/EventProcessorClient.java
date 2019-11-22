@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
@@ -76,9 +77,10 @@ public class EventProcessorClient {
         EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
-                eventHubAsyncClient.getFullyQualifiedNamespace().toLowerCase(),
-                eventHubAsyncClient.getEventHubName().toLowerCase(),
-                consumerGroup.toLowerCase(), identifier, TimeUnit.MINUTES.toSeconds(1), partitionPumpManager);
+                eventHubAsyncClient.getFullyQualifiedNamespace().toLowerCase(Locale.ROOT),
+                eventHubAsyncClient.getEventHubName().toLowerCase(Locale.ROOT),
+                consumerGroup.toLowerCase(Locale.ROOT), identifier, TimeUnit.MINUTES.toSeconds(1),
+                partitionPumpManager);
     }
 
     /**
