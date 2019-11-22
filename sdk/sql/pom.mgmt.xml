@@ -9,10 +9,10 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-sql/v2014_04_01</module>
-    <module>azure-mgmt-sql/v2015_05_01_preview</module>
-    <module>azure-mgmt-sql/v2017_03_01_preview</module>
-    <module>azure-mgmt-sql/v2017_10_01_preview</module>
-    <module>azure-mgmt-sql/v2018_06_01_preview</module>
+    <module>mgmt-v2014_04_01</module>
+    <module>mgmt-v2015_05_01_preview</module>
+    <module>mgmt-v2017_03_01_preview</module>
+    <module>mgmt-v2017_10_01_preview</module>
+    <module>mgmt-v2018_06_01_preview</module>
   </modules>
 </project>

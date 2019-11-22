@@ -182,7 +182,7 @@ public class EventHubMessageSerializerTest {
         Assertions.assertNotNull(properties);
         Assertions.assertEquals(eventHubName, properties.getName());
         Assertions.assertEquals(createdAt, properties.getCreatedAt());
-        Assertions.assertArrayEquals(partitionIds, properties.getPartitionIds());
+        Assertions.assertArrayEquals(partitionIds, properties.getPartitionIds().stream().toArray(String[]::new));
     }
 
     /**

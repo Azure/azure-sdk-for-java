@@ -33,7 +33,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
             .scheduler(Schedulers.parallel())
-            .buildAsyncProducer();
+            .buildAsyncProducerClient();
     }
 
     @Override
@@ -176,13 +176,13 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
         final EventData event = new EventData("body");
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
         final EventHubProducerAsyncClient client = createBuilder(true)
-            .buildAsyncProducer();
+            .buildAsyncProducerClient();
 
         // Act & Assert
         StepVerifier.create(client.getProperties())
             .assertNext(properties -> {
                 Assertions.assertEquals(getEventHubName(), properties.getName());
-                Assertions.assertEquals(2, properties.getPartitionIds().length);
+                Assertions.assertEquals(2, properties.getPartitionIds().stream().count());
             })
             .expectComplete()
             .verify(TIMEOUT);

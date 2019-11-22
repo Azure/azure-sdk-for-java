@@ -9,7 +9,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-mgmt-mysql/v2017_12_01</module>
-    <module>azure-mgmt-mysql/v2017_12_01_preview</module>
+    <module>mgmt-v2017_12_01</module>
+    <module>mgmt-v2017_12_01_preview</module>
   </modules>
 </project>

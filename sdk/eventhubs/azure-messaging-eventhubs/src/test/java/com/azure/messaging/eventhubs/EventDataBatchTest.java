@@ -3,9 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.jupiter.api.Assertions;
@@ -41,7 +41,7 @@ public class EventDataBatchTest {
      */
     @Test
     public void payloadExceededException() {
-        when(errorContextProvider.getErrorContext()).thenReturn(new ErrorContext("test-namespace"));
+        when(errorContextProvider.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
 
         final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, errorContextProvider);
         final EventData tooBig = new EventData(new byte[1024 * 1024 * 2]);
@@ -50,7 +50,7 @@ public class EventDataBatchTest {
             Assertions.fail("Expected an exception");
         } catch (AmqpException e) {
             Assertions.assertFalse(e.isTransient());
-            Assertions.assertEquals(ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
+            Assertions.assertEquals(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
         }
     }
 
@@ -63,7 +63,7 @@ public class EventDataBatchTest {
         final EventData within = new EventData(new byte[1024]);
 
         Assertions.assertTrue(batch.tryAdd(within));
-        Assertions.assertEquals(1, batch.getSize());
+        Assertions.assertEquals(1, batch.getCount());
     }
 
 

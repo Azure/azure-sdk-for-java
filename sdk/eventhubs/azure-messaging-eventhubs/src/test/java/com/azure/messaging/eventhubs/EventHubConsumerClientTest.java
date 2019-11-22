@@ -4,23 +4,22 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.AmqpShutdownSignal;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -30,7 +29,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -59,6 +57,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class EventHubConsumerClientTest {
@@ -75,13 +75,13 @@ public class EventHubConsumerClientTest {
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create(100, false);
     private final FluxSink<Message> sink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();
-    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
-    private final DirectProcessor<AmqpShutdownSignal> shutdownProcessor = DirectProcessor.create();
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
+    @Mock
+    private AmqpReceiveLink amqpReceiveLink2;
+
     @Mock
     private EventHubAmqpConnection connection;
     @Mock
@@ -94,14 +94,16 @@ public class EventHubConsumerClientTest {
     private ConnectionOptions connectionOptions;
     private EventHubConsumerAsyncClient asyncConsumer;
 
+    @SuppressWarnings("unchecked")
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
-        when(amqpReceiveLink.getErrors()).thenReturn(errorProcessor);
-        when(amqpReceiveLink.getConnectionStates()).thenReturn(endpointProcessor);
-        when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
+        when(amqpReceiveLink.getErrors()).thenReturn(Flux.never());
+        when(amqpReceiveLink.getConnectionStates()).thenReturn(Flux.never());
+        when(amqpReceiveLink.getShutdownSignals()).thenReturn(Flux.never());
+        when(amqpReceiveLink.getCredits()).thenReturn(10);
 
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
@@ -110,12 +112,13 @@ public class EventHubConsumerClientTest {
         when(connection.createSession(argThat(name -> name.endsWith(PARTITION_ID))))
             .thenReturn(Mono.fromCallable(() -> session));
         when(session.createConsumer(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(), any(), any(), any()))
-            .thenReturn(Mono.fromCallable(() -> amqpReceiveLink));
+            .thenReturn(Mono.just(amqpReceiveLink), Mono.fromCallable(() -> {
+                System.out.println("Returning second link");
+                return amqpReceiveLink2;
+            }));
 
-        EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setPrefetchCount(PREFETCH);
         asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            linkProvider, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(), options, false);
+            linkProvider, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
         consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
     }
 
@@ -131,22 +134,24 @@ public class EventHubConsumerClientTest {
     }
 
     /**
-     * Verify that by default, lastEnqueuedInformation is null if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()}
-     * is not set.
+     * Verify that by default, lastEnqueuedInformation is null if
+     * {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()} is not set.
      */
     @Test
     public void lastEnqueuedEventInformationIsNull() {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(),
-            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(false), false);
+            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP,
+            PREFETCH, false);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
         final int numberOfEvents = 10;
         sendMessages(sink, numberOfEvents, PARTITION_ID);
         final int numberToReceive = 3;
+        final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(false);
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, numberToReceive);
+        final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, numberToReceive,
+            EventPosition.earliest(), TIMEOUT, options);
 
         // Assert
         Assertions.assertNotNull(receive);
@@ -162,9 +167,9 @@ public class EventHubConsumerClientTest {
     @Test
     public void lastEnqueuedEventInformationCreated() {
         // Arrange
+        final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(),
-            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true), false);
+            HOSTNAME, EVENT_HUB_NAME, linkProvider, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
 
         final int numberOfEvents = 10;
@@ -172,7 +177,8 @@ public class EventHubConsumerClientTest {
         final int numberToReceive = 3;
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, numberOfEvents);
+        final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, numberOfEvents,
+            EventPosition.earliest(), TIMEOUT, options);
 
         // Assert
         Assertions.assertNotNull(receive);
@@ -200,7 +206,7 @@ public class EventHubConsumerClientTest {
         // Act
         semaphore.acquire();
         EXECUTOR_SERVICE.execute(() -> {
-            received.set(consumer.receive(PARTITION_ID, numberToReceive));
+            received.set(consumer.receiveFromPartition(PARTITION_ID, numberToReceive, EventPosition.earliest()));
             semaphore.release();
         });
 
@@ -234,28 +240,38 @@ public class EventHubConsumerClientTest {
         final int firstReceive = 8;
         final int secondReceive = 4;
 
-        sendMessages(sink, numberOfEvents, PARTITION_ID);
+        EmitterProcessor<Message> processor = EmitterProcessor.create(100, false);
+        FluxSink<Message> sink2 = processor.sink(FluxSink.OverflowStrategy.BUFFER);
+        when(amqpReceiveLink2.receive()).thenReturn(processor);
+        when(amqpReceiveLink2.getErrors()).thenReturn(Flux.never());
+        when(amqpReceiveLink2.getConnectionStates()).thenReturn(Flux.never());
+        when(amqpReceiveLink2.getShutdownSignals()).thenReturn(Flux.never());
+        when(amqpReceiveLink2.getCredits()).thenReturn(10);
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, firstReceive);
-        final IterableStream<PartitionEvent> receive2 = consumer.receive(PARTITION_ID, secondReceive);
+        sendMessages(sink, numberOfEvents, PARTITION_ID);
+        final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, firstReceive, EventPosition.earliest());
+
+        sendMessages(sink2, numberOfEvents, PARTITION_ID);
+        final IterableStream<PartitionEvent> receive2 = consumer.receiveFromPartition(PARTITION_ID, secondReceive, EventPosition.earliest());
 
         // Assert
+        System.out.println("First receive.");
         final Map<Integer, PartitionEvent> firstActual = receive.stream()
             .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
+
+        System.out.println("Second receive.");
         final Map<Integer, PartitionEvent> secondActual = receive2.stream()
             .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
+
+        verify(amqpReceiveLink, times(1)).receive();
+        verify(amqpReceiveLink2, times(1)).receive();
 
         Assertions.assertEquals(firstReceive, firstActual.size());
         Assertions.assertEquals(secondReceive, secondActual.size());
 
-        int startingIndex = 0;
-        int endIndex = firstReceive;
-        IntStream.range(startingIndex, endIndex).forEachOrdered(number -> Assertions.assertTrue(firstActual.containsKey(number)));
-
-        startingIndex += firstReceive;
-        endIndex += secondReceive;
-        IntStream.range(startingIndex, endIndex).forEachOrdered(number -> Assertions.assertTrue(secondActual.containsKey(number)));
+        IntStream.range(0, firstReceive).forEachOrdered(number -> Assertions.assertTrue(firstActual.containsKey(number)));
+        IntStream.range(0, secondReceive).forEachOrdered(number -> Assertions.assertTrue(secondActual.containsKey(number)));
     }
 
     /**
@@ -271,7 +287,7 @@ public class EventHubConsumerClientTest {
         sendMessages(sink, numberOfEvents, PARTITION_ID);
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receive(PARTITION_ID, firstReceive, timeout);
+        final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, firstReceive, EventPosition.earliest(), timeout);
 
         // Assert
         final Map<Integer, PartitionEvent> firstActual = receive.stream()
@@ -284,23 +300,16 @@ public class EventHubConsumerClientTest {
 
     @Test
     public void setsCorrectProperties() {
-        EventPosition position = EventPosition.fromOffset(105L);
-        EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setOwnerLevel(100L)
-            .setPrefetchCount(100);
-
         // Act
         EventHubConsumerClient consumer = new EventHubClientBuilder()
             .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath=dummy-event-hub")
-            .startingPosition(position)
             .consumerGroup(CONSUMER_GROUP)
-            .consumerOptions(options)
-            .buildConsumer();
+            .prefetchCount(100)
+            .buildConsumerClient();
 
         Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
         Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
         Assertions.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
-        Assertions.assertSame(position, consumer.getStartingPosition());
     }
 
     @Test
@@ -320,11 +329,8 @@ public class EventHubConsumerClientTest {
         when(managementNode.getEventHubProperties())
             .thenReturn(Mono.just(new EventHubProperties(EVENT_HUB_NAME, Instant.EPOCH, partitions)));
 
-        EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setPrefetchCount(PREFETCH);
-
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            eventHubConnection, messageSerializer, CONSUMER_GROUP, EventPosition.earliest(), options, false);
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
 
         EmitterProcessor<Message> processor2 = EmitterProcessor.create();
         FluxSink<Message> processor2sink = processor2.sink();
@@ -368,7 +374,8 @@ public class EventHubConsumerClientTest {
             .thenReturn(Mono.just(link3));
 
         // Act & Assert
-        StepVerifier.create(asyncClient.receive().filter(e -> isMatchingEvent(e, messageTrackingUUID)))
+        StepVerifier.create(asyncClient.receive(EventPosition.earliest())
+            .filter(e -> isMatchingEvent(e, messageTrackingUUID)))
             .then(() -> sendMessages(processor2sink, 2, id2))
             .assertNext(event -> assertPartition(id2, event))
             .assertNext(event -> assertPartition(id2, event))
@@ -402,7 +409,8 @@ public class EventHubConsumerClientTest {
             Map<String, String> set = new HashMap<>();
             set.put(MESSAGE_POSITION_ID, Integer.valueOf(i).toString());
             set.put(PARTITION_ID_HEADER, partitionId);
-            sink.next(getMessage(PAYLOAD_BYTES, messageTrackingUUID, set));
+            final Message message = getMessage(PAYLOAD_BYTES, messageTrackingUUID, set);
+            sink.next(message);
         }
     }
 }

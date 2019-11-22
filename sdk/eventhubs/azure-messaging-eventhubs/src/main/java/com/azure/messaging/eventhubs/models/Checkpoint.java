@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.eventhubs.PartitionProcessor;
+import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 
 /**
  * A model class to hold checkpoint data. A checkpoint represents the last successfully processed event by a {@link
@@ -13,13 +13,34 @@ import com.azure.messaging.eventhubs.PartitionProcessor;
 @Fluent
 public class Checkpoint {
 
+    private String fullyQualifiedNamespace;
     private String eventHubName;
-    private String consumerGroupName;
+    private String consumerGroup;
     private String ownerId;
     private String partitionId;
     private Long offset;
     private Long sequenceNumber;
     private String eTag;
+
+    /**
+     * Returns the fully qualified namespace of the Event Hub.
+     *
+     * @return the fully qualified namespace of the Event Hub.
+     */
+    public String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
+    }
+
+    /**
+     * Sets the fully qualified namespace of the Event Hub.
+     *
+     * @param fullyQualifiedNamespace the fully qualified namespace of the Event Hub.
+     * @return The updated {@link Checkpoint} instance.
+     */
+    public Checkpoint setFullyQualifiedNamespace(final String fullyQualifiedNamespace) {
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+        return this;
+    }
 
     /**
      * Gets the Event Hub name associated with this checkpoint.
@@ -46,18 +67,18 @@ public class Checkpoint {
      *
      * @return The consumer group name associated with this checkpoint.
      */
-    public String getConsumerGroupName() {
-        return consumerGroupName;
+    public String getConsumerGroup() {
+        return consumerGroup;
     }
 
     /**
      * Sets the consumer group name associated with this checkpoint.
      *
-     * @param consumerGroupName The consumer group name associated with this checkpoint.
+     * @param consumerGroup The consumer group name associated with this checkpoint.
      * @return The updated {@link Checkpoint} instance.
      */
-    public Checkpoint setConsumerGroupName(String consumerGroupName) {
-        this.consumerGroupName = consumerGroupName;
+    public Checkpoint setConsumerGroup(String consumerGroup) {
+        this.consumerGroup = consumerGroup;
         return this;
     }
 

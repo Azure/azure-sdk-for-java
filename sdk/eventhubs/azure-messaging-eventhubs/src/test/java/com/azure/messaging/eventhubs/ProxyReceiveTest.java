@@ -82,12 +82,11 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             logger.info("Already pushed events to partition. Skipping.");
         } else {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(builder.buildAsyncProducer(), NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(builder.buildAsyncProducerClient(), NUMBER_OF_EVENTS, options);
         }
 
         consumer = builder.consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .startingPosition(EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
     }
 
     @Override
@@ -98,7 +97,8 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     @Test
     public void testReceiverStartOfStreamFilters() {
         // Act & Assert
-        StepVerifier.create(consumer.receive(PARTITION_ID).take(NUMBER_OF_EVENTS))
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
+            .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
     }

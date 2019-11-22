@@ -4,10 +4,11 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CBSChannel;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -18,11 +19,9 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,8 +31,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -61,13 +58,8 @@ public class CBSChannelTest extends IntegrationTestBase {
         azureTokenManagerProvider = new AzureTokenManagerProvider(SHARED_ACCESS_SIGNATURE,
             connectionString.getEndpoint().getHost(), ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
-        TokenCredential tokenCredential = null;
-        try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(connectionString.getSharedAccessKeyName(),
-                connectionString.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            Assertions.fail("Could not create tokenProvider :" + e);
-        }
+        TokenCredential tokenCredential = new EventHubSharedKeyCredential(connectionString.getSharedAccessKeyName(),
+                connectionString.getSharedAccessKey());
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionString.getEndpoint().getHost(),
             connectionString.getEntityPath(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
@@ -111,14 +103,9 @@ public class CBSChannelTest extends IntegrationTestBase {
     public void unsuccessfulAuthorize() {
         // Arrange
         final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEntityPath());
-        final Duration duration = Duration.ofMinutes(10);
 
-        TokenCredential tokenProvider = null;
-        try {
-            tokenProvider = new EventHubSharedAccessKeyCredential(connectionString.getSharedAccessKeyName(), "Invalid shared access key.", duration);
-        } catch (Exception e) {
-            Assertions.fail("Could not create token provider: " + e.toString());
-        }
+        TokenCredential tokenProvider = new EventHubSharedKeyCredential(connectionString.getSharedAccessKeyName(),
+            "Invalid shared access key.");
 
         final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 
@@ -131,7 +118,7 @@ public class CBSChannelTest extends IntegrationTestBase {
                 Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
-                Assertions.assertEquals(ErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
+                Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
                 Assertions.assertFalse(exception.isTransient());
                 Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })

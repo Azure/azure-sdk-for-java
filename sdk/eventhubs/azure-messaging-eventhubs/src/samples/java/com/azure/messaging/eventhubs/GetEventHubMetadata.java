@@ -27,7 +27,7 @@ public class GetEventHubMetadata {
         // Instantiate a client that will be used to call the service.
         EventHubProducerAsyncClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncProducer();
+            .buildAsyncProducerClient();
 
         // Acquiring the semaphore so that this sample does not end before all the partition properties are fetched.
         semaphore.acquire();

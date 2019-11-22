@@ -7,12 +7,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opentelemetry.OpenTelemetry;
 import io.opentelemetry.sdk.trace.ReadableSpan;
+import io.opentelemetry.sdk.trace.SpanData;
 import io.opentelemetry.trace.AttributeValue;
+import io.opentelemetry.trace.Link;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.SpanContext;
 import io.opentelemetry.trace.SpanId;
 import io.opentelemetry.trace.Tracer;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +28,7 @@ import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -204,28 +208,27 @@ public class OpenTelemetryTracerTest {
             openTelemetryTracer.start("", Context.NONE, null));
     }
 
-    // TODO: Fix links for openTelemetry
-    // Issue- https://github.com/Azure/azure-sdk-for-java/issues/6188
-    // @Test
-    // public void addLinkTest() {
-    //     // Arrange
-    //     // Create a child-parent link between multiple spans
-    //     final ReadableSpan testSpan =
-    //         (ReadableSpan) tracer.spanBuilder("new-test-span").startSpan();
-    //     final ReadableSpan parentSpanImpl = (ReadableSpan) parentSpan;
-    //     final Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, testSpan.getSpanContext());
-    //     SpanData.Link expectedLink = SpanData.Link.create(testSpan.getSpanContext());
-    //
-    //     // Act
-    //     openTelemetryTracer.addLink(traceContext);
-    //
-    //     //Assert
-    //     // verify parent span has the expected Link
-    //     assertEquals(1, parentSpanImpl.toSpanData().getLinks().size());
-    //     Link createdLink = parentSpanImpl.toSpanData().getLinks().get(0);
-    //     assertEquals(expectedLink.getContext().getTraceId(), createdLink.getContext().getTraceId());
-    //     assertEquals(expectedLink.getContext().getTraceId(), createdLink.getContext().getTraceId());
-    // }
+    @Test
+    public void addLinkTest() {
+        // Arrange
+        Span.Builder span = tracer.spanBuilder("parent-span");
+        Span toLinkSpan = tracer.spanBuilder("new test span").startSpan();
+
+        Context spanContext = new Context(
+            SPAN_CONTEXT_KEY, toLinkSpan.getContext());
+        SpanData.Link expectedLink = SpanData.Link.create(toLinkSpan.getContext());
+
+        // Act
+        openTelemetryTracer.addLink(spanContext.addData(SPAN_BUILDER_KEY, span));
+        ReadableSpan span1 = (ReadableSpan) span.startSpan();
+
+        //Assert
+        // verify parent span has the expected Link
+        Link createdLink = span1.toSpanData().getLinks().get(0);
+        Assertions.assertEquals(1, span1.toSpanData().getLinks().size());
+        Assertions.assertEquals(expectedLink.getContext().getTraceId(), createdLink.getContext().getTraceId());
+        Assertions.assertEquals(expectedLink.getContext().getSpanId(), createdLink.getContext().getSpanId());
+    }
 
     @Test
     public void endSpanNoSuccessErrorMessageTest() {

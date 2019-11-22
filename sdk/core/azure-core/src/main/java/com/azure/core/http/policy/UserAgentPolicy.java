@@ -23,7 +23,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
 
     // From the design guidelines, the default user agent header format is:
     // azsdk-java-<client_lib>/<sdk_version> <platform_info>
-    private static final String USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s %s";
+    private static final String USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s (%s)";
 
     // From the design guidelines, the application id user agent header format is:
     // AzCopy/10.0.4-Preview azsdk-java-<client_lib>/<sdk_version> <platform_info>

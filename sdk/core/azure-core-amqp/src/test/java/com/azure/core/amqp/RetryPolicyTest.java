@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp;
 
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 
 public class RetryPolicyTest {
-    private final ErrorContext errorContext = new ErrorContext("test-namespace");
+    private final AmqpErrorContext errorContext = new AmqpErrorContext("test-namespace");
     private final int maxRetries = 10;
     private final Duration maxDelay = Duration.ofSeconds(120);
     private final Duration delay = Duration.ofSeconds(20);

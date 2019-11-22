@@ -4,8 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.util.logging.ClientLogger;
@@ -30,8 +30,8 @@ import java.util.Objects;
  *
  * @see EventHubProducerClient#createBatch()
  * @see EventHubProducerAsyncClient#createBatch()
- * @see EventHubProducerClient See EventHubProducer for examples using the synchronous producer.
- * @see EventHubProducerAsyncClient See EventHubProducerAsyncClient for examples using the asynchronous producer.
+ * @see EventHubClientBuilder See EventHubClientBuilder for examples of building an asynchronous or synchronous
+ *     producer.
  */
 public final class EventDataBatch {
     private final ClientLogger logger = new ClientLogger(EventDataBatch.class);
@@ -59,7 +59,7 @@ public final class EventDataBatch {
      *
      * @return The number of {@link EventData events} in the batch.
      */
-    public int getSize() {
+    public int getCount() {
         return events.size();
     }
 
@@ -73,14 +73,13 @@ public final class EventDataBatch {
     }
 
     /**
-     * Tries to add an {@link EventData eventData} to the batch.
+     * Tries to add an {@link EventData event} to the batch.
      *
      * @param eventData The {@link EventData} to add to the batch.
      * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
      *     the batch.
      * @throws IllegalArgumentException if {@code eventData} is {@code null}.
-     * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link
-     *     EventDataBatch}.
+     * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link EventDataBatch}.
      */
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
@@ -91,7 +90,7 @@ public final class EventDataBatch {
         try {
             size = getSize(eventData, events.isEmpty());
         } catch (BufferOverflowException exception) {
-            throw logger.logExceptionAsWarning(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+            throw logger.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                 String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
                     maxMessageSize / 1024),
                 contextProvider.getErrorContext()));
@@ -222,9 +221,7 @@ public final class EventDataBatch {
             message.setMessageAnnotations(messageAnnotations);
         }
 
-        if (event.getBody() != null) {
-            message.setBody(new Data(Binary.create(event.getBody())));
-        }
+        message.setBody(new Data(new Binary(event.getBody())));
 
         return message;
     }

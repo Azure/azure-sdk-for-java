@@ -3,11 +3,11 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorContext;
-import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.ClientConstants;
+import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -34,7 +34,7 @@ public class SessionHandler extends Handler {
         this.reactorDispatcher = reactorDispatcher;
     }
 
-    public ErrorContext getErrorContext() {
+    public AmqpErrorContext getErrorContext() {
         return new SessionErrorContext(getHostname(), entityName);
     }
 
@@ -119,7 +119,7 @@ public class SessionHandler extends Handler {
 
         if (condition != null) {
             final String id = getConnectionId();
-            final ErrorContext context = getErrorContext();
+            final AmqpErrorContext context = getErrorContext();
             final Exception exception;
             if (condition.getCondition() == null) {
                 exception = new AmqpException(false,
