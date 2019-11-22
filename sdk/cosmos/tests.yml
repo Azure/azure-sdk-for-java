@@ -78,25 +78,21 @@ jobs:
           DisplayName: Multimaster Single Region Fast
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
         # 09m 14s, expect passed
         Direct:
           DisplayName: Multimaster Single Region Direct
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
         # 07m 42s, expect passed
         Examples:
           DisplayName: Multimaster Single Region Examples
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
         # 07m 05s, expect passed
         NonEmulator:
           DisplayName: Multimaster Single Region NonEmulator
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
         # 28m 42s, expect passed (rebalanced)
         Single_Region_Long:
           DisplayName: Long Integration Tests
