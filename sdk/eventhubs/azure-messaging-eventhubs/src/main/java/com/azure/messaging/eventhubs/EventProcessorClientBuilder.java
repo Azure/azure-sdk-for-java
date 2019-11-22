@@ -15,10 +15,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.CloseContext;
+import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.function.Consumer;
@@ -55,7 +55,7 @@ import reactor.core.scheduler.Scheduler;
  * </ul>
  *
  * <p><strong>Creating an {@link EventProcessorClient}</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation}
+ * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation}
  *
  * @see EventProcessorClient
  * @see EventHubConsumerClient
@@ -69,10 +69,11 @@ public class EventProcessorClientBuilder {
     private final EventHubClientBuilder eventHubClientBuilder;
     private String consumerGroup;
     private CheckpointStore checkpointStore;
-    private Consumer<PartitionEvent> processEvent;
-    private Consumer<EventProcessingErrorContext> processError;
-    private Consumer<InitializationContext> initializePartition;
-    private Consumer<CloseContext> closePartition;
+    private Consumer<EventContext> processEvent;
+    private Consumer<ErrorContext> processError;
+    private Consumer<InitializationContext> processPartitionInitialization;
+    private Consumer<CloseContext> processPartitionClose;
+    private boolean trackLastEnqueuedEventProperties;
 
     /**
      * Creates a new instance of {@link EventProcessorClientBuilder}.
@@ -165,10 +166,10 @@ public class EventProcessorClientBuilder {
      * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
      * TransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
-     * @param proxyOptions The proxy configuration to use.
+     * @param proxyOptions The proxy options to use.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
-    public EventProcessorClientBuilder proxyConfiguration(ProxyOptions proxyOptions) {
+    public EventProcessorClientBuilder proxyOptions(ProxyOptions proxyOptions) {
         eventHubClientBuilder.proxyOptions(proxyOptions);
         return this;
     }
@@ -246,7 +247,7 @@ public class EventProcessorClientBuilder {
      * @return The updated {@link EventProcessorClientBuilder} instance.
      * @throws NullPointerException if {@code processEvent} is {@code null}.
      */
-    public EventProcessorClientBuilder processEvent(Consumer<PartitionEvent> processEvent) {
+    public EventProcessorClientBuilder processEvent(Consumer<EventContext> processEvent) {
         this.processEvent = Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
         return this;
     }
@@ -258,7 +259,7 @@ public class EventProcessorClientBuilder {
      * @param processError The callback that's called when an error occurs while processing events.
      * @return The updated {@link EventProcessorClientBuilder} instance.
      */
-    public EventProcessorClientBuilder processError(Consumer<EventProcessingErrorContext> processError) {
+    public EventProcessorClientBuilder processError(Consumer<ErrorContext> processError) {
         this.processError = processError;
         return this;
     }
@@ -274,7 +275,7 @@ public class EventProcessorClientBuilder {
      */
     public EventProcessorClientBuilder processPartitionInitialization(
         Consumer<InitializationContext> initializePartition) {
-        this.initializePartition = initializePartition;
+        this.processPartitionInitialization = initializePartition;
         return this;
     }
 
@@ -286,7 +287,26 @@ public class EventProcessorClientBuilder {
      * @return The updated {@link EventProcessorClientBuilder} instance.
      */
     public EventProcessorClientBuilder processPartitionClose(Consumer<CloseContext> closePartition) {
-        this.closePartition = closePartition;
+        this.processPartitionClose = closePartition;
+        return this;
+    }
+
+    /**
+     * Sets whether or not the event processor should request information on the last enqueued event on its associated
+     * partition, and track that information as events are received.
+     *
+     * <p>When information about the partition's last enqueued event is being tracked, each event received from the
+     * Event Hubs service will carry metadata about the partition that it otherwise would not. This results in a small
+     * amount of additional network bandwidth consumption that is generally a favorable trade-off when considered
+     * against periodically making requests for partition properties using the Event Hub client.</p>
+     *
+     * @param trackLastEnqueuedEventProperties {@code true} if the resulting events will keep track of the last
+     *     enqueued information for that partition; {@code false} otherwise.
+     *
+     * @return The updated {@link EventProcessorClientBuilder} instance.
+     */
+    public EventProcessorClientBuilder trackLastEnqueuedEventProperties(boolean trackLastEnqueuedEventProperties) {
+        this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
         return this;
     }
 
@@ -313,34 +333,35 @@ public class EventProcessorClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         return new EventProcessorClient(eventHubClientBuilder, this.consumerGroup,
-            getPartitionProcessorSupplier(), EventPosition.earliest(), checkpointStore, tracerProvider);
+            getPartitionProcessorSupplier(), EventPosition.earliest(), checkpointStore,
+            trackLastEnqueuedEventProperties, tracerProvider);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {
         return () -> new PartitionProcessor() {
             @Override
-            public void processEvent(PartitionEvent partitionEvent) {
-                processEvent.accept(partitionEvent);
+            public void processEvent(EventContext eventContext) {
+                processEvent.accept(eventContext);
             }
 
             @Override
             public void initialize(InitializationContext initializationContext) {
-                if (initializePartition != null) {
-                    initializePartition.accept(initializationContext);
+                if (processPartitionInitialization != null) {
+                    processPartitionInitialization.accept(initializationContext);
                 } else {
                     super.initialize(initializationContext);
                 }
             }
 
             @Override
-            public void processError(EventProcessingErrorContext eventProcessingErrorContext) {
-                processError.accept(eventProcessingErrorContext);
+            public void processError(ErrorContext errorContext) {
+                processError.accept(errorContext);
             }
 
             @Override
             public void close(CloseContext closeContext) {
-                if (closePartition != null) {
-                    closePartition.accept(closeContext);
+                if (processPartitionClose != null) {
+                    processPartitionClose.accept(closeContext);
                 } else {
                     super.close(closeContext);
                 }

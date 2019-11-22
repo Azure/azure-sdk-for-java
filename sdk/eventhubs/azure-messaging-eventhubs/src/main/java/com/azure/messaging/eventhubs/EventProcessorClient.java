@@ -21,13 +21,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 /**
- * Event Processor provides a convenient mechanism to consume events from all partitions of an Event Hub in the context
- * of a consumer group. Event Processor-based application consists of one or more instances of EventProcessor(s) which
- * are set up to consume events from the same Event Hub, consumer group to balance the workload across different
- * instances and track progress when events are processed. Based on the number of instances running, each Event
- * Processor may own zero or more partitions to balance the workload among all the instances.
+ * EventProcessorClient provides a convenient mechanism to consume events from all partitions of an Event Hub in the
+ * context of a consumer group. Event Processor-based application consists of one or more instances of
+ * EventProcessorClient(s) which are set up to consume events from the same Event Hub, consumer group to balance the
+ * workload across different instances and track progress when events are processed. Based on the number of instances
+ * running, each EventProcessorClient may own zero or more partitions to balance the workload among all the instances.
  *
- * <p>To create an instance of EventProcessor, use the fluent {@link EventProcessorClientBuilder}.</p>
+ * <p>To create an instance of EventProcessorClient, use the fluent {@link EventProcessorClientBuilder}.</p>
  *
  * @see EventProcessorClientBuilder
  */
@@ -54,13 +54,14 @@ public class EventProcessorClient {
      * @param consumerGroup The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param initialEventPosition Initial event position to start consuming events.
-     * @param checkpointStore The store used for reading and updating partition ownership and checkpoints.
-     * information.
+     * @param checkpointStore The store used for reading and updating partition ownership and checkpoints. information.
+     * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this
+     * EventProcessorClient will also include the last enqueued event properties for it's respective partitions.
      * @param tracerProvider The tracer implementation.
      */
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
         Supplier<PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
-        CheckpointStore checkpointStore, TracerProvider tracerProvider) {
+        CheckpointStore checkpointStore, boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
@@ -71,12 +72,13 @@ public class EventProcessorClient {
         this.identifier = UUID.randomUUID().toString();
         logger.info("The instance ID for this event processors is {}", this.identifier);
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
-            initialEventPosition, eventHubClientBuilder, tracerProvider);
+            initialEventPosition, eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider);
         EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
-                eventHubAsyncClient.getFullyQualifiedNamespace(), eventHubAsyncClient.getEventHubName(),
-                consumerGroup, identifier, TimeUnit.MINUTES.toSeconds(1), partitionPumpManager);
+                eventHubAsyncClient.getFullyQualifiedNamespace().toLowerCase(),
+                eventHubAsyncClient.getEventHubName().toLowerCase(),
+                consumerGroup.toLowerCase(), identifier, TimeUnit.MINUTES.toSeconds(1), partitionPumpManager);
     }
 
     /**
@@ -98,7 +100,7 @@ public class EventProcessorClient {
      * </p>
      *
      * <p><strong>Starting the processor to consume events from all partitions</strong></p>
-     * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.startstop}
+     * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclient.startstop}
      */
     public synchronized void start() {
         if (!started.compareAndSet(false, true)) {
@@ -122,7 +124,7 @@ public class EventProcessorClient {
      * </p>
      *
      * <p><strong>Stopping the processor</strong></p>
-     * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.startstop}
+     * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclient.startstop}
      */
     public synchronized void stop() {
         if (!started.compareAndSet(true, false)) {

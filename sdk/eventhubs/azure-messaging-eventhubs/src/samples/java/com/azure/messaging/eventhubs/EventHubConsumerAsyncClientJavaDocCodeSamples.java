@@ -134,8 +134,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
 
         // Receives events from all partitions as they come in.
         consumer.receive(EventPosition.latest(), receiveOptions).subscribe(partitionEvent -> {
-            PartitionContext context = partitionEvent.getPartitionContext();
-            LastEnqueuedEventProperties properties = context.getLastEnqueuedEventProperties();
+            LastEnqueuedEventProperties properties = partitionEvent.getLastEnqueuedEventProperties();
             System.out.printf("Information received at %s. Sequence Id: %s%n", properties.getRetrievalTime(),
                 properties.getSequenceNumber());
         });

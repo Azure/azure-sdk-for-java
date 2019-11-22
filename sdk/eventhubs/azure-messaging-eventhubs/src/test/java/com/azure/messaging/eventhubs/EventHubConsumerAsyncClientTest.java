@@ -148,9 +148,9 @@ public class EventHubConsumerAsyncClientTest {
         // Assert
         StepVerifier.create(runtimeConsumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberToReceive))
             .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
-            .assertNext(event -> Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
-            .assertNext(event -> Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
-            .assertNext(event -> Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
+            .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
+            .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
+            .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
             .verifyComplete();
     }
 
@@ -171,7 +171,7 @@ public class EventHubConsumerAsyncClientTest {
             .take(1))
             .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
             .assertNext(event -> {
-                LastEnqueuedEventProperties properties = event.getPartitionContext().getLastEnqueuedEventProperties();
+                LastEnqueuedEventProperties properties = event.getLastEnqueuedEventProperties();
                 Assertions.assertNotNull(properties);
                 Assertions.assertNull(properties.getOffset());
                 Assertions.assertNull(properties.getSequenceNumber());
