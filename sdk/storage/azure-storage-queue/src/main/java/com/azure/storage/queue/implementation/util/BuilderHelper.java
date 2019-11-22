@@ -227,7 +227,8 @@ public final class BuilderHelper {
      */
     public static void httpsValidation(Object objectToCheck, String objectName, String endpoint, ClientLogger logger) {
         if (objectToCheck != null && !parseEndpoint(endpoint, logger).getScheme().equals(Constants.HTTPS)) {
-            throw new IllegalArgumentException("Using a(n) " + objectName + " requires https");
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Using a(n) " + objectName + " requires https"));
         }
     }
 
