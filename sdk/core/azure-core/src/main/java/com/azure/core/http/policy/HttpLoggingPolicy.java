@@ -183,8 +183,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return queryStringBuilder.toString();
     }
 
-    private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final ClientLogger logger,
-        final URL url,
+    private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final ClientLogger logger, final URL url,
         final long startNs) {
         return (HttpResponse response) -> {
             long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
