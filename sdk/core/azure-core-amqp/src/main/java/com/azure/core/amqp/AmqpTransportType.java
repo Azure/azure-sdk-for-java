@@ -8,7 +8,7 @@ import java.util.Locale;
 /**
  * All TransportType switches available for AMQP protocol.
  */
-public enum TransportType {
+public enum AmqpTransportType {
     /**
      * AMQP over TCP. Uses port 5671 - assigned by IANA for secure AMQP (AMQPS).
      */
@@ -21,7 +21,7 @@ public enum TransportType {
 
     private final String value;
 
-    TransportType(final String value) {
+    AmqpTransportType(final String value) {
         this.value = value;
     }
 
@@ -40,8 +40,8 @@ public enum TransportType {
      * @return The TransportType represented by the value.
      * @throws IllegalArgumentException If a TransportType cannot be parsed from the string value.
      */
-    public static TransportType fromString(final String value) {
-        for (TransportType transportType : values()) {
+    public static AmqpTransportType fromString(final String value) {
+        for (AmqpTransportType transportType : values()) {
             if (transportType.value.equalsIgnoreCase(value)) {
                 return transportType;
             }

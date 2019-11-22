@@ -3,10 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -14,7 +13,6 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
-import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
@@ -34,10 +32,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -52,11 +48,9 @@ import java.util.stream.IntStream;
 import static com.azure.messaging.eventhubs.EventHubConsumerAsyncClientTest.PARTITION_ID_HEADER;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_POSITION_ID;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
-import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -106,7 +100,7 @@ public class EventHubConsumerClientTest {
         when(amqpReceiveLink.getCredits()).thenReturn(10);
 
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
+            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
         when(connection.createSession(argThat(name -> name.endsWith(PARTITION_ID))))
@@ -310,81 +304,6 @@ public class EventHubConsumerClientTest {
         Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
         Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
         Assertions.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
-    }
-
-    @Test
-    public void receivesMultiplePartitions() {
-        int numberOfEvents = 10;
-        when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
-
-        EventHubAmqpConnection connection1 = mock(EventHubAmqpConnection.class);
-        EventHubConnection eventHubConnection = new EventHubConnection(Mono.fromCallable(() -> connection1),
-            connectionOptions);
-
-        String id2 = "partition-2";
-        String id3 = "partition-3";
-        String[] partitions = new String[]{PARTITION_ID, id2, id3};
-        EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
-        when(connection1.getManagementNode()).thenReturn(Mono.just(managementNode));
-        when(managementNode.getEventHubProperties())
-            .thenReturn(Mono.just(new EventHubProperties(EVENT_HUB_NAME, Instant.EPOCH, partitions)));
-
-        EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false);
-
-        EmitterProcessor<Message> processor2 = EmitterProcessor.create();
-        FluxSink<Message> processor2sink = processor2.sink();
-        AmqpReceiveLink link2 = mock(AmqpReceiveLink.class);
-        EventHubSession session2 = mock(EventHubSession.class);
-
-        EmitterProcessor<Message> processor3 = EmitterProcessor.create();
-        FluxSink<Message> processor3sink = processor3.sink();
-        AmqpReceiveLink link3 = mock(AmqpReceiveLink.class);
-        EventHubSession session3 = mock(EventHubSession.class);
-
-        when(link2.receive()).thenReturn(processor2);
-        when(link2.getErrors()).thenReturn(Flux.never());
-        when(link2.getConnectionStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
-        when(link2.getShutdownSignals()).thenReturn(Flux.never());
-        when(link2.getCredits()).thenReturn(numberOfEvents);
-
-        when(link3.receive()).thenReturn(processor3);
-        when(link3.getErrors()).thenReturn(Flux.never());
-        when(link3.getConnectionStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
-        when(link3.getShutdownSignals()).thenReturn(Flux.never());
-        when(link3.getCredits()).thenReturn(numberOfEvents);
-
-        when(connection1.createSession(any())).thenAnswer(invocation -> {
-            String name = invocation.getArgument(0);
-
-            if (name.endsWith(PARTITION_ID)) {
-                return Mono.just(session);
-            } else if (name.endsWith(id2)) {
-                return Mono.just(session2);
-            } else if (name.endsWith(id3)) {
-                return Mono.just(session3);
-            } else {
-                return Mono.error(new IllegalArgumentException("Unknown session: " + name));
-            }
-        });
-        when(session2.createConsumer(any(), argThat(name -> name.endsWith(id2)), any(), any(), any(), any()))
-            .thenReturn(Mono.just(link2));
-
-        when(session3.createConsumer(any(), argThat(name -> name.endsWith(id3)), any(), any(), any(), any()))
-            .thenReturn(Mono.just(link3));
-
-        // Act & Assert
-        StepVerifier.create(asyncClient.receive(EventPosition.earliest())
-            .filter(e -> isMatchingEvent(e, messageTrackingUUID)))
-            .then(() -> sendMessages(processor2sink, 2, id2))
-            .assertNext(event -> assertPartition(id2, event))
-            .assertNext(event -> assertPartition(id2, event))
-            .then(() -> sendMessages(processor3sink, 1, id3))
-            .assertNext(event -> assertPartition(id3, event))
-            .then(() -> sendMessages(processor2sink, 1, id2))
-            .assertNext(event -> assertPartition(id2, event))
-            .thenCancel()
-            .verify(TIMEOUT);
     }
 
     private static Integer getPositionId(PartitionEvent partitionEvent) {

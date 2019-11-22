@@ -3,9 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
@@ -19,11 +19,11 @@ import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+import reactor.core.scheduler.Scheduler;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import reactor.core.scheduler.Scheduler;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
@@ -164,7 +164,7 @@ public class EventProcessorClientBuilder {
 
     /**
      * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
-     * TransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
+     * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
      * @param proxyOptions The proxy options to use.
      * @return The updated {@link EventProcessorClientBuilder} object.
@@ -188,12 +188,12 @@ public class EventProcessorClientBuilder {
 
     /**
      * Sets the transport type by which all the communication with Azure Event Hubs occurs. Default value is {@link
-     * TransportType#AMQP}.
+     * AmqpTransportType#AMQP}.
      *
      * @param transport The transport type to use.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
-    public EventProcessorClientBuilder transportType(TransportType transport) {
+    public EventProcessorClientBuilder transportType(AmqpTransportType transport) {
         eventHubClientBuilder.transportType(transport);
         return this;
     }
@@ -204,7 +204,7 @@ public class EventProcessorClientBuilder {
      * @param retryOptions The retry policy to use.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
-    public EventProcessorClientBuilder retry(RetryOptions retryOptions) {
+    public EventProcessorClientBuilder retry(AmqpRetryOptions retryOptions) {
         eventHubClientBuilder.retry(retryOptions);
         return this;
     }
@@ -324,7 +324,7 @@ public class EventProcessorClientBuilder {
      * {@code null}.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
-     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     * but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventProcessorClient buildEventProcessorClient() {
         Objects.requireNonNull(processEvent, "'processEvent' cannot be null");

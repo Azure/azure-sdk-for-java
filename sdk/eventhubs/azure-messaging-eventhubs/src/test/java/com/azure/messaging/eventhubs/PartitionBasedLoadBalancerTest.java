@@ -22,6 +22,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
@@ -344,7 +345,7 @@ public class PartitionBasedLoadBalancerTest {
         sleep(5);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
         verify(eventHubAsyncClient, never()).createConsumer(anyString(), anyInt());
-        verify(eventHubConsumer, never()).receive(any());
+        verify(eventHubConsumer, never()).receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class));
         verify(partitionProcessor, never()).processEvent(any(EventContext.class));
         verify(partitionProcessor, never()).processError(any(ErrorContext.class));
         verify(eventHubConsumer, never()).close();
@@ -368,7 +369,7 @@ public class PartitionBasedLoadBalancerTest {
         sleep(2);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
         verify(eventHubAsyncClient, never()).createConsumer(anyString(), anyInt());
-        verify(eventHubConsumer, never()).receive(any(), any());
+        verify(eventHubConsumer, never()).receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class));
         verify(partitionProcessor, never()).processEvent(any(EventContext.class));
         verify(partitionProcessor, never()).processError(any(ErrorContext.class));
         verify(eventHubConsumer, never()).close();

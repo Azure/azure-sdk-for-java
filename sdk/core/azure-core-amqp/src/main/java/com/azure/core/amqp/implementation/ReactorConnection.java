@@ -6,9 +6,9 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpExceptionHandler;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
@@ -45,13 +45,13 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
     private final ConnectionOptions connectionOptions;
     private final ReactorProvider reactorProvider;
     private final Disposable.Composite subscriptions;
-    private final RetryPolicy retryPolicy;
+    private final AmqpRetryPolicy retryPolicy;
 
     private ReactorExecutor executor;
     //TODO (conniey): handle failures and recreating the Reactor. Resubscribing the handlers, etc.
     private ReactorExceptionHandler reactorExceptionHandler;
 
-    private volatile CBSChannel cbsChannel;
+    private volatile ClaimsBasedSecurityChannel cbsChannel;
     private volatile Connection connection;
 
     /**
@@ -98,8 +98,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * {@inheritDoc}
      */
     @Override
-    public Mono<CBSNode> getCBSNode() {
-        final Mono<CBSNode> cbsNodeMono = RetryUtil.withRetry(
+    public Mono<ClaimsBasedSecurityNode> getClaimsBasedSecurityNode() {
+        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = RetryUtil.withRetry(
             getConnectionStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE),
             connectionOptions.getRetry().getTryTimeout(), retryPolicy)
             .then(Mono.fromCallable(this::getOrCreateCBSNode));
@@ -118,7 +118,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * {@inheritDoc}
      */
     @Override
-    public String getHostname() {
+    public String getFullyQualifiedNamespace() {
         return handler.getHostname();
     }
 
@@ -149,8 +149,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
         }
 
         return connectionMono.map(connection -> sessionMap.computeIfAbsent(sessionName, key -> {
-            final SessionHandler handler = handlerProvider.createSessionHandler(connectionId, getHostname(),
-                sessionName, connectionOptions.getRetry().getTryTimeout());
+            final SessionHandler handler = handlerProvider.createSessionHandler(connectionId,
+                getFullyQualifiedNamespace(), sessionName, connectionOptions.getRetry().getTryTimeout());
             final Session session = connection.session();
 
             BaseHandler.setHandler(session, handler);
@@ -168,8 +168,9 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * @return A new instance of AMQP session.
      */
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
-            tokenManagerProvider, messageSerializer, connectionOptions.getRetry().getTryTimeout());
+        return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
+            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
+            connectionOptions.getRetry().getTryTimeout());
     }
 
     /**
@@ -218,19 +219,19 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * @return A new {@link RequestResponseChannel} to communicate with the message broker.
      */
     protected Mono<RequestResponseChannel> createRequestResponseChannel(String sessionName, String linkName,
-                                                                        String entityPath) {
+            String entityPath) {
         return createSession(sessionName)
             .cast(ReactorSession.class)
-            .map(reactorSession -> new RequestResponseChannel(getId(), getHostname(), linkName, entityPath,
-                reactorSession.session(), connectionOptions.getRetry(), handlerProvider,
-                reactorProvider, messageSerializer));
+            .map(reactorSession -> new RequestResponseChannel(getId(), getFullyQualifiedNamespace(), linkName,
+                entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
+                messageSerializer));
     }
 
-    private synchronized CBSNode getOrCreateCBSNode() {
+    private synchronized ClaimsBasedSecurityNode getOrCreateCBSNode() {
         if (cbsChannel == null) {
             logger.info("Setting CBS channel.");
 
-            cbsChannel = new CBSChannel(
+            cbsChannel = new ClaimsBasedSecurityChannel(
                 createRequestResponseChannel(CBS_SESSION_NAME, CBS_LINK_NAME, CBS_ADDRESS),
                 connectionOptions.getTokenCredential(), connectionOptions.getAuthorizationType(),
                 connectionOptions.getRetry());

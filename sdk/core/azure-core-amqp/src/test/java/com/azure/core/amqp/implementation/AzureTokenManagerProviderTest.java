@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.credential.AccessToken;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +30,7 @@ public class AzureTokenManagerProviderTest {
     private static final String HOST_NAME = "foobar.windows.net";
 
     @Mock
-    private CBSNode cbsNode;
+    private ClaimsBasedSecurityNode cbsNode;
 
     @BeforeEach
     public void setup() {
