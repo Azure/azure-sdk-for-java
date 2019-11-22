@@ -102,9 +102,9 @@ public class ReactorSessionTest {
             .then(() -> handler.onSessionRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> handler.close())
-            // Expect two close notifications. One for getErrors() subscription and getEndpointStates();
-            .expectNext(AmqpEndpointState.CLOSED, AmqpEndpointState.CLOSED)
+            .expectNext(AmqpEndpointState.CLOSED)
             .then(() -> reactorSession.close())
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
     }
 }
