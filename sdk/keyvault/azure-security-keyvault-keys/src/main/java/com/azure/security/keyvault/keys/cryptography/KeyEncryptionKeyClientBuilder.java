@@ -109,7 +109,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
                 "Key Vault credentials are required to build the key encryption key async client"));
         }
 
-        HttpPipeline pipeline = builder.setupPipeline(serviceVersion);
+        HttpPipeline pipeline = builder.setupPipeline();
 
         return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion)));
     }
