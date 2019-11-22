@@ -185,12 +185,17 @@ public final class ConfigurationClientBuilder {
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
 
-        // add connection string credential if the AAD is not exist
-        if (tokenCredential == null) {
-            policies.add(new ConfigurationCredentialsPolicy(credential));
-        } else {
+        if (tokenCredential != null) {
+            // User token based policy
             policies.add(
                 new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", buildEndpoint)));
+        } else if (credential != null) {
+            // Use credential based policy
+            policies.add(new ConfigurationCredentialsPolicy(credential));
+        } else {
+            // Throw exception that credential and tokenCredential cannot be null
+           logger.logExceptionAsError(
+               new IllegalArgumentException("Missing credential information while building a client."));
         }
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
