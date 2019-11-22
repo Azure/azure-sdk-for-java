@@ -19,26 +19,34 @@ import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
-import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Represents an AMQP session using proton-j reactor.
  */
-public class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
+public class ReactorSession implements AmqpSession {
     private final ConcurrentMap<String, AmqpSendLink> openSendLinks = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, AmqpReceiveLink> openReceiveLinks = new ConcurrentHashMap<>();
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private final ClientLogger logger = new ClientLogger(ReactorSession.class);
+    private final ReplayProcessor<AmqpEndpointState> connectionStates =
+        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
+    private FluxSink<AmqpEndpointState> connectionStateSink = connectionStates.sink(FluxSink.OverflowStrategy.BUFFER);
 
     private final Session session;
     private final SessionHandler sessionHandler;
@@ -68,7 +76,6 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
                    ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
                    TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
                    Duration openTimeout) {
-        super(new ClientLogger(ReactorSession.class));
         this.session = session;
         this.sessionHandler = sessionHandler;
         this.handlerProvider = handlerProvider;
@@ -81,13 +88,21 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
 
         this.subscriptions = Disposables.composite(
             this.sessionHandler.getEndpointStates().subscribe(
-                this::notifyEndpointState,
-                this::notifyError,
-                () -> notifyEndpointState(EndpointState.CLOSED)),
-            this.sessionHandler.getErrors().subscribe(
-                this::notifyError,
-                this::notifyError,
-                () -> notifyEndpointState(EndpointState.CLOSED)));
+                state -> {
+                    logger.verbose("Connection state: {}", state);
+                    connectionStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
+                }, error -> {
+                    logger.error("Error occurred in connection.", error);
+                    connectionStateSink.error(error);
+                }, () -> {
+                    connectionStateSink.next(AmqpEndpointState.CLOSED);
+                    connectionStateSink.complete();
+                }),
+
+            this.sessionHandler.getErrors().subscribe(error -> {
+                logger.error("Error occurred in connection.", error);
+                connectionStateSink.error(error);
+            }));
 
         session.open();
     }
@@ -96,30 +111,26 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
         return this.session;
     }
 
+    @Override
+    public Flux<AmqpEndpointState> getEndpointStates() {
+        return connectionStates;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void close() {
-        openReceiveLinks.forEach((key, link) -> {
-            try {
-                link.close();
-            } catch (IOException e) {
-                logger.error("Error closing send link: " + key, e);
-            }
-        });
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+
+        openReceiveLinks.forEach((key, link) -> link.close());
         openReceiveLinks.clear();
 
-        openSendLinks.forEach((key, link) -> {
-            try {
-                link.close();
-            } catch (IOException e) {
-                logger.error("Error closing receive link: " + key, e);
-            }
-        });
+        openSendLinks.forEach((key, link) -> link.close());
         openSendLinks.clear();
         subscriptions.dispose();
-        super.close();
     }
 
     /**
@@ -146,7 +157,7 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
         final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
 
         return RetryUtil.withRetry(
-            getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
+            getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
             timeout, retry)
             .then(tokenManager.authorize().then(Mono.create(sink -> {
                 final AmqpSendLink existingSender = openSendLinks.get(linkName);
@@ -224,7 +235,7 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
         final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
 
         return RetryUtil.withRetry(
-            getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), timeout, retry)
+            getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), timeout, retry)
             .then(tokenManager.authorize().then(Mono.create(sink -> {
                 final AmqpReceiveLink existingReceiver = openReceiveLinks.get(linkName);
                 if (existingReceiver != null) {

@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
@@ -21,7 +20,6 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -124,15 +122,9 @@ class EventHubConnection implements Closeable {
     @Override
     public void close() {
         if (hasConnection.getAndSet(false)) {
-            try {
-                final AmqpConnection connection = currentConnection.block(connectionOptions.getRetry().getTryTimeout());
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (IOException exception) {
-                throw logger.logExceptionAsError(
-                    new AmqpException(false, "Unable to close connection to service", exception,
-                        new AmqpErrorContext(connectionOptions.getFullyQualifiedNamespace())));
+            final AmqpConnection connection = currentConnection.block(connectionOptions.getRetry().getTryTimeout());
+            if (connection != null) {
+                connection.close();
             }
         }
     }
