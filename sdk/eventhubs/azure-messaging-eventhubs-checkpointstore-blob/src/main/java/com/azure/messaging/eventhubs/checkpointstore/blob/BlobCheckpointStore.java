@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import java.util.Objects;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -78,11 +79,8 @@ public class BlobCheckpointStore implements CheckpointStore {
         BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);
         return blobContainerAsyncClient.listBlobs(options)
-            // Blob names should be of the pattern
-            // fullyqualifiednamespace/eventhub/consumergroup/ownership/<partitionId>
-            // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
-            .filter(blobItem -> blobItem.getName().split(BLOB_PATH_SEPARATOR).length == 5)
-            .map(this::convertToPartitionOwnership);
+            .flatMap(this::convertToPartitionOwnership)
+            .filter(Objects::nonNull);
     }
 
     @Override
@@ -93,43 +91,35 @@ public class BlobCheckpointStore implements CheckpointStore {
         BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);
         return blobContainerAsyncClient.listBlobs(options)
+            .flatMap(this::convertToCheckpoint)
+            .filter(Objects::nonNull);
+    }
+
+    private Mono<Checkpoint> convertToCheckpoint(BlobItem blobItem) {
+        String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
+        if (names.length == 5) {
             // Blob names should be of the pattern
             // fullyqualifiednamespace/eventhub/consumergroup/checkpoints/<partitionId>
             // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
-            .filter(blobItem -> blobItem.getName().split(BLOB_PATH_SEPARATOR).length == 5)
-            .map(this::convertToCheckpoint);
-    }
+            Checkpoint checkpoint = new Checkpoint();
+            logger.info("Found blob for partition {}", blobItem.getName());
+            checkpoint.setFullyQualifiedNamespace(names[0]);
+            checkpoint.setEventHubName(names[1]);
+            checkpoint.setConsumerGroup(names[2]);
+            // names[3] is "checkpoint"
+            checkpoint.setPartitionId(names[4]);
 
-    private Checkpoint convertToCheckpoint(BlobItem blobItem) {
-        Checkpoint checkpoint = new Checkpoint();
-
-        logger.info("Found blob for partition {}", blobItem.getName());
-        String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
-        checkpoint.setFullyQualifiedNamespace(names[0]);
-        checkpoint.setEventHubName(names[1]);
-        checkpoint.setConsumerGroup(names[2]);
-        // names[3] is "checkpoint"
-        checkpoint.setPartitionId(names[4]);
-
-        if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
-            logger.warning("No metadata available for blob {}", blobItem.getName());
-            return checkpoint;
-        }
-
-        blobItem.getMetadata().forEach((key, value) -> {
-            switch (key) {
-                case SEQUENCE_NUMBER:
-                    checkpoint.setSequenceNumber(Long.parseLong(value));
-                    break;
-                case OFFSET:
-                    checkpoint.setOffset(Long.parseLong(value));
-                    break;
-                default:
-                    // do nothing, other metadata that we don't use
-                    break;
+            if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
+                logger.warning("No metadata available for blob {}", blobItem.getName());
+                return Mono.empty();
             }
-        });
-        return checkpoint;
+
+            Map<String, String> metadata = blobItem.getMetadata();
+            checkpoint.setSequenceNumber(Long.parseLong(metadata.get(SEQUENCE_NUMBER)));
+            checkpoint.setOffset(Long.parseLong(metadata.get(OFFSET)));
+            return Mono.just(checkpoint);
+        }
+        return Mono.empty();
     }
 
     /**
@@ -228,36 +218,31 @@ public class BlobCheckpointStore implements CheckpointStore {
             + typeSuffix + partitionId;
     }
 
-    private PartitionOwnership convertToPartitionOwnership(BlobItem blobItem) {
-        PartitionOwnership partitionOwnership = new PartitionOwnership();
-        logger.info("Found blob for partition {}", blobItem.getName());
-
+    private Mono<PartitionOwnership> convertToPartitionOwnership(BlobItem blobItem) {
         String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
-        partitionOwnership.setFullyQualifiedNamespace(names[0]);
-        partitionOwnership.setEventHubName(names[1]);
-        partitionOwnership.setConsumerGroup(names[2]);
-        // names[3] is "ownership"
-        partitionOwnership.setPartitionId(names[4]);
+        if (names.length == 5) {
+            // Blob names should be of the pattern
+            // fullyqualifiednamespace/eventhub/consumergroup/ownership/<partitionId>
+            // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
+            PartitionOwnership partitionOwnership = new PartitionOwnership();
+            logger.info("Found blob for partition {}", blobItem.getName());
 
-        if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
-            logger.warning("No metadata available for blob {}", blobItem.getName());
-            return partitionOwnership;
-        }
-
-        blobItem.getMetadata().forEach((key, value) -> {
-            switch (key) {
-                case OWNER_ID:
-                    partitionOwnership.setOwnerId(value);
-                    break;
-                default:
-                    // do nothing, other metadata that we don't use
-                    break;
+            partitionOwnership.setFullyQualifiedNamespace(names[0]);
+            partitionOwnership.setEventHubName(names[1]);
+            partitionOwnership.setConsumerGroup(names[2]);
+            // names[3] is "ownership"
+            partitionOwnership.setPartitionId(names[4]);
+            if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
+                logger.warning("No metadata available for blob {}", blobItem.getName());
+                return Mono.empty();
             }
-        });
-        BlobItemProperties blobProperties = blobItem.getProperties();
-        partitionOwnership.setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli());
-        partitionOwnership.setETag(blobProperties.getETag());
-        return partitionOwnership;
+            partitionOwnership.setOwnerId(blobItem.getMetadata().get(OWNER_ID));
+            BlobItemProperties blobProperties = blobItem.getProperties();
+            partitionOwnership.setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli());
+            partitionOwnership.setETag(blobProperties.getETag());
+            return Mono.just(partitionOwnership);
+        }
+        return Mono.empty();
     }
 
 }
