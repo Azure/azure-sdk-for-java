@@ -10,12 +10,17 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
     <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-sdk</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.2.0</version>
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-security-keyvault-secrets</artifactId>
-        <version>4.0.0</version>
+        <version>4.1.0-beta.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.1.0-beta.1</version>
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
@@ -25,7 +30,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
     <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-exporters-logging</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.2.0</version>
     </dependency>
 </dependencies>
 ```
@@ -57,7 +62,9 @@ public class Sample {
     private static final TracerSdkFactory TRACER_SDK_FACTORY;
 
     static {
-        TRACER_SDK_FACTORY = Helper.configureOpenTelemetryAndJaegerExporter(LOGGER);
+        BatchSpansProcessor spanProcessor = BatchSpansProcessor.newBuilder(new LoggingExporter()).build();
+        TRACER_SDK_FACTORY = OpenTelemetrySdk.getTracerFactory();
+        TRACER_SDK_FACTORY.addSpanProcessor(spanProcessor);
         TRACER = TRACER_SDK_FACTORY.get("Sample");
     }
 
@@ -81,7 +88,7 @@ public class Sample {
         client.setSecret(new KeyVaultSecret("Secret1", "password1"))
             .subscriberContext(traceContext)
             .subscribe(secretResponse ->
-                    LOGGER.info("Secret with name: " + secret.getName()),
+                    LOGGER.info("Secret with name: " + secretResponse.getName()),
                 err -> {
                     LOGGER.info("Error occurred: " + err.getMessage());
                 });
