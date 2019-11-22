@@ -194,8 +194,8 @@ public final class ConfigurationClientBuilder {
             policies.add(new ConfigurationCredentialsPolicy(credential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
-           logger.logExceptionAsError(
-               new IllegalArgumentException("Missing credential information while building a client."));
+            logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
         }
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
