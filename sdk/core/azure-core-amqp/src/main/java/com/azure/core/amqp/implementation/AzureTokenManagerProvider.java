@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -43,7 +43,7 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
      * {@inheritDoc}
      */
     @Override
-    public TokenManager getTokenManager(Mono<CBSNode> cbsNodeMono, String resource) {
+    public TokenManager getTokenManager(Mono<ClaimsBasedSecurityNode> cbsNodeMono, String resource) {
         final String scopes = getResourceString(resource);
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
         return new ActiveClientTokenManager(cbsNodeMono, tokenAudience, scopes);

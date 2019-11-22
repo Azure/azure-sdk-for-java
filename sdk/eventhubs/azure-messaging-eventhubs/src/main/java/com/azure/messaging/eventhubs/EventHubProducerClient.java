@@ -118,8 +118,8 @@ public class EventHubProducerClient implements Closeable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventHubProperties getProperties() {
-        return producer.getProperties().block(tryTimeout);
+    public EventHubProperties getEventHubProperties() {
+        return producer.getEventHubProperties().block(tryTimeout);
     }
 
     /**
