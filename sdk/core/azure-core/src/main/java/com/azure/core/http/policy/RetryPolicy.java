@@ -29,8 +29,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final ChronoUnit retryAfterTimeUnit;
 
     /**
-     * Creates {@link RetryPolicy} with default {@link ExponentialBackoff} as {@link RetryStrategy} and use
-     * 'retry-after-ms' in {@link HttpResponse} header for calculating retry delay.
+     * Creates {@link RetryPolicy} with default {@link ExponentialBackoff} as {@link RetryStrategy} and ignore the
+     * delay provided in response header.
      */
     public RetryPolicy() {
         this(new ExponentialBackoff(), null, null);
@@ -63,11 +63,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * and ignore the delay provided in response header.
      * @param  retryAfterTimeUnit The time unit to use when applying the retry delay. {@code null} is valid if, and only
      * if, {@code retryAfterHeader} is {@code null}.
+     *
      * @throws NullPointerException When {@code retryStrategy} is {@code null}. Also when {@code retryAfterTimeUnit}
      * is {@code null} and {@code retryAfterHeader} is not {@code null}.
      */
     public RetryPolicy(RetryStrategy retryStrategy, String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
-        this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null");
+        this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null.");
         this.retryAfterHeader = retryAfterHeader;
         this.retryAfterTimeUnit = retryAfterTimeUnit;
         if (!isNullOrEmpty(retryAfterHeader)) {
@@ -76,10 +77,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates a {@link RetryPolicy} with the provided {@link RetryStrategy} and use 'retry-after-ms' in
-     * {@link HttpResponse} header for calculating retry delay.
+     * Creates a {@link RetryPolicy} with the provided {@link RetryStrategy} and ignore the delay provided in
+     * response header.
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
+     *
      * @throws NullPointerException When {@code retryStrategy} is {@code null}.
      */
     public RetryPolicy(RetryStrategy retryStrategy) {
