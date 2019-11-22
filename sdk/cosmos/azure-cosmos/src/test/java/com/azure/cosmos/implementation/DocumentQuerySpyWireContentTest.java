@@ -101,7 +101,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
             .collectList().block();
 
         assertThat(results.size()).describedAs("total results").isGreaterThanOrEqualTo(1);
-        
+
         List<HttpRequest> requests = client.getCapturedRequests();
 
         for(HttpRequest req: requests) {
@@ -133,7 +133,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_DocumentQuerySpyWireContentTest() throws Exception {
 
         client = new SpyClientBuilder(this.clientBuilder()).build();
 
@@ -159,7 +159,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
-        
+
         // do the query once to ensure the collection is cached.
         client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", options)
             .then().block();

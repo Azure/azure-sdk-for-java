@@ -60,7 +60,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         boolean isStringPath = false;
         boolean isBooleanPath = false;
         boolean isNullPath = false;
-        
+
         public CustomComparator(String path, CompositePathSortOrder order) {
             this.path = path;
             this.order = order;
@@ -101,7 +101,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                     return 0;
             } else if (isNullPath) {
                 // all nulls are equal
-                return 0; 
+                return 0;
             } else {
                 throw new IllegalStateException("data type not handled by comparator!");
             }
@@ -119,7 +119,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_MultiOrderByQueryTests() throws Exception {
         client = clientBuilder().buildAsyncClient();
         documentCollection = getSharedMultiPartitionCosmosContainerWithCompositeAndSpatialIndexes(client);
         truncateCollection(documentCollection);
@@ -236,15 +236,15 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                             orderByItemStringBuilder.append(",");
                         }
                         orderByItemStringBuilder.deleteCharAt(orderByItemStringBuilder.length() - 1);
-                        
+
                         String topString = hasTop ? "TOP " + topCount : "";
                         String whereString = hasFilter ? "WHERE root." + NUMBER_FIELD  + " % 2 = 0" : "";
-                        String query = "SELECT " + topString + " [" + selectItemStringBuilder.toString() + "] " + 
+                        String query = "SELECT " + topString + " [" + selectItemStringBuilder.toString() + "] " +
                                 "FROM root " + whereString + " " +
                                 "ORDER BY " + orderByItemStringBuilder.toString();
-                        
+
                         List<CosmosItemProperties> expectedOrderedList = top(sort(filter(this.documents, hasFilter), compositeIndex, invert), hasTop, topCount) ;
-                        
+
                         Flux<FeedResponse<CosmosItemProperties>> queryObservable = documentCollection.queryItems(query, feedOptions);
 
                         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator
@@ -257,7 +257,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                 }
             }
         }
-        
+
         // CREATE document with numberField not set.
         // This query would then be invalid.
         CosmosItemProperties documentWithEmptyField = generateMultiOrderByDocument();

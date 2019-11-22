@@ -28,8 +28,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//FIXME beforeClass times out inconsistently
-@Ignore
 public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
     private Database createdDatabase;

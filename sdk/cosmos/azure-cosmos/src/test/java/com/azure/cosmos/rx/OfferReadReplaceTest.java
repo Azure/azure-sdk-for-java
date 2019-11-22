@@ -48,7 +48,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
 
                 Offer rOffer = client.readOffer(offers.get(i).getSelfLink()).single().block().getResource();
                 int oldThroughput = rOffer.getThroughput();
-                
+
                 Flux<ResourceResponse<Offer>> readObservable = client.readOffer(offers.get(i).getSelfLink());
 
                 // validate offer read
@@ -69,9 +69,9 @@ public class OfferReadReplaceTest extends TestSuiteBase {
                         .withOfferThroughput(newThroughput)
                         .notNullEtag()
                         .build();
-                
+
                 validateSuccess(replaceObservable, validatorForReplace);
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -80,7 +80,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_OfferReadReplaceTest() {
         client = clientBuilder().build();
         createdDatabase = createDatabase(client, databaseId);
         createdCollection = createCollection(client, createdDatabase.getId(),

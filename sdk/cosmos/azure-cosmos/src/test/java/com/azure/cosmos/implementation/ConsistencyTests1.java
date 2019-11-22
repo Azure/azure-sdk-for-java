@@ -21,8 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConsistencyTests1 extends ConsistencyTestsBase {
 
-    //FIXME test is flaky
-    @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateStrongConsistencyOnSyncReplication() throws Exception {
         if (!TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.STRONG.toString())) {
@@ -133,22 +131,19 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         validateConsistentLSNAndQuorumAckedLSN();
     }
 
-    //FIXME test is flaky
-    @Ignore
+    // TODO (DANOBLE) test is flaky
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateStrongConsistencyOnAsyncReplicationGW() throws InterruptedException {
         validateStrongConsistencyOnAsyncReplication(true);
     }
 
-    //FIXME test is flaky
-    @Ignore
+    // TODO (DANOBLE) test is flaky
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateStrongConsistencyOnAsyncReplicationDirect() throws InterruptedException {
         validateStrongConsistencyOnAsyncReplication(false);
     }
 
-    //FIXME: test is flaky, fails inconsistently
-    @Ignore
+    // TODO (DANOBLE) test is flaky, fails inconsistently
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateSessionContainerAfterCollectionCreateReplace() {
         //TODO Need to test with TCP protocol
@@ -158,8 +153,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         validateSessionContainerAfterCollectionCreateReplace(true);
     }
 
-    // FIXME test is flaky
-    @Ignore
+    // TODO (DANOBLE) test is flaky
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateConsistentPrefixOnSyncReplication() throws InterruptedException {
         if (!(TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.STRONG.toString()) || TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.BOUNDED_STALENESS.toString()))) {
@@ -182,7 +176,10 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         assertThat(readLagging).isFalse();
     }
 
-    //FIXME test is flaky
+    // TODO (DANOBLE) ConsistencyTests1::validateConsistentPrefixOnAsyncReplication test fails
+    //  This test requires BoundedStaleness and fails due to timeouts when run in Direct TCP mode.
+    //  This test should be enabled when we are ready to address our BoundedStaleness consistency issues.
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6378
     @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateConsistentPrefixOnAsyncReplication() throws InterruptedException {
@@ -211,14 +208,14 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT, enabled = false)
     public void validateConsistentPrefixWithReplicaRestartWithPause() {
-        //TODO this need to complete once we implement emulator container in java, and the we can do operation 
+        //TODO this need to complete once we implement emulator container in java, and the we can do operation
         // like pause, resume, stop, recycle on it needed for this test.
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355053
     }
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT, enabled = false)
     public void validateConsistentPrefixWithReplicaRestart() {
-        //TODO this need to complete once we implement emulator container in java, and the we can do operation 
+        //TODO this need to complete once we implement emulator container in java, and the we can do operation
         // like pause, resume, stop, recycle on it needed for this test.
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355053
     }
@@ -231,7 +228,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT, enabled = false)
     public void validateBarrierStrongConsistencyForMasterResources() {
-        //TODO this need to complete once we implement emulator container in java, and the we can do operation 
+        //TODO this need to complete once we implement emulator container in java, and the we can do operation
         // like pause, resume, stop, recycle on it needed for this test.
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355053
     }

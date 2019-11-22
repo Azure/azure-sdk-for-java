@@ -177,7 +177,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_MultiMasterConflictResolutionTest() {
         // set up the client
 
         client = clientBuilder().buildAsyncClient();
