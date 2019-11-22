@@ -79,11 +79,18 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
                 });
 
                 link.getEndpointStates().subscribe(
-                    unused -> { },
+                    state -> {
+                        logger.verbose("Endpoint state: {}", state);
+                    },
                     error -> {
                         logger.info("Error received in AmqpReceiveLink. {}", error.toString());
 
                         //TODO (conniey): Propagate error to emitter and re-resubscribe for a link if it is transient.
+                        close();
+                    },
+                    () -> {
+                        logger.info("Amqp receive link shutting down.");
+                        close();
                     });
             }
 
@@ -121,7 +128,6 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
 
     /**
      * Disposes of the consumer by closing the underlying connection to the service.
-     *
      */
     @Override
     public void close() {
