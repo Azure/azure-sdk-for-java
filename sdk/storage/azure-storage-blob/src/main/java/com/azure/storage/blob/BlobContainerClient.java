@@ -555,11 +555,29 @@ public final class BlobContainerClient {
         return blockWithOptionalTimeout(response, timeout);
     }
 
+    /**
+     * Generates a user delegation sas for the container using the specified
+     * {@link BlobServiceSasSignatureValues}.
+     * @see BlobServiceSasSignatureValues for more information on how to construct a user delegation SAS.
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey {@link UserDelegationKey}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
         return this.client.generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
     }
 
+    /**
+     * Generates a service sas for the container using the specified {@link BlobServiceSasSignatureValues}
+     * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
         return this.client.generateSas(blobServiceSasSignatureValues);
     }

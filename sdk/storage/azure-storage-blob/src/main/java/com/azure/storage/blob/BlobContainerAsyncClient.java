@@ -82,6 +82,14 @@ public final class BlobContainerAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobContainerAsyncClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
 
+    /**
+     * Generates a service sas for the blob using the specified {@link BlobServiceSasSignatureValues}
+     * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
     private final String accountName;
     private final String containerName;
     private final BlobServiceVersion serviceVersion;
@@ -904,12 +912,30 @@ public final class BlobContainerAsyncClient {
             });
     }
 
+    /**
+     * Generates a user delegation sas for the container using the specified
+     * {@link BlobServiceSasSignatureValues}.
+     * @see BlobServiceSasSignatureValues for more information on how to construct a user delegation SAS.
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey {@link UserDelegationKey}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
             .generateUserDelegationSas(userDelegationKey, getAccountName());
     }
 
+    /**
+     * Generates a service sas for the container using the specified {@link BlobServiceSasSignatureValues}
+     * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));

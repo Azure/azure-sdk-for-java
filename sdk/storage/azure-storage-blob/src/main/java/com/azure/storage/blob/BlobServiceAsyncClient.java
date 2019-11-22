@@ -555,7 +555,19 @@ public final class BlobServiceAsyncClient {
         return this.accountName;
     }
 
-    public String generateSas(AccountSasSignatureValues accountSasSignatureValues) {
+    /**
+     * Generates an account sas for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * @see AccountSasSignatureValues for more information on how to construct an account SAS.
+     *
+     * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
+     * containers and file shares.</p>
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
         return new AccountSasImplUtil(accountSasSignatureValues)
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
     }

@@ -259,8 +259,8 @@ class SasClientTests extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sasValues = new AccountSasSignatureValues(expiryTime, service, resourceType, permissions)
-        def sas = primaryBlobServiceClient.generateSas(sasValues)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         def os = new ByteArrayOutputStream()
         client.download(os)
@@ -282,8 +282,8 @@ class SasClientTests extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sasValues = new AccountSasSignatureValues(expiryTime, service, resourceType, permissions)
-        def sas = primaryBlobServiceClient.generateSas(sasValues)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         client.delete()
 
@@ -305,8 +305,8 @@ class SasClientTests extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sasValues = new AccountSasSignatureValues(expiryTime, service, resourceType, permissions)
-        def sas = primaryBlobServiceClient.generateSas(sasValues)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
         def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
         sc.createBlobContainer(generateContainerName())
 
@@ -328,8 +328,8 @@ class SasClientTests extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sasValues = new AccountSasSignatureValues(expiryTime, service, resourceType, permissions)
-        def sas = primaryBlobServiceClient.generateSas(sasValues)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
         def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
         sc.createBlobContainer(generateContainerName())
 
