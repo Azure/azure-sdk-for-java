@@ -34,7 +34,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-import static com.azure.core.amqp.implementation.CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
+import static com.azure.core.amqp.implementation.CbsAuthorizationType.SHARED_ACCESS_SIGNATURE;
 
 public class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";

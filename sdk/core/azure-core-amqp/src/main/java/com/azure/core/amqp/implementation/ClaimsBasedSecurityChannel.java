@@ -27,11 +27,11 @@ public class ClaimsBasedSecurityChannel extends EndpointStateNotifierBase implem
 
     private final TokenCredential credential;
     private final Mono<RequestResponseChannel> cbsChannelMono;
-    private final CBSAuthorizationType authorizationType;
+    private final CbsAuthorizationType authorizationType;
     private final AmqpRetryOptions retryOptions;
 
     public ClaimsBasedSecurityChannel(Mono<RequestResponseChannel> responseChannelMono, TokenCredential tokenCredential,
-               CBSAuthorizationType authorizationType, AmqpRetryOptions retryOptions) {
+               CbsAuthorizationType authorizationType, AmqpRetryOptions retryOptions) {
         super(new ClientLogger(ClaimsBasedSecurityChannel.class));
 
         this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' cannot be null.");

@@ -95,7 +95,7 @@ public class ReactorConnectionTest {
 
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
-            CREDENTIAL_INFO.getEntityPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
+            CREDENTIAL_INFO.getEntityPath(), tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
             AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
             tokenManager, messageSerializer);
@@ -292,7 +292,7 @@ public class ReactorConnectionTest {
             .setMode(AmqpRetryMode.FIXED)
             .setTryTimeout(timeout);
         ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
-            CREDENTIAL_INFO.getEntityPath(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
+            CREDENTIAL_INFO.getEntityPath(), tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
             AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
 
         // Act and Assert

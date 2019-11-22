@@ -67,7 +67,7 @@ public class ReactorSessionTest {
 
         MockReactorHandlerProvider handlerProvider = new MockReactorHandlerProvider(reactorProvider, null, handler, null, null);
         AzureTokenManagerProvider azureTokenManagerProvider = new AzureTokenManagerProvider(
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
             Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT);
     }
