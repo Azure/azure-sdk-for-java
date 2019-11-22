@@ -22,8 +22,8 @@ public class EventProcessorBuilderJavaDocCodeSamples {
             .consumerGroup("consumer-group")
             .checkpointStore(new InMemoryCheckpointStore())
             .processEvent(eventContext -> {
-                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId()
+                    + "and sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
                 System.out.printf("Error occurred in partition processor for partition {}, {}",
