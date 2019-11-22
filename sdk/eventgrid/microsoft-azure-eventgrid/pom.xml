@@ -52,7 +52,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version> <!-- {x-version-update;eventgrid_junit:junit;external_dependency} -->
+            <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -90,7 +90,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version> <!-- {x-version-update;eventgrid_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+                <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>

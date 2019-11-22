@@ -77,33 +77,33 @@
     <dependency>
       <groupId>javax.xml.bind</groupId>
       <artifactId>jaxb-api</artifactId>
-      <version>2.2.7</version> <!-- {x-version-update;javax.xml.bind:jaxb-api;external_dependency} -->
+      <version>2.2.7</version> <!-- {x-version-update;media_javax.xml.bind:jaxb-api;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
-      <version>1.4.5</version> <!-- {x-version-update;javax.mail:mail;external_dependency} -->
+      <version>1.4.5</version> <!-- {x-version-update;media_javax.mail:mail;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
-      <version>1</version> <!-- {x-version-update;javax.inject:javax.inject;external_dependency} -->
+      <version>1</version> <!-- {x-version-update;media_javax.inject:javax.inject;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-client</artifactId>
-      <version>1.19</version> <!-- {x-version-update;com.sun.jersey:jersey-client;external_dependency} -->
+      <version>1.19</version> <!-- {x-version-update;media_com.sun.jersey:jersey-client;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-json</artifactId>
-      <version>1.19</version> <!-- {x-version-update;com.sun.jersey:jersey-json;external_dependency} -->
+      <version>1.19</version> <!-- {x-version-update;media_com.sun.jersey:jersey-json;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
-      <version>1.1.1</version> <!-- {x-version-update;commons-logging:commons-logging;external_dependency} -->
+      <version>1.1.1</version> <!-- {x-version-update;media_commons-logging:commons-logging;external_dependency} -->
     </dependency>
     <dependency>
   	  <groupId>com.fasterxml.jackson.core</groupId>
@@ -123,7 +123,7 @@
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt</artifactId>
-      <version>0.5.1</version> <!-- {x-version-update;io.jsonwebtoken:jjwt;external_dependency} -->
+      <version>0.5.1</version> <!-- {x-version-update;media_io.jsonwebtoken:jjwt;external_dependency} -->
     </dependency>
     <!-- Test dependencies -->
     <dependency>
@@ -135,13 +135,13 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
-      <version>1.9.0</version> <!-- {x-version-update;org.mockito:mockito-all;external_dependency} -->
+      <version>1.9.0</version> <!-- {x-version-update;media_org.mockito:mockito-all;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version> <!-- {x-version-update;media_junit:junit;external_dependency} -->
+      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -174,7 +174,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version> <!-- {x-version-update;media_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <source>1.6</source>
           <target>1.6</target>

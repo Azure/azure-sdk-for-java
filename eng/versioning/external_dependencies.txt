@@ -35,9 +35,6 @@ io.netty:netty-tcnative;2.0.26.Final
 io.netty:netty-tcnative-boringssl-static;2.0.26.Final
 io.opencensus:opencensus-api;0.24.0
 io.opencensus:opencensus-impl;0.24.0
-# SNAPSHOTS should not be allowed
-io.opentelemetry:opentelemetry-api;0.2.0
-io.opentelemetry:opentelemetry-sdk;0.2.0
 io.projectreactor.netty:reactor-netty;0.9.0.RELEASE
 io.projectreactor:reactor-core;3.3.0.RELEASE
 io.reactivex:rxjava;1.2.4
@@ -65,6 +62,8 @@ test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
 com.microsoft.azure:msal4j;0.5.0-preview
+io.opentelemetry:opentelemetry-api;0.2.0
+io.opentelemetry:opentelemetry-sdk;0.2.0
 io.projectreactor:reactor-test;3.3.0.RELEASE
 junit:junit;4.13-beta-3
 log4j:log4j;1.2.17
@@ -151,21 +150,10 @@ org.nanohttpd:nanohttpd;2.3.1
 # Format;
 # <some unique identifier, area name preferred>_groupId:artifactId;dependency-version
 
-# sdk\applicationinsights\microsoft-azure-applicationinsights-query\pom.xml hardcoded a version
-# string that was used for a number of dependency versions
+# sdk\applicationinsights\microsoft-azure-applicationinsights-query\pom.xml
 applicationinsights_com.microsoft.azure:azure-arm-client-runtime;1.6.3
 applicationinsights_com.microsoft.azure:azure-client-runtime;1.6.3
 applicationinsights_com.microsoft.azure:azure-client-authentication;1.6.3
-applicationinsights_junit:junit;4.12
-
-# sdk\authorization\microsoft-azure-authentication-msi-token-provider\pom.xml
-authentication_junit:junit;4.12
-authentication_org.apache.maven.plugins:maven-jar-plugin;3.1.0
-authentication_org.apache.maven.plugins:maven-compiler-plugin;3.1
-authentication_org.apache.maven.plugins:maven-javadoc-plugin;2.8
-
-# everything under sdk\cognitiveservices
-cognitiveservices_org.apache.maven.plugins:maven-javadoc-plugin;2.8
 
 # everything under sdk\cosmos
 cosmos_org.mockito:mockito-core;1.10.19
@@ -178,9 +166,6 @@ cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 eventgrid_com.microsoft.azure:azure-client-runtime;1.5.0
 eventgrid_com.microsoft.azure:azure-client-authentication;1.5.0
 eventgrid_commons-io:commons-io;2.6
-eventgrid_junit:junit;4.12
-eventgrid_org.apache.maven.plugins:maven-compiler-plugin;3.1
-eventgrid_org.apache.maven.plugins:maven-javadoc-plugin;2.8
 
 # sdk\eventhubs\microsoft-azure-eventhubs-eph\pom.xml
 # sdk\eventhubs\microsoft-azure-eventhubs-extensions\pom.xml
@@ -195,24 +180,18 @@ keyvault_com.microsoft.azure:azure-storage;4.4.0
 loganalytics_com.microsoft.azure:azure-arm-client-runtime;1.6.3
 loganalytics_com.microsoft.azure:azure-client-authentication;1.6.3
 loganalytics_com.microsoft.azure:azure-client-runtime;1.6.3
-loganalytics_junit:junit;4.12
-loganalytics_org.apache.maven.plugins:maven-compiler-plugin;3.1
-loganalytics_org.apache.maven.plugins:maven-javadoc-plugin;2.8
-loganalytics_org.apache.maven.plugins:maven-surefire-plugin;2.20
 
 # sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
 # all of these unique references below are listed here because they're old, some are over 10 years old
-javax.xml.bind:jaxb-api;2.2.7
-javax.inject:javax.inject;1
-javax.mail:mail;1.4.5
-com.sun.jersey:jersey-client;1.19
-com.sun.jersey:jersey-json;1.19
-commons-logging:commons-logging;1.1.1
-io.jsonwebtoken:jjwt;0.5.1
-org.mockito:mockito-all;1.9.0
-media_junit:junit;4.12
+media_javax.xml.bind:jaxb-api;2.2.7
+media_javax.inject:javax.inject;1
+media_javax.mail:mail;1.4.5
+media_com.sun.jersey:jersey-client;1.19
+media_com.sun.jersey:jersey-json;1.19
+media_commons-logging:commons-logging;1.1.1
+media_io.jsonwebtoken:jjwt;0.5.1
+media_org.mockito:mockito-all;1.9.0
 media_com.microsoft.azure:adal4j;1.2.0
-media_org.apache.maven.plugins:maven-compiler-plugin;3.1
 
 # sdk\servicebus\microsoft-azure-servicebus\pom.xml
 servicebus_com.microsoft.azure:azure-client-authentication;1.6.7
