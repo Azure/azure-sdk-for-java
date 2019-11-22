@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
@@ -14,7 +13,6 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
-import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
@@ -34,10 +32,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -52,11 +48,9 @@ import java.util.stream.IntStream;
 import static com.azure.messaging.eventhubs.EventHubConsumerAsyncClientTest.PARTITION_ID_HEADER;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_POSITION_ID;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
-import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
