@@ -187,7 +187,7 @@ public class SettingSelector {
             fields = CoreUtils.arrayToString(this.fields, SettingFields::toStringMapper);
         }
 
-        return String.format("SettingSelector(keys=%s, labels=%s, acceptDateTime=%s, fields=%s, range=%s)",
+        return String.format("SettingSelector(keys=%s, labels=%s, acceptDateTime=%s, fields=%s)",
             CoreUtils.arrayToString(this.keys, key -> key),
             CoreUtils.arrayToString(this.labels, label -> label),
             this.acceptDatetime,

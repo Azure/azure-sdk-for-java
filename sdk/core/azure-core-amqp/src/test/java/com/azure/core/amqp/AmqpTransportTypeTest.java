@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TransportTypeTest {
+public class AmqpTransportTypeTest {
 
     /**
      * Verifies that we can parse the transport type from string
@@ -16,9 +16,9 @@ public class TransportTypeTest {
     @Test
     public void createFromString() {
         String socketString = "Amqpwebsockets";
-        TransportType actual = TransportType.fromString(socketString);
+        AmqpTransportType actual = AmqpTransportType.fromString(socketString);
 
-        Assertions.assertEquals(TransportType.AMQP_WEB_SOCKETS, actual);
+        Assertions.assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, actual);
     }
 
     /**
@@ -29,7 +29,7 @@ public class TransportTypeTest {
         String socketString = "AmqpNonExistent";
 
         assertThrows(IllegalArgumentException.class, () -> {
-            TransportType actual = TransportType.fromString(socketString);
+            AmqpTransportType actual = AmqpTransportType.fromString(socketString);
         });
     }
 }

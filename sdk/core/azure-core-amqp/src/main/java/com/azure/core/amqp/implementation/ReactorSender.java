@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
@@ -68,7 +68,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
     private final TokenManager tokenManager;
     private final MessageSerializer messageSerializer;
-    private final RetryPolicy retry;
+    private final AmqpRetryPolicy retry;
     private final Duration timeout;
     private final Timer sendTimeoutTimer = new Timer("SendTimeout-timer");
 
@@ -84,8 +84,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private volatile int maxMessageSize;
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
-                  TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, RetryPolicy retry,
-                  int maxMessageSize) {
+            TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, AmqpRetryPolicy retry,
+            int maxMessageSize) {
         super(new ClientLogger(ReactorSender.class));
         this.entityPath = entityPath;
         this.sender = sender;

@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
+public class ClaimsBasedSecurityChannel extends EndpointStateNotifierBase implements ClaimsBasedSecurityNode {
     static final String PUT_TOKEN_OPERATION = "operation";
     static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
     static final String PUT_TOKEN_TYPE = "type";
@@ -28,11 +28,11 @@ public class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
     private final TokenCredential credential;
     private final Mono<RequestResponseChannel> cbsChannelMono;
     private final CBSAuthorizationType authorizationType;
-    private final RetryOptions retryOptions;
+    private final AmqpRetryOptions retryOptions;
 
-    public CBSChannel(Mono<RequestResponseChannel> responseChannelMono, TokenCredential tokenCredential,
-               CBSAuthorizationType authorizationType, RetryOptions retryOptions) {
-        super(new ClientLogger(CBSChannel.class));
+    public ClaimsBasedSecurityChannel(Mono<RequestResponseChannel> responseChannelMono, TokenCredential tokenCredential,
+               CBSAuthorizationType authorizationType, AmqpRetryOptions retryOptions) {
+        super(new ClientLogger(ClaimsBasedSecurityChannel.class));
 
         this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");

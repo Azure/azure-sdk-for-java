@@ -9,13 +9,13 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * A policy to govern retrying of messaging operations in which the base delay between retries remains the same.
  */
-public final class FixedRetryPolicy extends RetryPolicy {
+public class FixedAmqpRetryPolicy extends AmqpRetryPolicy {
     /**
      * Creates an instance with the given retry options.
      *
      * @param retryOptions The options to set on this retry policy.
      */
-    public FixedRetryPolicy(RetryOptions retryOptions) {
+    public FixedAmqpRetryPolicy(AmqpRetryOptions retryOptions) {
         super(retryOptions);
     }
 
@@ -32,7 +32,7 @@ public final class FixedRetryPolicy extends RetryPolicy {
     @Override
     protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
                                            ThreadLocalRandom random) {
-        final Double jitterNanos = random.nextDouble() * baseJitter.getSeconds() * RetryPolicy.NANOS_PER_SECOND;
+        final Double jitterNanos = random.nextDouble() * baseJitter.getSeconds() * AmqpRetryPolicy.NANOS_PER_SECOND;
         final Duration jitter = Duration.ofNanos(jitterNanos.longValue());
 
         return baseDelay.plus(jitter);
@@ -55,7 +55,7 @@ public final class FixedRetryPolicy extends RetryPolicy {
             return true;
         }
 
-        return obj instanceof FixedRetryPolicy
+        return obj instanceof FixedAmqpRetryPolicy
             && super.equals(obj);
     }
 }

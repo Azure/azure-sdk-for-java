@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.ErrorContextProvider;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -16,6 +17,7 @@ import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -57,7 +59,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendSmallEventsFullBatch() {
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, null, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, null, contextProvider,
+            new TracerProvider(Collections.emptyList()));
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -79,7 +82,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, contextProvider,
+            new TracerProvider(Collections.emptyList()));
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -104,7 +108,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         final String messageValue = UUID.randomUUID().toString();
 
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, contextProvider,
+            new TracerProvider(Collections.emptyList()));
         int count = 0;
         while (count < 10) {
             final EventData data = createData();
@@ -170,7 +175,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     public void sendEventsFullBatchWithPartitionKey() {
         // Arrange
         final int maxMessageSize = 1024;
-        final EventDataBatch batch = new EventDataBatch(maxMessageSize, null, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(maxMessageSize, null, PARTITION_KEY, contextProvider,
+            new TracerProvider(Collections.emptyList()));
         final Random random = new Random();
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
         int count = 0;

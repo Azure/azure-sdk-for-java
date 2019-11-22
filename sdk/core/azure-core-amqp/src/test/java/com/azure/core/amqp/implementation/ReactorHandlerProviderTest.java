@@ -3,12 +3,12 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
-import com.azure.core.amqp.ProxyAuthenticationType;
-import com.azure.core.amqp.ProxyOptions;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -84,7 +84,7 @@ public class ReactorHandlerProviderTest {
     @Test
     public void getsConnectionHandlerAMQP() {
         // Act
-        final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, HOSTNAME, TransportType.AMQP, null);
+        final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, HOSTNAME, AmqpTransportType.AMQP, null);
 
         // Assert
         Assertions.assertNotNull(handler);
@@ -99,7 +99,7 @@ public class ReactorHandlerProviderTest {
     public void getsConnectionHandlerWebSockets(ProxyOptions configuration) {
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, HOSTNAME,
-            TransportType.AMQP_WEB_SOCKETS, configuration);
+            AmqpTransportType.AMQP_WEB_SOCKETS, configuration);
 
         // Assert
         Assertions.assertNotNull(handler);
@@ -120,7 +120,7 @@ public class ReactorHandlerProviderTest {
 
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, hostname,
-            TransportType.AMQP_WEB_SOCKETS, configuration);
+            AmqpTransportType.AMQP_WEB_SOCKETS, configuration);
 
         // Assert
         Assertions.assertNotNull(handler);
@@ -144,7 +144,7 @@ public class ReactorHandlerProviderTest {
 
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, hostname,
-            TransportType.AMQP_WEB_SOCKETS, configuration);
+            AmqpTransportType.AMQP_WEB_SOCKETS, configuration);
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
