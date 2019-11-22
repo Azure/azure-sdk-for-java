@@ -4,7 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -36,7 +36,7 @@ public class ReactorReceiverTest {
     @Mock
     private Receiver receiver;
     @Mock
-    private CBSNode cbsNode;
+    private ClaimsBasedSecurityNode cbsNode;
     @Mock
     private Event event;
 

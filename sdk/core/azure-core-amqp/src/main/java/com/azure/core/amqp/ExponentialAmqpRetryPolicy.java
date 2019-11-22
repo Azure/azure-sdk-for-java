@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * A policy to govern retrying of messaging operations in which the delay between retries will grow in an exponential
  * manner, allowing more time to recover as the number of retries increases.
  */
-public final class ExponentialAmqpRetryPolicy extends AmqpRetryPolicy {
+public class ExponentialAmqpRetryPolicy extends AmqpRetryPolicy {
     private final double retryFactor;
 
     /**

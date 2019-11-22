@@ -292,13 +292,13 @@ PagedIterable<ConfigurationSetting> settings = client.listRevisions(selector);
 Set a configuration setting to read-only status.
 ```Java
 client.setConfigurationSetting("some_key", "some_label", "some_value");
-ConfigurationSetting setting = client.setReadOnly("some_key", "some_label");
+ConfigurationSetting setting = client.setReadOnly("some_key", "some_label", true);
 ```
 ### Clear read only from a Configuration Setting
 
 Clear read-only from a configuration setting.
 ```Java
-ConfigurationSetting setting = client.clearReadOnly("some_key", "some_label");
+ConfigurationSetting setting = client.setReadOnly("some_key", "some_label", false);
 ```
 
 ## Troubleshooting
