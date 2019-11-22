@@ -118,7 +118,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * {@inheritDoc}
      */
     @Override
-    public String getHostname() {
+    public String getFullyQualifiedNamespace() {
         return handler.getHostname();
     }
 
@@ -149,8 +149,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
         }
 
         return connectionMono.map(connection -> sessionMap.computeIfAbsent(sessionName, key -> {
-            final SessionHandler handler = handlerProvider.createSessionHandler(connectionId, getHostname(),
-                sessionName, connectionOptions.getRetry().getTryTimeout());
+            final SessionHandler handler = handlerProvider.createSessionHandler(connectionId,
+                getFullyQualifiedNamespace(), sessionName, connectionOptions.getRetry().getTryTimeout());
             final Session session = connection.session();
 
             BaseHandler.setHandler(session, handler);
@@ -219,12 +219,12 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * @return A new {@link RequestResponseChannel} to communicate with the message broker.
      */
     protected Mono<RequestResponseChannel> createRequestResponseChannel(String sessionName, String linkName,
-                                                                        String entityPath) {
+            String entityPath) {
         return createSession(sessionName)
             .cast(ReactorSession.class)
-            .map(reactorSession -> new RequestResponseChannel(getId(), getHostname(), linkName, entityPath,
-                reactorSession.session(), connectionOptions.getRetry(), handlerProvider,
-                reactorProvider, messageSerializer));
+            .map(reactorSession -> new RequestResponseChannel(getId(), getFullyQualifiedNamespace(), linkName,
+                entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
+                messageSerializer));
     }
 
     private synchronized ClaimsBasedSecurityNode getOrCreateCBSNode() {

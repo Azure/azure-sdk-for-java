@@ -119,7 +119,7 @@ public class ReactorConnectionTest {
         // Assert
         Assertions.assertTrue(connection instanceof ReactorConnection);
         Assertions.assertEquals(CONNECTION_ID, connection.getId());
-        Assertions.assertEquals(HOSTNAME, connection.getHostname());
+        Assertions.assertEquals(HOSTNAME, connection.getFullyQualifiedNamespace());
 
         Assertions.assertEquals(connectionHandler.getMaxFrameSize(), connection.getMaxFrameSize());
 
