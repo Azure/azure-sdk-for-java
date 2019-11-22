@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
@@ -54,7 +55,7 @@ public class ListOperationsAsync {
         Thread.sleep(22000);
 
         //Let's create a certificate issuer.
-        certificateAsyncClient.createIssuer("myIssuer", "Test")
+        certificateAsyncClient.createIssuer(new CertificateIssuer("myIssuer", "Test"))
             .subscribe(issuer -> {
                 System.out.printf("Issuer created with %s and %s\n", issuer.getName(), issuer.getProvider());
             });

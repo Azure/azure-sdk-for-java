@@ -163,16 +163,10 @@ public final class CertificateClientJavaDocCodeSnippets {
 
 
     /**
-     * Method to insert code snippets for {@link CertificateClient#createIssuer(String, String)}
+     * Method to insert code snippets for {@link CertificateClient#createIssuer(CertificateIssuer)}
      */
     public void createCertificateIssuerCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.createIssuer#String-String
-        CertificateIssuer createdIssuer = certificateClient.createIssuer("myIssuer", "myProvider");
-        System.out.printf("Created Issuer with name %s provider %s", createdIssuer.getName(),
-            createdIssuer.getProvider());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.createIssuer#String-String
-
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.createIssuer#CertificateIssuer
         CertificateIssuer issuerToCreate = new CertificateIssuer("myissuer", "myProvider")
             .setAccountId("testAccount")

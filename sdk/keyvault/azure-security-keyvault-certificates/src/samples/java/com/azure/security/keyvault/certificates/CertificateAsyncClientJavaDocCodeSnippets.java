@@ -205,19 +205,10 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#createIssuer(String, String)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#createIssuer(CertificateIssuer)}
      */
     public void createCertificateIssuerCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#String-String
-        certificateAsyncClient.createIssuer("issuerName", "providerName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(issuer -> {
-                System.out.printf("Issuer created with %s and %s", issuer.getName(),
-                    issuer.getProvider());
-            });
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#String-String
-
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#CertificateIssuer
         CertificateIssuer issuer = new CertificateIssuer("issuerName", "providerName")
             .setAccountId("keyvaultuser")

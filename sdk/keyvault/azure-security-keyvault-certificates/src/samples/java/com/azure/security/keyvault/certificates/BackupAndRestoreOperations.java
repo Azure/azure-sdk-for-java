@@ -73,7 +73,7 @@ public class BackupAndRestoreOperations {
             certificateClient.beginDeleteCertificate("certificateName");
         // Deleted Certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
-        System.out.printf("Deleted certitifcate with name %s and recovery id %s", pollResponse.getValue().getName(),
+        System.out.printf("Deleted certificate with name %s and recovery id %s", pollResponse.getValue().getName(),
             pollResponse.getValue().getRecoveryId());
         deletedCertificatePoller.waitForCompletion();
 

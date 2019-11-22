@@ -290,12 +290,6 @@ public abstract class CertificateClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void createIssuerEmptyName();
-
-    @Test
-    public abstract void createIssuerNullProvider();
-
-    @Test
     public abstract void createIssuerNull();
 
     @Test
@@ -452,8 +446,8 @@ public abstract class CertificateClientTestBase extends TestBase {
     Boolean validateIssuer(CertificateIssuer expected, CertificateIssuer actual) {
         return expected.getAccountId().equals(actual.getAccountId())
             && expected.isEnabled().equals(actual.isEnabled())
-            && (actual.getCreated() != null)
-            && (actual.getUpdated() != null)
+            && (actual.getCreatedOn() != null)
+            && (actual.getUpdatedOn() != null)
             && (actual.getId() != null)
             && (actual.getId().length() > 0)
             && expected.getName().equals(actual.getName())

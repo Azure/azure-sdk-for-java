@@ -205,7 +205,7 @@ public final class CertificateIssuer {
      * Get the created UTC time.
      * @return the created UTC time.
      */
-    public OffsetDateTime getCreated() {
+    public OffsetDateTime getCreatedOn() {
         return created;
     }
 
@@ -213,7 +213,7 @@ public final class CertificateIssuer {
      * Get the updated UTC time.
      * @return the updated UTC time.
      */
-    public OffsetDateTime getUpdated() {
+    public OffsetDateTime getUpdatedOn() {
         return updated;
     }
 

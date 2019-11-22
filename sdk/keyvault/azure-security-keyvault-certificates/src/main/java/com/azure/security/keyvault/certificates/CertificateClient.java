@@ -89,7 +89,7 @@ public final class CertificateClient {
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, boolean isEnabled, Map<String, String> tags) {
         return  client.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
     }
 
@@ -166,7 +166,7 @@ public final class CertificateClient {
     public Response<KeyVaultCertificateWithPolicy> getCertificateWithResponse(String certificateName) {
         return client.getCertificateWithResponse(certificateName).block();
     }
-  
+
     /**
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
@@ -216,15 +216,15 @@ public final class CertificateClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.updateCertificateProperties#CertificateProperties}
      *
-     * @param certificateProperties The {@link CertificateProperties} object with updated properties.
+     * @param properties The {@link CertificateProperties} object with updated properties.
      * @throws NullPointerException if {@code certificate} is {@code null}.
      * @throws ResourceNotFoundException when a certificate with {@link CertificateProperties#getName() certificateName} and {@link CertificateProperties#getVersion() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link CertificateProperties#getName() certificateName} or {@link CertificateProperties#getVersion() version} is empty string.
      * @return The {@link CertificateProperties updated certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultCertificate updateCertificateProperties(CertificateProperties certificateProperties) {
-        return updateCertificatePropertiesWithResponse(certificateProperties, Context.NONE).getValue();
+    public KeyVaultCertificate updateCertificateProperties(CertificateProperties properties) {
+        return updateCertificatePropertiesWithResponse(properties, Context.NONE).getValue();
     }
 
     /**
@@ -237,7 +237,7 @@ public final class CertificateClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.updateCertificatePropertiesWithResponse#CertificateProperties-Context}
      *
-     * @param certificateProperties The {@link CertificateProperties} object with updated properties.
+     * @param properties The {@link CertificateProperties} object with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws NullPointerException if {@code certificate} is {@code null}.
      * @throws ResourceNotFoundException when a certificate with {@link CertificateProperties#getName() certificateName} and {@link CertificateProperties#getVersion() version} doesn't exist in the key vault.
@@ -245,8 +245,8 @@ public final class CertificateClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateProperties updated certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificate> updateCertificatePropertiesWithResponse(CertificateProperties certificateProperties, Context context) {
-        return client.updateCertificatePropertiesWithResponse(certificateProperties, context).block();
+    public Response<KeyVaultCertificate> updateCertificatePropertiesWithResponse(CertificateProperties properties, Context context) {
+        return client.updateCertificatePropertiesWithResponse(properties, context).block();
     }
 
 
@@ -659,27 +659,6 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> updateCertificatePolicyWithResponse(String certificateName, CertificatePolicy policy, Context context) {
         return client.updateCertificatePolicyWithResponse(certificateName, policy, context).block();
-    }
-
-    /**
-     * Creates the specified certificate issuer. The SetCertificateIssuer operation updates the specified certificate issuer if it
-     * already exists or adds it if doesn't exist. This operation requires the certificates/setissuers permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new certificate issuer in the key vault. Prints out the created certificate
-     * issuer details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.createIssuer#String-String}
-     *
-     * @param issuerName The name of the certificate issuer to be created.
-     * @param provider The provider of the certificate issuer to be created.
-     * @throws ResourceModifiedException when invalid certificate issuer {@code issuerName} or {@code provider} configuration is provided.
-     * @throws HttpRequestException when a certificate issuer with {@code issuerName} is empty string.
-     * @return The created {@link CertificateIssuer certificate issuer}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateIssuer createIssuer(String issuerName, String provider) {
-        return createIssuerWithResponse(new CertificateIssuer(issuerName, provider), Context.NONE).getValue();
     }
 
     /**

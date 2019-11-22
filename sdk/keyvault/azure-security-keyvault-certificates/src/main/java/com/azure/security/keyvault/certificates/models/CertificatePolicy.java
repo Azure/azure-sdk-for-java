@@ -341,17 +341,6 @@ public final class CertificatePolicy {
     }
 
     /**
-     * Set the subject value.
-     *
-     * @param subjectName the subject value to set
-     * @return the updated CertificatePolicy object itself.
-     */
-    public CertificatePolicy getSubjectName(String subjectName) {
-        this.subject = subjectName;
-        return this;
-    }
-
-    /**
      * Get the subjectAlternativeNames.
      *
      * @return the subjectAlternativeNames.
