@@ -45,7 +45,7 @@ public interface AmqpConnection extends EndpointStateNotifier, Closeable {
      *
      * @return Provider that authorizes access to AMQP resources.
      */
-    Mono<CBSNode> getCBSNode();
+    Mono<ClaimsBasedSecurityNode> getClaimsBasedSecurityNode();
 
     /**
      * Creates a new session with the given session name.

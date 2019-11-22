@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
@@ -49,7 +49,7 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
     private final Duration openTimeout;
     private final Disposable.Composite subscriptions;
     private final ReactorHandlerProvider handlerProvider;
-    private final Mono<CBSNode> cbsNodeSupplier;
+    private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -59,13 +59,13 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
      * @param sessionName Name of the session.
      * @param provider Provides reactor instances for messages to sent with.
      * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
-     * @param cbsNodeSupplier Mono that returns a reference to the {@link CBSNode}.
+     * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing operations
      *      on the message broker.
      * @param openTimeout Timeout to wait for the session operation to complete.
      */
     public ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
-                   ReactorHandlerProvider handlerProvider, Mono<CBSNode> cbsNodeSupplier,
+                   ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
                    TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
                    Duration openTimeout) {
         super(new ClientLogger(ReactorSession.class));
