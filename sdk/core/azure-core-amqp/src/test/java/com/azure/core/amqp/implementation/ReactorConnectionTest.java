@@ -3,12 +3,13 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
@@ -53,7 +54,7 @@ public class ReactorConnectionTest {
     private static final String HOSTNAME = CREDENTIAL_INFO.getEndpoint().getHost();
     private static final Scheduler SCHEDULER = Schedulers.elastic();
 
-    private AmqpConnection connection;
+    private ReactorConnection connection;
     private SessionHandler sessionHandler;
 
     @Mock
@@ -303,7 +304,8 @@ public class ReactorConnectionTest {
         // Arrange
         final Event event = mock(Event.class);
         final Transport transport = mock(Transport.class);
-        final ErrorCondition errorCondition = new ErrorCondition(Symbol.getSymbol("amqp:not-found"), "Not found");
+        final AmqpErrorCondition condition = AmqpErrorCondition.NOT_FOUND;
+        final ErrorCondition errorCondition = new ErrorCondition(Symbol.getSymbol(condition.getErrorCondition()), "Not found");
 
         when(event.getTransport()).thenReturn(transport);
         when(event.getConnection()).thenReturn(connectionProtonJ);
@@ -314,10 +316,14 @@ public class ReactorConnectionTest {
 
         connectionHandler.onTransportError(event);
 
+        // Act & Assert
         StepVerifier.create(connection.getClaimsBasedSecurityNode())
-            .assertNext(node -> {
-                Assertions.assertTrue(node instanceof ClaimsBasedSecurityChannel);
-            }).verifyComplete();
+            .expectErrorSatisfies(e -> {
+                Assertions.assertTrue(e instanceof AmqpException);
+                AmqpException amqpException = (AmqpException) e;
+                Assertions.assertEquals(condition, amqpException.getErrorCondition());
+            })
+            .verify(Duration.ofSeconds(10));
 
         verify(transport, times(1)).unbind();
     }
