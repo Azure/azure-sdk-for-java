@@ -10,7 +10,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
     <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-sdk</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.0-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
@@ -25,7 +25,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
     <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-exporters-logging</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 

@@ -10,12 +10,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
     <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-sdk</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.0-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-security-keyvault-secrets</artifactId>
-        <version>4.1.0-beta.1</version>
+        <version>4.0.0</version>
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
@@ -25,7 +25,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
     <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-exporters-logging</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
