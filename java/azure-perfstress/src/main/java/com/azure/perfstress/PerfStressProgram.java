@@ -31,6 +31,7 @@ public class PerfStressProgram {
 
         try {
             classList.add(Class.forName("com.azure.perfstress.NoOpTest"));
+            classList.add(Class.forName("com.azure.perfstress.ExceptionTest"));
             classList.add(Class.forName("com.azure.perfstress.SleepTest"));
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
