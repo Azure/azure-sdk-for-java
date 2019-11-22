@@ -6,9 +6,9 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpExceptionHandler;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
@@ -118,7 +118,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * {@inheritDoc}
      */
     @Override
-    public String getHostname() {
+    public String getFullyQualifiedNamespace() {
         return handler.getHostname();
     }
 
@@ -149,7 +149,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
         }
 
         return connectionMono.map(connection -> sessionMap.computeIfAbsent(sessionName, key -> {
-            final SessionHandler handler = handlerProvider.createSessionHandler(connectionId, getHostname(),
+            final SessionHandler handler = handlerProvider.createSessionHandler(connectionId, getFullyQualifiedNamespace(),
                 sessionName, connectionOptions.getRetry().getTryTimeout());
             final Session session = connection.session();
 
@@ -221,7 +221,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
                                                                         String entityPath) {
         return createSession(sessionName)
             .cast(ReactorSession.class)
-            .map(reactorSession -> new RequestResponseChannel(getId(), getHostname(), linkName, entityPath,
+            .map(reactorSession -> new RequestResponseChannel(getId(), getFullyQualifiedNamespace(), linkName, entityPath,
                 reactorSession.session(), connectionOptions.getRetry(), handlerProvider,
                 reactorProvider, messageSerializer));
     }
