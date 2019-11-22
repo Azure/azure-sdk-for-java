@@ -19,7 +19,7 @@ documentation][api_documentation] | [Samples][samples]
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opencensus</artifactId>
-  <version>1.0.0-beta.4</version>
+  <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -38,7 +38,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opencensus</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.5</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -54,7 +54,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -137,10 +137,15 @@ private static  final Tracer TRACER;
             .buildProducer();
 
         try (Scope scope = TRACER.spanBuilder("tracing-user-span").startScopedSpan()) {
-            Context tracingContext = new Context(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
-            // Create an event to send
-            final EventData eventData = new EventData("Hello world!".getBytes(UTF_8), traceContext);
-            producer.send(eventData);
+            EventData event1 = new EventData("1".getBytes(UTF_8));
+            event1.addContext(PARENT_SPAN_KEY, span);
+
+            EventDataBatch eventDataBatch = producer.createBatch();
+
+            if (!eventDataBatch.tryAdd(eventData)) {
+                producer.send(eventDataBatch);
+                eventDataBatch = producer.createBatch();
+            }
         } finally {
             Tracing.getExportComponent().shutdown();
         }

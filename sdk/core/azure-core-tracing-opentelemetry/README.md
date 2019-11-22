@@ -53,7 +53,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -140,9 +140,15 @@ private static final TracerSdkFactory TRACER_SDK_FACTORY;
 
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
         try (Scope scope = TRACER.withSpan(span)) {
-            Context traceContext = new Context(PARENT_SPAN_KEY, span);
-            EventData eventData = new EventData("Hello world!".getBytes(UTF_8), traceContext);
-            producer.send(eventData); 
+            EventData event1 = new EventData("1".getBytes(UTF_8));
+            event1.addContext(PARENT_SPAN_KEY, span);
+
+            EventDataBatch eventDataBatch = producer.createBatch();
+
+            if (!eventDataBatch.tryAdd(eventData)) {
+                producer.send(eventDataBatch);
+                eventDataBatch = producer.createBatch();
+            }
         } finally {
             span.end();
         }

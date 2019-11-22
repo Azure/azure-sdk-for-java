@@ -10,12 +10,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
     <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-sdk</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.2.0</version>
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-messaging-eventhubs</artifactId>
-        <version>5.0.0-beta.5</version>
+        <version>5.0.0-beta.6</version>
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
@@ -25,7 +25,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
     <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-exporters-logging</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.2.0</version>
     </dependency>
 </dependencies>
 
@@ -74,20 +74,31 @@ public class Sample {
 
     private static void doClientWork() {
         EventHubProducerClient producer = new EventHubClientBuilder()
-            .connectionString(CONNECTION_STRING)
-            .buildProducer();
-
-        final int count = 2;
-        final byte[] body = "Hello World!".getBytes(UTF_8);
+            .connectionString(connectionString)
+            .buildProducerClient();
         
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
         try (final Scope scope = TRACER.withSpan(span)) {
-            final Context traceContext = new Context(PARENT_SPAN_KEY, span);
-            final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
-                final EventData data = new EventData(body, traceContext);
-                return Flux.just(data);
-            });
-            producer.send(testData.toIterable(1));
+            final EventData event1 = new EventData("1".getBytes(UTF_8));
+            event1.addContext(PARENT_SPAN_KEY, span);
+    
+            final EventData event2 = new EventData("2".getBytes(UTF_8));
+            event2.addContext(PARENT_SPAN_KEY, span);
+
+            final List<EventData> telemetryEvents = Arrays.asList(event1, event2);
+            final CreateBatchOptions options = new CreateBatchOptions()
+                .setPartitionKey("telemetry")
+                .setMaximumSizeInBytes(256);
+    
+            EventDataBatch currentBatch = producer.createBatch(options);
+    
+            // For each telemetry event, we try to add it to the current batch.
+            for (EventData event : telemetryEvents) {
+                if (!currentBatch.tryAdd(event)) {
+                    producer.send(currentBatch);
+                    currentBatch = producer.createBatch(options);
+                }
+            }
         } finally {
             span.end();
             producer.close();
