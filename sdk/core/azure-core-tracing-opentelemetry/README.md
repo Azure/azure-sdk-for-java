@@ -94,15 +94,9 @@ private static final TracerSdkFactory TRACER_SDK_FACTORY;
 
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
         try (Scope scope = TRACER.withSpan(span)) {
-            EventData event1 = new EventData("1".getBytes(UTF_8));
-            event1.addContext(PARENT_SPAN_KEY, span);
-
-            EventDataBatch eventDataBatch = producer.createBatch();
-
-            if (!eventDataBatch.tryAdd(eventData)) {
-                producer.send(eventDataBatch);
-                eventDataBatch = producer.createBatch();
-            }
+            Context traceContext = new Context(PARENT_SPAN_KEY, span);
+            EventData eventData = new EventData("Hello world!".getBytes(UTF_8), traceContext);
+            producer.send(eventData); 
         } finally {
             span.end();
         }

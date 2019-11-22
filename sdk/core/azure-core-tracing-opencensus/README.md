@@ -19,7 +19,7 @@ documentation][api_documentation] | [Samples][samples]
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opencensus</artifactId>
-  <version>1.0.0-beta.5</version>
+  <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -90,15 +90,10 @@ private static  final Tracer TRACER;
             .buildProducerClient();
 
         try (Scope scope = TRACER.spanBuilder("tracing-user-span").startScopedSpan()) {
-            EventData event1 = new EventData("1".getBytes(UTF_8));
-            event1.addContext(PARENT_SPAN_KEY, span);
-
-            EventDataBatch eventDataBatch = producer.createBatch();
-
-            if (!eventDataBatch.tryAdd(eventData)) {
-                producer.send(eventDataBatch);
-                eventDataBatch = producer.createBatch();
-            }
+            Context tracingContext = new Context(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
+            // Create an event to send
+            final EventData eventData = new EventData("Hello world!".getBytes(UTF_8), traceContext);
+            producer.send(eventData);
         } finally {
             Tracing.getExportComponent().shutdown();
         }
