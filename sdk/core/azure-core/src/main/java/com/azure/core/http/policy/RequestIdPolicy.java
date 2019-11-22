@@ -50,7 +50,7 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
 
         HttpHeaders httpHeaders = requestIdSupplier.get();
         if (Objects.nonNull(httpHeaders) && httpHeaders.getSize() > 0) {
-            for (HttpHeader header:httpHeaders) {
+            for (HttpHeader header : httpHeaders) {
                 String requestIdHeaderValue = context.getHttpRequest().getHeaders().getValue(header.getName());
                 if (requestIdHeaderValue == null) {
                     context.getHttpRequest().getHeaders().put(header.getName(), header.getValue());
