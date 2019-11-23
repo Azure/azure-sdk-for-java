@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -60,7 +59,6 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     @Override
     protected void beforeTest() {
         client = createBuilder()
-            .scheduler(Schedulers.single())
             .buildAsyncClient();
     }
 
