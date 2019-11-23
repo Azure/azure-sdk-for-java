@@ -21,11 +21,11 @@ import reactor.core.publisher.Mono;
  */
 public class EventContext {
 
+    private final ClientLogger logger = new ClientLogger(EventContext.class);
     private final PartitionContext partitionContext;
     private final EventData eventData;
     private final CheckpointStore checkpointStore;
     private final LastEnqueuedEventProperties lastEnqueuedEventProperties;
-    private ClientLogger logger = new ClientLogger(EventContext.class);
 
     /**
      * Creates an instance of {@link EventContext}.
@@ -86,7 +86,7 @@ public class EventContext {
      */
     public Mono<Void> updateCheckpointAsync(EventData eventData) {
         if (eventData == null) {
-            monoError(logger, new NullPointerException("'eventData' cannot be null"));
+            return monoError(logger, new NullPointerException("'eventData' cannot be null"));
         }
         Checkpoint checkpoint = new Checkpoint()
             .setConsumerGroup(partitionContext.getConsumerGroup())
