@@ -175,18 +175,6 @@ public class EventProcessorClientBuilder {
     }
 
     /**
-     * Sets the scheduler for operations such as connecting to and receiving or sending data to Event Hubs. If none is
-     * specified, an elastic pool is used.
-     *
-     * @param scheduler The scheduler for operations such as connecting to and receiving or sending data to Event Hubs.
-     * @return The updated {@link EventProcessorClientBuilder} object.
-     */
-    public EventProcessorClientBuilder scheduler(Scheduler scheduler) {
-        eventHubClientBuilder.scheduler(scheduler);
-        return this;
-    }
-
-    /**
      * Sets the transport type by which all the communication with Azure Event Hubs occurs. Default value is {@link
      * AmqpTransportType#AMQP}.
      *
@@ -305,7 +293,7 @@ public class EventProcessorClientBuilder {
      * {@code null}.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
-     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     * but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventProcessorClient buildEventProcessorClient() {
         Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
