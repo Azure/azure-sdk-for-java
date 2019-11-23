@@ -20,8 +20,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.UUID;
-import java.util.function.Supplier;
 
 public class RequestIdPolicyTests {
     private final HttpResponse mockResponse = new HttpResponse(null) {
