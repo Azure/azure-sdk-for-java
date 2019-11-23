@@ -19,7 +19,6 @@ import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
-import reactor.core.scheduler.Scheduler;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.function.Consumer;
@@ -171,18 +170,6 @@ public class EventProcessorClientBuilder {
      */
     public EventProcessorClientBuilder proxyOptions(ProxyOptions proxyOptions) {
         eventHubClientBuilder.proxyOptions(proxyOptions);
-        return this;
-    }
-
-    /**
-     * Sets the scheduler for operations such as connecting to and receiving or sending data to Event Hubs. If none is
-     * specified, an elastic pool is used.
-     *
-     * @param scheduler The scheduler for operations such as connecting to and receiving or sending data to Event Hubs.
-     * @return The updated {@link EventProcessorClientBuilder} object.
-     */
-    public EventProcessorClientBuilder scheduler(Scheduler scheduler) {
-        eventHubClientBuilder.scheduler(scheduler);
         return this;
     }
 
