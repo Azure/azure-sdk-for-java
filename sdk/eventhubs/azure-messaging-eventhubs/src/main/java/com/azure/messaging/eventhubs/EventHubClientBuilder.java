@@ -437,7 +437,7 @@ public class EventHubClientBuilder {
         }
 
         if (scheduler == null) {
-            scheduler = Schedulers.elastic();
+            scheduler = Schedulers.newElastic("event-hubs");
         }
 
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
