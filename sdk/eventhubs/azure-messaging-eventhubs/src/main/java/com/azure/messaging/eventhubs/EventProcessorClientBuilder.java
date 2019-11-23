@@ -19,7 +19,6 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
-import reactor.core.scheduler.Scheduler;
 
 import java.util.Objects;
 import java.util.ServiceLoader;
