@@ -16,8 +16,8 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
@@ -54,12 +54,13 @@ public final class BuilderHelper {
      * @param httpClient HttpClient to use in the builder.
      * @param additionalPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline.
      * @param configuration Configuration store contain environment settings.
+     * @param logger {@link ClientLogger} used to log any exception.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
         TokenCredential tokenCredential, SasTokenCredential sasTokenCredential, String endpoint,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
-        List<HttpPipelinePolicy> additionalPolicies, Configuration configuration) {
+        List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, ClientLogger logger) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -71,6 +72,7 @@ public final class BuilderHelper {
         if (storageSharedKeyCredential != null) {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
+            httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential,
                 String.format("%s/.default", endpoint));
         } else if (sasTokenCredential != null) {
@@ -129,14 +131,16 @@ public final class BuilderHelper {
     }
 
     /**
-     * Validates that the client is properly configured for using cpk.
+     * Validates that the client is properly configured to use https.
      *
-     * @param customerProvidedKey The cpk object.
+     * @param objectToCheck The object to check for.
+     * @param objectName The name of the object.
      * @param endpoint The endpoint for the client.
      */
-    public static void validateCpk(CpkInfo customerProvidedKey, String endpoint) {
-        if (customerProvidedKey != null && !BlobUrlParts.parse(endpoint).getScheme().equals(Constants.HTTPS)) {
-            throw new IllegalArgumentException("Using a customer provided key requires https");
+    public static void httpsValidation(Object objectToCheck, String objectName, String endpoint, ClientLogger logger) {
+        if (objectToCheck != null && !BlobUrlParts.parse(endpoint).getScheme().equals(Constants.HTTPS)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Using a(n) " + objectName + " requires https"));
         }
     }
 
