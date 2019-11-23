@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryPolicyOptions;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -58,7 +57,7 @@ public class UserAgentTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new RetryValidationHttpClient(request ->
                 assertEquals(expected, request.getHeaders().getValue(USER_AGENT))))
-            .policies(new RetryPolicy(new RetryPolicyOptions(new FixedDelay(5, Duration.ofMillis(10)))))
+            .policies(new RetryPolicy(new FixedDelay(5, Duration.ofMillis(10))))
             .policies(userAgentPolicy)
             .build();
 
