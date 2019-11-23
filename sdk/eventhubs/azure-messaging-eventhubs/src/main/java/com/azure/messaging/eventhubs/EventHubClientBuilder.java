@@ -280,18 +280,6 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the scheduler for operations such as connecting to and receiving or sending data to Event Hubs. If none is
-     * specified, an elastic pool is used.
-     *
-     * @param scheduler The scheduler for operations such as connecting to and receiving or sending data to Event Hubs.
-     * @return The updated {@link EventHubClientBuilder} object.
-     */
-    public EventHubClientBuilder scheduler(Scheduler scheduler) {
-        this.scheduler = scheduler;
-        return this;
-    }
-
-    /**
      * Sets the transport type by which all the communication with Azure Event Hubs occurs. Default value is {@link
      * AmqpTransportType#AMQP}.
      *
