@@ -12,8 +12,8 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.util.StringJoiner;
 
 /**
- * Sample that demonstrates the use {@link BlobCheckpointStore} for storing and updating partition ownership records
- * in Storage Blobs.
+ * Sample that demonstrates the use {@link BlobCheckpointStore} for storing and updating partition ownership records in
+ * Storage Blobs.
  */
 public class BlobCheckpointStoreSample {
 
@@ -40,9 +40,7 @@ public class BlobCheckpointStoreSample {
         Checkpoint checkpoint = new Checkpoint()
             .setConsumerGroup("xyz")
             .setEventHubName("abc")
-            .setOwnerId("owner1")
             .setPartitionId("0")
-            .setETag("")
             .setSequenceNumber(2L)
             .setOffset(250L);
         blobCheckpointStore.updateCheckpoint(checkpoint)
@@ -55,8 +53,7 @@ public class BlobCheckpointStoreSample {
                 .setEventHubName("abc")
                 .setConsumerGroup("xyz")
                 .setOwnerId("owner1")
-                .setPartitionId(String.valueOf(i))
-                .setOwnerLevel(0);
+                .setPartitionId(String.valueOf(i));
             pos[i] = po;
         }
         blobCheckpointStore.claimOwnership(pos).subscribe(BlobCheckpointStoreSample::printPartitionOwnership,
@@ -70,7 +67,6 @@ public class BlobCheckpointStoreSample {
                 .add("ownerId=" + partitionOwnership.getOwnerId())
                 .add("cg=" + partitionOwnership.getConsumerGroup())
                 .add("eh=" + partitionOwnership.getEventHubName())
-                .add("offset=" + partitionOwnership.getOffset())
                 .add("etag=" + partitionOwnership.getETag())
                 .add("lastModified=" + partitionOwnership.getLastModifiedTime())
                 .toString();

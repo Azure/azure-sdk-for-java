@@ -10,8 +10,9 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * The initialization context that is supplied to {@link EventProcessorClientBuilder#initializePartition(Consumer)
- * initializePartition} before the {@link EventProcessorClient} instance begins processing events from a partition.
+ * The initialization context that is supplied to {@link
+ * EventProcessorClientBuilder#processPartitionInitialization(Consumer)} before the {@link EventProcessorClient}
+ * instance begins processing events from a partition.
  */
 public class InitializationContext {
 
