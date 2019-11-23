@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
+import java.util.Objects;
 
 /**
  * A model class to contain partition information of an Event Hub.
@@ -28,10 +29,11 @@ public class PartitionContext {
      */
     public PartitionContext(String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
         String partitionId) {
-        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
-        this.eventHubName = eventHubName;
-        this.consumerGroup = consumerGroup;
-        this.partitionId = partitionId;
+        this.fullyQualifiedNamespace = Objects
+            .requireNonNull(fullyQualifiedNamespace, "fullyQualifiedNamespace cannot be null");
+        this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null.");
+        this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
+        this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null.");
     }
 
     /**

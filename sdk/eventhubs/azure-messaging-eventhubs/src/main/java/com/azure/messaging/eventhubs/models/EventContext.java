@@ -3,6 +3,9 @@
 
 package com.azure.messaging.eventhubs.models;
 
+import static com.azure.core.util.FluxUtil.monoError;
+
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
@@ -22,6 +25,7 @@ public class EventContext {
     private final EventData eventData;
     private final CheckpointStore checkpointStore;
     private final LastEnqueuedEventProperties lastEnqueuedEventProperties;
+    private ClientLogger logger = new ClientLogger(EventContext.class);
 
     /**
      * Creates an instance of {@link EventContext}.
@@ -32,6 +36,7 @@ public class EventContext {
      * @param lastEnqueuedEventProperties The properties of the last enqueued event in this partition. If {@link
      * EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)} is set to {@code false}, this will be
      * {@code null}.
+     * @throws NullPointerException If {@code partitionContext}, {@code eventData} or {@code checkpointStore} is null.
      */
     public EventContext(PartitionContext partitionContext, EventData eventData,
         CheckpointStore checkpointStore, LastEnqueuedEventProperties lastEnqueuedEventProperties) {
@@ -80,7 +85,9 @@ public class EventContext {
      * @return a representation of deferred execution of this call.
      */
     public Mono<Void> updateCheckpointAsync(EventData eventData) {
-        Objects.requireNonNull(eventData, "'eventData' cannot be null");
+        if (eventData == null) {
+            monoError(logger, new NullPointerException("'eventData' cannot be null"));
+        }
         Checkpoint checkpoint = new Checkpoint()
             .setConsumerGroup(partitionContext.getConsumerGroup())
             .setEventHubName(partitionContext.getEventHubName())

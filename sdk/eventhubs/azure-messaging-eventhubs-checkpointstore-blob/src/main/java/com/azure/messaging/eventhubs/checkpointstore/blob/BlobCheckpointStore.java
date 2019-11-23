@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import java.util.Objects;
+import java.util.function.Function;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -76,38 +77,31 @@ public class BlobCheckpointStore implements CheckpointStore {
     public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
         String consumerGroup) {
         String prefix = getBlobPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup, OWNERSHIP_PATH);
-        BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
-        ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);
-        return blobContainerAsyncClient.listBlobs(options)
-            .flatMap(this::convertToPartitionOwnership)
-            .filter(Objects::nonNull);
+        return listBlobs(prefix, this::convertToPartitionOwnership);
     }
 
     @Override
     public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName,
         String consumerGroup) {
-
         String prefix = getBlobPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup, CHECKPOINT_PATH);
+        return listBlobs(prefix, this::convertToCheckpoint);
+    }
+
+    private <T> Flux<T> listBlobs(String prefix, Function<BlobItem, Mono<T>> converter) {
         BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);
         return blobContainerAsyncClient.listBlobs(options)
-            .flatMap(this::convertToCheckpoint)
+            .flatMap(converter)
             .filter(Objects::nonNull);
     }
 
     private Mono<Checkpoint> convertToCheckpoint(BlobItem blobItem) {
         String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
+        logger.info("Found blob for partition {}", blobItem.getName());
         if (names.length == 5) {
             // Blob names should be of the pattern
             // fullyqualifiednamespace/eventhub/consumergroup/checkpoints/<partitionId>
             // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
-            Checkpoint checkpoint = new Checkpoint();
-            logger.info("Found blob for partition {}", blobItem.getName());
-            checkpoint.setFullyQualifiedNamespace(names[0]);
-            checkpoint.setEventHubName(names[1]);
-            checkpoint.setConsumerGroup(names[2]);
-            // names[3] is "checkpoint"
-            checkpoint.setPartitionId(names[4]);
 
             if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
                 logger.warning("No metadata available for blob {}", blobItem.getName());
@@ -115,8 +109,15 @@ public class BlobCheckpointStore implements CheckpointStore {
             }
 
             Map<String, String> metadata = blobItem.getMetadata();
-            checkpoint.setSequenceNumber(Long.parseLong(metadata.get(SEQUENCE_NUMBER)));
-            checkpoint.setOffset(Long.parseLong(metadata.get(OFFSET)));
+            Checkpoint checkpoint = new Checkpoint()
+                .setFullyQualifiedNamespace(names[0])
+                .setEventHubName(names[1])
+                .setConsumerGroup(names[2])
+                // names[3] is "checkpoint"
+                .setPartitionId(names[4])
+                .setSequenceNumber(Long.parseLong(metadata.get(SEQUENCE_NUMBER)))
+                .setOffset(Long.parseLong(metadata.get(OFFSET)));
+
             return Mono.just(checkpoint);
         }
         return Mono.empty();
@@ -219,29 +220,30 @@ public class BlobCheckpointStore implements CheckpointStore {
     }
 
     private Mono<PartitionOwnership> convertToPartitionOwnership(BlobItem blobItem) {
+        logger.info("Found blob for partition {}", blobItem.getName());
         String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
         if (names.length == 5) {
             // Blob names should be of the pattern
             // fullyqualifiednamespace/eventhub/consumergroup/ownership/<partitionId>
             // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
-            PartitionOwnership partitionOwnership = new PartitionOwnership();
-            logger.info("Found blob for partition {}", blobItem.getName());
-
-            partitionOwnership.setFullyQualifiedNamespace(names[0]);
-            partitionOwnership.setEventHubName(names[1]);
-            partitionOwnership.setConsumerGroup(names[2]);
-            // names[3] is "ownership"
-            partitionOwnership.setPartitionId(names[4]);
             if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
                 logger.warning("No metadata available for blob {}", blobItem.getName());
                 return Mono.empty();
             }
-            partitionOwnership.setOwnerId(blobItem.getMetadata().get(OWNER_ID));
+
             BlobItemProperties blobProperties = blobItem.getProperties();
-            partitionOwnership.setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli());
-            partitionOwnership.setETag(blobProperties.getETag());
+            PartitionOwnership partitionOwnership = new PartitionOwnership()
+                .setFullyQualifiedNamespace(names[0])
+                .setEventHubName(names[1])
+                .setConsumerGroup(names[2])
+                // names[3] is "ownership"
+                .setPartitionId(names[4])
+                .setOwnerId(blobItem.getMetadata().get(OWNER_ID))
+                .setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli())
+                .setETag(blobProperties.getETag());
             return Mono.just(partitionOwnership);
         }
+
         return Mono.empty();
     }
 
