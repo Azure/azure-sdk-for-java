@@ -760,6 +760,61 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
+    @Unroll
+    @Requires({ liveMode() })
+    def "Upload from file reporter"() {
+        when:
+        def uploadReporter = new Reporter(blockSize)
+        def file = getRandomFile(size)
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, bufferCount,
+            uploadReporter)
+
+        then:
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
+            null, null, null, null))
+            .assertNext({
+            assert uploadReporter.getReportingCount() == (long) (size / blockSize)
+        }).verifyComplete()
+
+        cleanup:
+        file.delete()
+
+        where:
+        size              | blockSize         | bufferCount
+        10 * Constants.MB | 10 * Constants.MB | 8
+        20 * Constants.MB | 1 * Constants.MB  | 5
+        10 * Constants.MB | 5 * Constants.MB  | 2
+        10 * Constants.MB | 10 * Constants.KB | 100
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Upload from file options"() {
+        setup:
+        def file = getRandomFile(dataSize)
+
+        when:
+        blobClient.uploadFromFile(file.toPath().toString(),
+            new ParallelTransferOptions(blockSize, null, null, singleUploadSize), null, null, null, null, null)
+
+        then:
+        blobClient.getBlockBlobClient()
+            .listBlocks(BlockListType.COMMITTED).getCommittedBlocks().size() == expectedBlockCount
+
+
+        cleanup:
+        file.delete()
+
+        where:
+        dataSize                                       | singleUploadSize | blockSize || expectedBlockCount
+        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES - 1 | null             | null      || 0 // Test that the default for singleUploadSize is the maximum
+        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 / (double) BlobClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
+        100                                            | 50               | null      || 1 // Test that singleUploadSize is respected
+        100                                            | 50               | 20        || 5 // Test that blockSize is respected
+
+    }
+
     def "Upload min"() {
         when:
         blockBlobClient.upload(defaultInputStream.get(), defaultDataSize, true)
@@ -1218,9 +1273,9 @@ class BlockBlobAPITest extends APISpec {
         then:
         StepVerifier.create(uploadOperation.then(blockBlobAsyncClient.getPropertiesWithResponse(null)))
             .assertNext({
-                assert validateBlobProperties(it, cacheControl, contentDisposition, contentEncoding, contentLanguage,
-                    contentMD5, contentType == null ? "application/octet-stream" : contentType)
-            }).verifyComplete()
+            assert validateBlobProperties(it, cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                contentMD5, contentType == null ? "application/octet-stream" : contentType)
+        }).verifyComplete()
         // HTTP default content type is application/octet-stream.
 
         where:
@@ -1254,9 +1309,9 @@ class BlockBlobAPITest extends APISpec {
         then:
         StepVerifier.create(uploadOperation.then(blobAsyncClient.getPropertiesWithResponse(null)))
             .assertNext({
-                assert it.getStatusCode() == 200
-                assert it.getValue().getMetadata() == metadata
-            }).verifyComplete()
+            assert it.getStatusCode() == 200
+            assert it.getValue().getMetadata() == metadata
+        }).verifyComplete()
 
         where:
         key1  | value1 | key2   | value2
@@ -1427,9 +1482,9 @@ class BlockBlobAPITest extends APISpec {
         // A second subscription to a download stream will
         StepVerifier.create(blobAsyncClient.upload(blockBlobAsyncClient.download(), parallelTransferOptions, true))
             .verifyErrorSatisfies({
-                assert it instanceof BlobStorageException
-                assert it.getStatusCode() == 500
-            })
+            assert it instanceof BlobStorageException
+            assert it.getStatusCode() == 500
+        })
     }
 
     @Requires({ liveMode() })
