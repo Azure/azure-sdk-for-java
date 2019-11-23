@@ -69,7 +69,7 @@ class ReactorSender implements AmqpSendLink {
     private final ConcurrentHashMap<String, RetriableWorkItem> pendingSendsMap = new ConcurrentHashMap<>();
     private final PriorityQueue<WeightedDeliveryTag> pendingSendsQueue =
         new PriorityQueue<>(1000, new DeliveryTagComparator());
-    private final ClientLogger logger = new ClientLogger(ReactorReceiver.class);
+    private final ClientLogger logger = new ClientLogger(ReactorSender.class);
     private final ReplayProcessor<AmqpEndpointState> connectionStates =
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
     private FluxSink<AmqpEndpointState> connectionStateSink = connectionStates.sink(FluxSink.OverflowStrategy.BUFFER);
