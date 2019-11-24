@@ -3,7 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventContext;
 import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,20 +27,31 @@ public class EventProcessorSample {
     public static void main(String[] args) throws Exception {
 
         Logger logger = LoggerFactory.getLogger(EventProcessorSample.class);
-        Consumer<PartitionEvent> processEvent = partitionEvent -> {
+        Consumer<EventContext> processEvent = eventContext -> {
             logger.info(
                 "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
-                partitionEvent.getPartitionContext().getEventHubName(),
-                partitionEvent.getPartitionContext().getConsumerGroup(),
-                partitionEvent.getPartitionContext().getPartitionId(),
-                partitionEvent.getData().getSequenceNumber());
-            partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData()).subscribe();
+                eventContext.getPartitionContext().getEventHubName(),
+                eventContext.getPartitionContext().getConsumerGroup(),
+                eventContext.getPartitionContext().getPartitionId(),
+                eventContext.getEventData().getSequenceNumber());
+            eventContext.updateCheckpoint();
+        };
+
+        // This error handler logs the error that occurred and keeps the processor running. If the error occurred in
+        // a specific partition and had to be closed, the ownership of the partition will be given up and will allow
+        // other processors to claim ownership of the partition.
+        Consumer<ErrorContext> processError = errorContext -> {
+            logger.error("Error while processing {}, {}, {}, {}", errorContext.getPartitionContext().getEventHubName(),
+                errorContext.getPartitionContext().getConsumerGroup(),
+                errorContext.getPartitionContext().getPartitionId(),
+                errorContext.getThrowable().getMessage());
         };
 
         EventProcessorClientBuilder eventProcessorClientBuilder = new EventProcessorClientBuilder()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .connectionString(EH_CONNECTION_STRING)
             .processEvent(processEvent)
+            .processError(processError)
             .checkpointStore(new InMemoryCheckpointStore());
 
         EventProcessorClient eventProcessorClient = eventProcessorClientBuilder.buildEventProcessorClient();

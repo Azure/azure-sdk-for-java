@@ -16,9 +16,9 @@ public final class EventProcessorJavaDocCodeSamples {
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .connectionString(connectionString)
-            .processEvent(partitionEvent -> {
-                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + partitionEvent.getData().getSequenceNumber());
+            .processEvent(eventContext -> {
+                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
                 System.out.printf("Error occurred in partition processor for partition {}, {}",
@@ -28,10 +28,10 @@ public final class EventProcessorJavaDocCodeSamples {
             .consumerGroup("consumer-group")
             .buildEventProcessorClient();
 
-        // BEGIN: com.azure.messaging.eventhubs.eventprocessor.startstop
+        // BEGIN: com.azure.messaging.eventhubs.eventprocessorclient.startstop
         eventProcessorClient.start();
         // Continue to perform other tasks while the processor is running in the background.
         eventProcessorClient.stop();
-        // END: com.azure.messaging.eventhubs.eventprocessor.startstop
+        // END: com.azure.messaging.eventhubs.eventprocessorclient.startstop
     }
 }
