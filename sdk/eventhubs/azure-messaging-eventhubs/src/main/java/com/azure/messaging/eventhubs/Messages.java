@@ -15,7 +15,7 @@ import java.util.Properties;
 public enum Messages {
     ;
     private static final ClientLogger LOGGER = new ClientLogger(Messages.class);
-    private static Properties PROPERTIES;
+    private static Properties properties;
     private static final String MESSAGES_PROPERTIES_PATH = "com/azure/messaging/eventhubs/messages.properties";
     public static final String PROCESS_SPAN_SCOPE_TYPE_ERROR = getMessage("PROCESS_SPAN_SCOPE_TYPE_ERROR");
     public static final String EXCEPTION_CLOSING_CONSUMER = getMessage("EXCEPTION_CLOSING_CONSUMER");
@@ -38,16 +38,17 @@ public enum Messages {
     public static final String EXCEPTION_OCCURRED_WHILE_CLOSING = getMessage("EXCEPTION_OCCURRED_WHILE_CLOSING");
 
     private static synchronized Properties getProperties() {
-        if (PROPERTIES != null) {
-            return PROPERTIES;
+        if (properties != null) {
+            return properties;
         }
-        PROPERTIES = new Properties();
-        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(MESSAGES_PROPERTIES_PATH)) {
-            PROPERTIES.load(inputStream);
+        properties = new Properties();
+        try (InputStream inputStream =
+                 Thread.currentThread().getContextClassLoader().getResourceAsStream(MESSAGES_PROPERTIES_PATH)) {
+            properties.load(inputStream);
         } catch (IOException exception) {
             LOGGER.error("Error loading message properties {}", Messages.class, exception);
         }
-        return PROPERTIES;
+        return properties;
     }
 
     /**
