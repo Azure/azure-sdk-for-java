@@ -93,7 +93,7 @@ final class PartitionBasedLoadBalancer {
          */
         final Mono<Map<String, PartitionOwnership>> partitionOwnershipMono = checkpointStore
             .listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroupName)
-            .timeout(Duration.ofSeconds(2)) // TODO: configurable by the user
+            .timeout(Duration.ofMinutes(1))
             .collectMap(PartitionOwnership::getPartitionId, Function.identity());
 
         /*
@@ -101,7 +101,7 @@ final class PartitionBasedLoadBalancer {
          */
         final Mono<List<String>> partitionsMono = eventHubAsyncClient
             .getPartitionIds()
-            .timeout(Duration.ofSeconds(5)) // TODO: configurable
+            .timeout(Duration.ofMinutes(1))
             .collectList();
 
         Mono.zip(partitionOwnershipMono, partitionsMono)
@@ -328,13 +328,21 @@ final class PartitionBasedLoadBalancer {
 
         checkpointStore
             .claimOwnership(ownershipRequest)
-            .timeout(Duration.ofSeconds(1)) // TODO: configurable
+            .timeout(Duration.ofMinutes(1)) // TODO: configurable
             .doOnNext(partitionOwnership -> logger.info("Successfully claimed ownership of partition {}",
                 partitionOwnership.getPartitionId()))
             .doOnError(ex -> logger
                 .warning("Failed to claim ownership of partition {} - {}", ownershipRequest.getPartitionId(),
                     ex.getMessage(), ex))
-            .subscribe(partitionPumpManager::startPartitionPump);
+            .collectList()
+            .zipWith(checkpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName, consumerGroupName)
+                .collectMap(checkpoint -> checkpoint.getPartitionId(), Function.identity()))
+            .subscribe(ownedPartitionCheckpointsTuple -> {
+                ownedPartitionCheckpointsTuple.getT1()
+                    .stream()
+                    .forEach(po -> partitionPumpManager.startPartitionPump(po,
+                        ownedPartitionCheckpointsTuple.getT2().get(po.getPartitionId())));
+            });
     }
 
     private PartitionOwnership createPartitionOwnershipRequest(
@@ -347,12 +355,7 @@ final class PartitionBasedLoadBalancer {
             .setPartitionId(partitionIdToClaim)
             .setConsumerGroup(this.consumerGroupName)
             .setEventHubName(this.eventHubName)
-            .setSequenceNumber(previousPartitionOwnership == null
-                ? null
-                : previousPartitionOwnership.getSequenceNumber())
-            .setOffset(previousPartitionOwnership == null ? null : previousPartitionOwnership.getOffset())
-            .setETag(previousPartitionOwnership == null ? null : previousPartitionOwnership.getETag())
-            .setOwnerLevel(0L);
+            .setETag(previousPartitionOwnership == null ? null : previousPartitionOwnership.getETag());
         return partitionOwnershipRequest;
     }
 }

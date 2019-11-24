@@ -122,9 +122,19 @@ class EventHubConnection implements Closeable {
     @Override
     public void close() {
         if (hasConnection.getAndSet(false)) {
-            final AmqpConnection connection = currentConnection.block(connectionOptions.getRetry().getTryTimeout());
-            if (connection != null) {
-                connection.close();
+            try {
+                final AmqpConnection connection = currentConnection.block(connectionOptions.getRetry().getTryTimeout());
+                if (connection != null) {
+                    connection.close();
+                }
+
+                if (connectionOptions.getScheduler() != null && !connectionOptions.getScheduler().isDisposed()) {
+                    connectionOptions.getScheduler().dispose();
+                }
+            } catch (IOException exception) {
+                throw logger.logExceptionAsError(
+                    new AmqpException(false, "Unable to close connection to service", exception,
+                        new AmqpErrorContext(connectionOptions.getFullyQualifiedNamespace())));
             }
         }
     }

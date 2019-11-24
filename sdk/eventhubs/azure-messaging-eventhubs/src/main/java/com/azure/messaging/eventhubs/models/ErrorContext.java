@@ -10,7 +10,7 @@ import java.util.Objects;
  * This class contains information about an error that occurred while processing events.
  */
 @Immutable
-public class EventProcessingErrorContext {
+public class ErrorContext {
     private final PartitionContext partitionContext;
     private final Throwable throwable;
 
@@ -21,7 +21,7 @@ public class EventProcessingErrorContext {
      * @param throwable The {@link Throwable error} that occurred.
      * @throws NullPointerException if {@code partitionContext} or {@code throwable} is {@code null}.
      */
-    public EventProcessingErrorContext(final PartitionContext partitionContext, final Throwable throwable) {
+    public ErrorContext(final PartitionContext partitionContext, final Throwable throwable) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");
         this.throwable = Objects.requireNonNull(throwable, "'throwable' cannot be null");
     }

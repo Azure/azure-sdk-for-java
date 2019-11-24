@@ -97,7 +97,7 @@ public final class BlobContainerClientBuilder {
      * @return a {@link BlobContainerAsyncClient} created from the configurations in this builder.
      */
     public BlobContainerAsyncClient buildAsyncClient() {
-        BuilderHelper.validateCpk(customerProvidedKey, endpoint);
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
 
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
@@ -111,7 +111,7 @@ public final class BlobContainerClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration);
+            httpClient, additionalPolicies, configuration, logger);
 
         return new BlobContainerAsyncClient(pipeline, String.format("%s/%s", endpoint, blobContainerName),
             serviceVersion, accountName, blobContainerName, customerProvidedKey);

@@ -7,19 +7,19 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
-import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
+import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
 
 /**
  * An abstract class defining all the operations that a partition processor can perform. Users of {@link
- * EventProcessorClient} should extend from this class and implement {@link #processEvent(PartitionEvent)} for
+ * EventProcessorClient} should extend from this class and implement {@link #processEvent(EventContext)} for
  * processing events. Additionally, users can override:
  * <ul>
  *     <li>{@link #initialize(InitializationContext)} - This method is called before at the beginning of processing a
  *     partition.</li>
- *     <li>{@link #processError(EventProcessingErrorContext)} - This method is called if there is an error while
+ *     <li>{@link #processError(ErrorContext)} - This method is called if there is an error while
  *     processing events</li>
  *     <li>{@link #close(CloseContext)} - This method is called at the end of processing a partition.
  *     The {@link CloseReason} specifies why the processing of a partition stopped.</li>
@@ -50,17 +50,17 @@ public abstract class PartitionProcessor {
      * This method is called when a new event is received for this partition. Processing of this event can happen
      * asynchronously.
      *
-     * @param partitionEvent The partition information and the next event data from this partition.
+     * @param eventContext The partition information and the next event data from this partition.
      */
-    public abstract void processEvent(PartitionEvent partitionEvent);
+    public abstract void processEvent(EventContext eventContext);
 
     /**
      * This method is called when an error occurs while receiving events from Event Hub. An error also marks the end of
      * event data stream.
      *
-     * @param eventProcessingErrorContext The error details and partition information where the error occurred.
+     * @param errorContext The error details and partition information where the error occurred.
      */
-    public abstract void processError(EventProcessingErrorContext eventProcessingErrorContext);
+    public abstract void processError(ErrorContext errorContext);
 
     /**
      * This method is called before the partition processor is closed. A partition processor could be closed for various

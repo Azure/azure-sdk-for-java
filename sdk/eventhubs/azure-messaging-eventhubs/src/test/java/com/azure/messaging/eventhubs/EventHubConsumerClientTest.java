@@ -149,7 +149,7 @@ public class EventHubConsumerClientTest {
         Assertions.assertNotNull(receive);
 
         for (PartitionEvent event : receive) {
-            Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties());
+            Assertions.assertNull(event.getLastEnqueuedEventProperties());
         }
     }
 
@@ -176,7 +176,7 @@ public class EventHubConsumerClientTest {
         Assertions.assertNotNull(receive);
 
         for (PartitionEvent event : receive) {
-            final LastEnqueuedEventProperties properties = event.getPartitionContext().getLastEnqueuedEventProperties();
+            final LastEnqueuedEventProperties properties = event.getLastEnqueuedEventProperties();
             Assertions.assertNotNull(properties);
             Assertions.assertNull(properties.getOffset());
             Assertions.assertNull(properties.getSequenceNumber());
