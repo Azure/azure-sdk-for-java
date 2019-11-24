@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
@@ -107,25 +109,33 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         message.setBody(new Data(Binary.create(ByteBuffer.wrap(PAYLOAD.getBytes()))));
         final EventData msgEvent = serializer.deserialize(message, EventData.class);
 
+        final EventPosition enqueuedTime = EventPosition.fromEnqueuedTime(Instant.now());
+        producer.send(msgEvent, sendOptions).block(TIMEOUT);
+
         // Act & Assert
         // We're setting a tracking identifier because we don't want to receive some random operations. We want to
         // receive the event we sent.
-        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.latest())
-            .filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(x -> x.getData()))
-            .then(() -> producer.send(msgEvent, sendOptions).block(TIMEOUT))
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, enqueuedTime)
+            .filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(PartitionEvent::getData))
             .assertNext(event -> {
                 validateAmqpProperties(message, expectedAnnotations, applicationProperties, event);
                 receivedEventData.set(event);
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         Assertions.assertNotNull(receivedEventData.get());
 
-        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.latest())
-            .filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(x -> x.getData()))
-            .then(() -> producer.send(receivedEventData.get(), sendOptions).block(TIMEOUT))
+        System.out.println("Sending another event we received.");
+        final EventPosition enqueuedTime2 = EventPosition.fromEnqueuedTime(Instant.now());
+        producer.send(receivedEventData.get(), sendOptions).block(TIMEOUT);
+
+//        .filter(event -> isMatchingEvent(event, messageTrackingValue))
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, enqueuedTime2)
+            .take(1).map(PartitionEvent::getData))
             .assertNext(event -> validateAmqpProperties(message, expectedAnnotations, applicationProperties, event))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     private void validateAmqpProperties(Message message, Map<Symbol, Object> messageAnnotations,

@@ -124,6 +124,7 @@ class ReactorSender implements AmqpSendLink {
                 }, () -> {
                     endpointStateSink.next(AmqpEndpointState.CLOSED);
                     endpointStateSink.complete();
+                    hasConnected.set(false);
                 }),
 
             this.handler.getErrors().subscribe(error -> {
