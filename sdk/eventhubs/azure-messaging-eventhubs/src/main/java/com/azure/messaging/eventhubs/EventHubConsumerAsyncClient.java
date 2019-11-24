@@ -299,7 +299,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
                 try {
                     value.close();
                 } catch (IOException e) {
-                    logger.warning("Exception occurred while closing consumer for partition '{}'", key, e);
+                    logger.warning(Messages.EXCEPTION_OCCURRED_WHILE_CLOSING, key, e);
                 }
             });
             openPartitionConsumers.clear();
@@ -327,7 +327,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
                     try {
                         consumer.close();
                     } catch (IOException e) {
-                        logger.warning("Exception occurred while closing consumer {}", linkName, e);
+                        logger.warning(Messages.EXCEPTION_CLOSING_CONSUMER, linkName, e);
                     }
                 }
             });

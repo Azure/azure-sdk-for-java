@@ -390,7 +390,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         if (batch == null) {
             return monoError(logger, new NullPointerException("'batch' cannot be null."));
         } else if (batch.getEvents().isEmpty()) {
-            logger.warning("Cannot send an EventBatch that is empty.");
+            logger.warning(Messages.CANNOT_SEND_EVENT_BATCH_EMPTY);
             return Mono.empty();
         }
 
@@ -476,7 +476,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             .flatMap(this::send)
             .then()
             .doOnError(error -> {
-                logger.error("Error sending batch.", error);
+                logger.error(Messages.ERROR_SENDING_BATCH, error);
             });
     }
 
@@ -514,7 +514,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 try {
                     value.close();
                 } catch (IOException e) {
-                    logger.warning("Error closing link for partition: {}", key, e);
+                    logger.warning(Messages.ERROR_CLOSING_LINK_FOR_PARTITION, key, e);
                 }
             });
             openLinks.clear();
@@ -572,7 +572,7 @@ public class EventHubProducerAsyncClient implements Closeable {
 
                 if (maxNumberOfBatches != null && list.size() == maxNumberOfBatches) {
                     final String message = String.format(Locale.US,
-                        "EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches);
+                        Messages.EVENT_DATA_DOES_NOT_FIT, maxNumberOfBatches);
 
                     throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
                         contextProvider.getErrorContext());

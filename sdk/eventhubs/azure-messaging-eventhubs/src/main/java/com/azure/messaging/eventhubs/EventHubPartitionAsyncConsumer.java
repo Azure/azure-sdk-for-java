@@ -81,7 +81,7 @@ class EventHubPartitionAsyncConsumer implements Closeable {
                 });
 
                 link.getErrors().subscribe(error -> {
-                    logger.info("Error received in ReceiveLink. {}", error.toString());
+                    logger.info(Messages.ERROR_RECEIVED_IN_RECEIVE_LINK, error.toString());
 
                     //TODO (conniey): Surface error to EmitterProcessor.
                 });
@@ -93,7 +93,7 @@ class EventHubPartitionAsyncConsumer implements Closeable {
                     try {
                         close();
                     } catch (IOException e) {
-                        logger.error("Error closing consumer: {}", e.toString());
+                        logger.error(Messages.ERROR_CLOSING_CONSUMER, e.toString());
                     }
                 });
             }
@@ -115,7 +115,7 @@ class EventHubPartitionAsyncConsumer implements Closeable {
             })
             .doOnRequest(request -> {
                 if (request < MINIMUM_REQUEST) {
-                    logger.warning("Back pressure request value not valid. It must be between {} and {}.",
+                    logger.warning(Messages.REQUEST_VALUE_NOT_VALID,
                         MINIMUM_REQUEST, MAXIMUM_REQUEST);
                     return;
                 }

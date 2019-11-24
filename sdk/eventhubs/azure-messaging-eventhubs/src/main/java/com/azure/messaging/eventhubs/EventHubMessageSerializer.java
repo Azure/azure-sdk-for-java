@@ -215,7 +215,7 @@ class EventHubMessageSerializer implements MessageSerializer {
             body = bodyData.getValue().getArray();
         } else {
             logger.warning(String.format(Locale.US,
-                "Message body type is not of type Data, but type: %s. Not setting body contents.",
+                Messages.MESSAGE_NOT_OF_TYPE,
                 bodySection != null ? bodySection.getType() : "null"));
 
             body = new byte[0];
