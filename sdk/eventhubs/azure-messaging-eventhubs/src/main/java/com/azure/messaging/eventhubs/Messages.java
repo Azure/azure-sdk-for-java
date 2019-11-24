@@ -15,7 +15,8 @@ import java.util.Properties;
 public enum Messages {
     ;
     private static final ClientLogger LOGGER = new ClientLogger(Messages.class);
-    private static final Properties PROPERTIES = loadProperties();
+    private static Properties PROPERTIES;
+    private static final String MESSAGES_PROPERTIES_PATH = "com/azure/messaging/eventhubs/messages.properties";
     public static final String PROCESS_SPAN_SCOPE_TYPE_ERROR = getMessage("PROCESS_SPAN_SCOPE_TYPE_ERROR");
     public static final String EXCEPTION_CLOSING_CONSUMER = getMessage("EXCEPTION_CLOSING_CONSUMER");
     public static final String MESSAGE_NOT_OF_TYPE = getMessage("MESSAGE_NOT_OF_TYPE");
@@ -36,14 +37,17 @@ public enum Messages {
     public static final String EXCEPTION_OCCURRED_WHILE_EMITTING = getMessage("EXCEPTION_OCCURRED_WHILE_EMITTING");
     public static final String EXCEPTION_OCCURRED_WHILE_CLOSING = getMessage("EXCEPTION_OCCURRED_WHILE_CLOSING");
 
-    private static Properties loadProperties() {
-        final Properties properties = new Properties();
-        try (InputStream inputStream = Messages.class.getClassLoader().getResourceAsStream("messages.properties")) {
-            properties.load(inputStream);
+    private static synchronized Properties getProperties() {
+        if (PROPERTIES != null) {
+            return PROPERTIES;
+        }
+        PROPERTIES = new Properties();
+        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(MESSAGES_PROPERTIES_PATH)) {
+            PROPERTIES.load(inputStream);
         } catch (IOException exception) {
             LOGGER.error("Error loading message properties {}", Messages.class, exception);
         }
-        return properties;
+        return PROPERTIES;
     }
 
     /**
@@ -51,6 +55,6 @@ public enum Messages {
      * @return the message matching the given key
      */
     public static String getMessage(String key) {
-        return String.valueOf(PROPERTIES.getOrDefault(key, key));
+        return String.valueOf(getProperties().getOrDefault(key, key));
     }
 }
