@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class SyncTokenPolicy implements HttpPipelinePolicy {
     private static final String syncTokenHeader = "Sync-Token";
-    private ConcurrentHashMap<String, SyncToken> syncTokenMap;
+    private ConcurrentHashMap<String, SyncToken> syncTokenMap; // key is sync-token id
 
     public SyncTokenPolicy() {
         syncTokenMap = new ConcurrentHashMap<>();
@@ -28,10 +28,38 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        // On Request, get the latest sync token from map
+        return next.process().flatMap(httpResponse -> {
+            // get the latest sync token from map
+            final String syncTokenValue = httpResponse.getRequest().getHeaders().getValue(syncTokenHeader);
+            if (syncTokenValue == null) {
+                return Mono.just(httpResponse);
+            }
 
-        // On response, update the same sync token.
+            // Sync-Token header could have more than one value
+            final String[] syncTokens = syncTokenValue.split(",");
+            for (final String syncTokenStr : syncTokens) {
+                final SyncToken syncToken = new SyncToken().fromSyncTokenString(syncTokenStr);
+                if (syncToken == null) {
+                    return Mono.just(httpResponse);
+                }
 
-        return null;
+                final String tokenId = syncToken.getId();
+                final long tokenSequenceNumber = syncToken.getSequenceNumber();
+
+                if (syncTokenMap.containsKey(tokenId)) {
+                    // get the latest sync token from map
+                    final SyncToken existSyncToken = syncTokenMap.get(tokenId);
+                    if (existSyncToken.getSequenceNumber() < tokenSequenceNumber) {
+                        // update the same sync token.
+                        syncTokenMap.put(tokenId, syncToken);
+                    }
+                } else {
+                    syncTokenMap.put(tokenId, syncToken);
+                }
+            }
+
+            httpResponse.getRequest().getHeaders().put(syncTokenHeader, syncTokenValue);
+            return Mono.just(httpResponse);
+        });
     }
 }

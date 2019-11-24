@@ -12,9 +12,12 @@ import com.azure.core.util.logging.ClientLogger;
 public final class SyncToken {
     private final ClientLogger logger = new ClientLogger(SyncToken.class);
 
-
     private String id, value;
     private long sequenceNumber;
+
+
+    SyncToken() {
+    }
 
     /**
      * Create an instance of SyncToken class
@@ -54,6 +57,19 @@ public final class SyncToken {
         return new SyncToken(id, value, sequenceNumber);
 
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public long getSequenceNumber() {
+        return sequenceNumber;
+    }
+
 
     @Override
     public String toString() {
