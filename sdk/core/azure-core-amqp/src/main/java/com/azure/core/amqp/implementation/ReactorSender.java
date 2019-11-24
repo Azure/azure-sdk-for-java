@@ -70,9 +70,9 @@ class ReactorSender implements AmqpSendLink {
     private final PriorityQueue<WeightedDeliveryTag> pendingSendsQueue =
         new PriorityQueue<>(1000, new DeliveryTagComparator());
     private final ClientLogger logger = new ClientLogger(ReactorSender.class);
-    private final ReplayProcessor<AmqpEndpointState> connectionStates =
+    private final ReplayProcessor<AmqpEndpointState> endpointStates =
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private FluxSink<AmqpEndpointState> connectionStateSink = connectionStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private FluxSink<AmqpEndpointState> endpointStateSink = endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
 
 
     private final TokenManager tokenManager;
@@ -116,18 +116,18 @@ class ReactorSender implements AmqpSendLink {
             this.handler.getEndpointStates().subscribe(
                 state -> {
                     logger.verbose("Connection state: {}", state);
-                    connectionStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
+                    endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
                     logger.error("Error occurred in connection.", error);
-                    connectionStateSink.error(error);
+                    endpointStateSink.error(error);
                 }, () -> {
-                    connectionStateSink.next(AmqpEndpointState.CLOSED);
-                    connectionStateSink.complete();
+                    endpointStateSink.next(AmqpEndpointState.CLOSED);
+                    endpointStateSink.complete();
                 }),
 
             this.handler.getErrors().subscribe(error -> {
                 logger.error("Error occurred in connection.", error);
-                connectionStateSink.error(error);
+                endpointStateSink.error(error);
             }),
 
             this.tokenManager.getAuthorizationResults().subscribe(
@@ -145,7 +145,7 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return connectionStates;
+        return endpointStates;
     }
 
     @Override
@@ -265,7 +265,7 @@ class ReactorSender implements AmqpSendLink {
     @Override
     public void close() {
         subscriptions.dispose();
-        connectionStateSink.complete();
+        endpointStateSink.complete();
         tokenManager.close();
     }
 

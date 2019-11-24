@@ -42,9 +42,9 @@ public class ReactorConnection implements AmqpConnection {
     private final AtomicBoolean hasConnection = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final DirectProcessor<AmqpShutdownSignal> shutdownSignals = DirectProcessor.create();
-    private final ReplayProcessor<AmqpEndpointState> connectionStates =
+    private final ReplayProcessor<AmqpEndpointState> endpointStates =
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private FluxSink<AmqpEndpointState> connectionStateSink = connectionStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private FluxSink<AmqpEndpointState> endpointStatesSink = endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
 
     private final String connectionId;
     private final Mono<Connection> connectionMono;
@@ -96,18 +96,18 @@ public class ReactorConnection implements AmqpConnection {
             this.handler.getEndpointStates().subscribe(
                 state -> {
                     logger.verbose("Connection state: {}", state);
-                    connectionStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
+                    endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
                     logger.error("Error occurred in connection.", error);
-                    connectionStateSink.error(error);
+                    endpointStatesSink.error(error);
                 }, () -> {
-                    connectionStateSink.next(AmqpEndpointState.CLOSED);
-                    connectionStateSink.complete();
+                    endpointStatesSink.next(AmqpEndpointState.CLOSED);
+                    endpointStatesSink.complete();
                 }),
 
             this.handler.getErrors().subscribe(error -> {
                 logger.error("Error occurred in connection.", error);
-                connectionStateSink.error(error);
+                endpointStatesSink.error(error);
             }));
     }
 
@@ -116,7 +116,7 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return connectionStates;
+        return endpointStates;
     }
 
     @Override
@@ -225,7 +225,7 @@ public class ReactorConnection implements AmqpConnection {
         }
 
         subscriptions.dispose();
-        connectionStateSink.complete();
+        endpointStatesSink.complete();
 
         final HashMap<String, AmqpSession> map = new HashMap<>(sessionMap);
 
