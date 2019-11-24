@@ -116,6 +116,7 @@ class ReactorSender implements AmqpSendLink {
             this.handler.getEndpointStates().subscribe(
                 state -> {
                     logger.verbose("Connection state: {}", state);
+                    this.hasConnected.set(state == EndpointState.ACTIVE);
                     endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
                     logger.error("Error occurred in connection.", error);

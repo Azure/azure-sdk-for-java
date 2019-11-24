@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
@@ -99,7 +100,8 @@ public class BackCompatTest extends IntegrationTestBase {
             .filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
             .then(() -> producer.send(eventData, sendOptions).block(TIMEOUT))
             .assertNext(event -> validateAmqpProperties(applicationProperties, event.getData()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(45));
     }
 
     private void validateAmqpProperties(Map<String, Object> expected, EventData event) {
