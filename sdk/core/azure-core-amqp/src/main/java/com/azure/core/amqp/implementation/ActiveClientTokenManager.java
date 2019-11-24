@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.exception.AzureException;
@@ -27,7 +27,7 @@ public class ActiveClientTokenManager implements TokenManager {
     private final ClientLogger logger = new ClientLogger(ActiveClientTokenManager.class);
     private final AtomicBoolean hasScheduled = new AtomicBoolean();
     private final AtomicBoolean hasDisposed = new AtomicBoolean();
-    private final Mono<CBSNode> cbsNode;
+    private final Mono<ClaimsBasedSecurityNode> cbsNode;
     private final String tokenAudience;
     private final String scopes;
     private final Timer timer;
@@ -37,7 +37,7 @@ public class ActiveClientTokenManager implements TokenManager {
     // last refresh interval in milliseconds.
     private AtomicLong lastRefreshInterval = new AtomicLong();
 
-    public ActiveClientTokenManager(Mono<CBSNode> cbsNode, String tokenAudience, String scopes) {
+    public ActiveClientTokenManager(Mono<ClaimsBasedSecurityNode> cbsNode, String tokenAudience, String scopes) {
         this.timer = new Timer(tokenAudience + "-tokenManager");
         this.cbsNode = cbsNode;
         this.tokenAudience = tokenAudience;

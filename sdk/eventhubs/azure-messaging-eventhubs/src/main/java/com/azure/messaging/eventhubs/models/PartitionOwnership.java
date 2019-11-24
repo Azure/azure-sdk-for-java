@@ -12,15 +12,33 @@ import java.util.Objects;
 @Fluent
 public class PartitionOwnership {
 
+    private String fullyQualifiedNamespace;
     private String eventHubName;
-    private String consumerGroupName;
+    private String consumerGroup;
     private String partitionId;
     private String ownerId;
-    private long ownerLevel;
-    private Long offset;
-    private Long sequenceNumber;
     private Long lastModifiedTime;
     private String eTag;
+
+    /**
+     * Returns the fully qualified namespace of the Event Hub.
+     *
+     * @return the fully qualified namespace of the Event Hub.
+     */
+    public String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
+    }
+
+    /**
+     * Sets the fully qualified namespace of the Event Hub.
+     *
+     * @param fullyQualifiedNamespace the fully qualified namespace of the Event Hub.
+     * @return The updated {@link PartitionOwnership} instance.
+     */
+    public PartitionOwnership setFullyQualifiedNamespace(final String fullyQualifiedNamespace) {
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+        return this;
+    }
 
     /**
      * Gets the Event Hub name associated with this ownership record.
@@ -47,18 +65,18 @@ public class PartitionOwnership {
      *
      * @return The consumer group name associated with this ownership record.
      */
-    public String getConsumerGroupName() {
-        return consumerGroupName;
+    public String getConsumerGroup() {
+        return consumerGroup;
     }
 
     /**
      * Sets the consumer group name associated with this ownership record.
      *
-     * @param consumerGroupName The consumer group name associated with this ownership record.
+     * @param consumerGroup The consumer group name associated with this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership setConsumerGroupName(String consumerGroupName) {
-        this.consumerGroupName = Objects.requireNonNull(consumerGroupName, "consumerGroupName cannot be null.");
+    public PartitionOwnership setConsumerGroup(String consumerGroup) {
+        this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
         return this;
     }
 
@@ -99,71 +117,6 @@ public class PartitionOwnership {
      */
     public PartitionOwnership setOwnerId(String ownerId) {
         this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null.");
-        return this;
-    }
-
-    /**
-     * Gets the owner level (aka epoch number) for the event processor identified by
-     * {@link #getOwnerId() this instance}.
-     *
-     * @return The owner level (aka epoch number) for the event processor identified by {@link #getOwnerId() this
-     *     instance}.
-     */
-    public long getOwnerLevel() {
-        return ownerLevel;
-    }
-
-    /**
-     * Sets the owner level (aka epoch number) for the event processor identified by
-     * {@link #getOwnerId() this instance}.
-     *
-     * @param ownerLevel The owner level (aka epoch number) for the event processor identified by {@link #getOwnerId()
-     *     this instance}.
-     * @return The updated {@link PartitionOwnership} instance.
-     */
-    public PartitionOwnership setOwnerLevel(long ownerLevel) {
-        this.ownerLevel = ownerLevel;
-        return this;
-    }
-
-    /**
-     * Gets the offset that serves as checkpoint for the partition id in this ownership record.
-     *
-     * @return The offset that serves as checkpoint for the partition id in this ownership record.
-     */
-    public Long getOffset() {
-        return offset;
-    }
-
-    /**
-     * Sets the offset that serves as checkpoint for the partition id in this ownership record.
-     *
-     * @param offset The offset that serves as checkpoint for the partition id in this ownership record.
-     * @return The updated {@link PartitionOwnership} instance.
-     */
-    public PartitionOwnership setOffset(Long offset) {
-        this.offset = offset;
-        return this;
-    }
-
-    /**
-     * Gets the sequence number that serves as checkpoint for the partition id in this ownership record.
-     *
-     * @return The sequence number that serves as checkpoint for the partition id in this ownership record.
-     */
-    public Long getSequenceNumber() {
-        return sequenceNumber;
-    }
-
-    /**
-     * Sets the sequence number that serves as checkpoint for the partition id in this ownership record.
-     *
-     * @param sequenceNumber The sequence number that serves as checkpoint for the partition id in this ownership
-     *     record.
-     * @return The updated {@link PartitionOwnership} instance.
-     */
-    public PartitionOwnership setSequenceNumber(Long sequenceNumber) {
-        this.sequenceNumber = sequenceNumber;
         return this;
     }
 

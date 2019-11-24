@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.RetryMode;
-import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.message.Message;
@@ -25,8 +25,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
 
-import static com.azure.core.amqp.implementation.CBSChannel.PUT_TOKEN_AUDIENCE;
-import static com.azure.core.amqp.implementation.CBSChannel.PUT_TOKEN_TYPE;
+import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_AUDIENCE;
+import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_TYPE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
@@ -34,8 +34,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CBSChannelTest {
-    private final RetryOptions options = new RetryOptions()
-        .setRetryMode(RetryMode.FIXED)
+    private final AmqpRetryOptions options = new AmqpRetryOptions()
+        .setMode(AmqpRetryMode.FIXED)
         .setTryTimeout(Duration.ofSeconds(45))
         .setMaxRetries(4);
 
@@ -69,7 +69,7 @@ public class CBSChannelTest {
         final String tokenAudience = "path.foo.bar";
         final String scopes = "scopes.cbs.foo";
         final AccessToken accessToken = new AccessToken("an-access-token?", OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC));
-        final CBSChannel cbsChannel = new CBSChannel(Mono.just(requestResponseChannel), tokenCredential,
+        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel), tokenCredential,
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
 
         when(tokenCredential.getToken(argThat(arg -> arg.getScopes().contains(scopes))))
@@ -103,7 +103,7 @@ public class CBSChannelTest {
         final String tokenAudience = "path.foo.bar";
         final String scopes = "scopes.cbs.foo";
         final AccessToken accessToken = new AccessToken("an-access-token?", OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC));
-        final CBSChannel cbsChannel = new CBSChannel(Mono.just(requestResponseChannel), tokenCredential,
+        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel), tokenCredential,
             CBSAuthorizationType.JSON_WEB_TOKEN, options);
 
         when(tokenCredential.getToken(argThat(arg -> arg.getScopes().contains(scopes))))

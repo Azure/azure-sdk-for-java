@@ -3,9 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.TransportType;
-import com.azure.core.amqp.models.ProxyAuthenticationType;
-import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.jupiter.api.Test;
 
@@ -53,14 +53,14 @@ public class EventHubClientBuilderTest {
     @Test
     public void customNoneProxyConfigurationBuilder() {
         // Arrange
-        final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.NONE, PROXY_ADDRESS,
+        final ProxyOptions proxyConfig = new ProxyOptions(ProxyAuthenticationType.NONE, PROXY_ADDRESS,
             null, null);
 
         // Act
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
-            .proxyConfiguration(proxyConfig)
-            .transportType(TransportType.AMQP_WEB_SOCKETS);
+            .proxyOptions(proxyConfig)
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
         // Assert
         assertNotNull(builder.buildAsyncClient());
@@ -70,13 +70,13 @@ public class EventHubClientBuilderTest {
     public void throwsWithProxyWhenTransportTypeNotChanged() {
         assertThrows(IllegalArgumentException.class, () -> {
             // Arrange
-            final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.BASIC, PROXY_ADDRESS,
+            final ProxyOptions proxyConfig = new ProxyOptions(ProxyAuthenticationType.BASIC, PROXY_ADDRESS,
                 null, null);
 
             // Act
             final EventHubClientBuilder builder = new EventHubClientBuilder()
                 .connectionString(CORRECT_CONNECTION_STRING)
-                .proxyConfiguration(proxyConfig);
+                .proxyOptions(proxyConfig);
 
             // Assert
             assertNotNull(builder.buildAsyncClient());

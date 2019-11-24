@@ -21,6 +21,8 @@ trigger:
   paths:
     include:
       - sdk/eventgrid/
+    exclude:
+      - sdk/eventgrid/mgmt-
 
 pr:
   branches:
@@ -32,6 +34,8 @@ pr:
   paths:
     include:
       - sdk/eventgrid/
+    exclude:
+      - sdk/eventgrid/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

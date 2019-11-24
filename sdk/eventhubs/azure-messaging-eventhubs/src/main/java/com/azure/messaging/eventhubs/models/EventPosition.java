@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 
 import java.time.Instant;
@@ -15,8 +14,6 @@ import java.util.Objects;
 /**
  * Defines a position of an {@link EventData} in the Event Hub partition. The position can be an offset, sequence
  * number, or enqueued time.
- *
- * @see EventHubClientBuilder#startingPosition(EventPosition)
  */
 @Immutable
 public final class EventPosition {
@@ -111,7 +108,7 @@ public final class EventPosition {
      *     received.
      * @return An {@link EventPosition} object.
      */
-    public static EventPosition fromOffset(long offset, boolean isInclusive) {
+    private static EventPosition fromOffset(long offset, boolean isInclusive) {
         return new EventPosition(isInclusive, offset, null, null);
     }
 

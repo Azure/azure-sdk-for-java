@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class EventHubProducerClientJavaDocCodeSamples {
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation
         EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
-            .buildProducer();
+            .buildProducerClient();
         // END: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation
 
         producer.close();
@@ -44,7 +44,7 @@ public class EventHubProducerClientJavaDocCodeSamples {
         SendOptions options = new SendOptions()
             .setPartitionId("foo");
 
-        EventHubProducerClient producer = builder.buildProducer();
+        EventHubProducerClient producer = builder.buildProducerClient();
         producer.send(eventData, options);
         // END: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation#partitionId
 
@@ -62,7 +62,7 @@ public class EventHubProducerClientJavaDocCodeSamples {
             new EventData("wheat".getBytes(UTF_8))
         );
 
-        final EventHubProducerClient producer = builder.buildProducer();
+        final EventHubProducerClient producer = builder.buildProducerClient();
         final SendOptions options = new SendOptions()
             .setPartitionKey("bread");
 
@@ -74,16 +74,20 @@ public class EventHubProducerClientJavaDocCodeSamples {
      * Code snippet demonstrating how to create an {@link EventDataBatch} and send it.
      */
     public void sendEventDataBatch() {
-        final EventHubProducerClient producer = builder.buildProducer();
+        final EventHubProducerClient producer = builder.buildProducerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.send#eventDataBatch
-        final List<EventData> telemetryEvents = Arrays.asList(
-            new EventData("92".getBytes(UTF_8)).addProperty("telemetry", "latency"),
-            new EventData("98".getBytes(UTF_8)).addProperty("telemetry", "cpu-temperature"),
-            new EventData("120".getBytes(UTF_8)).addProperty("telemetry", "fps")
-        );
+        final EventData firstEvent = new EventData("92".getBytes(UTF_8));
+        firstEvent.getProperties().put("telemetry", "latency");
 
-        final BatchOptions options = new BatchOptions()
+        final EventData secondEvent = new EventData("98".getBytes(UTF_8));
+        secondEvent.getProperties().put("telemetry", "cpu-temperature");
+
+        final EventData thirdEvent = new EventData("120".getBytes(UTF_8));
+        thirdEvent.getProperties().put("telemetry", "fps");
+
+        final List<EventData> telemetryEvents = Arrays.asList(firstEvent, secondEvent, thirdEvent);
+        final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionKey("telemetry")
             .setMaximumSizeInBytes(256);
 

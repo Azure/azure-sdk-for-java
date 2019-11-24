@@ -4,6 +4,8 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.http.rest.Response
+import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.file.datalake.models.FileSystemItem
 import com.azure.storage.file.datalake.models.FileSystemListDetails
@@ -162,6 +164,21 @@ class ServiceAPITest extends APISpec {
         start                | expiry                            || exception
         null                 | null                              || NullPointerException
         OffsetDateTime.now() | OffsetDateTime.now().minusDays(1) || IllegalArgumentException
+    }
+
+    def "Builder bearer token validation"() {
+        // Technically no additional checks need to be added to datalake builder since the corresponding blob builder fails
+        setup:
+        String endpoint = BlobUrlParts.parse(primaryDataLakeServiceClient.getAccountUrl()).setScheme("http").toUrl()
+        def builder = new DataLakeServiceClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 
 }

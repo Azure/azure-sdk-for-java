@@ -2,7 +2,9 @@ package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
+import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobContainerClient
+import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRequestConditions
@@ -59,6 +61,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
             cc.getBlobContainerUrl().toString())
             .blobName(generateBlobName())
             .buildEncryptedBlobClient()
+    }
+
+    def cleanup() {
+        cc.delete()
     }
 
     // Key and key resolver null
@@ -417,6 +423,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
         then:
         notThrown(IllegalStateException)
         os.toByteArray() == defaultData.array()
+
+        cleanup:
+        cac.delete()
     }
 
     // Tests key resolver
@@ -593,6 +602,20 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         notThrown(Throwable)
+    }
+
+    def "Builder bearer token validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(beac.getBlobUrl()).setScheme("http").toUrl()
+        def builder = new EncryptedBlobClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildEncryptedBlobClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {

@@ -3,10 +3,10 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.ExponentialRetryPolicy;
-import com.azure.core.amqp.FixedRetryPolicy;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,21 +24,21 @@ public class RetryUtil {
     }
 
     /**
-     * Given a set of {@link RetryOptions options}, creates the appropriate retry policy.
+     * Given a set of {@link AmqpRetryOptions options}, creates the appropriate retry policy.
      *
      * @param options A set of options used to configure the retry policy.
      * @return A new retry policy configured with the given {@code options}.
-     * @throws IllegalArgumentException If {@link RetryOptions#getRetryMode()} is not a supported mode.
+     * @throws IllegalArgumentException If {@link AmqpRetryOptions#getMode()} is not a supported mode.
      */
-    public static RetryPolicy getRetryPolicy(RetryOptions options) {
-        switch (options.getRetryMode()) {
+    public static AmqpRetryPolicy getRetryPolicy(AmqpRetryOptions options) {
+        switch (options.getMode()) {
             case FIXED:
-                return new FixedRetryPolicy(options);
+                return new FixedAmqpRetryPolicy(options);
             case EXPONENTIAL:
-                return new ExponentialRetryPolicy(options);
+                return new ExponentialAmqpRetryPolicy(options);
             default:
                 throw new IllegalArgumentException(
-                    String.format(Locale.ROOT, "Mode is not supported: %s", options.getRetryMode()));
+                    String.format(Locale.ROOT, "Mode is not supported: %s", options.getMode()));
         }
     }
 
@@ -49,7 +49,7 @@ public class RetryUtil {
      * @return A publisher that returns the results of the {@link Flux} if any of the retry attempts are successful.
      *         Otherwise, propagates a {@link TimeoutException}.
      */
-    public static <T> Flux<T> withRetry(Flux<T> source, Duration operationTimeout, RetryPolicy retryPolicy) {
+    public static <T> Flux<T> withRetry(Flux<T> source, Duration operationTimeout, AmqpRetryPolicy retryPolicy) {
         return Flux.defer(() -> source.timeout(operationTimeout))
             .retryWhen(errors -> retry(errors, retryPolicy));
     }
@@ -61,12 +61,12 @@ public class RetryUtil {
      * @return A publisher that returns the results of the {@link Flux} if any of the retry attempts are successful.
      *         Otherwise, propagates a {@link TimeoutException}.
      */
-    public static <T> Mono<T> withRetry(Mono<T> source, Duration operationTimeout, RetryPolicy retryPolicy) {
+    public static <T> Mono<T> withRetry(Mono<T> source, Duration operationTimeout, AmqpRetryPolicy retryPolicy) {
         return Mono.defer(() -> source.timeout(operationTimeout))
             .retryWhen(errors -> retry(errors, retryPolicy));
     }
 
-    private static Flux<Long> retry(Flux<Throwable> source, RetryPolicy retryPolicy) {
+    private static Flux<Long> retry(Flux<Throwable> source, AmqpRetryPolicy retryPolicy) {
         return source.zipWith(Flux.range(1, retryPolicy.getMaxRetries() + 1),
             (error, attempt) -> {
                 if (!(error instanceof TimeoutException) || attempt > retryPolicy.getMaxRetries()) {

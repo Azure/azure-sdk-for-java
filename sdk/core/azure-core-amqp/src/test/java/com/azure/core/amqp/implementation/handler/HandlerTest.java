@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorContext;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +50,7 @@ public class HandlerTest {
     @Test
     public void propagatesErrors() {
         // Arrange
-        final ErrorContext context = new ErrorContext("test namespace.");
+        final AmqpErrorContext context = new AmqpErrorContext("test namespace.");
         final Throwable exception = new AmqpException(false, "Some test message.", context);
 
         // Act & Assert

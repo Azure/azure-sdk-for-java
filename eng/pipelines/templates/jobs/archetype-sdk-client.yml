@@ -211,7 +211,7 @@ jobs:
           copy eng/spotbugs-aggregate-report/target/spotbugs/spotbugsXml.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
           copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         displayName: 'Copy reports to artifact staging'
-        condition: ne(variables['Build.Reason'], 'PullRequest')
+        condition: and(succeeded(), in(variables['Build.Reason'], 'Schedule', 'Manual'))
 
       - publish: $(Build.ArtifactStagingDirectory)
         condition: succeededOrFailed()

@@ -25,9 +25,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
 import static com.azure.messaging.eventhubs.TestUtils.getSymbol;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
@@ -54,8 +54,7 @@ public class BackCompatTest extends IntegrationTestBase {
     protected void beforeTest() {
         client = createBuilder().buildAsyncClient();
         consumer = createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .startingPosition(EventPosition.latest())
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         producer = client.createProducer();
@@ -96,15 +95,16 @@ public class BackCompatTest extends IntegrationTestBase {
         final EventData eventData = serializer.deserialize(message, EventData.class);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive(PARTITION_ID).filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.latest())
+            .filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
             .then(() -> producer.send(eventData, sendOptions).block(TIMEOUT))
-            .assertNext(event -> validateAmqpProperties(applicationProperties, event.getEventData()))
+            .assertNext(event -> validateAmqpProperties(applicationProperties, event.getData()))
             .verifyComplete();
     }
 
     private void validateAmqpProperties(Map<String, Object> expected, EventData event) {
         Assertions.assertEquals(expected.size(), event.getProperties().size());
-        Assertions.assertEquals(PAYLOAD, UTF_8.decode(event.getBody()).toString());
+        Assertions.assertEquals(PAYLOAD, event.getBodyAsString());
 
         expected.forEach((key, value) -> {
             Assertions.assertTrue(event.getProperties().containsKey(key));

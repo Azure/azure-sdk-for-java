@@ -157,6 +157,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -214,9 +216,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes one or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
-     * information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     * Writes one or more pages to the page blob. The write size must be a multiple of 512. For more information, see
+     * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
@@ -242,9 +243,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes one or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
-     * information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     * Writes one or more pages to the page blob. The write size must be a multiple of 512. For more information, see
+     * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
@@ -307,8 +307,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes one or more pages from the source page blob to this page blob. The start and end offsets must be a
-     * multiple of 512. For more information, see the
+     * Writes one or more pages from the source page blob to this page blob. The write size must be a multiple of 512.
+     * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -337,8 +337,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes one or more pages from the source page blob to this page blob. The start and end offsets must be a
-     * multiple of 512. For more information, see the
+     * Writes one or more pages from the source page blob to this page blob. The write size must be a multiple of 512.
+     * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -424,8 +424,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Frees the specified pages from the page blob. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     * Frees the specified pages from the page blob. The size of the range must be a multiple of 512. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -446,8 +446,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Frees the specified pages from the page blob. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     * Frees the specified pages from the page blob. The size of the range must be a multiple of 512. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *

@@ -80,7 +80,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -157,8 +157,7 @@
         <version>${jacoco-maven-plugin.version}</version>
         <executions>
           <execution>
-            <id>post-unit-test</id>
-            <phase>test</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>report-aggregate</goal>
             </goals>

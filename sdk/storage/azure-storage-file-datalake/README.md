@@ -18,14 +18,14 @@ efficient data access.
 
 ### Adding the package to your product
 
-Add a dependency on Azure Storage Blob
+Add a dependency on Azure Storage File Datalake
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
+[//]: # ({x-version-update-start;com.azure:azure-storage-file-datalake;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-storage-blob</artifactId>
-    <version>12.0.0</version>
+    <artifactId>azure-storage-file-datalake</artifactId>
+    <version>12.0.0-preview.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

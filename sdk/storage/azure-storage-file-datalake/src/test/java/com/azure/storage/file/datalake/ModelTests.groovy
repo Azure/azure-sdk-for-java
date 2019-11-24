@@ -10,17 +10,17 @@ class ModelTests extends APISpec{
 
     def "RolePermissions creation"() {
         when:
-        def permissions = new RolePermissions(true, true, true)
+        def permissions = new RolePermissions().setReadPermission(true).setExecutePermission(true).setWritePermission(true)
         def other = new RolePermissions(permissions)
 
         then:
-        permissions.read()
-        permissions.execute()
-        permissions.write()
+        permissions.hasReadPermission()
+        permissions.hasExecutePermission()
+        permissions.hasWritePermission()
 
-        other.read()
-        other.execute()
-        other.write()
+        other.hasReadPermission()
+        other.hasExecutePermission()
+        other.hasWritePermission()
 
         permissions.equals(other)
     }
@@ -57,11 +57,11 @@ class ModelTests extends APISpec{
         def other = RolePermissions.parseOctal(1)
 
         then:
-        permissions.owner() == owner
-        permissions.group() == group
-        permissions.other() == other
-        permissions.stickyBit()
-        permissions.extendedInfoInAcl()
+        permissions.getOwner() == owner
+        permissions.getGroup() == group
+        permissions.getOther() == other
+        permissions.hasStickyBit()
+        permissions.hasExtendedInfoInAcl()
     }
 
     def "PathPermissions create"() {
@@ -73,11 +73,11 @@ class ModelTests extends APISpec{
         def other = RolePermissions.parseOctal(1)
 
         then:
-        otherPermission.owner() == owner
-        otherPermission.group() == group
-        otherPermission.other() == other
-        otherPermission.stickyBit()
-        otherPermission.extendedInfoInAcl()
+        otherPermission.getOwner() == owner
+        otherPermission.getGroup() == group
+        otherPermission.getOther() == other
+        otherPermission.hasStickyBit()
+        otherPermission.hasExtendedInfoInAcl()
         permissions.equals(otherPermission)
     }
 
@@ -87,11 +87,11 @@ class ModelTests extends APISpec{
         def permissions = PathPermissions.parseSymbolic(symbol)
 
         then:
-        permissions.other().execute() == execute
-        permissions.other().read() == read
-        permissions.other().write() == write
-        permissions.stickyBit() == stickyBit
-        permissions.extendedInfoInAcl() == extendedInfoInAcl
+        permissions.getOther().hasExecutePermission() == execute
+        permissions.getOther().hasReadPermission() == read
+        permissions.getOther().hasWritePermission() == write
+        permissions.hasStickyBit() == stickyBit
+        permissions.hasExtendedInfoInAcl() == extendedInfoInAcl
 
         where:
         // These test the value of other
@@ -107,10 +107,10 @@ class ModelTests extends APISpec{
         def permissions = PathPermissions.parseOctal(octal)
 
         then:
-        owner == null ? true : permissions.owner() == owner
-        group == null ? true : permissions.group() == group
-        other == null ? true : permissions.other() == other
-        permissions.stickyBit() == stickyBit
+        owner == null ? true : permissions.getOwner() == owner
+        group == null ? true : permissions.getGroup() == group
+        other == null ? true : permissions.getOther() == other
+        permissions.hasStickyBit() == stickyBit
 
         where:
         octal   || owner                         | group                         | other                         | stickyBit

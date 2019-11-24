@@ -4,11 +4,10 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,8 +27,7 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
         producer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
-            .scheduler(Schedulers.parallel())
-            .buildProducer();
+            .buildProducerClient();
     }
 
     @Override
@@ -101,7 +99,7 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        final BatchOptions options = new BatchOptions().setPartitionKey("my-partition-key");
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("my-partition-key");
         final EventDataBatch batch = producer.createBatch(options);
 
         events.forEach(event -> {
@@ -128,5 +126,18 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
         producer.send(events.get(0), new SendOptions().setPartitionId("1"));
         producer.send(events, new SendOptions().setPartitionId("0"));
         producer.send(events, new SendOptions().setPartitionKey("sandwiches"));
+    }
+
+    @Test
+    public void sendAllPartitions() {
+        for (String partitionId : producer.getPartitionIds()) {
+            final EventDataBatch batch = producer.createBatch(new CreateBatchOptions().setPartitionId(partitionId));
+            Assertions.assertNotNull(batch);
+
+            Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid", Integer.parseInt(partitionId))));
+
+            // Act & Assert
+            producer.send(batch);
+        }
     }
 }

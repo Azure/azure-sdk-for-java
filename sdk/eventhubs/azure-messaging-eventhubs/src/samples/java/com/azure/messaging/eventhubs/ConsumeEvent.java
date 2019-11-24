@@ -45,8 +45,7 @@ public class ConsumeEvent {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString(connectionString)
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .startingPosition(EventPosition.latest())
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         // To create a consumer, we need to know what partition to connect to. We take the first partition id.
         // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
@@ -61,18 +60,19 @@ public class ConsumeEvent {
 
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
         // countDownLatch.
-        Disposable subscription = consumer.receive(firstPartition).subscribe(partitionEvent -> {
-            EventData event = partitionEvent.getEventData();
-            String contents = UTF_8.decode(event.getBody()).toString();
-            System.out.println(String.format("[%s] Sequence Number: %s. Contents: %s", countDownLatch.getCount(),
-                event.getSequenceNumber(), contents));
+        Disposable subscription = consumer.receiveFromPartition(firstPartition, EventPosition.latest())
+            .subscribe(partitionEvent -> {
+                EventData event = partitionEvent.getData();
+                String contents = new String(event.getBody(), UTF_8);
+                System.out.println(String.format("[%s] Sequence Number: %s. Contents: %s", countDownLatch.getCount(),
+                    event.getSequenceNumber(), contents));
 
-            countDownLatch.countDown();
-        });
+                countDownLatch.countDown();
+            });
 
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncProducer();
+            .buildAsyncProducerClient();
 
         // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
         // We set the send options to send the events to `firstPartition`.
@@ -88,7 +88,8 @@ public class ConsumeEvent {
             // We wait for all the events to be received before continuing.
             boolean isSuccessful = countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
             if (!isSuccessful) {
-                System.err.printf("Did not complete successfully. There are: %s events left.", countDownLatch.getCount());
+                System.err.printf("Did not complete successfully. There are: %s events left.%n",
+                    countDownLatch.getCount());
             }
         } finally {
             // Dispose and close of all the resources we've created.

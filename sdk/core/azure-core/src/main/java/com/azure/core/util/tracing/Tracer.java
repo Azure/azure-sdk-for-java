@@ -53,6 +53,11 @@ public interface Tracer {
     String SCOPE_KEY = "scope";
 
     /**
+     * Key for {@link Context} which indicates the shared span builder that is in the current Context.
+     */
+    String SPAN_BUILDER_KEY = "builder";
+
+    /**
      * Creates a new tracing span.
      * <p>
      * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span

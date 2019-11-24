@@ -4,10 +4,10 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpConnection;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -16,8 +16,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Class that manages the connection to Azure Event Hubs.
  */
-public class EventHubConnection implements Closeable {
+class EventHubConnection implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConnection.class);
     private final AtomicBoolean hasConnection = new AtomicBoolean();
     private final ConnectionOptions connectionOptions;
@@ -43,15 +43,25 @@ public class EventHubConnection implements Closeable {
             .cache();
     }
 
-    String getFullyQualifiedDomainName() {
-        return connectionOptions.getHostname();
+    /**
+     * Gets the fully qualified namespace for the connection.
+     *
+     * @return The fully qualified namespace this is connection.
+     */
+    public String getFullyQualifiedNamespace() {
+        return connectionOptions.getFullyQualifiedNamespace();
     }
 
-    String getEventHubName() {
+    /**
+     * Gets the name of the Event Hub.
+     *
+     * @return The name of the Event Hub.
+     */
+    public String getEventHubName() {
         return connectionOptions.getEntityPath();
     }
 
-    RetryOptions getRetryOptions() {
+    AmqpRetryOptions getRetryOptions() {
         return connectionOptions.getRetry();
     }
 
@@ -73,11 +83,11 @@ public class EventHubConnection implements Closeable {
      * @param retryOptions Options to use when creating the link.
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
-    Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, RetryOptions retryOptions) {
+    Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions) {
         return currentConnection.flatMap(connection -> connection.createSession(entityPath))
             .flatMap(session -> {
                 logger.verbose("Creating producer for {}", entityPath);
-                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy)
                     .cast(AmqpSendLink.class);
@@ -95,11 +105,11 @@ public class EventHubConnection implements Closeable {
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
-            EventHubConsumerOptions options) {
+            ReceiveOptions options) {
         return currentConnection.flatMap(connection -> connection.createSession(entityPath).cast(EventHubSession.class))
             .flatMap(session -> {
                 logger.verbose("Creating consumer for path: {}", entityPath);
-                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
+                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
 
                 return session.createConsumer(linkName, entityPath, connectionOptions.getRetry().getTryTimeout(),
                     retryPolicy, eventPosition, options);
@@ -119,10 +129,14 @@ public class EventHubConnection implements Closeable {
                 if (connection != null) {
                     connection.close();
                 }
+
+                if (connectionOptions.getScheduler() != null && !connectionOptions.getScheduler().isDisposed()) {
+                    connectionOptions.getScheduler().dispose();
+                }
             } catch (IOException exception) {
                 throw logger.logExceptionAsError(
                     new AmqpException(false, "Unable to close connection to service", exception,
-                        new ErrorContext(connectionOptions.getHostname())));
+                        new AmqpErrorContext(connectionOptions.getFullyQualifiedNamespace())));
             }
         }
     }

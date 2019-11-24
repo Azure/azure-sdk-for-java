@@ -20,6 +20,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 public class RequestIdPolicyTests {
     private final HttpResponse mockResponse = new HttpResponse(null) {
@@ -113,4 +115,37 @@ public class RequestIdPolicyTests {
 
         pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
     }
+
+    @Test
+    public void clientProvidedRequestIdForRetry() throws Exception {
+
+        String customRequestIdHeaderName = "x-ms-client-custom-request-id";
+        String clientProvidedRequestId = UUID.randomUUID().toString();
+
+        Supplier<HttpHeaders> requestIdSupplier = () -> new HttpHeaders().put(customRequestIdHeaderName, clientProvidedRequestId);
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient() {
+                String firstRequestId = null;
+
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    if (firstRequestId != null) {
+                        String newRequestId = request.getHeaders().getValue(customRequestIdHeaderName);
+                        Assertions.assertNotNull(newRequestId);
+                        Assertions.assertEquals(newRequestId, firstRequestId);
+                        Assertions.assertEquals(newRequestId, clientProvidedRequestId);
+                    }
+                    firstRequestId = request.getHeaders().getValue(customRequestIdHeaderName);
+                    if (firstRequestId == null) {
+                        Assertions.fail();
+                    }
+                    return Mono.just(mockResponse);
+                }
+            })
+            .policies(new RequestIdPolicy(requestIdSupplier), new RetryPolicy(new FixedDelay(1, Duration.of(0, ChronoUnit.SECONDS))))
+            .build();
+
+        pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
+    }
+
 }

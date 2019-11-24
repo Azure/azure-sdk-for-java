@@ -125,12 +125,12 @@ ClientSecretCredential credential = new ClientSecretCredentialBuilder()
     .tenantId("<< DIRECTORY (TENANT) ID >>")
     .build();
 
-// The fully qualified domain name (FQDN) for the Event Hubs namespace. This is likely to be similar to:
+// The fully qualified namespace for the Event Hubs instance. This is likely to be similar to:
 // {your-namespace}.servicebus.windows.net
-String fullyQualifiedDomainName = "<< EVENT HUBS FULLY QUALIFIED DOMAIN NAME >>"
+String fullyQualifiedNamespace = "<< EVENT HUBS FULLY QUALIFIED NAMESPACE >>"
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
 EventHubProducerClient client = new EventHubClientBuilder()
-    .credential(host, eventHubName, credential)
+    .credential(fullyQualifiedNamespace, eventHubName, credential)
     .buildProducer();
 ```
 
@@ -196,19 +196,20 @@ EventHubProducerClient producer = new EventHubClientBuilder()
     .buildProducer();
 EventDataBatch eventDataBatch = producer.createBatch();
 for (EventData eventData : eventDataList) {
-  if (!eventDataBatch.tryAdd(eventData)) {
-    producer.send(eventDataBatch);
-    eventDataBatch = producer.createBatch();
-  }
+    if (!eventDataBatch.tryAdd(eventData)) {
+        producer.send(eventDataBatch);
+        eventDataBatch = producer.createBatch();
+    }
 }
+
 // send the last batch of remaining events
 if (eventDataBatch.getSize() > 0) {
-  producer.send(eventDataBatch);
+    producer.send(eventDataBatch);
 }
 ```
 
 To send events to a particular partition, set the optional parameter `partitionId` on
-[`BatchOptions`][source_batchOptions].
+[`CreateBatchOptions`][source_CreateBatchOptions].
 
 #### Partition identifier
 
@@ -227,7 +228,8 @@ Hubs service keep different events or batches of events together on the same par
 setting a `partition key` when publishing the events.
 
 ```java
-BatchOptions batchOptions = new BatchOptions().partitionKey("grouping-key");
+CreateBatchOptions batchOptions = new CreateBatchOptions()
+    .partitionKey("grouping-key");
 EventDataBatch eventDataBatch = producer.createBatch(batchOptions);
 // add events to eventDataBatch
 producer.send(eventDataBatch);
@@ -282,42 +284,44 @@ for (EventData event : events) {
 IterableStream<EventData> nextEvents = consumer.receive(partitionId, 15, Duration.ofSeconds(40));
 ```
 
-### Consume events using an Event Processor
+### Consume events using an Event Processor Client
 
-To consume events for all partitions of an Event Hub, you'll create an [`EventProcessor`][source_eventprocessor] for a
+To consume events for all partitions of an Event Hub, you'll create an [`EventProcessorClient`][source_eventprocessorclient] for a
 specific consumer group. When an Event Hub is created, it provides a default consumer group that can be used to get
 started.
 
-The [`EventProcessor`][source_eventprocessor] will delegate processing of events to a callback function that you 
+The [`EventProcessorClient`][source_eventprocessorclient] will delegate processing of events to a callback function that you 
 provide, allowing you to focus on the logic needed to provide value while the processor holds responsibility for 
 managing the underlying consumer operations.
 
-In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the 
-[`InMemoryEventProcessorStore`][source_inmemoryeventprocessorstore] available in samples, and a callback function that 
+In our example, we will focus on building the [`EventProcessorClient`][source_eventprocessorclient], use the 
+[`InMemoryCheckpointStore`][source_inmemorycheckpointstore] available in samples, and a callback function that 
 processes events received from the Event Hub and writes to console.
 
 ```java
 class Program {
     public static void main(String[] args) {
-        EventProcessor eventProcessor = new EventProcessorBuilder()
+        EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup("<< CONSUMER GROUP NAME >>")
             .connectionString("<< EVENT HUB CONNECTION STRING >>")
-            .eventProcessorStore(new InMemoryEventProcessorStore())
-            .processEvent(partitionEvent -> {
-                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
-                return Mono.empty();
+            .checkpointStore(new InMemoryCheckpointStore())
+            .processEvent(eventContext -> {
+                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
-            .buildEventProcessor();
+            .processError(errorContext -> {
+                System.out.println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
+            })
+            .buildEventProcessorClient();
 
         // This will start the processor. It will start processing events from all partitions.
-        eventProcessor.start();
+        eventProcessorClient.start();
         
         // (for demo purposes only - adding sleep to wait for receiving events)
         TimeUnit.SECONDS.sleep(2); 
 
         // When the user wishes to stop processing events, they can call `stop()`.
-        eventProcessor.stop();
+        eventProcessorClient.stop();
     }
 }
 ```
@@ -442,10 +446,9 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [source_eventhubasyncproducerclient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducerAsyncClient.java
 [source_eventhubclient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubClient.java
 [source_eventHubProducerClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducerClient.java
-[source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
-[source_batchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/BatchOptions.java
-[source_inmemoryeventprocessorstore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryEventProcessorStore.java
+[source_eventprocessorclient]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessorClient.java
+[source_CreateBatchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/CreateBatchOptions.java
+[source_inmemorycheckpointstore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryCheckpointStore.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
-[source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FREADME.png)
