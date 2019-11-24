@@ -3,7 +3,7 @@
 
 package com.azure.core.http.rest;
 
-import com.azure.core.paging.PagedFluxCore;
+import com.azure.core.paging.SimplePagedFlux;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -37,7 +37,7 @@ import java.util.function.Supplier;
  * @see Page
  * @see Flux
  */
-public class PagedFluxBase<T, P extends PagedResponse<T>> extends PagedFluxCore<Void, T, P> {
+public class PagedFluxBase<T, P extends PagedResponse<T>> extends SimplePagedFlux<T, P> {
     /**
      * Creates an instance of {@link PagedFluxBase} that consists of only a single page of results.
      * The only argument to this constructor therefore is a supplier that fetches the first
@@ -65,7 +65,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends PagedFluxCore<
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever,
                          Function<String, Mono<P>> nextPageRetriever) {
-        super((state, continuationToken) -> continuationToken == null
+        super((continuationToken) -> continuationToken == null
                 ? firstPageRetriever.get().flux()
                 : nextPageRetriever.apply(continuationToken).flux());
     }
@@ -109,12 +109,5 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends PagedFluxCore<
     @Override
     public void subscribe(CoreSubscriber<? super T> coreSubscriber) {
         super.subscribe(coreSubscriber);
-    }
-
-    @Override
-    protected Void getState() {
-        // PagedFluxBase has no state to be pass around across
-        // multiple invocations of page retrieval calls
-        return null;
     }
 }

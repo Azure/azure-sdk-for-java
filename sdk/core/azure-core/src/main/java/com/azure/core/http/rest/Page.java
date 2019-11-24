@@ -3,22 +3,14 @@
 
 package com.azure.core.http.rest;
 
-import java.util.List;
+import com.azure.core.paging.PageCore;
 
 /**
  * Represents a paginated REST response from the service.
  *
  * @param <T> Type of the listed objects in that response.
  */
-public interface Page<T> {
-
-    /**
-     * Gets a list of items returned from the service.
-     *
-     * @return A list of items from the service.
-     */
-    List<T> getItems();
-
+public interface Page<T> extends PageCore<T> {
     /**
      * Gets a link to the next page, or {@code null} if there are no more results.
      *

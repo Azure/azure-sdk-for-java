@@ -4,66 +4,110 @@
 package com.azure.core.paging;
 
 import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.PagedFluxBase;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
-import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 /**
- * This class is a Flux that can operate on any type that extends {@link Page} and
- * also provides the ability to operate on individual items.
+ * This class is a Flux that can operate on a type that extends {@link PageCore} and also provides
+ * the ability to operate on individual items. This type does not impose the need of a user facing
+ * continuation token, hence it does not expose a public method to retrieve pages using such token.
  *
- * @param <S> The type of state
- * @param <T> The type of items in a {@link Page}
- * @param <P> The {@link Page} holding items of type {@code T}.
+ * The constructor of this type takes a provider method, that when called should provides Page Retriever
+ * Function which accepts no arguments. The provider is called for each Subscription to the PagedFluxCore
+ * instance. Given provider is called per Subscription, the provider implementation can create one or more
+ * objects to store any state and Page Retriever Function can capture and use those objects. This indirectly
+ * associate the state objects to the Subscription. The Page Retriever Function can get called multiple
+ * times in serial fashion, each time after the completion of the Flux returned by the previous invocation.
+ * The final completion signal will be send to the downstream subscriber when Page Retriever returns {@code null}.
  *
- * @see Page
+ * Example:
+ * ----------------------------------------------------------------------------------
+ *  // BlobsPage is list of blobs. This type does not have the concept of continuation token that can be
+ *  // exposed to the user, hence extends from PageCore. The Page Retrieval Function uses internal state
+ *  // to prepare/retrieve Flux of BlobsPage.
+ *  //
+ *  public class BlobsPage implements PageCore<Blob> {
+ *     @Override
+ *     List<Blob> getItems() {..}
+ *  }
+ *
+ *  // The provider impl that when called provides Page Retrieval Function that returns Flux of BlobsPage.
+ *  // Provider method is called for each Subscription to PagedFluxCore, For each call it create a state and
+ *  // associate it with instance of Page Retrieval Function.
+ *  //
+ *  Supplier<Supplier<Flux<P>>> pageRetrieverProvider = new Supplier<Supplier<Flux<P>>>() {
+ *          @Override
+ *          public Supplier<Flux<P>> get() {
+ *              // create state for each call to Provider.
+ *              State state = new State();
+ *
+ *              // Provide the Page Retrieval Function.
+ *              return new Supplier<Flux<P>> get() {
+ *                  // 'state' object is captured here.
+ *                  if (state.hasMorePage) {
+ *                      // Pass current state to service method that make API call.
+ *                      // state contains necessary data that service method needed
+ *                      // to prepare next set of pages. Before returning, the service
+ *                      // method updates the state for the next call.
+ *                      //
+ *                      Flux<BlobsPage> pages = containerClient.getBlobsPages(state);
+ *                      return pages;
+ *                  } else {
+ *                      // Null indicates no more Pages, upon receiving this, PagedFluxCore
+ *                      // send completion signal to the subscriber.
+ *                      //
+ *                      return null;
+ *                  }
+ *              }
+ *          }
+ *      };
+ *  };
+ *
+ *  class State {
+ *      public int foo;
+ *      public String bar;
+ *      public boolean hasMorePage;
+ *  }
+ * ----------------------------------------------------------------------------------
+ *
+ * @param <T> The type of items in a {@link PageCore}
+ * @param <P> The {@link PageCore} holding items of type {@code T}.
+ *
+ * @see PageCore
  * @see Flux
  */
-public abstract class PagedFluxCore<S, T, P extends Page<T>> extends Flux<T> {
-    private final BiFunction<S, String, Flux<P>> pageRetriever;
+public abstract class PagedFluxCore<T, P extends PageCore<T>> extends Flux<T> {
+
+    private final Supplier<Supplier<Flux<P>>> pageRetrieverProvider;
 
     /**
      * Creates an instance of {@link PagedFluxCore}.
      *
-     * @param pageRetriever Function that returns Flux of pages. The pageRetriever can get
-     *                      called multiple times. The continuation-token from the last Page
-     *                      emitted by the pageRetriever returned Flux will be provided to
-     *                      the next pageRetriever invocation. If the last Page emitted by
-     *                      the pageRetriever returned Flux has null continuation-token then
-     *                      final completion signal will be send to the downstream subscriber.
+     * @param pageRetrieverProvider a provider that returns Page Retriever Function.
      */
-    public PagedFluxCore(BiFunction<S, String, Flux<P>> pageRetriever) {
-        this.pageRetriever = Objects.requireNonNull(pageRetriever,
+    public PagedFluxCore(Supplier<Supplier<Flux<P>>> pageRetrieverProvider) {
+        this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
             "'pageRetriever' function cannot be null.");
     }
 
     /**
-     * Creates a flux of {@link Page} starting from the first page.
-     *
-     * @return A flux of {@link Page} starting from the first page
+     * @return a flux of {@link Page} starting from the first page
      */
     public Flux<P> byPage() {
-        return byPage(null);
-    }
-
-    /**
-     * Creates a flux of {@link Page} starting from the next page associated with the given
-     * continuation token. To start from first page, use {@link #byPage()} instead.
-     *
-     * @param continuationToken The continuation token used to fetch the next page
-     * @return A flux of {@link Page} starting from the page associated with the continuation token
-     */
-    public Flux<P> byPage(String continuationToken) {
-        final String [] lastPageContinuationToken = { continuationToken };
+        FluxHolder<P> holder = new FluxHolder<>();
+        Supplier<Flux<P>> pageRetriever = this.pageRetrieverProvider.get();
         return Mono.just(true)
             .repeat()
-            .concatMap(b -> pageRetriever.apply(getState(), lastPageContinuationToken[0])
-                .doOnNext(page -> lastPageContinuationToken[0] = page.getContinuationToken()))
-            .takeUntil(page -> page.getContinuationToken() == null);
+            .map(b -> {
+                holder.setFlux(pageRetriever.get());
+                return b;
+            })
+            .takeWhile(b -> holder.getFlux() != null)
+            .concatMap(b -> holder.getFlux());
     }
 
     /**
@@ -71,21 +115,27 @@ public abstract class PagedFluxCore<S, T, P extends Page<T>> extends Flux<T> {
      * This is recommended for most common scenarios. This will seamlessly fetch next
      * page when required and provide with a {@link Flux} of items.
      *
-     * @param coreSubscriber The subscriber for this {@link PagedFluxBase}
+     * @param coreSubscriber The subscriber for this {@link PagedFluxCore}
      */
     @Override
     public void subscribe(CoreSubscriber<? super T> coreSubscriber) {
-        byPage(null)
+        byPage()
             .flatMap(page -> Flux.fromIterable(page.getItems()))
             .subscribe(coreSubscriber);
     }
 
     /**
-     * Get a state for a subscription to this flux. For each subscription, this method will
-     * be called for the state instance to be associated with it, such a state instance will
-     * be shared across multiple pageRetriever calls during the life time of that subscription.
-     *
-     * @return get state object
+     *Type to hold Flux<P>.
      */
-    protected abstract S getState();
+    private static class FluxHolder<P> {
+        private Flux<P> value;
+
+        Flux<P> getFlux() {
+            return this.value;
+        }
+
+        void setFlux(Flux<P> value) {
+            this.value = value;
+        }
+    }
 }
