@@ -511,7 +511,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @Override
     public void close() {
-        if (!isDisposed.getAndSet(true)) {
+        if (isDisposed.getAndSet(true)) {
             return;
         }
 

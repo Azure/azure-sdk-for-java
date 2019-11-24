@@ -731,15 +731,35 @@ public class EventHubProducerAsyncClientTest {
     public void closesDedicatedConnection() {
         // Arrange
         EventHubConnection hubConnection = mock(EventHubConnection.class);
-        EventHubProducerAsyncClient sharedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+        EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             hubConnection, retryOptions, tracerProvider, messageSerializer, false);
 
         // Act
-        sharedProducer.close();
+        dedicatedProducer.close();
 
         // Verify
         verify(hubConnection, times(1)).close();
     }
+
+
+    /**
+     * Verifies that when we have a non-shared connection, the producer closes that connection. Only once.
+     */
+    @Test
+    public void closesDedicatedConnectionOnlyOnce() {
+        // Arrange
+        EventHubConnection hubConnection = mock(EventHubConnection.class);
+        EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            hubConnection, retryOptions, tracerProvider, messageSerializer, false);
+
+        // Act
+        dedicatedProducer.close();
+        dedicatedProducer.close();
+
+        // Verify
+        verify(hubConnection, times(1)).close();
+    }
+
 
     static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"
         + "Ut sodales efficitur sapien ut posuere. Morbi sed tellus est. Proin eu erat purus. Proin massa nunc, condimentum id iaculis dignissim, consectetur et odio. Cras suscipit sem eu libero aliquam tincidunt. Nullam ut arcu suscipit, eleifend velit in, cursus libero. Ut eleifend facilisis odio sit amet feugiat. Phasellus at nunc sit amet elit sagittis commodo ac in nisi. Fusce vitae aliquam quam. Integer vel nibh euismod, tempus elit vitae, pharetra est. Duis vulputate enim a elementum dignissim. Morbi dictum enim id elit scelerisque, in elementum nulla pharetra. \n"

@@ -49,6 +49,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
 
     private ConnectionStringProperties properties;
+    private String testName;
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
