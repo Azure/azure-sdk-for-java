@@ -73,8 +73,8 @@ class EventHubConnection implements Closeable {
     }
 
     /**
-     * Creates or gets a send link. The same link is returned if there is an existing send link with the same {@code
-     * linkName}. Otherwise, a new link is created and returned.
+     * Creates or gets a send link. The same link is returned if there is an existing send link with the same
+     * {@code linkName}. Otherwise, a new link is created and returned.
      *
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
