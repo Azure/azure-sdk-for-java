@@ -1,0 +1,88 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://fake-service.search.windows.net/indexers('indexer')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "640b002d-f321-4819-9922-c9c3947636b6",
+      "StatusCode" : "201",
+      "Date" : "Mon, 18 Nov 2019 12:11:56 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D76C20813CA3FE\"",
+      "elapsed-time" : "1516",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "406",
+      "Body" : "{\"@odata.context\":\"https://fake-service.search.windows.net/$metadata#indexers/$entity\",\"@odata.etag\":\"\\\"0x8D76C20813CA3FE\\\"\",\"name\":\"indexer\",\"description\":null,\"dataSourceName\":\"azs-java-test-sql\",\"skillsetName\":null,\"targetIndexName\":\"indexforindexers\",\"disabled\":false,\"schedule\":{\"interval\":\"P1D\",\"startTime\":\"0001-01-01T00:00:00Z\"},\"parameters\":null,\"fieldMappings\":[],\"outputFieldMappings\":[]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://fake-service.search.windows.net/indexers('indexer')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://fake-service.search.windows.net/indexers('indexer')/search.status?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "112449f0-adcb-49cf-91c1-a34dcb670672",
+      "StatusCode" : "200",
+      "Date" : "Mon, 18 Nov 2019 12:11:57 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "31",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "312",
+      "Body" : "{\"@odata.context\":\"https://fake-service.search.windows.net/$metadata#Microsoft.Azure.Search.V2019_05_06.IndexerExecutionInfo\",\"name\":\"indexer\",\"status\":\"running\",\"lastResult\":null,\"executionHistory\":[],\"limits\":{\"maxRunTime\":\"PT0S\",\"maxDocumentExtractionSize\":0,\"maxDocumentContentCharactersToExtract\":0}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://fake-service.search.windows.net/indexers('indexer')/search.run?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "102",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "request-id" : "13afb89c-d49c-48d0-8e71-c1954899c380",
+      "StatusCode" : "202",
+      "Date" : "Mon, 18 Nov 2019 12:11:57 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://fake-service.search.windows.net/indexers('indexer')/search.status?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "112449f0-adcb-49cf-91c1-a34dcb670672",
+      "StatusCode" : "200",
+      "Date" : "Mon, 18 Nov 2019 12:11:57 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "31",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "312",
+      "Body" : "{\"@odata.context\":\"https://fake-service.search.windows.net/$metadata#Microsoft.Azure.Search.V2019_05_06.IndexerExecutionInfo\",\"name\":\"indexer\",\"status\":\"running\",\"lastResult\":{\"status\" : \"inProgress\"},\"executionHistory\":[{\"status\" : \"success\",\"errorMessage\" : null,\"startTime\" : \"2014-11-26T03:37:18.853Z\",\"endTime\" : \"2014-11-26T03:37:19.012Z\",\"errors\" : [],\"warnings\" : [],\"itemsProcessed\" : 11,\"itemsFailed\" : 0,\"initialTrackingState\" : null,\"finalTrackingState\" : null}, {\"status\" : \"transientFailure\",\"errorMessage\" : \"Document key cannot be missing or empty\",\"startTime\" : \"2014-11-26T03:28:10.125Z\",\"endTime\" : \"2014-11-26T03:28:12.007Z\",\"errors\" : [{\"errorMessage\" : \"Document key cannot be missing or empty.\",\"statusCode\" : 400}],\"itemsProcessed\" : 1,\"itemsFailed\" : 1,\"initialTrackingState\" : null,\"finalTrackingState\" : null}],\"limits\":{\"maxRunTime\":\"PT0S\",\"maxDocumentExtractionSize\":0,\"maxDocumentContentCharactersToExtract\":0}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
