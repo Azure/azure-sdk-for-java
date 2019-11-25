@@ -46,7 +46,7 @@ public class IterableStream<T> implements Iterable<T> {
      * @return {@link Stream} of value {@code T}.
      */
     public Stream<T> stream() {
-        return flux.toStream();
+        return flux.toStream(1);
     }
 
     /**
@@ -57,7 +57,7 @@ public class IterableStream<T> implements Iterable<T> {
      */
     @Override
     public Iterator<T> iterator() {
-        return flux.toIterable().iterator();
+        return flux.toIterable(1).iterator();
     }
 
 }

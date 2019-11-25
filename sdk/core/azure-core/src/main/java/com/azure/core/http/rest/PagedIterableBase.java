@@ -46,7 +46,7 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends IterableSt
      * @return {@link Stream} of a Response that extends {@link PagedResponse}
      */
     public Stream<P> streamByPage() {
-        return pagedFluxBase.byPage().toStream();
+        return pagedFluxBase.byPage().toStream(1);
     }
 
     /**
@@ -58,7 +58,7 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends IterableSt
      * with the continuation token
      */
     public Stream<P> streamByPage(String continuationToken) {
-        return pagedFluxBase.byPage(continuationToken).toStream();
+        return pagedFluxBase.byPage(continuationToken).toStream(1);
     }
 
     /**
@@ -68,7 +68,7 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends IterableSt
      * @return {@link Iterable} interface
      */
     public Iterable<P> iterableByPage() {
-        return pagedFluxBase.byPage().toIterable();
+        return pagedFluxBase.byPage().toIterable(1);
     }
 
     /**
@@ -80,6 +80,6 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends IterableSt
      * @return {@link Iterable} interface
      */
     public Iterable<P> iterableByPage(String continuationToken) {
-        return pagedFluxBase.byPage(continuationToken).toIterable();
+        return pagedFluxBase.byPage(continuationToken).toIterable(1);
     }
 }
