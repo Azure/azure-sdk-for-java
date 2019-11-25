@@ -3,6 +3,7 @@
 
 module com.azure.cs.textanalytics {
     requires transitive com.azure.core;
+    requires transitive com.fasterxml.jackson.annotation;
 
     opens com.azure.cs.textanalytics.implementation to com.fasterxml.jackson.databind;
     opens com.azure.cs.textanalytics.models to com.fasterxml.jackson.databind;

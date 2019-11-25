@@ -6,7 +6,6 @@ package com.azure.cs.textanalytics.implementation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.RestProxy;
 
 /**
  * A builder for creating a new instance of the TextAnalyticsAPI type.
@@ -51,9 +50,10 @@ public final class TextAnalyticsAPIBuilder {
      * @return an instance of TextAnalyticsAPIImpl.
      */
     public TextAnalyticsAPIImpl build() {
-        if (pipeline == null) {
-//            this.pipeline = RestProxy.createDefaultPipeline();
-        }
+//        if (pipeline == null) {
+//            // TODO: fix it in swagger
+////            this.pipeline = RestProxy.createDefaultPipeline();
+//        }
         TextAnalyticsAPIImpl client = new TextAnalyticsAPIImpl(pipeline);
         if (this.endpoint != null) {
             client.setEndpoint(this.endpoint);

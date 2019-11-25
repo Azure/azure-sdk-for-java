@@ -21,7 +21,7 @@ public class DocumentResult {
         return id;
     }
 
-    public DocumentResult setId(String id) {
+    DocumentResult setId(String id) {
         this.id = id;
         return this;
     }
@@ -30,7 +30,7 @@ public class DocumentResult {
         return textDocumentStatistics;
     }
 
-    public DocumentResult setTextDocumentStatistics(TextDocumentStatistics textDocumentStatistics) {
+    DocumentResult setTextDocumentStatistics(TextDocumentStatistics textDocumentStatistics) {
         this.textDocumentStatistics = textDocumentStatistics;
         return this;
     }
@@ -39,7 +39,7 @@ public class DocumentResult {
         return error;
     }
 
-    public DocumentResult setError(DocumentError error) {
+    DocumentResult setError(DocumentError error) {
         this.error = error;
         return this;
     }

@@ -16,4 +16,9 @@ public final class KeyPhraseResult extends DocumentResult {
     public IterableStream<KeyPhraseResult> getItems() {
         return items;
     }
+
+    KeyPhraseResult setItems(IterableStream<KeyPhraseResult> items) {
+        this.items = items;
+        return this;
+    }
 }

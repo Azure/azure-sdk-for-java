@@ -14,8 +14,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.cs.textanalytics.implementation.models.MultiLanguageBatchInput;
@@ -71,9 +71,10 @@ public final class TextAnalyticsAPIImpl {
     /**
      * Initializes an instance of TextAnalyticsAPI client.
      */
-    public TextAnalyticsAPIImpl() {
-        this(RestProxy.createDefaultPipeline());
-    }
+//    // TODO: fix it in swagger: this(RestProxy.createDefaultPipeline());
+//    public TextAnalyticsAPIImpl() {
+//        this(RestProxy.create(TextAnalyticsAPIService.class, null));
+//    }
 
     /**
      * Initializes an instance of TextAnalyticsAPI client.

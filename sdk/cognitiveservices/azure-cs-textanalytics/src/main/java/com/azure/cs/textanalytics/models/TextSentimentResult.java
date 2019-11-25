@@ -20,7 +20,17 @@ public final class TextSentimentResult extends DocumentResult {
         return textSentiment;
     }
 
+    TextSentimentResult setTextSentiment(TextSentiment textSentiment) {
+        this.textSentiment = textSentiment;
+        return this;
+    }
+
     public IterableStream<TextSentiment> getItems() {
         return items;
+    }
+
+    TextSentimentResult setItems(IterableStream<TextSentiment> items) {
+        this.items = items;
+        return this;
     }
 }

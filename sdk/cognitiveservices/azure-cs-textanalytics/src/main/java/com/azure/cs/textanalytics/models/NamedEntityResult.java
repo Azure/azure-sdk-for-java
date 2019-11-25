@@ -5,7 +5,6 @@ package com.azure.cs.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.IterableStream;
-import com.azure.cs.textanalytics.implementation.models.EntitiesResult;
 
 /**
  * The NamedEntityResult model.
@@ -16,5 +15,10 @@ public final class NamedEntityResult extends DocumentResult {
 
     public IterableStream<NamedEntity> getItems() {
         return items;
+    }
+
+    NamedEntityResult setItems(IterableStream<NamedEntity> items) {
+        this.items = items;
+        return this;
     }
 }

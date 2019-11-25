@@ -24,15 +24,17 @@ public class DocumentResultCollection<T> extends IterableStream<T> {
         return modelVersion;
     }
 
-    public void setModelVersion(String modelVersion) {
+    DocumentResultCollection setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
+        return this;
     }
 
     public TextBatchStatistics getBatchStatistics() {
         return statistics;
     }
 
-    public void setBatchStatistics(TextBatchStatistics statistics) {
+    DocumentResultCollection setBatchStatistics(TextBatchStatistics statistics) {
         this.statistics = statistics;
+        return this;
     }
 }

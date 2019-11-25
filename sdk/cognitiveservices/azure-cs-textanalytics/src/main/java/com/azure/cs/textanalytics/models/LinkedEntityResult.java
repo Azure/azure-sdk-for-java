@@ -16,4 +16,9 @@ public final class LinkedEntityResult extends DocumentResult {
     public IterableStream<LinkedEntity> getItems() {
         return items;
     }
+
+    LinkedEntityResult setItems(IterableStream<LinkedEntity> items) {
+        this.items = items;
+        return this;
+    }
 }
