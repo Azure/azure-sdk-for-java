@@ -24,7 +24,6 @@ import org.apache.qpid.proton.message.Message;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -155,7 +154,7 @@ class EventHubMessageSerializer implements MessageSerializer {
         } else if (deserializedType == EventHubProperties.class) {
             return (T) toEventHubProperties(amqpBody);
         } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "Class '%s' is not a supported deserializable type.", deserializedType)));
         }
     }
@@ -214,8 +213,7 @@ class EventHubMessageSerializer implements MessageSerializer {
             Data bodyData = (Data) bodySection;
             body = bodyData.getValue().getArray();
         } else {
-            logger.warning(String.format(Locale.US,
-                Messages.MESSAGE_NOT_OF_TYPE,
+            logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE,
                 bodySection != null ? bodySection.getType() : "null"));
 
             body = new byte[0];
@@ -347,7 +345,6 @@ class EventHubMessageSerializer implements MessageSerializer {
                     default:
                         throw new IllegalArgumentException(
                             String.format(
-                                Locale.US,
                                 "Property is not a recognized reserved property name: %s",
                                 key));
                 }
@@ -426,7 +423,7 @@ class EventHubMessageSerializer implements MessageSerializer {
             return Double.BYTES;
         }
 
-        throw new IllegalArgumentException(String.format(Locale.US, "Encoding Type: %s is not supported",
+        throw new IllegalArgumentException(String.format("Encoding Type: %s is not supported",
             obj.getClass()));
     }
 
