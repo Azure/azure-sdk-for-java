@@ -645,4 +645,16 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         createAndValidateIndexer(indexer);
     }
+
+    @Override
+    public void existsReturnsTrueForExistingIndexer() {
+        Indexer indexer = createTestDataSourceAndIndexer();
+
+        Assert.assertTrue(client.indexerExists(indexer.getName()));
+    }
+
+    @Override
+    public void existsReturnsFalseForNonExistingIndexer() {
+        Assert.assertFalse(client.indexerExists("invalidindex"));
+    }
 }

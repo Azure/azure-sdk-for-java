@@ -149,6 +149,12 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged() throws NoSuchFieldException, IllegalAccessException;
 
+    @Test
+    public abstract void existsReturnsTrueForExistingIndexer();
+
+    @Test
+    public abstract void existsReturnsFalseForNonExistingIndexer();
+
     void assertIndexersEqual(Indexer expected, Indexer actual) {
         expected.setETag("none");
         actual.setETag("none");

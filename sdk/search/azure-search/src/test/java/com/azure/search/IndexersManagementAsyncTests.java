@@ -211,9 +211,9 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         return client.createOrUpdateSkillset(skillset).block();
     }
 
-    protected Mono<Indexer>  createIndexer(Indexer indexer,
-                                    AccessCondition accessCondition,
-                                    RequestOptions requestOptions) {
+    protected Mono<Indexer> createIndexer(Indexer indexer,
+                                          AccessCondition accessCondition,
+                                          RequestOptions requestOptions) {
         return client.createOrUpdateIndexer(
             indexer,
             accessCondition,
@@ -229,16 +229,16 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     }
 
     protected Mono<Void> deleteIndexer(String indexerName,
-                                           AccessCondition accessCondition,
-                                           RequestOptions requestOptions) {
+                                       AccessCondition accessCondition,
+                                       RequestOptions requestOptions) {
         return client.deleteIndexer(indexerName,
             accessCondition,
             requestOptions);
     }
 
     protected Mono<Response<Void>> deleteIndexerWithResponse(String indexerName,
-                                       AccessCondition accessCondition,
-                                       RequestOptions requestOptions) {
+                                                             AccessCondition accessCondition,
+                                                             RequestOptions requestOptions) {
         return client.deleteIndexerWithResponse(indexerName,
             accessCondition,
             requestOptions);
@@ -644,5 +644,22 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             .setDataSourceName(datasource.getName());
 
         createAndValidateIndexer(indexer);
+    }
+
+    @Override
+    public void existsReturnsTrueForExistingIndexer() {
+        Indexer indexer = createTestDataSourceAndIndexer();
+
+        StepVerifier.create(client.indexerExists(indexer.getName()))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Override
+    public void existsReturnsFalseForNonExistingIndexer() {
+
+        StepVerifier.create(client.indexerExists("invalidindex"))
+            .expectNext(false)
+            .verifyComplete();
     }
 }

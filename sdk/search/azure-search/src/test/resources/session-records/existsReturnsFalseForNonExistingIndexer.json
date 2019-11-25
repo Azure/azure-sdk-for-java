@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdk163588971893.search.windows.net/indexers('invalidindex')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "12751b4a-0882-43c9-88f4-63b14bf31611",
+      "StatusCode" : "404",
+      "Date" : "Sun, 24 Nov 2019 15:02:11 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "30",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "104",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'invalidindex' was not found in service 'azs-sdk163588971893'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

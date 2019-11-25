@@ -551,6 +551,43 @@ public class SearchServiceClient {
         return asyncClient.getIndexerStatusWithResponse(indexerName, requestOptions, context).block();
     }
 
+
+
+    /**
+     * Determines whether or not the given indexer exists.
+     *
+     * @param indexerName the name of the indexer
+     * @return true if the indexer exists; false otherwise.
+     */
+    public Boolean indexerExists(String indexerName) {
+        return asyncClient.indexerExists(indexerName).block();
+    }
+
+    /**
+     * Determines whether or not the given indexer exists.
+     *
+     * @param indexerName the name of the indexer
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return true if the indexer exists; false otherwise.
+     */
+    public Boolean indexerExists(String indexerName, RequestOptions requestOptions) {
+        return asyncClient.indexerExists(indexerName, requestOptions).block();
+    }
+
+    /**
+     * Determines whether or not the given indexer exists.
+     *
+     * @param indexerName the name of the indexer
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return true if the indexer exists; false otherwise.
+     */
+    public Response<Boolean> indexerExistsWithResponse(String indexerName, RequestOptions requestOptions) {
+        return asyncClient.indexerExistsWithResponse(indexerName, requestOptions).block();
+    }
+
+
     /**
      * Creates a new Azure Cognitive Search index
      *

@@ -737,6 +737,48 @@ public class SearchServiceAsyncClient {
             .map(Function.identity());
     }
 
+
+    /**
+     * Determines whether or not the given indexer exists.
+     *
+     * @param indexerName the name of the indexer
+     * @return true if the indexer exists; false otherwise.
+     */
+    public Mono<Boolean> indexerExists(String indexerName) {
+        return this.indexerExistsWithResponse(indexerName, null).map(Response::getValue);
+    }
+
+    /**
+     * Determines whether or not the given indexer exists.
+     *
+     * @param indexerName the name of the indexer
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return true if the indexer exists; false otherwise.
+     */
+    public Mono<Boolean> indexerExists(String indexerName, RequestOptions requestOptions) {
+        return this.indexerExistsWithResponse(indexerName, requestOptions).map(Response::getValue);
+    }
+
+    /**
+     * Determines whether or not the given indexer exists.
+     *
+     * @param indexerName the name of the indexer
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return true if the indexer exists; false otherwise.
+     */
+    public Mono<Response<Boolean>> indexerExistsWithResponse(String indexerName, RequestOptions requestOptions) {
+        return withContext(context -> this.indexerExistsWithResponse(indexerName, requestOptions, context));
+    }
+
+    Mono<Response<Boolean>> indexerExistsWithResponse(String indexerName,
+                                                         RequestOptions requestOptions,
+                                                         Context context) {
+        return resourceExistsWithResponse(() ->
+            this.getIndexerWithResponse(indexerName, requestOptions, context));
+    }
+
     /**
      * Creates a new Azure Cognitive Search index.
      *
