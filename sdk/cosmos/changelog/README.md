@@ -5,6 +5,9 @@
 - Namespace changes from microsoft-azure-cosmos to azure-cosmos
 - Getter and Setter changes to get() & set() pattern
 
+### 3.3.3
+- ChangeFeedProcessor; added a "catch all" exception handler that keeps the loop which checks and acquires available leases alive until the user stops the change feed processor.
+
 ### 3.3.2
  - ChangeFeedProcessor; fixes and extra logging related to the creations of the lease documents.
  - Port consistency policy bug fix (see https://github.com/Azure/azure-cosmosdb-java/pull/196)
