@@ -6,10 +6,10 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import reactor.core.publisher.Flux;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Holds information about an Event Hub which can come handy while performing operations like
@@ -31,9 +31,10 @@ public final class EventHubProperties {
         final String[] partitionIds) {
         this.name = name;
         this.createdAt = createdAt;
+
         this.partitionIds = partitionIds != null
-            ? new IterableStream<>(Flux.fromArray(Arrays.copyOf(partitionIds, partitionIds.length)))
-            : new IterableStream<>(Flux.empty());
+            ? new IterableStream<>(Arrays.asList(partitionIds))
+            : new IterableStream<>(Collections.emptyList());
     }
 
     /**
