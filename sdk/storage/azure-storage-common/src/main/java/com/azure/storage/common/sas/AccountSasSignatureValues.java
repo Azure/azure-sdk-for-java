@@ -38,7 +38,8 @@ public final class AccountSasSignatureValues {
 
     /**
      * Initializes a new {@link AccountSasSignatureValues} object.
-     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService, AccountSasResourceType)}
+     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
+     * AccountSasResourceType)}
      */
     @Deprecated
     public AccountSasSignatureValues() {
@@ -133,8 +134,8 @@ public final class AccountSasSignatureValues {
      *
      * @param expiryTime Expiry time to set
      * @return the updated AccountSasSignatureValues object.
-     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService, AccountSasResourceType)}
-     * to specify the expiry time.
+     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
+     * AccountSasResourceType)} to specify the expiry time.
      */
     @Deprecated
     public AccountSasSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
@@ -159,8 +160,8 @@ public final class AccountSasSignatureValues {
      * @param permissions Permissions to set.
      * @return the updated AccountSasSignatureValues object.
      * @throws NullPointerException if {@code permissions} is null.
-     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService, AccountSasResourceType)}
-     * to specify the allowed permissions.
+     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
+     * AccountSasResourceType)} to specify the allowed permissions.
      */
     @Deprecated
     public AccountSasSignatureValues setPermissions(AccountSasPermission permissions) {
@@ -200,8 +201,8 @@ public final class AccountSasSignatureValues {
      *
      * @param services Allowed services string to set
      * @return the updated AccountSasSignatureValues object.
-     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService, AccountSasResourceType)}
-     * to specify the services being targeted.
+     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
+     * AccountSasResourceType)} to specify the services being targeted.
      */
     @Deprecated
     public AccountSasSignatureValues setServices(String services) {
@@ -223,8 +224,8 @@ public final class AccountSasSignatureValues {
      *
      * @param resourceTypes Allowed resource types string to set
      * @return the updated AccountSasSignatureValues object.
-     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService, AccountSasResourceType)}
-     * to specify the resource types being targeted.
+     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
+     * AccountSasResourceType)} to specify the resource types being targeted.
      */
     @Deprecated
     public AccountSasSignatureValues setResourceTypes(String resourceTypes) {

@@ -82,14 +82,6 @@ public final class BlobContainerAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobContainerAsyncClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
 
-    /**
-     * Generates a service sas for the blob using the specified {@link BlobServiceSasSignatureValues}
-     * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
-     *
-     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
-     *
-     * @return A {@code String} representing all SAS query parameters.
-     */
     private final String accountName;
     private final String containerName;
     private final BlobServiceVersion serviceVersion;
@@ -917,6 +909,10 @@ public final class BlobContainerAsyncClient {
      * {@link BlobServiceSasSignatureValues}.
      * @see BlobServiceSasSignatureValues for more information on how to construct a user delegation SAS.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
+     *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param userDelegationKey {@link UserDelegationKey}
      *
@@ -931,6 +927,10 @@ public final class BlobContainerAsyncClient {
     /**
      * Generates a service sas for the container using the specified {@link BlobServiceSasSignatureValues}
      * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.generateSas#BlobServiceSasSignatureValues}
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      *

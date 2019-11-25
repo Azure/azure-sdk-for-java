@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpPipeline;
@@ -7,6 +10,11 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.time.OffsetDateTime;
 
+/**
+ * This class provides helper methods for sas.
+ *
+ * RESERVED FOR INTERNAL USE.
+ */
 public class SasImplUtils {
     /**
      * Extracts the {@link StorageSharedKeyCredential} from a {@link HttpPipeline}

@@ -9,22 +9,24 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
-import com.azure.storage.blob.sas.BlobServiceSasQueryParameters;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.storage.common.implementation.SasImplUtils.formatQueryParameterDate;
 import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQueryParameter;
 
+/**
+ * This class provides helper methods for common blob service sas patterns.
+ *
+ * RESERVED FOR INTERNAL USE.
+ */
 public class BlobSasImplUtil {
     /**
      * The SAS blob constant.
@@ -41,7 +43,7 @@ public class BlobSasImplUtil {
      */
     private static final String SAS_CONTAINER_CONSTANT = "c";
 
-    private final ClientLogger logger = new ClientLogger(BlobServiceSasSignatureValues.class);
+    private final ClientLogger logger = new ClientLogger(BlobSasImplUtil.class);
 
     private String version;
 

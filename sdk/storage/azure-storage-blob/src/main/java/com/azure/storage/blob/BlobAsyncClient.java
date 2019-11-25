@@ -560,6 +560,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * {@link BlobServiceSasSignatureValues}.
      * @see BlobServiceSasSignatureValues for more information on how to construct a user delegation SAS.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
+     *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param userDelegationKey {@link UserDelegationKey}
      *
@@ -574,6 +578,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Generates a service sas for the blob using the specified {@link BlobServiceSasSignatureValues}
      * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.generateSas#BlobServiceSasSignatureValues}
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      *

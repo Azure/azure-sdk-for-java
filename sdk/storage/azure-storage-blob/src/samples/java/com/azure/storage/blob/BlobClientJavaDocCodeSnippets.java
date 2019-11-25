@@ -15,6 +15,9 @@ import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.common.implementation.Constants;
 
@@ -44,6 +47,7 @@ public class BlobClientJavaDocCodeSnippets {
     private String value1 = "val1";
     private String value2 = "val2";
     private String filePath = "filePath";
+    private UserDelegationKey userDelegationKey;
 
     /**
      * Code snippets for {@link BlobClient#exists()}
@@ -426,5 +430,32 @@ public class BlobClientJavaDocCodeSnippets {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
         // END: com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration
+    }
+
+
+    /**
+     * Code snippet for {@link BlobClient#generateUserDelegationSas(BlobServiceSasSignatureValues, UserDelegationKey)}
+     * and {@link BlobClient#generateSas(BlobServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        // BEGIN: com.azure.storage.blob.BlobClient.generateSas#BlobServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        BlobSasPermission permission = new BlobSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.blob.BlobClient.generateSas#BlobServiceSasSignatureValues
+
+        // BEGIN: com.azure.storage.blob.BlobClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        BlobSasPermission myPermission = new BlobSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey);
+        // END: com.azure.storage.blob.BlobClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
     }
 }

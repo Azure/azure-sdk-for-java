@@ -128,19 +128,6 @@ public class BlobAsyncClientBase {
         this.customerProvidedKey = customerProvidedKey;
     }
 
-    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
-        UserDelegationKey userDelegationKey) {
-        return getBlobAsyncClient().generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
-    }
-
-    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
-        return getBlobAsyncClient().generateSas(blobServiceSasSignatureValues);
-    }
-
-    private BlobAsyncClient getBlobAsyncClient() {
-        return prepareBuilder().buildAsyncClient();
-    }
-
     BlobClientBuilder prepareBuilder() {
         BlobClientBuilder builder = new BlobClientBuilder()
             .pipeline(getHttpPipeline())
@@ -1417,4 +1404,44 @@ public class BlobAsyncClientBase {
                 return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind()));
             });
     }
+
+    /**
+     * Generates a user delegation sas for the blob using the specified
+     * {@link BlobServiceSasSignatureValues}.
+     * @see BlobServiceSasSignatureValues for more information on how to construct a user delegation SAS.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey {@link UserDelegationKey}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return getBlobAsyncClient().generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
+    }
+
+    /**
+     * Generates a service sas for the blob using the specified {@link BlobServiceSasSignatureValues}
+     * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
+        return getBlobAsyncClient().generateSas(blobServiceSasSignatureValues);
+    }
+
+    private BlobAsyncClient getBlobAsyncClient() {
+        return prepareBuilder().buildAsyncClient();
+    }
+
 }

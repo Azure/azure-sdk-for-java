@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common.implementation;
 
 import com.azure.core.util.CoreUtils;
@@ -12,6 +15,11 @@ import java.time.OffsetDateTime;
 import static com.azure.storage.common.implementation.SasImplUtils.formatQueryParameterDate;
 import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQueryParameter;
 
+/**
+ * This class provides helper methods for common account sas patterns.
+ *
+ * RESERVED FOR INTERNAL USE.
+ */
 public class AccountSasImplUtil {
 
     private String version;

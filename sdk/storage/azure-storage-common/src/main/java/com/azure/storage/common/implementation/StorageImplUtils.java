@@ -3,11 +3,9 @@
 
 package com.azure.storage.common.implementation;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,7 +19,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
