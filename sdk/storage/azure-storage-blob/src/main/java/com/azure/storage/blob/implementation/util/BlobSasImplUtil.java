@@ -158,7 +158,7 @@ public class BlobSasImplUtil {
      * @param signature The signature of the Sas.
      * @return A String representing the Sas.
      */
-    public String encode(UserDelegationKey userDelegationKey, String signature) {
+    private String encode(UserDelegationKey userDelegationKey, String signature) {
         /*
          We should be url-encoding each key and each value, but because we know all the keys and values will encode to
          themselves, we cheat except for the signature value.
@@ -202,11 +202,12 @@ public class BlobSasImplUtil {
      * Ensures that the builder's properties are in a consistent state.
 
      * 1. If there is no version, use latest.
-     * 2. Resource name is chosen by:
+     * 2. If there is no identifier set, ensure expiryTime and permissions are set.
+     * 3. Resource name is chosen by:
      *    a. If "BlobName" is _not_ set, it is a container resource.
      *    b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
      *    c. Otherwise, it is a blob resource.
-     * 3. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
+     * 4. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
      *
      * Taken from:
      * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
@@ -215,6 +216,13 @@ public class BlobSasImplUtil {
     private void ensureState() {
         if (version == null) {
             version = BlobServiceVersion.getLatest().getVersion();
+        }
+
+        if (identifier == null) {
+            if (expiryTime == null || permissions == null) {
+                throw logger.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
+                    + "and permissions must be set"));
+            }
         }
 
         if (CoreUtils.isNullOrEmpty(blobName)) {
