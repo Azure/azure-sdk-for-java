@@ -58,7 +58,6 @@ com.microsoft.azure:adal4j;1.6.4
 com.microsoft.azure:azure-mgmt-graph-rbac;1.3.0
 com.microsoft.azure:azure-mgmt-keyvault;1.11.1
 com.microsoft.azure:azure-mgmt-resources;1.3.0
-test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
 com.microsoft.azure:msal4j;0.5.0-preview
@@ -149,6 +148,16 @@ org.nanohttpd:nanohttpd;2.3.1
 # what was defined in the parent pom.
 # Format;
 # <some unique identifier, area name preferred>_groupId:artifactId;dependency-version
+
+# This is a unique dependency as it is the only <type>test-jar</type> dependency in the
+# data track. It's also using a SNAPSHOT version which should be disallowed but there is
+# going to be some investigation necessary to find, at the very least, a newer version
+# which is, hopefully, not a SNAPSHOT.
+# sdk\batch\microsoft-azure-batch\pom.xml
+# sdk\keyvault\microsoft-azure-keyvault\pom.xml
+# sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
+# sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
+test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # sdk\applicationinsights\microsoft-azure-applicationinsights-query\pom.xml
 applicationinsights_com.microsoft.azure:azure-arm-client-runtime;1.6.3
