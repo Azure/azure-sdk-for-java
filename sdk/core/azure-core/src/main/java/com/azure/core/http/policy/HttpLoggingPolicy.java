@@ -88,7 +88,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 requestUrl.setQuery(getAllowedQueryString(request.getUrl().getQuery()));
                 logger.info("--> {} {}", request.getHttpMethod(), requestUrl.toUrl());
             } catch (MalformedURLException ex) {
-                return Mono.error(logger.logExceptionAsWarning(new IllegalStateException("Invalid request URL.")));
+                return Mono.error(logger.logExceptionAsWarning(new IllegalStateException("Invalid request URL. URL: "
+                    + request.getUrl())));
             }
         }
 
