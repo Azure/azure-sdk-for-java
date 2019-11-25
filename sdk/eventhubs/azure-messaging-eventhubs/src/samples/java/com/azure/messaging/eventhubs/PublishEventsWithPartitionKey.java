@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Send a list of events with send option configured
+ * Send a Flux of events using a partition key.
  */
 public class PublishEventsWithPartitionKey {
 
@@ -53,8 +53,7 @@ public class PublishEventsWithPartitionKey {
         // we can only be assured that it will be a consistent choice of partition. If you have a need to understand which
         // exact partition an event is published to, you will need to use an Event Hub producer associated with that partition.
         final CreateBatchOptions options = new CreateBatchOptions()
-            .setPartitionKey("basketball")
-            .setMaximumSizeInBytes(256);
+            .setPartitionKey("basketball");
         final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
             producer.createBatch(options).block());
 

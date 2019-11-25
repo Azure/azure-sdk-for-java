@@ -51,8 +51,7 @@ public class PublishEventsToSpecificPartition {
 
         // Create a batch to send the events.
         final CreateBatchOptions options = new CreateBatchOptions()
-            .setPartitionId(firstPartition)
-            .setMaximumSizeInBytes(256);
+            .setPartitionId(firstPartition);
         final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
             producer.createBatch(options).block());
 
