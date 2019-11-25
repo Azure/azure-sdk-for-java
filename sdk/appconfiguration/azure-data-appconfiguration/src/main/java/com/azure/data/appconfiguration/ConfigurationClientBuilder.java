@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
@@ -97,6 +98,7 @@ public final class ConfigurationClientBuilder {
     private HttpPipelinePolicy retryPolicy;
     private Configuration configuration;
     private ConfigurationServiceVersion version;
+    private Supplier<HttpHeaders> headersSupplier;
 
     /**
      * The constructor with defaults.
@@ -374,6 +376,18 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder serviceVersion(ConfigurationServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the customized headers that is used when each request is sent. It is possible to use new header value for
+     * each request.
+     *
+     * @param headersSupplier user's headers supplier applied to each request.
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder headersSupplier(Supplier<HttpHeaders> headersSupplier) {
+        this.headersSupplier = headersSupplier;
         return this;
     }
 
