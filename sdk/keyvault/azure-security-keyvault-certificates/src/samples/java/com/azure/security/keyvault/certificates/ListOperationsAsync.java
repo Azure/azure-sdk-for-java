@@ -38,7 +38,7 @@ public class ListOperationsAsync {
         //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
             .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
-            .setReuseKey(true)
+            .setKeyReusable(true)
             .setKeyCurveName(CertificateKeyCurveName.P_256);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
@@ -101,21 +101,21 @@ public class ListOperationsAsync {
         // Let's set certificate contacts on the Key vault.
         CertificateContact oontactToAdd = new CertificateContact("user", "useremail@exmaple.com");
         certificateAsyncClient.setContacts(Arrays.asList(oontactToAdd)).subscribe(contact ->
-            System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmailAddress())
+            System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmail())
         );
 
         Thread.sleep(3000);
 
         // Let's list all certificate contacts in the key vault.
         certificateAsyncClient.listContacts().subscribe(contact ->
-            System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmailAddress())
+            System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmail())
         );
 
         Thread.sleep(3000);
 
         // Let's delete all certificate contacts in the key vault.
         certificateAsyncClient.listContacts().subscribe(contact ->
-            System.out.printf("Deleted Contact name %s and email %s\n", contact.getName(), contact.getEmailAddress())
+            System.out.printf("Deleted Contact name %s and email %s\n", contact.getName(), contact.getEmail())
         );
 
         Thread.sleep(2000);

@@ -33,7 +33,7 @@ public final class CertificateOperation {
      * Indicates if the certificates generated under this policy should be
      * published to certificate transparency logs.
      */
-    private Boolean certificateTransparency;
+    private boolean certificateTransparency;
 
     /**
      * The certificate signing request (CSR) that is being used in the
@@ -110,7 +110,7 @@ public final class CertificateOperation {
      *
      * @return the certificateTransparency status.
      */
-    public Boolean getCertificateTransparency() {
+    public boolean getCertificateTransparency() {
         return this.certificateTransparency;
     }
 

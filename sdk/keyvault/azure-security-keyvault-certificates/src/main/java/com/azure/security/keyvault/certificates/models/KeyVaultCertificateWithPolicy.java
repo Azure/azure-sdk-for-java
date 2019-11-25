@@ -29,14 +29,6 @@ public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
     }
 
     /**
-     * Get the certificate properties.
-     * @return the certificate properties.
-     */
-    public CertificateProperties getProperties() {
-        return properties;
-    }
-
-    /**
      * Set the certificate properties
      * @param properties the certificate properties
      * @throws NullPointerException if {@code certificateProperties} is null

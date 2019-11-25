@@ -90,19 +90,19 @@ public class ListOperations {
         CertificateContact contactToAdd = new CertificateContact("user", "useremail@exmaple.com");
         for (CertificateContact contact : certificateClient.setContacts(Arrays.asList(contactToAdd))) {
             System.out.printf("Added contact with name %s and email %s to key vault", contact.getName(),
-                contact.getEmailAddress());
+                contact.getEmail());
         }
 
         // Let's list all certificate contacts in the key vault.
         for (CertificateContact contact : certificateClient.listContacts()) {
             System.out.printf("Retrieved contact with name %s and email %s from the key vault", contact.getName(),
-                contact.getEmailAddress());
+                contact.getEmail());
         }
 
         // Let's delete all certificate contacts in the key vault.
         for (CertificateContact contact : certificateClient.deleteContacts()) {
             System.out.printf("Deleted contact with name %s and email %s from key vault", contact.getName(),
-                contact.getEmailAddress());
+                contact.getEmail());
         }
     }
 }

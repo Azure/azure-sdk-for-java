@@ -18,7 +18,7 @@ class KeyProperties {
         this.exportable = certificatePolicy.isExportable();
         this.keySize = certificatePolicy.getKeySize();
         this.keyType = certificatePolicy.getKeyType();
-        this.reuseKey = certificatePolicy.isReuseKey();
+        this.reuseKey = certificatePolicy.isKeyReusable();
     }
 
 

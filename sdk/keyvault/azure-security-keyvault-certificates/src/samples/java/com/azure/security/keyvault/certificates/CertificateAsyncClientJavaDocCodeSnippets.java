@@ -95,7 +95,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(policy ->
                 System.out.printf("Certificate policy is returned with issuer name %s and subject name %s %n",
-                    policy.getIssuerName(), policy.getSubjectName()));
+                    policy.getIssuerName(), policy.getSubject()));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicy#string
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicyWithResponse#string
@@ -103,7 +103,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(policyResponse ->
                 System.out.printf("Certificate policy is returned with issuer name %s and subject name %s %n",
-                    policyResponse.getValue().getIssuerName(), policyResponse.getValue().getSubjectName()));
+                    policyResponse.getValue().getIssuerName(), policyResponse.getValue().getSubject()));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicyWithResponse#string
     }
 
@@ -319,11 +319,11 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscribe(certificatePolicyResponseValue -> {
                 CertificatePolicy certificatePolicy = certificatePolicyResponseValue;
                 // Update transparency
-                certificatePolicy.setCertificateTransparency(true);
+                certificatePolicy.setCertificateTransparent(true);
                 certificateAsyncClient.updateCertificatePolicy("certificateName", certificatePolicy)
                     .subscribe(updatedPolicy ->
                         System.out.printf("Certificate policy's updated transparency status %s %n",
-                            updatedPolicy.isCertificateTransparency().toString()));
+                            updatedPolicy.isCertificateTransparent().toString()));
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicy#string
 
@@ -333,12 +333,12 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscribe(certificatePolicyResponseValue -> {
                 CertificatePolicy certificatePolicy = certificatePolicyResponseValue;
                 // Update transparency
-                certificatePolicy.setCertificateTransparency(true);
+                certificatePolicy.setCertificateTransparent(true);
                 certificateAsyncClient.updateCertificatePolicyWithResponse("certificateName",
                     certificatePolicy)
                     .subscribe(updatedPolicyResponse ->
                         System.out.printf("Certificate policy's updated transparency status %s %n",
-                            updatedPolicyResponse.getValue().isCertificateTransparency().toString()));
+                            updatedPolicyResponse.getValue().isCertificateTransparent().toString()));
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicyWithResponse#string
     }
@@ -567,19 +567,19 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts
         CertificateContact oontactToAdd = new CertificateContact("user", "useremail@exmaple.com");
         certificateAsyncClient.setContacts(Arrays.asList(oontactToAdd)).subscribe(contact ->
-            System.out.printf("Contact name %s and email %s", contact.getName(), contact.getEmailAddress())
+            System.out.printf("Contact name %s and email %s", contact.getName(), contact.getEmail())
         );
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.listContacts
         certificateAsyncClient.listContacts().subscribe(contact ->
-            System.out.printf("Contact name %s and email %s", contact.getName(), contact.getEmailAddress())
+            System.out.printf("Contact name %s and email %s", contact.getName(), contact.getEmail())
         );
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.listContacts
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteContacts
         certificateAsyncClient.deleteContacts().subscribe(contact ->
-            System.out.printf("Deleted Contact name %s and email %s", contact.getName(), contact.getEmailAddress())
+            System.out.printf("Deleted Contact name %s and email %s", contact.getName(), contact.getEmail())
         );
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteContacts
     }

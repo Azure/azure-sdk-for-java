@@ -109,33 +109,33 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createCertificate#String-CertificatePolicy-Boolean-Map}
      *
-     * @param name The name of the certificate to be created.
+     * @param certificateName The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
      * @param enabled The enabled status for the certificate.
      * @param tags The application specific metadata to set.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
-    public PollerFlux<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String name, CertificatePolicy policy, boolean enabled, Map<String, String> tags) {
+    public PollerFlux<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String certificateName, CertificatePolicy policy, boolean enabled, Map<String, String> tags) {
         return new PollerFlux<>(Duration.ofSeconds(1),
-                activationOperation(name, policy, enabled, tags),
-                createPollOperation(name),
-                cancelOperation(name),
-                fetchResultOperation(name));
+                activationOperation(certificateName, policy, enabled, tags),
+                createPollOperation(certificateName),
+                cancelOperation(certificateName),
+                fetchResultOperation(certificateName));
     }
 
     private BiFunction<PollingContext<CertificateOperation>,
             PollResponse<CertificateOperation>,
-            Mono<CertificateOperation>> cancelOperation(String name) {
+            Mono<CertificateOperation>> cancelOperation(String certificateName) {
         return (pollingContext, firstResponse) -> withContext(context
-            -> cancelCertificateOperationWithResponse(name, context)).flatMap(FluxUtil::toMono);
+            -> cancelCertificateOperationWithResponse(certificateName, context)).flatMap(FluxUtil::toMono);
     }
 
-    private Function<PollingContext<CertificateOperation>, Mono<CertificateOperation>> activationOperation(String name,
+    private Function<PollingContext<CertificateOperation>, Mono<CertificateOperation>> activationOperation(String certificateName,
                                                                                       CertificatePolicy policy,
                                                                                       boolean enabled,
                                                                                       Map<String, String> tags) {
-        return (pollingContext) -> withContext(context -> createCertificateWithResponse(name,
+        return (pollingContext) -> withContext(context -> createCertificateWithResponse(certificateName,
                 policy,
                 enabled,
                 tags,
@@ -144,9 +144,9 @@ public class CertificateAsyncClient {
     }
 
     private Function<PollingContext<CertificateOperation>,
-            Mono<KeyVaultCertificate>> fetchResultOperation(String name) {
+            Mono<KeyVaultCertificate>> fetchResultOperation(String certificateName) {
         return (pollingContext) -> withContext(context
-            -> getCertificateWithResponse(name, "", context)
+            -> getCertificateWithResponse(certificateName, "", context)
                         .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue())));
     }
 
@@ -160,13 +160,13 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createCertificate#String-CertificatePolicy}
      *
-     * @param name The name of the certificate to be created.
+     * @param certificateName The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
-    public PollerFlux<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String name, CertificatePolicy policy) {
-        return beginCreateCertificate(name, policy, true, null);
+    public PollerFlux<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
+        return beginCreateCertificate(certificateName, policy, true, null);
     }
 
     /*
@@ -199,17 +199,18 @@ public class CertificateAsyncClient {
                 break;
             default:
                 //should not reach here
+                status = LongRunningOperationStatus.fromString(certificateOperationResponse.getValue().getStatus(), true);
                 break;
         }
         return Mono.just(new PollResponse<>(status, certificateOperationResponse.getValue()));
     }
 
-    Mono<Response<CertificateOperation>> createCertificateWithResponse(String name, CertificatePolicy certificatePolicy, boolean enabled, Map<String, String> tags, Context context) {
+    Mono<Response<CertificateOperation>> createCertificateWithResponse(String certificateName, CertificatePolicy certificatePolicy, boolean enabled, Map<String, String> tags, Context context) {
         CertificateRequestParameters certificateRequestParameters = new CertificateRequestParameters()
             .certificatePolicy(new CertificatePolicyRequest(certificatePolicy))
             .certificateAttributes(new CertificateRequestAttributes().enabled(enabled))
             .tags(tags);
-        return service.createCertificate(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, certificateRequestParameters, CONTENT_TYPE_HEADER_VALUE, context);
+        return service.createCertificate(vaultUrl, certificateName, API_VERSION, ACCEPT_LANGUAGE, certificateRequestParameters, CONTENT_TYPE_HEADER_VALUE, context);
     }
 
 
@@ -220,16 +221,16 @@ public class CertificateAsyncClient {
      * <p>Geta a pending certificate operation. The {@link PollerFlux poller} allows users to automatically poll on the certificate
      * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
      *
-     * @param name The name of the certificate.
-     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist.
+     * @param certificateName The name of the certificate.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist.
      * @return A {@link PollerFlux} polling on the certificate operation status.
      */
-    public PollerFlux<CertificateOperation, KeyVaultCertificate> getCertificateOperation(String name) {
+    public PollerFlux<CertificateOperation, KeyVaultCertificate> getCertificateOperation(String certificateName) {
         return new PollerFlux<>(Duration.ofSeconds(1),
             (pollingContext) -> Mono.empty(),
-            createPollOperation(name),
-            cancelOperation(name),
-            fetchResultOperation(name));
+            createPollOperation(certificateName),
+            cancelOperation(certificateName),
+            fetchResultOperation(certificateName));
     }
 
     /**
@@ -241,15 +242,15 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String}
      *
-     * @param name The name of the certificate to retrieve, cannot be null
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @param certificateName The name of the certificate to retrieve, cannot be null
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return A {@link Mono} containing the requested {@link KeyVaultCertificateWithPolicy certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultCertificateWithPolicy> getCertificate(String name) {
+    public Mono<KeyVaultCertificateWithPolicy> getCertificate(String certificateName) {
         try {
-            return withContext(context -> getCertificateWithResponse(name, "", context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> getCertificateWithResponse(certificateName, "", context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -264,32 +265,32 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#String}
      *
-     * @param name The name of the certificate to retrieve, cannot be null
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @param certificateName The name of the certificate to retrieve, cannot be null
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultCertificateWithPolicy certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultCertificateWithPolicy>> getCertificateWithResponse(String name) {
+    public Mono<Response<KeyVaultCertificateWithPolicy>> getCertificateWithResponse(String certificateName) {
         try {
-            return withContext(context -> getCertificateWithResponse(name, "", context));
+            return withContext(context -> getCertificateWithResponse(certificateName, "", context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<KeyVaultCertificateWithPolicy>> getCertificateWithResponse(String name, String version, Context context) {
-        return service.getCertificateWithPolicy(vaultUrl, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Retrieving certificate - {}",  name))
+    Mono<Response<KeyVaultCertificateWithPolicy>> getCertificateWithResponse(String certificateName, String version, Context context) {
+        return service.getCertificateWithPolicy(vaultUrl, certificateName, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Retrieving certificate - {}",  certificateName))
             .doOnSuccess(response -> logger.info("Retrieved the certificate - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to Retrieve the certificate - {}", name, error));
+            .doOnError(error -> logger.warning("Failed to Retrieve the certificate - {}", certificateName, error));
     }
 
-    Mono<Response<KeyVaultCertificate>> getCertificateVersionWithResponse(String name, String version, Context context) {
-        return service.getCertificate(vaultUrl, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Retrieving certificate - {}",  name))
+    Mono<Response<KeyVaultCertificate>> getCertificateVersionWithResponse(String certificateName, String version, Context context) {
+        return service.getCertificate(vaultUrl, certificateName, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Retrieving certificate - {}",  certificateName))
             .doOnSuccess(response -> logger.info("Retrieved the certificate - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to Retrieve the certificate - {}", name, error));
+            .doOnError(error -> logger.warning("Failed to Retrieve the certificate - {}", certificateName, error));
     }
 
     /**
@@ -301,16 +302,16 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersionWithResponse#string-string}
      *
-     * @param name The name of the certificate to retrieve, cannot be null
+     * @param certificateName The name of the certificate to retrieve, cannot be null
      * @param version The version of the certificate to retrieve. If this is an empty String or null then latest version of the certificate is retrieved.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultCertificate certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultCertificate>> getCertificateVersionWithResponse(String name, String version) {
+    public Mono<Response<KeyVaultCertificate>> getCertificateVersionWithResponse(String certificateName, String version) {
         try {
-            return withContext(context -> getCertificateVersionWithResponse(name, version == null ? "" : version, context));
+            return withContext(context -> getCertificateVersionWithResponse(certificateName, version == null ? "" : version, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -325,16 +326,16 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersion#String-String}
      *
-     * @param name The name of the certificate to retrieve, cannot be null
+     * @param certificateName The name of the certificate to retrieve, cannot be null
      * @param version The version of the certificate to retrieve. If this is an empty String or null then latest version of the certificate is retrieved.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return A {@link Mono} containing the requested {@link KeyVaultCertificate certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultCertificate> getCertificateVersion(String name, String version) {
+    public Mono<KeyVaultCertificate> getCertificateVersion(String certificateName, String version) {
         try {
-            return withContext(context -> getCertificateVersionWithResponse(name, version == null ? "" : version, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> getCertificateVersionWithResponse(certificateName, version == null ? "" : version, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -412,22 +413,22 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#string}
      *
-     * @param name The name of the certificate to be deleted.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a certificate with {@code name} is empty string.
+     * @param certificateName The name of the certificate to be deleted.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link PollerFlux} to poll on the {@link DeletedCertificate deleted certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String name) {
+    public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
         return new PollerFlux<>(Duration.ofSeconds(1),
-            activationOperation(name),
-            createDeletePollOperation(name),
+            activationOperation(certificateName),
+            createDeletePollOperation(certificateName),
             (context, firstResponse) -> Mono.empty(),
             (context) -> Mono.empty());
     }
 
-    private Function<PollingContext<DeletedCertificate>, Mono<DeletedCertificate>> activationOperation(String name) {
-        return (pollingContext) -> withContext(context -> deleteCertificateWithResponse(name, context)
+    private Function<PollingContext<DeletedCertificate>, Mono<DeletedCertificate>> activationOperation(String certificateName) {
+        return (pollingContext) -> withContext(context -> deleteCertificateWithResponse(certificateName, context)
             .flatMap(deletedCertificateResponse -> Mono.just(deletedCertificateResponse.getValue())));
     }
 
@@ -449,11 +450,11 @@ public class CertificateAsyncClient {
                 .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollingContext.getLatestResponse().getValue()));
     }
 
-    Mono<Response<DeletedCertificate>> deleteCertificateWithResponse(String name, Context context) {
-        return service.deleteCertificate(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Deleting certificate - {}",  name))
+    Mono<Response<DeletedCertificate>> deleteCertificateWithResponse(String certificateName, Context context) {
+        return service.deleteCertificate(vaultUrl, certificateName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Deleting certificate - {}",  certificateName))
             .doOnSuccess(response -> logger.info("Deleted the certificate - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to delete the certificate - {}", name, error));
+            .doOnError(error -> logger.warning("Failed to delete the certificate - {}", certificateName, error));
     }
 
     /**
@@ -467,15 +468,15 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getDeletedCertificate#string}
      *
-     * @param name The name of the deleted certificate.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a certificate with {@code name} is empty string.
+     * @param certificateName The name of the deleted certificate.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link Mono} containing the {@link DeletedCertificate deleted certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeletedCertificate> getDeletedCertificate(String name) {
+    public Mono<DeletedCertificate> getDeletedCertificate(String certificateName) {
         try {
-            return withContext(context -> getDeletedCertificateWithResponse(name, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> getDeletedCertificateWithResponse(certificateName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -492,25 +493,25 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getDeletedCertificateWithResponse#string}
      *
-     * @param name The name of the deleted certificate.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a certificate with {@code name} is empty string.
+     * @param certificateName The name of the deleted certificate.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link DeletedCertificate deleted certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedCertificate>> getDeletedCertificateWithResponse(String name) {
+    public Mono<Response<DeletedCertificate>> getDeletedCertificateWithResponse(String certificateName) {
         try {
-            return withContext(context -> getDeletedCertificateWithResponse(name, context));
+            return withContext(context -> getDeletedCertificateWithResponse(certificateName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<DeletedCertificate>> getDeletedCertificateWithResponse(String name, Context context) {
-        return service.getDeletedCertificate(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Retrieving deleted certificate - {}",  name))
+    Mono<Response<DeletedCertificate>> getDeletedCertificateWithResponse(String certificateName, Context context) {
+        return service.getDeletedCertificate(vaultUrl, certificateName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Retrieving deleted certificate - {}",  certificateName))
             .doOnSuccess(response -> logger.info("Retrieved the deleted certificate - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to Retrieve the deleted certificate - {}", name, error));
+            .doOnError(error -> logger.warning("Failed to Retrieve the deleted certificate - {}", certificateName, error));
     }
 
     /**
@@ -523,15 +524,15 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string}
      *
-     * @param name The name of the deleted certificate.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a certificate with {@code name} is empty string.
+     * @param certificateName The name of the deleted certificate.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return An empty {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> purgeDeletedCertificate(String name) {
+    public Mono<Void> purgeDeletedCertificate(String certificateName) {
         try {
-            return purgeDeletedCertificateWithResponse(name).flatMap(FluxUtil::toMono);
+            return purgeDeletedCertificateWithResponse(certificateName).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -547,25 +548,25 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string}
      *
-     * @param name The name of the deleted certificate.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a certificate with {@code name} is empty string.
+     * @param certificateName The name of the deleted certificate.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link Mono} containing a Void Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> purgeDeletedCertificateWithResponse(String name) {
+    public Mono<Response<Void>> purgeDeletedCertificateWithResponse(String certificateName) {
         try {
-            return withContext(context -> purgeDeletedCertificateWithResponse(name, context));
+            return withContext(context -> purgeDeletedCertificateWithResponse(certificateName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> purgeDeletedCertificateWithResponse(String name, Context context) {
-        return service.purgeDeletedcertificate(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Purging certificate - {}",  name))
+    Mono<Response<Void>> purgeDeletedCertificateWithResponse(String certificateName, Context context) {
+        return service.purgeDeletedcertificate(vaultUrl, certificateName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Purging certificate - {}",  certificateName))
             .doOnSuccess(response -> logger.info("Purged the certificate - {}", response.getStatusCode()))
-            .doOnError(error -> logger.warning("Failed to purge the certificate - {}", name, error));
+            .doOnError(error -> logger.warning("Failed to purge the certificate - {}", certificateName, error));
     }
 
     /**
@@ -579,22 +580,22 @@ public class CertificateAsyncClient {
 
      * {@codesnippet com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#string}
      *
-     * @param name The name of the deleted certificate to be recovered.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the certificate vault.
-     * @throws HttpRequestException when a certificate with {@code name} is empty string.
+     * @param certificateName The name of the deleted certificate to be recovered.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the certificate vault.
+     * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link PollerFlux} to poll on the {@link KeyVaultCertificate recovered certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<KeyVaultCertificate, Void> beginRecoverDeletedCertificate(String name) {
+    public PollerFlux<KeyVaultCertificate, Void> beginRecoverDeletedCertificate(String certificateName) {
         return new PollerFlux<>(Duration.ofSeconds(1),
-            recoverActivationOperation(name),
-            createRecoverPollOperation(name),
+            recoverActivationOperation(certificateName),
+            createRecoverPollOperation(certificateName),
             (context, firstResponse) -> Mono.empty(),
             context -> Mono.empty());
     }
 
-    private Function<PollingContext<KeyVaultCertificate>, Mono<KeyVaultCertificate>> recoverActivationOperation(String name) {
-        return (pollingContext) -> withContext(context -> recoverDeletedCertificateWithResponse(name, context)
+    private Function<PollingContext<KeyVaultCertificate>, Mono<KeyVaultCertificate>> recoverActivationOperation(String certificateName) {
+        return (pollingContext) -> withContext(context -> recoverDeletedCertificateWithResponse(certificateName, context)
             .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue())));
     }
 
@@ -618,11 +619,11 @@ public class CertificateAsyncClient {
                     pollingContext.getLatestResponse().getValue()));
     }
 
-    Mono<Response<KeyVaultCertificate>> recoverDeletedCertificateWithResponse(String name, Context context) {
-        return service.recoverDeletedCertificate(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Recovering deleted certificate - {}",  name))
+    Mono<Response<KeyVaultCertificate>> recoverDeletedCertificateWithResponse(String certificateName, Context context) {
+        return service.recoverDeletedCertificate(vaultUrl, certificateName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Recovering deleted certificate - {}",  certificateName))
             .doOnSuccess(response -> logger.info("Recovered the deleted certificate - {}", response.getValue().getProperties().getName()))
-            .doOnError(error -> logger.warning("Failed to recover the deleted certificate - {}", name, error));
+            .doOnError(error -> logger.warning("Failed to recover the deleted certificate - {}", certificateName, error));
     }
 
     /**
@@ -635,15 +636,15 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.backupCertificate#string}
      *
-     * @param name The name of the certificate.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a certificate with {@code name} is empty string.
+     * @param certificateName The name of the certificate.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link Mono} containing the backed up certificate blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<byte[]> backupCertificate(String name) {
+    public Mono<byte[]> backupCertificate(String certificateName) {
         try {
-            return withContext(context -> backupCertificateWithResponse(name, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> backupCertificateWithResponse(certificateName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -659,25 +660,25 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.backupCertificateWithResponse#string}
      *
-     * @param name The name of the certificate.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a certificate with {@code name} is empty string.
+     * @param certificateName The name of the certificate.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the backed up certificate blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<byte[]>> backupCertificateWithResponse(String name) {
+    public Mono<Response<byte[]>> backupCertificateWithResponse(String certificateName) {
         try {
-            return withContext(context -> backupCertificateWithResponse(name, context));
+            return withContext(context -> backupCertificateWithResponse(certificateName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<byte[]>> backupCertificateWithResponse(String name, Context context) {
-        return service.backupCertificate(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Backing up certificate - {}",  name))
+    Mono<Response<byte[]>> backupCertificateWithResponse(String certificateName, Context context) {
+        return service.backupCertificate(vaultUrl, certificateName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Backing up certificate - {}",  certificateName))
             .doOnSuccess(response -> logger.info("Backed up the certificate - {}", response.getStatusCode()))
-            .doOnError(error -> logger.warning("Failed to back up the certificate - {}", name, error))
+            .doOnError(error -> logger.warning("Failed to back up the certificate - {}", certificateName, error))
             .flatMap(certificateBackupResponse -> Mono.just(new SimpleResponse<>(certificateBackupResponse.getRequest(),
                 certificateBackupResponse.getStatusCode(), certificateBackupResponse.getHeaders(), certificateBackupResponse.getValue().getValue())));
     }
@@ -697,7 +698,7 @@ public class CertificateAsyncClient {
      * @return A {@link Mono} containing the {@link KeyVaultCertificate restored certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultCertificate> restoreCertificateBackup(byte[] backup) {
+    public Mono<KeyVaultCertificateWithPolicy> restoreCertificateBackup(byte[] backup) {
         try {
             return withContext(context -> restoreCertificateBackupWithResponse(backup, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -720,7 +721,7 @@ public class CertificateAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificate restored certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultCertificate>> restoreCertificateBackupWithResponse(byte[] backup) {
+    public Mono<Response<KeyVaultCertificateWithPolicy>> restoreCertificateBackupWithResponse(byte[] backup) {
         try {
             return withContext(context -> restoreCertificateBackupWithResponse(backup, context));
         } catch (RuntimeException ex) {
@@ -728,7 +729,7 @@ public class CertificateAsyncClient {
         }
     }
 
-    Mono<Response<KeyVaultCertificate>> restoreCertificateBackupWithResponse(byte[] backup, Context context) {
+    Mono<Response<KeyVaultCertificateWithPolicy>> restoreCertificateBackupWithResponse(byte[] backup, Context context) {
         CertificateRestoreParameters parameters = new CertificateRestoreParameters().certificateBundleBackup(backup);
         return service.restoreCertificate(vaultUrl, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Restoring the certificate"))
@@ -928,34 +929,34 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificateVersions}
      *
-     * @param name The name of the certificate.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return A {@link PagedFlux} containing {@link CertificateProperties certificate} of all the versions of the specified certificate in the vault. Flux is empty if certificate with {@code name} does not exist in key vault.
+     * @param certificateName The name of the certificate.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
+     * @return A {@link PagedFlux} containing {@link CertificateProperties certificate} of all the versions of the specified certificate in the vault. Flux is empty if certificate with {@code certificateName} does not exist in key vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String name) {
+    public PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName) {
         try {
             return new PagedFlux<>(
-                () -> withContext(context -> listCertificateVersionsFirstPage(name, context)),
+                () -> withContext(context -> listCertificateVersionsFirstPage(certificateName, context)),
                 continuationToken -> withContext(context -> listCertificateVersionsNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 
-    PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String name, Context context) {
+    PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName, Context context) {
         return new PagedFlux<>(
-            () -> listCertificateVersionsFirstPage(name, context),
+            () -> listCertificateVersionsFirstPage(certificateName, context),
             continuationToken -> listCertificateVersionsNextPage(continuationToken, context));
     }
 
-    private Mono<PagedResponse<CertificateProperties>> listCertificateVersionsFirstPage(String name, Context context) {
+    private Mono<PagedResponse<CertificateProperties>> listCertificateVersionsFirstPage(String certificateName, Context context) {
         try {
-            return service.getCertificateVersions(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-                .doOnRequest(ignored -> logger.info("Listing certificate versions - {}", name))
-                .doOnSuccess(response -> logger.info("Listed certificate versions - {}", name))
-                .doOnError(error -> logger.warning(String.format("Failed to list certificate versions - {}", name), error));
+            return service.getCertificateVersions(vaultUrl, certificateName, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+                .doOnRequest(ignored -> logger.info("Listing certificate versions - {}", certificateName))
+                .doOnSuccess(response -> logger.info("Listed certificate versions - {}", certificateName))
+                .doOnError(error -> logger.warning(String.format("Failed to list certificate versions - {}", certificateName), error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1043,15 +1044,15 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicy#string}
      *
-     * @param name The name of the certificate whose policy is to be retrieved, cannot be null
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @param certificateName The name of the certificate whose policy is to be retrieved, cannot be null
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested {@link CertificatePolicy certificate policy}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificatePolicy> getCertificatePolicy(String name) {
+    public Mono<CertificatePolicy> getCertificatePolicy(String certificateName) {
         try {
-            return withContext(context -> getCertificatePolicyWithResponse(name, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> getCertificatePolicyWithResponse(certificateName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1066,25 +1067,25 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicyWithResponse#string}
      *
-     * @param name The name of the certificate whose policy is to be retrieved, cannot be null
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @param certificateName The name of the certificate whose policy is to be retrieved, cannot be null
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return A {@link Mono} containing the requested {@link CertificatePolicy certificate policy}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponse(String name) {
+    public Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponse(String certificateName) {
         try {
-            return withContext(context -> getCertificatePolicyWithResponse(name, context));
+            return withContext(context -> getCertificatePolicyWithResponse(certificateName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponse(String name, Context context) {
-        return service.getCertificatePolicy(vaultUrl, API_VERSION, ACCEPT_LANGUAGE, name, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Retrieving certificate policy - {}",  name))
-            .doOnSuccess(response -> logger.info("Retrieved certificate policy - {}", name))
-            .doOnError(error -> logger.warning("Failed to retrieve certificate policy - {}", name, error));
+    Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponse(String certificateName, Context context) {
+        return service.getCertificatePolicy(vaultUrl, API_VERSION, ACCEPT_LANGUAGE, certificateName, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Retrieving certificate policy - {}",  certificateName))
+            .doOnSuccess(response -> logger.info("Retrieved certificate policy - {}", certificateName))
+            .doOnError(error -> logger.warning("Failed to retrieve certificate policy - {}", certificateName, error));
     }
 
     /**
@@ -1100,8 +1101,8 @@ public class CertificateAsyncClient {
      * @param certificateName The name of the certificate whose policy is to be updated.
      * @param policy The certificate policy to be updated.
      * @throws NullPointerException if {@code policy} is {@code null}.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string or if {@code policy} is invalid.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code certificateName} is empty string or if {@code policy} is invalid.
      * @return A {@link Mono} containing the updated {@link CertificatePolicy certificate policy}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1126,7 +1127,7 @@ public class CertificateAsyncClient {
      * @param certificateName The name of the certificate whose policy is to be updated.
      * @param policy The certificate policy is to be updated.
      * @throws NullPointerException if {@code policy} is {@code null}.
-     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string or if {@code policy} is invalid.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the updated {@link CertificatePolicy certificate policy}.
      */
@@ -1157,28 +1158,28 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#String-String}
      *
-     * @param name The name of the certificate issuer to be created.
+     * @param issuerName The name of the certificate issuer to be created.
      * @param provider The provider of the certificate issuer to be created.
-     * @throws ResourceModifiedException when invalid certificate issuer {@code name} or {@code provider} configuration is provided.
-     * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
+     * @throws ResourceModifiedException when invalid certificate issuer {@code issuerName} or {@code provider} configuration is provided.
+     * @throws HttpRequestException when a certificate issuer with {@code issuerName} is empty string.
      * @return A {@link Mono} containing the created {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateIssuer> createIssuer(String name, String provider) {
+    public Mono<CertificateIssuer> createIssuer(String issuerName, String provider) {
         try {
-            return withContext(context -> createIssuerWithResponse(name, provider, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> createIssuerWithResponse(issuerName, provider, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<CertificateIssuer>> createIssuerWithResponse(String name, String provider, Context context) {
+    Mono<Response<CertificateIssuer>> createIssuerWithResponse(String issuerName, String provider, Context context) {
         CertificateIssuerSetParameters parameters = new CertificateIssuerSetParameters()
                     .provider(provider);
-        return service.setCertificateIssuer(vaultUrl, API_VERSION, ACCEPT_LANGUAGE, name, parameters, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Creating certificate issuer - {}", name))
+        return service.setCertificateIssuer(vaultUrl, API_VERSION, ACCEPT_LANGUAGE, issuerName, parameters, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Creating certificate issuer - {}", issuerName))
             .doOnSuccess(response -> logger.info("Created the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to create the certificate issuer - {}", name, error));
+            .doOnError(error -> logger.warning("Failed to create the certificate issuer - {}", issuerName, error));
     }
 
     /**
@@ -1193,7 +1194,7 @@ public class CertificateAsyncClient {
      *
      * @param issuer The configuration of the certificate issuer to be created.
      * @throws ResourceModifiedException when invalid certificate issuer {@code issuer} configuration is provided.
-     * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
+     * @throws HttpRequestException when a certificate issuer with {@code issuerName} is empty string.
      * @return A {@link Mono} containing the created {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1217,7 +1218,7 @@ public class CertificateAsyncClient {
      *
      * @param issuer The configuration of the certificate issuer to be created.
      * @throws ResourceModifiedException when invalid certificate issuer {@code issuer} configuration is provided.
-     * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
+     * @throws HttpRequestException when a certificate issuer with {@link CertificateIssuer#getName() name} is empty string.
      * @return A {@link Mono} containing  a {@link Response} whose {@link Response#getValue() value} contains the created {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1231,7 +1232,7 @@ public class CertificateAsyncClient {
 
     Mono<Response<CertificateIssuer>> createIssuerWithResponse(CertificateIssuer issuer, Context context) {
         CertificateIssuerSetParameters parameters = new CertificateIssuerSetParameters()
-            .provider(issuer.getProperties().getProvider())
+            .provider(issuer.getProvider())
             .credentials(new IssuerCredentials().accountId(issuer.getAccountId()).password(issuer.getPassword()))
             .organizationDetails(new OrganizationDetails().adminDetails(issuer.getAdministratorContacts()))
             .credentials(new IssuerCredentials().password(issuer.getPassword()).accountId(issuer.getAccountId()));
@@ -1251,15 +1252,15 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuerWithResponse#string}
      *
-     * @param name The name of the certificate to retrieve, cannot be null
-     * @throws ResourceNotFoundException when a certificate issuer with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @param issuerName The name of the certificate issuer to retrieve, cannot be null
+     * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code issuerName} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateIssuer>> getIssuerWithResponse(String name) {
+    public Mono<Response<CertificateIssuer>> getIssuerWithResponse(String issuerName) {
         try {
-            return withContext(context -> getIssuerWithResponse(name, context));
+            return withContext(context -> getIssuerWithResponse(issuerName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1274,25 +1275,25 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuer#string}
      *
-     * @param name The name of the certificate to retrieve, cannot be null
-     * @throws ResourceNotFoundException when a certificate issuer with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @param issuerName The name of the certificate to retrieve, cannot be null
+     * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code issuerName} is empty string.
      * @return A {@link Mono} containing the requested {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateIssuer> getIssuer(String name) {
+    public Mono<CertificateIssuer> getIssuer(String issuerName) {
         try {
-            return withContext(context -> getIssuerWithResponse(name, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> getIssuerWithResponse(issuerName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<CertificateIssuer>> getIssuerWithResponse(String name, Context context) {
-        return service.getCertificateIssuer(vaultUrl, API_VERSION, ACCEPT_LANGUAGE, name, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Retrieving certificate issuer - {}",  name))
+    Mono<Response<CertificateIssuer>> getIssuerWithResponse(String issuerName, Context context) {
+        return service.getCertificateIssuer(vaultUrl, API_VERSION, ACCEPT_LANGUAGE, issuerName, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Retrieving certificate issuer - {}",  issuerName))
             .doOnSuccess(response -> logger.info("Retrieved the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to retreive the certificate issuer - {}", name, error));
+            .doOnError(error -> logger.warning("Failed to retreive the certificate issuer - {}", issuerName, error));
     }
 
     /**
@@ -1305,15 +1306,15 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteIssuerWithResponse#string}
      *
-     * @param name The name of the certificate issuer to be deleted.
-     * @throws ResourceNotFoundException when a certificate issuer with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
+     * @param issuerName The name of the certificate issuer to be deleted.
+     * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key vault.
+     * @throws HttpRequestException when a certificate issuer with {@code issuerName} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateIssuer deleted issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String name) {
+    public Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String issuerName) {
         try {
-            return withContext(context -> deleteIssuerWithResponse(name, context));
+            return withContext(context -> deleteIssuerWithResponse(issuerName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1329,25 +1330,25 @@ public class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteIssuer#string}
      *
-     * @param name The name of the certificate issuer to be deleted.
-     * @throws ResourceNotFoundException when a certificate issuer with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
+     * @param issuerName The name of the certificate issuer to be deleted.
+     * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key vault.
+     * @throws HttpRequestException when a certificate issuer with {@code issuerName} is empty string.
      * @return A {@link Mono} containing the {@link CertificateIssuer deleted issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateIssuer> deleteIssuer(String name) {
+    public Mono<CertificateIssuer> deleteIssuer(String issuerName) {
         try {
-            return withContext(context -> deleteIssuerWithResponse(name, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> deleteIssuerWithResponse(issuerName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String name, Context context) {
-        return service.deleteCertificateIssuer(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Deleting certificate issuer - {}",  name))
+    Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String issuerName, Context context) {
+        return service.deleteCertificateIssuer(vaultUrl, issuerName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Deleting certificate issuer - {}",  issuerName))
             .doOnSuccess(response -> logger.info("Deleted the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to delete the certificate issuer - {}", name, error));
+            .doOnError(error -> logger.warning("Failed to delete the certificate issuer - {}", issuerName, error));
     }
 
 
@@ -1460,7 +1461,7 @@ public class CertificateAsyncClient {
 
     Mono<Response<CertificateIssuer>> updateIssuerWithResponse(CertificateIssuer issuer, Context context) {
         CertificateIssuerUpdateParameters updateParameters = new CertificateIssuerUpdateParameters()
-            .provider(issuer.getProperties().getProvider())
+            .provider(issuer.getProvider())
             .organizationDetails(new OrganizationDetails().adminDetails(issuer.getAdministratorContacts()))
             .credentials(new IssuerCredentials().password(issuer.getPassword()).accountId(issuer.getAccountId()));
         return service.updateCertificateIssuer(vaultUrl, issuer.getName(), API_VERSION, ACCEPT_LANGUAGE, updateParameters, CONTENT_TYPE_HEADER_VALUE, context)
@@ -1588,8 +1589,8 @@ public class CertificateAsyncClient {
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperation#string}
      *
      * @param certificateName The name of the certificate which is in the process of being created.
-     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when the {@code name} is empty string.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException when the {@code certificateName} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation deleted certificate operation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1612,8 +1613,8 @@ public class CertificateAsyncClient {
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperationWithResponse#string}
      *
      * @param certificateName The name of the certificate which is in the process of being created.
-     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when the {@code name} is empty string.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist in the key vault.
+     * @throws HttpRequestException when the {@code certificateName} is empty string.
      * @return A {@link Mono} containing the {@link CertificateOperation deleted certificate operation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1676,7 +1677,7 @@ public class CertificateAsyncClient {
 
     Mono<Response<KeyVaultCertificate>> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
         CertificateImportParameters parameters = new CertificateImportParameters()
-            .base64EncodedCertificate(Base64Url.encode(importCertificateOptions.getValue()).toString())
+            .base64EncodedCertificate(Base64Url.encode(importCertificateOptions.getCertificate()).toString())
             .certificateAttributes(new CertificateRequestAttributes(importCertificateOptions))
             .certificatePolicy(importCertificateOptions.getCertificatePolicy())
             .password(importCertificateOptions.getPassword())

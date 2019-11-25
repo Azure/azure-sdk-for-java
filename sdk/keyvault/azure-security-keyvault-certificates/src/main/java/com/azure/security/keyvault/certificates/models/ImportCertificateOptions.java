@@ -16,7 +16,7 @@ public final class ImportCertificateOptions {
     /**
      * The file location of the certificate.
      */
-    private final byte[] value;
+    private final byte[] certificate;
 
     /**
      * The name of the certificate.
@@ -47,12 +47,12 @@ public final class ImportCertificateOptions {
     /**
      * Creates instance of CertificateImportOptions.
      * @param name The name of the key.
-     * @param value The PFX or PEM formatted value of the certificate containing both the x509 certificates and the private key.
+     * @param certificate The PFX or PEM formatted value of the certificate containing both the x509 certificates and the private key.
      */
-    public ImportCertificateOptions(String name, byte[] value) {
-        Objects.requireNonNull(value, "The certificate value parameter cannot be null.");
+    public ImportCertificateOptions(String name, byte[] certificate) {
+        Objects.requireNonNull(certificate, "The certificate value parameter cannot be null.");
         this.name = name;
-        this.value = CoreUtils.clone(value);
+        this.certificate = CoreUtils.clone(certificate);
     }
 
     /**
@@ -141,7 +141,7 @@ public final class ImportCertificateOptions {
      * Get the value of the certificate.
      * @return the value of the certificate.
      */
-    public byte[] getValue() {
-        return CoreUtils.clone(this.value);
+    public byte[] getCertificate() {
+        return CoreUtils.clone(this.certificate);
     }
 }

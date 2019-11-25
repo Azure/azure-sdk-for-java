@@ -25,7 +25,7 @@ class LifetimeActionRequest {
 
     LifetimeActionRequest(LifeTimeAction lifeTimeAction) {
         action = new Action()
-            .setActionType(lifeTimeAction.getActionType());
+            .setActionType(lifeTimeAction.getAction());
         trigger = new Trigger()
             .daysBeforeExpiry(lifeTimeAction.getDaysBeforeExpiry())
             .lifetimePercentage(lifeTimeAction.getLifetimePercentage());

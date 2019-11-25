@@ -14,7 +14,7 @@ public final class CertificateContact {
      * Email addresss.
      */
     @JsonProperty(value = "email")
-    private String emailAddress;
+    private String email;
 
     /**
      * Name.
@@ -32,12 +32,12 @@ public final class CertificateContact {
      * Creates a new contact instance.
      *
      * @param name The name of the contact
-     * @param emailAddress The email address of the contact
+     * @param email The email address of the contact
      * @param phone The phone number of the contact.
      */
-    public CertificateContact(String name, String emailAddress, String phone) {
+    public CertificateContact(String name, String email, String phone) {
         this.name = name;
-        this.emailAddress = emailAddress;
+        this.email = email;
         this.phone = phone;
     }
 
@@ -45,11 +45,11 @@ public final class CertificateContact {
      * Creates a new contact instance.
      *
      * @param name The name of the contact
-     * @param emailAddress The email address of the contact
+     * @param email The email address of the contact
      */
-    public CertificateContact(String name, String emailAddress) {
+    public CertificateContact(String name, String email) {
         this.name = name;
-        this.emailAddress = emailAddress;
+        this.email = email;
     }
 
     CertificateContact() { }
@@ -59,8 +59,8 @@ public final class CertificateContact {
      *
      * @return the emailAddress
      */
-    public String getEmailAddress() {
-        return this.emailAddress;
+    public String getEmail() {
+        return this.email;
     }
 
     /**

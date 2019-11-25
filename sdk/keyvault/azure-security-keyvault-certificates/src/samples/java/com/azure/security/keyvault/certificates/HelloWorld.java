@@ -46,7 +46,7 @@ public class HelloWorld {
       //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
             .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
-            .setReuseKey(true)
+            .setKeyReusable(true)
             .setKeyType(CertificateKeyType.EC)
             .setKeyCurveName(CertificateKeyCurveName.P_256)
             .setValidityInMonths(12);

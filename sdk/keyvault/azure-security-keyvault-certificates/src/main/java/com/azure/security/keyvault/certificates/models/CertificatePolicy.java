@@ -24,7 +24,7 @@ public final class CertificatePolicy {
      * The subject name. Should be a valid X509 distinguished Name.
      */
     @JsonProperty(value = "subject")
-    private String subjectName;
+    private String subject;
 
     /**
      * The subject alternative names.
@@ -62,7 +62,7 @@ public final class CertificatePolicy {
      * published to certificate transparency logs.
      */
     @JsonProperty(value = "cert_transparency")
-    private Boolean certificateTransparency;
+    private Boolean certificateTransparent;
 
     /**
      * The content type of the secret.
@@ -107,7 +107,7 @@ public final class CertificatePolicy {
      * Indicates if the same key pair will be used on certificate renewal.
      */
     @JsonProperty(value = "reuse_key")
-    private Boolean reuseKey;
+    private Boolean keyReusable;
 
     /**
      * Elliptic curve name. For valid values, see KeyCurveName. Possible
@@ -131,11 +131,11 @@ public final class CertificatePolicy {
     /**
      * Creates certificate policy.
      * @param issuerName The issuer name to set.
-     * @param subjectName The subject name to set.
+     * @param subject The subject name to set.
      */
-    public CertificatePolicy(String issuerName, String subjectName) {
+    public CertificatePolicy(String issuerName, String subject) {
         this.issuerName = issuerName;
-        this.subjectName = subjectName;
+        this.subject = subject;
     }
 
     /**
@@ -151,12 +151,12 @@ public final class CertificatePolicy {
     /**
      * Creates certificate policy.
      * @param issuerName The issuer name to set.
-     * @param subjectName The subject name to set.
+     * @param subject The subject name to set.
      * @param subjectAlternativeNames The subject alternative names to set.
      */
-    public CertificatePolicy(String issuerName, String subjectName, SubjectAlternativeNames subjectAlternativeNames) {
+    public CertificatePolicy(String issuerName, String subject, SubjectAlternativeNames subjectAlternativeNames) {
         this.issuerName = issuerName;
-        this.subjectName = subjectName;
+        this.subject = subject;
         this.subjectAlternativeNames = subjectAlternativeNames;
     }
 
@@ -255,22 +255,22 @@ public final class CertificatePolicy {
     }
 
     /**
-     * Get the reuseKey value.
+     * Get the key reuse status.
      *
-     * @return the reuseKey value
+     * @return the key reuse status
      */
-    public Boolean isReuseKey() {
-        return this.reuseKey;
+    public Boolean isKeyReusable() {
+        return this.keyReusable;
     }
 
     /**
      * Set the reuseKey value.
      *
-     * @param reuseKey the reuseKey value to set
+     * @param keyReusable the reuseKey value to set
      * @return the updated CertificatePolicy object itself.
      */
-    public CertificatePolicy setReuseKey(Boolean reuseKey) {
-        this.reuseKey = reuseKey;
+    public CertificatePolicy setKeyReusable(Boolean keyReusable) {
+        this.keyReusable = keyReusable;
         return this;
     }
 
@@ -349,7 +349,7 @@ public final class CertificatePolicy {
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy getSubjectName(String subjectName) {
-        this.subjectName = subjectName;
+        this.subject = subjectName;
         return this;
     }
 
@@ -431,11 +431,11 @@ public final class CertificatePolicy {
     /**
      * Set the certificateTransparency value.
      *
-     * @param certificateTransparency the certificateTransparency value to set
+     * @param certificateTransparent the certificateTransparency value to set
      * @return the updated CertificatePolicy object itself.
      */
-    public CertificatePolicy setCertificateTransparency(Boolean certificateTransparency) {
-        this.certificateTransparency = certificateTransparency;
+    public CertificatePolicy setCertificateTransparent(Boolean certificateTransparent) {
+        this.certificateTransparent = certificateTransparent;
         return this;
     }
 
@@ -444,8 +444,8 @@ public final class CertificatePolicy {
      *
      * @return the subject name
      */
-    public String getSubjectName() {
-        return this.subjectName;
+    public String getSubject() {
+        return this.subject;
     }
 
     /**
@@ -476,12 +476,12 @@ public final class CertificatePolicy {
     }
 
     /**
-     * Get the certificateTransparency value.
+     * Get the certificate transparency status.
      *
-     * @return the certificateTransparency value
+     * @return the certificate transparency status
      */
-    public Boolean isCertificateTransparency() {
-        return this.certificateTransparency;
+    public Boolean isCertificateTransparent() {
+        return this.certificateTransparent;
     }
 
     /**
@@ -506,7 +506,7 @@ public final class CertificatePolicy {
      * Get the default certificate policy.
      * @return the default certificate policy.
      */
-    public static CertificatePolicy getDefaultPolicy() {
+    public static CertificatePolicy getDefault() {
         return  new CertificatePolicy("Self", "CN=DefaultPolicy");
     }
 
@@ -517,7 +517,7 @@ public final class CertificatePolicy {
         this.keyType = CertificateKeyType.fromString((String) keyProps.get("kty"));
         this.keySize = (Integer) keyProps.get("key_size");
         this.exportable = (Boolean) keyProps.get("exportable");
-        this.reuseKey = (Boolean) keyProps.get("reuseKey");
+        this.keyReusable = (Boolean) keyProps.get("reuseKey");
         this.keyCurveName = keyProps.containsKey("crv") ? CertificateKeyCurveName.fromString((String) keyProps.get("crv")) : null;
     }
 
@@ -526,7 +526,7 @@ public final class CertificatePolicy {
     @SuppressWarnings("unchecked")
     private void unpackX509Properties(Map<String, Object> x509Props) {
         validityInMonths = (Integer) x509Props.get("validity_months");
-        subjectName = (String) x509Props.get("subject");
+        subject = (String) x509Props.get("subject");
 
         this.enhancedKeyUsage = (x509Props.containsKey("ekus") ? parseEnhancedKeyUsage((List<Object>) x509Props.get("ekus")) : null);
         this.keyUsage = (x509Props.containsKey("key_usage") ? parseKeyUsage((List<Object>) x509Props.get("key_usage")) : null);
@@ -562,7 +562,7 @@ public final class CertificatePolicy {
     private void unpackIssuerProperties(Map<String, Object> issuerProps) {
         this.issuerName = (String) issuerProps.get("name");
         this.certificateType = (String) issuerProps.get("cty");
-        this.certificateTransparency = (Boolean) issuerProps.get("cert_transparency");
+        this.certificateTransparent = (Boolean) issuerProps.get("cert_transparency");
     }
 
     @JsonProperty("lifetime_actions")

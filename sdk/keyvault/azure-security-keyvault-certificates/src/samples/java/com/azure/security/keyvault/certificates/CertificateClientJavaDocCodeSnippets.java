@@ -63,14 +63,14 @@ public final class CertificateClientJavaDocCodeSnippets {
         CertificateClient certificateClient = getCertificateClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicy#string
         CertificatePolicy policy = certificateClient.getCertificatePolicy("certificateName");
-        System.out.printf("Received policy with subject name %s", policy.getSubjectName());
+        System.out.printf("Received policy with subject name %s", policy.getSubject());
         // END: com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicy#string
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicyWithResponse#string
         Response<CertificatePolicy> returnedPolicyWithResponse = certificateClient.getCertificatePolicyWithResponse(
             "certificateName", new Context(key1, value1));
         System.out.printf("Received policy with subject name %s",
-            returnedPolicyWithResponse.getValue().getSubjectName());
+            returnedPolicyWithResponse.getValue().getSubject());
         // END: com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicyWithResponse#string
     }
 
@@ -263,22 +263,22 @@ public final class CertificateClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.updateCertificatePolicy#string
         CertificatePolicy certificatePolicy = certificateClient.getCertificatePolicy("certificateName");
         //Update the certificate policy cert transparency property.
-        certificatePolicy.setCertificateTransparency(true);
+        certificatePolicy.setCertificateTransparent(true);
         CertificatePolicy updatedCertPolicy = certificateClient.updateCertificatePolicy("certificateName",
             certificatePolicy);
         System.out.printf("Updated Certificate Policy transparency status %s",
-            updatedCertPolicy.isCertificateTransparency());
+            updatedCertPolicy.isCertificateTransparent());
         // END: com.azure.security.keyvault.certificates.CertificateClient.updateCertificatePolicy#string
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.updateCertificatePolicyWithResponse#string
         CertificatePolicy certificatePolicyToUpdate = certificateClient.getCertificatePolicy("certificateName");
         //Update the certificate policy cert transparency property.
-        certificatePolicyToUpdate.setCertificateTransparency(true);
+        certificatePolicyToUpdate.setCertificateTransparent(true);
         Response<CertificatePolicy> updatedCertPolicyWithResponse = certificateClient
             .updateCertificatePolicyWithResponse("certificateName", certificatePolicyToUpdate,
                 new Context(key1, value1));
         System.out.printf("Updated Certificate Policy transparency status %s", updatedCertPolicyWithResponse
-            .getValue().isCertificateTransparency());
+            .getValue().isCertificateTransparent());
         // END: com.azure.security.keyvault.certificates.CertificateClient.updateCertificatePolicyWithResponse#string
     }
 
@@ -522,7 +522,7 @@ public final class CertificateClientJavaDocCodeSnippets {
         CertificateContact contactToAdd = new CertificateContact("user", "useremail@exmaple.com");
         for (CertificateContact contact : certificateClient.setContacts(Arrays.asList(contactToAdd))) {
             System.out.printf("Added contact with name %s and email %s to key vault", contact.getName(),
-                contact.getEmailAddress());
+                contact.getEmail());
         }
         // END: com.azure.security.keyvault.certificates.CertificateClient.setContacts#contacts
 
@@ -531,35 +531,35 @@ public final class CertificateClientJavaDocCodeSnippets {
         for (CertificateContact contact : certificateClient.setContacts(Arrays.asList(sampleContact),
             new Context(key1, value1))) {
             System.out.printf("Added contact with name %s and email %s to key vault", contact.getName(),
-                contact.getEmailAddress());
+                contact.getEmail());
         }
         // END: com.azure.security.keyvault.certificates.CertificateClient.setContacts#contacts-context
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.listContacts
         for (CertificateContact contact : certificateClient.listContacts()) {
             System.out.printf("Added contact with name %s and email %s to key vault", contact.getName(),
-                contact.getEmailAddress());
+                contact.getEmail());
         }
         // END: com.azure.security.keyvault.certificates.CertificateClient.listContacts
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.listContacts#context
         for (CertificateContact contact : certificateClient.listContacts(new Context(key1, value1))) {
             System.out.printf("Added contact with name %s and email %s to key vault", contact.getName(),
-                contact.getEmailAddress());
+                contact.getEmail());
         }
         // END: com.azure.security.keyvault.certificates.CertificateClient.listContacts#context
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.deleteContacts
         for (CertificateContact contact : certificateClient.deleteContacts()) {
             System.out.printf("Deleted contact with name %s and email %s from key vault", contact.getName(),
-                contact.getEmailAddress());
+                contact.getEmail());
         }
         // END: com.azure.security.keyvault.certificates.CertificateClient.deleteContacts
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.deleteContacts#context
         for (CertificateContact contact : certificateClient.deleteContacts(new Context(key1, value1))) {
             System.out.printf("Deleted contact with name %s and email %s from key vault", contact.getName(),
-                contact.getEmailAddress());
+                contact.getEmail());
         }
         // END: com.azure.security.keyvault.certificates.CertificateClient.deleteContacts#context
     }

@@ -242,7 +242,7 @@ interface CertificateService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyVaultCertificate>> restoreCertificate(@HostParam("url") String url,
+    Mono<Response<KeyVaultCertificateWithPolicy>> restoreCertificate(@HostParam("url") String url,
                                                            @QueryParam("api-version") String apiVersion,
                                                            @HeaderParam("accept-language") String acceptLanguage,
                                                            @BodyParam("application/json") CertificateRestoreParameters parameters,
