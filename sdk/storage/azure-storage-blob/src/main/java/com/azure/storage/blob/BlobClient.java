@@ -5,7 +5,6 @@ package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -18,7 +17,6 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
