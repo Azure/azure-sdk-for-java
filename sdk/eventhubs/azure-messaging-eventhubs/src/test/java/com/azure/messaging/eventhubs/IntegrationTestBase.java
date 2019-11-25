@@ -49,6 +49,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
 
     private ConnectionStringProperties properties;
+    private String testName;
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
@@ -58,6 +59,7 @@ public abstract class IntegrationTestBase extends TestBase {
     public void setupTest(TestInfo testInfo) {
         logger.info("[{}]: Performing integration test set-up.", testInfo.getDisplayName());
 
+        testName = testInfo.getDisplayName();
         skipIfNotRecordMode();
 
         properties = new ConnectionStringProperties(getConnectionString());
@@ -242,8 +244,8 @@ public abstract class IntegrationTestBase extends TestBase {
             try {
                 closeable.close();
             } catch (IOException error) {
-                logger.error(String.format("[%s]: %s didn't close properly.",
-                    getTestName(), closeable.getClass().getSimpleName()), error);
+                logger.error(String.format("[%s]: %s didn't close properly.", testName,
+                    closeable.getClass().getSimpleName()), error);
             }
         }
     }

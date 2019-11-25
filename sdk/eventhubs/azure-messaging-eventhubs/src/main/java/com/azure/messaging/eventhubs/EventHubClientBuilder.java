@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -532,9 +532,9 @@ public class EventHubClientBuilder {
             proxyOptions = getDefaultProxyConfiguration(configuration);
         }
 
-        final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
-            ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
-            : CBSAuthorizationType.JSON_WEB_TOKEN;
+        final CbsAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
+            ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
+            : CbsAuthorizationType.JSON_WEB_TOKEN;
 
         return new ConnectionOptions(fullyQualifiedNamespace, eventHubName, credentials, authorizationType,
             transport, retryOptions, proxyOptions, scheduler);
