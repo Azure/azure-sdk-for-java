@@ -20,6 +20,7 @@ import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
 import com.azure.storage.queue.implementation.models.QueueGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
+import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
@@ -27,6 +28,7 @@ import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.SendMessageResult;
 import com.azure.storage.queue.models.UpdateMessageResult;
+import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -97,6 +99,15 @@ public final class QueueAsyncClient {
      */
     public QueueServiceVersion getServiceVersion() {
         return serviceVersion;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return client.getHttpPipeline();
     }
 
     /**
@@ -888,6 +899,23 @@ public final class QueueAsyncClient {
      */
     public String getAccountName() {
         return this.accountName;
+    }
+
+    /**
+     * Generates a service sas for the queue using the specified {@link QueueServiceSasSignatureValues}
+     * @see QueueServiceSasSignatureValues for more information on how to construct a service SAS.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.generateSas#QueueServiceSasSignatureValues}
+     *
+     * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues) {
+        return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
     }
 
     /*
