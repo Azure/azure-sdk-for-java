@@ -177,16 +177,20 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             .buildAsyncProducerClient();
 
         // Act & Assert
-        StepVerifier.create(client.getEventHubProperties())
-            .assertNext(properties -> {
-                Assertions.assertEquals(getEventHubName(), properties.getName());
-                Assertions.assertEquals(2, properties.getPartitionIds().stream().count());
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+        try {
+            StepVerifier.create(client.getEventHubProperties())
+                .assertNext(properties -> {
+                    Assertions.assertEquals(getEventHubName(), properties.getName());
+                    Assertions.assertEquals(2, properties.getPartitionIds().stream().count());
+                })
+                .expectComplete()
+                .verify(TIMEOUT);
 
-        StepVerifier.create(client.send(event, options))
-            .expectComplete()
-            .verify(TIMEOUT);
+            StepVerifier.create(client.send(event, options))
+                .expectComplete()
+                .verify(TIMEOUT);
+        } finally {
+            dispose(client);
+        }
     }
 }

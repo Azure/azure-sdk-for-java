@@ -344,6 +344,21 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Package-private method that sets the scheduler for the created Event Hub client.
+     *
+     * TODO (conniey): Currently, the default is to use an elastic scheduler if none is specified to facilitate the
+     * possibility of legacy blocking code. However, we should consider if we should give consumers an option to use a
+     * parallel Scheduler. https://github.com/Azure/azure-sdk-for-java/issues/5466
+     *
+     * @param scheduler Scheduler to set.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    EventHubClientBuilder scheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
+        return this;
+    }
+
+    /**
      * Creates a new {@link EventHubConsumerAsyncClient} based on the options set on this builder. Every time
      * {@code buildAsyncConsumer()} is invoked, a new instance of {@link EventHubConsumerAsyncClient} is created.
      *
