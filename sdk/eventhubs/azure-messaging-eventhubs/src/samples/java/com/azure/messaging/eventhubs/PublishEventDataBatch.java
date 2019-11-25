@@ -4,6 +4,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -30,12 +31,13 @@ public class PublishEventDataBatch {
         // 2. Creating an Event Hub instance.
         // 3. Creating a "Shared access policy" for your Event Hub instance.
         // 4. Copying the connection string from the policy's properties.
-        final String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
+        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         // Create a producer.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
+            .scheduler(Schedulers.parallel())
             .buildAsyncProducerClient();
 
         // Creating a batch where we want the events ending up in the same partition by setting the partition key.
@@ -51,6 +53,9 @@ public class PublishEventDataBatch {
             if (!batch.tryAdd(event)) {
                 producer.createBatch(options).map(newBatch -> {
                     currentBatch.set(newBatch);
+
+                    // Adding that event we couldn't add before.
+                    newBatch.tryAdd(event);
                     return producer.send(batch);
                 }).block();
             }
@@ -64,5 +69,17 @@ public class PublishEventDataBatch {
                 // Disposing of our producer.
                 producer.close();
             });
+
+        // Sleeping this thread because we want to wait for all the events to send before ending the program.
+        // `.subscribe` is not a blocking call. It coordinates the callbacks and starts the send operation, but does not
+        // wait for it to complete.
+        // Customers can chain together Reactor operators like .then() and `.doFinally` if they want an operation to run
+        // after all the events have been transmitted. .block() can also be used to turn the call into a synchronous
+        // operation.
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
