@@ -13,7 +13,7 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs</artifactId>
-  <version>5.0.0-beta.6</version>
+  <version>5.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
 </dependency>
  ```
 [//]: # ({x-version-update-end})
