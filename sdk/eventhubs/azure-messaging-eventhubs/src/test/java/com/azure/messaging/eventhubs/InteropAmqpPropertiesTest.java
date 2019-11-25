@@ -56,7 +56,8 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     protected void beforeTest() {
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
 
-        client = createBuilder().buildAsyncClient();
+        client = createBuilder().shareConnection()
+            .buildAsyncClient();
         producer = client.createProducer();
         consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
     }
