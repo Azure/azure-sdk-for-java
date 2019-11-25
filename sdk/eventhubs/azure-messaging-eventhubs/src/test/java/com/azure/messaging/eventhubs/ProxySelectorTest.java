@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.jupiter.api.Assertions;
@@ -63,13 +63,12 @@ public class ProxySelectorTest extends IntegrationTestBase {
         final EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .startingPosition(EventPosition.earliest())
-            .transportType(TransportType.AMQP_WEB_SOCKETS)
-            .retry(new RetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .buildAsyncConsumer();
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .retry(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+            .buildAsyncConsumerClient();
 
         try {
-            StepVerifier.create(consumer.receive("1").take(1))
+            StepVerifier.create(consumer.receiveFromPartition("1", EventPosition.earliest()).take(1))
                 .expectErrorSatisfies(error -> {
                     // The message can vary because it is returned from proton-j, so we don't want to compare against that.
                     // This is a transient error from ExceptionUtil.java: line 67.

@@ -40,6 +40,7 @@ The following sections provide several code snippets covering some of the most c
 - [Set a configuration setting to read only][sample_read_only]
 - [Clear read only from a configuration setting][sample_read_only]
 - [Conditional request a configuration setting][sample_conditional_request]
+- [AAD Authentication][sample_aad]
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -66,5 +67,6 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_conditional_request]: java/com/azure/data/appconfiguration/ConditionalRequest.java
 [sample_read_only]: java/com/azure/data/appconfiguration/ReadOnlySample.java
 [sample_read_revision_history]: com/azure/data/appconfiguration/ReadRevisionHistory.java
+[sample_aad]: java/com/azure/data/appconfiguration/AadAuthentication.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2Fsrc%2Fsamples%2FREADME.png)

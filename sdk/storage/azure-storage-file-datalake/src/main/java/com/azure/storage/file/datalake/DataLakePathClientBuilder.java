@@ -130,7 +130,7 @@ public final class DataLakePathClientBuilder {
             } else {
                 return null;
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
         return new DataLakeFileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
             pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
@@ -186,7 +186,7 @@ public final class DataLakePathClientBuilder {
             } else {
                 return null;
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
         return new DataLakeDirectoryAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
             pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
@@ -336,7 +336,8 @@ public final class DataLakePathClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated DataLakePathClientBuilder object

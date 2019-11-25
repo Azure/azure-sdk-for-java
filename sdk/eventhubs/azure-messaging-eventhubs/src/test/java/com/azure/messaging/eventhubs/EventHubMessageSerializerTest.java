@@ -16,10 +16,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
 import static com.azure.messaging.eventhubs.TestUtils.OFFSET;
@@ -182,7 +182,7 @@ public class EventHubMessageSerializerTest {
         Assertions.assertNotNull(properties);
         Assertions.assertEquals(eventHubName, properties.getName());
         Assertions.assertEquals(createdAt, properties.getCreatedAt());
-        Assertions.assertArrayEquals(partitionIds, properties.getPartitionIds());
+        Assertions.assertArrayEquals(partitionIds, properties.getPartitionIds().stream().toArray(String[]::new));
     }
 
     /**

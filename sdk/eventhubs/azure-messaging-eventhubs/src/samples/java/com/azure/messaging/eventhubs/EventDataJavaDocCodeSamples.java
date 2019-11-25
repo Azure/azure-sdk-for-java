@@ -14,13 +14,13 @@ public class EventDataJavaDocCodeSamples {
      * Creates an EventData using application properties.
      */
     public void createEventData() {
-        // BEGIN: com.azure.messaging.eventhubs.eventdata.addProperty#string-object
+        // BEGIN: com.azure.messaging.eventhubs.eventdata.getProperties
         TelemetryEvent telemetry = new TelemetryEvent("temperature", "37");
         byte[] serializedTelemetryData = telemetry.toString().getBytes(UTF_8);
 
         EventData eventData = new EventData(serializedTelemetryData);
-        eventData.addProperty("eventType", TelemetryEvent.class.getName());
-        // END: com.azure.messaging.eventhubs.eventdata.addProperty#string-object
+        eventData.getProperties().put("eventType", TelemetryEvent.class.getName());
+        // END: com.azure.messaging.eventhubs.eventdata.getProperties
     }
 
     private static final class TelemetryEvent {

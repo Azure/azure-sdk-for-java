@@ -5,7 +5,7 @@ omitted_paths:
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
-  - "sdk/*/azure-mgmt-*/*"
+  - "sdk/*/mgmt-*/*"
   - eng/*
   - samples/*
 language: java
@@ -70,6 +70,7 @@ known_content_issues:
   - ['sdk/storage/microsoft-azure-storage-blob/swagger/README.md', '#3113']
   - ['sdk/storage/azure-storage-common/README.md', '#3113']
   - ['sdk/core/README.md', '#3113']
+  - ['sdk/storage/README.md', '#3113']
   - ['cosmosdb/data-plane/README.md', '#3113']
   - ['cosmosdb/data-plane/benchmark/README.md', '#3113']
   - ['cosmosdb/data-plane/changelog/README.md', '#3113']

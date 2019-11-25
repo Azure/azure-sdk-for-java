@@ -1,4 +1,9 @@
 # Change Log azure-data-appconfiguration
+## Version 1.0.0-preview.7 (2019-11-20)
+
+#### Breaking Changes
+- Removed clearReadOnly API, updated setReadOnly API to support setting and clearing read only based on the flag passed.
+
 ## Version 1.0.0-preview.6 (2019-10-31)
 For details on the Azure SDK for Java (October 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview6-java).
 - Renamed addSetting, getSetting, deleteSetting, setSetting, listSettings, listSettingRevisions to

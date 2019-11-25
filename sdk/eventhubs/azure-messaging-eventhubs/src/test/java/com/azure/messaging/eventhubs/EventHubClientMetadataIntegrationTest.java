@@ -3,12 +3,13 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -50,7 +51,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
             .assertNext(properties -> {
                 Assertions.assertNotNull(properties);
                 Assertions.assertEquals(eventHubName, properties.getName());
-                Assertions.assertEquals(expectedPartitionIds.length, properties.getPartitionIds().length);
+                Assertions.assertEquals(expectedPartitionIds.length, properties.getPartitionIds().stream().count());
             }).verifyComplete();
     }
 
@@ -106,7 +107,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     public void getPartitionPropertiesInvalidToken() throws InvalidKeyException, NoSuchAlgorithmException {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
-        final TokenCredential invalidTokenCredential = new EventHubSharedAccessKeyCredential(
+        final TokenCredential invalidTokenCredential = new EventHubSharedKeyCredential(
             original.getSharedAccessKeyName(), "invalid-sas-key-value", TIMEOUT);
         final EventHubAsyncClient invalidClient = createBuilder()
             .credential(original.getEndpoint().getHost(), original.getEntityPath(), invalidTokenCredential)
@@ -118,7 +119,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                 Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
-                Assertions.assertEquals(ErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
+                Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
                 Assertions.assertFalse(exception.isTransient());
                 Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })
@@ -132,7 +133,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     public void getPartitionPropertiesNonExistentHub() throws InvalidKeyException, NoSuchAlgorithmException {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
-        final TokenCredential validCredentials = new EventHubSharedAccessKeyCredential(
+        final TokenCredential validCredentials = new EventHubSharedKeyCredential(
             original.getSharedAccessKeyName(), original.getSharedAccessKey(), TIMEOUT);
         final EventHubAsyncClient invalidClient = createBuilder()
             .credential(original.getEndpoint().getHost(), "does-not-exist", validCredentials)
@@ -144,7 +145,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                 Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
-                Assertions.assertEquals(ErrorCondition.NOT_FOUND, exception.getErrorCondition());
+                Assertions.assertEquals(AmqpErrorCondition.NOT_FOUND, exception.getErrorCondition());
                 Assertions.assertFalse(exception.isTransient());
                 Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })

@@ -3,22 +3,22 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.ExponentialRetryPolicy;
-import com.azure.core.amqp.FixedRetryPolicy;
-import com.azure.core.amqp.RetryMode;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
-import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ import static org.mockito.Mockito.when;
 public class EventHubConnectionTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(2);
     private static final String HOST_NAME = "Some-host-name";
-    private final RetryOptions retryOptions = new RetryOptions()
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setTryTimeout(Duration.ofSeconds(5))
         .setMaxRetries(0);
 
@@ -59,7 +59,7 @@ public class EventHubConnectionTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         ConnectionOptions connectionOptions = new ConnectionOptions(HOST_NAME, "event-hub-path", tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         provider = new EventHubConnection(Mono.just(connection), connectionOptions);
     }
@@ -82,17 +82,17 @@ public class EventHubConnectionTest {
         // Arrange
         final Duration timeout = Duration.ofSeconds(4);
         final AmqpSendLink sendLink = mock(AmqpSendLink.class);
-        final RetryOptions options = new RetryOptions()
+        final AmqpRetryOptions options = new AmqpRetryOptions()
             .setTryTimeout(timeout)
             .setMaxRetries(2)
-            .setMode(RetryMode.FIXED);
+            .setMode(AmqpRetryMode.FIXED);
 
         final String linkName = "some-link-name";
         final String entityPath = "some-entity-path";
         when(connection.createSession(entityPath)).thenReturn(Mono.just(session));
         when(session.createProducer(eq(linkName), eq(entityPath), eq(timeout),
             argThat(matcher -> options.getMaxRetries() == matcher.getMaxRetries()
-                && matcher instanceof FixedRetryPolicy)))
+                && matcher instanceof FixedAmqpRetryPolicy)))
             .thenReturn(Mono.just(sendLink));
 
         // Act & Assert
@@ -105,7 +105,7 @@ public class EventHubConnectionTest {
     public void getReceiveLink() {
         // Arrange
         final AmqpReceiveLink receiveLink = mock(AmqpReceiveLink.class);
-        final EventHubConsumerOptions options = new EventHubConsumerOptions();
+        final ReceiveOptions options = new ReceiveOptions();
 
         final EventPosition position = EventPosition.fromOffset(10L);
         final String linkName = "some-link-name";
@@ -115,7 +115,7 @@ public class EventHubConnectionTest {
         when(session.createConsumer(
             eq(linkName), eq(entityPath), eq(retryOptions.getTryTimeout()),
             argThat(matcher -> retryOptions.getMaxRetries() == matcher.getMaxRetries()
-                && matcher instanceof ExponentialRetryPolicy),
+                && matcher instanceof ExponentialAmqpRetryPolicy),
             eq(position), eq(options)))
             .thenReturn(Mono.just(receiveLink));
 

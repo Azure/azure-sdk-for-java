@@ -117,7 +117,7 @@ public class DataLakeFileSystemClientBuilder {
             } else {
                 return null;
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
         return new DataLakeFileSystemAsyncClient(pipeline, String.format("%s/%s", endpoint, dataLakeFileSystemName),
             serviceVersion, accountName, dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient());
@@ -254,7 +254,8 @@ public class DataLakeFileSystemClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated DataLakeFileSystemClientBuilder object
