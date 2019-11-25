@@ -21,7 +21,6 @@ import reactor.core.publisher.Mono;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.ShortBufferException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
@@ -147,7 +146,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                      * Calculate the IV.
                      *
                      * If we are starting at the beginning, we can grab the IV from the encryptionData. Otherwise,
-                     * Rx makes it difficult to grab the first 16 bytes of data to pass as an IV to the cipher.
+                     * Reactor makes it difficult to grab the first 16 bytes of data to pass as an IV to the cipher.
                      * As a work around, we initialize the cipher with a garbage IV (empty byte array) and attempt to
                      * decrypt the first 16 bytes (the actual IV for the relevant data). We throw away this "decrypted"
                      * data. Now, though, because each block of 16 is used as the IV for the next, the original 16 bytes
@@ -185,29 +184,22 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                             .allocate(cipher.getOutputSize(encryptedByteBuffer.remaining()));
 
                         // First, determine if we should update or finalize and fill the output buffer.
-
-                        // We will have reached the end of the downloaded range. Finalize.
-                        int decryptedBytes;
                         int bytesToInput = encryptedByteBuffer.remaining();
-                        if (totalInputBytes.longValue() + bytesToInput
-                            >= encryptedBlobRange.getAdjustedDownloadCount()) {
-                            try {
-                                decryptedBytes = cipher.doFinal(encryptedByteBuffer, plaintextByteBuffer);
-                            } catch (GeneralSecurityException e) {
-                                throw logger.logExceptionAsError(Exceptions.propagate(e));
+                        try {
+                            // We will have reached the end of the downloaded range, finalize.
+                            if (totalInputBytes.longValue() + bytesToInput
+                                >= encryptedBlobRange.getAdjustedDownloadCount()) {
+                                cipher.doFinal(encryptedByteBuffer, plaintextByteBuffer);
+                            } else {
+                                // We won't reach the end of the downloaded range, update.
+                                cipher.update(encryptedByteBuffer, plaintextByteBuffer);
                             }
-                        } else {
-                            // We will not have reached the end of the downloaded range. Update.
-                            try {
-                                decryptedBytes = cipher.update(encryptedByteBuffer, plaintextByteBuffer);
-                            } catch (ShortBufferException e) {
-                                throw logger.logExceptionAsError(Exceptions.propagate(e));
-                            }
+                        } catch (GeneralSecurityException e) {
+                            throw logger.logExceptionAsError(Exceptions.propagate(e));
                         }
                         totalInputBytes.addAndGet(bytesToInput);
 
-                        // This is to get the decryptedBytes value into the next map to adjust the position of the
-                        // output buffer because the data range was increased for decryption.
+                        // Flip the buffer to set the position back to 0 and set the limit to the data size.
                         plaintextByteBuffer.flip();
                         return plaintextByteBuffer;
                     });
@@ -319,7 +311,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
             // Blob being downloaded is not null.
             if (encryptionData == null) {
-                return encryptionData;
+                return null;
             }
 
             Objects.requireNonNull(encryptionData.getContentEncryptionIV(), "contentEncryptionIV in encryptionData "
@@ -361,18 +353,20 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             keyMono = this.keyResolver.buildAsyncKeyEncryptionKey(encryptionData.getWrappedContentKey().getKeyId())
                 .onErrorResume(NullPointerException.class, e -> {
                     /*
-                     * keyResolver returns null if it cannot find the key, but RX throws on null values
+                     * keyResolver returns null if it cannot find the key, but Reactor throws on null values
                      * passing through workflows, so we propagate this case with an IllegalArgumentException
                      */
                     throw logger.logExceptionAsError(Exceptions.propagate(e));
                 });
         } else {
-            if (encryptionData.getWrappedContentKey().getKeyId().equals(this.keyWrapper.getKeyId().block())) {
-                keyMono = Mono.just(this.keyWrapper);
-            } else {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Key mismatch. The key id stored on "
-                    + "the service does not match the specified key."));
-            }
+            keyMono = this.keyWrapper.getKeyId().flatMap(keyId -> {
+                if (encryptionData.getWrappedContentKey().getKeyId().equals(keyId)) {
+                    return Mono.just(this.keyWrapper);
+                } else {
+                    throw logger.logExceptionAsError(Exceptions.propagate(new IllegalArgumentException("Key mismatch. " +
+                        "The key id stored on the service does not match the specified key.")));
+                }
+            });
         }
 
         return keyMono.flatMap(keyEncryptionKey -> keyEncryptionKey.unwrapKey(
