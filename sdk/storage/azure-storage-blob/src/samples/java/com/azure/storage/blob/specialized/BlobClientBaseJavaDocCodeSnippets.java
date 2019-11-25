@@ -47,7 +47,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
-    private UserDelegationKey userDelegationKey;
+    private UserDelegationKey userDelegationKey = null;
 
     /**
      * Code snippets for {@link BlobClientBase#exists()}

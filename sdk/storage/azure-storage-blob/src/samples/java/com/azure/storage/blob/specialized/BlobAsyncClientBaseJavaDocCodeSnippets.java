@@ -39,7 +39,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     private String copyId = "copyId";
     private String url = "https://sample.com";
     private String file = "file";
-    private UserDelegationKey userDelegationKey;
+    private UserDelegationKey userDelegationKey = null;
 
     /**
      * Code snippet for {@link BlobAsyncClientBase#exists()}

@@ -43,7 +43,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     private int blockSize = 50;
     private int numBuffers = 2;
     private String filePath = "filePath";
-    private UserDelegationKey userDelegationKey;
+    private UserDelegationKey userDelegationKey = null;
 
     /**
      * Code snippet for {@link BlobAsyncClient#exists()}

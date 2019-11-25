@@ -47,7 +47,7 @@ public class BlobClientJavaDocCodeSnippets {
     private String value1 = "val1";
     private String value2 = "val2";
     private String filePath = "filePath";
-    private UserDelegationKey userDelegationKey;
+    private UserDelegationKey userDelegationKey = null;
 
     /**
      * Code snippets for {@link BlobClient#exists()}
