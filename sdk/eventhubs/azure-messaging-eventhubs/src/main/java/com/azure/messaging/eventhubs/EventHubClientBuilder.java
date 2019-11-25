@@ -348,7 +348,7 @@ public class EventHubClientBuilder {
      *
      * TODO (conniey): Currently, the default is to use an elastic scheduler if none is specified to facilitate the
      * possibility of legacy blocking code. However, we should consider if we should give consumers an option to use a
-     * parallel Scheduler.
+     * parallel Scheduler. https://github.com/Azure/azure-sdk-for-java/issues/5466
      *
      * @param scheduler Scheduler to set.
      * @return The updated {@link EventHubClientBuilder} object.
