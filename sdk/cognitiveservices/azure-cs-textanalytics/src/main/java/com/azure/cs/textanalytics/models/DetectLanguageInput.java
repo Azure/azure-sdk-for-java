@@ -11,9 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The UnknownLanguageInput model.
  */
 @Fluent
-public final class DetectLangaugeInput {
+public final class DetectLanguageInput {
 
-    public DetectLangaugeInput(String id, String text) {
+    public DetectLanguageInput(String id, String text) {
         this.id = id;
         this.text = text;
     }
@@ -51,7 +51,7 @@ public final class DetectLangaugeInput {
      * @param id the id value to set.
      * @return the UnknownLanguageInput object itself.
      */
-    DetectLangaugeInput setId(String id) {
+    DetectLanguageInput setId(String id) {
         this.id = id;
         return this;
     }
@@ -71,7 +71,7 @@ public final class DetectLangaugeInput {
      * @param text the text value to set.
      * @return the UnknownLanguageInput object itself.
      */
-    public DetectLangaugeInput setText(String text) {
+    public DetectLanguageInput setText(String text) {
         this.text = text;
         return this;
     }
@@ -91,7 +91,7 @@ public final class DetectLangaugeInput {
      * @param countryHint the countryHint value to set.
      * @return the UnknownLanguageInput object itself.
      */
-    public DetectLangaugeInput setCountryHint(String countryHint) {
+    public DetectLanguageInput setCountryHint(String countryHint) {
         this.countryHint = countryHint;
         return this;
     }

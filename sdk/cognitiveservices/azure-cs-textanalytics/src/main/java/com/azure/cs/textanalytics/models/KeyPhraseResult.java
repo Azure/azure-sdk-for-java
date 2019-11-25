@@ -11,14 +11,14 @@ import com.azure.core.util.IterableStream;
  */
 @Fluent
 public final class KeyPhraseResult extends DocumentResult {
-    private IterableStream<KeyPhraseResult> items;
+    private IterableStream<KeyPhraseResult> keyPhrases;
 
-    public IterableStream<KeyPhraseResult> getItems() {
-        return items;
+    public IterableStream<KeyPhraseResult> getKeyPhrases() {
+        return keyPhrases;
     }
 
-    KeyPhraseResult setItems(IterableStream<KeyPhraseResult> items) {
-        this.items = items;
+    KeyPhraseResult setKeyPhrases(IterableStream<KeyPhraseResult> keyPhrases) {
+        this.keyPhrases = keyPhrases;
         return this;
     }
 }

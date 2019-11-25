@@ -11,14 +11,14 @@ import com.azure.core.util.IterableStream;
  */
 @Fluent
 public final class NamedEntityResult extends DocumentResult {
-    private IterableStream<NamedEntity> items;
+    private IterableStream<NamedEntity> namedEntities;
 
-    public IterableStream<NamedEntity> getItems() {
-        return items;
+    public IterableStream<NamedEntity> getNamedEntities() {
+        return namedEntities;
     }
 
-    NamedEntityResult setItems(IterableStream<NamedEntity> items) {
-        this.items = items;
+    NamedEntityResult setNamedEntities(IterableStream<NamedEntity> namedEntities) {
+        this.namedEntities = namedEntities;
         return this;
     }
 }
