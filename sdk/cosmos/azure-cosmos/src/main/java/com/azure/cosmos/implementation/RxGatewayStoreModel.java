@@ -277,8 +277,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                StoreResponse rsp = new StoreResponse(httpResponseStatus,
                                    HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()),
                                    content);
-                               if (request.requestContext.cosmosResponseDiagnostics != null &&
-                                   request.getResourceType().equals(ResourceType.Document)) {
+                               if (request.requestContext.cosmosResponseDiagnostics != null) {
                                    BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, request, rsp, null);
                                    DirectBridgeInternal.setCosmosResponseDiagnostics(rsp, request.requestContext.cosmosResponseDiagnostics);
                                }
@@ -307,8 +306,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                            return Mono.error(dce);
                        }
 
-                       if (request.requestContext.cosmosResponseDiagnostics != null &&
-                           request.getResourceType().equals(ResourceType.Document)) {
+                       if (request.requestContext.cosmosResponseDiagnostics != null) {
                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosResponseDiagnostics, request, null, (CosmosClientException)exception);
                            BridgeInternal.setCosmosResponseDiagnostics((CosmosClientException)exception, request.requestContext.cosmosResponseDiagnostics);
                        }

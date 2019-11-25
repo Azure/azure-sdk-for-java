@@ -12,9 +12,13 @@ import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.Strings;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URI;
 
 public class StoreResult {
@@ -155,5 +159,43 @@ public class StoreResult {
                 ", itemLSN: " + this.itemLSN +
                 ", sessionToken: " + (this.sessionToken != null ? this.sessionToken.convertToString() : null) +
                 ", exception: " + BridgeInternal.getInnerErrorMessage(this.exception);
+    }
+    public static class StoreResultSerializer extends StdSerializer<StoreResult> {
+
+        public StoreResultSerializer(){
+            super(StoreResult.class);
+        }
+
+        @Override
+        public void serialize(StoreResult storeResult,
+                              JsonGenerator jsonGenerator,
+                              SerializerProvider serializerProvider) throws IOException {
+            int statusCode = 0;
+            int subStatusCode = HttpConstants.SubStatusCodes.UNKNOWN;
+
+            if (storeResult.storeResponse != null) {
+                statusCode = storeResult.storeResponse.getStatus();
+                subStatusCode = storeResult.storeResponse.getSubStatusCode();
+            } else if (storeResult.exception != null) {
+                statusCode = storeResult.exception.getStatusCode();
+                subStatusCode = storeResult.exception.getSubStatusCode();
+            }
+            jsonGenerator.writeStartObject();
+            jsonGenerator.writeObjectField("storePhysicalAddress", storeResult.storePhysicalAddress);
+            jsonGenerator.writeNumberField("lsn", storeResult.lsn);
+            jsonGenerator.writeNumberField("globalCommittedLsn", storeResult.globalCommittedLSN);
+            jsonGenerator.writeStringField("partitionKeyRangeId", storeResult.partitionKeyRangeId);
+            jsonGenerator.writeBooleanField("isValid", storeResult.isValid);
+            jsonGenerator.writeNumberField("statusCode", statusCode);
+            jsonGenerator.writeNumberField("subStatusCode", subStatusCode);
+            jsonGenerator.writeBooleanField("isGone", storeResult.isGoneException);
+            jsonGenerator.writeBooleanField("isNotFound", storeResult.isNotFoundException);
+            jsonGenerator.writeBooleanField("isInvalidPartition", storeResult.isInvalidPartitionException);
+            jsonGenerator.writeNumberField("requestCharge", storeResult.requestCharge);
+            jsonGenerator.writeNumberField("itemLSN", storeResult.itemLSN);
+            jsonGenerator.writeStringField("sessionToken", (storeResult.sessionToken != null ? storeResult.sessionToken.convertToString() : null));
+            jsonGenerator.writeStringField("exception", BridgeInternal.getInnerErrorMessage(storeResult.exception));
+            jsonGenerator.writeEndObject();
+        }
     }
 }
