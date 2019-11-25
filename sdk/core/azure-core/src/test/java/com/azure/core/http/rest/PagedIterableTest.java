@@ -248,7 +248,7 @@ public class PagedIterableTest {
     private static class TestPagedFlux<T> extends PagedFlux<T> {
         private int nextPageRetrievals = 0;
 
-        public TestPagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
+        TestPagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
             Function<String, Mono<PagedResponse<T>>> nextPageRetriever) {
             super(firstPageRetriever, nextPageRetriever);
         }
