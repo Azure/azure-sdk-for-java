@@ -5,7 +5,8 @@ package com.azure.cs.textanalytics.batch;
 
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.cs.textanalytics.models.DocumentBatchStatistics;
+import com.azure.cs.textanalytics.models.LinkedEntityResult;
+import com.azure.cs.textanalytics.models.TextBatchStatistics;
 import com.azure.cs.textanalytics.models.TextDocumentInput;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.LinkedEntity;
@@ -24,15 +25,15 @@ public class RecognizeLinkedEntitiesBatchDocuments {
 
         // The texts that need be analysed.
         List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("Old Faithful is a geyser at Yellowstone Park.").setLanguage("US"),
-            new TextDocumentInput("Mount Shasta has lenticular clouds.").setLanguage("US")
+            new TextDocumentInput("1", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("US"),
+            new TextDocumentInput("2", "Mount Shasta has lenticular clouds.").setLanguage("US")
         );
 
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
-        DocumentResultCollection<LinkedEntity> detectedBatchResult = client.recognizeLinkedEntities(inputs, requestOptions);
-        final String modelVersion = detectedBatchResult.getModelVersion();
-        System.out.printf("Model version: %s", modelVersion);
-        final DocumentBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
+        final DocumentResultCollection<LinkedEntityResult> detectedBatchResult = client.recognizeLinkedEntities(inputs, requestOptions);
+        System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
+
+        final TextBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
             batchStatistics.getDocumentsCount(),
             batchStatistics.getErroneousDocumentsCount(),

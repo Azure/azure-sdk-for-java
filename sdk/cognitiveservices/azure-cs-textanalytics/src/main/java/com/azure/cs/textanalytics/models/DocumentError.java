@@ -39,7 +39,7 @@ public final class DocumentError {
      * @param id the id value to set.
      * @return the DocumentError object itself.
      */
-    public DocumentError setId(String id) {
+    DocumentError setId(String id) {
         this.id = id;
         return this;
     }
@@ -59,7 +59,7 @@ public final class DocumentError {
      * @param error the error value to set.
      * @return the DocumentError object itself.
      */
-    public DocumentError setError(Object error) {
+    DocumentError setError(Object error) {
         this.error = error;
         return this;
     }

@@ -42,7 +42,7 @@ public final class TextDocumentStatistics {
      * @param charactersCount the charactersCount value to set.
      * @return the TextDocumentStatistics object itself.
      */
-    public TextDocumentStatistics setCharactersCount(int charactersCount) {
+    TextDocumentStatistics setCharactersCount(int charactersCount) {
         this.charactersCount = charactersCount;
         return this;
     }
@@ -64,7 +64,7 @@ public final class TextDocumentStatistics {
      * @param transactionsCount the transactionsCount value to set.
      * @return the TextDocumentStatistics object itself.
      */
-    public TextDocumentStatistics setTransactionsCount(int transactionsCount) {
+    TextDocumentStatistics setTransactionsCount(int transactionsCount) {
         this.transactionsCount = transactionsCount;
         return this;
     }

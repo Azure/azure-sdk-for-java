@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * information about the request payload.
  */
 @Fluent
-public final class DocumentBatchStatistics {
+public final class TextBatchStatistics {
     /*
      * Number of documents submitted in the request.
      */
@@ -56,7 +56,7 @@ public final class DocumentBatchStatistics {
      * @param documentsCount the documentsCount value to set.
      * @return the DocumentBatchStatistics object itself.
      */
-    public DocumentBatchStatistics setDocumentsCount(int documentsCount) {
+    TextBatchStatistics setDocumentsCount(int documentsCount) {
         this.documentsCount = documentsCount;
         return this;
     }
@@ -78,7 +78,7 @@ public final class DocumentBatchStatistics {
      * @param validDocumentsCount the validDocumentsCount value to set.
      * @return the DocumentBatchStatistics object itself.
      */
-    public DocumentBatchStatistics setValidDocumentsCount(int validDocumentsCount) {
+    TextBatchStatistics setValidDocumentsCount(int validDocumentsCount) {
         this.validDocumentsCount = validDocumentsCount;
         return this;
     }
@@ -102,7 +102,7 @@ public final class DocumentBatchStatistics {
      * @param erroneousDocumentsCount the erroneousDocumentsCount value to set.
      * @return the DocumentBatchStatistics object itself.
      */
-    public DocumentBatchStatistics setErroneousDocumentsCount(int erroneousDocumentsCount) {
+    TextBatchStatistics setErroneousDocumentsCount(int erroneousDocumentsCount) {
         this.erroneousDocumentsCount = erroneousDocumentsCount;
         return this;
     }
@@ -124,7 +124,7 @@ public final class DocumentBatchStatistics {
      * @param transactionsCount the transactionsCount value to set.
      * @return the DocumentBatchStatistics object itself.
      */
-    public DocumentBatchStatistics setTransactionsCount(long transactionsCount) {
+    TextBatchStatistics setTransactionsCount(long transactionsCount) {
         this.transactionsCount = transactionsCount;
         return this;
     }

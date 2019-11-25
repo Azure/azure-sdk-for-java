@@ -4,37 +4,27 @@
 package com.azure.cs.textanalytics;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.cs.textanalytics.implementation.TextAnalyticsAPIBuilder;
 import com.azure.cs.textanalytics.implementation.TextAnalyticsAPIImpl;
+import com.azure.cs.textanalytics.models.TextAnalyticsClientOptions;
 
 import javax.security.auth.login.Configuration;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
 public final class TextAnalyticsClientBuilder {
-//    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
-//    private static final String CONTENT_TYPE_HEADER = "Content-Type";
-//    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-//    private static final String ACCEPT_HEADER = "Accept";
-//    private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
+    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
+    private static final String CONTENT_TYPE_HEADER = "Content-Type";
+    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+    private static final String ACCEPT_HEADER = "Accept";
+    private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
 
     private final ClientLogger logger = new ClientLogger(TextAnalyticsClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
@@ -113,59 +103,45 @@ public final class TextAnalyticsClientBuilder {
 //        return new ConfigurationAsyncClient(buildEndpoint, pipeline);
     }
 
-    // Properties
     public TextAnalyticsClientBuilder endpoint(String endpoint) {
-        try {
-            new URL(endpoint);
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
-        }
-        this.endpoint = endpoint;
         return this;
     }
 
-    // TODO: use AAD token
-//    public TextAnalyticsClientBuilder connectionString(String connectionString) {
-//        this.connectionString = connectionString;
-//        return this;
-//    }
+    public TextAnalyticsClientBuilder subscriptionKey(String subscriptionKey) {
+        return this;
+    }
 
-    public TextAnalyticsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
-        httpLogOptions = httpLogOptions;
+    public TextAnalyticsClientBuilder credential(TokenCredential tokenCredential) {
+        return this;
+    }
+
+    public TextAnalyticsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         return this;
     }
 
     public TextAnalyticsClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy);
-        policies.add(policy);
         return this;
     }
 
-//    public TextAnalyticsClientBuilder httpClient(HttpClient httpClient) {
-//        if (this.httpClient != null && client == null) {
-//            logger.info("HttpClient is being set to 'null' when it was previously configured.");
-//        }
-//
-//        this.httpClient = client;
-//        return this;
-//    }
-//
-//    public TextAnalyticsClientBuilder pipeline(HttpPipeline pipeline) {
-//        if (this.pipeline != null && pipeline == null) {
-//            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
-//        }
-//
-//        this.pipeline = pipeline;
-//        return this;
-//    }
-//
-//    public TextAnalyticsClientBuilder configuration(Configuration configuration) {
-//        this.configuration = configuration;
-//        return this;
-//    }
-//
-//    public TextAnalyticsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-//        this.retryPolicy = retryPolicy;
-//        return this;
-//    }
+    public TextAnalyticsClientBuilder httpClient(HttpClient client) {
+        return this;
+    }
+
+    public TextAnalyticsClientBuilder pipeline(HttpPipeline pipeline) {
+        return this;
+    }
+
+    public TextAnalyticsClientBuilder configuration(Configuration configuration) {
+        return this;
+    }
+
+    public TextAnalyticsClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
+        return this;
+    }
+
+//    public TextAnalyticsClientBuilder serviceVersion(ConfigurationServiceVersion version) {}
+
+    public TextAnalyticsClientBuilder clientOptions(TextAnalyticsClientOptions clientOptions) {
+        return this;
+    }
 }

@@ -5,7 +5,8 @@ package com.azure.cs.textanalytics.batch;
 
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.cs.textanalytics.models.DocumentBatchStatistics;
+import com.azure.cs.textanalytics.models.KeyPhraseResult;
+import com.azure.cs.textanalytics.models.TextBatchStatistics;
 import com.azure.cs.textanalytics.models.TextDocumentInput;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
@@ -24,16 +25,15 @@ public class RecognizeKeyPhrasesBatchDocuments {
 
         // The texts that need be analysed.
         List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("My cat might need to see a veterinarian").setLanguage("US"),
-            new TextDocumentInput("The pitot tube is used to measure airspeed.").setLanguage("US")
+            new TextDocumentInput("1", "My cat might need to see a veterinarian").setLanguage("US"),
+            new TextDocumentInput("2", "The pitot tube is used to measure airspeed.").setLanguage("US")
         );
 
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
-        DocumentResultCollection<String> detectedBatchResult = client.extractKeyPhrases(inputs, requestOptions);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
+        final DocumentResultCollection<KeyPhraseResult> detectedBatchResult = client.extractKeyPhrases(inputs, requestOptions);
+        System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
 
-        final String modelVersion = detectedBatchResult.getModelVersion();
-        System.out.printf("Model version: %s", modelVersion);
-        final DocumentBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
+        final TextBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
             batchStatistics.getDocumentsCount(),
             batchStatistics.getErroneousDocumentsCount(),

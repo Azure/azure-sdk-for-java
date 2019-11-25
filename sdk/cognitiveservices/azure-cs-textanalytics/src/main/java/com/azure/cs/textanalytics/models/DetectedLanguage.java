@@ -49,7 +49,7 @@ public final class DetectedLanguage {
      * @param name the name value to set.
      * @return the DetectedLanguage object itself.
      */
-    public DetectedLanguage setName(String name) {
+    DetectedLanguage setName(String name) {
         this.name = name;
         return this;
     }
@@ -71,7 +71,7 @@ public final class DetectedLanguage {
      * @param iso6391Name the iso6391Name value to set.
      * @return the DetectedLanguage object itself.
      */
-    public DetectedLanguage setIso6391Name(String iso6391Name) {
+    DetectedLanguage setIso6391Name(String iso6391Name) {
         this.iso6391Name = iso6391Name;
         return this;
     }
@@ -93,7 +93,7 @@ public final class DetectedLanguage {
      * @param score the score value to set.
      * @return the DetectedLanguage object itself.
      */
-    public DetectedLanguage setScore(double score) {
+    DetectedLanguage setScore(double score) {
         this.score = score;
         return this;
     }
