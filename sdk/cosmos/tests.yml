@@ -318,7 +318,7 @@ jobs:
                 DisplayName: Multimaster Single Region Direct
                 OSVmImage: 'macOS-10.13'
                 ProfileFlag: '-Pdirect'
-                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session'
+                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
             # 07m 52s, expect passed
             Examples:
                 DisplayName: Multimaster Single Region Examples
