@@ -57,6 +57,7 @@ public final class ConfigurationAsyncClient {
 
     private final String serviceEndpoint;
     private final ConfigurationService service;
+    private final String apiVersion = ConfigurationServiceVersion.getLatest().getVersion();
 
     /**
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
@@ -134,7 +135,7 @@ public final class ConfigurationAsyncClient {
         // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
         // If the service finds any existing configuration settings, then its e-tag will match and the service will
         // return an error.
-        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, null,
+        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, null,
             getETagValue(ETAG_ANY), context)
             .onErrorResume(HttpResponseException.class,
                 (Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
@@ -234,8 +235,8 @@ public final class ConfigurationAsyncClient {
         // Otherwise, the service throws an exception because the current configuration value was updated and we have an
         // old value locally.
         // If no ETag value was passed in, then the value is always added or updated.
-        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting,
-            ifMatchETag, null, context)
+        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, ifMatchETag,
+            null, context)
             .doOnSubscribe(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
@@ -340,7 +341,7 @@ public final class ConfigurationAsyncClient {
         validateSetting(setting);
 
         final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
-        return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
+        return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
             acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag, context)
             .onErrorResume(HttpResponseException.class,
                 (Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
@@ -431,7 +432,7 @@ public final class ConfigurationAsyncClient {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
-        return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), ifMatchETag,
+        return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, ifMatchETag,
             null, context)
             .doOnSubscribe(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
@@ -511,14 +512,14 @@ public final class ConfigurationAsyncClient {
         validateSetting(setting);
 
         if (isReadOnly) {
-            return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
+            return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
                 null, context)
                 .doOnSubscribe(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
                 .doOnSuccess(response -> logger.info("Set read only ConfigurationSetting - {}", response.getValue()))
                 .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting,
                     error));
         } else {
-            return service.unlockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(),
+            return service.unlockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion,
                 null, null, context)
                 .doOnSubscribe(ignoredValue -> logger.verbose("Clearing read only ConfigurationSetting - {}", setting))
                 .doOnSuccess(
@@ -578,7 +579,7 @@ public final class ConfigurationAsyncClient {
     private Mono<PagedResponse<ConfigurationSetting>> listFirstPageSettings(SettingSelector selector, Context context) {
         try {
             if (selector == null) {
-                return service.listKeyValues(serviceEndpoint, null, null, null, null, context)
+                return service.listKeyValues(serviceEndpoint, null, null, apiVersion, null, null, context)
                     .doOnRequest(ignoredValue -> logger.info("Listing all ConfigurationSettings"))
                     .doOnSuccess(response -> logger.info("Listed all ConfigurationSettings"))
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
@@ -588,7 +589,8 @@ public final class ConfigurationAsyncClient {
             String keys = CoreUtils.arrayToString(selector.getKeys(), key -> key);
             String labels = CoreUtils.arrayToString(selector.getLabels(), label -> label);
 
-            return service.listKeyValues(serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), context)
+            return service.listKeyValues(serviceEndpoint, keys, labels, apiVersion, fields,
+                selector.getAcceptDateTime(), context)
                 .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", selector))
                 .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", selector))
                 .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", selector, error));
@@ -636,14 +638,14 @@ public final class ConfigurationAsyncClient {
                 String labels = CoreUtils.arrayToString(selector.getLabels(), label -> label);
 
                 result = service.listKeyValueRevisions(
-                    serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), null, context)
+                    serviceEndpoint, keys, labels, apiVersion, fields, selector.getAcceptDateTime(), null, context)
                     .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
                     .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
                     .doOnError(error ->
                         logger.warning("Failed to list ConfigurationSetting revisions - {}", selector, error));
             } else {
                 result = service.listKeyValueRevisions(
-                    serviceEndpoint, null, null, null, null, null, context)
+                    serviceEndpoint, null, null, apiVersion, null, null, null, context)
                     .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions"))
                     .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions"))
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
