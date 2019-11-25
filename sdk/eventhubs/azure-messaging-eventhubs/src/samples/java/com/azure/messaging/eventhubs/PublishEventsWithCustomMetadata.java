@@ -11,8 +11,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to sent events to Event Hubs, allowing the service to load-balance the events between all
- * partitions.
+ * Sample demonstrates how to sent events with custom metadata to Event Hubs using {@link EventData#getProperties()}.
+ * Allows the service to load-balance the events between all partitions by using
+ * {@link EventHubProducerAsyncClient#createBatch()} which uses the default set of create batch options.
  */
 public class PublishEventsWithCustomMetadata {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);

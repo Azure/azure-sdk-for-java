@@ -12,14 +12,14 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to sent events to specific event hub by define partition ID in producer option only.
+ * Sample demonstrates how to sent events to specific event hub by defining partition id using
+ * {@link CreateBatchOptions#setPartitionId(String)}.
  */
 public class PublishEventsToSpecificPartition {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
-     * Main method to invoke this demo about how to send a batch of events with partition ID configured in producer
-     * option to an Azure Event Hub instance.
+     * Main method to invoke this demo about how to send a batch of events with partition ID configured.
      *
      * @param args Unused arguments to the program.
      */

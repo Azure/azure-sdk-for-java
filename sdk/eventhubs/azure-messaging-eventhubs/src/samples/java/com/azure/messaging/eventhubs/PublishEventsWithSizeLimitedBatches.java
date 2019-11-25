@@ -11,7 +11,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Demonstrates how to publish events when there is a size constraint on batch size.
+ * Demonstrates how to publish events when there is a size constraint on batch size using
+ * {@link CreateBatchOptions#setMaximumSizeInBytes(int)}.
  */
 public class PublishEventsWithSizeLimitedBatches {
     /**
