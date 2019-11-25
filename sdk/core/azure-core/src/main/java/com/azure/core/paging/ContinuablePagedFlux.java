@@ -105,7 +105,7 @@ public abstract class ContinuablePagedFlux<C extends ContinuationToken, T, P ext
     }
 
     /**
-     * @return a flux of {@link ContinuablePage} starting from the Page identified
+     * @return a Flux of {@link ContinuablePage} starting from the Page identified
      * by the given token.
      */
     public Flux<P> byPage(C continuationToken) {
@@ -115,5 +115,14 @@ public abstract class ContinuablePagedFlux<C extends ContinuationToken, T, P ext
             .repeat(() -> !state.isDone())
             .concatMap(b -> pageRetriever.apply(state.getLastContinuationToken())
                 .doOnNext(p -> state.setLastContinuationToken(p.getContinuationToken())));
+    }
+
+    /**
+     * @return a Flux of Page items starting from the items in the Page identified
+     * by the given token.
+     */
+    public Flux<T> byItem(C continuationToken) {
+        return byPage(continuationToken)
+            .flatMapIterable(page -> page.getItems());
     }
 }

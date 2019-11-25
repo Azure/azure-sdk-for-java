@@ -64,4 +64,13 @@ public abstract class SimplePagedFlux<T, P extends Page<T>> extends PagedFluxCor
             .concatMap(b -> pageRetriever.apply(state.getLastContinuationToken())
                 .doOnNext(p -> state.setLastContinuationToken(p.getContinuationToken())));
     }
+
+    /**
+     * @return a Flux of Page items starting from the items in the Page identified
+     * by the given token.
+     */
+    public Flux<T> byItem(String continuationToken) {
+        return byPage(continuationToken)
+            .flatMapIterable(page -> page.getItems());
+    }
 }

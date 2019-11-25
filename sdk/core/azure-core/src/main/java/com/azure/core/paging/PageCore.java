@@ -6,13 +6,13 @@ package com.azure.core.paging;
 import java.util.List;
 
 /**
- * Type represents a Page from the service.
+ * Type represents a Page.
  *
  * @param <T> Type of items in the page
  */
 public interface PageCore<T> {
     /**
-     * @return list of items in the page returned by the service.
+     * @return list of items in the page.
      */
     List<T> getItems();
 }

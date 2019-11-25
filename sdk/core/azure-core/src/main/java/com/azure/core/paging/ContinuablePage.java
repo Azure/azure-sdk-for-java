@@ -4,7 +4,8 @@
 package com.azure.core.paging;
 
 /**
- * Type represents a Page from the service and expose continuation token.
+ * Type represents a Page and continuation token for the next set of
+ * one or more page.
  *
  * @param <C> Type of continuation token
  * @param <T> Type of items in the page

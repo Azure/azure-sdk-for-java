@@ -125,15 +125,23 @@ public abstract class PagedFluxCore<T, P extends PageCore<T>> extends Flux<T> {
     }
 
     /**
-     *Type to hold Flux<P>.
+     *Internal type to hold a reference to Flux<P>.
      */
     private static class FluxHolder<P> {
         private Flux<P> value;
 
+        /**
+         * @return the Flux in hold
+         */
         Flux<P> getFlux() {
             return this.value;
         }
 
+        /**
+         * Hold the given Flux.
+         *
+         * @param value the Flux
+         */
         void setFlux(Flux<P> value) {
             this.value = value;
         }
