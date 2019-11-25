@@ -22,6 +22,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -565,7 +566,9 @@ public final class BlobContainerClient {
      * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
-     * @param userDelegationKey {@link UserDelegationKey}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see BlobServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to get a
+     * user delegation key.
      *
      * @return A {@code String} representing all SAS query parameters.
      */

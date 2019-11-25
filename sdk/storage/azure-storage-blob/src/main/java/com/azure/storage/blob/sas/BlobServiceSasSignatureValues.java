@@ -28,8 +28,6 @@ import java.time.OffsetDateTime;
  * @see <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas>Constructing a
  * User Delegation SAS</a>
  */
-
-// TODO (gapra) : Add code snippets for new workflow
 public final class BlobServiceSasSignatureValues {
     /**
      * The SAS blob constant.
@@ -298,7 +296,10 @@ public final class BlobServiceSasSignatureValues {
      * Gets the name of the container the SAS user may access.
      *
      * @return The name of the container the SAS user may access.
+     * @deprecated Container name is not auto-populated by the generate*Sas methods provided on the desired
+     * container/blob client.
      */
+    @Deprecated
     public String getContainerName() {
         return containerName;
     }
@@ -323,7 +324,9 @@ public final class BlobServiceSasSignatureValues {
      *
      * @return The decoded name of the blob the SAS user may access. {@code null} or an empty string is returned when a
      * creating a container SAS.
+     * @deprecated Blob name is now auto-populated by the generate*Sas methods provided on the desired blob client.
      */
+    @Deprecated
     public String getBlobName() {
         return blobName;
     }
@@ -344,7 +347,10 @@ public final class BlobServiceSasSignatureValues {
 
     /**
      * @return the specific snapshot the SAS user may access.
+     * @deprecated Snapshot id is now auto-populated by the generate*Sas methods provided on the desired (snapshot) blob
+     * client.
      */
+    @Deprecated
     public String getSnapshotId() {
         return this.snapshotId;
     }

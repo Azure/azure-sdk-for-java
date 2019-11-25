@@ -240,10 +240,7 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
      * @return A {@code String} representing all SAS query parameters.
-     * @deprecated Please use the generate*Sas method on the desired container/blob client after initializing
-     * {@link BlobServiceSasSignatureValues}.
      */
-    @Deprecated
     public String encode() {
         /*
          We should be url-encoding each key and each value, but because we know all the keys and values will encode to

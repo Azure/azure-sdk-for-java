@@ -39,6 +39,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -914,7 +915,9 @@ public final class BlobContainerAsyncClient {
      * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
-     * @param userDelegationKey {@link UserDelegationKey}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to
+     * get a user delegation key.
      *
      * @return A {@code String} representing all SAS query parameters.
      */

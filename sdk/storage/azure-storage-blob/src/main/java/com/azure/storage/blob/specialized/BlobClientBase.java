@@ -12,6 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
@@ -39,6 +40,7 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
@@ -802,7 +804,6 @@ public class BlobClientBase {
         return blockWithOptionalTimeout(response, timeout);
     }
 
-
     /**
      * Generates a user delegation sas for the blob using the specified
      * {@link BlobServiceSasSignatureValues}.
@@ -813,13 +814,14 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
-     * @param userDelegationKey {@link UserDelegationKey}
-     *
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see BlobServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to get a
+     * user delegation key.
      * @return A {@code String} representing all SAS query parameters.
      */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
-        return getBlobClient().generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
+        return this.client.generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
     }
 
     /**
@@ -835,10 +837,6 @@ public class BlobClientBase {
      * @return A {@code String} representing all SAS query parameters.
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
-        return getBlobClient().generateSas(blobServiceSasSignatureValues);
-    }
-
-    private BlobClient getBlobClient() {
-        return this.client.prepareBuilder().buildClient();
+        return this.client.generateSas(blobServiceSasSignatureValues);
     }
 }

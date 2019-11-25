@@ -509,30 +509,4 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
         // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
     }
-
-    /**
-     * Code snippet for {@link BlobAsyncClient#generateUserDelegationSas(BlobServiceSasSignatureValues, UserDelegationKey)}
-     * and {@link BlobAsyncClient#generateSas(BlobServiceSasSignatureValues)}
-     */
-    public void generateSas() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateSas#BlobServiceSasSignatureValues
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        BlobSasPermission permission = new BlobSasPermission().setReadPermission(true);
-
-        BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(expiryTime, permission)
-            .setStartTime(OffsetDateTime.now());
-
-        client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
-        // END: com.azure.storage.blob.BlobAsyncClient.generateSas#BlobServiceSasSignatureValues
-
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
-        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
-        BlobSasPermission myPermission = new BlobSasPermission().setReadPermission(true);
-
-        BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues(expiryTime, permission)
-            .setStartTime(OffsetDateTime.now());
-
-        client.generateUserDelegationSas(values, userDelegationKey);
-        // END: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
-    }
 }

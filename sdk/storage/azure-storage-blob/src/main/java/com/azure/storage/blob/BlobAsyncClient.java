@@ -568,42 +568,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
-    /**
-     * Generates a user delegation sas for the blob using the specified
-     * {@link BlobServiceSasSignatureValues}.
-     * @see BlobServiceSasSignatureValues for more information on how to construct a user delegation SAS.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
-     *
-     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
-     * @param userDelegationKey {@link UserDelegationKey}
-     *
-     * @return A {@code String} representing all SAS query parameters.
-     */
-    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
-        UserDelegationKey userDelegationKey) {
-        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(), getSnapshotId())
-            .generateUserDelegationSas(userDelegationKey, getAccountName());
-    }
 
-    /**
-     * Generates a service sas for the blob using the specified {@link BlobServiceSasSignatureValues}
-     * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.generateSas#BlobServiceSasSignatureValues}
-     *
-     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
-     *
-     * @return A {@code String} representing all SAS query parameters.
-     */
-    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
-        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(), getSnapshotId())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
-    }
 
     boolean uploadInBlocks(String filePath) {
         AsynchronousFileChannel channel = uploadFileResourceSupplier(filePath);

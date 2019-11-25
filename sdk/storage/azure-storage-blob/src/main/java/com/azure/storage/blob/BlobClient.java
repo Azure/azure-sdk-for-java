@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.UncheckedIOException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -185,40 +186,5 @@ public class BlobClient extends BlobClientBase {
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }
-    }
-
-    /**
-     * Generates a user delegation sas for the blob using the specified
-     * {@link BlobServiceSasSignatureValues}.
-     * @see BlobServiceSasSignatureValues for more information on how to construct a user delegation SAS.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
-     *
-     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
-     * @param userDelegationKey {@link UserDelegationKey}
-     *
-     * @return A {@code String} representing all SAS query parameters.
-     */
-    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
-        UserDelegationKey userDelegationKey) {
-        return this.client.generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
-    }
-
-    /**
-     * Generates a service sas for the blob using the specified {@link BlobServiceSasSignatureValues}
-     * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobClient.generateSas#BlobServiceSasSignatureValues}
-     *
-     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
-     *
-     * @return A {@code String} representing all SAS query parameters.
-     */
-    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
-        return this.client.generateSas(blobServiceSasSignatureValues);
     }
 }
