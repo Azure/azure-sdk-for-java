@@ -4,6 +4,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
@@ -58,23 +59,39 @@ public class PublishEventsToSpecificPartition {
         // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
         // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
         // are sent.
-        data.subscribe(event -> {
+        final Mono<Void> sendOperation = data.flatMap(event -> {
             final EventDataBatch batch = currentBatch.get();
-            if (!batch.tryAdd(event)) {
+            if (batch.tryAdd(event)) {
+                return Mono.empty();
+            }
+
+            // The batch is full, so we create a new batch and send the batch. Mono.when completes when both operations
+            // have completed.
+            return Mono.when(
+                producer.send(batch),
                 producer.createBatch(options).map(newBatch -> {
                     currentBatch.set(newBatch);
-                    return producer.send(batch);
-                }).block();
-            }
-        }, error -> System.err.println("Error received:" + error),
-            () -> {
+
+                    // Add that event that we couldn't before.
+                    newBatch.tryAdd(event);
+                    return newBatch;
+                }));
+        }).then()
+            .doFinally(signal -> {
                 final EventDataBatch batch = currentBatch.getAndSet(null);
                 if (batch != null) {
-                    producer.send(batch).block();
+                    producer.send(batch).block(Duration.ofSeconds(60));
                 }
-
-                // Disposing of our producer.
-                producer.close();
             });
+
+        // The sendOperation creation and assignment is not a blocking call. It does not get invoked until there is a
+        // subscriber to that operation. For the purpose of this example, we block so the program does not end before
+        // the send operation is complete. Any of the `.subscribe` overloads also work to start the Mono asynchronously.
+        try {
+            sendOperation.block(Duration.ofSeconds(60));
+        } finally {
+            // Disposing of our producer.
+            producer.close();
+        }
     }
 }
