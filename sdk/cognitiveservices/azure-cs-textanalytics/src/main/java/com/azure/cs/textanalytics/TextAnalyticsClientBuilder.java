@@ -139,7 +139,7 @@ public final class TextAnalyticsClientBuilder {
         return this;
     }
 
-//    public TextAnalyticsClientBuilder serviceVersion(ConfigurationServiceVersion version) {}
+    public TextAnalyticsClientBuilder serviceVersion(TextAnalyticsServiceVersion version) { return this;}
 
     public TextAnalyticsClientBuilder clientOptions(TextAnalyticsClientOptions clientOptions) {
         return this;
