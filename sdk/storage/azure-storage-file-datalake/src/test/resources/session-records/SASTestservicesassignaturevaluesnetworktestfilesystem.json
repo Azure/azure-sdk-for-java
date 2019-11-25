@@ -1,0 +1,129 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://gaprahns.blob.core.windows.net/jtfsservicesassignaturevaluesnetworktestfilesystem028360d64?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "26bd9f1c-40b0-41ea-8ab0-d45be570b6bd"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D76D5388999057",
+      "Last-Modified" : "Wed, 20 Nov 2019 00:49:43 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "69f9ff27-201e-006a-733c-9f12d1000000",
+      "Date" : "Wed, 20 Nov 2019 00:49:43 GMT",
+      "x-ms-client-request-id" : "26bd9f1c-40b0-41ea-8ab0-d45be570b6bd"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://gaprahns.blob.core.windows.net/jtfsservicesassignaturevaluesnetworktestfilesystem028360d64?restype=container&comp=acl",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "a9fe98aa-c9c3-438b-ad56-70fedd14d3f0",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D76D5388C983D6",
+      "Last-Modified" : "Wed, 20 Nov 2019 00:49:44 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "69f9ffb2-201e-006a-763c-9f12d1000000",
+      "Date" : "Wed, 20 Nov 2019 00:49:43 GMT",
+      "x-ms-client-request-id" : "a9fe98aa-c9c3-438b-ad56-70fedd14d3f0"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://gaprahns.dfs.core.windows.net/jtfsservicesassignaturevaluesnetworktestfilesystem028360d64?recursive=false&upn=false&resource=filesystem&sv=2019-02-02&si=0000&sr=c&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4db3d36e-eb47-4e5c-925c-e0600b384c18"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "f11ca5a0-701f-001f-5d3c-9f956a000000",
+      "Body" : "{\"paths\":[]}\n",
+      "Date" : "Wed, 20 Nov 2019 00:49:44 GMT",
+      "x-ms-client-request-id" : "4db3d36e-eb47-4e5c-925c-e0600b384c18",
+      "Content-Type" : "application/json;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://gaprahns.dfs.core.windows.net/jtfsservicesassignaturevaluesnetworktestfilesystem028360d64?recursive=false&upn=false&resource=filesystem&sv=2019-02-02&se=2019-11-21T00%3A49%3A44Z&sr=c&sp=racwdl&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "77a02632-c354-48d0-a028-324a0431134f"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "f11ca5a1-701f-001f-5e3c-9f956a000000",
+      "Body" : "{\"paths\":[]}\n",
+      "Date" : "Wed, 20 Nov 2019 00:49:44 GMT",
+      "x-ms-client-request-id" : "77a02632-c354-48d0-a028-324a0431134f",
+      "Content-Type" : "application/json;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://gaprahns.blob.core.windows.net?prefix=jtfsservicesassignaturevaluesnetworktestfilesystem&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "1db89c5f-e2a2-4568-a59a-e8dc5df72374"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "69f9fffe-201e-006a-343c-9f12d1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://gaprahns.blob.core.windows.net/\"><Prefix>jtfsservicesassignaturevaluesnetworktestfilesystem</Prefix><Containers><Container><Name>jtfsservicesassignaturevaluesnetworktestfilesystem028360d64</Name><Properties><Last-Modified>Wed, 20 Nov 2019 00:49:44 GMT</Last-Modified><Etag>\"0x8D76D5388C983D6\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Wed, 20 Nov 2019 00:49:43 GMT",
+      "x-ms-client-request-id" : "1db89c5f-e2a2-4568-a59a-e8dc5df72374",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://gaprahns.blob.core.windows.net/jtfsservicesassignaturevaluesnetworktestfilesystem028360d64?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "1f189368-00d0-4cac-bd65-f5e9fdd1bf26"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "69fa0021-201e-006a-543c-9f12d1000000",
+      "Date" : "Wed, 20 Nov 2019 00:49:44 GMT",
+      "x-ms-client-request-id" : "1f189368-00d0-4cac-bd65-f5e9fdd1bf26"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsservicesassignaturevaluesnetworktestfilesystem028360d64", "2019-11-20T00:49:43.982492900Z", "2019-11-20T00:49:44.108466700Z" ]
+}

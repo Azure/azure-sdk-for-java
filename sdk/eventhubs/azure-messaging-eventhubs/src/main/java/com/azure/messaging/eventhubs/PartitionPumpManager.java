@@ -8,15 +8,17 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
+import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Signal;
 
 import java.io.Closeable;
@@ -32,51 +34,56 @@ import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
- * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessor}. Each
- * partition pump is an {@link EventHubConsumerClient} that is receiving events from partitions this
- * {@link EventProcessor} has claimed ownership of.
+ * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}.
+ * Each partition pump is an {@link EventHubConsumerClient} that is receiving events from partitions this {@link
+ * EventProcessorClient} has claimed ownership of.
  *
  * <p>
- * New partition pumps are created when this {@link EventProcessor} claims ownership of a new partition. When the {@link
- * EventProcessor} is requested to stop, this class is responsible for stopping all event processing tasks and closing
- * all connections to the Event Hub.
+ * New partition pumps are created when this {@link EventProcessorClient} claims ownership of a new partition. When the
+ * {@link EventProcessorClient} is requested to stop, this class is responsible for stopping all event processing tasks
+ * and closing all connections to the Event Hub.
  * </p>
  */
 class PartitionPumpManager {
 
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
-    private final EventProcessorStore eventProcessorStore;
+    private final CheckpointStore checkpointStore;
     private final Map<String, EventHubConsumerAsyncClient> partitionPumps = new ConcurrentHashMap<>();
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
     private final EventPosition initialEventPosition;
     private final EventHubClientBuilder eventHubClientBuilder;
     private final TracerProvider tracerProvider;
+    private final boolean trackLastEnqueuedEventProperties;
 
     /**
      * Creates an instance of partition pump manager.
      *
-     * @param eventProcessorStore The partition manager that is used to store and update checkpoints.
+     * @param checkpointStore The partition manager that is used to store and update checkpoints.
      * @param partitionProcessorFactory The partition processor factory that is used to create new instances of {@link
      * PartitionProcessor} when new partition pumps are started.
      * @param initialEventPosition The initial event position to use when a new partition pump is created and no
      * checkpoint for the partition is available.
      * @param eventHubClientBuilder The client builder used to create new clients (and new connections) for each
-     * partition processed by this {@link EventProcessor}.
+     * partition processed by this {@link EventProcessorClient}.
+     * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this
+     * EventProcessorClient will also include the last enqueued event properties for it's respective partitions.
+     * @param tracerProvider The tracer implementation.
      */
-    PartitionPumpManager(EventProcessorStore eventProcessorStore,
-        Supplier<PartitionProcessor> partitionProcessorFactory,
-        EventPosition initialEventPosition, EventHubClientBuilder eventHubClientBuilder,
+    PartitionPumpManager(CheckpointStore checkpointStore,
+        Supplier<PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
+        EventHubClientBuilder eventHubClientBuilder, boolean trackLastEnqueuedEventProperties,
         TracerProvider tracerProvider) {
-        this.eventProcessorStore = eventProcessorStore;
+        this.checkpointStore = checkpointStore;
         this.partitionProcessorFactory = partitionProcessorFactory;
         this.initialEventPosition = initialEventPosition;
         this.eventHubClientBuilder = eventHubClientBuilder;
+        this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
         this.tracerProvider = tracerProvider;
     }
 
     /**
      * Stops all partition pumps that are actively consuming events. This method is invoked when the {@link
-     * EventProcessor} is requested to stop.
+     * EventProcessorClient} is requested to stop.
      */
     void stopAllPartitionPumps() {
         this.partitionPumps.forEach((partitionId, eventHubConsumer) -> {
@@ -96,62 +103,70 @@ class PartitionPumpManager {
      *
      * @param claimedOwnership The details of partition ownership for which new partition pump is requested to start.
      */
-    void startPartitionPump(PartitionOwnership claimedOwnership) {
+    void startPartitionPump(PartitionOwnership claimedOwnership, Checkpoint checkpoint) {
         if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
             logger.info("Consumer is already running for this partition  {}", claimedOwnership.getPartitionId());
             return;
         }
 
-        PartitionContext partitionContext = new PartitionContext(claimedOwnership.getPartitionId(),
-            claimedOwnership.getEventHubName(), claimedOwnership.getConsumerGroupName(),
-            claimedOwnership.getOwnerId(), claimedOwnership.getETag(), eventProcessorStore);
+        PartitionContext partitionContext = new PartitionContext(claimedOwnership.getFullyQualifiedNamespace(),
+            claimedOwnership.getEventHubName(), claimedOwnership.getConsumerGroup(),
+            claimedOwnership.getPartitionId());
         PartitionProcessor partitionProcessor = this.partitionProcessorFactory.get();
 
         InitializationContext initializationContext = new InitializationContext(partitionContext,
             EventPosition.earliest());
         partitionProcessor.initialize(initializationContext);
 
-        EventPosition startFromEventPosition;
-        if (claimedOwnership.getOffset() != null) {
-            startFromEventPosition = EventPosition.fromOffset(claimedOwnership.getOffset());
-        } else if (claimedOwnership.getSequenceNumber() != null) {
-            startFromEventPosition = EventPosition.fromSequenceNumber(claimedOwnership.getSequenceNumber());
+        EventPosition startFromEventPosition = null;
+        if (checkpoint != null && checkpoint.getOffset() != null) {
+            startFromEventPosition = EventPosition.fromOffset(checkpoint.getOffset());
+        } else if (checkpoint != null && checkpoint.getSequenceNumber() != null) {
+            startFromEventPosition = EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber(), true);
         } else {
             startFromEventPosition = initialEventPosition;
         }
 
-        EventHubConsumerOptions eventHubConsumerOptions = new EventHubConsumerOptions().setOwnerLevel(0L);
+        ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L)
+            .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
+
         EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
-            .createConsumer(claimedOwnership.getConsumerGroupName(), startFromEventPosition, eventHubConsumerOptions);
+            .createConsumer(claimedOwnership.getConsumerGroup(), EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
 
         partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
-        eventHubConsumer.receive(claimedOwnership.getPartitionId()).subscribe(partitionEvent -> {
-            EventData eventData = partitionEvent.getData();
-            try {
+
+        // The indentation required by checkstyle is different from the indentation IntelliJ uses.
+        // @formatter:off
+        eventHubConsumer.receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
+            .subscribe(partitionEvent -> {
+                EventData eventData = partitionEvent.getData();
                 Context processSpanContext = startProcessTracingSpan(eventData);
                 if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
                     eventData.addContext(SPAN_CONTEXT_KEY, processSpanContext);
                 }
-                partitionProcessor.processEvent(new PartitionEvent(partitionContext, eventData)).doOnEach(signal ->
-                    endProcessTracingSpan(processSpanContext, signal)).subscribe(unused -> {
-                    }, /* event processing returned error */ ex -> handleProcessingError(claimedOwnership,
-                    eventHubConsumer, partitionProcessor, ex, partitionContext));
-            } catch (Exception ex) {
-                /* event processing threw an exception */
-                handleProcessingError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext);
-            }
-        }, /* EventHubConsumer receive() returned an error */
-            ex -> handleReceiveError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
-            () -> partitionProcessor.close(new CloseContext(partitionContext, CloseReason.EVENT_PROCESSOR_SHUTDOWN)));
+                try {
+                    partitionProcessor.processEvent(new EventContext(partitionContext, eventData, checkpointStore,
+                        partitionEvent.getLastEnqueuedEventProperties()));
+                    endProcessTracingSpan(processSpanContext, Signal.complete());
+                } catch (Exception ex) {
+                    /* event processing threw an exception */
+                    handleProcessingError(claimedOwnership, partitionProcessor, ex, partitionContext);
+                    endProcessTracingSpan(processSpanContext, Signal.error(ex));
+
+                }
+            }, /* EventHubConsumer receive() returned an error */
+                ex -> handleReceiveError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
+                () -> partitionProcessor.close(new CloseContext(partitionContext,
+                    CloseReason.EVENT_PROCESSOR_SHUTDOWN)));
+            // @formatter:on
     }
 
-    private void handleProcessingError(PartitionOwnership claimedOwnership,
-            EventHubConsumerAsyncClient eventHubConsumer, PartitionProcessor partitionProcessor, Throwable error,
-            PartitionContext partitionContext) {
+    private void handleProcessingError(PartitionOwnership claimedOwnership, PartitionProcessor partitionProcessor,
+        Throwable error, PartitionContext partitionContext) {
         try {
             // There was an error in process event (user provided code), call process error and if that
             // also fails just log and continue
-            partitionProcessor.processError(new EventProcessingErrorContext(partitionContext, error));
+            partitionProcessor.processError(new ErrorContext(partitionContext, error));
         } catch (Exception ex) {
             logger.warning("Failed while processing error {}", claimedOwnership.getPartitionId(), ex);
         }
@@ -161,7 +176,7 @@ class PartitionPumpManager {
         PartitionProcessor partitionProcessor, Throwable error, PartitionContext partitionContext) {
         try {
             // if there was an error on receive, it also marks the end of the event data stream
-            partitionProcessor.processError(new EventProcessingErrorContext(partitionContext, error));
+            partitionProcessor.processError(new ErrorContext(partitionContext, error));
             CloseReason closeReason = CloseReason.EVENT_HUB_EXCEPTION;
             // If the exception indicates that the partition was stolen (i.e some other consumer with same ownerlevel
             // started consuming the partition), update the closeReason

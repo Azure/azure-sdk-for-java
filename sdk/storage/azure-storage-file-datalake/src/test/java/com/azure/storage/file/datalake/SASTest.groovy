@@ -8,6 +8,8 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.implementation.StorageImplUtils
 import com.azure.storage.common.sas.*
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
+import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
+import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
 import com.azure.storage.file.datalake.models.FileRange
 import com.azure.storage.file.datalake.models.UserDelegationKey
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
@@ -111,50 +113,50 @@ class SASTest extends APISpec {
     }
 
     // Set Access Policy on File System not implemented yet
-//    def "serviceSASSignatureValues network test file system"() {
-//        setup:
-//        def identifier = new BlobSignedIdentifier()
-//            .setId("0000")
-//            .setAccessPolicy(new BlobAccessPolicy().permissions("racwdl")
-//                .setExpiresOn(getUTCNow().plusDays(1)))
-//        fsc.setAccessPolicy(null, Arrays.asList(identifier))
-//
-//        // Check containerSASPermissions
-//        def permissions = new FileSystemSasPermission()
-//            .setReadPermission(true)
-//            .setWritePermission(true)
-//            .setListPermission(true)
-//            .setCreatePermission(true)
-//            .setDeletePermission(true)
-//            .setAddPermission(true)
-//            .setListPermission(true)
-//
-//        def expiryTime = getUTCNow().plusDays(1)
-//
-//        when:
-//        def sasWithId = new DataLakeServiceSasSignatureValues()
-//            .setIdentifier(identifier.getId())
-//            .setFileSystemName(fsc.getFileSystemName())
-//            .generateSasQueryParameters(primaryCredential)
-//            .encode()
-//
-//        def client1 = getFileSystemClient(sasWithId, fsc.getFileSystemUrl())
-//
-//        client1.listBlobs().iterator().hasNext()
-//
-//        def sasWithPermissions = new DataLakeServiceSasSignatureValues()
-//            .permissions(permissions)
-//            .setExpiryTime(expiryTime)
-//            .setFileSystemName(fsc.getFileSystemName())
-//            .generateSasQueryParameters(primaryCredential)
-//            .encode()
-//        def client2 = getFileSystemClient(sasWithPermissions, fsc.getFileSystemUrl())
-//
-//        client2.listBlobs().iterator().hasNext()
-//
-//        then:
-//        notThrown(BlobStorageException)
-//    }
+    def "serviceSASSignatureValues network test file system"() {
+        setup:
+        def identifier = new DataLakeSignedIdentifier()
+            .setId("0000")
+            .setAccessPolicy(new DataLakeAccessPolicy().setPermissions("racwdl")
+                .setExpiresOn(getUTCNow().plusDays(1)))
+        fsc.setAccessPolicy(null, Arrays.asList(identifier))
+
+        // Check containerSASPermissions
+        def permissions = new FileSystemSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setListPermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+
+        def expiryTime = getUTCNow().plusDays(1)
+
+        when:
+        def sasWithId = new DataLakeServiceSasSignatureValues()
+            .setIdentifier(identifier.getId())
+            .setFileSystemName(fsc.getFileSystemName())
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
+
+        def client1 = getFileSystemClient(sasWithId, fsc.getFileSystemUrl())
+
+        client1.listPaths().iterator().hasNext()
+
+        def sasWithPermissions = new DataLakeServiceSasSignatureValues()
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .setFileSystemName(fsc.getFileSystemName())
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
+        def client2 = getFileSystemClient(sasWithPermissions, fsc.getFileSystemUrl())
+
+        client2.listPaths().iterator().hasNext()
+
+        then:
+        notThrown(BlobStorageException)
+    }
 
     def "serviceSASSignatureValues network test file user delegation"() {
         setup:

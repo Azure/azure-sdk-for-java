@@ -37,7 +37,7 @@ public class ReadOnlySampleAsync {
             () -> System.out.printf(String.format("Set setting with key=%s and value=%s added or updated.", key, value)));
 
         // Read-Only
-        client.setReadOnly(key, null).subscribe(
+        client.setReadOnly(key, value, true).subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
                 System.out.printf(String.format("[Read-Only Setting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
@@ -47,7 +47,7 @@ public class ReadOnlySampleAsync {
         );
 
         // Clear Read-Only
-        client.clearReadOnly(key, null).subscribe(
+        client.setReadOnly(key, value, false).subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
                 System.out.printf(String.format("[Cleared Read-Only Setting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));

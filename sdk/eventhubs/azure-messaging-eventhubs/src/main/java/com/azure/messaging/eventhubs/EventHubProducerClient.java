@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
@@ -78,7 +78,7 @@ import java.util.Objects;
  * @see EventHubClient#createProducer()
  * @see EventHubProducerAsyncClient To asynchronously generate events to an Event Hub, see EventHubAsyncProducer.
  */
-@Immutable
+@ServiceClient(builder = EventHubClientBuilder.class)
 public class EventHubProducerClient implements Closeable {
     private final EventHubProducerAsyncClient producer;
     private final Duration tryTimeout;
@@ -118,8 +118,8 @@ public class EventHubProducerClient implements Closeable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventHubProperties getProperties() {
-        return producer.getProperties().block(tryTimeout);
+    public EventHubProperties getEventHubProperties() {
+        return producer.getEventHubProperties().block(tryTimeout);
     }
 
     /**
@@ -127,7 +127,6 @@ public class EventHubProducerClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<String> getPartitionIds() {
         return new IterableStream<>(producer.getPartitionIds());
     }

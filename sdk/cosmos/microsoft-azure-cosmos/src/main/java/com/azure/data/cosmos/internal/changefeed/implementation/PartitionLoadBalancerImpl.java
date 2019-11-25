@@ -131,6 +131,11 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
                         })
                     );
             })
+            .onErrorResume(throwable -> {
+                // "catch all" exception handler to keep the loop going until the user stops the change feed processor
+                logger.warn("Unexpected exception thrown while trying to acquire available leases", throwable);
+                return Mono.empty();
+            })
             .repeat(() -> {
                 return !cancellationToken.isCancellationRequested();
             })

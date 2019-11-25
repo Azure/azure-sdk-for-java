@@ -26,3 +26,4 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
         return next.process();
     }
 }
+

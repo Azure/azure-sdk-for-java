@@ -24,11 +24,13 @@ class FileSASTests extends APISpec {
     private ShareFileClient primaryFileClient
     private ShareClient primaryShareClient
     private ShareServiceClient primaryFileServiceClient
+    private String shareName
 
-    private String shareName = "sharename"
     private String filePath = "filename"
 
     def setup() {
+        shareName = testResourceName.randomName(methodName, 60)
+
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         primaryShareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
@@ -141,6 +143,7 @@ class FileSASTests extends APISpec {
     def "FileSAS network test download upload"() {
         setup:
         String data = "test"
+        primaryShareClient.create()
         primaryFileClient.create(Constants.KB)
         primaryFileClient.upload(getInputStream(data.getBytes()), (long) data.length())
 
@@ -201,6 +204,7 @@ class FileSASTests extends APISpec {
     def "FileSAS network test upload fails"() {
         setup:
         String data = "test"
+        primaryShareClient.create()
         primaryFileClient.create(Constants.KB)
 
         def permissions = new ShareFileSasPermission()
@@ -255,13 +259,13 @@ class FileSASTests extends APISpec {
         notThrown(ShareStorageException)
     }
 
-    def "ShareSAS network test identifier permissions create delete"() {
+    def "ShareSAS network identifier permissions"() {
         setup:
         ShareSignedIdentifier identifier = new ShareSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new ShareAccessPolicy().setPermissions("rcwdl")
                 .setExpiresOn(getUTCNow().plusDays(1)))
-
+        primaryShareClient.create()
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))
 
         // Check containerSASPermissions
@@ -309,7 +313,7 @@ class FileSASTests extends APISpec {
         notThrown(ShareStorageException)
     }
 
-    def "AccountSAS FileService network test create delete share succeeds"() {
+    def "AccountSAS network create delete share"() {
         setup:
         def service = new AccountSasService()
             .setFileAccess(true)

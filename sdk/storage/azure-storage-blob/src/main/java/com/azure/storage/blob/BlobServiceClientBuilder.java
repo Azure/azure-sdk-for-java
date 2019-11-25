@@ -84,7 +84,7 @@ public final class BlobServiceClientBuilder {
      * @throws IllegalArgumentException If no credentials are provided.
      */
     public BlobServiceAsyncClient buildAsyncClient() {
-        BuilderHelper.validateCpk(customerProvidedKey, endpoint);
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
 
         if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)
             && Objects.isNull(sasTokenCredential)) {
@@ -95,7 +95,7 @@ public final class BlobServiceClientBuilder {
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, serviceVersion);
+            httpClient, additionalPolicies, configuration, logger);
 
         return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey);
     }
@@ -235,7 +235,8 @@ public final class BlobServiceClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated BlobServiceClientBuilder object

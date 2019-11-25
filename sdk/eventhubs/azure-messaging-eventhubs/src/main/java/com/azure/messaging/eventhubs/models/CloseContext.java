@@ -4,11 +4,11 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.messaging.eventhubs.EventProcessor;
+import com.azure.messaging.eventhubs.EventProcessorClient;
 import java.util.Objects;
 
 /**
- * This class contains information about a partition for which this {@link EventProcessor} stopped processing.
+ * This class contains information about a partition for which this {@link EventProcessorClient} stopped processing.
  */
 @Immutable
 public class CloseContext {
