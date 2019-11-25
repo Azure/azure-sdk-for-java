@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -39,7 +40,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     private String copyId = "copyId";
     private String url = "https://sample.com";
     private String file = "file";
-    private UserDelegationKey userDelegationKey = null;
+    private UserDelegationKey userDelegationKey = new BlobServiceClientBuilder().buildClient().getUserDelegationKey(null, null);
 
     /**
      * Code snippet for {@link BlobAsyncClientBase#exists()}

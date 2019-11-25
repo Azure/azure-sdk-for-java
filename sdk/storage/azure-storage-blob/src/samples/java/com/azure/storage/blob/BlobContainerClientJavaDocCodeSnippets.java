@@ -35,7 +35,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
     private String proposedId = "proposedId";
     private int leaseDuration = (int) Duration.ofSeconds(30).getSeconds();
     private Duration timeout = Duration.ofSeconds(30);
-    private UserDelegationKey userDelegationKey = null;
+    private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
      * Code snippet for {@link BlobContainerClient#getBlobClient(String)}

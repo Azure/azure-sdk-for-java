@@ -8,6 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -47,7 +48,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
-    private UserDelegationKey userDelegationKey = null;
+    private UserDelegationKey userDelegationKey = new BlobServiceClientBuilder().buildClient().getUserDelegationKey(null, null);
 
     /**
      * Code snippets for {@link BlobClientBase#exists()}

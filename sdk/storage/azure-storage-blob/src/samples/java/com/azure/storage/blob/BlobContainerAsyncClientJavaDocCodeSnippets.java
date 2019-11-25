@@ -32,7 +32,7 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     private String leaseId = "leaseId";
     private String proposedId = "proposedId";
     private int leaseDuration = (int) Duration.ofSeconds(30).getSeconds();
-    private UserDelegationKey userDelegationKey = null;
+    private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
      * Code snippet for {@link BlobContainerAsyncClient#getBlobAsyncClient(String)}
