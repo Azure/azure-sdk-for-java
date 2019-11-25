@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * A policy to govern retrying of messaging operations in which the base delay between retries remains the same.
  */
-public final class FixedAmqpRetryPolicy extends AmqpRetryPolicy {
+public class FixedAmqpRetryPolicy extends AmqpRetryPolicy {
     /**
      * Creates an instance with the given retry options.
      *

@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -280,18 +280,6 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the scheduler for operations such as connecting to and receiving or sending data to Event Hubs. If none is
-     * specified, an elastic pool is used.
-     *
-     * @param scheduler The scheduler for operations such as connecting to and receiving or sending data to Event Hubs.
-     * @return The updated {@link EventHubClientBuilder} object.
-     */
-    public EventHubClientBuilder scheduler(Scheduler scheduler) {
-        this.scheduler = scheduler;
-        return this;
-    }
-
-    /**
      * Sets the transport type by which all the communication with Azure Event Hubs occurs. Default value is {@link
      * AmqpTransportType#AMQP}.
      *
@@ -449,7 +437,7 @@ public class EventHubClientBuilder {
         }
 
         if (scheduler == null) {
-            scheduler = Schedulers.elastic();
+            scheduler = Schedulers.newElastic("event-hubs");
         }
 
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
@@ -544,9 +532,9 @@ public class EventHubClientBuilder {
             proxyOptions = getDefaultProxyConfiguration(configuration);
         }
 
-        final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
-            ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
-            : CBSAuthorizationType.JSON_WEB_TOKEN;
+        final CbsAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
+            ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
+            : CbsAuthorizationType.JSON_WEB_TOKEN;
 
         return new ConnectionOptions(fullyQualifiedNamespace, eventHubName, credentials, authorizationType,
             transport, retryOptions, proxyOptions, scheduler);

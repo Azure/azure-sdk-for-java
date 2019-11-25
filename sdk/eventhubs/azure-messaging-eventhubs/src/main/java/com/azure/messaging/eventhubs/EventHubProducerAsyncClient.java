@@ -28,7 +28,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -134,8 +133,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
-            AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
-            boolean isSharedConnection) {
+        AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
+        boolean isSharedConnection) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connection = connection;
@@ -170,7 +169,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EventHubProperties> getProperties() {
+    public Mono<EventHubProperties> getEventHubProperties() {
         return connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
     }
 
@@ -180,7 +179,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
     public Flux<String> getPartitionIds() {
-        return getProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
+        return getEventHubProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
 
     /**
@@ -188,6 +187,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * events in the partition event stream.
      *
      * @param partitionId The unique identifier of a partition associated with the Event Hub.
+     *
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -208,6 +208,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
      *
      * @param options A set of options used to configure the {@link EventDataBatch}.
+     *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
     public Mono<EventDataBatch> createBatch(CreateBatchOptions options) {
@@ -220,7 +221,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final int batchMaxSize = options.getMaximumSizeInBytes();
 
         if (!CoreUtils.isNullOrEmpty(partitionKey)
-                && !CoreUtils.isNullOrEmpty(partitionId)) {
+            && !CoreUtils.isNullOrEmpty(partitionId)) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "CreateBatchOptions.getPartitionKey() and CreateBatchOptions.getPartitionId() are both set. "
                     + "Only one or the other can be used. partitionKey: '%s'. partitionId: '%s'",
@@ -382,6 +383,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @param batch The batch to send to the service.
      *
      * @return A {@link Mono} that completes when the batch is pushed to the service.
+     *
      * @throws NullPointerException if {@code batch} is {@code null}.
      * @see EventHubProducerAsyncClient#createBatch()
      * @see EventHubProducerAsyncClient#createBatch(CreateBatchOptions)
@@ -450,7 +452,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String partitionId = options.getPartitionId();
 
         if (!CoreUtils.isNullOrEmpty(partitionKey)
-                && !CoreUtils.isNullOrEmpty(partitionId)) {
+            && !CoreUtils.isNullOrEmpty(partitionId)) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "SendOptions.getPartitionKey() and SendOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",
@@ -509,19 +511,15 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @Override
     public void close() {
-        if (!isDisposed.getAndSet(true)) {
-            openLinks.forEach((key, value) -> {
-                try {
-                    value.close();
-                } catch (IOException e) {
-                    logger.warning("Error closing link for partition: {}", key, e);
-                }
-            });
-            openLinks.clear();
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
 
-            if (!isSharedConnection) {
-                connection.close();
-            }
+        openLinks.forEach((key, value) -> value.close());
+        openLinks.clear();
+
+        if (!isSharedConnection) {
+            connection.close();
         }
     }
 

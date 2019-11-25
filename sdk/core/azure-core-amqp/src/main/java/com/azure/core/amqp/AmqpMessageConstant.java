@@ -13,7 +13,7 @@ import java.util.Objects;
  * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-properties">
  * AMQP 1.0: Messaging Properties</a>
  */
-public enum MessageConstant {
+public enum AmqpMessageConstant {
     /**
      * Message-id, if set, uniquely identifies a message within the message system. The message producer is usually
      * responsible for setting the message-id in such a way that it is assured to be globally unique. A broker MAY
@@ -95,16 +95,16 @@ public enum MessageConstant {
      */
     PUBLISHER_ANNOTATION_NAME("x-opt-publisher");
 
-    private static final Map<String, MessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
+    private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;
 
     static {
-        for (MessageConstant error : MessageConstant.values()) {
+        for (AmqpMessageConstant error : AmqpMessageConstant.values()) {
             RESERVED_CONSTANTS_MAP.put(error.getValue(), error);
         }
     }
 
-    MessageConstant(String value) {
+    AmqpMessageConstant(String value) {
         this.constant = value;
     }
 
@@ -120,13 +120,13 @@ public enum MessageConstant {
     /**
      * Parses an header value to its message constant.
      *
-     * @param headerValue the messaging header value to parse.
+     * @param value the messaging header value to parse.
      * @return the parsed MessageConstant object, or {@code null} if unable to parse.
      * @throws NullPointerException if {@code constant} is {@code null}.
      */
-    public static MessageConstant fromString(String headerValue) {
-        Objects.requireNonNull(headerValue, "'headerValue' cannot be null.");
+    public static AmqpMessageConstant fromString(String value) {
+        Objects.requireNonNull(value, "'value' cannot be null.");
 
-        return RESERVED_CONSTANTS_MAP.get(headerValue);
+        return RESERVED_CONSTANTS_MAP.get(value);
     }
 }

@@ -25,8 +25,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
 
-import static com.azure.core.amqp.implementation.CBSChannel.PUT_TOKEN_AUDIENCE;
-import static com.azure.core.amqp.implementation.CBSChannel.PUT_TOKEN_TYPE;
+import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_AUDIENCE;
+import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_TYPE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
@@ -69,8 +69,8 @@ public class CBSChannelTest {
         final String tokenAudience = "path.foo.bar";
         final String scopes = "scopes.cbs.foo";
         final AccessToken accessToken = new AccessToken("an-access-token?", OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC));
-        final CBSChannel cbsChannel = new CBSChannel(Mono.just(requestResponseChannel), tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
+        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel), tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
 
         when(tokenCredential.getToken(argThat(arg -> arg.getScopes().contains(scopes))))
             .thenReturn(Mono.just(accessToken));
@@ -103,8 +103,8 @@ public class CBSChannelTest {
         final String tokenAudience = "path.foo.bar";
         final String scopes = "scopes.cbs.foo";
         final AccessToken accessToken = new AccessToken("an-access-token?", OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC));
-        final CBSChannel cbsChannel = new CBSChannel(Mono.just(requestResponseChannel), tokenCredential,
-            CBSAuthorizationType.JSON_WEB_TOKEN, options);
+        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel), tokenCredential,
+            CbsAuthorizationType.JSON_WEB_TOKEN, options);
 
         when(tokenCredential.getToken(argThat(arg -> arg.getScopes().contains(scopes))))
             .thenReturn(Mono.just(accessToken));

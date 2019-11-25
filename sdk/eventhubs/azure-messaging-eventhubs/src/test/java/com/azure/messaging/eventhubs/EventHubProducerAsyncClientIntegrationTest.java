@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
@@ -32,7 +31,6 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
         producer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
-            .scheduler(Schedulers.parallel())
             .buildAsyncProducerClient();
     }
 
@@ -179,7 +177,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             .buildAsyncProducerClient();
 
         // Act & Assert
-        StepVerifier.create(client.getProperties())
+        StepVerifier.create(client.getEventHubProperties())
             .assertNext(properties -> {
                 Assertions.assertEquals(getEventHubName(), properties.getName());
                 Assertions.assertEquals(2, properties.getPartitionIds().stream().count());

@@ -11,11 +11,13 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -118,8 +120,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
         // First log the URL information.
         if (logDetailLevel.shouldLogUrl()) {
-            logger.info("--> {} {}", request.getHttpMethod(), request.getUrl());
-            formatAllowableQueryParams(request.getUrl().getQuery(), logger);
+            try {
+                UrlBuilder requestUrl = UrlBuilder.parse(request.getUrl());
+                requestUrl.setQuery(getAllowedQueryString(request.getUrl().getQuery()));
+                logger.info("--> {} {}", request.getHttpMethod(), requestUrl.toUrl());
+            } catch (MalformedURLException ex) {
+                return Mono.error(logger.logExceptionAsWarning(new IllegalStateException("Invalid request URL.")));
+            }
         }
 
         // Then log the headers.
@@ -185,35 +192,36 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         logger.info(sb.toString());
     }
 
-    private void formatAllowableQueryParams(String queryString, ClientLogger logger) {
+    private String getAllowedQueryString(String queryString) {
         if (CoreUtils.isNullOrEmpty(queryString)) {
-            return;
+            return "";
         }
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder queryStringBuilder = new StringBuilder();
         String[] queryParams = queryString.split("&");
         for (String queryParam : queryParams) {
+            if (queryStringBuilder.length() > 0) {
+                queryStringBuilder.append("&");
+            }
+
             String[] queryPair = queryParam.split("=", 2);
             if (queryPair.length == 2) {
                 String queryName = queryPair[0];
-                if (allowedQueryParamNames.contains(queryName.toLowerCase(Locale.ROOT))) {
-                    sb.append(queryParam);
+                if (allowedQueryParamNames.contains(queryName.toLowerCase())) {
+                    queryStringBuilder.append(queryParam);
                 } else {
-                    sb.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
+                    queryStringBuilder.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
                 }
             } else {
-                sb.append(queryParam);
+                queryStringBuilder.append(queryParam);
             }
-            sb.append("&");
         }
 
-        if (sb.length() > 0) {
-            logger.info(sb.substring(0, sb.length() - 1));
-        }
+        return queryStringBuilder.toString();
     }
 
-    private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final ClientLogger logger,
-        final URL url, final long startNs) {
+    private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final ClientLogger logger, final URL url,
+        final long startNs) {
         return (HttpResponse response) -> {
             long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
             //

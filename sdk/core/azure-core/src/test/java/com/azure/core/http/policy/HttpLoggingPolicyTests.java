@@ -13,10 +13,12 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,6 +36,9 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,6 +49,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Contains tests for {@link HttpLoggingPolicy}.
  */
 public class HttpLoggingPolicyTests {
+    private static final String REDACTED = "REDACTED";
+
     // Context used to tell the HttpLoggingPolicy to use a ClientLogger named HttpLoggingPolicyTests.
     private Context context = new Context("caller-method", "HttpLoggingPolicyTests");
 
@@ -105,6 +112,7 @@ public class HttpLoggingPolicyTests {
         System.setErr(originalSystemErr);
         System.clearProperty("org.slf4j.simpleLogger.log.HttpLoggingPolicyTests");
 
+        // Reset or clear the log level after the test completes.
         if (CoreUtils.isNullOrEmpty(originalLogLevel)) {
             System.clearProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
         } else {
@@ -323,6 +331,51 @@ public class HttpLoggingPolicyTests {
                 assertFalse(logOutput.contains(responseBodyAsString));
             })
             .verifyComplete();
+    }
+
+    /**
+     * Tests that a query string will be properly redacted before it is logged.
+     */
+    @ParameterizedTest
+    @MethodSource("redactQueryParametersSupplier")
+    public void redactQueryParameters(String requestUrl, String expectedQueryString,
+        Set<String> allowedQueryParameters) {
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpLoggingPolicy(new HttpLogOptions()
+                .setLogLevel(HttpLogDetailLevel.BASIC)
+                .setAllowedQueryParamNames(allowedQueryParameters)))
+            .httpClient(new NoOpHttpClient())
+            .build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl)))
+            .verifyComplete();
+
+        String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        Assertions.assertTrue(logString.contains(expectedQueryString));
+    }
+
+    private static Stream<Arguments> redactQueryParametersSupplier() {
+        String requestUrl = "https://localhost?sensitiveQueryParameter=sensitiveValue&queryParameter=value";
+
+        String expectedFormat = "sensitiveQueryParameter=%s&queryParameter=%s";
+        String fullyRedactedQueryString = String.format(expectedFormat, REDACTED, REDACTED);
+        String sensitiveRedactionQueryString = String.format(expectedFormat, REDACTED, "value");
+        String fullyAllowedQueryString = String.format(expectedFormat, "sensitiveValue", "value");
+
+        Set<String> allQueryParameters = new HashSet<>();
+        allQueryParameters.add("sensitiveQueryParameter");
+        allQueryParameters.add("queryParameter");
+
+        return Stream.of(
+            // All query parameters should be redacted.
+            Arguments.of(requestUrl, fullyRedactedQueryString, new HashSet<String>()),
+
+            // Only the sensitive query parameter should be redacted.
+            Arguments.of(requestUrl, sensitiveRedactionQueryString, Collections.singleton("queryParameter")),
+
+            // No query parameters are redacted.
+            Arguments.of(requestUrl, fullyAllowedQueryString, allQueryParameters)
+        );
     }
 
     private HttpPipeline createPipeline(HttpLogOptions logOptions, HttpResponse response, boolean treatAsError) {
