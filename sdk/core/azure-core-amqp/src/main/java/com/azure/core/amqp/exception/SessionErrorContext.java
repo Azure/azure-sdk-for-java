@@ -10,7 +10,7 @@ import java.util.Locale;
 /**
  * Context for an error that occurs in an AMQP session when an {@link AmqpException} occurs.
  */
-public class SessionErrorContext extends ErrorContext {
+public class SessionErrorContext extends AmqpErrorContext {
     private static final long serialVersionUID = -6595933736672371232L;
     private final String entityPath;
 

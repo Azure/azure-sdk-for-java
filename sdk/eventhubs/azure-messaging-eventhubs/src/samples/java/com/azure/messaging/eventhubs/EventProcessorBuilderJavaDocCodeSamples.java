@@ -4,26 +4,26 @@
 package com.azure.messaging.eventhubs;
 
 /**
- * Code snippets for {@link EventProcessorBuilder}.
+ * Code snippets for {@link EventProcessorClientBuilder}.
  */
 public class EventProcessorBuilderJavaDocCodeSamples {
 
     /**
-     * Code snippet for showing how to create a new instance of {@link EventProcessor}.
+     * Code snippet for showing how to create a new instance of {@link EventProcessorClient}.
      *
-     * @return A new instance of {@link EventProcessor}
+     * @return A new instance of {@link EventProcessorClient}
      */
-    // BEGIN: com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation
-    public EventProcessor createEventProcessor() {
+    // BEGIN: com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation
+    public EventProcessorClient createEventProcessor() {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-        EventProcessor eventProcessor = new EventProcessorBuilder()
+        EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup("consumer-group")
-            .eventProcessorStore(new InMemoryEventProcessorStore())
-            .processEvent(partitionEvent -> {
-                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + partitionEvent.getData().getSequenceNumber());
+            .checkpointStore(new InMemoryCheckpointStore())
+            .processEvent(eventContext -> {
+                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId()
+                    + "and sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
                 System.out.printf("Error occurred in partition processor for partition {}, {}",
@@ -31,9 +31,9 @@ public class EventProcessorBuilderJavaDocCodeSamples {
                     errorContext.getThrowable());
             })
             .connectionString(connectionString)
-            .buildEventProcessor();
-        return eventProcessor;
+            .buildEventProcessorClient();
+        return eventProcessorClient;
     }
-    // END: com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation
+    // END: com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation
 
 }

@@ -35,6 +35,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -83,7 +84,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void createCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Mono<CosmosContainerResponse> createObservable = database
                 .createContainer(collectionDefinition);
 
@@ -146,14 +147,12 @@ public class CollectionCrudTest extends TestSuiteBase {
         };
         List<SpatialSpec> spatialIndexes = new ArrayList<SpatialSpec>();
         for (int index = 0; index < 2; index++) {
-            List<SpatialType> collectionOfSpatialTypes = new ArrayList<SpatialType>();
 
             SpatialSpec spec = new SpatialSpec();
             spec.path("/path" + index + "/*");
 
-            for (int i = index; i < index + 3; i++) {
-                collectionOfSpatialTypes.add(spatialTypes[i]);
-            }
+            List<SpatialType> collectionOfSpatialTypes = new ArrayList<SpatialType>(Arrays.asList(spatialTypes).subList(0, index + 3));
+
             spec.spatialTypes(collectionOfSpatialTypes);
             spatialIndexes.add(spec);
         }

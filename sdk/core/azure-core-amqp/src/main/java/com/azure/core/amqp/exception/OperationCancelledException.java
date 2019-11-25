@@ -16,7 +16,7 @@ public class OperationCancelledException extends AmqpException {
      * @param message Message associated with this exception.
      * @param context The context that caused this OperationCancelledException.
      */
-    public OperationCancelledException(String message, ErrorContext context) {
+    public OperationCancelledException(String message, AmqpErrorContext context) {
         super(false, message, context);
     }
 
@@ -27,7 +27,7 @@ public class OperationCancelledException extends AmqpException {
      * @param cause The throwable that caused this exception to be thrown.
      * @param context The context that caused this OperationCancelledException.
      */
-    public OperationCancelledException(final String message, final Throwable cause, ErrorContext context) {
+    public OperationCancelledException(final String message, final Throwable cause, AmqpErrorContext context) {
         super(false, message, cause, context);
     }
 }

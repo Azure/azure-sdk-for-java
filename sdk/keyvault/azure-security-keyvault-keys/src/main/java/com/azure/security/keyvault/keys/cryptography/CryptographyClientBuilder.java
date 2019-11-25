@@ -138,7 +138,7 @@ public final class CryptographyClientBuilder {
                 "Key Vault credentials are required to build the Cryptography async client"));
         }
 
-        HttpPipeline pipeline = setupPipeline(serviceVersion);
+        HttpPipeline pipeline = setupPipeline();
 
         if (jsonWebKey != null) {
             return new CryptographyAsyncClient(jsonWebKey, pipeline, serviceVersion);
@@ -147,14 +147,14 @@ public final class CryptographyClientBuilder {
         }
     }
 
-    HttpPipeline setupPipeline(CryptographyServiceVersion serviceVersion) {
+    HttpPipeline setupPipeline() {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
-            buildConfiguration, serviceVersion));
+            buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));

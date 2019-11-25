@@ -15,8 +15,6 @@ import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * A package-private consumer responsible for reading {@link EventData} from a specific Event Hub partition in the
  * context of a specific consumer group.
  */
-class EventHubPartitionAsyncConsumer implements Closeable {
+class EventHubPartitionAsyncConsumer implements AutoCloseable {
     private static final AtomicReferenceFieldUpdater<EventHubPartitionAsyncConsumer, AmqpReceiveLink>
         RECEIVE_LINK_FIELD_UPDATER = AtomicReferenceFieldUpdater.newUpdater(
         EventHubPartitionAsyncConsumer.class, AmqpReceiveLink.class, "receiveLink");
@@ -40,6 +38,7 @@ class EventHubPartitionAsyncConsumer implements Closeable {
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
     private final ClientLogger logger = new ClientLogger(EventHubPartitionAsyncConsumer.class);
     private final MessageSerializer messageSerializer;
+    private final String fullyQualifiedNamespace;
     private final String eventHubName;
     private final String consumerGroup;
     private final String partitionId;
@@ -50,9 +49,10 @@ class EventHubPartitionAsyncConsumer implements Closeable {
     private volatile AmqpReceiveLink receiveLink;
 
     EventHubPartitionAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
-        String eventHubName, String consumerGroup, String partitionId, int prefetchCount,
-        boolean trackLastEnqueuedEventProperties) {
+        String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId,
+        int prefetchCount, boolean trackLastEnqueuedEventProperties) {
         this.messageSerializer = messageSerializer;
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
@@ -78,22 +78,20 @@ class EventHubPartitionAsyncConsumer implements Closeable {
                     }
                 });
 
-                link.getErrors().subscribe(error -> {
-                    logger.info("Error received in ReceiveLink. {}", error.toString());
+                link.getEndpointStates().subscribe(
+                    state -> {
+                        logger.verbose("Endpoint state: {}", state);
+                    },
+                    error -> {
+                        logger.info("Error received in AmqpReceiveLink. {}", error.toString());
 
-                    //TODO (conniey): Surface error to EmitterProcessor.
-                });
-
-                link.getShutdownSignals().subscribe(signal -> {
-                    logger.info("Shutting down. Initiated by client? {}. Reason: {}",
-                        signal.isInitiatedByClient(), signal.toString());
-
-                    try {
+                        //TODO (conniey): Propagate error to emitter and re-resubscribe for a link if it is transient.
                         close();
-                    } catch (IOException e) {
-                        logger.error("Error closing consumer: {}", e.toString());
-                    }
-                });
+                    },
+                    () -> {
+                        logger.info("Amqp receive link shutting down.");
+                        close();
+                    });
             }
 
             return link.receive().map(message -> onMessageReceived(message));
@@ -130,11 +128,9 @@ class EventHubPartitionAsyncConsumer implements Closeable {
 
     /**
      * Disposes of the consumer by closing the underlying connection to the service.
-     *
-     * @throws IOException if the underlying transport and its resources could not be disposed.
      */
     @Override
-    public void close() throws IOException {
+    public void close() {
         if (!isDisposed.getAndSet(true)) {
             final AmqpReceiveLink receiveLink = RECEIVE_LINK_FIELD_UPDATER.getAndSet(this, null);
             if (receiveLink != null) {
@@ -181,9 +177,8 @@ class EventHubPartitionAsyncConsumer implements Closeable {
             }
         }
 
-        final PartitionContext partitionContext = new PartitionContext(partitionId, eventHubName, consumerGroup,
-            lastEnqueuedEventProperties.get());
-
-        return new PartitionEvent(partitionContext, event);
+        final PartitionContext partitionContext = new PartitionContext(fullyQualifiedNamespace, eventHubName,
+            consumerGroup, partitionId);
+        return new PartitionEvent(partitionContext, event, lastEnqueuedEventProperties.get());
     }
 }

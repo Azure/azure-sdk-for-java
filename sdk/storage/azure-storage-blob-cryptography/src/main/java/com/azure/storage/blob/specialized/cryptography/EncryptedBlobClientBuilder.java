@@ -141,12 +141,12 @@ public final class EncryptedBlobClientBuilder {
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        return new EncryptedBlobAsyncClient(getHttpPipeline(serviceVersion),
+        return new EncryptedBlobAsyncClient(getHttpPipeline(),
             String.format("%s/%s/%s", endpoint, containerName, blobName), serviceVersion, accountName, containerName,
             blobName, snapshot, keyWrapper, keyWrapAlgorithm);
     }
 
-    private HttpPipeline getHttpPipeline(BlobServiceVersion serviceVersion) {
+    private HttpPipeline getHttpPipeline() {
         if (httpPipeline != null) {
             return  httpPipeline;
         }
@@ -160,13 +160,14 @@ public final class EncryptedBlobClientBuilder {
 
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
         policies.add(new UserAgentPolicy(logOptions.getApplicationId(), userAgentName, userAgentVersion,
-            userAgentConfiguration, serviceVersion));
+            userAgentConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
         if (storageSharedKeyCredential != null) {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         } else if (tokenCredential != null) {
+            BuilderHelper.httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
         } else if (sasTokenCredential != null) {
             policies.add(new SasTokenCredentialPolicy(sasTokenCredential));

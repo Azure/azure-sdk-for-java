@@ -97,7 +97,7 @@ public class DataLakeServiceClientBuilder {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Authorization credentials must be set."));
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
         return new DataLakeServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName,
             blobServiceClientBuilder.buildAsyncClient());

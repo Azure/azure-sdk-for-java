@@ -3,14 +3,14 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.AmqpSendLink;
-import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
@@ -76,7 +76,7 @@ public class EventHubProducerAsyncClientTest {
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
-    private final RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(10));
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10));
     private EventHubProducerAsyncClient producer;
     private EventHubConnection eventHubConnection;
     @Mock
@@ -89,7 +89,7 @@ public class EventHubProducerAsyncClientTest {
 
         tracerProvider = new TracerProvider(Collections.emptyList());
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, retryOptions,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         eventHubConnection = new EventHubConnection(Mono.just(connection), connectionOptions);
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, eventHubConnection, retryOptions, tracerProvider,
@@ -257,10 +257,10 @@ public class EventHubProducerAsyncClientTest {
     }
 
     /**
-     * Verifies addLink method invoked when sending a single message on retry (span context already present on event).
+     * Verifies addLink method is not invoked and message/event is not stamped with context on retry (span context already present on event).
      */
     @Test
-    public void sendMessageAddLink() {
+    public void sendMessageRetrySpanTest() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
@@ -301,7 +301,7 @@ public class EventHubProducerAsyncClientTest {
         verify(tracer1, times(1))
             .start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, never()).start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(2)).addLink(any());
+        verify(tracer1, never()).addLink(any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
@@ -331,7 +331,7 @@ public class EventHubProducerAsyncClientTest {
         // Act & Assert
         StepVerifier.create(producer.send(testData))
             .verifyErrorMatches(error -> error instanceof AmqpException
-                && ((AmqpException) error).getErrorCondition() == ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
+                && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
 
         verify(link, times(0)).send(any(Message.class));
     }
@@ -380,6 +380,47 @@ public class EventHubProducerAsyncClientTest {
             .verifyComplete();
 
         verify(link, times(2)).getLinkSize();
+    }
+
+    /**
+     * Verifies that message spans are started and ended on tryAdd when creating batches to send in
+     * {@link EventDataBatch}.
+     */
+    @Test
+    public void startMessageSpansOnCreateBatch() {
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            eventHubConnection, retryOptions, tracerProvider, messageSerializer, false);
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+
+        when(link.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
+        when(connection.createSession(EVENT_HUB_NAME)).thenReturn(Mono.just(session));
+
+        // EC is the prefix they use when creating a link that sends to the service round-robin.
+        when(session.createProducer(argThat(name -> name.startsWith("EC")), eq(EVENT_HUB_NAME),
+            eq(retryOptions.getTryTimeout()), any()))
+            .thenReturn(Mono.just(link));
+
+        when(tracer1.start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+            }
+        );
+
+        // Act & Assert
+        StepVerifier.create(asyncProducer.createBatch())
+            .assertNext(batch -> {
+                Assertions.assertTrue(batch.tryAdd(new EventData("Hello World".getBytes(UTF_8))));
+            })
+            .verifyComplete();
+
+        verify(tracer1, times(1))
+            .start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
     /**
@@ -690,15 +731,35 @@ public class EventHubProducerAsyncClientTest {
     public void closesDedicatedConnection() {
         // Arrange
         EventHubConnection hubConnection = mock(EventHubConnection.class);
-        EventHubProducerAsyncClient sharedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+        EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             hubConnection, retryOptions, tracerProvider, messageSerializer, false);
 
         // Act
-        sharedProducer.close();
+        dedicatedProducer.close();
 
         // Verify
         verify(hubConnection, times(1)).close();
     }
+
+
+    /**
+     * Verifies that when we have a non-shared connection, the producer closes that connection. Only once.
+     */
+    @Test
+    public void closesDedicatedConnectionOnlyOnce() {
+        // Arrange
+        EventHubConnection hubConnection = mock(EventHubConnection.class);
+        EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            hubConnection, retryOptions, tracerProvider, messageSerializer, false);
+
+        // Act
+        dedicatedProducer.close();
+        dedicatedProducer.close();
+
+        // Verify
+        verify(hubConnection, times(1)).close();
+    }
+
 
     static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"
         + "Ut sodales efficitur sapien ut posuere. Morbi sed tellus est. Proin eu erat purus. Proin massa nunc, condimentum id iaculis dignissim, consectetur et odio. Cras suscipit sem eu libero aliquam tincidunt. Nullam ut arcu suscipit, eleifend velit in, cursus libero. Ut eleifend facilisis odio sit amet feugiat. Phasellus at nunc sit amet elit sagittis commodo ac in nisi. Fusce vitae aliquam quam. Integer vel nibh euismod, tempus elit vitae, pharetra est. Duis vulputate enim a elementum dignissim. Morbi dictum enim id elit scelerisque, in elementum nulla pharetra. \n"
