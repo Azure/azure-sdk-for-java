@@ -13,6 +13,8 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
@@ -95,27 +97,55 @@ public final class TextAnalyticsAPIImpl {
     private interface TextAnalyticsAPIService {
         @Post("entities/recognition/general")
         @ExpectedResponses({200, 500})
-        Mono<SimpleResponse<Object>> entitiesRecognitionGeneral(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput, Context context);
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<SimpleResponse<Object>> entitiesRecognitionGeneral(@HostParam("Endpoint") String endpoint,
+                                                                @QueryParam("model-version") String modelVersion,
+                                                                @QueryParam("showStats") Boolean showStats,
+                                                                @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput,
+                                                                Context context);
 
         @Post("entities/recognition/pii")
         @ExpectedResponses({200, 500})
-        Mono<SimpleResponse<Object>> entitiesRecognitionPii(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput, Context context);
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<SimpleResponse<Object>> entitiesRecognitionPii(@HostParam("Endpoint") String endpoint,
+                                                            @QueryParam("model-version") String modelVersion,
+                                                            @QueryParam("showStats") Boolean showStats,
+                                                            @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput,
+                                                            Context context);
 
         @Post("entities/linking")
         @ExpectedResponses({200, 500})
-        Mono<SimpleResponse<Object>> entitiesLinking(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput, Context context);
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<SimpleResponse<Object>> entitiesLinking(@HostParam("Endpoint") String endpoint,
+                                                     @QueryParam("model-version") String modelVersion,
+                                                     @QueryParam("showStats") Boolean showStats,
+                                                     @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput,
+                                                     Context context);
 
         @Post("keyPhrases")
         @ExpectedResponses({200, 500})
-        Mono<SimpleResponse<Object>> keyPhrases(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput, Context context);
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<SimpleResponse<Object>> keyPhrases(@HostParam("Endpoint") String endpoint,
+                                                @QueryParam("model-version") String modelVersion,
+                                                @QueryParam("showStats") Boolean showStats,
+                                                @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput,
+                                                Context context);
 
         @Post("languages")
         @ExpectedResponses({200, 500})
-        Mono<SimpleResponse<Object>> languages(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") LanguageBatchInput languageBatchInput, Context context);
+        Mono<SimpleResponse<Object>> languages(@HostParam("Endpoint") String endpoint,
+                                               @QueryParam("model-version") String modelVersion,
+                                               @QueryParam("showStats") Boolean showStats,
+                                               @BodyParam("application/json; charset=utf-8") LanguageBatchInput languageBatchInput,
+                                               Context context);
 
         @Post("sentiment")
         @ExpectedResponses({200, 500})
-        Mono<SimpleResponse<Object>> sentiment(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput, Context context);
+        Mono<SimpleResponse<Object>> sentiment(@HostParam("Endpoint") String endpoint,
+                                               @QueryParam("model-version") String modelVersion,
+                                               @QueryParam("showStats") Boolean showStats,
+                                               @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput multiLanguageBatchInput,
+                                               Context context);
     }
 
     /**
