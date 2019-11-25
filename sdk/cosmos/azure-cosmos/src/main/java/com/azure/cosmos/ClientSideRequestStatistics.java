@@ -36,6 +36,7 @@ class ClientSideRequestStatistics {
     private final static int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
 
     private final static DateTimeFormatter responseTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss.SSS").withLocale(Locale.US);
+    private final static OperatingSystemMXBean mbean = (com.sun.management.OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
 
     private ZonedDateTime requestStartTime;
     private ZonedDateTime requestEndTime;
@@ -272,10 +273,8 @@ class ClientSideRequestStatistics {
             String usedMemory = totalMemory - freeMemory + " KB";
             String availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
 
-            OperatingSystemMXBean mbean = (com.sun.management.OperatingSystemMXBean)
-                ManagementFactory.getOperatingSystemMXBean();
-            String processCpuLoad = Double.toString(mbean.getProcessCpuLoad());
-            String systemCpuLoad = Double.toString(mbean.getSystemCpuLoad());
+            String processCpuLoad = Double.toString(this.mbean.getProcessCpuLoad());
+            String systemCpuLoad = Double.toString(this.mbean.getSystemCpuLoad());
 
             stringBuilder.append("System State Information -------").append(System.lineSeparator());
             stringBuilder.append("Used Memory : " + usedMemory).append(System.lineSeparator());
