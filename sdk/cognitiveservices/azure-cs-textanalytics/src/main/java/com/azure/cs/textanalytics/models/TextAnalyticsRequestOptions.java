@@ -11,7 +11,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class TextAnalyticsRequestOptions {
     private String modelVersion;
-    private boolean showStats;
+    private boolean showStatistics;
 
     public String getModelVersion() {
         return modelVersion;
@@ -22,12 +22,12 @@ public final class TextAnalyticsRequestOptions {
         return this;
     }
 
-    public boolean isShowStatistics() {
-        return showStats;
+    public boolean showStatistics() {
+        return showStatistics;
     }
 
-    public TextAnalyticsRequestOptions setShowStatistics(boolean showStats) {
-        this.showStats = showStats;
+    public TextAnalyticsRequestOptions setShowStatistics(boolean showStatistics) {
+        this.showStatistics = showStatistics;
         return this;
     }
 }

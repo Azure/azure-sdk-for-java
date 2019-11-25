@@ -6,23 +6,17 @@ package com.azure.cs.textanalytics;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.cs.textanalytics.models.DetectedLanguage;
+import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.DetectedLanguageResult;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.LinkedEntityResult;
-import com.azure.cs.textanalytics.models.NamedEntity;
 import com.azure.cs.textanalytics.models.NamedEntityResult;
-import com.azure.cs.textanalytics.models.TextSentiment;
-import com.azure.cs.textanalytics.models.DetectLangaugeInput;
-import com.azure.cs.textanalytics.models.LinkedEntity;
-import com.azure.cs.textanalytics.models.TextDocumentInput;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.cs.textanalytics.models.TextDocumentInput;
 import com.azure.cs.textanalytics.models.TextSentimentResult;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -37,7 +31,7 @@ public final class TextAnalyticsClient {
     // (1) language
     // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectedLanguageResult detectLanguage(String text) { return null;}
+    public DetectedLanguageResult detectLanguage(String text) { return null; }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectedLanguageResult detectLanguage(String text, String countryHint) {
@@ -58,19 +52,19 @@ public final class TextAnalyticsClient {
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<DetectedLanguageResult> detectLanguages(List<DetectLangaugeInput> inputs) {
+    public DocumentResultCollection<DetectedLanguageResult> detectLanguages(List<DetectLanguageInput> inputs) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectedLanguageResult> detectLanguages(
-        List<DetectLangaugeInput> inputs, TextAnalyticsRequestOptions options) {
+        List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<DetectedLanguageResult>> detectLanguagesWithResponse(
-        List<DetectLangaugeInput> inputs, TextAnalyticsRequestOptions options, Context context) {
+        List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         return client.detectLanguagesWithResponse(inputs, options, context).block();
     }
 

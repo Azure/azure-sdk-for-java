@@ -17,7 +17,7 @@ import com.azure.cs.textanalytics.models.DetectedLanguageResult;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.LinkedEntityResult;
-import com.azure.cs.textanalytics.models.DetectLangaugeInput;
+import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.NamedEntityResult;
 import com.azure.cs.textanalytics.models.TextDocumentInput;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
@@ -83,13 +83,13 @@ public final class TextAnalyticsAsyncClient {
 
     // Advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<DetectedLanguageResult>> detectLanguages(List<DetectLangaugeInput> inputs) {
+    public Mono<DocumentResultCollection<DetectedLanguageResult>> detectLanguages(List<DetectLanguageInput> inputs) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectedLanguageResult>> detectLanguages(
-        List<DetectLangaugeInput> inputs, TextAnalyticsRequestOptions options) {
+        List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options) {
 //        try {
 //            return withContext(
 //                context -> detectLanguagesWithResponse(inputs, options, context));
@@ -101,14 +101,14 @@ public final class TextAnalyticsAsyncClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentResultCollection<DetectedLanguageResult>>> detectLanguagesWithResponse(
-        List<DetectLangaugeInput> inputs, TextAnalyticsRequestOptions options) {
+        List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     Mono<Response<DocumentResultCollection<DetectedLanguageResult>>> detectLanguagesWithResponse(
-        List<DetectLangaugeInput> inputs, TextAnalyticsRequestOptions options, Context context) {
+        List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         return client.languagesWithRestResponseAsync(new LanguageBatchInput().setDocuments(inputs),
-            options.getModelVersion(), options.isShowStatistics(), context)
+            options.getModelVersion(), options.showStatistics(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -168,7 +168,7 @@ public final class TextAnalyticsAsyncClient {
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
         return client.entitiesRecognitionGeneralWithRestResponseAsync(
             new MultiLanguageBatchInput().setDocuments(document), options.getModelVersion(),
-            options.isShowStatistics(), context).map(response -> new SimpleResponse<>(response, null));
+            options.showStatistics(), context).map(response -> new SimpleResponse<>(response, null));
     }
 
     // (3) PII entities
@@ -228,7 +228,7 @@ public final class TextAnalyticsAsyncClient {
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate multiLanguageBatchInput
         return client.entitiesRecognitionPiiWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(document),
-            options.getModelVersion(), options.isShowStatistics(), context)
+            options.getModelVersion(), options.showStatistics(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -289,7 +289,7 @@ public final class TextAnalyticsAsyncClient {
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate multiLanguageBatchInput
         return client.entitiesLinkingWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(inputs),
-            options.getModelVersion(), options.isShowStatistics(), context)
+            options.getModelVersion(), options.showStatistics(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -363,7 +363,7 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractKeyPhrasesWithResponse(
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
         return client.keyPhrasesWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(document),
-            options.getModelVersion(), options.isShowStatistics(), context).map(response ->
+            options.getModelVersion(), options.showStatistics(), context).map(response ->
             new SimpleResponse<>(response, null));
     }
 
@@ -440,7 +440,7 @@ public final class TextAnalyticsAsyncClient {
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate multiLanguageBatchInput
         return client.sentimentWithRestResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(document), options.getModelVersion(), options.isShowStatistics(),
+            new MultiLanguageBatchInput().setDocuments(document), options.getModelVersion(), options.showStatistics(),
             context).map(response -> new SimpleResponse<>(response, null));
     }
 }

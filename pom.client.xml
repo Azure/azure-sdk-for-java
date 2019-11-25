@@ -989,5 +989,6 @@
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/storage/azure-storage-queue-cryptography</module>
+    <module>sdk/cognitiveservices/azure-cs-textanalytics</module>
   </modules>
 </project>

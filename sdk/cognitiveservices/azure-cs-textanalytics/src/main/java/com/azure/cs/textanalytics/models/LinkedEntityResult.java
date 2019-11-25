@@ -11,14 +11,14 @@ import com.azure.core.util.IterableStream;
  */
 @Fluent
 public final class LinkedEntityResult extends DocumentResult {
-    private IterableStream<LinkedEntity> items;
+    private IterableStream<LinkedEntity> linkedEntities;
 
-    public IterableStream<LinkedEntity> getItems() {
-        return items;
+    public IterableStream<LinkedEntity> getLinkedEntities() {
+        return linkedEntities;
     }
 
-    LinkedEntityResult setItems(IterableStream<LinkedEntity> items) {
-        this.items = items;
+    LinkedEntityResult setLinkedEntities(IterableStream<LinkedEntity> linkedEntities) {
+        this.linkedEntities = linkedEntities;
         return this;
     }
 }

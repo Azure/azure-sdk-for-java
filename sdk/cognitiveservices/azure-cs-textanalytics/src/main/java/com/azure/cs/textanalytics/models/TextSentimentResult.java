@@ -13,24 +13,24 @@ import java.util.List;
  */
 @Fluent
 public final class TextSentimentResult extends DocumentResult {
-    private TextSentiment textSentiment;
-    private IterableStream<TextSentiment> items;
+    private TextSentiment documentSentiment;
+    private IterableStream<TextSentiment> sentenceSentiments;
 
-    public TextSentiment getTextSentiment() {
-        return textSentiment;
+    public TextSentiment getDocumentSentiment() {
+        return documentSentiment;
     }
 
-    TextSentimentResult setTextSentiment(TextSentiment textSentiment) {
-        this.textSentiment = textSentiment;
+    public IterableStream<TextSentiment> getSentenceSentiments() {
+        return sentenceSentiments;
+    }
+
+    TextSentimentResult setDocumentSentiment(TextSentiment documentSentiment) {
+        this.documentSentiment = documentSentiment;
         return this;
     }
 
-    public IterableStream<TextSentiment> getItems() {
-        return items;
-    }
-
-    TextSentimentResult setItems(IterableStream<TextSentiment> items) {
-        this.items = items;
+    TextSentimentResult setSentenceSentiments(IterableStream<TextSentiment> sentenceSentiments) {
+        this.sentenceSentiments = sentenceSentiments;
         return this;
     }
 }

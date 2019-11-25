@@ -12,7 +12,7 @@ import com.azure.core.util.IterableStream;
 @Fluent
 public final class DetectedLanguageResult extends DocumentResult {
     private DetectedLanguage primaryLanguage;
-    private IterableStream<DetectedLanguage> items;
+    private IterableStream<DetectedLanguage> detectedLanguages;
 
     public DetectedLanguage getPrimaryLanguage() {
         return primaryLanguage;
@@ -23,12 +23,12 @@ public final class DetectedLanguageResult extends DocumentResult {
         return this;
     }
 
-    public IterableStream<DetectedLanguage> getItems() {
-        return items;
+    public IterableStream<DetectedLanguage> getDetectedLanguages() {
+        return detectedLanguages;
     }
 
-    DetectedLanguageResult setItems(IterableStream<DetectedLanguage> items) {
-        this.items = items;
+    DetectedLanguageResult setDetectedLanguages(IterableStream<DetectedLanguage> detectedLanguages) {
+        this.detectedLanguages = detectedLanguages;
         return this;
     }
 }
