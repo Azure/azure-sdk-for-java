@@ -14,16 +14,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
-import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
 import static com.azure.messaging.eventhubs.TestUtils.OFFSET;
 import static com.azure.messaging.eventhubs.TestUtils.PARTITION_KEY;
@@ -70,7 +67,7 @@ public class EventDataTest {
         final EventData eventData = new EventData(byteArray);
 
         // Assert
-        final byte[] actual = eventData.getBody().array();
+        final byte[] actual = eventData.getBody();
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(0, actual.length);
     }
@@ -85,36 +82,7 @@ public class EventDataTest {
 
         // Assert
         Assertions.assertNotNull(eventData.getBody());
-        Assertions.assertEquals(PAYLOAD, UTF_8.decode(eventData.getBody()).toString());
-    }
-
-    /**
-     * Verify that the Comparable interface is implemented correctly for EventData by sorting events by their squence
-     * numbers.
-     */
-    @Test
-    public void comparableEventDataSequenceNumbers() {
-        // Arrange
-        final EventData[] events = new EventData[]{
-            constructMessage(19),
-            constructMessage(22),
-            constructMessage(25),
-            constructMessage(88),
-        };
-
-        final List<EventData> unordered = new ArrayList<>();
-        unordered.add(events[1]);
-        unordered.add(events[0]);
-        unordered.add(events[3]);
-        unordered.add(events[2]);
-
-        // Act
-        Collections.sort(unordered);
-
-        // Assert
-        for (int i = 0; i < events.length; i++) {
-            Assertions.assertSame(events[i], unordered.get(i));
-        }
+        Assertions.assertEquals(PAYLOAD, new String(eventData.getBody(), UTF_8));
     }
 
     /**

@@ -41,9 +41,6 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <p><strong>Consuming events a single partition from Event Hub</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition}
  *
- * <p><strong>Receiving from all partitions</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition}
- *
  * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
  * <p>For event consumers that need to limit the number of events they receive at a given time, they can use {@link
  * BaseSubscriber#request(long)}.</p>
@@ -53,8 +50,11 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <p>Latest partition information as events are received can by setting
  * {@link ReceiveOptions#setTrackLastEnqueuedEventProperties(boolean) setTrackLastEnqueuedEventProperties} to
  * {@code true}. As events come in, explore the {@link PartitionContext} object.
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean-receiveoptions}
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition-receiveoptions}
+ * <p><strong>Receiving from all partitions</strong></p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean}
+ *
  */
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubConsumerAsyncClient implements Closeable {
@@ -123,7 +123,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EventHubProperties> getProperties() {
+    public Mono<EventHubProperties> getEventHubProperties() {
         return connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
     }
 
@@ -133,7 +133,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
     public Flux<String> getPartitionIds() {
-        return getProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
+        return getEventHubProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
 
     /**
@@ -156,7 +156,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     /**
-     * Begin consuming events from a single partition starting at {@code startingPosition}.
+     * Consumes events from a single partition starting at {@code startingPosition}.
      *
      * @param partitionId Identifier of the partition to read events from.
      * @param startingPosition Position within the Event Hub partition to begin consuming events.
@@ -171,7 +171,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     /**
-     * Begin consuming events from a single partition starting at {@code startingPosition} with a set of
+     * Consumes events from a single partition starting at {@code startingPosition} with a set of
      * {@link ReceiveOptions receive options}.
      *
      * <ul>
@@ -210,35 +210,75 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     /**
-     * Begin consuming events from all partitions starting at {@code startingPosition}.
+     * Consumes events from all partitions starting from the beginning of each partition.
      *
-     * @param startingPosition Position within each Event Hub partition to begin consuming events.
+     * <p>
+     * This method is not recommended for production use; the {@link EventProcessorClient} should be used for reading
+     * events from all partitions in a production scenario, as it offers a much more robust experience with higher
+     * throughput.
+     *
+     * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
+     * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
+     * given partition or subset of partitions.
+     * </p>
      *
      * @return A stream of events for every partition in the Event Hub starting from {@code startingPosition}.
-     *
-     * @throws NullPointerException if {@code startingPosition} is null.
      */
-    public Flux<PartitionEvent> receive(EventPosition startingPosition) {
-        return receive(startingPosition, defaultReceiveOptions);
+    public Flux<PartitionEvent> receive() {
+        return receive(true, defaultReceiveOptions);
     }
 
     /**
-     * Begin consuming events from all partitions starting at {@code startingPosition}.
+     * Consumes events from all partitions.
      *
-     * @param startingPosition Position within each Event Hub partition to begin consuming events.
+     * <p>
+     * This method is not recommended for production use; the {@link EventProcessorClient} should be used for reading
+     * events from all partitions in a production scenario, as it offers a much more robust experience with higher
+     * throughput.
+     *
+     * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
+     * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
+     * given partition or subset of partitions.
+     * </p>
+     *
+     * @param startReadingAtEarliestEvent {@code true} to begin reading at the first events available in each partition;
+     *     otherwise, reading will begin at the end of each partition seeing only new events as they are published.
+     *
+     * @return A stream of events for every partition in the Event Hub.
+     */
+    public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent) {
+        return receive(startReadingAtEarliestEvent, defaultReceiveOptions);
+    }
+
+    /**
+     * Consumes events from all partitions.
+     *
+     * <p>
+     * This method is not recommended for production use; the {@link EventProcessorClient} should be used for reading
+     * events from all partitions in a production scenario, as it offers a much more robust experience with higher
+     * throughput.
+     *
+     * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
+     * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
+     * given partition or subset of partitions.
+     * </p>
+     *
+     * @param startReadingAtEarliestEvent {@code true} to begin reading at the first events available in each partition;
+     *     otherwise, reading will begin at the end of each partition seeing only new events as they are published.
      * @param receiveOptions Options when receiving events from each Event Hub partition.
      *
-     * @return A stream of events for every partition in the Event Hub starting from {@code startingPosition}.
+     * @return A stream of events for every partition in the Event Hub.
      *
-     * @throws NullPointerException if {@code startingPosition} or {@code receiveOptions} is null.
+     * @throws NullPointerException if {@code receiveOptions} is null.
      */
-    public Flux<PartitionEvent> receive(EventPosition startingPosition, ReceiveOptions receiveOptions) {
-        if (Objects.isNull(startingPosition)) {
-            return fluxError(logger, new NullPointerException("'startingPosition' cannot be null."));
-        } else if (Objects.isNull(receiveOptions)) {
+    public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent, ReceiveOptions receiveOptions) {
+        if (Objects.isNull(receiveOptions)) {
             return fluxError(logger, new NullPointerException("'receiveOptions' cannot be null."));
         }
 
+        final EventPosition startingPosition = startReadingAtEarliestEvent
+            ? EventPosition.earliest()
+            : EventPosition.latest();
         final String prefix = StringUtil.getRandomString("all");
         final Flux<PartitionEvent> allPartitionEvents = getPartitionIds().flatMap(partitionId -> {
             final String linkName = prefix + "-" + partitionId;
@@ -302,7 +342,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
             connection.createReceiveLink(linkName, entityPath, startingPosition, receiveOptions)
                 .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
 
-        return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer,
+        return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, prefetchCount,
             receiveOptions.getTrackLastEnqueuedEventProperties());
     }

@@ -40,6 +40,7 @@ class EventHubPartitionAsyncConsumer implements Closeable {
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
     private final ClientLogger logger = new ClientLogger(EventHubPartitionAsyncConsumer.class);
     private final MessageSerializer messageSerializer;
+    private final String fullyQualifiedNamespace;
     private final String eventHubName;
     private final String consumerGroup;
     private final String partitionId;
@@ -50,9 +51,10 @@ class EventHubPartitionAsyncConsumer implements Closeable {
     private volatile AmqpReceiveLink receiveLink;
 
     EventHubPartitionAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
-        String eventHubName, String consumerGroup, String partitionId, int prefetchCount,
-        boolean trackLastEnqueuedEventProperties) {
+        String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId,
+        int prefetchCount, boolean trackLastEnqueuedEventProperties) {
         this.messageSerializer = messageSerializer;
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
@@ -181,9 +183,8 @@ class EventHubPartitionAsyncConsumer implements Closeable {
             }
         }
 
-        final PartitionContext partitionContext = new PartitionContext(partitionId, eventHubName, consumerGroup,
-            lastEnqueuedEventProperties.get());
-
-        return new PartitionEvent(partitionContext, event);
+        final PartitionContext partitionContext = new PartitionContext(fullyQualifiedNamespace, eventHubName,
+            consumerGroup, partitionId);
+        return new PartitionEvent(partitionContext, event, lastEnqueuedEventProperties.get());
     }
 }

@@ -8,7 +8,6 @@ import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,8 +27,7 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
         producer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
-            .scheduler(Schedulers.parallel())
-            .buildProducer();
+            .buildProducerClient();
     }
 
     @Override

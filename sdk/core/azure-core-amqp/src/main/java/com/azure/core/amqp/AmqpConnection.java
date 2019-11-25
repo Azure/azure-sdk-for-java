@@ -20,11 +20,11 @@ public interface AmqpConnection extends EndpointStateNotifier, Closeable {
     String getId();
 
     /**
-     * Gets the hostname for the AMQP connection.
+     * Gets the fully qualified namespace for the AMQP connection.
      *
      * @return The hostname for the AMQP connection.
      */
-    String getHostname();
+    String getFullyQualifiedNamespace();
 
     /**
      * Gets the maximum frame size for the connection.
@@ -45,7 +45,7 @@ public interface AmqpConnection extends EndpointStateNotifier, Closeable {
      *
      * @return Provider that authorizes access to AMQP resources.
      */
-    Mono<CBSNode> getCBSNode();
+    Mono<ClaimsBasedSecurityNode> getClaimsBasedSecurityNode();
 
     /**
      * Creates a new session with the given session name.

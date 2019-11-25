@@ -3,12 +3,12 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.amqp.ProxyOptions;
 
 import java.time.Duration;
 
@@ -33,7 +33,7 @@ class MockReactorHandlerProvider extends ReactorHandlerProvider {
     }
 
     @Override
-    public ConnectionHandler createConnectionHandler(String connectionId, String hostname, TransportType transportType,
+    public ConnectionHandler createConnectionHandler(String connectionId, String hostname, AmqpTransportType transportType,
                                                      ProxyOptions configuration) {
         return connectionHandler;
     }

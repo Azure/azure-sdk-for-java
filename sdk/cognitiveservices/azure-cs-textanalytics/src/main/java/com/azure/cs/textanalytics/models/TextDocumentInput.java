@@ -13,10 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TextDocumentInput {
 
-    public TextDocumentInput(String text) {
-        this.text = text;
-    }
-
     /*
      * A unique, non-empty document identifier.
      */
@@ -37,6 +33,11 @@ public final class TextDocumentInput {
     @JsonProperty(value = "language")
     private String language;
 
+    public TextDocumentInput (String id, String text) {
+        this.id = id;
+        this.text = text;
+    }
+
     /**
      * Get the id property: A unique, non-empty document identifier.
      *
@@ -47,34 +48,12 @@ public final class TextDocumentInput {
     }
 
     /**
-     * Set the id property: A unique, non-empty document identifier.
-     *
-     * @param id the id value to set.
-     * @return the MultiLanguageInput object itself.
-     */
-    public TextDocumentInput setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the text property: The input text to process.
      *
      * @return the text value.
      */
     public String getText() {
         return this.text;
-    }
-
-    /**
-     * Set the text property: The input text to process.
-     *
-     * @param text the text value to set.
-     * @return the MultiLanguageInput object itself.
-     */
-    public TextDocumentInput setText(String text) {
-        this.text = text;
-        return this;
     }
 
     /**

@@ -9,12 +9,15 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -80,8 +83,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
         final HttpLogDetailLevel httpLogLevel = httpLogOptions.getLogLevel();
         if (httpLogLevel.shouldLogUrl()) {
-            logger.info("--> {} {}", request.getHttpMethod(), request.getUrl());
-            formatAllowableQueryParams(httpLogOptions.getAllowedQueryParamNames(), request.getUrl().getQuery(), logger);
+            try {
+                UrlBuilder requestUrl = UrlBuilder.parse(request.getUrl());
+                requestUrl.setQuery(getAllowedQueryString(request.getUrl().getQuery()));
+                logger.info("--> {} {}", request.getHttpMethod(), requestUrl.toUrl());
+            } catch (MalformedURLException ex) {
+                return Mono.error(logger.logExceptionAsWarning(new IllegalStateException("Invalid request URL.")));
+            }
         }
 
         if (httpLogLevel.shouldLogHeaders()) {
@@ -126,7 +134,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private void formatAllowableHeaders(Set<String> allowedHeaderNames, HttpHeaders requestResponseHeaders,
-                                        ClientLogger logger) {
+        ClientLogger logger) {
         Set<String> lowerCasedAllowedHeaderNames = allowedHeaderNames.stream().map(String::toLowerCase)
             .collect(Collectors.toSet());
         StringBuilder sb = new StringBuilder();
@@ -143,36 +151,40 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         logger.info(sb.toString());
     }
 
-    private void formatAllowableQueryParams(Set<String> allowedQueryParamNames, String queryString,
-                                            ClientLogger logger) {
-        Set<String> lowerCasedAllowedQueryParams = allowedQueryParamNames.stream().map(String::toLowerCase)
+    private String getAllowedQueryString(String queryString) {
+        Set<String> lowerCasedAllowedQueryParams = httpLogOptions.getAllowedQueryParamNames().stream()
+            .map(String::toLowerCase)
             .collect(Collectors.toSet());
-        if (queryString != null) {
-            StringBuilder sb = new StringBuilder();
-            String[] queryParams = queryString.split("&");
-            for (String queryParam : queryParams) {
-                String[] queryPair = queryParam.split("=", 2);
-                if (queryPair.length == 2) {
-                    String queryName = queryPair[0];
-                    if (lowerCasedAllowedQueryParams.contains(queryName.toLowerCase(Locale.ROOT))) {
-                        sb.append(queryParam);
-                    } else {
-                        sb.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
-                    }
-                } else {
-                    sb.append(queryParam);
-                }
-                sb.append("&");
+
+        if (CoreUtils.isNullOrEmpty(queryString)) {
+            return "";
+        }
+
+        StringBuilder queryStringBuilder = new StringBuilder();
+        String[] queryParams = queryString.split("&");
+        for (String queryParam : queryParams) {
+            if (queryStringBuilder.length() > 0) {
+                queryStringBuilder.append("&");
             }
-            if (sb.length() > 0) {
-                logger.info(sb.substring(0, sb.length() - 1));
+
+            String[] queryPair = queryParam.split("=", 2);
+            if (queryPair.length == 2) {
+                String queryName = queryPair[0];
+                if (lowerCasedAllowedQueryParams.contains(queryName.toLowerCase(Locale.ROOT))) {
+                    queryStringBuilder.append(queryParam);
+                } else {
+                    queryStringBuilder.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
+                }
+            } else {
+                queryStringBuilder.append(queryParam);
             }
         }
+
+        return queryStringBuilder.toString();
     }
 
-    private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final ClientLogger logger,
-                                                                           final URL url,
-                                                                           final long startNs) {
+    private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final ClientLogger logger, final URL url,
+        final long startNs) {
         return (HttpResponse response) -> {
             long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
             //

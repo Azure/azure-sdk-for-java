@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cognitiveservices-textanalytics</artifactId>
-  <version>1.0.0-preview.1</version>
+  <version>1.1.0-beta.1</version>
 
   <name>Microsoft Azure client library for Cognitive Services Text Analytics</name>
   <description>This package contains the Microsoft Azure Cognitive Services Text Analytics SDK.</description>
@@ -36,7 +36,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0</version>
+      <version>1.1.0-beta.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -45,13 +45,11 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.0.0</version>
+      <version>1.1.0-beta.1</version>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
-      <version>1.0.0</version>
-      <scope>compile</scope>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
     </dependency>
   </dependencies>
 

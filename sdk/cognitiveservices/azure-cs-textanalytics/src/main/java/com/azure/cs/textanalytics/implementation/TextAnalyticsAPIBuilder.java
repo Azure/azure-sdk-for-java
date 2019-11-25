@@ -4,23 +4,8 @@
 
 package com.azure.cs.textanalytics.implementation;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.QueryParam;
-import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.RestProxy;
-import com.azure.core.util.Context;
-import com.azure.cs.textanalytics.implementation.models.LanguageBatchInput;
-import com.azure.cs.textanalytics.implementation.models.MultiLanguageBatchInput;
-import reactor.core.publisher.Mono;
 
 /**
  * A builder for creating a new instance of the TextAnalyticsAPI type.
@@ -65,9 +50,10 @@ public final class TextAnalyticsAPIBuilder {
      * @return an instance of TextAnalyticsAPIImpl.
      */
     public TextAnalyticsAPIImpl build() {
-        if (pipeline == null) {
-            this.pipeline = RestProxy.createDefaultPipeline();
-        }
+//        if (pipeline == null) {
+//            // TODO: fix it in swagger
+////            this.pipeline = RestProxy.createDefaultPipeline();
+//        }
         TextAnalyticsAPIImpl client = new TextAnalyticsAPIImpl(pipeline);
         if (this.endpoint != null) {
             client.setEndpoint(this.endpoint);

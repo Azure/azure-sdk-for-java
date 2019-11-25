@@ -3,10 +3,10 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 
 /**
- * An enumeration of supported authorization methods with the {@link CBSNode}.
+ * An enumeration of supported authorization methods with the {@link ClaimsBasedSecurityNode}.
  */
 public enum CBSAuthorizationType {
     /**

@@ -199,8 +199,6 @@ public class OpenCensusTracerTest {
         assertThrows(NullPointerException.class, () -> openCensusTracer.start("", Context.NONE, null));
     }
 
-    //add tests for number of child spans created and how parent span relation
-
     @Test
     public void addLinkTest() {
         // Arrange

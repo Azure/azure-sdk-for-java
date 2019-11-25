@@ -5,11 +5,12 @@ package com.azure.cs.textanalytics.batch;
 
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.cs.textanalytics.models.DocumentBatchStatistics;
+import com.azure.cs.textanalytics.models.TextBatchStatistics;
 import com.azure.cs.textanalytics.models.TextDocumentInput;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
-import com.azure.cs.textanalytics.models.DocumentSentiment;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.cs.textanalytics.models.TextSentiment;
+import com.azure.cs.textanalytics.models.TextSentimentResult;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,17 +25,15 @@ public class AnalyzeSentimentBatchDocuments {
 
         // The texts that need be analysed.
         List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("The hotel was dark and unclean.").setLanguage("US"),
-            new TextDocumentInput("The restaurant had amazing gnocci.").setLanguage("US")
+            new TextDocumentInput("1", "The hotel was dark and unclean.").setLanguage("US"),
+            new TextDocumentInput("2", "The restaurant had amazing gnocci.").setLanguage("US")
         );
 
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
-        DocumentResultCollection<DocumentSentiment> detectedBatchResult = client.analyzeDocumentSentiment(inputs, requestOptions);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
+        DocumentResultCollection<TextSentimentResult> detectedBatchResult = client.analyzeSentiment(inputs, requestOptions);
+        System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
 
-        final String modelVersion = detectedBatchResult.getModelVersion();
-        System.out.printf("Model version: %s", modelVersion);
-
-        final DocumentBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
+        final TextBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
             batchStatistics.getDocumentsCount(),
             batchStatistics.getErroneousDocumentsCount(),
@@ -42,15 +41,24 @@ public class AnalyzeSentimentBatchDocuments {
             batchStatistics.getValidDocumentsCount());
 
         // Detecting sentiment for each of document from a batch of documents
-        detectedBatchResult.stream().forEach(documentSentimentDocumentResult ->
-            documentSentimentDocumentResult.getItems().stream().forEach(documentSentiment ->
-                documentSentiment.getItems().stream().forEach(sentenceSentiment ->
+        detectedBatchResult.stream().forEach(result -> {
+            final TextSentiment documentSentiment = result.getTextSentiment();
+            System.out.printf("Recognized document sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s",
+                documentSentiment.getTextSentimentClass(),
+                documentSentiment.getPositiveScore(),
+                documentSentiment.getNeutralScore(),
+                documentSentiment.getNegativeScore(),
+                documentSentiment.getLength(),
+                documentSentiment.getOffSet());
+
+            result.getItems().stream().forEach(sentenceSentiment ->
                 System.out.printf("Recognized sentence sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s",
                     sentenceSentiment.getTextSentimentClass(),
                     sentenceSentiment.getPositiveScore(),
                     sentenceSentiment.getNeutralScore(),
                     sentenceSentiment.getNegativeScore(),
                     sentenceSentiment.getLength(),
-                    sentenceSentiment.getOffSet()))));
+                    sentenceSentiment.getOffSet()));
+        });
     }
 }

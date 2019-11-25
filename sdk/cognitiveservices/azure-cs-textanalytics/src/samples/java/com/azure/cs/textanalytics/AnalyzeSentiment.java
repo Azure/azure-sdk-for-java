@@ -3,8 +3,13 @@
 
 package com.azure.cs.textanalytics;
 
+import com.azure.core.util.IterableStream;
 import com.azure.cs.textanalytics.models.TextSentiment;
 import com.azure.cs.textanalytics.models.TextSentimentClass;
+import com.azure.cs.textanalytics.models.TextSentimentResult;
+import org.w3c.dom.Text;
+
+import java.util.List;
 
 public class AnalyzeSentiment {
 
@@ -16,14 +21,22 @@ public class AnalyzeSentiment {
         // The text that need be analysed.
         String text = "The hotel was dark and unclean.";
 
-        TextSentiment sentenceTextSentiment = client.analyzeSentenceSentiment(text, "US");
-        final TextSentimentClass sentiment = sentenceTextSentiment.getTextSentimentClass();
-        final double positiveScore = sentenceTextSentiment.getPositiveScore();
-        final double neutralScore = sentenceTextSentiment.getNeutralScore();
-        final double negativeScore = sentenceTextSentiment.getNegativeScore();
+        final TextSentimentResult sentimentResult = client.analyzeSentiment(text, "US");
 
+        final TextSentiment documentSentiment = sentimentResult.getTextSentiment();
         System.out.printf(
             "Recognized TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.",
-            sentiment, positiveScore, neutralScore, negativeScore));
+            documentSentiment.getTextSentimentClass(),
+            documentSentiment.getPositiveScore(),
+            documentSentiment.getNeutralScore(),
+            documentSentiment.getNegativeScore());
+
+        final IterableStream<TextSentiment> sentiments = sentimentResult.getItems();
+        sentiments.stream().forEach(textSentiment -> System.out.printf(
+            "Recognized Sentence TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.",
+            textSentiment.getTextSentimentClass(),
+            textSentiment.getPositiveScore(),
+            textSentiment.getNeutralScore(),
+            textSentiment.getNegativeScore()));
     }
 }

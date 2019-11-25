@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
@@ -60,7 +60,7 @@ public class EventHubClientBuilderTest {
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
             .proxyOptions(proxyConfig)
-            .transportType(TransportType.AMQP_WEB_SOCKETS);
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
         // Assert
         assertNotNull(builder.buildAsyncClient());

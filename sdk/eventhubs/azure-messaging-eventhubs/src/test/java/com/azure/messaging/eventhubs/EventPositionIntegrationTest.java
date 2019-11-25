@@ -16,7 +16,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -117,14 +117,14 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         Assertions.assertEquals(NUMBER_OF_EVENTS, enqueuedEvents.size());
 
         // EventData implements Comparable, so we can sort these and ensure that the events received are the same.
-        Collections.sort(earliestEvents);
-        Collections.sort(enqueuedEvents);
+        earliestEvents.sort(Comparator.comparing(EventData::getSequenceNumber));
+        enqueuedEvents.sort(Comparator.comparing(EventData::getSequenceNumber));
 
         for (int i = 0; i < NUMBER_OF_EVENTS; i++) {
             final EventData event = earliestEvents.get(i);
             final EventData event2 = enqueuedEvents.get(i);
-            final String eventBody = UTF_8.decode(event.getBody()).toString();
-            final String event2Body = UTF_8.decode(event2.getBody()).toString();
+            final String eventBody = new String(event.getBody(), UTF_8);
+            final String event2Body = new String(event2.getBody(), UTF_8);
 
             Assertions.assertEquals(event.getSequenceNumber(), event2.getSequenceNumber());
             Assertions.assertEquals(event.getOffset(), event2.getOffset());
@@ -164,7 +164,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         final EventHubProducerAsyncClient producer = client.createProducer();
         final Flux<EventData> events = Flux.range(0, NUMBER_OF_EVENTS).map(number -> {
             final EventData eventData = new EventData(("Event " + number).getBytes(UTF_8));
-            eventData.addProperty(MESSAGE_TRACKING_ID, messageValue);
+            eventData.getProperties().put(MESSAGE_TRACKING_ID, messageValue);
             return eventData;
         });
 
@@ -273,7 +273,9 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         // Arrange
         final EventData[] events = EVENTS_PUSHED.get();
         final EventData expectedEvent = events[4];
-        final EventPosition position = EventPosition.fromOffset(events[3].getOffset(), false);
+
+        // Choose the offset before it, so we get that event back.
+        final EventPosition position = EventPosition.fromOffset(events[3].getOffset() - 1);
         final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
 
         // Act & Assert

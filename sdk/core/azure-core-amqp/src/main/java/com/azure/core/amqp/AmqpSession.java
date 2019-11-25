@@ -35,7 +35,7 @@ public interface AmqpSession extends EndpointStateNotifier, Closeable {
      * @param retryPolicy The retry policy to use when sending messages.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, RetryPolicy retryPolicy);
+    Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retryPolicy);
 
     /**
      * Creates a new AMQP link that consumes events from the message broker.
@@ -46,7 +46,7 @@ public interface AmqpSession extends EndpointStateNotifier, Closeable {
      * @param retryPolicy The retry policy to use when consuming messages.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, RetryPolicy retryPolicy);
+    Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retryPolicy);
 
     /**
      * Removes an {@link AmqpLink} with the given {@code linkName}.

@@ -3,6 +3,12 @@
 
 package com.azure.cs.textanalytics.models;
 
+import com.azure.core.annotation.Fluent;
+
+/**
+ * The TextAnalyticsRequestOptions model.
+ */
+@Fluent
 public final class TextAnalyticsRequestOptions {
     private String modelVersion;
     private boolean showStats;

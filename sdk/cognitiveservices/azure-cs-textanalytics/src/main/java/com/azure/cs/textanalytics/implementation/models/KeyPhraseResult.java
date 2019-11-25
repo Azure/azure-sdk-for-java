@@ -5,7 +5,7 @@
 package com.azure.cs.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.cs.textanalytics.models.DocumentBatchStatistics;
+import com.azure.cs.textanalytics.models.TextBatchStatistics;
 import com.azure.cs.textanalytics.models.DocumentError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -31,7 +31,7 @@ public final class KeyPhraseResult {
      * The statistics property.
      */
     @JsonProperty(value = "statistics")
-    private DocumentBatchStatistics statistics;
+    private TextBatchStatistics statistics;
 
     /*
      * This field indicates which model is used for scoring.
@@ -84,7 +84,7 @@ public final class KeyPhraseResult {
      *
      * @return the statistics value.
      */
-    public DocumentBatchStatistics getStatistics() {
+    public TextBatchStatistics getStatistics() {
         return this.statistics;
     }
 
@@ -94,7 +94,7 @@ public final class KeyPhraseResult {
      * @param statistics the statistics value to set.
      * @return the KeyPhraseResult object itself.
      */
-    public KeyPhraseResult setStatistics(DocumentBatchStatistics statistics) {
+    public KeyPhraseResult setStatistics(TextBatchStatistics statistics) {
         this.statistics = statistics;
         return this;
     }

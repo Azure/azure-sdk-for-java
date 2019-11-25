@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
@@ -403,6 +403,20 @@ class ServiceAPITest extends APISpec {
         String endpoint = BlobUrlParts.parse(primaryBlobServiceClient.getAccountUrl()).setScheme("http").toUrl()
         def builder = new BlobServiceClientBuilder()
             .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Builder bearer token validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(primaryBlobServiceClient.getAccountUrl()).setScheme("http").toUrl()
+        def builder = new BlobServiceClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
 
         when:

@@ -4,10 +4,10 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpShutdownSignal;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -116,7 +116,7 @@ public class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP_WEB_SOCKETS, new RetryOptions(),
+            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         eventHubConnection = new EventHubConnection(Mono.just(connection), connectionOptions);
         when(connection.createSession(any())).thenReturn(Mono.just(session));
@@ -148,9 +148,9 @@ public class EventHubConsumerAsyncClientTest {
         // Assert
         StepVerifier.create(runtimeConsumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberToReceive))
             .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
-            .assertNext(event -> Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
-            .assertNext(event -> Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
-            .assertNext(event -> Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties()))
+            .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
+            .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
+            .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
             .verifyComplete();
     }
 
@@ -171,7 +171,7 @@ public class EventHubConsumerAsyncClientTest {
             .take(1))
             .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
             .assertNext(event -> {
-                LastEnqueuedEventProperties properties = event.getPartitionContext().getLastEnqueuedEventProperties();
+                LastEnqueuedEventProperties properties = event.getLastEnqueuedEventProperties();
                 Assertions.assertNotNull(properties);
                 Assertions.assertNull(properties.getOffset());
                 Assertions.assertNull(properties.getSequenceNumber());
@@ -503,7 +503,7 @@ public class EventHubConsumerAsyncClientTest {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath=dummy-event-hub")
             .consumerGroup(CONSUMER_GROUP)
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
 
         Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
         Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
@@ -572,7 +572,7 @@ public class EventHubConsumerAsyncClientTest {
             .thenReturn(Mono.just(link3));
 
         // Act & Assert
-        StepVerifier.create(asyncClient.receive(EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID)))
+        StepVerifier.create(asyncClient.receive(true).filter(e -> isMatchingEvent(e, messageTrackingUUID)))
             .then(() -> sendMessages(processor2sink, 2, id2))
             .assertNext(event -> assertPartition(id2, event))
             .assertNext(event -> assertPartition(id2, event))
@@ -650,7 +650,7 @@ public class EventHubConsumerAsyncClientTest {
             .thenReturn(Mono.just(link3));
 
         // Act & Assert
-        StepVerifier.create(asyncClient.receive(EventPosition.earliest()).filter(e -> isMatchingEvent(e, messageTrackingUUID)))
+        StepVerifier.create(asyncClient.receive(true).filter(e -> isMatchingEvent(e, messageTrackingUUID)))
             .then(() -> sendMessages(processor2sink, 2, id2))
             .assertNext(event -> assertPartition(id2, event))
             .assertNext(event -> assertPartition(id2, event))

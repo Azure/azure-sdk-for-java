@@ -3,19 +3,25 @@
 
 package com.azure.cs.textanalytics.models;
 
+import com.azure.core.annotation.Fluent;
+
 import java.util.List;
 
-public class DocumentResult<T> {
+/**
+ * The DocumentResult model.
+ */
+@Fluent
+public class DocumentResult {
 
     private String id;
     private TextDocumentStatistics textDocumentStatistics;
-    private List<T> items;
+    private DocumentError error;
 
     public String getId() {
         return id;
     }
 
-    public DocumentResult setId(String id) {
+    DocumentResult setId(String id) {
         this.id = id;
         return this;
     }
@@ -24,17 +30,18 @@ public class DocumentResult<T> {
         return textDocumentStatistics;
     }
 
-    public DocumentResult setTextDocumentStatistics(TextDocumentStatistics textDocumentStatistics) {
+    DocumentResult setTextDocumentStatistics(TextDocumentStatistics textDocumentStatistics) {
         this.textDocumentStatistics = textDocumentStatistics;
         return this;
     }
 
-    public List<T> getItems() {
-        return items;
+    public DocumentError getError() {
+        return error;
     }
 
-    public DocumentResult setItems(List<T> items) {
-        this.items = items;
+    DocumentResult setError(DocumentError error) {
+        this.error = error;
         return this;
     }
+
 }

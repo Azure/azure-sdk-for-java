@@ -36,7 +36,7 @@ public class PublishEventDataBatch {
         // Create a producer.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncProducer();
+            .buildAsyncProducerClient();
 
         // Creating a batch where we want the events ending up in the same partition by setting the partition key.
         final CreateBatchOptions options = new CreateBatchOptions()
