@@ -10,7 +10,7 @@ jobs:
     parameters:
         TestName: Single_Region_Session
         ServiceDirectory: cosmos
-        TimeoutInMinutes: 240
+        TimeoutInMinutes: 90
         EnvVars:
             ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
             ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
@@ -19,11 +19,18 @@ jobs:
         MaxParallel: 1
         Matrix:
             # 59m 59s, timed out
-            Http_E2E:
+            Session_Https_E2E:
                 DisplayName: ReadMyWrites Integration Tests
                 OSVmImage: 'windows-2019'
                 ProfileFlag: '-Pe2e'
                 AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
+                DESIRED_CONSISTENCY: 'Session'
+            # 59m 59s, timed out
+            Session_Tcp_E2E:
+                DisplayName: ReadMyWrites Integration Tests
+                OSVmImage: 'windows-2019'
+                ProfileFlag: '-Pe2e'
+                AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
                 DESIRED_CONSISTENCY: 'Session'
             # 09m 23s, expect passed
             Single_Region_Fast:
@@ -63,7 +70,7 @@ jobs:
     parameters:
         TestName: Single_Region_Session_2
         ServiceDirectory: cosmos
-        TimeoutInMinutes: 240
+        TimeoutInMinutes: 90
         EnvVars:
             ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
             ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
@@ -123,7 +130,7 @@ jobs:
     parameters:
         TestName: Single_Region_Strong_Tcp
         ServiceDirectory: cosmos
-        TimeoutInMinutes: 240
+        TimeoutInMinutes: 90
         EnvVars:
             ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
             ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
@@ -177,7 +184,7 @@ jobs:
     parameters:
         TestName: Single_Region_Strong_Https
         ServiceDirectory: cosmos
-        TimeoutInMinutes: 240
+        TimeoutInMinutes: 90
         EnvVars:
             ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
             ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
@@ -185,18 +192,25 @@ jobs:
         MaxParallel: 1
         Matrix:
             # 59m 58s, timed out
-            Https_E2E:
+            Strong_Https_E2E:
                 DisplayName: Single Region ReadMyWrites
                 OSVmImage: 'windows-2019'
                 ProfileFlag: '-Pe2e'
                 AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
+                DESIRED_CONSISTENCY: 'Strong'
+            # 59m 58s, timed out
+            Strong_Tcp_E2E:
+                DisplayName: Single Region ReadMyWrites
+                OSVmImage: 'windows-2019'
+                ProfileFlag: '-Pe2e'
+                AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
                 DESIRED_CONSISTENCY: 'Strong'
             # 08m 50s, expect passed
             Strong_Https_Fast:
                 DisplayName: Strong HTTP Fast
                 OSVmImage: 'macOS-10.13'
                 ProfileFlag: '-Pfast'
-                AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
                 PROTOCOLS: '["Https"]'
                 DESIRED_CONSISTENCIES: '["Strong", "Session"]'
             # 08m 50s, expect passed
@@ -204,7 +218,7 @@ jobs:
                 DisplayName: Strong HTTP Direct
                 OSVmImage: 'macOS-10.13'
                 ProfileFlag: '-Pdirect'
-                AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
                 PROTOCOLS: '["Https"]'
                 DESIRED_CONSISTENCIES: '["Strong", "Session"]'
             # 07m 36s, expect passed
@@ -212,7 +226,7 @@ jobs:
                 DisplayName: Strong HTTP Examples
                 OSVmImage: 'macOS-10.13'
                 ProfileFlag: '-Pexamples'
-                AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
                 PROTOCOLS: '["Https"]'
                 DESIRED_CONSISTENCIES: '["Strong", "Session"]'
             # 06m 59s, expect passed
@@ -220,7 +234,7 @@ jobs:
                 DisplayName: Strong HTTP NonEmulator
                 OSVmImage: 'macOS-10.13'
                 ProfileFlag: '-Pnon-emulator'
-                AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+                AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
                 PROTOCOLS: '["Https"]'
                 DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
@@ -238,7 +252,7 @@ jobs:
     parameters:
         TestName: MultiMaster_Multi_Region
         ServiceDirectory: cosmos
-        TimeoutInMinutes: 240
+        TimeoutInMinutes: 90
         EnvVars:
             ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
             ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
@@ -294,7 +308,7 @@ jobs:
     parameters:
         TestName: MultiMaster_Single_Region
         ServiceDirectory: cosmos
-        TimeoutInMinutes: 240
+        TimeoutInMinutes: 90
         EnvVars:
             ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
             ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
