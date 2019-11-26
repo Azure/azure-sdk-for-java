@@ -6,7 +6,9 @@ package com.azure.messaging.eventhubs;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -16,6 +18,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * {@link CreateBatchOptions#setMaximumSizeInBytes(int)}.
  */
 public class PublishEventsWithSizeLimitedBatches {
+    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
+
     /**
      * Main method to invoke this demo on how to send an {@link EventDataBatch} to an Azure Event Hub.
      *
@@ -50,39 +54,44 @@ public class PublishEventsWithSizeLimitedBatches {
             producer.createBatch(options).block());
 
         // The sample Flux contains three events, but it could be an infinite stream of telemetry events.
-        telemetryEvents.subscribe(event -> {
+        // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
+        // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
+        // are sent.
+        final Mono<Void> sendOperation = telemetryEvents.flatMap(event -> {
             final EventDataBatch batch = currentBatch.get();
-            if (!batch.tryAdd(event)) {
-                producer.createBatch(options).map(newBatch -> {
+            if (batch.tryAdd(event)) {
+                return Mono.empty();
+            }
+
+            // The batch is full, so we create a new batch and send the batch. Mono.when completes when both operations
+            // have completed.
+            return Mono.when(
+                producer.send(batch),
+                producer.createBatch().map(newBatch -> {
                     currentBatch.set(newBatch);
 
-                    // Adding that event we couldn't add before.
+                    // Add that event that we couldn't before.
                     if (!newBatch.tryAdd(event)) {
-                        throw Exceptions.propagate(new IllegalArgumentException(
-                            String.format("Could not add event because it is too large. Contents: %s",
-                                event.getBodyAsString())));
-                    }
+                        throw Exceptions.propagate(new IllegalArgumentException(String.format(
+                            "Event is too large for an empty batch. Max size: %s. Event: %s",
+                            newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
+                    };
 
-                    return producer.send(batch);
-                }).block();
-            }
-        }, error -> System.err.println("Error received:" + error), () -> {
+                    return newBatch;
+                }));
+        }).then()
+            .doFinally(signal -> {
                 final EventDataBatch batch = currentBatch.getAndSet(null);
                 if (batch != null) {
-                    producer.send(batch).block();
+                    producer.send(batch).block(OPERATION_TIMEOUT);
                 }
             });
 
-        // Sleeping this thread because we want to wait for all the events to send before ending the program.
-        // `.subscribe` is not a blocking call. It coordinates the callbacks and starts the send operation, but does not
-        // wait for it to complete.
-        // Customers can chain together Reactor operators like .then() and `.doFinally` if they want an operation to run
-        // after all the events have been transmitted. .block() can also be used to turn the call into a synchronous
-        // operation.
+        // The sendOperation creation and assignment is not a blocking call. It does not get invoked until there is a
+        // subscriber to that operation. For the purpose of this example, we block so the program does not end before
+        // the send operation is complete. Any of the `.subscribe` overloads also work to start the Mono asynchronously.
         try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            sendOperation.block(OPERATION_TIMEOUT);
         } finally {
             // Disposing of our producer.
             producer.close();

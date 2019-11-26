@@ -77,12 +77,12 @@ public class PublishEventsWithCustomMetadata {
                 producer.createBatch().map(newBatch -> {
                     currentBatch.set(newBatch);
 
-                    // Adding that event we couldn't add before.
+                    // Add that event that we couldn't before.
                     if (!newBatch.tryAdd(event)) {
-                        throw Exceptions.propagate(new IllegalArgumentException(
-                            String.format("Could not add event because it is too large. Contents: %s",
-                                event.getBodyAsString())));
-                    }
+                        throw Exceptions.propagate(new IllegalArgumentException(String.format(
+                            "Event is too large for an empty batch. Max size: %s. Event: %s",
+                            newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
+                    };
 
                     return newBatch;
                 }));

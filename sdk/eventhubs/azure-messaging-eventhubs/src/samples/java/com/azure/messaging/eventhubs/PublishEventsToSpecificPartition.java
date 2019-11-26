@@ -3,6 +3,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +20,7 @@ public class PublishEventsToSpecificPartition {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
-     * Main method to invoke this demo about how to send a batch of events with partition ID configured.
+     * Main method to invoke this demo about how to send a batch of events with partition id configured.
      *
      * @param args Unused arguments to the program.
      */
@@ -72,14 +73,19 @@ public class PublishEventsToSpecificPartition {
                     currentBatch.set(newBatch);
 
                     // Add that event that we couldn't before.
-                    newBatch.tryAdd(event);
+                    if (!newBatch.tryAdd(event)) {
+                        throw Exceptions.propagate(new IllegalArgumentException(String.format(
+                            "Event is too large for an empty batch. Max size: %s. Event: %s",
+                            newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
+                    };
+
                     return newBatch;
                 }));
         }).then()
             .doFinally(signal -> {
                 final EventDataBatch batch = currentBatch.getAndSet(null);
                 if (batch != null) {
-                    producer.send(batch).block(Duration.ofSeconds(60));
+                    producer.send(batch).block(OPERATION_TIMEOUT);
                 }
             });
 
@@ -87,7 +93,7 @@ public class PublishEventsToSpecificPartition {
         // subscriber to that operation. For the purpose of this example, we block so the program does not end before
         // the send operation is complete. Any of the `.subscribe` overloads also work to start the Mono asynchronously.
         try {
-            sendOperation.block(Duration.ofSeconds(60));
+            sendOperation.block(OPERATION_TIMEOUT);
         } finally {
             // Disposing of our producer.
             producer.close();
