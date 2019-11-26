@@ -81,8 +81,10 @@ import java.util.ServiceLoader;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation}
  *
- * @see EventHubClient
- * @see EventHubAsyncClient
+ * @see EventHubProducerAsyncClient
+ * @see EventHubProducerClient
+ * @see EventHubConsumerAsyncClient
+ * @see EventHubConsumerClient
  */
 @ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class,
     EventHubConsumerAsyncClient.class, EventHubConsumerClient.class})
