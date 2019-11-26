@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.jproxy.ProxyServer;
 import com.azure.messaging.eventhubs.jproxy.SimpleProxy;
@@ -75,7 +75,8 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         EventHubClientBuilder builder = new EventHubClientBuilder()
-            .transportType(TransportType.AMQP_WEB_SOCKETS)
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .shareConnection()
             .connectionString(getConnectionString());
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {

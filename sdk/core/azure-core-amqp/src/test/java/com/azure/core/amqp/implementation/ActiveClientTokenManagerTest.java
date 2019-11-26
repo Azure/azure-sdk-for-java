@@ -3,11 +3,11 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
-import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.exception.AzureException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +31,7 @@ public class ActiveClientTokenManagerTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(4);
 
     @Mock
-    private CBSNode cbsNode;
+    private ClaimsBasedSecurityNode cbsNode;
 
     @BeforeEach
     public void setup() {
@@ -50,7 +50,7 @@ public class ActiveClientTokenManagerTest {
     @Test
     public void getAuthorizationResults() {
         // Arrange
-        final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
+        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
         when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(3));
 
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
@@ -72,7 +72,7 @@ public class ActiveClientTokenManagerTest {
     @Test
     public void getAuthorizationResultsSuccessFailure() {
         // Arrange
-        final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
+        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
         final IllegalArgumentException error = new IllegalArgumentException("Some error");
 
         when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(2),
@@ -97,7 +97,7 @@ public class ActiveClientTokenManagerTest {
     @Test
     public void cannotAuthorizeDisposedInstance() {
         // Arrange
-        final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
+        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
         when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(2));
 
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
@@ -116,9 +116,9 @@ public class ActiveClientTokenManagerTest {
     @Test
     public void getAuthorizationResultsRetriableError() {
         // Arrange
-        final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
-        final AmqpException error = new AmqpException(true, ErrorCondition.TIMEOUT_ERROR, "Timed out",
-            new ErrorContext("Test-context-namespace"));
+        final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
+        final AmqpException error = new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR, "Timed out",
+            new AmqpErrorContext("Test-context-namespace"));
 
         when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(3), Mono.error(error),
             getNextExpiration(5), getNextExpiration(10),

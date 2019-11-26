@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.jupiter.api.Assertions;
@@ -63,8 +63,8 @@ public class ProxySelectorTest extends IntegrationTestBase {
         final EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .transportType(TransportType.AMQP_WEB_SOCKETS)
-            .retry(new RetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .retry(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
             .buildAsyncConsumerClient();
 
         try {

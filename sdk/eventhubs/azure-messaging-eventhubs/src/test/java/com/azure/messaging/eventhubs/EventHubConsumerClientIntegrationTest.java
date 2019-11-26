@@ -10,7 +10,6 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -53,7 +52,6 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         super.beforeTest();
         client = new EventHubClientBuilder()
             .connectionString(getConnectionString())
-            .scheduler(Schedulers.single())
             .retry(RETRY_OPTIONS)
             .shareConnection()
             .buildClient();
@@ -242,7 +240,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            final EventHubProperties properties = consumer.getProperties();
+            final EventHubProperties properties = consumer.getEventHubProperties();
             Assertions.assertNotNull(properties);
             Assertions.assertEquals(consumer.getEventHubName(), properties.getName());
             Assertions.assertEquals(2, properties.getPartitionIds().stream().count());

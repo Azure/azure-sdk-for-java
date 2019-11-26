@@ -71,12 +71,7 @@ public final class AzureFileStorageBuilder {
      */
     public AzureFileStorageImpl build() {
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder()
-                                .policies(
-                                    new UserAgentPolicy(),
-                                    new RetryPolicy(),
-                                    new CookiePolicy())
-                                .build();
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
         }
         AzureFileStorageImpl client = new AzureFileStorageImpl(pipeline);
         if (this.version != null) {

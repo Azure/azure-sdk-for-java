@@ -3,7 +3,9 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
@@ -11,14 +13,14 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to sent events to specific event hub by define partition ID in producer option only.
+ * Sample demonstrates how to sent events to specific event hub by defining partition id using
+ * {@link CreateBatchOptions#setPartitionId(String)}.
  */
 public class PublishEventsToSpecificPartition {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
-     * Main method to invoke this demo about how to send a batch of events with partition ID configured in producer
-     * option to an Azure Event Hub instance.
+     * Main method to invoke this demo about how to send a batch of events with partition id configured.
      *
      * @param args Unused arguments to the program.
      */
@@ -50,31 +52,51 @@ public class PublishEventsToSpecificPartition {
 
         // Create a batch to send the events.
         final CreateBatchOptions options = new CreateBatchOptions()
-            .setPartitionId(firstPartition)
-            .setMaximumSizeInBytes(256);
+            .setPartitionId(firstPartition);
         final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
             producer.createBatch(options).block());
 
         // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
         // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
         // are sent.
-        data.subscribe(event -> {
+        final Mono<Void> sendOperation = data.flatMap(event -> {
             final EventDataBatch batch = currentBatch.get();
-            if (!batch.tryAdd(event)) {
+            if (batch.tryAdd(event)) {
+                return Mono.empty();
+            }
+
+            // The batch is full, so we create a new batch and send the batch. Mono.when completes when both operations
+            // have completed.
+            return Mono.when(
+                producer.send(batch),
                 producer.createBatch(options).map(newBatch -> {
                     currentBatch.set(newBatch);
-                    return producer.send(batch);
-                }).block();
-            }
-        }, error -> System.err.println("Error received:" + error),
-            () -> {
+
+                    // Add that event that we couldn't before.
+                    if (!newBatch.tryAdd(event)) {
+                        throw Exceptions.propagate(new IllegalArgumentException(String.format(
+                            "Event is too large for an empty batch. Max size: %s. Event: %s",
+                            newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
+                    }
+
+                    return newBatch;
+                }));
+        }).then()
+            .doFinally(signal -> {
                 final EventDataBatch batch = currentBatch.getAndSet(null);
                 if (batch != null) {
-                    producer.send(batch).block();
+                    producer.send(batch).block(OPERATION_TIMEOUT);
                 }
-
-                // Disposing of our producer.
-                producer.close();
             });
+
+        // The sendOperation creation and assignment is not a blocking call. It does not get invoked until there is a
+        // subscriber to that operation. For the purpose of this example, we block so the program does not end before
+        // the send operation is complete. Any of the `.subscribe` overloads also work to start the Mono asynchronously.
+        try {
+            sendOperation.block(OPERATION_TIMEOUT);
+        } finally {
+            // Disposing of our producer.
+            producer.close();
+        }
     }
 }

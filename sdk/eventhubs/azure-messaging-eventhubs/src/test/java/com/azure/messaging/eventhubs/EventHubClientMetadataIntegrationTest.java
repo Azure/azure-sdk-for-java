@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
@@ -14,9 +14,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Tests the metadata operations such as fetching partition properties and event hub properties.
@@ -104,7 +101,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
      * Verifies that error conditions are handled for fetching Event Hub metadata.
      */
     @Test
-    public void getPartitionPropertiesInvalidToken() throws InvalidKeyException, NoSuchAlgorithmException {
+    public void getPartitionPropertiesInvalidToken() {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
         final TokenCredential invalidTokenCredential = new EventHubSharedKeyCredential(
@@ -119,7 +116,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                 Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
-                Assertions.assertEquals(ErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
+                Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
                 Assertions.assertFalse(exception.isTransient());
                 Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })
@@ -130,7 +127,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
      * Verifies that error conditions are handled for fetching partition metadata.
      */
     @Test
-    public void getPartitionPropertiesNonExistentHub() throws InvalidKeyException, NoSuchAlgorithmException {
+    public void getPartitionPropertiesNonExistentHub() {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
         final TokenCredential validCredentials = new EventHubSharedKeyCredential(
@@ -145,7 +142,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                 Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
-                Assertions.assertEquals(ErrorCondition.NOT_FOUND, exception.getErrorCondition());
+                Assertions.assertEquals(AmqpErrorCondition.NOT_FOUND, exception.getErrorCondition());
                 Assertions.assertFalse(exception.isTransient());
                 Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })

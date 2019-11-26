@@ -8,8 +8,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
+import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
@@ -139,7 +140,7 @@ public class EventProcessorClientTest {
 
         // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> testPartitionProcessor, EventPosition.earliest(), checkpointStore, tracerProvider);
+            () -> testPartitionProcessor, EventPosition.earliest(), checkpointStore, false, tracerProvider);
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
         eventProcessorClient.stop();
@@ -155,8 +156,6 @@ public class EventProcessorClientTest {
                 assertEquals("1", partitionOwnership.getPartitionId(), "Partition");
                 assertEquals("test-consumer", partitionOwnership.getConsumerGroup(), "Consumer");
                 assertEquals("test-eh", partitionOwnership.getEventHubName(), "EventHub name");
-                assertEquals(2, (long) partitionOwnership.getSequenceNumber(), "Sequence number");
-                assertEquals(Long.valueOf(100), partitionOwnership.getOffset(), "Offset");
                 assertEquals(eventProcessorClient.getIdentifier(), partitionOwnership.getOwnerId(), "OwnerId");
                 assertTrue(partitionOwnership.getLastModifiedTime() >= beforeTest, "LastModifiedTime");
                 assertTrue(partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis(), "LastModifiedTime");
@@ -212,7 +211,7 @@ public class EventProcessorClientTest {
         );
         // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> faultyPartitionProcessor, EventPosition.earliest(), checkpointStore, tracerProvider);
+            () -> faultyPartitionProcessor, EventPosition.earliest(), checkpointStore, false, tracerProvider);
 
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
@@ -271,7 +270,7 @@ public class EventProcessorClientTest {
 
         //Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            FaultyPartitionProcessor::new, EventPosition.earliest(), checkpointStore, tracerProvider);
+            FaultyPartitionProcessor::new, EventPosition.earliest(), checkpointStore, false, tracerProvider);
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
         eventProcessorClient.stop();
@@ -330,7 +329,7 @@ public class EventProcessorClientTest {
 
         //Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            TestPartitionProcessor::new, EventPosition.earliest(), checkpointStore, tracerProvider);
+            TestPartitionProcessor::new, EventPosition.earliest(), checkpointStore, false, tracerProvider);
 
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
@@ -392,7 +391,7 @@ public class EventProcessorClientTest {
         // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
             "test-consumer",
-            TestPartitionProcessor::new, position, checkpointStore, tracerProvider);
+            TestPartitionProcessor::new, position, checkpointStore, false, tracerProvider);
         eventProcessorClient.start();
         final boolean completed = count.await(10, TimeUnit.SECONDS);
         eventProcessorClient.stop();
@@ -417,9 +416,8 @@ public class EventProcessorClientTest {
     }
 
     private PartitionEvent getEvent(EventData event) {
-        PartitionContext context = new PartitionContext("ns", "foo", "bar", "baz", "0", null,
-            new InMemoryCheckpointStore());
-        return new PartitionEvent(context, event);
+        PartitionContext context = new PartitionContext("ns", "foo", "bar", "baz");
+        return new PartitionEvent(context, event, null);
     }
 
     private static final class FaultyPartitionProcessor extends PartitionProcessor {
@@ -427,12 +425,12 @@ public class EventProcessorClientTest {
         boolean error;
 
         @Override
-        public void processError(EventProcessingErrorContext eventProcessingErrorContext) {
+        public void processError(ErrorContext errorContext) {
             error = true;
         }
 
         @Override
-        public void processEvent(PartitionEvent partitionEvent) {
+        public void processEvent(EventContext partitionEvent) {
             throw new IllegalStateException();
         }
     }
@@ -440,12 +438,12 @@ public class EventProcessorClientTest {
     private static final class TestPartitionProcessor extends PartitionProcessor {
 
         @Override
-        public void processEvent(PartitionEvent partitionEvent) {
-            partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData()).subscribe();
+        public void processEvent(EventContext eventContext) {
+            eventContext.updateCheckpoint();
         }
 
         @Override
-        public void processError(EventProcessingErrorContext eventProcessingErrorContext) {
+        public void processError(ErrorContext errorContext) {
             // do nothing
             return;
         }

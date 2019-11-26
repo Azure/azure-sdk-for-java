@@ -3,13 +3,11 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.AmqpShutdownSignal;
-import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.engine.Delivery;
-import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
@@ -17,8 +15,8 @@ import reactor.core.Disposables;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.ReplayProcessor;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -26,7 +24,7 @@ import java.util.function.Supplier;
 /**
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
  */
-public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpReceiveLink {
+public class ReactorReceiver implements AmqpReceiveLink {
     // Initial value is true because we could not have created this receiver without authorising against the CBS node
     // first.
     private final AtomicBoolean hasAuthorized = new AtomicBoolean(true);
@@ -36,50 +34,45 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     private final ReceiveLinkHandler handler;
     private final TokenManager tokenManager;
     private final Disposable.Composite subscriptions;
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final EmitterProcessor<Message> messagesProcessor = EmitterProcessor.create();
-    private final AtomicBoolean isDisposed;
     private FluxSink<Message> messageSink = messagesProcessor.sink();
+    private final ClientLogger logger = new ClientLogger(ReactorReceiver.class);
+    private final ReplayProcessor<AmqpEndpointState> endpointStates =
+        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
+    private FluxSink<AmqpEndpointState> endpointStateSink = endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
 
     private volatile Supplier<Integer> creditSupplier;
 
     ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, TokenManager tokenManager) {
-        super(new ClientLogger(ReactorReceiver.class));
-        this.isDisposed = new AtomicBoolean();
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
         this.tokenManager = tokenManager;
 
         this.subscriptions = Disposables.composite(
-            handler.getDeliveredMessages().subscribe(this::decodeDelivery),
+            this.handler.getDeliveredMessages().subscribe(this::decodeDelivery),
 
-            handler.getEndpointStates().subscribe(
-                this::notifyEndpointState,
-                error -> logger.error("Error encountered getting endpointState", error),
-                () -> {
-                    logger.verbose("getEndpointStates completed.");
-                    notifyEndpointState(EndpointState.CLOSED);
+            this.handler.getEndpointStates().subscribe(
+                state -> {
+                    logger.verbose("Connection state: {}", state);
+                    endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
+                }, error -> {
+                    logger.error("Error occurred in connection.", error);
+                    endpointStateSink.error(error);
+                    close();
+                }, () -> {
+                    endpointStateSink.next(AmqpEndpointState.CLOSED);
+                    close();
                 }),
 
-            handler.getErrors().subscribe(error -> {
-                if (!(error instanceof AmqpException)) {
-                    logger.error("Error occurred that is not an AmqpException.", error);
-                    notifyShutdown(new AmqpShutdownSignal(false, false, error.toString()));
-                    close();
-                    return;
-                }
-
-                final AmqpException amqpException = (AmqpException) error;
-                if (!amqpException.isTransient()) {
-                    logger.warning("Error occurred that is not retriable.", amqpException);
-                    notifyShutdown(new AmqpShutdownSignal(false, false, amqpException.toString()));
-                    close();
-                } else {
-                    notifyError(error);
-                }
+            this.handler.getErrors().subscribe(error -> {
+                logger.error("Error occurred in link.", error);
+                endpointStateSink.error(error);
+                close();
             }),
 
-            tokenManager.getAuthorizationResults().subscribe(
+            this.tokenManager.getAuthorizationResults().subscribe(
                 response -> {
                     logger.verbose("Token refreshed: {}", response);
                     hasAuthorized.set(true);
@@ -87,8 +80,12 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
                     logger.info("clientId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
                         handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
                     hasAuthorized.set(false);
-                }, () -> hasAuthorized.set(false))
-        );
+                }, () -> hasAuthorized.set(false)));
+    }
+
+    @Override
+    public Flux<AmqpEndpointState> getEndpointStates() {
+        return endpointStates;
     }
 
     @Override
@@ -134,17 +131,10 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
         }
 
         subscriptions.dispose();
-
-        try {
-            tokenManager.close();
-        } catch (IOException e) {
-            logger.warning("IOException occurred trying to close tokenManager for {}.", entityPath, e);
-        }
-
+        endpointStateSink.complete();
         messageSink.complete();
-
+        tokenManager.close();
         handler.close();
-        super.close();
     }
 
     private void decodeDelivery(Delivery delivery) {

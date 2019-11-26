@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -60,7 +59,6 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     @Override
     protected void beforeTest() {
         client = createBuilder()
-            .scheduler(Schedulers.single())
             .buildAsyncClient();
     }
 
@@ -154,7 +152,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             StepVerifier.create(consumer.receiveFromPartition(secondPartitionId, position, options)
                 .take(expectedNumber))
                 .assertNext(event -> {
-                    Assertions.assertNull(event.getPartitionContext().getLastEnqueuedEventProperties(), "'lastEnqueuedEventProperties' should be null.");
+                    Assertions.assertNull(event.getLastEnqueuedEventProperties(), "'lastEnqueuedEventProperties' should be null.");
                 })
                 .expectNextCount(expectedNumber - 1)
                 .verifyComplete();
@@ -191,12 +189,12 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         // Act & Assert
         try {
             StepVerifier.create(consumer.receiveFromPartition(secondPartitionId, EventPosition.latest(), options).take(10))
-                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), true))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), true))
                 .expectNextCount(5)
-                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), false))
-                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), false))
-                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), false))
-                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
                 .verifyComplete();
         } finally {
             isActive.set(false);
@@ -297,7 +295,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.getProperties())
+            StepVerifier.create(consumer.getEventHubProperties())
                 .assertNext(properties -> {
                     Assertions.assertNotNull(properties);
                     Assertions.assertEquals(consumer.getEventHubName(), properties.getName());
@@ -378,12 +376,12 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         // Act & Assert
         try {
             StepVerifier.create(consumer.receiveFromPartition(secondPartitionId, EventPosition.latest(), options).take(10))
-                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), true))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), true))
                 .expectNextCount(5)
-                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), false))
-                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), false))
-                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), false))
-                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getPartitionContext().getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
                 .verifyComplete();
         } finally {
             isActive.set(false);
@@ -395,7 +393,6 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
     @Test
     public void receivesMultiplePartitions() {
         // Arrange
-        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 1);
 
         final AtomicBoolean isActive = new AtomicBoolean(true);
@@ -422,7 +419,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive(position)
+            StepVerifier.create(consumer.receive(false)
                 .filter(x -> TestUtils.isMatchingEvent(x.getData(), MESSAGE_TRACKING_ID))
                 .take(expectedNumber))
                 .assertNext(event -> assertPartitionEvent(event, producer.getEventHubName(), allPartitions, expectedPartitions))

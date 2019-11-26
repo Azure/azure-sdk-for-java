@@ -4,13 +4,11 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.EndpointStateNotifierBase;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubProperties;
 import com.azure.messaging.eventhubs.PartitionProperties;
 import org.apache.qpid.proton.Proton;
@@ -27,7 +25,7 @@ import java.util.Objects;
  * Channel responsible for Event Hubs related metadata and management plane operations. Management plane operations
  * include another partition, increasing quotas, etc.
  */
-public class ManagementChannel extends EndpointStateNotifierBase implements EventHubManagementNode {
+public class ManagementChannel implements EventHubManagementNode {
     // Well-known keys from the management service responses and requests.
     public static final String MANAGEMENT_ENTITY_NAME_KEY = "name";
     public static final String MANAGEMENT_PARTITION_NAME_KEY = "partition";
@@ -67,7 +65,6 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
      */
     ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String eventHubName, TokenCredential credential,
                       TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
-        super(new ClientLogger(ManagementChannel.class));
 
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");

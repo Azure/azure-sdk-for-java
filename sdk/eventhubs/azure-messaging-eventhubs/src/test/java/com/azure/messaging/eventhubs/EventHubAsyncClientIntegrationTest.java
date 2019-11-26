@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -38,13 +38,13 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     private static volatile IntegrationTestEventData testData = null;
 
     private EventHubAsyncClient client;
-    private TransportType transportType;
+    private AmqpTransportType transportType;
 
     public EventHubAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubAsyncClientIntegrationTest.class));
     }
 
-    protected void beforeTest(TransportType transportType) {
+    protected void beforeTest(AmqpTransportType transportType) {
         client = createBuilder()
             .transportType(transportType)
             .shareConnection()
@@ -72,8 +72,8 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
      * is exhausted.
      */
     @ParameterizedTest
-    @EnumSource(value = TransportType.class)
-    public void receiveMessage(TransportType transportType) {
+    @EnumSource(value = AmqpTransportType.class)
+    public void receiveMessage(AmqpTransportType transportType) {
         beforeTest(transportType);
         // Arrange
         final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 2);

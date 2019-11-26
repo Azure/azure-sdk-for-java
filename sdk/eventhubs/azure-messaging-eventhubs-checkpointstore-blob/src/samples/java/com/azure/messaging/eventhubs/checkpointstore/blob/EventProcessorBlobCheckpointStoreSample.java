@@ -7,8 +7,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
-import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.util.function.Consumer;
@@ -24,15 +24,15 @@ public class EventProcessorBlobCheckpointStoreSample {
     private static final String SAS_TOKEN_STRING = "";
     private static final String STORAGE_CONNECTION_STRING = "";
 
-    public static final Consumer<PartitionEvent> PARTITION_PROCESSOR = partitionEvent -> {
+    public static final Consumer<EventContext> PARTITION_PROCESSOR = eventContext -> {
         System.out.printf("Processing event from partition %s with sequence number %d %n",
-            partitionEvent.getPartitionContext().getPartitionId(), partitionEvent.getData().getSequenceNumber());
-        if (partitionEvent.getData().getSequenceNumber() % 10 == 0) {
-            partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData()).subscribe();
+            eventContext.getPartitionContext().getPartitionId(), eventContext.getEventData().getSequenceNumber());
+        if (eventContext.getEventData().getSequenceNumber() % 10 == 0) {
+            eventContext.updateCheckpoint();
         }
     };
 
-    public static final Consumer<EventProcessingErrorContext> ERROR_HANDLER = errorContext -> {
+    public static final Consumer<ErrorContext> ERROR_HANDLER = errorContext -> {
         System.out.printf("Error occurred in partition processor for partition {}, {}",
             errorContext.getPartitionContext().getPartitionId(),
             errorContext.getThrowable());
