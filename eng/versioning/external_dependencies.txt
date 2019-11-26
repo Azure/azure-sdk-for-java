@@ -29,10 +29,13 @@ io.micrometer:micrometer-registry-azure-monitor;1.2.0
 io.micrometer:micrometer-registry-graphite;1.2.0
 io.netty:netty-buffer;4.1.42.Final
 io.netty:netty-codec-http;4.1.42.Final
+io.netty:netty-codec-http2;4.1.42.Final
 io.netty:netty-handler;4.1.42.Final
 io.netty:netty-handler-proxy;4.1.42.Final
 io.netty:netty-tcnative;2.0.26.Final
 io.netty:netty-tcnative-boringssl-static;2.0.26.Final
+io.netty:netty-transport-native-epoll;4.1.42.Final
+io.netty:netty-transport-native-unix-common;4.1.42.Final
 io.opencensus:opencensus-api;0.24.0
 io.opencensus:opencensus-impl;0.24.0
 io.projectreactor.netty:reactor-netty;0.9.0.RELEASE

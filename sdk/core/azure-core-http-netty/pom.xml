@@ -85,17 +85,17 @@
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http2</artifactId>
-      <version>4.1.42.Final</version>
+      <version>4.1.42.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-unix-common</artifactId>
-      <version>4.1.42.Final</version>
+      <version>4.1.42.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-epoll</artifactId>
-      <version>4.1.42.Final</version>
+      <version>4.1.42.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
       <classifier>linux-x86_64</classifier>
     </dependency>
 
