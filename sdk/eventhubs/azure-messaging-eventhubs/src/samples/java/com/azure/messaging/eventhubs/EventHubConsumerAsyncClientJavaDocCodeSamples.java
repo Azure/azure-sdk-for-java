@@ -123,7 +123,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
      * Receives from all partitions with last enqueued information.
      */
     public void receiveLastEnqueuedInformation() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean-receiveoptions
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions
         ReceiveOptions receiveOptions = new ReceiveOptions()
             .setTrackLastEnqueuedEventProperties(true);
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
@@ -131,12 +131,14 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildAsyncConsumerClient();
 
-        // Receives events from all partitions as they come in.
-        consumer.receive(false, receiveOptions).subscribe(partitionEvent -> {
-            LastEnqueuedEventProperties properties = partitionEvent.getLastEnqueuedEventProperties();
-            System.out.printf("Information received at %s. Sequence Id: %s%n", properties.getRetrievalTime(),
-                properties.getSequenceNumber());
-        });
-        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean-receiveoptions
+        // Receives events from partition "0" as they come in.
+        consumer.receiveFromPartition("0", EventPosition.earliest(), receiveOptions)
+            .subscribe(partitionEvent -> {
+                LastEnqueuedEventProperties properties = partitionEvent.getLastEnqueuedEventProperties();
+                System.out.printf("Information received at %s. Last enqueued sequence number: %s%n",
+                    properties.getRetrievalTime(),
+                    properties.getSequenceNumber());
+            });
+        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions
     }
 }
