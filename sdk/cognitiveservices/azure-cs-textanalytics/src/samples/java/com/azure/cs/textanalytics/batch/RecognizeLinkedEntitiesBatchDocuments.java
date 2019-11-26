@@ -44,6 +44,6 @@ public class RecognizeLinkedEntitiesBatchDocuments {
         detectedBatchResult.stream().forEach(linkedEntityDocumentResult ->
             linkedEntityDocumentResult.getLinkedEntities().stream().forEach(linkedEntity ->
                 System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s",
-                    linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource())));
+                    linkedEntity.getName(), linkedEntity.getUri(), linkedEntity.getDataSource())));
     }
 }

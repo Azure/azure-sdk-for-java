@@ -138,7 +138,7 @@ public final class LinkedEntity {
      *
      * @return the url value.
      */
-    public String getUrl() {
+    public String getUri() {
         return this.url;
     }
 

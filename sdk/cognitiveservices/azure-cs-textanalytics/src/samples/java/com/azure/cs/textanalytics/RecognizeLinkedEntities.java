@@ -17,7 +17,7 @@ public class RecognizeLinkedEntities {
         client.recognizeLinkedEntities(text, "US").getLinkedEntities().stream().forEach(
             linkedEntity -> System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s",
                 linkedEntity.getName(),
-                linkedEntity.getUrl(),
+                linkedEntity.getUri(),
                 linkedEntity.getDataSource()));
     }
 }
