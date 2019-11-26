@@ -38,11 +38,11 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opencensus</artifactId>
-    <version>1.0.0-beta.5</version>
+    <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
-        <artifactId>azure-core-http-netty</artifactId>
+        <artifactId>azure-core-http-netty</artifactId> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
       </exclusion>
     </exclusions>
 </dependency>
@@ -53,8 +53,8 @@ Netty and include OkHTTP client in your pom.xml.
 <!-- Add OkHTTP client to use with Tracing OpenCensus package -->
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.1.0-beta.1</version>
+  <artifactId>azure-core-http-okhttp</artifactId> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

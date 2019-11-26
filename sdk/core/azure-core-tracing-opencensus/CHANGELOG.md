@@ -1,7 +1,8 @@
 # Release History
-## Version 1.0.0-beta.5 (2019-11-25)
+## Version 1.0.0-beta.5 (2019-11-26)
 For details on the Azure SDK for Java (December 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview6-java).
-Version 1.0.0-beta.5 extended support for 0.24.0 opencensus-api package version.
+- Extended support for 0.24.0 opencensus-api package version.
+- Added tracing instrumentation for Batch send operation in Eventhubs.
 
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-tracing-opencensus_1.0.0-beta.5/sdk/core/azure-core-tracing-opencensus/README.md)
