@@ -112,14 +112,14 @@ public class CertificateAsyncClient {
      *
      * @param certificateName The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
-     * @param enabled The enabled status for the certificate.
+     * @param isEnabled The enabled status for the certificate.
      * @param tags The application specific metadata to set.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
-    public PollerFlux<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String certificateName, CertificatePolicy policy, boolean enabled, Map<String, String> tags) {
+    public PollerFlux<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String certificateName, CertificatePolicy policy, boolean isEnabled, Map<String, String> tags) {
         return new PollerFlux<>(Duration.ofSeconds(1),
-                activationOperation(certificateName, policy, enabled, tags),
+                activationOperation(certificateName, policy, isEnabled, tags),
                 createPollOperation(certificateName),
                 cancelOperation(certificateName),
                 fetchResultOperation(certificateName));
@@ -199,7 +199,6 @@ public class CertificateAsyncClient {
                 status = LongRunningOperationStatus.FAILED;
                 break;
             default:
-                status = LongRunningOperationStatus.fromString(certificateOperationResponse.getValue().getStatus(), true);
                 //should not reach here
                 status = LongRunningOperationStatus.fromString(certificateOperationResponse.getValue().getStatus(), true);
                 break;
