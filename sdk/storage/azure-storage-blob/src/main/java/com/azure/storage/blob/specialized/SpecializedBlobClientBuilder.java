@@ -173,7 +173,7 @@ public final class SpecializedBlobClientBuilder {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
-        BuilderHelper.validateCpk(customerProvidedKey, endpoint);
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
     }
 
     /*
@@ -190,7 +190,7 @@ public final class SpecializedBlobClientBuilder {
     private HttpPipeline getHttpPipeline() {
         return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration);
+            httpClient, additionalPolicies, configuration, logger);
     }
 
     private BlobServiceVersion getServiceVersion() {

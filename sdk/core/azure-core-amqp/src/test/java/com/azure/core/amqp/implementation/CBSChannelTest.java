@@ -70,7 +70,7 @@ public class CBSChannelTest {
         final String scopes = "scopes.cbs.foo";
         final AccessToken accessToken = new AccessToken("an-access-token?", OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC));
         final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel), tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
 
         when(tokenCredential.getToken(argThat(arg -> arg.getScopes().contains(scopes))))
             .thenReturn(Mono.just(accessToken));
@@ -104,7 +104,7 @@ public class CBSChannelTest {
         final String scopes = "scopes.cbs.foo";
         final AccessToken accessToken = new AccessToken("an-access-token?", OffsetDateTime.of(2019, 11, 10, 15, 2, 5, 0, ZoneOffset.UTC));
         final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel), tokenCredential,
-            CBSAuthorizationType.JSON_WEB_TOKEN, options);
+            CbsAuthorizationType.JSON_WEB_TOKEN, options);
 
         when(tokenCredential.getToken(argThat(arg -> arg.getScopes().contains(scopes))))
             .thenReturn(Mono.just(accessToken));

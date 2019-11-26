@@ -98,9 +98,9 @@ class Program {
             .consumerGroup("<< CONSUMER GROUP NAME >>")
             .connectionString("<< EVENT HUB CONNECTION STRING >>")
             .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
-            .processEvent(partitionEvent -> {
-                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + partitionEvent.getEventData().getSequenceNumber());
+            .processEvent(eventContext -> {
+                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
                 System.out.println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
