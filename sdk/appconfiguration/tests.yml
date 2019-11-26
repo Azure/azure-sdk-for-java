@@ -7,4 +7,3 @@ jobs:
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_APPCONFIG_CONNECTION_STRING: $(java-azconfig-test-connection-string)
-        AZURE_LOG_LEVEL: 2
