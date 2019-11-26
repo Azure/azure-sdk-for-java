@@ -23,6 +23,8 @@ public class SearchForDynamicDocumentsExample {
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
 
+    private static final String INDEX_NAME = "hotels-sample-index";
+
     public static void main(String[] args) {
         searchWithSyncClient();
         searchWithAsyncClient();
@@ -36,7 +38,7 @@ public class SearchForDynamicDocumentsExample {
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
-            .indexName("hotels")
+            .indexName(INDEX_NAME)
             .buildClient();
 
         // Perform a text-based search
@@ -45,9 +47,9 @@ public class SearchForDynamicDocumentsExample {
             // Each result is a dynamic Map
             Document doc = result.getDocument();
             String hotelName = (String) doc.get("HotelName");
-            Integer rating = (Integer) doc.get("Rating");
+            Double rating = (Double) doc.get("Rating");
 
-            System.out.printf("%s: %d%n", hotelName, rating);
+            System.out.printf("%s: %s%n", hotelName, rating);
         }
     }
 
@@ -59,7 +61,7 @@ public class SearchForDynamicDocumentsExample {
         SearchIndexAsyncClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
-            .indexName("hotels")
+            .indexName(INDEX_NAME)
             .buildAsyncClient();
 
         // Add additional options for the search

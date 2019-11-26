@@ -6,6 +6,7 @@ package com.azure.search;
 import com.azure.core.util.Configuration;
 import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexBatch;
+import models.Hotel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,8 @@ public class IndexContentManagementExample {
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
 
+    private static final String INDEX_NAME = "hotels-sample-index";
+
     public static void main(String[] args) {
         basicIndexing();
         advancedIndexing();
@@ -38,7 +41,7 @@ public class IndexContentManagementExample {
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
-            .indexName("hotels")
+            .indexName(INDEX_NAME)
             .buildClient();
 
         List<Hotel> hotels = new ArrayList<>();
@@ -58,7 +61,7 @@ public class IndexContentManagementExample {
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_KEY))
-            .indexName("hotels")
+            .indexName(INDEX_NAME)
             .buildClient();
 
         IndexBatch<Hotel> batch = new IndexBatch<Hotel>()
