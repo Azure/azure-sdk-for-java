@@ -3,7 +3,6 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;

@@ -3,10 +3,14 @@
 
 package com.azure.core.util;
 
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * This class provides utility to iterate over values using standard 'for-each' style loops, or to convert them into a
@@ -28,15 +32,36 @@ import java.util.stream.Stream;
  * @see Iterable
  */
 public class IterableStream<T> implements Iterable<T> {
+    /*
+     * This is the default batch size that will be requested when using stream or iterable by page, this will indicate
+     * to Reactor how many elements should be prefetched before another batch is requested.
+     */
+    private static final int DEFAULT_BATCH_SIZE = 1;
+
+    private final ClientLogger logger = new ClientLogger(IterableStream.class);
     private final Flux<T> flux;
+    private final Iterable<T> iterable;
 
     /**
-     * Creates instance with the given {@link Flux}.
+     * Creates an instance with the given {@link Flux}.
      *
      * @param flux Flux of items to iterate over.
+     * @throws NullPointerException if {@code flux} is {@code null}.
      */
     public IterableStream(Flux<T> flux) {
-        this.flux = flux;
+        this.flux = Objects.requireNonNull(flux, "'flux' cannot be null.");
+        this.iterable = null;
+    }
+
+    /**
+     * Creates an instance with the given {@link Iterable}.
+     *
+     * @param iterable Collection of items to iterate over.
+     * @throws NullPointerException if {@code iterable} is {@code null}.
+     */
+    public IterableStream(Iterable<T> iterable) {
+        this.iterable = Objects.requireNonNull(iterable, "'iterable' cannot be null.");
+        this.flux = null;
     }
 
     /**
@@ -46,7 +71,14 @@ public class IterableStream<T> implements Iterable<T> {
      * @return {@link Stream} of value {@code T}.
      */
     public Stream<T> stream() {
-        return flux.toStream();
+        if (flux != null) {
+            return flux.toStream(DEFAULT_BATCH_SIZE);
+        } else if (iterable != null) {
+            return StreamSupport.stream(iterable.spliterator(), false);
+        } else {
+            logger.warning("IterableStream was not initialized with Iterable or Flux, returning empty stream.");
+            return Stream.empty();
+        }
     }
 
     /**
@@ -57,7 +89,13 @@ public class IterableStream<T> implements Iterable<T> {
      */
     @Override
     public Iterator<T> iterator() {
-        return flux.toIterable().iterator();
+        if (flux != null) {
+            return flux.toIterable(DEFAULT_BATCH_SIZE).iterator();
+        } else if (iterable != null) {
+            return iterable.iterator();
+        } else {
+            logger.warning("IterableStream was not initialized with Iterable or Flux, returning empty iterator.");
+            return Collections.emptyIterator();
+        }
     }
-
 }

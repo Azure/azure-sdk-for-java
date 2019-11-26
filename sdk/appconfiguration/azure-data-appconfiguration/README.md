@@ -135,6 +135,21 @@ ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .buildAsyncClient();
 ```
 
+You can also use `TokenCredential` to create a configuration client, such as an Azure Active Directory (AAD) token.
+Unlike a connection string if you're using an AAD token you must supply the endpoint of AppConfiguration service. The
+endpoint can be obtained by going to your App Configuration instance in the Azure portal and navigating to "Overview"
+page and look for the "Endpoint" keyword. 
+
+```Java
+// An example of using TokenCredential and Endpoint to create a synchronous client
+TokenCredential credential = new DefaultAzureCredential();
+
+ConfigurationClient client = new ConfigurationClientBuilder()
+        .credential(credential)
+        .endpoint(endpoint)
+        .buildClient();
+```
+
 ## Key concepts
 
 ### Configuration Setting
@@ -277,13 +292,13 @@ PagedIterable<ConfigurationSetting> settings = client.listRevisions(selector);
 Set a configuration setting to read-only status.
 ```Java
 client.setConfigurationSetting("some_key", "some_label", "some_value");
-ConfigurationSetting setting = client.setReadOnly("some_key", "some_label");
+ConfigurationSetting setting = client.setReadOnly("some_key", "some_label", true);
 ```
 ### Clear read only from a Configuration Setting
 
 Clear read-only from a configuration setting.
 ```Java
-ConfigurationSetting setting = client.clearReadOnly("some_key", "some_label");
+ConfigurationSetting setting = client.setReadOnly("some_key", "some_label", false);
 ```
 
 ## Troubleshooting

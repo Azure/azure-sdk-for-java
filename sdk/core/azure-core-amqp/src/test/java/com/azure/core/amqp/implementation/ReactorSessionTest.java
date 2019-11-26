@@ -4,7 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -47,7 +47,7 @@ public class ReactorSessionTest {
     @Mock
     private Event event;
     @Mock
-    private CBSNode cbsNode;
+    private ClaimsBasedSecurityNode cbsNode;
     @Mock
     private MessageSerializer serializer;
     @Mock
@@ -67,7 +67,7 @@ public class ReactorSessionTest {
 
         MockReactorHandlerProvider handlerProvider = new MockReactorHandlerProvider(reactorProvider, null, handler, null, null);
         AzureTokenManagerProvider azureTokenManagerProvider = new AzureTokenManagerProvider(
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
             Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT);
     }
@@ -97,14 +97,14 @@ public class ReactorSessionTest {
     public void verifyEndpointStates() {
         when(session.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
-        StepVerifier.create(reactorSession.getConnectionStates())
+        StepVerifier.create(reactorSession.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> handler.onSessionRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> handler.close())
-            // Expect two close notifications. One for getErrors() subscription and getEndpointStates();
-            .expectNext(AmqpEndpointState.CLOSED, AmqpEndpointState.CLOSED)
+            .expectNext(AmqpEndpointState.CLOSED)
             .then(() -> reactorSession.close())
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
     }
 }

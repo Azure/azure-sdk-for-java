@@ -63,14 +63,16 @@ public class EventDataBatchTest {
      */
     @Test
     public void withinPayloadSize() {
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, null,
-            new TracerProvider(Collections.emptyList()));
+        final int maxSize = ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY,
+            null, new TracerProvider(Collections.emptyList()));
         final EventData within = new EventData(new byte[1024]);
 
+        Assertions.assertEquals(maxSize, batch.getMaxSizeInBytes());
+        Assertions.assertTrue(maxSize > batch.getSizeInBytes());
         Assertions.assertTrue(batch.tryAdd(within));
         Assertions.assertEquals(1, batch.getCount());
     }
-
 
     /**
      * Verify that we can create a batch with partition id and key.

@@ -3,10 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
@@ -51,7 +50,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
 
     private ConnectionStringProperties properties;
-    private Scheduler scheduler;
+    private String testName;
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
@@ -61,9 +60,9 @@ public abstract class IntegrationTestBase extends TestBase {
     public void setupTest(TestInfo testInfo) {
         logger.info("[{}]: Performing integration test set-up.", testInfo.getDisplayName());
 
+        testName = testInfo.getDisplayName();
         skipIfNotRecordMode();
 
-        scheduler = Schedulers.single();
         properties = new ConnectionStringProperties(getConnectionString());
 
         beforeTest();
@@ -160,9 +159,9 @@ public abstract class IntegrationTestBase extends TestBase {
     protected EventHubClientBuilder createBuilder(boolean useCredentials) {
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .scheduler(scheduler)
             .retry(RETRY_OPTIONS)
-            .transportType(AmqpTransportType.AMQP);
+            .transportType(AmqpTransportType.AMQP)
+            .scheduler(Schedulers.newParallel("eh-integration"));
 
         if (useCredentials) {
             final String fqdn = getFullyQualifiedDomainName();
@@ -247,8 +246,8 @@ public abstract class IntegrationTestBase extends TestBase {
             try {
                 closeable.close();
             } catch (IOException error) {
-                logger.error(String.format("[%s]: %s didn't close properly.",
-                    getTestName(), closeable.getClass().getSimpleName()), error);
+                logger.error(String.format("[%s]: %s didn't close properly.", testName,
+                    closeable.getClass().getSimpleName()), error);
             }
         }
     }
