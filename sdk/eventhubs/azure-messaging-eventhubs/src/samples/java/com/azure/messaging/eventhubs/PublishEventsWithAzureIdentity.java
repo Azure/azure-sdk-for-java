@@ -69,9 +69,6 @@ public class PublishEventsWithAzureIdentity {
                 if (batch != null) {
                     producer.send(batch).block();
                 }
-
-                // Disposing of our producer.
-                producer.close();
             });
 
         // Sleeping this thread because we want to wait for all the events to send before ending the program.
@@ -84,6 +81,9 @@ public class PublishEventsWithAzureIdentity {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            // Disposing of our producer.
+            producer.close();
         }
     }
 }
