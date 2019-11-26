@@ -155,7 +155,7 @@ class EventHubMessageSerializer implements MessageSerializer {
             return (T) toEventHubProperties(amqpBody);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "Class '%s' is not a supported deserializable type.", deserializedType)));
+                Messages.CLASS_NOT_A_SUPPORTED_TYPE, deserializedType)));
         }
     }
 
@@ -423,7 +423,7 @@ class EventHubMessageSerializer implements MessageSerializer {
             return Double.BYTES;
         }
 
-        throw new IllegalArgumentException(String.format("Encoding Type: %s is not supported",
+        throw new IllegalArgumentException(String.format(Messages.ENCODING_TYPE_NOT_SUPPORTED,
             obj.getClass()));
     }
 

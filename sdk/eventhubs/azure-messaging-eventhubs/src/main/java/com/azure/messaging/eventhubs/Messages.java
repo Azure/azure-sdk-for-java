@@ -17,6 +17,8 @@ public enum Messages {
     private static final ClientLogger LOGGER = new ClientLogger(Messages.class);
     private static Properties properties;
     private static final String MESSAGES_PROPERTIES_PATH = "com/azure/messaging/eventhubs/messages.properties";
+    public static final String CLASS_NOT_A_SUPPORTED_TYPE = getMessage("CLASS_NOT_A_SUPPORTED_TYPE");
+    public static final String ENCODING_TYPE_NOT_SUPPORTED = getMessage("ENCODING_TYPE_NOT_SUPPORTED");
     public static final String PROCESS_SPAN_SCOPE_TYPE_ERROR = getMessage("PROCESS_SPAN_SCOPE_TYPE_ERROR");
     public static final String MESSAGE_NOT_OF_TYPE = getMessage("MESSAGE_NOT_OF_TYPE");
     public static final String REQUEST_VALUE_NOT_VALID = getMessage("REQUEST_VALUE_NOT_VALID");
@@ -39,9 +41,13 @@ public enum Messages {
         properties = new Properties();
         try (InputStream inputStream =
                  Thread.currentThread().getContextClassLoader().getResourceAsStream(MESSAGES_PROPERTIES_PATH)) {
-            properties.load(inputStream);
+            if (inputStream != null) {
+                properties.load(inputStream);
+            } else {
+                LOGGER.error("Message properties [{}] not found", MESSAGES_PROPERTIES_PATH); //NON-NLS
+            }
         } catch (IOException exception) {
-            LOGGER.error("Error loading message properties {}", Messages.class, exception); //NON-NLS
+            LOGGER.error("Error loading message properties [{}]", MESSAGES_PROPERTIES_PATH, exception); //NON-NLS
         }
         return properties;
     }
