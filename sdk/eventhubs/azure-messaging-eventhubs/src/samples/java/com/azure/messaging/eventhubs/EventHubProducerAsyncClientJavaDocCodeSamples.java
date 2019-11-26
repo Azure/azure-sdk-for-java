@@ -101,19 +101,17 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
      */
     public void batchSizeLimited() {
         final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
-
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey-int
         final EventData firstEvent = new EventData("92".getBytes(UTF_8));
         firstEvent.getProperties().put("telemetry", "latency");
         final EventData secondEvent = new EventData("98".getBytes(UTF_8));
         secondEvent.getProperties().put("telemetry", "cpu-temperature");
 
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey-int
         final Flux<EventData> telemetryEvents = Flux.just(firstEvent, secondEvent);
 
         // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
         // In this case, all the batches created with these options are limited to 256 bytes.
         final CreateBatchOptions options = new CreateBatchOptions()
-            .setPartitionKey("telemetry")
             .setMaximumSizeInBytes(256);
         final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
             producer.createBatch(options).block());

@@ -170,6 +170,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @param partitionId The unique identifier of a partition associated with the Event Hub.
      *
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     *
+     * @throws NullPointerException if {@code partitionId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
@@ -186,11 +188,13 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     /**
-     * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
+     * Creates an {@link EventDataBatch} configured with the options specified.
      *
      * @param options A set of options used to configure the {@link EventDataBatch}.
      *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
+     *
+     * @throws NullPointerException if {@code options} is null.
      */
     public Mono<EventDataBatch> createBatch(CreateBatchOptions options) {
         if (options == null) {
@@ -488,7 +492,8 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     /**
-     * Disposes of the {@link EventHubProducerAsyncClient} by closing the underlying connection to the service.
+     * Disposes of the {@link EventHubProducerAsyncClient}. If the client had a dedicated connection, the underlying
+     * connection is also closed.
      */
     @Override
     public void close() {
