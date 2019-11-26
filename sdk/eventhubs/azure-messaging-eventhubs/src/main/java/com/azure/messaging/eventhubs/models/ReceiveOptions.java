@@ -30,20 +30,18 @@ public class ReceiveOptions {
     }
 
     /**
-     * Sets the {@code ownerLevel} value on this consumer. When populated, the level indicates that a consumer is
-     * intended to be the only reader of events for the requested partition and an associated consumer group. To do so,
-     * this consumer will attempt to assert ownership over the partition; in the case where more than one exclusive
-     * consumer attempts to assert ownership for the same partition/consumer group pair, the one having a larger {@link
-     * ReceiveOptions#getOwnerLevel()} value will "win".
+     * Sets the {@code ownerLevel} value on this recieve operation. When populated, the level indicates that the receive
+     * operation is intended to be the only reader of events for the requested partition and associated consumer group.
+     * To do so, this receive operation will attempt to assert ownership over the partition; in the case where
+     * there is more than one exclusive receive operation for the same partition/consumer group pair, the one having a
+     * larger {@link ReceiveOptions#getOwnerLevel()} value will "win".
      *
-     * <p>
-     * When an exclusive consumer is used, those consumers which are not exclusive or which have a lower priority will
-     * either not be allowed to be created, if they already exist, will encounter an exception during the next attempted
-     * operation.
-     * </p>
+     * <p>When an exclusive receive operation is used, those receive operations which are not exclusive or which have a
+     * lower priority will either not be allowed to be created. If they already exist, will encounter an exception
+     * during the next attempted operation.</p>
      *
-     * @param priority The priority associated with an exclusive consumer; for a non-exclusive consumer, this value
-     *     should be {@code null}.
+     * @param priority The priority associated with an exclusive receive operation; for a non-exclusive receive
+     *     operation, this value should be {@code null}.
      *
      * @return The updated {@link ReceiveOptions} object.
      *
@@ -60,10 +58,10 @@ public class ReceiveOptions {
     }
 
     /**
-     * Gets whether or not the consumer should request information on the last enqueued event on its associated
+     * Gets whether or not the receive operation should request information on the last enqueued event on its associated
      * partition, and track that information as events are received.
      *
-     * @return {@code true} if the resulting consumer will keep track of the last enqueued information for that
+     * @return {@code true} if the resulting receive operation will keep track of the last enqueued information for that
      *     partition; {@code false} otherwise.
      */
     public boolean getTrackLastEnqueuedEventProperties() {
@@ -71,7 +69,7 @@ public class ReceiveOptions {
     }
 
     /**
-     * Sets whether or not the consumer should request information on the last enqueued event on its associated
+     * Sets whether or not the receive operation should request information on the last enqueued event on its associated
      * partition, and track that information as events are received.
      *
      * <p>When information about the partition's last enqueued event is being tracked, each event received from the
