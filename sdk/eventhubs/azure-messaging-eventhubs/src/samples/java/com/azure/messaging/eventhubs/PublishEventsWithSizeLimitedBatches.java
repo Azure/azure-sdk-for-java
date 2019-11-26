@@ -75,7 +75,7 @@ public class PublishEventsWithSizeLimitedBatches {
                         throw Exceptions.propagate(new IllegalArgumentException(String.format(
                             "Event is too large for an empty batch. Max size: %s. Event: %s",
                             newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
-                    };
+                    }
 
                     return newBatch;
                 }));
