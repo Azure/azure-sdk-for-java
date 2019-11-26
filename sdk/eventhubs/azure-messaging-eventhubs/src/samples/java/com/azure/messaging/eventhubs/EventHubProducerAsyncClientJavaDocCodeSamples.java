@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -18,9 +19,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
     private final EventHubClientBuilder builder = new EventHubClientBuilder();
 
     /**
-     * Code snippet demonstrating how to create an {@link EventHubProducerAsyncClient} that automatically routes events to any
-     * partition.
-     *
+     * Code snippet demonstrating how to create an {@link EventHubProducerAsyncClient}.
      */
     public void instantiate() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation
@@ -37,19 +36,45 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippet demonstrating how to send a batch that automatically routes events to any partition.
+     */
+    public void batchAutomaticRouting() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch
+        // The required parameter is a way to authenticate with Event Hubs using credentials.
+        // The connectionString provides a way to authenticate with Event Hub.
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+            .connectionString(
+                "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}",
+                "event-hub-name")
+            .buildAsyncProducerClient();
+
+        // Creating a batch without options set, will allow for automatic routing of events to any partition.
+        producer.createBatch().flatMap(batch -> {
+            batch.tryAdd(new EventData("test-event-1"));
+            batch.tryAdd(new EventData("test-event-2"));
+            return producer.send(batch);
+        }).block();
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch
+
+        producer.close();
+    }
+
+    /**
      * Code snippet demonstrating how to create an {@link EventHubProducerAsyncClient} that routes events to a single
      * partition.
-     *
      */
     public void instantiatePartitionProducer() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation#partitionId
-        EventData eventData = new EventData("data-to-partition-foo");
-        SendOptions options = new SendOptions()
-            .setPartitionId("foo");
-
         EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
-        producer.send(eventData, options);
-        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation#partitionId
+
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionId
+        // Creating a batch with partitionId set will route all events in that batch to partition `foo`.
+        CreateBatchOptions options = new CreateBatchOptions().setPartitionId("foo");
+        producer.createBatch(options).flatMap(batch -> {
+            batch.tryAdd(new EventData("test-event-1"));
+            batch.tryAdd(new EventData("test-event-2"));
+            return producer.send(batch);
+        }).block();
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionId
 
         producer.close();
     }
@@ -58,36 +83,31 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
      * Code snippet demonstrating how to send events with a partition key.
      */
     public void sendEventsFluxSendOptions() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#publisher-sendOptions
-        Flux<EventData> events = Flux.just(
-            new EventData("sourdough".getBytes(UTF_8)),
-            new EventData("rye".getBytes(UTF_8)),
-            new EventData("wheat".getBytes(UTF_8))
-        );
-
         EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
-        SendOptions options = new SendOptions()
-            .setPartitionKey("bread");
 
-        producer.send(events, options).subscribe(ignored -> System.out.println("sent"),
-            error -> System.err.println("Error received:" + error),
-            () -> System.out.println("Send complete."));
-        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#publisher-sendOptions
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey
+        // Creating a batch with partitionKey set will tell the service to hash the partitionKey and decide which
+        // partition to send the events to. Events with the same partitionKey are always routed to the same partition.
+        CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("sandwiches");
+        producer.createBatch(options).flatMap(batch -> {
+            batch.tryAdd(new EventData("sourdough"));
+            batch.tryAdd(new EventData("rye"));
+            return producer.send(batch);
+        }).block();
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey
     }
 
     /**
-     * Code snippet demonstrating how to create an {@link EventDataBatch} and send it.
+     * Code snippet demonstrating how to create a size-limited {@link EventDataBatch} and send it.
      */
     public void sendEventDataBatch() {
         final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
 
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#eventDataBatch
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey-int
         final EventData firstEvent = new EventData("92".getBytes(UTF_8));
         firstEvent.getProperties().put("telemetry", "latency");
-
         final EventData secondEvent = new EventData("98".getBytes(UTF_8));
         secondEvent.getProperties().put("telemetry", "cpu-temperature");
-
         final EventData thirdEvent = new EventData("120".getBytes(UTF_8));
         thirdEvent.getProperties().put("telemetry", "fps");
 
@@ -100,21 +120,27 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
             producer.createBatch(options).block());
 
         // The sample Flux contains three events, but it could be an infinite stream of telemetry events.
-        telemetryEvents.subscribe(event -> {
+        telemetryEvents.flatMap(event -> {
             final EventDataBatch batch = currentBatch.get();
-            if (!batch.tryAdd(event)) {
+            if (batch.tryAdd(event)) {
+                return Mono.empty();
+            }
+
+            return Mono.when(
+                producer.send(batch),
                 producer.createBatch(options).map(newBatch -> {
                     currentBatch.set(newBatch);
-                    return producer.send(batch);
-                }).block();
-            }
-        }, error -> System.err.println("Error received:" + error),
-            () -> {
+                    // Add the event that did not fit in the previous batch.
+                    newBatch.tryAdd(event);
+                    return newBatch;
+                }));
+        }).then()
+            .doFinally(signal -> {
                 final EventDataBatch batch = currentBatch.getAndSet(null);
-                if (batch != null) {
+                if (batch != null && batch.getCount() > 0) {
                     producer.send(batch).block();
                 }
             });
-        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#eventDataBatch
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey-int
     }
 }

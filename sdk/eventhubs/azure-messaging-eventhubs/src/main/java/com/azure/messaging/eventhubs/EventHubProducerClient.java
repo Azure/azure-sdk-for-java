@@ -16,8 +16,8 @@ import java.util.Objects;
 
 /**
  * A <b>synchronous</b> producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped
- * together in batches. Depending on the options specified at creation, the producer may be created to allow event data
- * to be automatically routed to an available partition or specific to a partition.
+ * together in batches. Depending on the {@link CreateBatchOptions options} specified when creating an
+ * {@link EventDataBatch}, the events may be automatically routed to an available partition or specific to a partition.
  *
  * <p>
  * Allowing automatic routing of partitions is recommended when:
@@ -28,7 +28,7 @@ import java.util.Objects;
  * </p>
  *
  * <p>
- * If no {@link SendOptions#getPartitionId() partitionId} is specified, the following rules are used for
+ * If no {@link CreateBatchOptions#getPartitionId() partitionId} is specified, the following rules are used for
  * automatically selecting one:
  *
  * <ol>
@@ -40,9 +40,9 @@ import java.util.Objects;
  *
  * <p><strong>Create a producer that routes events to any partition</strong></p>
  * To allow automatic routing of messages to available partition, do not specify the {@link
- * SendOptions#getPartitionId() partitionId} when creating the {@link EventHubProducerClient}.
+ * CreateBatchOptions#getPartitionId() partitionId} when creating the {@link EventDataBatch}.
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.instantiation}
+ * {@codesnippet }
  *
  * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
  * Developers can push events to a single partition by specifying the
@@ -75,7 +75,7 @@ import java.util.Objects;
  * </p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.send#eventDataBatch}
  *
- * @see EventHubClient#createProducer()
+ * @see EventHubClientBuilder#buildProducerClient()
  * @see EventHubProducerAsyncClient To asynchronously generate events to an Event Hub, see EventHubAsyncProducer.
  */
 @ServiceClient(builder = EventHubClientBuilder.class)

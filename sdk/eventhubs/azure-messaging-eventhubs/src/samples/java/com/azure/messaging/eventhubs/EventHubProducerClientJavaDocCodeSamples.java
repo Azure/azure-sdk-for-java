@@ -18,13 +18,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class EventHubProducerClientJavaDocCodeSamples {
     private final EventHubClientBuilder builder = new EventHubClientBuilder()
         .connectionString("fake-string");
+
     /**
-     * Code snippet demonstrating how to create an {@link EventHubProducerClient} that automatically routes events to any
-     * partition.
-     *
+     * Code snippet demonstrating how to create an {@link EventHubProducerClient}.
      */
     public void instantiate() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation
+        // The required parameter is a way to authenticate with Event Hubs using credentials.
+        // The connectionString provides a way to authenticate with Event Hub.
         EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
             .buildProducerClient();
@@ -36,16 +37,16 @@ public class EventHubProducerClientJavaDocCodeSamples {
     /**
      * Code snippet demonstrating how to send events to a single partition.
      *
-     * @throws IOException if the producer cannot be disposed.
      */
-    public void instantiatePartitionProducer() throws IOException {
+    public void instantiatePartitionProducer() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation#partitionId
-        EventData eventData = new EventData("data-to-partition-foo");
-        SendOptions options = new SendOptions()
+        CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionId("foo");
 
         EventHubProducerClient producer = builder.buildProducerClient();
-        producer.send(eventData, options);
+        EventDataBatch batch = producer.createBatch(options);
+        batch.tryAdd(new EventData("data-to-partition-foo"));
+        producer.send(batch);
         // END: com.azure.messaging.eventhubs.eventhubproducerclient.instantiation#partitionId
 
         producer.close();

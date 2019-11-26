@@ -51,8 +51,8 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
 
 /**
  * An <b>asynchronous</b> producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped
- * together in batches. Depending on the options specified at creation, the producer may be created to allow event data
- * to be automatically routed to an available partition or specific to a partition.
+ * together in batches. Depending on the {@link CreateBatchOptions options} specified when creating an
+ * {@link EventDataBatch}, the events may be automatically routed to an available partition or specific to a partition.
  *
  * <p>
  * Allowing automatic routing of partitions is recommended when:
@@ -71,38 +71,35 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  * </ol>
  * </p>
  *
- * <p><strong>Create a producer that routes events to any partition</strong></p>
- * To allow automatic routing of messages to available partition, do not specify the {@link
- * CreateBatchOptions#getPartitionId() partitionId} when creating the {@link EventHubProducerAsyncClient}.
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation}
+ * <p><strong>Create a producer and publish events to any partition</strong></p>
+ * <p>To allow automatic routing of messages to available partition, do not specify the {@link
+ * CreateBatchOptions#getPartitionId() partitionId} when creating the {@link EventHubProducerAsyncClient}.</p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch}
  *
- * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
- * Developers can push events to a single partition by specifying the
+ * <p><strong>Publish events to partition "foo"</strong></p>
+ * <p>Developers can push events to a single partition by specifying the
  * {@link CreateBatchOptions#setPartitionId(String) partitionId} when creating an {@link EventHubProducerAsyncClient}.
+ * </p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation#partitionId}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionId}
  *
- * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#setPartitionKey(String)}
- * .</strong></p>
- * If developers want to push similar events to end up at the same partition, but do not require them to go to a
- * specific partition, they can use {@link SendOptions#setPartitionKey(String)}.
- * <p>
+ * <p><strong>Publish events to the same partition, grouped together using partition key</strong></p>
+ * <p>If developers want to push similar events to end up at the same partition, but do not require them to go to a
+ * specific partition, they can use {@link CreateBatchOptions#setPartitionKey(String)}.
  * In the sample below, all the "sandwiches" end up in the same partition, but it could end up in partition 0, 1, etc.
- * of the available partitions. All that matters to the end user is that they are grouped together.
- * </p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#publisher-sendOptions}
+ * of the available partitions. All that matters to the end user is that they are grouped together.</p>
  *
- * <p><strong>Publish events using an {@link EventDataBatch}.</strong></p>
- * Developers can create an {@link EventDataBatch}, add the events they want into it, and publish these
- * events together. When creating a {@link EventDataBatch batch}, developers can specify a set of
- * {@link CreateBatchOptions options} to configure this batch.
- * <p>
- * In the scenario below, the developer is creating a networked video game. They want to receive telemetry about their
- * users' gaming systems, but do not want to slow down the network with telemetry. So they limit the size of their
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey}
+ *
+ * <p><strong>Publish events using a size-limited {@link EventDataBatch}</strong></p>
+ * <p>In the scenario below, the developer is creating a networked video game. They want to receive telemetry about
+ * their users' gaming systems, but do not want to slow down the network with telemetry. So they limit the size of their
  * {@link EventDataBatch batches} to be no larger than 256 bytes. The events within the batch also get hashed to the
- * same partition because they all share the same {@link CreateBatchOptions#getPartitionKey()}.
- * </p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#eventDataBatch}
+ * same partition because they all share the same {@link CreateBatchOptions#getPartitionKey()}.</p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey-int}
+ *
+ * @see EventHubClientBuilder#buildAsyncProducerClient()
  */
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubProducerAsyncClient implements Closeable {
