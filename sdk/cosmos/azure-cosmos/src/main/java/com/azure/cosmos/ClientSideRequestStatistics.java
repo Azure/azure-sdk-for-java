@@ -202,7 +202,7 @@ class ClientSideRequestStatistics {
             //  only take last 10 responses from this list - this has potential of having large number of entries.
             //  since this is for establishing consistency, we can make do with the last responses to paint a meaningful picture.
             int supplementalResponseStatisticsListCount = this.supplementalResponseStatisticsList.size();
-            int initialIndex = Math.max(squpplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
+            int initialIndex = Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
             if (initialIndex != 0) {
                 this.supplementalResponseStatisticsList.removeAll(this.supplementalResponseStatisticsList.subList(0, initialIndex));
             }
