@@ -176,7 +176,13 @@ public final class CoreUtils {
         return new UserAgentProperties(name, version);
     }
 
-    private static Map<String, String> getProperties(String propertiesFileName) {
+    /**
+     * Helper method that returns an immutable {@link Map} of properties defined in {@code propertiesFileName}.
+     *
+     * @param propertiesFileName The file name defining the properties.
+     * @return an immutable {@link Map}.
+     */
+    public static Map<String, String> getProperties(String propertiesFileName) {
         ClientLogger logger = new ClientLogger(CoreUtils.class);
         try (InputStream inputStream = CoreUtils.class.getClassLoader()
             .getResourceAsStream(propertiesFileName)) {

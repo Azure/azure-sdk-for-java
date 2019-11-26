@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,8 +41,9 @@ public class CoreUtilsTests {
 
     @Test
     public void testProperties() {
-        assertNotNull(CoreUtils.getUserAgentPropertiesFromProperties("azure-core.properties").getVersion());
-        assertNotNull(CoreUtils.getUserAgentPropertiesFromProperties("azure-core.properties").getName());
+        UserAgentProperties properties =
+            CoreUtils.getUserAgentPropertiesFromProperties("azure-core.properties");
+        assertFalse(properties.getName().matches("UnknownName"));
         assertTrue(CoreUtils.getUserAgentPropertiesFromProperties("azure-core.properties").getVersion()
             .matches("\\d.\\d.\\d([-a-zA-Z0-9.])*"));
     }
