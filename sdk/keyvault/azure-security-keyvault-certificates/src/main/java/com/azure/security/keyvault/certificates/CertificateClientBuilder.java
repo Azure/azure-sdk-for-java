@@ -17,6 +17,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.UserAgentProperties;
 import com.azure.core.util.logging.ClientLogger;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -55,8 +56,9 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {CertificateClient.class, CertificateAsyncClient.class})
 public final class CertificateClientBuilder {
     private final ClientLogger logger = new ClientLogger(CertificateClientBuilder.class);
-
+    private static final String AZURE_KEY_VAULT_CERTIFICATES_PROPERTIES = "azure-key-vault-certificates.properties";
     private final List<HttpPipelinePolicy> policies;
+    private final UserAgentProperties properties;
     private TokenCredential credential;
     private HttpPipeline pipeline;
     private URL vaultUrl;
@@ -73,6 +75,7 @@ public final class CertificateClientBuilder {
         retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
+        properties = CoreUtils.getUserAgentPropertiesFromProperties(AZURE_KEY_VAULT_CERTIFICATES_PROPERTIES);
     }
 
     /**
@@ -108,11 +111,13 @@ public final class CertificateClientBuilder {
      * {@link CertificateClientBuilder#vaultUrl(String)} have not been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
-        Configuration buildConfiguration = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+        Configuration buildConfiguration = (configuration == null) ? Configuration.getGlobalConfiguration().clone() :
+            configuration;
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
         CertificateServiceVersion serviceVersion = version != null ? version : CertificateServiceVersion.getLatest();
 
@@ -121,12 +126,14 @@ public final class CertificateClientBuilder {
         }
 
         if (credential == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIALS_REQUIRED)));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIALS_REQUIRED)));
         }
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, buildConfiguration));
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), properties.getName(),
+            properties.getVersion(), buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));

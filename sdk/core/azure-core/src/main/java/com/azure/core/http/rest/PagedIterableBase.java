@@ -28,6 +28,12 @@ import java.util.stream.Stream;
  * @see IterableStream
  */
 public class PagedIterableBase<T, P extends PagedResponse<T>> extends IterableStream<T> {
+    /*
+     * This is the default batch size that will be requested when using stream or iterable by page, this will indicate
+     * to Reactor how many elements should be prefetched before another batch is requested.
+     */
+    private static final int DEFAULT_BATCH_SIZE = 1;
+
     private final PagedFluxBase<T, P> pagedFluxBase;
 
     /**
@@ -46,7 +52,7 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends IterableSt
      * @return {@link Stream} of a Response that extends {@link PagedResponse}
      */
     public Stream<P> streamByPage() {
-        return pagedFluxBase.byPage().toStream();
+        return pagedFluxBase.byPage().toStream(DEFAULT_BATCH_SIZE);
     }
 
     /**
@@ -58,7 +64,7 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends IterableSt
      * with the continuation token
      */
     public Stream<P> streamByPage(String continuationToken) {
-        return pagedFluxBase.byPage(continuationToken).toStream();
+        return pagedFluxBase.byPage(continuationToken).toStream(DEFAULT_BATCH_SIZE);
     }
 
     /**
@@ -68,7 +74,7 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends IterableSt
      * @return {@link Iterable} interface
      */
     public Iterable<P> iterableByPage() {
-        return pagedFluxBase.byPage().toIterable();
+        return pagedFluxBase.byPage().toIterable(DEFAULT_BATCH_SIZE);
     }
 
     /**
@@ -80,6 +86,6 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends IterableSt
      * @return {@link Iterable} interface
      */
     public Iterable<P> iterableByPage(String continuationToken) {
-        return pagedFluxBase.byPage(continuationToken).toIterable();
+        return pagedFluxBase.byPage(continuationToken).toIterable(DEFAULT_BATCH_SIZE);
     }
 }

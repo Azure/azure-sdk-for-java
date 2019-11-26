@@ -29,8 +29,8 @@ import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
- * consumer group.
+ * An <b>asynchronous</b> consumer responsible for reading {@link EventData} from either a specific Event Hub partition
+ * or all partitions in the context of a specific consumer group.
  *
  * <p><strong>Creating an {@link EventHubConsumerAsyncClient}</strong></p>
  * <p>Required parameters are {@code consumerGroup}, and credentials are required when

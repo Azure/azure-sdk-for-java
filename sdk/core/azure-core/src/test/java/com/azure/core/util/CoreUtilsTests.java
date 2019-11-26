@@ -40,16 +40,17 @@ public class CoreUtilsTests {
 
     @Test
     public void testProperties() {
-        assertNotNull(CoreUtils.getProperties("azure-core.properties").get("version"));
-        assertNotNull(CoreUtils.getProperties("azure-core.properties").get("name"));
-        assertTrue(CoreUtils.getProperties("azure-core.properties").get("version")
+        assertNotNull(CoreUtils.getUserAgentPropertiesFromProperties("azure-core.properties").getVersion());
+        assertNotNull(CoreUtils.getUserAgentPropertiesFromProperties("azure-core.properties").getName());
+        assertTrue(CoreUtils.getUserAgentPropertiesFromProperties("azure-core.properties").getVersion()
             .matches("\\d.\\d.\\d([-a-zA-Z0-9.])*"));
     }
 
     @Test
     public void testMissingProperties() {
-        assertNotNull(CoreUtils.getProperties("foo.properties"));
-        assertTrue(CoreUtils.getProperties("foo.properties").isEmpty());
-        assertNull(CoreUtils.getProperties("azure-core.properties").get("foo"));
+        assertTrue(CoreUtils.getUserAgentPropertiesFromProperties("foo.properties")
+            .getVersion().matches("UnknownVersion"));
+        assertTrue(CoreUtils.getUserAgentPropertiesFromProperties("foo.properties")
+            .getName().matches("UnknownName"));
     }
 }

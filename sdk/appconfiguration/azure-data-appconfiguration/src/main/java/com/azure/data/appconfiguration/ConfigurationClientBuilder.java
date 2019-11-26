@@ -22,6 +22,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UserAgentProperties;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
@@ -77,15 +78,12 @@ public final class ConfigurationClientBuilder {
     private static final String ACCEPT_HEADER = "Accept";
     private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
     private static final String APP_CONFIG_PROPERTIES = "azure-appconfig.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
     private final HttpHeaders headers;
-    private final String clientName;
-    private final String clientVersion;
+    private final UserAgentProperties properties;
 
     private ConfigurationClientCredentials credential;
     private TokenCredential tokenCredential;
@@ -105,9 +103,7 @@ public final class ConfigurationClientBuilder {
         policies = new ArrayList<>();
         httpLogOptions = new HttpLogOptions();
 
-        Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
-        clientName = properties.getOrDefault(NAME, "UnknownName");
-        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+        properties = CoreUtils.getUserAgentPropertiesFromProperties(APP_CONFIG_PROPERTIES);
 
         headers = new HttpHeaders()
             .put(ECHO_REQUEST_ID_HEADER, "true")
@@ -175,8 +171,8 @@ public final class ConfigurationClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), properties.getName(),
+            properties.getVersion(), buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());

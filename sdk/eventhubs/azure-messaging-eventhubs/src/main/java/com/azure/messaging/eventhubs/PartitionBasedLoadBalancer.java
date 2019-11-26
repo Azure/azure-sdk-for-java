@@ -146,16 +146,6 @@ final class PartitionBasedLoadBalancer {
                 partitionOwnershipMap);
             logger.info("Number of active ownership records {}", activePartitionOwnershipMap.size());
 
-            if (CoreUtils.isNullOrEmpty(activePartitionOwnershipMap)) {
-                /*
-                 * If the active partition ownership map is empty, this is the first time an event processor is
-                 * running or all Event Processors are down for this Event Hub, consumer group combination. All
-                 * partitions in this Event Hub are available to claim. Choose a random partition to claim ownership.
-                 */
-                claimOwnership(partitionOwnershipMap, partitionIds.get(RANDOM.nextInt(numberOfPartitions)));
-                return;
-            }
-
             /*
              * Create a map of owner id and a list of partitions it owns
              */
@@ -166,6 +156,17 @@ final class PartitionBasedLoadBalancer {
 
             // add the current event processor to the map if it doesn't exist
             ownerPartitionMap.putIfAbsent(this.ownerId, new ArrayList<>());
+
+            if (CoreUtils.isNullOrEmpty(activePartitionOwnershipMap)) {
+                /*
+                 * If the active partition ownership map is empty, this is the first time an event processor is
+                 * running or all Event Processors are down for this Event Hub, consumer group combination. All
+                 * partitions in this Event Hub are available to claim. Choose a random partition to claim ownership.
+                 */
+                claimOwnership(partitionOwnershipMap, ownerPartitionMap,
+                    partitionIds.get(RANDOM.nextInt(numberOfPartitions)));
+                return;
+            }
 
             /*
              * Find the minimum number of partitions every event processor should own when the load is
@@ -191,6 +192,8 @@ final class PartitionBasedLoadBalancer {
                 ownerPartitionMap)) {
                 // If the partitions are evenly distributed among all active event processors, no change required.
                 logger.info("Load is balanced");
+                // renew ownership of already owned partitions
+                checkpointStore.claimOwnership(ownerPartitionMap.get(this.ownerId)).subscribe();
                 return;
             }
 
@@ -198,6 +201,8 @@ final class PartitionBasedLoadBalancer {
                 // This event processor already has enough partitions and shouldn't own more.
                 logger.info("This event processor owns {} partitions and shouldn't own more",
                     ownerPartitionMap.get(ownerId).size());
+                // renew ownership of already owned partitions
+                checkpointStore.claimOwnership(ownerPartitionMap.get(this.ownerId)).subscribe();
                 return;
             }
 
@@ -224,7 +229,7 @@ final class PartitionBasedLoadBalancer {
                     return findPartitionToSteal(ownerPartitionMap);
                 });
 
-            claimOwnership(partitionOwnershipMap, partitionToClaim);
+            claimOwnership(partitionOwnershipMap, ownerPartitionMap, partitionToClaim);
         });
     }
 
@@ -320,14 +325,17 @@ final class PartitionBasedLoadBalancer {
             }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
-    private void claimOwnership(final Map<String, PartitionOwnership> partitionOwnershipMap,
-        final String partitionIdToClaim) {
+    private void claimOwnership(final Map<String, PartitionOwnership> partitionOwnershipMap, Map<String,
+        List<PartitionOwnership>> ownerPartitionsMap, final String partitionIdToClaim) {
         logger.info("Attempting to claim ownership of partition {}", partitionIdToClaim);
         PartitionOwnership ownershipRequest = createPartitionOwnershipRequest(partitionOwnershipMap,
             partitionIdToClaim);
 
+        List<PartitionOwnership> currentPartitionsOwned = ownerPartitionsMap.get(ownerId);
+        currentPartitionsOwned.add(ownershipRequest);
+
         checkpointStore
-            .claimOwnership(ownershipRequest)
+            .claimOwnership(currentPartitionsOwned)
             .timeout(Duration.ofMinutes(1)) // TODO: configurable
             .doOnNext(partitionOwnership -> logger.info("Successfully claimed ownership of partition {}",
                 partitionOwnership.getPartitionId()))

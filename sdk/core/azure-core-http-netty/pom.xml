@@ -8,14 +8,14 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+  <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
 
   <name>Microsoft Azure Netty HTTP Client Library</name>
   <description>This package contains the Netty HTTP client plugin for azure-core.</description>
@@ -58,36 +58,58 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-handler</artifactId>
+      <version>4.1.42.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-handler-proxy</artifactId>
+      <version>4.1.42.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-buffer</artifactId>
+      <version>4.1.42.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>
+      <version>4.1.42.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-codec-http2</artifactId>
+      <version>4.1.42.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-unix-common</artifactId>
+      <version>4.1.42.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-epoll</artifactId>
+      <version>4.1.42.Final</version>
+      <classifier>linux-x86_64</classifier>
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
+      <version>0.9.0.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Netty -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -100,23 +122,27 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
+      <version>3.3.0.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
+      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.github.tomakehurst</groupId>
       <artifactId>wiremock-standalone</artifactId>
+      <version>2.24.1</version> <!-- {x-version-update;com.github.tomakehurst:wiremock-standalone;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

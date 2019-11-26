@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
@@ -13,18 +14,24 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to sent events to specific event hub by defining partition id using
- * {@link CreateBatchOptions#setPartitionId(String)}.
+ * Demonstrates how to publish events when there is a size constraint on batch size using
+ * {@link CreateBatchOptions#setMaximumSizeInBytes(int)}.
  */
-public class PublishEventsToSpecificPartition {
+public class PublishEventsWithSizeLimitedBatches {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
-     * Main method to invoke this demo about how to send a batch of events with partition id configured.
+     * Main method to invoke this demo on how to send an {@link EventDataBatch} to an Azure Event Hub.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
+        Flux<EventData> telemetryEvents = Flux.just(
+            new EventData("Roast beef".getBytes(UTF_8)),
+            new EventData("Cheese".getBytes(UTF_8)),
+            new EventData("Tofu".getBytes(UTF_8)),
+            new EventData("Turkey".getBytes(UTF_8)));
+
         // The connection string value can be obtained by:
         // 1. Going to your Event Hubs namespace in Azure Portal.
         // 2. Creating an Event Hub instance.
@@ -37,29 +44,20 @@ public class PublishEventsToSpecificPartition {
             .connectionString(connectionString)
             .buildAsyncProducerClient();
 
-        // To send our events, we need to know what partition to send it to. For the sake of this example, we take the
-        // first partition id.
-        // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
-        // time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
-        // TimeoutException is thrown.
-        String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
-
-        // We will publish three events based on simple sentences.
-        Flux<EventData> data = Flux.just(
-            new EventData("EventData Sample 1".getBytes(UTF_8)),
-            new EventData("EventData Sample 2".getBytes(UTF_8)),
-            new EventData("EventData Sample 3".getBytes(UTF_8)));
-
-        // Create a batch to send the events.
+        // In cases where developers need to size limit their batch size, they can use `setMaximumSizeInBytes` to limit
+        // the size of their EventDataBatch. By default, it will be the max size allowed by the underlying link.
+        // Since there is no partition id or partition key set, the Event Hubs service will automatically load balance
+        // the events between all available partitions.
         final CreateBatchOptions options = new CreateBatchOptions()
-            .setPartitionId(firstPartition);
+            .setMaximumSizeInBytes(256);
         final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
             producer.createBatch(options).block());
 
+        // The sample Flux contains three events, but it could be an infinite stream of telemetry events.
         // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
         // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
         // are sent.
-        final Mono<Void> sendOperation = data.flatMap(event -> {
+        final Mono<Void> sendOperation = telemetryEvents.flatMap(event -> {
             final EventDataBatch batch = currentBatch.get();
             if (batch.tryAdd(event)) {
                 return Mono.empty();
@@ -69,7 +67,7 @@ public class PublishEventsToSpecificPartition {
             // have completed.
             return Mono.when(
                 producer.send(batch),
-                producer.createBatch(options).map(newBatch -> {
+                producer.createBatch().map(newBatch -> {
                     currentBatch.set(newBatch);
 
                     // Add that event that we couldn't before.
@@ -100,3 +98,5 @@ public class PublishEventsToSpecificPartition {
         }
     }
 }
+
+

@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
  */
 public final class CoreUtils {
     private static final String COMMA = ",";
+    private static final String NAME = "name";
+    private static final String VERSION = "version";
 
     private CoreUtils() {
         // Exists only to defeat instantiation.
@@ -162,12 +164,19 @@ public final class CoreUtils {
 
 
     /**
-     * Helper method that returns an immutable {@link Map} of properties defined in {@code propertiesFileName}.
+     * Helper method that returns {@link UserAgentProperties} from properties defined in {@code propertiesFileName}.
      *
      * @param propertiesFileName The file name defining the properties.
-     * @return an immutable {@link Map}.
+     * @return {@link UserAgentProperties}.
      */
-    public static Map<String, String> getProperties(String propertiesFileName) {
+    public static UserAgentProperties getUserAgentPropertiesFromProperties(String propertiesFileName) {
+        Map<String, String> propertyMap = getProperties(propertiesFileName);
+        String name = propertyMap.getOrDefault(NAME, "UnknownName");
+        String version = propertyMap.getOrDefault(VERSION, "UnknownVersion");
+        return new UserAgentProperties(name, version);
+    }
+
+    private static Map<String, String> getProperties(String propertiesFileName) {
         ClientLogger logger = new ClientLogger(CoreUtils.class);
         try (InputStream inputStream = CoreUtils.class.getClassLoader()
             .getResourceAsStream(propertiesFileName)) {
