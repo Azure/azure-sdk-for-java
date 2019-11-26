@@ -43,6 +43,12 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             (Indexer indexer, AccessOptions ac) ->
                 createIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
 
+    private BiFunction<Indexer,
+        AccessOptions,
+        Indexer> createOrUpdateWithResponseFunc =
+            (Indexer indexer, AccessOptions ac) ->
+                createIndexerWithResponse(indexer, ac.getAccessCondition(), ac.getRequestOptions());
+
     private Supplier<Indexer> newIndexerFunc =
         () -> createTestIndexer("name")
             .setDataSourceName(SQL_DATASOURCE_NAME);
@@ -226,6 +232,17 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             indexer,
             accessCondition,
             requestOptions);
+    }
+
+    protected Indexer createIndexerWithResponse(Indexer indexer,
+                                    AccessCondition accessCondition,
+                                    RequestOptions requestOptions) {
+        return client.createOrUpdateIndexerWithResponse(
+            indexer,
+            accessCondition,
+            requestOptions,
+            Context.NONE)
+            .getValue();
     }
 
     protected Response<Void> deleteIndexer(String indexerName,
@@ -532,6 +549,20 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         Indexer indexerResult = act.createOrUpdateIfNotExistsSucceedsOnNoResource(
             createOrUpdateFunc,
+            newIndexerFunc);
+
+        Assert.assertTrue(StringUtils.isNoneEmpty(indexerResult.getETag()));
+    }
+
+    @Override
+    public void createOrUpdateIndexerWithResponseIfNotExistsSucceedsOnNoResource() {
+        AccessConditionTests act = new AccessConditionTests();
+
+        // Prepare datasource and index
+        createDatasourceAndIndex();
+
+        Indexer indexerResult = act.createOrUpdateIfNotExistsSucceedsOnNoResource(
+            createOrUpdateWithResponseFunc,
             newIndexerFunc);
 
         Assert.assertTrue(StringUtils.isNoneEmpty(indexerResult.getETag()));

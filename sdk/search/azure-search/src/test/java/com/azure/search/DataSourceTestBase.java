@@ -51,7 +51,10 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     public abstract void createOrUpdateDataSourceIfNotExistsFailsOnExistingResource();
 
     @Test
-    public abstract void createOrUpdateIfNotExistsSucceedsOnNoResource();
+    public abstract void createOrUpdateDatasourceIfNotExistsSucceedsOnNoResource();
+
+    @Test
+    public abstract void createOrUpdateDatasourceWithResponseIfNotExistsSucceedsOnNoResource();
 
     @Test
     public abstract void getDataSourceReturnsCorrectDefinition();
@@ -63,19 +66,19 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     public abstract void deleteDataSourceIfExistsWorksOnlyWhenResourceExists();
 
     @Test
-    public abstract void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource();
+    public abstract void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException;
 
     @Test
-    public abstract void updateDataSourceIfExistsFailsOnNoResource();
+    public abstract void updateDataSourceIfExistsFailsOnNoResource() throws NoSuchFieldException, IllegalAccessException;
 
     @Test
-    public abstract void updateDataSourceIfExistsSucceedsOnExistingResource();
+    public abstract void updateDataSourceIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException;
 
     @Test
-    public abstract void updateDataSourceIfNotChangedFailsWhenResourceChanged();
+    public abstract void updateDataSourceIfNotChangedFailsWhenResourceChanged() throws NoSuchFieldException, IllegalAccessException;
 
     @Test
-    public abstract void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged();
+    public abstract void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged() throws NoSuchFieldException, IllegalAccessException;
 
     @Test
     public abstract void existsReturnsFalseForNonExistingDatasource();
@@ -104,7 +107,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
 
     protected DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
         return DataSources.azureBlobStorage(
-            "azs-java-test-blob",
+            BLOB_DATASOURCE_TEST_NAME,
             "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;",
             "fakecontainer",
             "/fakefolder/",

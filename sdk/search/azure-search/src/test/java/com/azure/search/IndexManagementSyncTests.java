@@ -14,6 +14,7 @@ import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
 import com.azure.search.models.IndexGetStatisticsResult;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
@@ -21,20 +22,70 @@ import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.Suggester;
 import com.azure.search.models.SynonymMap;
+import com.azure.search.test.AccessConditionTests;
+import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import static com.azure.search.test.AccessConditionBase.generateIfNotChangedAccessCondition;
-import static com.azure.search.test.AccessConditionBase.generateIfExistsAccessCondition;
-import static com.azure.search.test.AccessConditionBase.generateIfNotExistsAccessCondition;
 
 public class IndexManagementSyncTests extends IndexManagementTestBase {
     private SearchServiceClient client;
+
+    // commonly used lambda definitions
+    private BiFunction<Index,
+        AccessOptions,
+        Index> createOrUpdateFunc =
+            (Index index, AccessOptions ac) ->
+                createIndex(index, false, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private BiFunction<Index,
+        AccessOptions,
+        Index> createOrUpdateWithResponseFunc =
+            (Index index, AccessOptions ac) ->
+                createIndexWithResponse(index, false, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private Supplier<Index> newIndexFunc =
+        () -> createTestIndex();
+
+    private Function<Index, Index> changeIndexFunc =
+        (Index index) -> mutateCorsOptionsInIndex(index);
+
+    private BiConsumer<String, AccessOptions> deleteIndexFunc =
+        (String name, AccessOptions ac) ->
+            deleteIndex(name, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private void deleteIndex(String indexName,
+                                   AccessCondition accessCondition,
+                                   RequestOptions requestOptions) {
+        client.deleteIndex(indexName,
+            accessCondition,
+            requestOptions);
+    }
+
+    private Index createIndex(Index index, boolean allowDowntime,
+                              AccessCondition accessCondition,
+                              RequestOptions requestOptions) {
+        return client.createOrUpdateIndex(index, allowDowntime, accessCondition, requestOptions);
+    }
+
+    private Index createIndexWithResponse(Index index, boolean allowDowntime,
+                                          AccessCondition accessCondition,
+                                          RequestOptions requestOptions) {
+        return client.createOrUpdateIndexWithResponse(index,
+            allowDowntime,
+            accessCondition,
+            requestOptions,
+            Context.NONE).getValue();
+    }
 
     @Override
     protected void beforeTest() {
@@ -80,7 +131,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createIndexFailsWithUsefulMessageOnUserError() {
-        String indexName = "hotels";
+        String indexName = HOTEL_INDEX_NAME;
         Index index = new Index()
             .setName(indexName)
             .setFields(Collections.singletonList(
@@ -144,44 +195,31 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     }
 
     @Override
-    public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
-        Index index = createTestIndex();
-        Index staleResource = client.createOrUpdateIndex(index);
-        Index currentResource = client.createOrUpdateIndex(mutateCorsOptionsInIndex(staleResource));
+    public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
 
-        try {
-            client.deleteIndex(index.getName(), generateIfNotChangedAccessCondition(staleResource.getETag()), generateRequestOptions());
-            Assert.fail("deleteIndex did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
-
-        Response<Void> response = client.deleteIndexWithResponse(index.getName(),
-            generateIfNotChangedAccessCondition(currentResource.getETag()), generateRequestOptions(), Context.NONE);
-
-        Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), response.getStatusCode());
+        act.deleteIfNotChangedWorksOnlyOnCurrentResource(
+            deleteIndexFunc,
+            newIndexFunc,
+            createOrUpdateFunc,
+            HOTEL_INDEX_NAME);
     }
 
     @Override
     public void deleteIndexIfExistsWorksOnlyWhenResourceExists() {
-        Index index = createTestIndex();
-        client.createIndex(index);
+        AccessConditionTests act = new AccessConditionTests();
 
-        client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), generateRequestOptions());
-        try {
-            client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), generateRequestOptions());
-            Assert.fail("deleteIndex did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
+        act.deleteIfExistsWorksOnlyWhenResourceExists(
+            deleteIndexFunc,
+            createOrUpdateFunc,
+            newIndexFunc,
+            HOTEL_INDEX_NAME);
     }
 
     @Override
     public void deleteIndexIsIdempotent() {
         Index index = new Index()
-            .setName("hotels")
+            .setName(HOTEL_INDEX_NAME)
             .setFields(Collections.singletonList(
                 new Field()
                     .setName("HotelId")
@@ -277,7 +315,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         client.createSynonymMap(synonymMap);
 
         Index index = new Index()
-            .setName("hotels")
+            .setName(HOTEL_INDEX_NAME)
             .setFields(Arrays.asList(
                 new Field()
                     .setName("HotelId")
@@ -442,88 +480,69 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
-        Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index);
-        Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
+        AccessConditionTests act = new AccessConditionTests();
 
-        try {
-            client.createOrUpdateIndex(mutatedResource,
-                false, generateIfNotExistsAccessCondition(), generateRequestOptions());
-            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
+        act.createOrUpdateIfNotExistsFailsOnExistingResource(
+            createOrUpdateFunc,
+            newIndexFunc,
+            changeIndexFunc);
     }
 
     @Override
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
-        Index resource = createTestIndex();
-        Index updatedResource = client.createOrUpdateIndex(resource,
-            false, generateIfNotExistsAccessCondition(), generateRequestOptions());
+        AccessConditionTests act = new AccessConditionTests();
 
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
+        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
+            createOrUpdateFunc,
+            newIndexFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
-        Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index);
-        Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.createOrUpdateIndex(mutatedResource,
-            false, generateIfExistsAccessCondition(), generateRequestOptions());
+    public void createOrUpdateIndexWithResponseIfNotExistsSucceedsOnNoResource() {
+        AccessConditionTests act = new AccessConditionTests();
 
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
+        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
+            createOrUpdateWithResponseFunc,
+            newIndexFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfExistsFailsOnNoResource() {
-        Index resource = createTestIndex();
-
-        try {
-            client.createOrUpdateIndex(resource,
-                false, generateIfExistsAccessCondition(), generateRequestOptions());
-            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
-        // The resource should never have been created on the server, and thus it should not have an ETag
-        Assert.assertNull(resource.getETag());
+    public void createOrUpdateIndexIfExistsSucceedsOnExistingResource()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+        act.updateIfExistsSucceedsOnExistingResource(
+            newIndexFunc,
+            createOrUpdateFunc,
+            changeIndexFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
-        Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index);
-        Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.createOrUpdateIndex(mutatedResource,
-            false, generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions());
-
-        Assert.assertFalse(createdResource.getETag().isEmpty());
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
+    public void createOrUpdateIndexIfExistsFailsOnNoResource()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+        act.updateIfExistsFailsOnNoResource(
+            newIndexFunc,
+            createOrUpdateFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
-        Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index);
-        Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.createOrUpdateIndex(mutatedResource);
+    public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+        act.updateIfNotChangedSucceedsWhenResourceUnchanged(
+            newIndexFunc,
+            createOrUpdateFunc,
+            changeIndexFunc);
+    }
 
-        try {
-            client.createOrUpdateIndex(updatedResource,
-                false, generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions());
-            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
-        Assert.assertFalse(createdResource.getETag().isEmpty());
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
+    @Override
+    public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+        act.updateIfNotChangedFailsWhenResourceChanged(
+            newIndexFunc,
+            createOrUpdateFunc,
+            changeIndexFunc);
     }
 
     @Override

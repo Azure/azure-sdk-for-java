@@ -15,22 +15,74 @@ import com.azure.search.models.KeyPhraseExtractionSkill;
 import com.azure.search.models.KeyPhraseExtractionSkillLanguage;
 import com.azure.search.models.OcrSkillLanguage;
 import com.azure.search.models.OutputFieldMappingEntry;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SentimentSkillLanguage;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SplitSkillLanguage;
 import com.azure.search.models.TextExtractionAlgorithm;
 import com.azure.search.models.TextSplitMode;
-import com.azure.search.test.AccessConditionBase;
+import com.azure.search.test.AccessConditionTests;
+import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     private SearchServiceClient client;
+
+    protected static final String OCR_SKILLSET_NAME = "ocr-skillset";
+
+    // commonly used lambda definitions
+    private BiFunction<Skillset,
+        AccessOptions,
+        Skillset> createOrUpdateFunc =
+            (Skillset skillset, AccessOptions ac) ->
+                createSkillset(skillset, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private BiFunction<Skillset,
+        AccessOptions,
+        Skillset> createOrUpdateWithResponseFunc =
+            (Skillset skillset, AccessOptions ac) ->
+                createSkillsetWithResponse(skillset, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private Supplier<Skillset> newSkillsetFunc =
+        () -> createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
+
+    private Function<Skillset, Skillset> changeSkillsetFunc =
+        (Skillset skillset) -> mutateSkillsInSkillset(skillset);
+
+    private BiConsumer<String, AccessOptions> deleteSkillsetFunc =
+        (String name, AccessOptions ac) ->
+            deleteSkillset(name, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private void deleteSkillset(String skillsetName,
+                                      AccessCondition accessCondition,
+                                      RequestOptions requestOptions) {
+        client.deleteSkillset(skillsetName,
+            accessCondition,
+            requestOptions);
+    }
+
+    private Skillset createSkillset(Skillset skillset,
+                                    AccessCondition accessCondition,
+                                    RequestOptions requestOptions) {
+        return client.createOrUpdateSkillset(skillset, accessCondition, requestOptions);
+    }
+
+    private Skillset createSkillsetWithResponse(Skillset skillset,
+                                                AccessCondition accessCondition,
+                                                RequestOptions requestOptions) {
+        return client.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions, Context.NONE)
+            .getValue();
+    }
 
     @Override
     protected void beforeTest() {
@@ -164,7 +216,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     @Override
     public void createSkillsetReturnsCorrectDefinitionWithOcrDefaultSettings() {
-        Skillset expectedSkillset = createSkillsetWithOcrDefaultSettings(false);
+        Skillset expectedSkillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
 
         assertSkillsetsEqual(expectedSkillset, actualSkillset);
@@ -204,7 +256,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     @Override
     public void getOcrSkillsetReturnsCorrectDefinition() {
-        Skillset expected = createSkillsetWithOcrDefaultSettings(false);
+        Skillset expected = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
         client.createSkillset(expected);
 
         Skillset actual = client.getSkillset(expected.getName());
@@ -219,7 +271,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     @Override
     public void getOcrSkillsetWithShouldDetectOrientationReturnsCorrectDefinition() {
-        Skillset expected = createSkillsetWithOcrDefaultSettings(true);
+        Skillset expected = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, true);
 
         client.createSkillset(expected);
 
@@ -322,7 +374,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     @Override
     public void deleteSkillsetIsIdempotent() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
         Response<Void> deleteResponse = client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(),
             generateRequestOptions(), Context.NONE);
@@ -342,7 +394,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     @Override
     public void canCreateAndDeleteSkillset() {
-        Skillset expected = createSkillsetWithOcrDefaultSettings(false);
+        Skillset expected = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
         client.createSkillset(expected);
         client.deleteSkillset(expected.getName());
 
@@ -385,7 +437,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     @Override
     public void existsReturnsTrueForExistingSkillset() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
         client.createSkillset(skillset);
 
@@ -396,7 +448,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     @Override
     public void createOrUpdateUpdatesSkills() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
         Skillset createdSkillset = client.createSkillset(skillset);
 
@@ -421,7 +473,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     @Override
     public void createOrUpdateUpdatesCognitiveService() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
         Skillset createdSkillset = client.createSkillset(skillset);
 
@@ -459,140 +511,91 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     @Override
     public void createOrUpdateSkillsetIfNotExistsFailsOnExistingResource() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
-        Skillset createdResource = client.createOrUpdateSkillset(skillset);
-        Skillset mutatedResource = mutateSkillsInSkillset(createdResource);
+        AccessConditionTests act = new AccessConditionTests();
 
-        try {
-            client.createOrUpdateSkillset(mutatedResource, AccessConditionBase.generateIfNotExistsAccessCondition(),
-                generateRequestOptions());
-            Assert.fail("createOrUpdateSkillset did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(),
-                ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
-
-        try {
-            client.createOrUpdateSkillsetWithResponse(mutatedResource, AccessConditionBase.generateIfNotExistsAccessCondition(),
-                generateRequestOptions(), Context.NONE);
-            Assert.fail("createOrUpdateSkillset did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(),
-                ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
+        act.createOrUpdateIfNotExistsFailsOnExistingResource(
+            createOrUpdateFunc,
+            newSkillsetFunc,
+            changeSkillsetFunc);
     }
 
     @Override
     public void createOrUpdateSkillsetIfNotExistsSucceedsOnNoResource() {
-        Skillset resource = createSkillsetWithOcrDefaultSettings(false);
+        AccessConditionTests act = new AccessConditionTests();
 
-        Skillset updatedResource = client.createOrUpdateSkillset(resource, AccessConditionBase.generateIfNotExistsAccessCondition(),
-            generateRequestOptions());
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-
-        updatedResource = client.createOrUpdateSkillset(resource.setName("test-skillset1"),
-            AccessConditionBase.generateIfNotExistsAccessCondition(), generateRequestOptions());
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-
-        Response<Skillset> updatedResponse =
-            client.createOrUpdateSkillsetWithResponse(resource.setName("test-skillset2"),
-                AccessConditionBase.generateIfNotExistsAccessCondition(), generateRequestOptions(), Context.NONE);
-
-        Assert.assertFalse(updatedResponse.getValue().getETag().isEmpty());
+        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
+            createOrUpdateFunc,
+            newSkillsetFunc);
     }
 
     @Override
-    public void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
-        Skillset createdResource = client.createOrUpdateSkillset(skillset);
-        Skillset mutatedResource = mutateSkillsInSkillset(createdResource);
-        Skillset updatedResource = client.createOrUpdateSkillset(mutatedResource, AccessConditionBase.generateIfExistsAccessCondition(),
-            generateRequestOptions());
+    public void createOrUpdateSkillsetWithResponseIfNotExistsSucceedsOnNoResource() {
+        AccessConditionTests act = new AccessConditionTests();
 
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
+        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
+            createOrUpdateWithResponseFunc,
+            newSkillsetFunc);
     }
 
     @Override
-    public void createOrUpdateSkillsetIfExistsFailsOnNoResource() {
-        Skillset resource = createSkillsetWithOcrDefaultSettings(false);
-
-        try {
-            client.createOrUpdateSkillset(resource, AccessConditionBase.generateIfExistsAccessCondition(), generateRequestOptions());
-            Assert.fail("createOrUpdateSkillset did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(),
-                ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
-        // The resource should never have been created on the server, and thus it should not have an ETag
-        Assert.assertNull(resource.getETag());
+    public void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+        act.updateIfExistsSucceedsOnExistingResource(
+            newSkillsetFunc,
+            createOrUpdateFunc,
+            changeSkillsetFunc);
     }
 
     @Override
-    public void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
-        Skillset createdResource = client.createOrUpdateSkillset(skillset);
-        Skillset mutatedResource = mutateSkillsInSkillset(createdResource);
-        Skillset updatedResource = client.createOrUpdateSkillset(mutatedResource, AccessConditionBase.generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions());
-
-        Assert.assertFalse(createdResource.getETag().isEmpty());
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
+    public void createOrUpdateSkillsetIfExistsFailsOnNoResource()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+        act.updateIfExistsFailsOnNoResource(
+            newSkillsetFunc,
+            createOrUpdateFunc);
     }
 
     @Override
-    public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
-        Skillset createdResource = client.createOrUpdateSkillset(skillset);
-        Skillset mutatedResource = mutateSkillsInSkillset(createdResource);
-        Skillset updatedResource = client.createOrUpdateSkillset(mutatedResource);
-
-        try {
-            client.createOrUpdateSkillset(updatedResource, AccessConditionBase.generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions());
-            Assert.fail("createOrUpdateSkillset did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
-        Assert.assertFalse(createdResource.getETag().isEmpty());
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
+    public void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+        act.updateIfNotChangedSucceedsWhenResourceUnchanged(
+            newSkillsetFunc,
+            createOrUpdateFunc,
+            changeSkillsetFunc);
     }
 
     @Override
-    public void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
-        Skillset staleResource = client.createOrUpdateSkillset(skillset);
-        Skillset currentResource = client.createOrUpdateSkillset(staleResource.setDescription("description"));
+    public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+        act.updateIfNotChangedFailsWhenResourceChanged(
+            newSkillsetFunc,
+            createOrUpdateFunc,
+            changeSkillsetFunc);
+    }
 
-        try {
-            client.deleteSkillset(skillset.getName(), AccessConditionBase.generateIfNotChangedAccessCondition(staleResource.getETag()), generateRequestOptions());
-            Assert.fail("deleteSkillset did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
+    @Override
+    public void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
 
-        Response<Void> response = client.deleteSkillsetWithResponse(skillset.getName(),
-            AccessConditionBase.generateIfNotChangedAccessCondition(currentResource.getETag()), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), response.getStatusCode());
+        act.deleteIfNotChangedWorksOnlyOnCurrentResource(
+            deleteSkillsetFunc,
+            newSkillsetFunc,
+            createOrUpdateFunc,
+            OCR_SKILLSET_NAME);
     }
 
     @Override
     public void deleteSkillsetIfExistsWorksOnlyWhenResourceExists() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
-        client.createSkillset(skillset);
+        AccessConditionTests act = new AccessConditionTests();
 
-        client.deleteSkillset(skillset.getName(), AccessConditionBase.generateIfExistsAccessCondition(), generateRequestOptions());
-        try {
-            client.deleteSkillset(skillset.getName(), AccessConditionBase.generateIfExistsAccessCondition(), generateRequestOptions());
-            Assert.fail("deleteSkillset did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
+        act.deleteIfExistsWorksOnlyWhenResourceExists(
+            deleteSkillsetFunc,
+            createOrUpdateFunc,
+            newSkillsetFunc,
+            OCR_SKILLSET_NAME);
     }
 }

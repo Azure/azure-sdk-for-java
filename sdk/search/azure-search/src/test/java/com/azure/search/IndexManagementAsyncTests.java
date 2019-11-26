@@ -11,6 +11,7 @@ import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
@@ -18,6 +19,8 @@ import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.Suggester;
 import com.azure.search.models.SynonymMap;
+import com.azure.search.test.AccessConditionAsyncTests;
+import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.core.publisher.Mono;
@@ -27,13 +30,56 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static com.azure.search.test.AccessConditionBase.generateIfNotChangedAccessCondition;
-import static com.azure.search.test.AccessConditionBase.generateIfExistsAccessCondition;
-import static com.azure.search.test.AccessConditionBase.generateIfNotExistsAccessCondition;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class IndexManagementAsyncTests extends IndexManagementTestBase {
     private SearchServiceAsyncClient client;
+
+    // commonly used lambda definitions
+    private BiFunction<Index,
+        AccessOptions,
+        Mono<Index>> createOrUpdateAsyncFunc =
+            (Index index, AccessOptions ac) ->
+                createIndex(index, false, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private BiFunction<Index,
+        AccessOptions,
+        Mono<Index>> createOrUpdateWithResponseAsyncFunc =
+            (Index index, AccessOptions ac) ->
+                createIndexWithResponse(index, false, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private Supplier<Index> newIndexFunc =
+        () -> createTestIndex();
+
+    private Function<Index, Index> changeIndexFunc =
+        (Index index) -> mutateCorsOptionsInIndex(index);
+
+    private BiFunction<String, AccessOptions, Mono<Void>> deleteIndexAsyncFunc =
+        (String name, AccessOptions ac) ->
+            deleteIndex(name, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private Mono<Void> deleteIndex(String indexName,
+                                     AccessCondition accessCondition,
+                                     RequestOptions requestOptions) {
+        return client.deleteIndex(indexName,
+            accessCondition,
+            requestOptions);
+    }
+
+    private Mono<Index> createIndex(Index index, boolean allowDowntime,
+                                    AccessCondition accessCondition,
+                                    RequestOptions requestOptions) {
+        return client.createOrUpdateIndex(index, allowDowntime, accessCondition, requestOptions);
+    }
+
+    private Mono<Index> createIndexWithResponse(Index index, boolean allowDowntime,
+                                                          AccessCondition accessCondition,
+                                                          RequestOptions requestOptions) {
+        return client.createOrUpdateIndexWithResponse(index, allowDowntime, accessCondition, requestOptions)
+            .map(Response::getValue);
+    }
 
     @Override
     protected void beforeTest() {
@@ -95,9 +141,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createIndexFailsWithUsefulMessageOnUserError() {
-        String indexName = "hotels";
         Index index = new Index()
-            .setName(indexName)
+            .setName(HOTEL_INDEX_NAME)
             .setFields(Collections.singletonList(
                 new Field()
                     .setName("HotelId")
@@ -106,7 +151,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             ));
 
         String expectedMessage = String.format("The request is invalid. Details: index : Found 0 key fields in index '%s'. "
-            + "Each index must have exactly one key field.", indexName);
+            + "Each index must have exactly one key field.", HOTEL_INDEX_NAME);
 
         StepVerifier
             .create(client.createIndex(index))
@@ -185,43 +230,32 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     }
 
     @Override
-    public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
-        Index index = createTestIndex();
-        Index staleResource = client.createOrUpdateIndex(index).block();
-        Index currentResource = client.createOrUpdateIndex(mutateCorsOptionsInIndex(staleResource)).block();
+    public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
-        StepVerifier
-            .create(client.deleteIndex(index.getName(),
-                generateIfNotChangedAccessCondition(staleResource.getETag()), generateRequestOptions()))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
-            });
-
-        Response<Void> response = client.deleteIndexWithResponse(index.getName(),
-            generateIfNotChangedAccessCondition(currentResource.getETag()), generateRequestOptions()).block();
-
-        Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), response.getStatusCode());
+        act.deleteIfNotChangedWorksOnlyOnCurrentResourceAsync(
+            deleteIndexAsyncFunc,
+            newIndexFunc,
+            createOrUpdateAsyncFunc,
+            changeIndexFunc,
+            HOTEL_INDEX_NAME);
     }
 
     @Override
     public void deleteIndexIfExistsWorksOnlyWhenResourceExists() {
-        Index index = createTestIndex();
-        client.createIndex(index).block();
+        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
-        client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), generateRequestOptions()).block();
-        StepVerifier
-            .create(client.deleteIndex(index.getName(), generateIfExistsAccessCondition(), generateRequestOptions()))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
-            });
+        act.deleteIfExistsWorksOnlyWhenResourceExistsAsync(
+            deleteIndexAsyncFunc,
+            createOrUpdateAsyncFunc,
+            newIndexFunc,
+            HOTEL_INDEX_NAME);
     }
 
     @Override
     public void deleteIndexIsIdempotent() {
         Index index = new Index()
-            .setName("hotels")
+            .setName(HOTEL_INDEX_NAME)
             .setFields(Collections.singletonList(
                 new Field()
                     .setName("HotelId")
@@ -357,7 +391,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         client.createSynonymMap(synonymMap).block();
 
         Index index = new Index()
-            .setName("hotels")
+            .setName(HOTEL_INDEX_NAME)
             .setFields(Arrays.asList(
                 new Field()
                     .setName("HotelId")
@@ -538,99 +572,68 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
-        Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index).block();
-        Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
+        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
-        StepVerifier
-            .create(client.createOrUpdateIndex(mutatedResource,
-                false, generateIfNotExistsAccessCondition(), generateRequestOptions()))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
-            });
+        act.createOrUpdateIfNotExistsFailsOnExistingResourceAsync(
+            createOrUpdateAsyncFunc,
+            newIndexFunc,
+            changeIndexFunc);
     }
 
     @Override
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
-        Index resource = createTestIndex();
-        Mono<Index> updatedResource = client.createOrUpdateIndex(resource,
-            false, generateIfNotExistsAccessCondition(), generateRequestOptions());
+        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
-        StepVerifier
-            .create(updatedResource)
-            .assertNext(res -> Assert.assertFalse(res.getETag().isEmpty()))
-            .verifyComplete();
+        act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
+            createOrUpdateAsyncFunc,
+            newIndexFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
-        Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index).block();
-        Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Mono<Index> updatedResource = client.createOrUpdateIndex(mutatedResource,
-            false, generateIfExistsAccessCondition(), generateRequestOptions());
+    public void createOrUpdateIndexWithResponseIfNotExistsSucceedsOnNoResource() {
+        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
-        StepVerifier
-            .create(updatedResource)
-            .assertNext(res -> {
-                Assert.assertFalse(res.getETag().isEmpty());
-                Assert.assertNotEquals(createdResource.getETag(), res.getETag());
-            })
-            .verifyComplete();
+        act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
+            createOrUpdateWithResponseAsyncFunc,
+            newIndexFunc);
+    }
+
+    @Override
+    public void createOrUpdateIndexIfExistsSucceedsOnExistingResource()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
+        act.updateIfExistsSucceedsOnExistingResourceAsync(
+            newIndexFunc,
+            createOrUpdateAsyncFunc,
+            changeIndexFunc);
     }
 
     @Override
     public void createOrUpdateIndexIfExistsFailsOnNoResource() {
-        Index resource = createTestIndex();
-
-        StepVerifier
-            .create(client.createOrUpdateIndex(resource,
-                false, generateIfExistsAccessCondition(), generateRequestOptions()))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
-            });
-
-        // The resource should never have been created on the server, and thus it should not have an ETag
-        Assert.assertNull(resource.getETag());
+        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
+        act.updateIfExistsFailsOnNoResourceAsync(
+            newIndexFunc,
+            createOrUpdateAsyncFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
-        Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index).block();
-        Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Mono<Index> updatedResource = client.createOrUpdateIndex(mutatedResource,
-            false, generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions());
-
-        StepVerifier
-            .create(updatedResource)
-            .assertNext(res -> {
-                Assert.assertFalse(createdResource.getETag().isEmpty());
-                Assert.assertFalse(res.getETag().isEmpty());
-                Assert.assertNotEquals(createdResource.getETag(), res.getETag());
-            })
-            .verifyComplete();
+    public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
+        act.updateIfNotChangedSucceedsWhenResourceUnchangedAsync(
+            newIndexFunc,
+            createOrUpdateAsyncFunc,
+            changeIndexFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
-        Index index = createTestIndex();
-        Index createdResource = client.createOrUpdateIndex(index).block();
-        Index mutatedResource = mutateCorsOptionsInIndex(createdResource);
-        Index updatedResource = client.createOrUpdateIndex(mutatedResource).block();
-
-        StepVerifier
-            .create(client.createOrUpdateIndex(updatedResource,
-                false, generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions()))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
-            });
-        Assert.assertFalse(createdResource.getETag().isEmpty());
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
+    public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
+        act.updateIfNotChangedFailsWhenResourceChangedAsync(
+            newIndexFunc,
+            createOrUpdateAsyncFunc,
+            changeIndexFunc);
     }
 
     @Override

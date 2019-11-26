@@ -80,11 +80,14 @@ public abstract class SearchServiceTestBase extends TestBase {
     // and it has been enabled on the table with ALTER TABLE ... ENABLE CHANGE_TRACKING
     private static final String SQL_CONN_STRING_FIXTURE = "Server=tcp:xxx.database.windows.net,1433;Database=xxx;User ID=reader;Password=xxx;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
 
+    protected static final String HOTEL_INDEX_NAME = "hotels";
+
     public static final String AZURE_SQL_CONN_STRING_READONLY =
         "Server=tcp:azs-playground.database.windows.net,1433;Database=usgs;User ID=reader;Password=EdrERBt3j6mZDP;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;"; // [SuppressMessage("Microsoft.Security", "CS001:SecretInline")]
 
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
+    public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String COSMOS_DATASOURCE_NAME = "azs-java-live-blob";
 
     private String searchServiceName;
@@ -159,7 +162,7 @@ public abstract class SearchServiceTestBase extends TestBase {
         weights.put("Description", 1.5);
         weights.put("Category", 2.0);
         return new Index()
-            .setName("hotels")
+            .setName(HOTEL_INDEX_NAME)
             .setFields(Arrays.asList(
                 new Field()
                     .setName("HotelId")

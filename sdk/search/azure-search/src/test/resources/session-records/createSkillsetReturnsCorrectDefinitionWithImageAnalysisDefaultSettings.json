@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk98674289a57b.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkbd7806197555.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "6760bef5-01a5-41a6-818f-22ed24fdec61",
+      "request-id" : "469d2c50-b292-4bf4-a216-5295073482c2",
       "StatusCode" : "201",
-      "Date" : "Fri, 22 Nov 2019 03:43:46 GMT",
+      "Date" : "Mon, 25 Nov 2019 07:23:32 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D76EFE2E276A91\"",
-      "elapsed-time" : "88",
+      "ETag" : "W/\"0x8D77178606468E5\"",
+      "elapsed-time" : "58",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "715",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk98674289a57b.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D76EFE2E276A91\\\"\",\"name\":\"image-analysis-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.ImageAnalysisSkill\",\"name\":\"myimage\",\"description\":\"Tested image analysis skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"visualFeatures\":[],\"details\":[],\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"description\",\"targetName\":\"mydescription\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkbd7806197555.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D77178606468E5\\\"\",\"name\":\"image-analysis-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.ImageAnalysisSkill\",\"name\":\"myimage\",\"description\":\"Tested image analysis skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"visualFeatures\":[],\"details\":[],\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"description\",\"targetName\":\"mydescription\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk98674289a57b.search-dogfood.windows-int.net/skillsets('image-analysis-skillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkbd7806197555.search-dogfood.windows-int.net/skillsets('image-analysis-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

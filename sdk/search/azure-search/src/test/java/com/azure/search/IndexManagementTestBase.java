@@ -32,7 +32,7 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     public abstract void existsReturnsFalseForNonExistingIndex();
 
     @Test
-    public abstract void deleteIndexIfNotChangedWorksOnlyOnCurrentResource();
+    public abstract void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException;
 
     @Test
     public abstract void deleteIndexIfExistsWorksOnlyWhenResourceExists();
@@ -74,16 +74,19 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     public abstract void createOrUpdateIndexIfNotExistsSucceedsOnNoResource();
 
     @Test
-    public abstract void createOrUpdateIndexIfExistsSucceedsOnExistingResource();
+    public abstract void createOrUpdateIndexWithResponseIfNotExistsSucceedsOnNoResource();
 
     @Test
-    public abstract void createOrUpdateIndexIfExistsFailsOnNoResource();
+    public abstract void createOrUpdateIndexIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException;
 
     @Test
-    public abstract void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged();
+    public abstract void createOrUpdateIndexIfExistsFailsOnNoResource() throws NoSuchFieldException, IllegalAccessException;
 
     @Test
-    public abstract void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged();
+    public abstract void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() throws NoSuchFieldException, IllegalAccessException;
+
+    @Test
+    public abstract void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() throws NoSuchFieldException, IllegalAccessException;
 
     @Test
     public abstract void canCreateAndGetIndexStats();

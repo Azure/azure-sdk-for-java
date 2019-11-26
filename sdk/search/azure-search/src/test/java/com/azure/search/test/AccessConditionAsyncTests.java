@@ -7,6 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -36,21 +37,22 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
     ) {
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
+
         AccessOptions accessOptions = new AccessOptions(null);
+        AccessOptions deleteAccessOptions = new AccessOptions(generateIfExistsAccessCondition());
 
         // Create it on the search service
-        createOrUpdateDefinition.apply(newResource, accessOptions).block();
-
-        // Try to delete and expect to succeed
-        accessOptions = new AccessOptions(generateIfExistsAccessCondition());
-        deleteFunc.apply(resourceName, accessOptions).block();
+        Mono<Void> deletionResult = createOrUpdateDefinition.apply(newResource, accessOptions)
+            .flatMap(r -> deleteFunc.apply(resourceName, deleteAccessOptions));
 
         // Try to delete again and expect to fail
         StepVerifier
-            .create(deleteFunc.apply(resourceName, accessOptions))
+            .create(Flux.concat(deletionResult, deleteFunc.apply(resourceName, deleteAccessOptions)))
+            .expectNext()
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+                Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(),
+                    ((HttpResponseException) error).getResponse().getStatusCode());
             });
     }
 
@@ -59,14 +61,17 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
+     * @param deleteFunc a function that deletes the resource
+     * @param mutateResourceDefinition a function that changes the resource
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
      */
     public <T> void deleteIfNotChangedWorksOnlyOnCurrentResourceAsync(
         BiFunction<String, AccessOptions, Mono<Void>> deleteFunc,
         Supplier<T> newResourceDefinition,
         BiFunction<T, AccessOptions, Mono<T>> createOrUpdateDefinition,
+        Function<T, T> mutateResourceDefinition,
         String resourceName
-    ) throws NoSuchFieldException, IllegalAccessException {
+    ) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T staleResource = newResourceDefinition.get();
@@ -80,7 +85,8 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
         String eTagStale = getEtag(staleResource);
 
         // Update the resource, the etag will be changed
-        T currentResource = createOrUpdateDefinition.apply(staleResource, accessOptions).block();
+        T currentResource = mutateResourceDefinition.apply(staleResource);
+        currentResource = createOrUpdateDefinition.apply(currentResource, accessOptions).block();
 
         accessOptions.setAccessCondition(generateIfNotChangedAccessCondition(eTagStale));
         StepVerifier
@@ -151,7 +157,10 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
 
         StepVerifier
             .create(createOrUpdateDefinition.apply(newResource, accessOptions))
-            .assertNext(Assert::assertNotNull)
+            .assertNext(r -> {
+                String eTag = getEtag(r);
+                Assert.assertTrue(StringUtils.isNotBlank(eTag));
+            })
             .verifyComplete();
     }
 
@@ -178,8 +187,8 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
             });
 
         // The resource should never have been created on the server, and thus it should not have an ETag
-        //String eTag = getEtag(newResource);
-        //Assert.assertNull(eTag);
+        String eTag = getEtag(newResource);
+        Assert.assertNull(eTag);
     }
 
     /**
@@ -192,8 +201,7 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
     public <T> void updateIfExistsSucceedsOnExistingResourceAsync(
         Supplier<T> newResourceDefinition,
         BiFunction<T, AccessOptions, Mono<T>> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition)
-        throws NoSuchFieldException, IllegalAccessException {
+        Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
@@ -236,7 +244,7 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
     public <T> void updateIfNotChangedFailsWhenResourceChangedAsync(
         Supplier<T> newResourceDefinition,
         BiFunction<T, AccessOptions, Mono<T>> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition) throws NoSuchFieldException, IllegalAccessException {
+        Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
@@ -280,7 +288,7 @@ public class AccessConditionAsyncTests extends AccessConditionBase {
     public <T> void updateIfNotChangedSucceedsWhenResourceUnchangedAsync(
         Supplier<T> newResourceDefinition,
         BiFunction<T, AccessOptions, Mono<T>> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition) throws NoSuchFieldException, IllegalAccessException {
+        Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();

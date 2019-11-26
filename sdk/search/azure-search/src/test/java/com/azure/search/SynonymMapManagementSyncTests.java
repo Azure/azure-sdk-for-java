@@ -22,10 +22,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.search.test.AccessConditionBase.generateIfNotChangedAccessCondition;
-import static com.azure.search.test.AccessConditionBase.generateIfExistsAccessCondition;
-import static com.azure.search.test.AccessConditionBase.generateIfNotExistsAccessCondition;
-
 public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase {
     private SearchServiceClient client;
 
@@ -35,6 +31,12 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         SynonymMap> createOrUpdateFunc =
             (SynonymMap sm, AccessOptions ac) ->
                 createOrUpdateSynonymMap(sm, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private BiFunction<SynonymMap,
+        AccessOptions,
+        SynonymMap> createOrUpdateWithResponseFunc =
+            (SynonymMap sm, AccessOptions ac) ->
+                createOrUpdateSynonymMapWithResponse(sm, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<SynonymMap> newSynonymMapFunc =
         () -> createTestSynonymMap();
@@ -49,6 +51,11 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     protected SynonymMap createOrUpdateSynonymMap(
         SynonymMap sm, AccessCondition ac, RequestOptions ro) {
         return client.createOrUpdateSynonymMap(sm, ac, ro);
+    }
+
+    protected SynonymMap createOrUpdateSynonymMapWithResponse(
+        SynonymMap sm, AccessCondition ac, RequestOptions ro) {
+        return client.createOrUpdateSynonymMapWithResponse(sm, ac, ro, Context.NONE).getValue();
     }
 
     protected void deleteSynonymMap(
@@ -162,76 +169,60 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     }
 
     @Override
-    public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() {
-        SynonymMap synonymMap = createTestSynonymMap();
-        SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap);
-        SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
-        SynonymMap updatedResource = client.createOrUpdateSynonymMap(mutatedResource, generateIfExistsAccessCondition(), generateRequestOptions());
-
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
-    }
-
-    @Override
     public void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResource() {
-        SynonymMap resource = createTestSynonymMap();
+        AccessConditionTests act = new AccessConditionTests();
 
-        SynonymMap updatedResource = client.createOrUpdateSynonymMap(resource, generateIfNotExistsAccessCondition(), generateRequestOptions());
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-
-        updatedResource = client.createOrUpdateSynonymMap(resource.setName("test-synonym1"),
-            generateIfNotExistsAccessCondition(), generateRequestOptions());
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-
-        Response<SynonymMap> updatedResponse = client.createOrUpdateSynonymMapWithResponse(resource.setName("test-synonym2"),
-            generateIfNotExistsAccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertFalse(updatedResponse.getValue().getETag().isEmpty());
+        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
+            createOrUpdateFunc,
+            newSynonymMapFunc);
     }
 
     @Override
-    public void createOrUpdateSynonymMapIfExistsFailsOnNoResource() {
-        SynonymMap resource = createTestSynonymMap();
+    public void createOrUpdateSynonymMapWithResponseIfNotExistsSucceedsOnNoResource() {
+        AccessConditionTests act = new AccessConditionTests();
 
-        try {
-            client.createOrUpdateSynonymMap(resource, generateIfExistsAccessCondition(), generateRequestOptions());
-            Assert.fail("createOrUpdateSynonymMap did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
-        // The resource should never have been created on the server, and thus it should not have an ETag
-        Assert.assertNull(resource.getETag());
+        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
+            createOrUpdateWithResponseFunc,
+            newSynonymMapFunc);
     }
 
     @Override
-    public void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged() {
-        SynonymMap synonymMap = createTestSynonymMap();
-        SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap);
-        SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
-        SynonymMap updatedResource = client.createOrUpdateSynonymMap(mutatedResource, generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions());
-
-        Assert.assertFalse(createdResource.getETag().isEmpty());
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
+    public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+        act.updateIfExistsSucceedsOnExistingResource(
+            newSynonymMapFunc,
+            createOrUpdateFunc,
+            changeSynonymMapFunc);
     }
 
     @Override
-    public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged() {
-        SynonymMap synonymMap = createTestSynonymMap();
-        SynonymMap createdResource = client.createOrUpdateSynonymMap(synonymMap);
-        SynonymMap mutatedResource = mutateSynonymsInSynonymMap(createdResource);
-        SynonymMap updatedResource = client.createOrUpdateSynonymMap(mutatedResource);
+    public void createOrUpdateSynonymMapIfExistsFailsOnNoResource()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+        act.updateIfExistsFailsOnNoResource(
+            newSynonymMapFunc,
+            createOrUpdateFunc);
+    }
 
-        try {
-            client.createOrUpdateSynonymMap(updatedResource, generateIfNotChangedAccessCondition(createdResource.getETag()), generateRequestOptions());
-            Assert.fail("createOrUpdateSynonymMap did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
-        Assert.assertFalse(createdResource.getETag().isEmpty());
-        Assert.assertFalse(updatedResource.getETag().isEmpty());
-        Assert.assertNotEquals(createdResource.getETag(), updatedResource.getETag());
+    @Override
+    public void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+        act.updateIfNotChangedSucceedsWhenResourceUnchanged(
+            newSynonymMapFunc,
+            createOrUpdateFunc,
+            changeSynonymMapFunc);
+    }
+
+    @Override
+    public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged()
+        throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+        act.updateIfNotChangedFailsWhenResourceChanged(
+            newSynonymMapFunc,
+            createOrUpdateFunc,
+            changeSynonymMapFunc);
     }
 
     @Override

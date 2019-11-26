@@ -43,6 +43,12 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             (Indexer indexer, AccessOptions ac) ->
                 createIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
 
+    private BiFunction<Indexer,
+        AccessOptions,
+        Mono<Indexer>> createOrUpdateWithResponseAsyncFunc =
+            (Indexer indexer, AccessOptions ac) ->
+                createIndexerWithResponse(indexer, ac.getAccessCondition(), ac.getRequestOptions());
+
     private Supplier<Indexer> newIndexerFunc =
         () -> createTestIndexer("name")
             .setDataSourceName(SQL_DATASOURCE_NAME);
@@ -54,6 +60,61 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         (String name, AccessOptions ac) ->
             deleteIndexer(name, ac.getAccessCondition(), ac.getRequestOptions());
 
+    private DataSource createDatasource(DataSource ds) {
+        return client.createOrUpdateDataSource(ds).block();
+    }
+
+    private Index createIndex(Index index) {
+        return client.createOrUpdateIndex(index).block();
+    }
+
+    private Skillset createSkillset(Skillset skillset) {
+        return client.createOrUpdateSkillset(skillset).block();
+    }
+
+    private Mono<Indexer> createIndexer(Indexer indexer,
+                                         AccessCondition accessCondition,
+                                         RequestOptions requestOptions) {
+        return client.createOrUpdateIndexer(
+            indexer,
+            accessCondition,
+            requestOptions);
+    }
+
+    private Mono<Indexer> createIndexerWithResponse(Indexer indexer,
+                                         AccessCondition accessCondition,
+                                         RequestOptions requestOptions) {
+        return client.createOrUpdateIndexerWithResponse(
+            indexer,
+            accessCondition,
+            requestOptions,
+            Context.NONE)
+            .map(Response::getValue);
+    }
+
+    private Mono<Indexer> createIndexer(Indexer indexer) {
+        return client.createOrUpdateIndexer(indexer);
+    }
+
+    private Indexer getIndexer(String indexerName) {
+        return client.getIndexer(indexerName).block();
+    }
+
+    private Mono<Void> deleteIndexer(String indexerName,
+                                     AccessCondition accessCondition,
+                                     RequestOptions requestOptions) {
+        return client.deleteIndexer(indexerName,
+            accessCondition,
+            requestOptions);
+    }
+
+    private Mono<Response<Void>> deleteIndexerWithResponse(String indexerName,
+                                                           AccessCondition accessCondition,
+                                                           RequestOptions requestOptions) {
+        return client.deleteIndexerWithResponse(indexerName,
+            accessCondition,
+            requestOptions);
+    }
 
     protected void createDatasourceAndIndex() {
         DataSource datasource = createTestSqlDataSource();
@@ -197,51 +258,6 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     protected void beforeTest() {
         super.beforeTest();
         client = getSearchServiceClientBuilder().buildAsyncClient();
-    }
-
-    protected DataSource createDatasource(DataSource ds) {
-        return client.createOrUpdateDataSource(ds).block();
-    }
-
-    protected Index createIndex(Index index) {
-        return client.createOrUpdateIndex(index).block();
-    }
-
-    protected Skillset createSkillset(Skillset skillset) {
-        return client.createOrUpdateSkillset(skillset).block();
-    }
-
-    protected Mono<Indexer> createIndexer(Indexer indexer,
-                                          AccessCondition accessCondition,
-                                          RequestOptions requestOptions) {
-        return client.createOrUpdateIndexer(
-            indexer,
-            accessCondition,
-            requestOptions);
-    }
-
-    protected Mono<Indexer> createIndexer(Indexer indexer) {
-        return client.createOrUpdateIndexer(indexer);
-    }
-
-    protected Indexer getIndexer(String indexerName) {
-        return client.getIndexer(indexerName).block();
-    }
-
-    protected Mono<Void> deleteIndexer(String indexerName,
-                                       AccessCondition accessCondition,
-                                       RequestOptions requestOptions) {
-        return client.deleteIndexer(indexerName,
-            accessCondition,
-            requestOptions);
-    }
-
-    protected Mono<Response<Void>> deleteIndexerWithResponse(String indexerName,
-                                                             AccessCondition accessCondition,
-                                                             RequestOptions requestOptions) {
-        return client.deleteIndexerWithResponse(indexerName,
-            accessCondition,
-            requestOptions);
     }
 
     @Override
@@ -539,6 +555,18 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     }
 
     @Override
+    public void createOrUpdateIndexerWithResponseIfNotExistsSucceedsOnNoResource() {
+        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
+
+        // Prepare datasource and index
+        createDatasourceAndIndex();
+
+        act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
+            createOrUpdateWithResponseAsyncFunc,
+            newIndexerFunc);
+    }
+
+    @Override
     public void deleteIndexerIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -565,6 +593,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             deleteIndexerAsyncFunc,
             newIndexerFunc,
             createOrUpdateAsyncFunc,
+            changeIndexerFunc,
             indexerName);
     }
 

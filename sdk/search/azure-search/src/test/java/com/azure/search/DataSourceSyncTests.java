@@ -20,7 +20,6 @@ import com.azure.search.models.DataSourceType;
 import com.azure.search.test.AccessConditionTests;
 import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
 
@@ -31,8 +30,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.search.test.AccessConditionBase.*;
-
 public class DataSourceSyncTests extends DataSourceTestBase {
     private SearchServiceClient client;
 
@@ -42,6 +39,12 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         DataSource> createOrUpdateFunc =
             (DataSource ds, AccessOptions ac) ->
                 createOrUpdateDataSource(ds, ac.getAccessCondition(), ac.getRequestOptions());
+
+    private BiFunction<DataSource,
+        AccessOptions,
+        DataSource> createOrUpdateWithResponseFunc =
+            (DataSource ds, AccessOptions ac) ->
+                createOrUpdateWithResponseDataSource(ds, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<DataSource> newDataSourceFunc =
         () -> createTestBlobDataSource(null);
@@ -63,6 +66,13 @@ public class DataSourceSyncTests extends DataSourceTestBase {
                                                AccessCondition accessCondition,
                                                RequestOptions requestOptions) {
         return client.createOrUpdateDataSource(datasource, accessCondition, requestOptions);
+    }
+
+    public DataSource createOrUpdateWithResponseDataSource(DataSource datasource,
+                                                           AccessCondition accessCondition,
+                                                           RequestOptions requestOptions) {
+        return client.createOrUpdateDataSourceWithResponse(datasource, accessCondition, requestOptions, Context.NONE)
+            .getValue();
     }
 
     public void deleteDataSource(String name, AccessCondition accessCondition, RequestOptions requestOptions) {
@@ -166,124 +176,82 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     }
 
     @Override
-    public void createOrUpdateIfNotExistsSucceedsOnNoResource() {
-        // Create a data source
-        DataSource dataSource = createTestBlobDataSource(null);
+    public void createOrUpdateDatasourceIfNotExistsSucceedsOnNoResource() {
+        AccessConditionTests act = new AccessConditionTests();
 
-        DataSource result = client.createOrUpdateDataSource(dataSource,
-            generateIfNotExistsAccessCondition(), generateRequestOptions());
+        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
+            createOrUpdateFunc,
+            newDataSourceFunc);
+    }
 
-        Assert.assertTrue(StringUtils.isNoneBlank(result.getETag()));
+    @Override
+    public void createOrUpdateDatasourceWithResponseIfNotExistsSucceedsOnNoResource() {
+        AccessConditionTests act = new AccessConditionTests();
+
+        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
+            createOrUpdateWithResponseFunc,
+            newDataSourceFunc);
     }
 
     @Override
     public void deleteDataSourceIfExistsWorksOnlyWhenResourceExists() {
-        // Create a data source
-        DataSource dataSource = createTestBlobDataSource(null);
-        client.createOrUpdateDataSource(dataSource);
+        AccessConditionTests act = new AccessConditionTests();
 
-        String dataSourceName = dataSource.getName();
-
-        // Delete the data source
-        client.deleteDataSource(dataSourceName, generateIfExistsAccessCondition(), generateRequestOptions());
-
-        // Try to delete the data source again and verify the exception:
-        assertException(
-            () -> client.deleteDataSource(
-                dataSourceName, generateIfExistsAccessCondition(), generateRequestOptions()),
-            HttpResponseException.class,
-            "The precondition given in one of the request headers evaluated to false");
+        act.deleteIfExistsWorksOnlyWhenResourceExists(
+            deleteDataSourceFunc,
+            createOrUpdateFunc,
+            newDataSourceFunc,
+            BLOB_DATASOURCE_TEST_NAME);
     }
 
     @Override
-    public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() {
-        // Create a data source and save its eTag
-        DataSource dataSourceOrig = createTestBlobDataSource(null);
-        String dataSourceName = dataSourceOrig.getName();
+    public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
 
-        String eTagOrig = client.createOrUpdateDataSource(dataSourceOrig).getETag();
-
-        // update the data source with the changed description, and save the updated eTag:
-        String eTagUpdate = client.createOrUpdateDataSource(
-            dataSourceOrig.setDescription("changedDescription")
-        ).getETag();
-
-        // Try to delete the data source with the original eTag, and verify the exception
-        assertException(
-            () -> client.deleteDataSource(dataSourceName,
-                generateIfNotChangedAccessCondition(eTagOrig), generateRequestOptions()),
-            HttpResponseException.class,
-            "The precondition given in one of the request headers evaluated to false");
-
-        // Delete the data source with the updated eTag:
-        client.deleteDataSource(dataSourceName, generateIfNotChangedAccessCondition(eTagUpdate), generateRequestOptions());
+        act.deleteIfNotChangedWorksOnlyOnCurrentResource(
+            deleteDataSourceFunc,
+            newDataSourceFunc,
+            createOrUpdateFunc,
+            BLOB_DATASOURCE_TEST_NAME);
     }
 
     @Override
-    public void updateDataSourceIfExistsFailsOnNoResource() {
-        DataSource dataSource = createTestBlobDataSource(null);
-        assertException(
-            () -> client.createOrUpdateDataSource(dataSource,
-                generateIfExistsAccessCondition(), generateRequestOptions()),
-            HttpResponseException.class,
-            "The precondition given in one of the request headers evaluated to false");
+    public void updateDataSourceIfExistsFailsOnNoResource() throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
+
+        act.updateIfExistsFailsOnNoResource(
+            newDataSourceFunc,
+            createOrUpdateFunc);
     }
 
     @Override
-    public void updateDataSourceIfExistsSucceedsOnExistingResource() {
-        DataSource dataSource = createTestBlobDataSource(null);
-        DataSource createdDataSource = client.createOrUpdateDataSource(dataSource);
+    public void updateDataSourceIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
 
-        Assert.assertNotNull(createdDataSource);
-        String createdETag = createdDataSource.getETag();
-
-        createdDataSource.setDescription("edited description");
-        DataSource editedDataSource = client.createOrUpdateDataSource(
-            createdDataSource, generateIfExistsAccessCondition(), generateRequestOptions());
-
-        Assert.assertTrue(StringUtils.isNotEmpty(editedDataSource.getETag()));
-        Assert.assertNotEquals(editedDataSource.getETag(), createdETag);
+        act.updateIfExistsSucceedsOnExistingResource(
+            newDataSourceFunc,
+            createOrUpdateFunc,
+            changeDataSourceFunc);
     }
 
     @Override
-    public void updateDataSourceIfNotChangedFailsWhenResourceChanged() {
-        DataSource dataSource = createTestBlobDataSource(null);
-        DataSource createdDataSource = client.createOrUpdateDataSource(dataSource);
+    public void updateDataSourceIfNotChangedFailsWhenResourceChanged() throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
 
-        Assert.assertNotNull(createdDataSource);
-        String createdETag = createdDataSource.getETag();
-        Assert.assertTrue(StringUtils.isNoneEmpty(createdETag));
-
-        createdDataSource.setDescription("edited description");
-        DataSource updatedDataSource = client.createOrUpdateDataSource(dataSource);
-
-        Assert.assertNotNull(updatedDataSource);
-        Assert.assertTrue(StringUtils.isNoneEmpty(updatedDataSource.getETag()));
-        Assert.assertNotEquals(createdETag, updatedDataSource.getETag());
-
-        assertException(
-            () -> client.createOrUpdateDataSource(
-                updatedDataSource, generateIfNotChangedAccessCondition(createdETag), generateRequestOptions()),
-            HttpResponseException.class,
-            "The precondition given in one of the request headers evaluated to false"
-        );
+        act.updateIfNotChangedFailsWhenResourceChanged(
+            newDataSourceFunc,
+            createOrUpdateFunc,
+            changeDataSourceFunc);
     }
 
     @Override
-    public void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged() {
-        DataSource dataSource = createTestBlobDataSource(null);
-        DataSource createdDataSource = client.createOrUpdateDataSource(dataSource);
+    public void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged() throws NoSuchFieldException, IllegalAccessException {
+        AccessConditionTests act = new AccessConditionTests();
 
-        Assert.assertNotNull(createdDataSource);
-        String createdETag = createdDataSource.getETag();
-
-        createdDataSource.setDescription("edited description");
-        DataSource updatedDataSource = client.createOrUpdateDataSource(createdDataSource,
-            generateIfNotChangedAccessCondition(createdETag), generateRequestOptions());
-
-        Assert.assertTrue(StringUtils.isNotBlank(createdETag));
-        Assert.assertTrue(StringUtils.isNoneBlank(updatedDataSource.getETag()));
-        Assert.assertNotEquals(createdETag, updatedDataSource.getETag());
+        act.updateIfNotChangedSucceedsWhenResourceUnchanged(
+            newDataSourceFunc,
+            createOrUpdateFunc,
+            changeDataSourceFunc);
     }
 
     @Override

@@ -68,6 +68,10 @@ public class AccessConditionTests extends AccessConditionBase {
 
         // Create the resource on the service
         T createdResource = createOrUpdateDefinition.apply(newResource, accessOptions);
+
+        String eTag = getEtag(createdResource);
+        Assert.assertTrue(StringUtils.isNotBlank(eTag));
+
         return createdResource;
     }
 
@@ -120,7 +124,7 @@ public class AccessConditionTests extends AccessConditionBase {
         Supplier<T> newResourceDefinition,
         BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
         String resourceName
-    ) throws NoSuchFieldException, IllegalAccessException {
+    ) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T staleResource = newResourceDefinition.get();
@@ -165,8 +169,7 @@ public class AccessConditionTests extends AccessConditionBase {
      */
     public <T> void updateIfExistsFailsOnNoResource(
         Supplier<T> newResourceDefinition,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition)
-        throws NoSuchFieldException, IllegalAccessException {
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition) {
         T newResource = newResourceDefinition.get();
         try {
             AccessOptions accessOptions =
@@ -194,8 +197,7 @@ public class AccessConditionTests extends AccessConditionBase {
     public <T> void updateIfExistsSucceedsOnExistingResource(
         Supplier<T> newResourceDefinition,
         BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition)
-        throws NoSuchFieldException, IllegalAccessException {
+        Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
@@ -233,7 +235,7 @@ public class AccessConditionTests extends AccessConditionBase {
     public <T> void updateIfNotChangedFailsWhenResourceChanged(
         Supplier<T> newResourceDefinition,
         BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition) throws NoSuchFieldException, IllegalAccessException {
+        Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
@@ -280,7 +282,7 @@ public class AccessConditionTests extends AccessConditionBase {
     public <T> void updateIfNotChangedSucceedsWhenResourceUnchanged(
         Supplier<T> newResourceDefinition,
         BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition) throws NoSuchFieldException, IllegalAccessException {
+        Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
