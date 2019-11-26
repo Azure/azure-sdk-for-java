@@ -23,14 +23,18 @@ import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
 import com.google.common.base.Strings;
 import io.reactivex.subscribers.TestSubscriber;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.groups.Tuple;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import org.testng.asserts.Assertion;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -39,6 +43,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.testng.Assert.fail;
 
 public class ParallelDocumentQueryTest extends TestSuiteBase {
@@ -289,15 +294,22 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
         options.setMaxDegreeOfParallelism(2);
 
-        List<List<Integer>> expectedValues = new ArrayList<>();
-        ArrayList<Integer> a1 = new ArrayList<Integer>();
-        ArrayList<Integer> a2 = new ArrayList<Integer>();
+        Collection<List<List<Integer>>> expectedValues = new ArrayList<>();
+        List<List<Integer>> lists = new ArrayList<>();
+        List<Integer> a1 = new ArrayList<>();
+        ArrayList<Integer> a2 = new ArrayList<>();
         a1.add(6519456);
         a1.add(1471916863);
         a2.add(2498434);
         a2.add(1455671440);
-        expectedValues.add(a1);
-        expectedValues.add(a2);
+        lists.add(a1);
+        lists.add(a2);
+
+        expectedValues.add(lists);
+        expectedValues.add(lists);
+        
+        expectedValues.add(lists);
+        expectedValues.add(lists);
 
         String query = "Select top 2 value c.sgmts from c";
 
@@ -305,6 +317,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         List<List> fetchedResults = new ArrayList<>();
         queryObservable.map(feedResponse -> fetchedResults.addAll(feedResponse.getResults())).blockLast();
+        assertThat(fetchedResults).containsAll(expectedValues);
     }
 
     @Test(groups = { "simple" })
@@ -334,7 +347,20 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         Flux<FeedResponse<TestObject>> queryObservable = createdCollection.queryItems(query, options, TestObject.class);
         List<TestObject> fetchedResults = new ArrayList<>();
         queryObservable.map(feedResponse -> fetchedResults.addAll(feedResponse.getResults())).blockLast();
-        System.out.println("fetchedResults = " + fetchedResults);
+
+        List<Tuple> assertTuples = createdDocuments.stream()
+                                       .map(cosmosItemProperties -> tuple(cosmosItemProperties.getId(),
+                                                                          cosmosItemProperties.get("mypk"),
+                                                                          cosmosItemProperties.get("prop"),
+                                                                          cosmosItemProperties.get("boolProp")))
+                                       .collect(Collectors.toList());
+
+        assertThat(fetchedResults).extracting(TestObject::getId,
+                                               TestObject::getMypk,
+                                              TestObject::getProp,
+                                              TestObject::getBoolProp)
+            .containsAll(assertTuples);
+        
     }
 
 
