@@ -61,11 +61,11 @@ public class PublishEventsWithSizeLimitedBatches {
                 }).block();
             }
         }, error -> System.err.println("Error received:" + error), () -> {
-            final EventDataBatch batch = currentBatch.getAndSet(null);
-            if (batch != null) {
-                producer.send(batch).block();
-            }
-        });
+                final EventDataBatch batch = currentBatch.getAndSet(null);
+                if (batch != null) {
+                    producer.send(batch).block();
+                }
+            });
 
         // Sleeping this thread because we want to wait for all the events to send before ending the program.
         // `.subscribe` is not a blocking call. It coordinates the callbacks and starts the send operation, but does not
