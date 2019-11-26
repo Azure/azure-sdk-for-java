@@ -43,28 +43,29 @@ public class EventHubConsumerJavaDocCodeSamples {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration
         Instant twelveHoursAgo = Instant.now().minus(Duration.ofHours(12));
         EventPosition startingPosition = EventPosition.fromEnqueuedTime(twelveHoursAgo);
-
-        // Obtain partitionId from EventHubConsumerClient.getPartitionIds().
         String partitionId = "0";
 
-        // Begins reading events from partition '0' and returns the first 100 received or until the wait time of 30
-        // seconds has elapsed.
+        // Reads events from partition '0' and returns the first 100 received or until the 30 seconds has elapsed.
         IterableStream<PartitionEvent> events = consumer.receiveFromPartition(partitionId, 100,
             startingPosition, Duration.ofSeconds(30));
 
+        Long lastSequenceNumber = -1L;
         for (PartitionEvent partitionEvent : events) {
             // For each event, perform some sort of processing.
             System.out.print("Event received: " + partitionEvent.getData().getSequenceNumber());
+            lastSequenceNumber = partitionEvent.getData().getSequenceNumber();
         }
 
-        // Gets the next set of events from partition '0' to consume and process.
-        IterableStream<PartitionEvent> nextEvents = consumer.receiveFromPartition(partitionId, 100,
-            startingPosition, Duration.ofSeconds(30));
+        // Figure out what the next EventPosition to receive from is based on last event we processed in the stream.
+        // If lastSequenceNumber is -1L, then we didn't see any events the first time we fetched events from the
+        // partition.
+        if (lastSequenceNumber != -1L) {
+            EventPosition nextPosition = EventPosition.fromSequenceNumber(lastSequenceNumber, false);
+
+            // Gets the next set of events from partition '0' to consume and process.
+            IterableStream<PartitionEvent> nextEvents = consumer.receiveFromPartition(partitionId, 100,
+                nextPosition, Duration.ofSeconds(30));
+        }
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration
-
-        for (PartitionEvent partitionEvent : nextEvents) {
-            // For each event, perform some sort of processing.
-            System.out.print("Event received: " + partitionEvent.getData().getSequenceNumber());
-        }
     }
 }

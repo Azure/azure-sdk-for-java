@@ -137,6 +137,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @param partitionId The unique identifier of a partition associated with the Event Hub.
      *
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     *
+     * @throws NullPointerException if {@code partitionId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
