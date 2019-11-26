@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.implementation.RequestOptions;
@@ -11,16 +13,18 @@ import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-class AsyncReadBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
+class AsyncReadBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
+    private final CosmosAsyncContainer cosmosAsyncContainer;
 
     class LatencySubscriber<T> extends BaseSubscriber<T> {
 
         Timer.Context context;
-        BaseSubscriber<ResourceResponse<Document>> baseSubscriber;
+        BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber;
 
-        LatencySubscriber(BaseSubscriber<ResourceResponse<Document>> baseSubscriber) {
+        LatencySubscriber(BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber) {
             this.baseSubscriber = baseSubscriber;
         }
 
@@ -48,24 +52,25 @@ class AsyncReadBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
 
     AsyncReadBenchmark(Configuration cfg) {
         super(cfg);
+        cosmosAsyncContainer = v4Client.getDatabase(cfg.getDatabaseId()).getContainer(cfg.getCollectionId()).read().block().getContainer();
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<ResourceResponse<Document>> baseSubscriber, long i) throws InterruptedException {
+    protected void performWorkload(BaseSubscriber<CosmosAsyncItemResponse> baseSubscriber, long i) throws InterruptedException {
         int index = (int) (i % docsToRead.size());
-        RequestOptions options = new RequestOptions();
-        options.setPartitionKey(new PartitionKey(docsToRead.get(index).getId()));
+        Document doc = docsToRead.get(index);
 
-        Flux<ResourceResponse<Document>> obs = client.readDocument(getDocumentLink(docsToRead.get(index)), options);
+        String partitionKeyValue = doc.getId();
+        Mono<CosmosAsyncItemResponse> result = cosmosAsyncContainer.getItem(doc.getId(), partitionKeyValue).read();
 
         concurrencyControlSemaphore.acquire();
 
         if (configuration.getOperationType() == Configuration.Operation.ReadThroughput) {
-            obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
+            result.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
         } else {
-            LatencySubscriber<ResourceResponse<Document>> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
+            LatencySubscriber<CosmosAsyncItemResponse> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
             latencySubscriber.context = latency.time();
-            obs.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
+            result.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
         }
     }
 }
