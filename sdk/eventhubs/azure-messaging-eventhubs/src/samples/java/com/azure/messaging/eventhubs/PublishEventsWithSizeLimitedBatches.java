@@ -50,23 +50,22 @@ public class PublishEventsWithSizeLimitedBatches {
 
         // The sample Flux contains three events, but it could be an infinite stream of telemetry events.
         telemetryEvents.subscribe(event -> {
-                final EventDataBatch batch = currentBatch.get();
-                if (!batch.tryAdd(event)) {
-                    producer.createBatch(options).map(newBatch -> {
-                        currentBatch.set(newBatch);
+            final EventDataBatch batch = currentBatch.get();
+            if (!batch.tryAdd(event)) {
+                producer.createBatch(options).map(newBatch -> {
+                    currentBatch.set(newBatch);
 
-                        // Adding that event we couldn't add before.
-                        newBatch.tryAdd(event);
-                        return producer.send(batch);
-                    }).block();
-                }
-            }, error -> System.err.println("Error received:" + error),
-            () -> {
-                final EventDataBatch batch = currentBatch.getAndSet(null);
-                if (batch != null) {
-                    producer.send(batch).block();
-                }
-            });
+                    // Adding that event we couldn't add before.
+                    newBatch.tryAdd(event);
+                    return producer.send(batch);
+                }).block();
+            }
+        }, error -> System.err.println("Error received:" + error), () -> {
+            final EventDataBatch batch = currentBatch.getAndSet(null);
+            if (batch != null) {
+                producer.send(batch).block();
+            }
+        });
 
         // Sleeping this thread because we want to wait for all the events to send before ending the program.
         // `.subscribe` is not a blocking call. It coordinates the callbacks and starts the send operation, but does not
