@@ -5,11 +5,7 @@ package com.azure.cs.textanalytics;
 
 import com.azure.core.util.IterableStream;
 import com.azure.cs.textanalytics.models.TextSentiment;
-import com.azure.cs.textanalytics.models.TextSentimentClass;
 import com.azure.cs.textanalytics.models.TextSentimentResult;
-import org.w3c.dom.Text;
-
-import java.util.List;
 
 public class AnalyzeSentiment {
 

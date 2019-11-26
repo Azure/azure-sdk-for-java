@@ -5,6 +5,7 @@ package com.azure.cs.textanalytics.batch;
 
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
 import com.azure.cs.textanalytics.models.DetectedLanguageResult;
 import com.azure.cs.textanalytics.models.TextBatchStatistics;
