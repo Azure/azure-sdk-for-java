@@ -93,7 +93,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = 10_000 * SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_StoredProcedureCrudTest() {
         assertThat(this.client).isNull();
         this.client = clientBuilder().buildAsyncClient();
         this.container = getSharedMultiPartitionCosmosContainer(this.client);

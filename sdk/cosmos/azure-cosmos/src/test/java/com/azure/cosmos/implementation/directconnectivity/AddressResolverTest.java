@@ -67,7 +67,7 @@ public class AddressResolverTest {
     private Map<ServiceIdentity, Integer> addressesRefreshCount;
 
     @BeforeClass(groups = "unit")
-    public void setup() throws Exception {
+    public void before_AddressResolverTest() throws Exception {
         this.addressResolver = new AddressResolver();
         this.collectionCache = Mockito.mock(RxCollectionCache.class);
         this.collectionRoutingMapCache = Mockito.mock(ICollectionRoutingMapCache.class);

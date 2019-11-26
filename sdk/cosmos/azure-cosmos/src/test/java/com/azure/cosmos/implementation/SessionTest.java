@@ -55,7 +55,7 @@ public class SessionTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_SessionTest() {
         createdDatabase = SHARED_DATABASE;
 
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();

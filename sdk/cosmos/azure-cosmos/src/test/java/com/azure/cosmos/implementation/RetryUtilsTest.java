@@ -33,7 +33,7 @@ public class RetryUtilsTest {
     private StoreResponse storeResponse;
 
     @BeforeClass(groups = { "unit" })
-    public void beforeClass() throws Exception {
+    public void before_RetryUtilsTest() throws Exception {
         retryPolicy = Mockito.mock(IRetryPolicy.class);
         callbackMethod = Mockito.mock(Function.class);
         inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
