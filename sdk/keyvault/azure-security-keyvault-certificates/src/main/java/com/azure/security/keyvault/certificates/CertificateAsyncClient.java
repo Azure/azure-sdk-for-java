@@ -237,28 +237,6 @@ public class CertificateAsyncClient {
             fetchResultOperation(certificateName));
     }
 
-
-    /**
-     * Gets a pending {@link CertificateOperation} from the key vault. This operation requires the certificates/get permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Get a pending certificate operation. The {@link PollerFlux poller} allows users to automatically poll on the certificate
-     * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateOperation#String}
-     *
-     * @param name The name of the certificate.
-     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist.
-     * @return A {@link PollerFlux} polling on the certificate operation status.
-     */
-    public PollerFlux<CertificateOperation, KeyVaultCertificate> getCertificateOperation(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
-            (pollingContext) -> Mono.empty(),
-            createPollOperation(name),
-            cancelOperation(name),
-            fetchResultOperation(name));
-    }
-
     /**
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
