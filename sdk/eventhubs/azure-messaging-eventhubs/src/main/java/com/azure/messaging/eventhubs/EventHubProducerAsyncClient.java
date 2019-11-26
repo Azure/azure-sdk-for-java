@@ -63,7 +63,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  * </p>
  *
  * <p>
- * If no partition is specified, the following rules are used for automatically selecting one:
+ * If no partition id is specified, the following rules are used for automatically selecting one:
  * <ol>
  * <li>Distribute the events equally amongst all available partitions using a round-robin approach.</li>
  * <li>If a partition becomes unavailable, the Event Hubs service will automatically detect it and forward the
@@ -84,6 +84,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-int}
  *
  * @see EventHubClientBuilder#buildAsyncProducerClient()
+ * @see EventHubProducerClient To synchronously generate events to an Event Hub, see EventHubProducerClient.
  */
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubProducerAsyncClient implements Closeable {
@@ -129,7 +130,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * Gets the fully qualified Event Hubs namespace that the connection is associated with. This is likely similar to
      * {@code {yournamespace}.servicebus.windows.net}.
      *
-     * @return The fully qualified Event Hubs namespace that the connection is associated with
+     * @return The fully qualified Event Hubs namespace that the connection is associated with.
      */
     public String getFullyQualifiedNamespace() {
         return fullyQualifiedNamespace;
@@ -247,7 +248,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * <p>
      * For more information regarding the maximum event size allowed, see
-     * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
+     * <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
      * Limits</a>.
      * </p>
      *
@@ -269,7 +270,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * <p>
      * For more information regarding the maximum event size allowed, see
-     * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
+     * <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
      * Limits</a>.
      * </p>
      *
