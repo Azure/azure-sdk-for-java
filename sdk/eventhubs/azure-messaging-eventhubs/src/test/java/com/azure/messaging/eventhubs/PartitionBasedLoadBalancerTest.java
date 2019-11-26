@@ -345,7 +345,8 @@ public class PartitionBasedLoadBalancerTest {
         sleep(5);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
         verify(eventHubAsyncClient, never()).createConsumer(anyString(), anyInt());
-        verify(eventHubConsumer, never()).receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class));
+        verify(eventHubConsumer, never())
+            .receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class));
         verify(partitionProcessor, never()).processEvent(any(EventContext.class));
         verify(partitionProcessor, never()).processError(any(ErrorContext.class));
         verify(eventHubConsumer, never()).close();
@@ -369,7 +370,8 @@ public class PartitionBasedLoadBalancerTest {
         sleep(2);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
         verify(eventHubAsyncClient, never()).createConsumer(anyString(), anyInt());
-        verify(eventHubConsumer, never()).receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class));
+        verify(eventHubConsumer, never())
+            .receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class));
         verify(partitionProcessor, never()).processEvent(any(EventContext.class));
         verify(partitionProcessor, never()).processError(any(ErrorContext.class));
         verify(eventHubConsumer, never()).close();
@@ -392,7 +394,7 @@ public class PartitionBasedLoadBalancerTest {
             .setETag(UUID.randomUUID().toString())
             .setLastModifiedTime(System.currentTimeMillis())
             .setOwnerId("");
-        checkpointStore.claimOwnership(claim1, claim2).subscribe();
+        checkpointStore.claimOwnership(Arrays.asList(claim1, claim2)).subscribe();
 
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
