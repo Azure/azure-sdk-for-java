@@ -79,17 +79,18 @@ public class CertificateClient {
      * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to complete and
      * returns its last status. The details of the last certificate operation status are printed when a response is received</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.createCertificate#String-CertificatePolicy-Map}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Map}
      *
      * @param name The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
+     * @param isEnabled The enabled status of the certificate.
      * @param tags The application specific metadata to set.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String name, CertificatePolicy policy, Map<String, String> tags) {
-        return  client.beginCreateCertificate(name, policy, true, tags).getSyncPoller();
+    public SyncPoller<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String name, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
+        return  client.beginCreateCertificate(name, policy, isEnabled, tags).getSyncPoller();
     }
 
     /**
@@ -100,7 +101,7 @@ public class CertificateClient {
      * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to complete and
      * returns its last status. The details of the last certificate operation status are printed when a response is received</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.createCertificate#String-CertificatePolicy}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy}
      *
      * @param name The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
@@ -118,6 +119,8 @@ public class CertificateClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Geta a pending certificate operation. The {@link SyncPoller poller} allows users to automatically poll on the certificate
      * operation status.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificateOperation#String}
      *
      * @param name The name of the certificate.
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist.

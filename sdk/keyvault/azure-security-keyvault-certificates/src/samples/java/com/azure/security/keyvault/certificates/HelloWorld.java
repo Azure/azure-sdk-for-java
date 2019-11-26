@@ -53,7 +53,7 @@ public class HelloWorld {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName92", policy, tags);
+        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName92", policy, true, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
@@ -82,7 +82,7 @@ public class HelloWorld {
 
         //Let's create a certificate signed by our issuer.
         certificateClient.beginCreateCertificate("myCertificate",
-            new CertificatePolicy("myIssuer", "CN=SelfSignedJavaPkcs12"), tags)
+            new CertificatePolicy("myIssuer", "CN=SelfSignedJavaPkcs12"), true, tags)
             .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         // Let's Get the latest version of our certificate from the key vault.

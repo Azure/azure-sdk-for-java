@@ -44,7 +44,7 @@ public class ListOperations {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certName", policy, tags);
+        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certName", policy, true, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
@@ -57,7 +57,7 @@ public class ListOperations {
 
         //Let's create a certificate signed by our issuer.
         certificateClient.beginCreateCertificate("myCertificate",
-            new CertificatePolicy("myIssuer", "CN=SignedJavaPkcs12"), tags)
+            new CertificatePolicy("myIssuer", "CN=SignedJavaPkcs12"), true, tags)
             .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
 
