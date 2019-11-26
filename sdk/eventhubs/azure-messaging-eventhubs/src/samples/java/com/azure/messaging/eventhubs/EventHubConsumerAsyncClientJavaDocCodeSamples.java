@@ -18,6 +18,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Code snippets demonstrating various {@link EventHubConsumerAsyncClient} scenarios.
  */
 public class EventHubConsumerAsyncClientJavaDocCodeSamples {
+    private final EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
+        .connectionString("fake-string")
+        .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+        .buildAsyncConsumerClient();
 
     public void initialization() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
@@ -28,16 +32,14 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildAsyncConsumerClient();
         // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
+
+        consumer.close();
     }
 
     /**
      * Receives event data from a single partition.
      */
     public void receive() {
-        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
-            .connectionString("fake-string")
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition
         // Obtain partitionId from EventHubConsumerAsyncClient.getPartitionIds()
