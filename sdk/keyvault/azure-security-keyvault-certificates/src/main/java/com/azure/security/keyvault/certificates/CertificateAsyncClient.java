@@ -199,7 +199,7 @@ public class CertificateAsyncClient {
                 status = LongRunningOperationStatus.FAILED;
                 break;
             default:
-                status = LongRunningOperationStatus.fromString(certificateOperationResponse.getValue().getStatus());
+                status = LongRunningOperationStatus.fromString(certificateOperationResponse.getValue().getStatus(), true);
                 //should not reach here
                 break;
         }

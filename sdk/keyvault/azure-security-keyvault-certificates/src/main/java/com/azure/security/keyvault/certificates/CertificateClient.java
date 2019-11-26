@@ -79,7 +79,7 @@ public class CertificateClient {
      * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to complete and
      * returns its last status. The details of the last certificate operation status are printed when a response is received</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Map}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map}
      *
      * @param name The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
