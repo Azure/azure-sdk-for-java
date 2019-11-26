@@ -22,57 +22,14 @@ import java.util.function.Supplier;
  * objects to store any state and Page Retriever Function can capture and use those objects. This indirectly
  * associate the state objects to the Subscription. The Page Retriever Function can get called multiple
  * times in serial fashion, each time after the completion of the Flux returned by the previous invocation.
- * The final completion signal will be send to the downstream subscriber when Page Retriever returns {@code null}.
+ * The final completion signal will be send to the downstream subscriber when Page Retriever returns
+ * {@code null}.
  *
- * Example:
- * ----------------------------------------------------------------------------------
- *  // BlobsPage is list of blobs. This type does not have the concept of continuation token that can be
- *  // exposed to the user, hence extends from PageCore. The Page Retrieval Function uses internal state
- *  // to prepare/retrieve Flux of BlobsPage.
- *  //
- *  public class BlobsPage implements PageCore<Blob> {
- *     @Override
- *     List<Blob> getItems() {..}
- *  }
+ * <p><strong>Extending PagedFluxCore with Page Retrieval Function Provider</strong></p>
+ * {@codesnippet com.azure.core.paging.pagedfluxcore.provider}
  *
- *  // The provider impl that when called provides Page Retrieval Function that returns Flux of BlobsPage.
- *  // Provider method is called for each Subscription to PagedFluxCore, For each call it create a state and
- *  // associate it with instance of Page Retrieval Function.
- *  //
- *  Supplier<Supplier<Flux<P>>> pageRetrieverProvider = new Supplier<Supplier<Flux<P>>>() {
- *          @Override
- *          public Supplier<Flux<P>> get() {
- *              // create state for each call to Provider.
- *              State state = new State();
- *
- *              // Provide the Page Retrieval Function.
- *              return new Supplier<Flux<P>> get() {
- *                  // 'state' object is captured here.
- *                  if (state.hasMorePage) {
- *                      // Pass current state to service method that make API call.
- *                      // state contains necessary data that service method needed
- *                      // to prepare next set of pages. Before returning, the service
- *                      // method updates the state for the next call.
- *                      //
- *                      Flux<BlobsPage> pages = containerClient.getBlobsPages(state);
- *                      return pages;
- *                  } else {
- *                      // Null indicates no more Pages, upon receiving this, PagedFluxCore
- *                      // send completion signal to the subscriber.
- *                      //
- *                      return null;
- *                  }
- *              }
- *          }
- *      };
- *  };
- *
- *  class State {
- *      public int foo;
- *      public String bar;
- *      public boolean hasMorePage;
- *  }
- * ----------------------------------------------------------------------------------
+ * <p><strong>Extending PagedFluxCore for Custom Continuation Token support</strong></p>
+ * {@codesnippet com.azure.core.paging.pagedfluxcore.continuationtoken}
  *
  * @param <T> The type of items in a {@link PageCore}
  * @param <P> The {@link PageCore} holding items of type {@code T}.

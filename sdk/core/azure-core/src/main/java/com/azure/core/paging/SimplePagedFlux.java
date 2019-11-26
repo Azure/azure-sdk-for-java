@@ -11,7 +11,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * This class is a Flux that can operate on a type that extends {@link Page} and also provides
+ * This class is a Flux that can operate on a type that extends {@link SimplePage} and also provides
  * the ability to operate on individual items. This type support user providing string based
  * continuation token (next link) and retrieve pages using it.
  *
@@ -19,14 +19,14 @@ import java.util.function.Supplier;
  * token. The Page Retriever Function can get called multiple times in serial fashion, first time
  * with {@code null} as continuation token and then each time with the non-null continuation token
  * of the {@link Page} emitted from the Flux returned by the last Page Retriever invocation.
- * Completion signal will be send to the subscriber when the last {@link Page} emitted from the Flux
- * has {@code null} continuation token. Note that unlike {@link PagedFluxCore} and {@link ContinuablePagedFlux}
- * this type does not support capture based state management.
+ * Completion signal will be send to the subscriber when the last {@link SimplePage} emitted from
+ * the Flux has {@code null} continuation token. Note that unlike {@link PagedFluxCore} and
+ * {@link ContinuablePagedFlux} this type does not support capture based state management.
  *
  * @param <T> Type of items in the page
  * @param <P> The of the page
  */
-public abstract class SimplePagedFlux<T, P extends Page<T>> extends PagedFluxCore<T, P> {
+public abstract class SimplePagedFlux<T, P extends SimplePage<T>> extends PagedFluxCore<T, P> {
 
     private final Function<String, Flux<P>> pageRetriever;
 
@@ -36,8 +36,8 @@ public abstract class SimplePagedFlux<T, P extends Page<T>> extends PagedFluxCor
      * @param pageRetriever the Page Retriever Function.
      */
     public SimplePagedFlux(Function<String, Flux<P>> pageRetriever) {
-        super(new Supplier<>() {
-            final ContinuationState<String> state = new ContinuationState(null);
+        super(new Supplier<Supplier<Flux<P>>>() {
+            final ContinuationState<String> state = new ContinuationState<>(null);
             @Override
             public Supplier<Flux<P>> get() {
                 return () -> {
@@ -55,22 +55,19 @@ public abstract class SimplePagedFlux<T, P extends Page<T>> extends PagedFluxCor
     }
 
     /**
-     * @return a flux of {@link Page} starting from the Page identified by the given token.
+     * Get Flux of {@link SimplePage} starting from the Page identified by the given token.
+     *
+     * @param continuationToken the continuation token
+     * @return a Flux that emits one or pages
      */
     public Flux<P> byPage(String continuationToken) {
-        final ContinuationState<String> state = new ContinuationState(continuationToken);
+        if (continuationToken == null) {
+            return Flux.empty();
+        }
+        final ContinuationState<String> state = new ContinuationState<>(continuationToken);
         return Mono.just(true)
             .repeat(() -> !state.isDone())
             .concatMap(b -> pageRetriever.apply(state.getLastContinuationToken())
                 .doOnNext(p -> state.setLastContinuationToken(p.getContinuationToken())));
-    }
-
-    /**
-     * @return a Flux of Page items starting from the items in the Page identified
-     * by the given token.
-     */
-    public Flux<T> byItem(String continuationToken) {
-        return byPage(continuationToken)
-            .flatMapIterable(page -> page.getItems());
     }
 }
