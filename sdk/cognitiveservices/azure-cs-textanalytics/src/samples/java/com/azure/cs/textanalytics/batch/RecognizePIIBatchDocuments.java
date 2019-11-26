@@ -43,7 +43,7 @@ public class RecognizePIIBatchDocuments {
 
         // Detecting pii entities from a batch of documents
         detectedBatchResult.stream().forEach(piiEntityDocumentResult ->
-            piiEntityDocumentResult.getItems().stream().forEach(entity ->
+            piiEntityDocumentResult.getNamedEntities().stream().forEach(entity ->
                 System.out.printf("Recognized Personal Identifiable Info NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s",
                     entity.getText(),
                     entity.getType(),

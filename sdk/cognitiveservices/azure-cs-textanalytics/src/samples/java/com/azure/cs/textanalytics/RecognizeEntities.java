@@ -14,7 +14,7 @@ public class RecognizeEntities {
         // The text that need be analysed.
         String text = "Satya Nadella is the CEO of Microsoft";
 
-        client.recognizeEntities(text, "US").getItems().stream().forEach(
+        client.recognizeEntities(text, "US").getNamedEntities().stream().forEach(
             entity -> System.out.printf(
                 "Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s",
                 entity.getText(),

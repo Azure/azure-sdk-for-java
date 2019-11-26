@@ -23,7 +23,7 @@ public class AnalyzeSentiment {
 
         final TextSentimentResult sentimentResult = client.analyzeSentiment(text, "US");
 
-        final TextSentiment documentSentiment = sentimentResult.getTextSentiment();
+        final TextSentiment documentSentiment = sentimentResult.getDocumentSentiment();
         System.out.printf(
             "Recognized TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.",
             documentSentiment.getTextSentimentClass(),
@@ -31,7 +31,7 @@ public class AnalyzeSentiment {
             documentSentiment.getNeutralScore(),
             documentSentiment.getNegativeScore());
 
-        final IterableStream<TextSentiment> sentiments = sentimentResult.getItems();
+        final IterableStream<TextSentiment> sentiments = sentimentResult.getSentenceSentiments();
         sentiments.stream().forEach(textSentiment -> System.out.printf(
             "Recognized Sentence TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.",
             textSentiment.getTextSentimentClass(),
