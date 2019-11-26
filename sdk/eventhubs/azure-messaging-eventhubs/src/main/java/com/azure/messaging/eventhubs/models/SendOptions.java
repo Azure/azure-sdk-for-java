@@ -19,8 +19,8 @@ public class SendOptions {
      * Sets a hashing key to be provided for the batch of events, which instructs the Event Hubs service to map this key
      * to a specific partition.
      *
-     * <p>The selection of a partition is stable for a given partition hashing key. Should any other batches of events be
-     * sent using the same exact partition hashing key, the Event Hubs service will route them all to the same
+     * <p>The selection of a partition is stable for a given partition hashing key. Should any other batches of events
+     * be sent using the same exact partition hashing key, the Event Hubs service will route them all to the same
      * partition.</p>
      *
      * <p>This should be specified only when there is a need to group events by partition, but there is flexibility into

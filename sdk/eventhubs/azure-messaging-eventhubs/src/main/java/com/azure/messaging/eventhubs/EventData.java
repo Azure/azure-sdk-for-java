@@ -136,8 +136,8 @@ public class EventData {
      * Properties that are populated by Event Hubs service. As these are populated by the Event Hubs service, they are
      * only present on a <b>received</b> {@link EventData}.
      *
-     * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
-     * the {@link EventData} is not received and is created by the public constructors.
+     * @return An encapsulation of all system properties appended by EventHubs service into {@link EventData}.
+     *     {@code null} if the {@link EventData} is not received from the Event Hubs service.
      */
     public Map<String, Object> getSystemProperties() {
         return systemProperties;
@@ -168,7 +168,8 @@ public class EventData {
     }
 
     /**
-     * Gets the offset of the event when it was received from the associated Event Hub partition.
+     * Gets the offset of the event when it was received from the associated Event Hub partition. This is only present
+     * on a <b>received</b> {@link EventData}.
      *
      * @return The offset within the Event Hub partition of the received event. {@code null} if the {@link EventData}
      *     was not received from Event Hubs service.
@@ -179,7 +180,8 @@ public class EventData {
 
     /**
      * Gets the partition hashing key if it was set when originally publishing the event. If it exists, this value was
-     * used to compute a hash to select a partition to send the message to.
+     * used to compute a hash to select a partition to send the message to. This is only present on a <b>received</b>
+     * {@link EventData}.
      *
      * @return A partition key for this Event Data. {@code null} if the {@link EventData} was not received from Event
      *     Hubs service or there was no partition key set when the event was sent to the Event Hub.
@@ -189,7 +191,8 @@ public class EventData {
     }
 
     /**
-     * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition.
+     * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition. This is only present on a
+     * <b>received</b> {@link EventData}.
      *
      * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the {@link EventData}
      *     was not received from Event Hubs service.
@@ -200,7 +203,8 @@ public class EventData {
 
     /**
      * Gets the sequence number assigned to the event when it was enqueued in the associated Event Hub partition. This
-     * is unique for every message received in the Event Hub partition.
+     * is unique for every message received in the Event Hub partition. This is only present on a <b>received</b>
+     * {@link EventData}.
      *
      * @return The sequence number for this event. {@code null} if the {@link EventData} was not received from Event
      *     Hubs service.
