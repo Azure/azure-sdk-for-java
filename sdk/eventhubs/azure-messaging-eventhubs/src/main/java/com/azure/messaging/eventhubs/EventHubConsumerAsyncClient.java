@@ -33,8 +33,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * or all partitions in the context of a specific consumer group.
  *
  * <p><strong>Creating an {@link EventHubConsumerAsyncClient}</strong></p>
- * <p>Required parameters are {@code consumerGroup}, and credentials are required when
- * creating a consumer.</p> {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
  *
  * <p><strong>Consuming events a single partition from Event Hub</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition}

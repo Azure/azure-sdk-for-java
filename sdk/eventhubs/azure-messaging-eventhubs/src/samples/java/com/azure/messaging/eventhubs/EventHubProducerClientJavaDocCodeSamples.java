@@ -36,6 +36,8 @@ public class EventHubProducerClientJavaDocCodeSamples {
 
     /**
      * Code snippet demonstrating how to send a batch that automatically routes events to any partition.
+     *
+     * @throws IllegalArgumentException if an event is too large for an empty batch.
      */
     public void batchAutomaticRouting() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch
@@ -104,6 +106,8 @@ public class EventHubProducerClientJavaDocCodeSamples {
 
     /**
      * Code snippet demonstrating how to create a size-limited {@link EventDataBatch} and send it.
+     *
+     * @throws IllegalArgumentException if an event is too large for an empty batch.
      */
     public void batchSizeLimited() {
         final EventHubProducerClient producer = builder.buildProducerClient();
