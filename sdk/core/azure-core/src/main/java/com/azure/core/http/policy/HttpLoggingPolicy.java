@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -195,7 +194,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             if (httpLogLevel.shouldLogUrl()) {
                 UrlBuilder requestUrl = UrlBuilder.parse(url);
                 requestUrl.setQuery(getAllowedQueryString(url.getQuery()));
-                logger.info("<-- {} {} ({} ms, {} body)", response.getStatusCode(), requestUrl.toString(), tookMs, bodySize);
+                logger.info("<-- {} {} ({} ms, {} body)", response.getStatusCode(), requestUrl.toString(), tookMs,
+                    bodySize);
             }
 
             if (httpLogLevel.shouldLogHeaders()) {
