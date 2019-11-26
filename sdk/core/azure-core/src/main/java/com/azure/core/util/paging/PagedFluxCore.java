@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.paging;
+package com.azure.core.util.paging;
 
 import com.azure.core.http.rest.Page;
 import reactor.core.CoreSubscriber;
@@ -26,10 +26,10 @@ import java.util.function.Supplier;
  * {@code null}.
  *
  * <p><strong>Extending PagedFluxCore with Page Retrieval Function Provider</strong></p>
- * {@codesnippet com.azure.core.paging.pagedfluxcore.provider}
+ * {@codesnippet com.azure.core.util.paging.pagedfluxcore.provider}
  *
  * <p><strong>Extending PagedFluxCore for Custom Continuation Token support</strong></p>
- * {@codesnippet com.azure.core.paging.pagedfluxcore.continuationtoken}
+ * {@codesnippet com.azure.core.util.paging.pagedfluxcore.continuationtoken}
  *
  * @param <T> The type of items in a {@link PageCore}
  * @param <P> The {@link PageCore} holding items of type {@code T}.

@@ -3,7 +3,7 @@
 
 package com.azure.core.http.rest;
 
-import com.azure.core.paging.SimplePagedFlux;
+import com.azure.core.util.paging.SimplePagedFlux;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

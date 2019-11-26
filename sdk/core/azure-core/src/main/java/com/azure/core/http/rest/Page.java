@@ -3,7 +3,7 @@
 
 package com.azure.core.http.rest;
 
-import com.azure.core.paging.SimplePage;
+import com.azure.core.util.paging.SimplePage;
 
 /**
  * Represents a paginated REST response from the service.

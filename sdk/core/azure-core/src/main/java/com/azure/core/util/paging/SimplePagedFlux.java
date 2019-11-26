@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.paging;
+package com.azure.core.util.paging;
 
 import com.azure.core.http.rest.Page;
 import reactor.core.publisher.Flux;
@@ -20,8 +20,8 @@ import java.util.function.Supplier;
  * with {@code null} as continuation token and then each time with the non-null continuation token
  * of the {@link Page} emitted from the Flux returned by the last Page Retriever invocation.
  * Completion signal will be send to the subscriber when the last {@link SimplePage} emitted from
- * the Flux has {@code null} continuation token. Note that unlike {@link PagedFluxCore} and
- * {@link ContinuablePagedFlux} this type does not support capture based state management.
+ * the Flux has {@code null} continuation token. Note that unlike {@link PagedFluxCore} this type
+ * does not support capture based state management.
  *
  * @param <T> Type of items in the page
  * @param <P> The of the page

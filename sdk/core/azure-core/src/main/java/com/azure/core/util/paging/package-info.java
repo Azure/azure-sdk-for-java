@@ -4,4 +4,4 @@
 /**
  * Package containing paging abstraction.
  */
-package com.azure.core.paging;
+package com.azure.core.util.paging;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.paging;
+package com.azure.core.util.paging;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,7 +18,13 @@ public class PagedFluxCoreJavaDocCodeSnippets {
      * Code snippets for showing usage of {@link PagedFluxCore} in class docs
      */
     public void classDocSnippet() {
-        // BEGIN: com.azure.core.paging.pagedfluxcore.provider
+        // BEGIN: com.azure.core.util.paging.pagedfluxcore.provider
+
+        /**
+         * Blob entry in a BlobPage.
+         */
+        class Blob {
+        }
 
         /**
          * BlobPage that does not have user facing continuation token.
@@ -29,6 +35,16 @@ public class PagedFluxCoreJavaDocCodeSnippets {
                 // The Blob items in the page
                 return null;
             }
+        }
+
+        /**
+         * Type to store state specific to one subscription
+         */
+        class State {
+            boolean hasMorePage() {
+                return true;
+            }
+            // Other state variables
         }
 
         /**
@@ -92,14 +108,14 @@ public class PagedFluxCoreJavaDocCodeSnippets {
         }
 
         BlobPagedFlux blobPagedFlux = new BlobPagedFlux(pageRetrieverProvider);
-        // END: com.azure.core.paging.pagedfluxcore.provider
+        // END: com.azure.core.util.paging.pagedfluxcore.provider
     }
 
     /**
      * Code snippets for extending from {@link PagedFluxCore} and enabling custom continuation token.
      */
     public void customContinuationTokenSnippet() {
-        // BEGIN: com.azure.core.paging.pagedfluxcore.continuationtoken
+        // BEGIN: com.azure.core.util.paging.pagedfluxcore.continuationtoken
 
         abstract class ContinuablePage<C, T> implements PageCore<T> {
             abstract C getContinuationToken();
@@ -172,6 +188,9 @@ public class PagedFluxCoreJavaDocCodeSnippets {
             }
         }
 
+        class File {
+        }
+
         class FilePage extends ContinuablePage<FileContinuationToken, File> {
             @Override
             public List<File> getItems() {
@@ -213,34 +232,6 @@ public class PagedFluxCoreJavaDocCodeSnippets {
 
         FilePagedFlux filePagedFlux = new FilePagedFlux(pageRetrieverProvider);
 
-        // END: com.azure.core.paging.pagedfluxcore.continuationtoken
-    }
-
-    /**
-     * Implementation not provided.
-     *
-     * Type of items in a BlobPage
-     */
-    private static class Blob {
-    }
-
-    /**
-     * Implementation not provided.
-     *
-     * Type to store state specific to one subscription
-     */
-    private static class State {
-        Boolean hasMorePage() {
-            return null;
-        }
-        // Other state variables
-    }
-
-    /**
-     * Implementation not provided.
-     *
-     * Type of items in a FilePage
-     */
-    private static class File {
+        // END: com.azure.core.util.paging.pagedfluxcore.continuationtoken
     }
 }

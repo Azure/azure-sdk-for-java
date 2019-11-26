@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.paging;
+package com.azure.core.util.paging;
 
 import java.util.List;
 
