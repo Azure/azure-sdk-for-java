@@ -1,4 +1,17 @@
 # Release History
+## 5.0.0-beta.6 (2019-12-02)
+- Artifact name changed from `preview` to `beta`.
+- Producer clients (both sync and async) support sending events only using `EventDataBatch`. All other send overloads are removed.
+- Async consumer now supports receiving events from all partitions to help getting started scenarios.
+- Sync consumer will only support receiving from a single partition.
+- Producer and consumer clients now support sharing same amqp connection.
+- Removed support for user-provided schedulers.
+- Configuration for owner level and ability to track last enqueued event properties are now in `ReceiveOptions` and will
+be declared at the time of receiving events and not when the client is created.
+- `EventProcessorStore` renamed to `CheckpointStore` and method signatures are updated.
+- `EventProcessor` renamed to `EventProcessorClient` and `EventProcessorBuilder` renamed to `EventProcessorClientBuilder`.
+- New types introduced to simplify functional callbacks used in `EventProcessorClient`.
+
 ## 5.0.0-preview.5 (2019-11-01)
 - Separate clients for sending and receiving events.
    - `EventHubProducerAsyncClient` and `EventHubProduderClient` for sending events.
