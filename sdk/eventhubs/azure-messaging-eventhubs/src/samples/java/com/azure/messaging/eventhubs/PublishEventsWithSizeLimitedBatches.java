@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -56,7 +57,12 @@ public class PublishEventsWithSizeLimitedBatches {
                     currentBatch.set(newBatch);
 
                     // Adding that event we couldn't add before.
-                    newBatch.tryAdd(event);
+                    if (!newBatch.tryAdd(event)) {
+                        throw Exceptions.propagate(new IllegalArgumentException(
+                            String.format("Could not add event because it is too large. Contents: %s",
+                                event.getBodyAsString())));
+                    }
+
                     return producer.send(batch);
                 }).block();
             }

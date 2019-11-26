@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -76,8 +77,13 @@ public class PublishEventsWithCustomMetadata {
                 producer.createBatch().map(newBatch -> {
                     currentBatch.set(newBatch);
 
-                    // Add that event that we couldn't before.
-                    newBatch.tryAdd(event);
+                    // Adding that event we couldn't add before.
+                    if (!newBatch.tryAdd(event)) {
+                        throw Exceptions.propagate(new IllegalArgumentException(
+                            String.format("Could not add event because it is too large. Contents: %s",
+                                event.getBodyAsString())));
+                    }
+
                     return newBatch;
                 }));
         }).then()
