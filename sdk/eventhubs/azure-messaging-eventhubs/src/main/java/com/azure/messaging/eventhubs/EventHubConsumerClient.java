@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * A <b>synchronous</b> consumer responsible for reading {@link EventData} from a Event Hub partition in the context of
+ * A <b>synchronous</b> consumer responsible for reading {@link EventData} from an Event Hub partition in the context of
  * a specific consumer group.
  *
  * <p><strong>Creating a synchronous consumer</strong></p>
