@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
