@@ -5,22 +5,13 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.messaging.eventhubs.EventHubProducerClient;
-import reactor.core.publisher.Flux;
 
 /**
  * The set of options that can be specified when sending a set of events to influence the way in which events are sent
  * to the Event Hubs service.
- *
- * @see EventHubProducerClient#send(EventData, SendOptions)
- * @see EventHubProducerClient#send(Iterable, SendOptions)
- * @see EventHubProducerAsyncClient#send(EventData, SendOptions)
- * @see EventHubProducerAsyncClient#send(Iterable, SendOptions)
- * @see EventHubProducerAsyncClient#send(Flux, SendOptions)
  */
 @Fluent
-public class SendOptions implements Cloneable {
+public class SendOptions {
     private String partitionKey;
     private String partitionId;
 
@@ -81,22 +72,5 @@ public class SendOptions implements Cloneable {
     public SendOptions setPartitionId(String partitionId) {
         this.partitionId = partitionId;
         return this;
-    }
-
-    /**
-     * Creates a shallow clone of this instance.
-     *
-     * @return A shallow clone of this object.
-     */
-    @Override
-    public SendOptions clone() {
-        SendOptions clone;
-        try {
-            clone = (SendOptions) super.clone();
-        } catch (CloneNotSupportedException e) {
-            clone = new SendOptions();
-        }
-
-        return clone.setPartitionKey(partitionKey);
     }
 }

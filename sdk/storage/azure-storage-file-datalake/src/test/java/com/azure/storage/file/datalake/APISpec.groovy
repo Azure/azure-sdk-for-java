@@ -6,15 +6,17 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
+import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -287,13 +289,24 @@ class APISpec extends Specification {
         }
     }
 
-    static DataLakeLeaseClient createLeaseClient(DataLakePathClient pathClient) {
+    static DataLakeLeaseClient createLeaseClient(DataLakeFileClient pathClient) {
         return createLeaseClient(pathClient, null)
     }
 
-    static DataLakeLeaseClient createLeaseClient(DataLakePathClient pathClient, String leaseId) {
+    static DataLakeLeaseClient createLeaseClient(DataLakeFileClient pathClient, String leaseId) {
         return new DataLakeLeaseClientBuilder()
-            .pathClient(pathClient)
+            .fileClient(pathClient)
+            .leaseId(leaseId)
+            .buildClient()
+    }
+
+    static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient) {
+        return createLeaseClient(pathClient, null)
+    }
+
+    static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder()
+            .directoryClient(pathClient)
             .leaseId(leaseId)
             .buildClient()
     }
@@ -476,7 +489,7 @@ class APISpec extends Specification {
     }
 
     /**
-     * This helper method will acquire a lease on a path to prepare for testing leaseAccessConditions. We want to test
+     * This helper method will acquire a lease on a path to prepare for testing lease id. We want to test
      * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
      * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
      * with other AC tests.
@@ -486,7 +499,7 @@ class APISpec extends Specification {
      * @param leaseID
      *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
      * @return
-     * The actual leaseAccessConditions of the path if recievedLeaseID is passed, otherwise whatever was passed will be
+     * The actual lease id of the path if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
     def setupPathLeaseCondition(DataLakePathClient pc, String leaseID) {

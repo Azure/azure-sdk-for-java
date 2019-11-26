@@ -7,12 +7,11 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.http.PagedResponseBase;
-import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -23,6 +22,8 @@ import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
+import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -31,11 +32,13 @@ import com.azure.storage.file.datalake.models.PublicAccessType;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 
 
 /**
@@ -115,9 +118,8 @@ public class DataLakeFileSystemAsyncClient {
      * file system.
      */
     public DataLakeFileAsyncClient getFileAsyncClient(String fileName) {
-        if (ImplUtils.isNullOrEmpty(fileName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'fileName' can not be set to null"));
-        }
+        Objects.requireNonNull(fileName, "'fileName' can not be set to null");
+
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(fileName,
             null).getBlockBlobAsyncClient();
 
@@ -141,9 +143,8 @@ public class DataLakeFileSystemAsyncClient {
      * in this file system.
      */
     public DataLakeDirectoryAsyncClient getDirectoryAsyncClient(String directoryName) {
-        if (ImplUtils.isNullOrEmpty(directoryName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'directoryName' can not be set to null"));
-        }
+        Objects.requireNonNull(directoryName, "'directoryName' can not be set to null");
+
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(directoryName,
             null).getBlockBlobAsyncClient();
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
@@ -270,15 +271,15 @@ public class DataLakeFileSystemAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteWithResponse#DataLakeRequestConditions}
      *
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response signalling completion.
      * @throws UnsupportedOperationException If either {@link DataLakeRequestConditions#getIfMatch()} or
      * {@link DataLakeRequestConditions#getIfNoneMatch()} is set.
      */
-    public Mono<Response<Void>> deleteWithResponse(DataLakeRequestConditions accessConditions) {
+    public Mono<Response<Void>> deleteWithResponse(DataLakeRequestConditions requestConditions) {
         try {
             return blobContainerAsyncClient.deleteWithResponse(
-                Transforms.toBlobRequestConditions(accessConditions));
+                Transforms.toBlobRequestConditions(requestConditions));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -352,7 +353,7 @@ public class DataLakeFileSystemAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setMetadataWithResponse#Map-DataLakeRequestConditions}
      *
      * @param metadata Metadata to associate with the file system.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains signalling
      * completion.
      * @throws UnsupportedOperationException If one of {@link DataLakeRequestConditions#getIfMatch()},
@@ -360,10 +361,10 @@ public class DataLakeFileSystemAsyncClient {
      * is set.
      */
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
-        DataLakeRequestConditions accessConditions) {
+        DataLakeRequestConditions requestConditions) {
         try {
             return blobContainerAsyncClient.setMetadataWithResponse(metadata,
-                Transforms.toBlobRequestConditions(accessConditions));
+                Transforms.toBlobRequestConditions(requestConditions));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -423,8 +424,8 @@ public class DataLakeFileSystemAsyncClient {
 
         return StorageImplUtils.applyOptionalTimeout(
             this.azureDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
-                options.isRecursive(), marker, options.getPath(), options.getMaxResults(), options.isReturnUpn(), null,
-                null, Context.NONE), timeout);
+                options.isRecursive(), marker, options.getPath(), options.getMaxResults(),
+                options.isUserPrincipalNameReturned(), null, null, Context.NONE), timeout);
     }
 
     /**
@@ -461,17 +462,17 @@ public class DataLakeFileSystemAsyncClient {
      * @param umask Restricts permissions of the file to be created.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the file.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeFileAsyncClient} used to interact with the file created.
      */
     public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
-        DataLakeRequestConditions accessConditions) {
+        DataLakeRequestConditions requestConditions) {
         try {
             DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
 
-            return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, accessConditions)
+            return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
                 .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -508,12 +509,12 @@ public class DataLakeFileSystemAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileWithResponse#String-DataLakeRequestConditions}
      *
      * @param fileName Name of the file to delete.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
-    public Mono<Response<Void>> deleteFileWithResponse(String fileName, DataLakeRequestConditions accessConditions) {
+    public Mono<Response<Void>> deleteFileWithResponse(String fileName, DataLakeRequestConditions requestConditions) {
         try {
-            return getFileAsyncClient(fileName).deleteWithResponse(accessConditions);
+            return getFileAsyncClient(fileName).deleteWithResponse(requestConditions);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -554,18 +555,18 @@ public class DataLakeFileSystemAsyncClient {
      * @param umask Restricts permissions of the directory to be created.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the directory.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the directory created.
      */
     public Mono<Response<DataLakeDirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
-        DataLakeRequestConditions accessConditions) {
+        DataLakeRequestConditions requestConditions) {
         try {
             DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = getDirectoryAsyncClient(directoryName);
 
             return dataLakeDirectoryAsyncClient.createWithResponse(permissions, umask, headers, metadata,
-                accessConditions).map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
+                requestConditions).map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -598,12 +599,112 @@ public class DataLakeFileSystemAsyncClient {
      *
      * @param directoryName Name of the directory to delete.
      * @param recursive Whether or not to delete all paths beneath the directory.
-     * @param accessConditions {@link DataLakeRequestConditions}
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
     public Mono<Response<Void>> deleteDirectoryWithResponse(String directoryName, boolean recursive,
-        DataLakeRequestConditions accessConditions) {
-        return getDirectoryAsyncClient(directoryName).deleteWithResponse(recursive, accessConditions);
+        DataLakeRequestConditions requestConditions) {
+        return getDirectoryAsyncClient(directoryName).deleteWithResponse(recursive, requestConditions);
+    }
+
+    /**
+     * Sets the file system's permissions. The permissions indicate whether paths in a file system may be accessed
+     * publicly. Note that, for each signed identifier, we will truncate the start and expiry times to the nearest
+     * second to ensure the time formatting is compatible with the service. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setAccessPolicy#PublicAccessType-List}
+     *
+     * @param accessType Specifies how the data in this file system is available to the public. See the
+     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param identifiers A list of {@link DataLakeSignedIdentifier} objects that specify the permissions for the file
+     * system.
+     * Please see
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information. Passing null will clear all access policies.
+     * @return A reactive response signalling completion.
+     */
+    public Mono<Void> setAccessPolicy(PublicAccessType accessType, List<DataLakeSignedIdentifier> identifiers) {
+        try {
+            return setAccessPolicyWithResponse(accessType, identifiers, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Sets the file system's permissions. The permissions indicate whether paths in a file system may be accessed
+     * publicly. Note that, for each signed identifier, we will truncate the start and expiry times to the nearest
+     * second to ensure the time formatting is compatible with the service. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions}
+     *
+     * @param accessType Specifies how the data in this file system is available to the public. See the
+     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param identifiers A list of {@link DataLakeSignedIdentifier} objects that specify the permissions for the file
+     * system.
+     * Please see
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information. Passing null will clear all access policies.
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @return A reactive response signalling completion.
+     * @throws UnsupportedOperationException If either {@link DataLakeRequestConditions#getIfMatch()} or
+     * {@link DataLakeRequestConditions#getIfNoneMatch()} is set.
+     */
+    public Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
+        List<DataLakeSignedIdentifier> identifiers, DataLakeRequestConditions requestConditions) {
+        try {
+            return blobContainerAsyncClient.setAccessPolicyWithResponse(Transforms.toBlobPublicAccessType(accessType),
+                Transforms.toBlobIdentifierList(identifiers), Transforms.toBlobRequestConditions(requestConditions));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Returns the file system's permissions. The permissions indicate whether file system's paths may be accessed
+     * publicly. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getAccessPolicy}
+     *
+     * @return A reactive response containing the file system access policy.
+     */
+    public Mono<FileSystemAccessPolicies> getAccessPolicy() {
+        try {
+            return getAccessPolicyWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Returns the file system's permissions. The permissions indicate whether file system's paths may be accessed
+     * publicly. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getAccessPolicyWithResponse#String}
+     *
+     * @param leaseId The lease ID the active lease on the file system must match.
+     * @return A reactive response containing the file system access policy.
+     */
+    public Mono<Response<FileSystemAccessPolicies>> getAccessPolicyWithResponse(String leaseId) {
+        try {
+            return blobContainerAsyncClient.getAccessPolicyWithResponse(leaseId)
+                .map(response -> new SimpleResponse<>(response,
+                Transforms.toFileSystemAccessPolicies(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     BlobContainerAsyncClient getBlobContainerAsyncClient() {

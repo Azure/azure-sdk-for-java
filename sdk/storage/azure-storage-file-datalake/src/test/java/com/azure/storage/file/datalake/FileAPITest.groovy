@@ -2,6 +2,8 @@ package com.azure.storage.file.datalake
 
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
+import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 
@@ -17,9 +19,9 @@ class FileAPITest extends APISpec {
     String fileName
 
     PathPermissions permissions = new PathPermissions()
-        .owner(new RolePermissions().read(true).write(true).execute(true))
-        .group(new RolePermissions().read(true).execute(true))
-        .other(new RolePermissions().read(true))
+        .setOwner(new RolePermissions().setReadPermission(true).setWritePermission(true).setExecutePermission(true))
+        .setGroup(new RolePermissions().setReadPermission(true).setExecutePermission(true))
+        .setOther(new RolePermissions().setReadPermission(true))
 
     List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
 
@@ -1384,6 +1386,38 @@ class FileAPITest extends APISpec {
 
         then:
         thrown(StorageErrorException)
+    }
+
+    def "Get File Name and Build Client"() {
+        when:
+        DataLakeFileClient client = fsc.getFileClient(originalFileName)
+
+        then:
+        // Note : Here I use Path because there is a test that tests the use of a /
+        client.getFilePath() == finalFileName
+
+        where:
+        originalFileName       | finalFileName
+        "file"                 | "file"
+        "path/to]a file"       | "path/to]a file"
+        "path%2Fto%5Da%20file" | "path/to]a file"
+        "斑點"                   | "斑點"
+        "%E6%96%91%E9%BB%9E"   | "斑點"
+    }
+
+    def "Builder bearer token validation"() {
+        // Technically no additional checks need to be added to datalake builder since the corresponding blob builder fails
+        setup:
+        String endpoint = BlobUrlParts.parse(fc.getFileUrl()).setScheme("http").toUrl()
+        def builder = new DataLakePathClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildFileClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 
 }

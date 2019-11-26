@@ -158,9 +158,9 @@ class QueueServiceAsyncAPITests extends APISpec {
         when:
         def listQueueVerifier = StepVerifier.create((primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions())))
         then:
-        listQueueVerifier.assertNext {
-            !it.iterator().hasNext()
-        }
+        listQueueVerifier
+            .expectNextCount(0)
+            .verifyComplete()
     }
 
     def "Get and set properties"() {
@@ -187,7 +187,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         then:
         getPropertiesBeforeVerifier.assertNext {
             assert QueueTestHelper.assertQueueServicePropertiesAreEqual(originalProperties, it)
-        }
+        }.verifyComplete()
         setPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 202)
         }.verifyComplete()

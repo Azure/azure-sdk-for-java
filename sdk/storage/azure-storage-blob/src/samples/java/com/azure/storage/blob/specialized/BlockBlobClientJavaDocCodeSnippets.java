@@ -89,14 +89,14 @@ public class BlockBlobClientJavaDocCodeSnippets {
 
         byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
 
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("key", "value");
 
         System.out.printf("Uploaded BlockBlob MD5 is %s%n", Base64.getEncoder()
             .encodeToString(client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, md5,
-                accessConditions, timeout, context)
+                requestConditions, timeout, context)
                 .getValue()
                 .getContentMd5()));
         // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context
@@ -190,6 +190,17 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobClient#commitBlockList(List, boolean)}
+     */
+    public void commitBlockListWithOverwrite() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean
+        boolean overwrite = false; // Default behavior
+        System.out.printf("Committing block list completed. Last modified: %s%n",
+            client.commitBlockList(Collections.singletonList(base64BlockId), overwrite).getLastModified());
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean
+    }
+
+    /**
      * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(List, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions, Duration, Context)}
      */
     public void commitBlockList2() {
@@ -200,14 +211,14 @@ public class BlockBlobClientJavaDocCodeSnippets {
             .setContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobRequestConditions accessConditions = new BlobRequestConditions()
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("key", "value");
 
         System.out.printf("Committing block list completed with status %d%n",
             client.commitBlockListWithResponse(Collections.singletonList(base64BlockId), headers, metadata,
-                AccessTier.HOT, accessConditions, timeout, context).getStatusCode());
+                AccessTier.HOT, requestConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context
     }
 }

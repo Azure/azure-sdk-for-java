@@ -7,7 +7,6 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
@@ -22,9 +21,7 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
-import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -112,27 +109,20 @@ public final class BlobClientBuilder {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
+
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        String blobContainerName = CoreUtils.isNullOrEmpty(containerName)
-            ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+        String blobContainerName = CoreUtils.isNullOrEmpty(containerName) ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME
             : containerName;
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (storageSharedKeyCredential != null) {
-                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                return null;
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
+            httpClient, additionalPolicies, configuration, logger);
 
         return new BlobAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, blobContainerName, blobName),
             serviceVersion, accountName, blobContainerName, blobName, snapshot, customerProvidedKey);
@@ -331,7 +321,8 @@ public final class BlobClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated BlobClientBuilder object

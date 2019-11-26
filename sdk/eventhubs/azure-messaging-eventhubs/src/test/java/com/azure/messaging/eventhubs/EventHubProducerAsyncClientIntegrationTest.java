@@ -4,16 +4,12 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.models.BatchOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
@@ -30,21 +26,12 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
         super(new ClientLogger(EventHubProducerAsyncClientIntegrationTest.class));
     }
 
-    @Rule
-    public TestName testName = new TestName();
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
-    }
-
     @Override
     protected void beforeTest() {
         producer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
-            .scheduler(Schedulers.parallel())
-            .buildAsyncProducer();
+            .buildAsyncProducerClient();
     }
 
     @Override
@@ -99,7 +86,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
 
         final Mono<EventDataBatch> createBatch = producer.createBatch().map(batch -> {
             events.forEach(event -> {
-                Assert.assertTrue(batch.tryAdd(event));
+                Assertions.assertTrue(batch.tryAdd(event));
             });
 
             return batch;
@@ -121,13 +108,13 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             new EventData("Event 2".getBytes(UTF_8)),
             new EventData("Event 3".getBytes(UTF_8)));
 
-        final BatchOptions options = new BatchOptions().setPartitionKey("my-partition-key");
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("my-partition-key");
         final Mono<EventDataBatch> createBatch = producer.createBatch(options)
             .map(batch -> {
-                Assert.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
+                Assertions.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
 
                 events.forEach(event -> {
-                    Assert.assertTrue(batch.tryAdd(event));
+                    Assertions.assertTrue(batch.tryAdd(event));
                 });
 
                 return batch;
@@ -159,5 +146,51 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
         // Assert
         StepVerifier.create(onComplete)
             .verifyComplete();
+    }
+
+    @Test
+    public void sendAllPartitions() {
+        final List<String> partitionIds = producer.getPartitionIds().collectList().block(TIMEOUT);
+
+        Assertions.assertNotNull(partitionIds);
+
+        for (String partitionId : partitionIds) {
+            final EventDataBatch batch = producer.createBatch(new CreateBatchOptions().setPartitionId(partitionId)).block(TIMEOUT);
+            Assertions.assertNotNull(batch);
+
+            Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid", Integer.parseInt(partitionId))));
+
+            // Act & Assert
+            StepVerifier.create(producer.send(batch)).expectComplete().verify(TIMEOUT);
+        }
+    }
+
+    /**
+     * Sending with credentials.
+     */
+    @Test
+    public void sendWithCredentials() {
+        // Arrange
+        final EventData event = new EventData("body");
+        final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
+        final EventHubProducerAsyncClient client = createBuilder(true)
+            .buildAsyncProducerClient();
+
+        // Act & Assert
+        try {
+            StepVerifier.create(client.getEventHubProperties())
+                .assertNext(properties -> {
+                    Assertions.assertEquals(getEventHubName(), properties.getName());
+                    Assertions.assertEquals(2, properties.getPartitionIds().stream().count());
+                })
+                .expectComplete()
+                .verify(TIMEOUT);
+
+            StepVerifier.create(client.send(event, options))
+                .expectComplete()
+                .verify(TIMEOUT);
+        } finally {
+            dispose(client);
+        }
     }
 }

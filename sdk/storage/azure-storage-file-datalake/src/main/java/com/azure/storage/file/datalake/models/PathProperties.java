@@ -4,8 +4,8 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.implementation.util.ImplUtils;
 
+import com.azure.core.util.CoreUtils;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -86,7 +86,7 @@ public class PathProperties {
         this.eTag = eTag;
         this.fileSize = fileSize;
         this.contentType = contentType;
-        this.contentMd5 = ImplUtils.clone(contentMd5);
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         this.contentEncoding = contentEncoding;
         this.contentDisposition = contentDisposition;
         this.contentLanguage = contentLanguage;
@@ -147,7 +147,7 @@ public class PathProperties {
      * @return the MD5 of the file's content
      */
     public byte[] getContentMd5() {
-        return ImplUtils.clone(contentMd5);
+        return CoreUtils.clone(contentMd5);
     }
 
     /**

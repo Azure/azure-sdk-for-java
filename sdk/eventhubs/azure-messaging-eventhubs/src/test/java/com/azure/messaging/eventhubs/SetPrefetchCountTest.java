@@ -4,16 +4,11 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 
 import java.util.concurrent.CountDownLatch;
@@ -25,7 +20,7 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 /**
  * Verifies we can use various prefetch options with {@link EventHubConsumerAsyncClient}.
  */
-@Ignore("Set prefetch tests do not work because they try to send very large number of events at once.")
+@Disabled("Set prefetch tests do not work because they try to send very large number of events at once.")
 public class SetPrefetchCountTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
     // Default number of events to fetch when creating the consumer.
@@ -42,16 +37,8 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
     private EventHubAsyncClient client;
     private EventHubConsumerAsyncClient consumer;
 
-    @Rule
-    public TestName testName = new TestName();
-
     public SetPrefetchCountTest() {
         super(new ClientLogger(SetPrefetchCountTest.class));
-    }
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
     }
 
     @Override
@@ -72,7 +59,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
     }
 
     /**
-     * Test that we can use a very large prefetch number with {@link EventHubConsumerOptions}
+     * Test that we can use a very large prefetch number.
      */
     @Test
     public void setLargePrefetchCount() throws InterruptedException {
@@ -81,13 +68,10 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         // chosen
         final int eventCount = NUMBER_OF_EVENTS;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
-        final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .setPrefetchCount(2000);
 
-        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
-            EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
+        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, 2000);
 
-        final Disposable subscription = consumer.receive(PARTITION_ID)
+        final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
             .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(eventCount).subscribe(event -> countDownLatch.countDown());
 
@@ -96,7 +80,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
             countDownLatch.await(1, TimeUnit.MINUTES);
 
             // Assert
-            Assert.assertEquals(0, countDownLatch.getCount());
+            Assertions.assertEquals(0, countDownLatch.getCount());
         } finally {
             subscription.dispose();
         }
@@ -110,12 +94,10 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         // Arrange
         final int eventCount = 30;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
-        final EventHubConsumerOptions options = new EventHubConsumerOptions().setPrefetchCount(11);
 
-        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME,
-            EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
+        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, 11);
 
-        final Disposable subscription = consumer.receive(PARTITION_ID)
+        final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
             .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(eventCount).subscribe(event -> countDownLatch.countDown());
 
@@ -124,7 +106,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
             countDownLatch.await(45, TimeUnit.SECONDS);
 
             // Assert
-            Assert.assertEquals(0, countDownLatch.getCount());
+            Assertions.assertEquals(0, countDownLatch.getCount());
         } finally {
             subscription.dispose();
         }

@@ -89,7 +89,6 @@ public class CertificateClient {
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-
     public SyncPoller<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
         return  client.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
     }
@@ -167,7 +166,7 @@ public class CertificateClient {
     public Response<KeyVaultCertificateWithPolicy> getCertificateWithResponse(String certificateName) {
         return client.getCertificateWithResponse(certificateName).block();
     }
-
+  
     /**
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *

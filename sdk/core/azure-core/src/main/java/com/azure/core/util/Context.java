@@ -6,9 +6,10 @@ package com.azure.core.util;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * {@code Context} offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
@@ -126,5 +127,24 @@ public class Context {
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * Scans the linked-list of {@link Context} objects populating a {@link Map} with the values of the context.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.Context.getValues}
+     *
+     * @return A map containing all values of the context linked-list.
+     */
+    public Map<Object, Object> getValues() {
+        return getValuesHelper(new HashMap<>());
+    }
+
+    private Map<Object, Object> getValuesHelper(Map<Object, Object> values) {
+        values.putIfAbsent(key, value);
+
+        return (parent == null) ? values : parent.getValuesHelper(values);
     }
 }

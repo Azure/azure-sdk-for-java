@@ -84,6 +84,9 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
     .build();
 ```
 
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
 ### Create an App Configuration Store
 
 To create a Configuration Store you can use the Azure Portal or [Azure CLI][azure_cli].
@@ -130,6 +133,21 @@ or
 ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .connectionString(connectionString)
         .buildAsyncClient();
+```
+
+You can also use `TokenCredential` to create a configuration client, such as an Azure Active Directory (AAD) token.
+Unlike a connection string if you're using an AAD token you must supply the endpoint of AppConfiguration service. The
+endpoint can be obtained by going to your App Configuration instance in the Azure portal and navigating to "Overview"
+page and look for the "Endpoint" keyword. 
+
+```Java
+// An example of using TokenCredential and Endpoint to create a synchronous client
+TokenCredential credential = new DefaultAzureCredential();
+
+ConfigurationClient client = new ConfigurationClientBuilder()
+        .credential(credential)
+        .endpoint(endpoint)
+        .buildClient();
 ```
 
 ## Key concepts
@@ -274,13 +292,13 @@ PagedIterable<ConfigurationSetting> settings = client.listRevisions(selector);
 Set a configuration setting to read-only status.
 ```Java
 client.setConfigurationSetting("some_key", "some_label", "some_value");
-ConfigurationSetting setting = client.setReadOnly("some_key", "some_label");
+ConfigurationSetting setting = client.setReadOnly("some_key", "some_label", true);
 ```
 ### Clear read only from a Configuration Setting
 
 Clear read-only from a configuration setting.
 ```Java
-ConfigurationSetting setting = client.clearReadOnly("some_key", "some_label");
+ConfigurationSetting setting = client.setReadOnly("some_key", "some_label", false);
 ```
 
 ## Troubleshooting
@@ -319,5 +337,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples_readme]: src/samples/README.md
 [source_code]: src
 [spring_quickstart]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2FREADME.png)

@@ -44,13 +44,13 @@ public class DirectoryExample {
         // Create a child directory.
         String childDirectoryName = generateRandomName();
         try {
-            directoryClient.createSubDirectory(childDirectoryName);
+            directoryClient.createSubdirectory(childDirectoryName);
         } catch (StorageErrorException e) {
             System.out.println("Failed to create sub directory. Reasons: " + e.getMessage());
         }
 
         // Create a 1KB file under the child directory.
-        DataLakeDirectoryClient childDirClient = directoryClient.getSubDirectoryClient(childDirectoryName);
+        DataLakeDirectoryClient childDirClient = directoryClient.getSubdirectoryClient(childDirectoryName);
         String fileName = generateRandomName();
         try {
             childDirClient.createFile(fileName);
@@ -82,7 +82,7 @@ public class DirectoryExample {
 
         // Delete the child folder
         try {
-            directoryClient.deleteSubDirectory(childDirectoryName);
+            directoryClient.deleteSubdirectory(childDirectoryName);
         } catch (StorageErrorException e) {
             System.out.println("Failed to delete the child directory. Reasons: " + e.getMessage());
         }

@@ -3,7 +3,7 @@
 
 package com.azure.storage.file.datalake.sas;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -542,7 +542,7 @@ public final class DataLakeServiceSasSignatureValues {
             version = DataLakeServiceVersion.getLatest().getVersion();
         }
 
-        if (ImplUtils.isNullOrEmpty(pathName)) {
+        if (CoreUtils.isNullOrEmpty(pathName)) {
             resource = SAS_CONTAINER_CONSTANT;
         } else {
             resource = SAS_BLOB_CONSTANT;
@@ -570,7 +570,7 @@ public final class DataLakeServiceSasSignatureValues {
     private String getCanonicalName(String account) {
         // File System: "/blob/account/containername"
         // Path:      "/blob/account/containername/blobname"
-        return ImplUtils.isNullOrEmpty(pathName)
+        return CoreUtils.isNullOrEmpty(pathName)
             ? String.format("/blob/%s/%s", account, fileSystemName)
             : String.format("/blob/%s/%s/%s", account, fileSystemName, pathName.replace("\\", "/"));
     }

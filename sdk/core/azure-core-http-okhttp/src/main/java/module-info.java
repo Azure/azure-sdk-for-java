@@ -4,7 +4,6 @@
 module com.azure.core.http.okhttp {
 
     requires transitive com.azure.core;
-    requires com.azure.core.test;
     requires okhttp3;
     requires okio;
 

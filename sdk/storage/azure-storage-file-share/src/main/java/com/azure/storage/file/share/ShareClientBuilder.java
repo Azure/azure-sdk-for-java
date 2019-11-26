@@ -128,7 +128,7 @@ public class ShareClientBuilder {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
         AzureFileStorageImpl azureFileStorage = new AzureFileStorageBuilder()
             .url(endpoint)
@@ -301,7 +301,8 @@ public class ShareClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated ShareClientBuilder object
