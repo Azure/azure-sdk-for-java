@@ -90,8 +90,8 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
 
-    public SyncPoller<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String name, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        return  client.beginCreateCertificate(name, policy, isEnabled, tags).getSyncPoller();
+    public SyncPoller<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
+        return  client.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
     }
 
     /**
