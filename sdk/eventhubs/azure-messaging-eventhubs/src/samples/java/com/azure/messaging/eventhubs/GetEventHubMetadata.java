@@ -21,25 +21,27 @@ public class GetEventHubMetadata {
 
         // Instantiate a client that will be used to call the service. Using a try-resource block, so it disposes of
         // the client when we are done.
-        try (EventHubProducerClient client = new EventHubClientBuilder()
+        EventHubProducerClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildProducerClient()) {
+            .buildProducerClient();
 
-            // Querying the partition identifiers for the Event Hub. Then calling client.getPartitionProperties with the
-            // identifier to get information about each partition.
-            for (String partitionId : client.getPartitionIds()) {
-                PartitionProperties properties = client.getPartitionProperties(partitionId);
-                System.out.printf(
-                    "Event Hub Name: %s; Partition Id: %s; Is partition empty? %s; First Sequence Number: %s; "
-                        + "Last Enqueued Time: %s; Last Enqueued Sequence Number: %s; Last Enqueued Offset: %s%n",
-                    properties.getEventHubName(),
-                    properties.getId(),
-                    properties.isEmpty(),
-                    properties.getBeginningSequenceNumber(),
-                    properties.getLastEnqueuedTime(),
-                    properties.getLastEnqueuedSequenceNumber(),
-                    properties.getLastEnqueuedOffset());
-            }
+        // Querying the partition identifiers for the Event Hub. Then calling client.getPartitionProperties with the
+        // identifier to get information about each partition.
+        for (String partitionId : client.getPartitionIds()) {
+            PartitionProperties properties = client.getPartitionProperties(partitionId);
+            System.out.printf(
+                "Event Hub Name: %s; Partition Id: %s; Is partition empty? %s; First Sequence Number: %s; "
+                    + "Last Enqueued Time: %s; Last Enqueued Sequence Number: %s; Last Enqueued Offset: %s%n",
+                properties.getEventHubName(),
+                properties.getId(),
+                properties.isEmpty(),
+                properties.getBeginningSequenceNumber(),
+                properties.getLastEnqueuedTime(),
+                properties.getLastEnqueuedSequenceNumber(),
+                properties.getLastEnqueuedOffset());
         }
+
+        // Dispose of the client.
+        client.close();
     }
 }
