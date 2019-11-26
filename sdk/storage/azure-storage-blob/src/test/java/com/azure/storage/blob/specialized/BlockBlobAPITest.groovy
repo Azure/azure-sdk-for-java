@@ -728,7 +728,7 @@ class BlockBlobAPITest extends APISpec {
          * fails when it attempts to put the block list.
          */
         StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString())
-            .doOnSubscribe({ blobAsyncClient.uploadFromFile(smallFile.toPath().toString()).delaySubscription(Duration.ofMillis(500)).then() }))
+            .doOnSubscribe({ blobAsyncClient.uploadFromFile(smallFile.toPath().toString()).delaySubscription(Duration.ofMillis(500)).subscribe() }))
             .verifyErrorSatisfies({
                 assert it instanceof BlobStorageException
                 assert ((BlobStorageException) it).getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
@@ -1441,15 +1441,11 @@ class BlockBlobAPITest extends APISpec {
          * has verified whether a blob with the given name already exists, so this will trigger once uploading begins.
          */
         def data = Flux.just(getRandomData(Constants.MB)).repeat(257)
-            .doOnSubscribe({ blobAsyncClient.uploadFromFile(smallFile.toPath().toString()).then() })
+            .doOnSubscribe({ blobAsyncClient.uploadFromFile(smallFile.toPath().toString()).subscribe() })
         blobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName())
 
         expect:
-        /*
-         * Upload using a small buffer so that many requests are needed before it completes.
-         */
-        def options = new ParallelTransferOptions(Constants.MB, null, null)
-        StepVerifier.create(blobAsyncClient.upload(data, options))
+        StepVerifier.create(blobAsyncClient.upload(data, null))
             .verifyErrorSatisfies({
                 assert it instanceof BlobStorageException
                 assert ((BlobStorageException) it).getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS

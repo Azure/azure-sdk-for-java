@@ -30,6 +30,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
+import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -484,31 +485,44 @@ class BlobAPITest extends APISpec {
         def file = getRandomFile(Constants.MB)
         bc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(testName + "")
-        if (outFile.exists()) {
-            assert outFile.delete()
-        }
+        Files.deleteIfExists(file.toPath())
 
         expect:
-        /*
-         * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
-         * to change the ETag failing the download.
-         */
-        def bac = new BlobClientBuilder().pipeline(bc.getHttpPipeline()).endpoint(bc.getBlobUrl()).buildAsyncClient()
+        def bac = new BlobClientBuilder()
+            .pipeline(bc.getHttpPipeline())
+            .endpoint(bc.getBlobUrl())
+            .buildAsyncClient()
             .getBlockBlobAsyncClient()
 
+        /*
+         * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
+         * to change the ETag therefore failing the download.
+         */
         def options = new ParallelTransferOptions(Constants.KB, null, null)
+
+        /*
+         * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is
+         * registered for onErrorDropped the error is logged at the ERROR level.
+         *
+         * onErrorDropped is triggered once the reactive stream has emitted one element, after that exceptions are
+         * dropped.
+         */
+        Hooks.onErrorDropped({ ignored -> /* do nothing with it */ })
 
         /*
          * When the download begins trigger an upload to overwrite the downloading blob after waiting 500 milliseconds
          * so that the download is able to get an ETag before it is changed.
          */
         StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
-            .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(500)).then() }))
+            .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
             .verifyErrorSatisfies({
                 assert it instanceof BlobStorageException
                 assert ((BlobStorageException) it).getStatusCode() == 412
-                assert !outFile.exists()
             })
+
+        // Give the file a chance to be deleted by the download operation before verifying its deletion
+        sleep(500)
+        !outFile.exists()
 
         cleanup:
         file.delete()

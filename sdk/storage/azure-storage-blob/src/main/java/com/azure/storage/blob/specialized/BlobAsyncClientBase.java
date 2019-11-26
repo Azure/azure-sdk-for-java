@@ -67,8 +67,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static java.lang.StrictMath.toIntExact;
 
@@ -315,10 +315,10 @@ public class BlobAsyncClientBase {
      * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
-     * @param sourceModifiedRequestConditions {@link RequestConditions} against the source. Standard HTTP
-     * Access conditions related to the modification of data. ETag and LastModifiedTime are used to construct
-     * conditions related to when the blob was changed relative to the given request. The request will fail if the
-     * specified condition is not satisfied.
+     * @param sourceModifiedRequestConditions {@link RequestConditions} against the source. Standard HTTP Access
+     * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
+     * related to when the blob was changed relative to the given request. The request will fail if the specified
+     * condition is not satisfied.
      * @param destRequestConditions {@link BlobRequestConditions} against the destination.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
@@ -326,8 +326,8 @@ public class BlobAsyncClientBase {
      * cancelled.
      */
     public PollerFlux<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
-                                        RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
-                                        BlobRequestConditions destRequestConditions, Duration pollInterval) {
+        RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
+        BlobRequestConditions destRequestConditions, Duration pollInterval) {
 
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
         final RequestConditions sourceModifiedCondition = sourceModifiedRequestConditions == null
@@ -360,9 +360,9 @@ public class BlobAsyncClientBase {
                 }
             },
             (pollingContext, firstResponse) -> {
-                if (firstResponse == null ||  firstResponse.getValue() == null) {
+                if (firstResponse == null || firstResponse.getValue() == null) {
                     return Mono.error(logger.logExceptionAsError(
-                            new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                        new IllegalArgumentException("Cannot cancel a poll response that never started.")));
                 }
                 final String copyIdentifier = firstResponse.getValue().getCopyId();
 
@@ -378,8 +378,8 @@ public class BlobAsyncClientBase {
     }
 
     private Mono<BlobCopyInfo> onStart(String sourceUrl, Map<String, String> metadata, AccessTier tier,
-            RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
-            BlobRequestConditions destinationRequestConditions) {
+        RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
+        BlobRequestConditions destinationRequestConditions) {
         URL url;
         try {
             url = new URL(sourceUrl);
@@ -413,7 +413,7 @@ public class BlobAsyncClientBase {
         if (lastInfo == null) {
             logger.warning("BlobCopyInfo does not exist. Activation operation failed.");
             return Mono.just(new PollResponse<>(
-                    LongRunningOperationStatus.fromString("COPY_START_FAILED", true), null));
+                LongRunningOperationStatus.fromString("COPY_START_FAILED", true), null));
         }
 
         return getProperties().map(response -> {
@@ -455,11 +455,11 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
+     * @param copyId The id of the copy operation to abort.
+     * @return A reactive response signalling completion.
      * @see #copyFromUrl(String)
      * @see #beginCopy(String, Duration)
      * @see #beginCopy(String, Map, AccessTier, RehydratePriority, RequestConditions, BlobRequestConditions, Duration)
-     * @param copyId The id of the copy operation to abort.
-     * @return A reactive response signalling completion.
      */
     public Mono<Void> abortCopyFromUrl(String copyId) {
         try {
@@ -479,12 +479,12 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
-     * @see #copyFromUrl(String)
-     * @see #beginCopy(String, Duration)
-     * @see #beginCopy(String, Map, AccessTier, RehydratePriority, RequestConditions, BlobRequestConditions, Duration)
      * @param copyId The id of the copy operation to abort.
      * @param leaseId The lease ID the active lease on the blob must match.
      * @return A reactive response signalling completion.
+     * @see #copyFromUrl(String)
+     * @see #beginCopy(String, Duration)
+     * @see #beginCopy(String, Map, AccessTier, RehydratePriority, RequestConditions, BlobRequestConditions, Duration)
      */
     public Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId, String leaseId) {
         try {
@@ -542,8 +542,8 @@ public class BlobAsyncClientBase {
      * @return A reactive response containing the copy ID for the long running operation.
      */
     public Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata,
-            AccessTier tier, RequestConditions sourceModifiedRequestConditions,
-            BlobRequestConditions destRequestConditions) {
+        AccessTier tier, RequestConditions sourceModifiedRequestConditions,
+        BlobRequestConditions destRequestConditions) {
         try {
             return withContext(context -> copyFromUrlWithResponse(copySource, metadata, tier,
                 sourceModifiedRequestConditions, destRequestConditions, context));
@@ -553,8 +553,8 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
-            RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destRequestConditions,
-            Context context) {
+        RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destRequestConditions,
+        Context context) {
         sourceModifiedRequestConditions = sourceModifiedRequestConditions == null
             ? new RequestConditions() : sourceModifiedRequestConditions;
         destRequestConditions = destRequestConditions == null ? new BlobRequestConditions() : destRequestConditions;
@@ -757,44 +757,42 @@ public class BlobAsyncClientBase {
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
         return getSetupMono(finalRange, finalParallelTransferOptions, downloadRetryOptions, requestConditions,
-           rangeGetContentMd5, context)
-        .flatMap(setupTuple3 -> {
-            long newCount = setupTuple3.getT1();
-            BlobRequestConditions finalConditions = setupTuple3.getT2();
+            rangeGetContentMd5, context)
+            .flatMap(setupTuple3 -> {
+                long newCount = setupTuple3.getT1();
+                BlobRequestConditions finalConditions = setupTuple3.getT2();
 
-            int numChunks = calculateNumBlocks(newCount, finalParallelTransferOptions.getBlockSize());
+                int numChunks = calculateNumBlocks(newCount, finalParallelTransferOptions.getBlockSize());
 
-            // In case it is an empty blob, this ensures we still actually perform a download operation.
-            numChunks = numChunks == 0 ? 1 : numChunks;
+                // In case it is an empty blob, this ensures we still actually perform a download operation.
+                numChunks = numChunks == 0 ? 1 : numChunks;
 
-            BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
-            return Flux.range(0, numChunks)
-                .flatMap(chunkNum -> {
-                    // The first chunk was retrieved during setup.
-                    if (chunkNum == 0) {
-                        return writeBodyToFile(initialResponse, file, 0, finalParallelTransferOptions, progressLock,
-                            totalProgress);
-                    }
+                BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
+                return Flux.range(0, numChunks)
+                    .flatMap(chunkNum -> {
+                        // The first chunk was retrieved during setup.
+                        if (chunkNum == 0) {
+                            return writeBodyToFile(initialResponse, file, 0, finalParallelTransferOptions, progressLock,
+                                totalProgress);
+                        }
 
-                    // Calculate whether we need a full chunk or something smaller because we are at the end.
-                    long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSize(),
-                        newCount - (chunkNum.longValue() * finalParallelTransferOptions.getBlockSize().longValue()));
-                    BlobRange chunkRange = new BlobRange(
-                        finalRange.getOffset()
-                            + (chunkNum.longValue() * finalParallelTransferOptions.getBlockSize().longValue()),
-                        chunkSizeActual);
+                        // Calculate whether we need a full chunk or something smaller because we are at the end.
+                        long modifier = chunkNum.longValue() * finalParallelTransferOptions.getBlockSize();
+                        long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSize(),
+                            newCount - modifier);
+                        BlobRange chunkRange = new BlobRange(finalRange.getOffset() + modifier, chunkSizeActual);
 
-                    // Make the download call.
-                    return this.downloadWithResponse(chunkRange, downloadRetryOptions, finalConditions,
-                        rangeGetContentMd5, null)
-                        .subscribeOn(Schedulers.elastic())
-                        .flatMap(response ->
-                            writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
-                                totalProgress));
-                })
-                // Only the first download call returns a value.
-                .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
-        });
+                        // Make the download call.
+                        return this.downloadWithResponse(chunkRange, downloadRetryOptions, finalConditions,
+                            rangeGetContentMd5, null)
+                            .subscribeOn(Schedulers.elastic())
+                            .flatMap(response ->
+                                writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
+                                    totalProgress));
+                    })
+                    // Only the first download call returns a value.
+                    .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
+            });
     }
 
     private int calculateNumBlocks(long dataSize, long blockLength) {
@@ -843,34 +841,34 @@ public class BlobAsyncClientBase {
 
                 return Mono.zip(Mono.just(newCount), Mono.just(newConditions), Mono.just(response));
             })
-            .onErrorResume(BlobStorageException.class, blobStorageException -> {
+            .onErrorResume(throwable -> {
                 /*
-                In the case of an empty blob, we still want to report success and give back valid headers. Attempting a
-                range download on an empty blob will return an InvalidRange error code and a Content-Range header of the
-                format "bytes * /0". We need to double check that the total size is zero in the case that the customer
-                has attempted an invalid range on a non-zero length blob.
+                 * In the case of an empty blob, we still want to report success and give back valid headers. Attempting a
+                 * range download on an empty blob will return an InvalidRange error code and a Content-Range header of the
+                 * format "bytes * /0". We need to double check that the total size is zero in the case that the customer
+                 * has attempted an invalid range on a non-zero length blob.
                  */
-                if (blobStorageException.getErrorCode() == BlobErrorCode.INVALID_RANGE
-                    && extractTotalBlobLength(blobStorageException.getResponse()
-                    .getHeaders().getValue("Content-Range")) == 0) {
-
-                    return this.downloadWithResponse(new BlobRange(0, 0L), downloadRetryOptions, requestConditions,
-                        rangeGetContentMd5, context)
-                        .subscribeOn(Schedulers.elastic())
-                        .flatMap(response -> {
-                            /*
-                            Ensure the blob is still 0 length by checking our download was the full length.
-                            (200 is for full blob; 206 is partial).
-                             */
-                            if (response.getStatusCode() != 200) {
-                                Mono.error(new IllegalStateException("Blob was modified mid download. It was "
-                                    + "originally 0 bytes and is now larger."));
-                            }
-                            return Mono.zip(Mono.just(0L), Mono.just(requestConditions), Mono.just(response));
-                        });
+                if (!(throwable instanceof BlobStorageException)) {
+                    return false;
                 }
-                return Mono.error(blobStorageException);
-            });
+
+                BlobStorageException storageException = (BlobStorageException) throwable;
+                return storageException.getErrorCode() == BlobErrorCode.INVALID_RANGE
+                    && extractTotalBlobLength(storageException.getResponse().getHeaderValue("Content-Range")) == 0;
+            }, blobStorageException -> this.downloadWithResponse(new BlobRange(0, 0L), downloadRetryOptions,
+                requestConditions, rangeGetContentMd5, context)
+                .subscribeOn(Schedulers.elastic())
+                .flatMap(response -> {
+                    /*
+                     * Ensure the blob is still 0 length by checking our download was the full length.
+                     * (200 is for full blob; 206 is partial).
+                     */
+                    if (response.getStatusCode() != 200) {
+                        Mono.error(new IllegalStateException("Blob was modified mid download. It was "
+                            + "originally 0 bytes and is now larger."));
+                    }
+                    return Mono.zip(Mono.just(0L), Mono.just(requestConditions), Mono.just(response));
+                }));
     }
 
     private static BlobRequestConditions setEtag(BlobRequestConditions requestConditions, String etag) {
@@ -933,7 +931,7 @@ public class BlobAsyncClientBase {
         try {
             channel.close();
             if (!signalType.equals(SignalType.ON_COMPLETE)) {
-                Files.delete(Paths.get(filePath));
+                Files.deleteIfExists(Paths.get(filePath));
                 logger.verbose("Downloading to file failed. Cleaning up resources.");
             }
         } catch (IOException e) {
