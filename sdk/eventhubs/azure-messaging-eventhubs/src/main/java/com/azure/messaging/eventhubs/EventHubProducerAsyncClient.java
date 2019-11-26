@@ -81,7 +81,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_M
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey}
  *
  * <p><strong>Publish events using a size-limited {@link EventDataBatch}</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey-int}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-int}
  *
  * @see EventHubClientBuilder#buildAsyncProducerClient()
  */

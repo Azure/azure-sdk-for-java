@@ -59,8 +59,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet demonstrating how to create an {@link EventHubProducerAsyncClient} that routes events to a single
-     * partition.
+     * Code snippet demonstrating how to create an EventDataBatch at routes events to a single partition.
      */
     public void batchPartitionId() {
         EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
@@ -87,7 +86,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey
         // Creating a batch with partitionKey set will tell the service to hash the partitionKey and decide which
         // partition to send the events to. Events with the same partitionKey are always routed to the same partition.
-        CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("sandwiches");
+        CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("bread");
         producer.createBatch(options).flatMap(batch -> {
             batch.tryAdd(new EventData("sourdough"));
             batch.tryAdd(new EventData("rye"));
@@ -106,7 +105,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
         final EventData secondEvent = new EventData("98".getBytes(UTF_8));
         secondEvent.getProperties().put("telemetry", "cpu-temperature");
 
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey-int
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-int
         final Flux<EventData> telemetryEvents = Flux.just(firstEvent, secondEvent);
 
         // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
@@ -138,6 +137,6 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
                     producer.send(batch).block();
                 }
             });
-        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey-int
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-int
     }
 }

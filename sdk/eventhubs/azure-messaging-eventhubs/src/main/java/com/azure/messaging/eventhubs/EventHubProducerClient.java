@@ -48,7 +48,7 @@ import java.util.Objects;
  * Developers can push events to a single partition by specifying the
  * {@link SendOptions#setPartitionId(String) partitionId} when creating an {@link EventHubProducerClient}.
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.instantiation#partitionId}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionId}
  *
  * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#setPartitionKey(String)}
  * </strong></p>
@@ -60,7 +60,7 @@ import java.util.Objects;
  * of the available partitions. All that matters to the end user is that they are grouped together.
  * </p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.send#publisher-sendOptions}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionKey}
  *
  * <p><strong>Publish events using an {@link EventDataBatch}</strong></p>
  * Developers can create an {@link EventDataBatch}, add the events they want into it, and publish these events together.
@@ -73,7 +73,7 @@ import java.util.Objects;
  * {@link EventDataBatch batches} to be no larger than 256 bytes. The events within the batch also get hashed to the
  * same partition because they all share the same {@link CreateBatchOptions#getPartitionKey()}.
  * </p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.send#eventDataBatch}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-int}
  *
  * @see EventHubClientBuilder#buildProducerClient()
  * @see EventHubProducerAsyncClient To asynchronously generate events to an Event Hub, see EventHubAsyncProducer.
