@@ -62,7 +62,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
      * Code snippet demonstrating how to create an {@link EventHubProducerAsyncClient} that routes events to a single
      * partition.
      */
-    public void instantiatePartitionProducer() {
+    public void batchPartitionId() {
         EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionId
@@ -81,7 +81,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
     /**
      * Code snippet demonstrating how to send events with a partition key.
      */
-    public void sendEventsFluxSendOptions() {
+    public void batchPartitionKey() {
         EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey
@@ -99,7 +99,7 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
     /**
      * Code snippet demonstrating how to create a size-limited {@link EventDataBatch} and send it.
      */
-    public void sendEventDataBatch() {
+    public void batchSizeLimited() {
         final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey-int
@@ -107,18 +107,18 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
         firstEvent.getProperties().put("telemetry", "latency");
         final EventData secondEvent = new EventData("98".getBytes(UTF_8));
         secondEvent.getProperties().put("telemetry", "cpu-temperature");
-        final EventData thirdEvent = new EventData("120".getBytes(UTF_8));
-        thirdEvent.getProperties().put("telemetry", "fps");
 
-        final Flux<EventData> telemetryEvents = Flux.just(firstEvent, secondEvent, thirdEvent);
+        final Flux<EventData> telemetryEvents = Flux.just(firstEvent, secondEvent);
 
+        // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
+        // In this case, all the batches created with these options are limited to 256 bytes.
         final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionKey("telemetry")
             .setMaximumSizeInBytes(256);
         final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
             producer.createBatch(options).block());
 
-        // The sample Flux contains three events, but it could be an infinite stream of telemetry events.
+        // The sample Flux contains two events, but it could be an infinite stream of telemetry events.
         telemetryEvents.flatMap(event -> {
             final EventDataBatch batch = currentBatch.get();
             if (batch.tryAdd(event)) {
