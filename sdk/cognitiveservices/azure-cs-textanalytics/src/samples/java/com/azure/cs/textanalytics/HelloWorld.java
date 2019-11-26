@@ -25,7 +25,7 @@ public class HelloWorld {
             detectedDocumentLanguage.getIso6391Name(),
             detectedDocumentLanguage.getScore());
 
-        final IterableStream<DetectedLanguage> detectedLanguages = detectedLanguageResult.getItems();
+        final IterableStream<DetectedLanguage> detectedLanguages = detectedLanguageResult.getDetectedLanguages();
         detectedLanguages.stream().forEach(detectedLanguage ->
             System.out.printf("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
             detectedLanguage.getName(),

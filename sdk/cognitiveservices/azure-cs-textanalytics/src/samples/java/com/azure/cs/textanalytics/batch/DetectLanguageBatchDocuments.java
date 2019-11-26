@@ -5,11 +5,11 @@ package com.azure.cs.textanalytics.batch;
 
 import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
 import com.azure.cs.textanalytics.models.DetectedLanguageResult;
 import com.azure.cs.textanalytics.models.TextBatchStatistics;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
-import com.azure.cs.textanalytics.models.DetectLangaugeInput;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
 import java.util.Arrays;
@@ -24,9 +24,9 @@ public class DetectLanguageBatchDocuments {
             .buildClient();
 
         // The texts that need be analysed.
-        List<DetectLangaugeInput> inputs = Arrays.asList(
-            new DetectLangaugeInput("1", "This is written in English").setCountryHint("US"),
-            new DetectLangaugeInput("2", "Este es un document escrito en Español.").setCountryHint("es")
+        List<DetectLanguageInput> inputs = Arrays.asList(
+            new DetectLanguageInput("1", "This is written in English").setCountryHint("US"),
+            new DetectLanguageInput("2", "Este es un document escrito en Español.").setCountryHint("es")
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
@@ -49,7 +49,7 @@ public class DetectLanguageBatchDocuments {
                 detectedPrimaryLanguage.getIso6391Name(),
                 detectedPrimaryLanguage.getScore());
 
-            result.getItems().stream().forEach(detectedLanguage ->
+            result.getDetectedLanguages().stream().forEach(detectedLanguage ->
                 System.out.printf("Detected primary Language: %s, ISO 6391 Name: %s, Score: %s",
                     detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(),

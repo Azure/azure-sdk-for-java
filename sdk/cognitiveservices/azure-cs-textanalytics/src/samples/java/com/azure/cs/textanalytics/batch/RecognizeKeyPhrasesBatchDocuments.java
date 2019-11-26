@@ -42,7 +42,7 @@ public class RecognizeKeyPhrasesBatchDocuments {
 
         // Detecting key phrase for each of document from a batch of documents
         detectedBatchResult.stream().forEach(keyPhraseResult ->
-            keyPhraseResult.getItems().stream().forEach(keyPhrases ->
+            keyPhraseResult.getKeyPhrases().stream().forEach(keyPhrases ->
                 System.out.printf("Recognized Phrases: %s", keyPhrases)));
     }
 }

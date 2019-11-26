@@ -14,7 +14,7 @@ public class RecognizePII {
         // The text that need be analysed.
         String text = "My SSN is 555-55-5555";
 
-        client.recognizePiiEntities(text, "US").getItems().stream().forEach(
+        client.recognizePiiEntities(text, "US").getNamedEntities().stream().forEach(
             entity -> System.out.printf(
                 "Recognized PII NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s",
                 entity.getText(),

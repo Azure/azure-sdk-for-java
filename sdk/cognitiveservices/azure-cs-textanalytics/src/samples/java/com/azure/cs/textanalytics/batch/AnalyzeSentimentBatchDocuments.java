@@ -42,7 +42,7 @@ public class AnalyzeSentimentBatchDocuments {
 
         // Detecting sentiment for each of document from a batch of documents
         detectedBatchResult.stream().forEach(result -> {
-            final TextSentiment documentSentiment = result.getTextSentiment();
+            final TextSentiment documentSentiment = result.getDocumentSentiment();
             System.out.printf("Recognized document sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s",
                 documentSentiment.getTextSentimentClass(),
                 documentSentiment.getPositiveScore(),
@@ -51,7 +51,7 @@ public class AnalyzeSentimentBatchDocuments {
                 documentSentiment.getLength(),
                 documentSentiment.getOffSet());
 
-            result.getItems().stream().forEach(sentenceSentiment ->
+            result.getSentenceSentiments().stream().forEach(sentenceSentiment ->
                 System.out.printf("Recognized sentence sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s",
                     sentenceSentiment.getTextSentimentClass(),
                     sentenceSentiment.getPositiveScore(),

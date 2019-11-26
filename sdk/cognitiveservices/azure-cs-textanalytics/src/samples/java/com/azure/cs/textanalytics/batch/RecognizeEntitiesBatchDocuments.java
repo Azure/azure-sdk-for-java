@@ -41,7 +41,7 @@ public class RecognizeEntitiesBatchDocuments {
 
         // Detecting entities for each of document from a batch of documents
         detectedBatchResult.stream().forEach(detectedEntityResult ->
-            detectedEntityResult.getItems().stream().forEach(entity ->
+            detectedEntityResult.getNamedEntities().stream().forEach(entity ->
                 System.out.printf("Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s",
                     entity.getText(),
                     entity.getType(),
