@@ -74,6 +74,7 @@ public class CertificateAsyncClient {
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
     private final String vaultUrl;
     private final CertificateService service;
     private final ClientLogger logger = new ClientLogger(CertificateAsyncClient.class);
@@ -107,7 +108,7 @@ public class CertificateAsyncClient {
      * <p>Create certificate is a long running operation. The {@link PollerFlux poller} allows users to automatically poll on the create certificate
      * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createCertificate#String-CertificatePolicy-Boolean-Map}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map}
      *
      * @param certificateName The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
@@ -158,7 +159,7 @@ public class CertificateAsyncClient {
      * <p>Create certificate is a long running operation. The {@link PollerFlux poller} allows users to automatically poll on the create certificate
      * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createCertificate#String-CertificatePolicy}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy}
      *
      * @param certificateName The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
@@ -198,6 +199,7 @@ public class CertificateAsyncClient {
                 status = LongRunningOperationStatus.FAILED;
                 break;
             default:
+                status = LongRunningOperationStatus.fromString(certificateOperationResponse.getValue().getStatus(), true);
                 //should not reach here
                 status = LongRunningOperationStatus.fromString(certificateOperationResponse.getValue().getStatus(), true);
                 break;
@@ -218,8 +220,10 @@ public class CertificateAsyncClient {
      * Gets a pending {@link CertificateOperation} from the key vault. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Geta a pending certificate operation. The {@link PollerFlux poller} allows users to automatically poll on the certificate
+     * <p>Get a pending certificate operation. The {@link PollerFlux poller} allows users to automatically poll on the certificate
      * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateOperation#String}
      *
      * @param certificateName The name of the certificate.
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist.

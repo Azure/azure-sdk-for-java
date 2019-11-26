@@ -233,7 +233,7 @@ List the certificates in the key vault by calling `listPropertiesOfCertificates`
 ```java
 // List operations don't return the certificates with their full information. So, for each returned certificate we call getCertificate to get the certificate with all its properties excluding the policy.
 for (CertificateProperties certificateProperties : certificateClient.listPropertiesOfCertificates()) {
-    KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificateProperties);
+    KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificateProperties.getName(), certificateProperties.getVersion());
     System.out.printf("Received certificate with name %s and secret id %s", certificateWithAllProperties.getName(),
         certificateWithAllProperties.getSecretId());
 }
@@ -323,7 +323,7 @@ List the certificates in the key vault by calling `listPropertiesOfCertificates`
 ```Java
 // The List Certificates operation returns certificates without their full properties, so for each certificate returned we call `getCertificate` to get all its attributes excluding the policy.
 certificateAsyncClient.listPropertiesOfCertificates()
-    .subscribe(certificateProperties -> certificateAsyncClient.getCertificate(certificateProperties)
+    .subscribe(certificateProperties -> certificateAsyncClient.getCertificate(certificateProperties.getName(), certificateProperties.getVersion());
         .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s",
             certificateResponse.getName(), certificateResponse.getKeyId())));
 ```
