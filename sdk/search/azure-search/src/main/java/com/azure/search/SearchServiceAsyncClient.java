@@ -132,10 +132,10 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search datasource or updates a datasource if it already exists.
+     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource the definition of the datasource to create or update
-     * @return the datasource that was created or updated.
+     * @param dataSource the definition of the data source to create or update
+     * @return the data source that was created or updated.
      */
     public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource) {
         return this.createOrUpdateDataSourceWithResponse(dataSource, null, null)
@@ -143,14 +143,14 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search datasource or updates a datasource if it already exists.
+     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource the definition of the datasource to create or update
+     * @param dataSource the definition of the data source to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return the datasource that was created or updated.
+     * @return the data source that was created or updated.
      */
     public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource,
                                                      AccessCondition accessCondition,
@@ -160,14 +160,14 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search datasource or updates a datasource if it already exists.
+     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource The definition of the datasource to create or update.
+     * @param dataSource The definition of the data source to create or update.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return a datasource response.
+     * @return a data source response.
      */
     public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
                                                                            AccessCondition accessCondition,
@@ -298,9 +298,9 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search datasource.
+     * Deletes an Azure Cognitive Search data source.
      *
-     * @param dataSourceName The name of the datasource to delete.
+     * @param dataSourceName The name of the data source to delete.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
@@ -315,9 +315,9 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search datasource.
+     * Deletes an Azure Cognitive Search data source.
      *
-     * @param dataSourceName The name of the datasource to delete.
+     * @param dataSourceName The name of the data source to delete.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
@@ -345,44 +345,44 @@ public class SearchServiceAsyncClient {
 
 
     /**
-     * Determines whether or not the given datasource exists.
+     * Determines whether or not the given data source exists.
      *
-     * @param datasourceName the name of the datasource
-     * @return true if the datasource exists; false otherwise.
+     * @param dataSourceName the name of the data source
+     * @return true if the data source exists; false otherwise.
      */
-    public Mono<Boolean> datasourceExists(String datasourceName) {
-        return this.datasourceExistsWithResponse(datasourceName, null).map(Response::getValue);
+    public Mono<Boolean> dataSourceExists(String dataSourceName) {
+        return this.dataSourceExistsWithResponse(dataSourceName, null).map(Response::getValue);
     }
 
     /**
-     * Determines whether or not the given datasource exists.
+     * Determines whether or not the given data source exists.
      *
-     * @param datasourceName the name of the datasource
+     * @param dataSourceName the name of the data source
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the datasource exists; false otherwise.
+     * @return true if the data source exists; false otherwise.
      */
-    public Mono<Boolean> datasourceExists(String datasourceName, RequestOptions requestOptions) {
-        return this.datasourceExistsWithResponse(datasourceName, requestOptions).map(Response::getValue);
+    public Mono<Boolean> dataSourceExists(String dataSourceName, RequestOptions requestOptions) {
+        return this.dataSourceExistsWithResponse(dataSourceName, requestOptions).map(Response::getValue);
     }
 
     /**
-     * Determines whether or not the given datasource exists.
+     * Determines whether or not the given data source exists.
      *
-     * @param datasourceName the name of the datasource
+     * @param dataSourceName the name of the data source
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the datasource exists; false otherwise.
+     * @return true if the data source exists; false otherwise.
      */
-    public Mono<Response<Boolean>> datasourceExistsWithResponse(String datasourceName, RequestOptions requestOptions) {
-        return withContext(context -> this.datasourceExistsWithResponse(datasourceName, requestOptions, context));
+    public Mono<Response<Boolean>> dataSourceExistsWithResponse(String dataSourceName, RequestOptions requestOptions) {
+        return withContext(context -> this.dataSourceExistsWithResponse(dataSourceName, requestOptions, context));
     }
 
-    Mono<Response<Boolean>> datasourceExistsWithResponse(String datasourceName,
+    Mono<Response<Boolean>> dataSourceExistsWithResponse(String dataSourceName,
                                                          RequestOptions requestOptions,
                                                          Context context) {
         return resourceExistsWithResponse(() ->
-            this.getDataSourceWithResponse(datasourceName, requestOptions, context));
+            this.getDataSourceWithResponse(dataSourceName, requestOptions, context));
     }
 
     /**

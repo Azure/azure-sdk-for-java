@@ -468,8 +468,8 @@ public abstract class SearchServiceTestBase extends TestBase {
     }
 
     /**
-     * create a new blob datasource object
-     * @return the created datasource
+     * create a new blob data source object
+     * @return the created data source
      */
     protected DataSource createBlobDataSource() {
         String storageConnString = "";
@@ -483,7 +483,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                 azureSearchResources.createBlobContainer(storageConnString);
         }
 
-        // create the new datasource object for this storage account and container
+        // create the new data source object for this storage account and container
         return DataSources.azureBlobStorage(
             BLOB_DATASOURCE_NAME,
             storageConnString,

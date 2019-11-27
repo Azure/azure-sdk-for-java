@@ -182,7 +182,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     }
 
     /**
-     * This index contains fields that are declared on the live datasource
+     * This index contains fields that are declared on the live data source
      * we use to test the indexers
      *
      * @return the newly created Index object

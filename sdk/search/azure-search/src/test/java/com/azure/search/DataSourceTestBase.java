@@ -73,10 +73,10 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     @Test
     public void canUpdateConnectionData() {
         // Note: since connection string is not returned when queried from the service, actually saving the
-        // datasource, retrieving it and verifying the change, won't work.
+        // data source, retrieving it and verifying the change, won't work.
         // Hence, we only validate that the properties on the local items can change.
 
-        // Create an initial datasource
+        // Create an initial data source
         DataSource initial = createTestBlobDataSource(null);
         Assert.assertEquals(initial.getCredentials().getConnectionString(),
             "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;");

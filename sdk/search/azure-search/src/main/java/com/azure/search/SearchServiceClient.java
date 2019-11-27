@@ -73,24 +73,24 @@ public class SearchServiceClient {
     }
 
      /**
-     * Creates a new Azure Cognitive Search datasource or updates a datasource if it already exists
+     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists
      *
-     * @param dataSource The definition of the datasource to create or update.
-     * @return the datasource that was created or updated.
+     * @param dataSource The definition of the data source to create or update.
+     * @return the data source that was created or updated.
      */
     public DataSource createOrUpdateDataSource(DataSource dataSource) {
         return asyncClient.createOrUpdateDataSource(dataSource).block();
     }
 
     /**
-     * Creates a new Azure Cognitive Search datasource or updates a datasource if it already exists.
+     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource the definition of the datasource to create or update
+     * @param dataSource the definition of the data source to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return the datasource that was created or updated.
+     * @return the data source that was created or updated.
      */
     public DataSource createOrUpdateDataSource(DataSource dataSource,
                                                AccessCondition accessCondition,
@@ -99,15 +99,15 @@ public class SearchServiceClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search datasource or updates a datasource if it already exists.
+     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource the definition of the datasource to create or update
+     * @param dataSource the definition of the data source to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return a response containing datasource that was created or updated.
+     * @return a response containing data source that was created or updated.
      */
     public Response<DataSource> createOrUpdateDataSourceWithResponse(DataSource dataSource,
                                                                      AccessCondition accessCondition,
@@ -196,16 +196,16 @@ public class SearchServiceClient {
     /**
      * Delete a DataSource
      *
-     * @param dataSourceName the name of the datasource to be deleted
+     * @param dataSourceName the name of the data source to be deleted
      */
     public void deleteDataSource(String dataSourceName) {
         asyncClient.deleteDataSource(dataSourceName).block();
     }
 
     /**
-     * Deletes an Azure Cognitive Search datasource.
+     * Deletes an Azure Cognitive Search data source.
      *
-     * @param dataSourceName The name of the datasource to delete
+     * @param dataSourceName The name of the data source to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
@@ -220,7 +220,7 @@ public class SearchServiceClient {
     /**
      * Delete a DataSource with Response
      *
-     * @param dataSourceName the name of the datasource to be deleted
+     * @param dataSourceName the name of the data source to be deleted
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
@@ -237,41 +237,41 @@ public class SearchServiceClient {
     }
 
     /**
-     * Determines whether or not the given datasource exists.
+     * Determines whether or not the given data source exists.
      *
-     * @param datasourceName the name of the datasource
-     * @return true if the datasource exists; false otherwise.
+     * @param dataSourceName the name of the data source
+     * @return true if the data source exists; false otherwise.
      */
-    public Boolean datasourceExists(String datasourceName) {
-        return asyncClient.datasourceExists(datasourceName).block();
+    public Boolean dataSourceExists(String dataSourceName) {
+        return asyncClient.dataSourceExists(dataSourceName).block();
     }
 
     /**
-     * Determines whether or not the given datasource exists.
+     * Determines whether or not the given data source exists.
      *
-     * @param datasourceName the name of the datasource
+     * @param dataSourceName the name of the data source
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the datasource exists; false otherwise.
+     * @return true if the data source exists; false otherwise.
      */
-    public Boolean datasourceExists(String datasourceName, RequestOptions requestOptions) {
-        return asyncClient.datasourceExists(datasourceName, requestOptions).block();
+    public Boolean dataSourceExists(String dataSourceName, RequestOptions requestOptions) {
+        return asyncClient.dataSourceExists(dataSourceName, requestOptions).block();
     }
 
     /**
-     * Determines whether or not the given datasource exists.
+     * Determines whether or not the given data source exists.
      *
-     * @param datasourceName the name of the datasource
+     * @param dataSourceName the name of the data source
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return true if the datasource exists; false otherwise.
+     * @return true if the data source exists; false otherwise.
      */
-    public Response<Boolean> datasourceExistsWithResponse(String datasourceName,
+    public Response<Boolean> dataSourceExistsWithResponse(String dataSourceName,
         RequestOptions requestOptions,
         Context context) {
         return asyncClient
-            .datasourceExistsWithResponse(datasourceName, requestOptions, context)
+            .dataSourceExistsWithResponse(dataSourceName, requestOptions, context)
             .block();
     }
 

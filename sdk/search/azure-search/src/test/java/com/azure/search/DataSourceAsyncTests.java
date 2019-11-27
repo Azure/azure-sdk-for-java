@@ -61,16 +61,16 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         client = getSearchServiceClientBuilder().buildAsyncClient();
     }
 
-    public Mono<DataSource> createOrUpdateDataSource(DataSource datasource,
+    public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource,
                                                AccessCondition accessCondition,
                                                RequestOptions requestOptions) {
-        return client.createOrUpdateDataSource(datasource, accessCondition, requestOptions);
+        return client.createOrUpdateDataSource(dataSource, accessCondition, requestOptions);
     }
 
-    public Mono<DataSource> createOrUpdateWithResponseDataSource(DataSource datasource,
+    public Mono<DataSource> createOrUpdateWithResponseDataSource(DataSource dataSource,
                                                                  AccessCondition accessCondition,
                                                                  RequestOptions requestOptions) {
-        return client.createOrUpdateDataSourceWithResponse(datasource, accessCondition, requestOptions, Context.NONE)
+        return client.createOrUpdateDataSourceWithResponse(dataSource, accessCondition, requestOptions, Context.NONE)
             .map(Response::getValue);
     }
 
@@ -244,7 +244,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     @Override
     public void existsReturnsFalseForNonExistingDatasource() {
         StepVerifier
-            .create(client.datasourceExists("inExistentDataSourceName"))
+            .create(client.dataSourceExists("inExistentDataSourceName"))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
@@ -255,7 +255,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         client.createOrUpdateDataSource(dataSource).block();
 
         StepVerifier
-            .create(client.datasourceExists(dataSource.getName()))
+            .create(client.dataSourceExists(dataSource.getName()))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
     }
@@ -313,7 +313,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null));
         assertDataSourcesEqual(expectedDataSource, actualDataSource);
-        // we delete the datasource because otherwise we will hit the quota limits during the tests
+        // we delete the data source because otherwise we will hit the quota limits during the tests
         client.deleteDataSource(actualDataSource.getName()).block();
     }
 

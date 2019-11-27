@@ -62,16 +62,16 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         client = getSearchServiceClientBuilder().buildClient();
     }
 
-    public DataSource createOrUpdateDataSource(DataSource datasource,
+    public DataSource createOrUpdateDataSource(DataSource dataSource,
                                                AccessCondition accessCondition,
                                                RequestOptions requestOptions) {
-        return client.createOrUpdateDataSource(datasource, accessCondition, requestOptions);
+        return client.createOrUpdateDataSource(dataSource, accessCondition, requestOptions);
     }
 
-    public DataSource createOrUpdateWithResponseDataSource(DataSource datasource,
+    public DataSource createOrUpdateWithResponseDataSource(DataSource dataSource,
                                                            AccessCondition accessCondition,
                                                            RequestOptions requestOptions) {
-        return client.createOrUpdateDataSourceWithResponse(datasource, accessCondition, requestOptions, Context.NONE)
+        return client.createOrUpdateDataSourceWithResponse(dataSource, accessCondition, requestOptions, Context.NONE)
             .getValue();
     }
 
@@ -256,7 +256,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
     @Override
     public void existsReturnsFalseForNonExistingDatasource() {
-        Assert.assertFalse(client.datasourceExists("inExistentDataSourceName"));
+        Assert.assertFalse(client.dataSourceExists("inExistentDataSourceName"));
     }
 
     @Override
@@ -264,7 +264,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
 
-        Assert.assertTrue(client.datasourceExists(dataSource.getName()));
+        Assert.assertTrue(client.dataSourceExists(dataSource.getName()));
     }
 
     @Override
@@ -304,7 +304,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null));
         assertDataSourcesEqual(expectedDataSource, actualDataSource);
-        // we delete the datasource because otherwise we will hit the quota limits during the tests
+        // we delete the data source because otherwise we will hit the quota limits during the tests
         client.deleteDataSource(actualDataSource.getName());
 
     }
