@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdk59a31780682e.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "ddfd9551-290f-49ad-8e84-08580f7cfccd",
+      "StatusCode" : "404",
+      "Date" : "Wed, 27 Nov 2019 16:28:10 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "24",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "134",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob' was found in a service named 'azs-sdk59a31780682e'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdk59a31780682e.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "1cd8ab7c-245f-47cd-8202-b8f2a77a7b09",
+      "StatusCode" : "404",
+      "Date" : "Wed, 27 Nov 2019 16:28:10 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "5",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "127",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'azs-java-test-blob' was found in service 'azs-sdk59a31780682e'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

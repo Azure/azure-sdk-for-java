@@ -91,6 +91,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public abstract void deleteIndexerIsIdempotent();
 
     @Test
+    public abstract void canCreateAndDeleteIndexer();
+
+    @Test
     public abstract void canCreateAndGetIndexer();
 
     @Test
@@ -128,6 +131,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void existsReturnsFalseForNonExistingIndexer();
+
+    @Test
+    public abstract  void canRunIndexerWithResponse();
 
     /**
      * Create a new valid skillset object

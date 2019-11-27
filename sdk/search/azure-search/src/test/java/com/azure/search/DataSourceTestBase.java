@@ -82,6 +82,9 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     public abstract void existsReturnsTrueForExistingDatasource();
 
     @Test
+    public abstract void canCreateAndDeleteDatasource();
+
+    @Test
     public abstract void canUpdateConnectionData();
 
     protected DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {

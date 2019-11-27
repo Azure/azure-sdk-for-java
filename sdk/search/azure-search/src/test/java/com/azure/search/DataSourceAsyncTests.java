@@ -6,7 +6,6 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataContainer;
 import com.azure.search.models.DataSource;
@@ -24,7 +23,6 @@ import org.junit.Assert;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -67,10 +65,10 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         return client.createOrUpdateDataSource(datasource, accessCondition, requestOptions);
     }
 
-    private Mono<DataSource> createOrUpdateDataSourceWithResponse(DataSource datasource,
-                                                                  AccessCondition accessCondition,
-                                                                  RequestOptions requestOptions) {
-        return client.createOrUpdateDataSourceWithResponse(datasource, accessCondition, requestOptions, Context.NONE)
+    private Mono<DataSource> createOrUpdateDataSourceWithResponse(DataSource dataSource,
+                                                                 AccessCondition accessCondition,
+                                                                 RequestOptions requestOptions) {
+        return client.createOrUpdateDataSourceWithResponse(dataSource, accessCondition, requestOptions)
             .map(Response::getValue);
     }
 
@@ -97,11 +95,8 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             })
             .verifyComplete();
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
-
         StepVerifier
-            .create(client.listDataSourcesWithResponse("name", requestOptions))
+            .create(client.listDataSourcesWithResponse("name", generateRequestOptions()))
             .assertNext(result -> {
                 Assert.assertEquals(2, result.getItems().size());
                 Assert.assertEquals(dataSource1.getName(), result.getValue().get(0).getName());
@@ -115,7 +110,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         DataSource dataSource1 = createTestBlobDataSource(null);
 
         // Try to delete before the data source exists, expect a NOT FOUND return status code
-        Response<Void> res = client.deleteDataSourceWithResponse(dataSource1.getName(), null, null).block();
+        Response<Void> res = client.deleteDataSourceWithResponse(dataSource1.getName(), new AccessCondition(), generateRequestOptions()).block();
         assert res != null;
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, res.getStatusCode());
 
@@ -123,12 +118,12 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         client.createOrUpdateDataSource(dataSource1).block();
 
         // Delete twice, expect the first to succeed (with NO CONTENT status code) and the second to return NOT FOUND
-        res = client.deleteDataSourceWithResponse(dataSource1.getName(), null, null).block();
+        res = client.deleteDataSourceWithResponse(dataSource1.getName(), new AccessCondition(), generateRequestOptions()).block();
         assert res != null;
         Assert.assertEquals(HttpStatus.SC_NO_CONTENT, res.getStatusCode());
 
         // Again, expect to fail
-        res = client.deleteDataSourceWithResponse(dataSource1.getName(), null, null).block();
+        res = client.deleteDataSourceWithResponse(dataSource1.getName(), new AccessCondition(), generateRequestOptions()).block();
         assert res != null;
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, res.getStatusCode());
     }
@@ -181,6 +176,17 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
             createOrUpdateDataSourceWithResponseFunc,
             newDataSourceFunc);
+    }
+
+    @Override
+    public void canCreateAndDeleteDatasource() {
+        DataSource dataSource = createTestBlobDataSource(null);
+        client.deleteDataSource(dataSource.getName()).block();
+
+        StepVerifier
+            .create(client.dataSourceExists(dataSource.getName()))
+            .assertNext(Assert::assertFalse)
+            .verifyComplete();
     }
 
     @Override
@@ -262,6 +268,16 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .create(client.dataSourceExists(dataSource.getName()))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
+
+        StepVerifier
+            .create(client.dataSourceExists(dataSource.getName(), generateRequestOptions()))
+            .assertNext(Assert::assertTrue)
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.dataSourceExistsWithResponse(dataSource.getName(), generateRequestOptions()))
+            .assertNext(res -> Assert.assertTrue(res.getValue()))
+            .verifyComplete();
     }
 
     @Override
@@ -335,11 +351,19 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     private void createGetAndValidateDataSource(DataSource expectedDataSource) {
         client.createOrUpdateDataSource(expectedDataSource).block();
         String dataSourceName = expectedDataSource.getName();
+        // Get doesn't return connection strings.
+        expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null));
+
         DataSource actualDataSource = client.getDataSource(dataSourceName).block();
         assert actualDataSource != null;
+        assertDataSourcesEqual(expectedDataSource, actualDataSource);
 
-        expectedDataSource.setCredentials(
-            new DataSourceCredentials().setConnectionString(null)); // Get doesn't return connection strings.
+        actualDataSource = client.getDataSource(dataSourceName, generateRequestOptions()).block();
+        assert actualDataSource != null;
+        assertDataSourcesEqual(expectedDataSource, actualDataSource);
+
+        actualDataSource = client.getDataSourceWithResponse(dataSourceName, generateRequestOptions()).block().getValue();
+        assert actualDataSource != null;
         assertDataSourcesEqual(expectedDataSource, actualDataSource);
 
         client.deleteDataSource(dataSourceName).block();

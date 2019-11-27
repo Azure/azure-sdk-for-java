@@ -84,7 +84,6 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         return Arrays.asList(indexer1, indexer2);
     }
 
-
     protected Indexer createTestDataSourceAndIndexer() {
         // Create DataSource and Index
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
@@ -92,7 +91,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         // Create the indexer object
         Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
-        createIndexer(indexer, null, null);
+        createIndexer(indexer, new AccessCondition(), generateRequestOptions());
 
         return indexer;
     }
@@ -119,7 +118,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createIndexer(initial);
 
         // update the indexer in the service
-        Indexer indexerResponse = createIndexer(updatedIndexer, null, null);
+        Indexer indexerResponse = createIndexer(updatedIndexer, new AccessCondition(), generateRequestOptions());
 
         // verify the returned updated indexer is as expected
         setSameStartTime(updatedIndexer, indexerResponse);
@@ -137,7 +136,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createIndex(index);
 
         // create this indexer in the service
-        Indexer indexerResponse = createIndexer(indexer, null, null);
+        Indexer indexerResponse = createIndexer(indexer, new AccessCondition(), generateRequestOptions());
 
         // verify the returned updated indexer is as expected
         setSameStartTime(indexer, indexerResponse);
@@ -190,17 +189,16 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             .getValue();
     }
 
-    private Response<Void> deleteIndexer(String indexerName,
-                                           AccessCondition accessCondition,
-                                           RequestOptions requestOptions) {
-        return client.deleteIndexerWithResponse(indexerName,
-            accessCondition,
-            requestOptions,
-            Context.NONE);
+    private void deleteIndexer(String indexerName,
+                               AccessCondition accessCondition,
+                               RequestOptions requestOptions) {
+        client.deleteIndexer(indexerName, accessCondition, requestOptions);
     }
 
-    private Response<Void> deleteIndexer(String indexerName) {
-        return deleteIndexer(indexerName, null, null);
+    private Response<Void> deleteIndexerWithResponse(String indexerName,
+                                                     AccessCondition accessCondition,
+                                                     RequestOptions requestOptions) {
+        return client.deleteIndexerWithResponse(indexerName, accessCondition, requestOptions, Context.NONE);
     }
 
     @Override
@@ -248,9 +246,14 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         List<Indexer> indexers = client.listIndexers().stream().collect(Collectors.toList());
         Assert.assertEquals(2, indexers.size());
-
         assertIndexersEqual(indexer1, indexers.get(0));
         assertIndexersEqual(indexer2, indexers.get(1));
+
+        indexers = client.listIndexersWithResponse("name", generateRequestOptions(), Context.NONE)
+            .getItems().stream().collect(Collectors.toList());
+        Assert.assertEquals(2, indexers.size());
+        Assert.assertEquals(indexer1.getName(), indexers.get(0).getName());
+        Assert.assertEquals(indexer2.getName(), indexers.get(1).getName());
     }
 
     @Override
@@ -296,10 +299,18 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     public void canRunIndexer() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
-        Response<Void> response = client.runIndexerWithResponse(indexer.getName(), null, null);
-        Assert.assertEquals(HttpStatus.SC_ACCEPTED, response.getStatusCode());
-
+        client.runIndexer(indexer.getName());
         IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
+        Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
+    }
+
+    @Override
+    public void canRunIndexerWithResponse() {
+        Indexer indexer = createTestDataSourceAndIndexer();
+
+        Response<Void> response = client.runIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
+        IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
+        Assert.assertEquals(HttpStatus.SC_ACCEPTED, response.getStatusCode());
         Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 
@@ -436,6 +447,17 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     }
 
     @Override
+    public void canCreateAndDeleteIndexer() {
+        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
+        indexer.setDataSourceName(SQL_DATASOURCE_NAME);
+        createIndexer(indexer);
+
+        client.deleteIndexer(indexer.getName());
+        Assert.assertFalse(client.indexerExists(indexer.getName()));
+    }
+
+    @Override
     public void deleteIndexerIsIdempotent() {
         // Create Datasource
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
@@ -445,25 +467,24 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
 
         // Try delete before the indexer even exists.
-        Response<Void> result = deleteIndexer(indexer.getName());
+        Response<Void> result = deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), generateRequestOptions());
 
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
 
         // Actually create the indexer
-        createIndexer(indexer, null, null);
+        createIndexer(indexer, new AccessCondition(), generateRequestOptions());
 
         // Now delete twice.
-        result = deleteIndexer(indexer.getName());
+        result = deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), generateRequestOptions());
         Assert.assertEquals(HttpStatus.SC_NO_CONTENT, result.getStatusCode());
 
-        result = deleteIndexer(indexer.getName());
+        result = deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), generateRequestOptions());
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
     }
 
     @Override
     public void canCreateAndGetIndexer() {
         String indexerName = "indexer";
-
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         createDatasource(dataSource);
 
@@ -476,7 +497,12 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createIndexer(indexer, null, null);
 
         Indexer indexerResult = getIndexer(indexerName);
+        assertIndexersEqual(indexer, indexerResult);
 
+        indexerResult = client.getIndexer(indexerName, generateRequestOptions());
+        assertIndexersEqual(indexer, indexerResult);
+
+        indexerResult = client.getIndexerWithResponse(indexerName, generateRequestOptions(), Context.NONE).getValue();
         assertIndexersEqual(indexer, indexerResult);
     }
 
@@ -630,6 +656,8 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Indexer indexer = createTestDataSourceAndIndexer();
 
         Assert.assertTrue(client.indexerExists(indexer.getName()));
+        Assert.assertTrue(client.indexerExists(indexer.getName(), generateRequestOptions()));
+        Assert.assertTrue(client.indexerExistsWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
     @Override

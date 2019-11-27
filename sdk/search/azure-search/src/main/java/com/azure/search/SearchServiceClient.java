@@ -581,10 +581,12 @@ public class SearchServiceClient {
      * @param indexerName the name of the indexer
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the indexer exists; false otherwise.
      */
-    public Response<Boolean> indexerExistsWithResponse(String indexerName, RequestOptions requestOptions) {
-        return asyncClient.indexerExistsWithResponse(indexerName, requestOptions).block();
+    public Response<Boolean> indexerExistsWithResponse(String indexerName,
+                                                       RequestOptions requestOptions, Context context) {
+        return asyncClient.indexerExistsWithResponse(indexerName, requestOptions, context).block();
     }
 
 

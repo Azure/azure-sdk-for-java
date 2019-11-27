@@ -94,10 +94,8 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         Assert.assertEquals(dataSource1.getName(), resultList.get(0).getName());
         Assert.assertEquals(dataSource2.getName(), resultList.get(1).getName());
 
-        Context context = new Context("key", "value");
-
         PagedResponse<DataSource> listResponse = client.listDataSourcesWithResponse("name",
-            generateRequestOptions(), context);
+            generateRequestOptions(), Context.NONE);
         resultList = listResponse.getItems();
 
         Assert.assertEquals(2, resultList.size());
@@ -106,13 +104,20 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     }
 
     @Override
+    public void canCreateAndDeleteDatasource() {
+        DataSource dataSource = createTestBlobDataSource(null);
+        client.deleteDataSource(dataSource.getName());
+
+        Assert.assertFalse(client.dataSourceExists(dataSource.getName()));
+    }
+
+    @Override
     public void deleteDataSourceIsIdempotent() {
         DataSource dataSource = createTestBlobDataSource(null);
 
-        Context context = new Context("key", "value");
         // Try to delete before the data source exists, expect a NOT FOUND return status code
         Response<Void> result = client.deleteDataSourceWithResponse(dataSource.getName(),
-            new AccessCondition(), generateRequestOptions(), context);
+            new AccessCondition(), generateRequestOptions(), Context.NONE);
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
 
         // Create the data source
@@ -120,11 +125,11 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
         // Delete twice, expect the first to succeed (with NO CONTENT status code) and the second to return NOT FOUND
         result = client.deleteDataSourceWithResponse(dataSource.getName(),
-            new AccessCondition(), generateRequestOptions(), context);
+            new AccessCondition(), generateRequestOptions(), Context.NONE);
         Assert.assertEquals(HttpStatus.SC_NO_CONTENT, result.getStatusCode());
         // Again, expect to fail
         result = client.deleteDataSourceWithResponse(dataSource.getName(),
-            new AccessCondition(), generateRequestOptions(), context);
+            new AccessCondition(), generateRequestOptions(), Context.NONE);
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
     }
 
@@ -265,6 +270,8 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         client.createOrUpdateDataSource(dataSource);
 
         Assert.assertTrue(client.dataSourceExists(dataSource.getName()));
+        Assert.assertTrue(client.dataSourceExists(dataSource.getName(), generateRequestOptions()));
+        Assert.assertTrue(client.dataSourceExistsWithResponse(dataSource.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
     @Override
@@ -322,9 +329,15 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     private void createGetAndValidateDataSource(DataSource expectedDataSource) {
         client.createOrUpdateDataSource(expectedDataSource);
         String dataSourceName = expectedDataSource.getName();
-        DataSource actualDataSource = client.getDataSource(dataSourceName);
-
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null)); // Get doesn't return connection strings.
+
+        DataSource actualDataSource = client.getDataSource(dataSourceName);
+        assertDataSourcesEqual(expectedDataSource, actualDataSource);
+
+        actualDataSource = client.getDataSource(dataSourceName, generateRequestOptions());
+        assertDataSourcesEqual(expectedDataSource, actualDataSource);
+
+        actualDataSource = client.getDataSourceWithResponse(dataSourceName, generateRequestOptions(), Context.NONE).getValue();
         assertDataSourcesEqual(expectedDataSource, actualDataSource);
 
         client.deleteDataSource(dataSourceName);
