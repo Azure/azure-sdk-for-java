@@ -1078,7 +1078,12 @@ class BlockBlobAPITest extends APISpec {
             null, null, null, null))
             .assertNext({
                 assert it.getStatusCode() == 201
-                assert uploadReporter.getReportingCount() == (long) (size / blockSize)
+
+                /*
+                 * Verify that the reporting count is equal or greater than the size divided by block size in the case
+                 * that operations need to be retried. Retry attempts will increment the reporting count.
+                 */
+                assert uploadReporter.getReportingCount() >= (long) (size / blockSize)
             }).verifyComplete()
 
         where:
@@ -1086,7 +1091,7 @@ class BlockBlobAPITest extends APISpec {
         10 * Constants.MB | 10 * Constants.MB | 8
         20 * Constants.MB | 1 * Constants.MB  | 5
         10 * Constants.MB | 5 * Constants.MB  | 2
-        10 * Constants.MB | 10 * Constants.KB | 100
+        10 * Constants.MB | 50 * Constants.KB | 20
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
