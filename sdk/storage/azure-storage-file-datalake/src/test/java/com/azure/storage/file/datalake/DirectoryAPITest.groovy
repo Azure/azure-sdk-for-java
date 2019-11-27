@@ -1522,4 +1522,17 @@ class DirectoryAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    def "Get Access Control OAuth"() {
+        setup:
+        def client = getOAuthServiceClient()
+        def fsClient = client.getFileSystemClient(dc.getFileSystemName())
+        def dirClient = fsClient.getDirectoryClient(dc.getDirectoryPath())
+
+        when:
+        dirClient.getAccessControl()
+
+        then:
+        notThrown(StorageErrorException)
+    }
+
 }
