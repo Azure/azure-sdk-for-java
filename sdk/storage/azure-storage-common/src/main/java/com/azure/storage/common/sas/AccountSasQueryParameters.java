@@ -14,7 +14,7 @@ import java.util.Map;
  * appended to a URL directly (though caution should be taken here in case there are existing query parameters, which
  * might affect the appropriate means of appending these query parameters). NOTE: Instances of this class are immutable
  * to ensure thread safety.
- * @deprecated Please use the generate*Sas method on the desired service client after initializing
+ * @deprecated Please use the generateSas method on the desired service client after initializing
  * {@link AccountSasSignatureValues}.
  */
 @Deprecated
@@ -83,7 +83,7 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
      * @return A {@code String} representing all SAS query parameters.
-     * @deprecated Please use the generate*Sas method on the desired service client after initializing
+     * @deprecated Please use the generateSas method on the desired service client after initializing
      * {@link AccountSasSignatureValues}.
      */
     @Deprecated

@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 
 /**
  * Used to initialize parameters for a Shared Access Signature (SAS) for an Azure Blob Storage service. Once all the
- * values here are set, use the appropriate generate*Sas method on the desired container/blob client to obtain a
+ * values here are set, use the appropriate SAS generation method on the desired container/blob client to obtain a
  * representation of the SAS which can then be applied to a new client using the .sasToken(String) method on the
  * desired client builder.
  *
@@ -296,7 +296,7 @@ public final class BlobServiceSasSignatureValues {
      * Gets the name of the container the SAS user may access.
      *
      * @return The name of the container the SAS user may access.
-     * @deprecated Container name is not auto-populated by the generate*Sas methods provided on the desired
+     * @deprecated Container name is now auto-populated by the SAS generation methods provided on the desired
      * container/blob client.
      */
     @Deprecated
@@ -309,7 +309,7 @@ public final class BlobServiceSasSignatureValues {
      *
      * @param containerName The name of the container.
      * @return The updated BlobServiceSASSignatureValues object.
-     * @deprecated Please use the generate*Sas methods provided on the desired container/blob client that will
+     * @deprecated Please use the SAS generation methods provided on the desired container/blob client that will
      * auto-populate the container name.
      */
     @Deprecated
@@ -324,7 +324,7 @@ public final class BlobServiceSasSignatureValues {
      *
      * @return The decoded name of the blob the SAS user may access. {@code null} or an empty string is returned when a
      * creating a container SAS.
-     * @deprecated Blob name is now auto-populated by the generate*Sas methods provided on the desired blob client.
+     * @deprecated Blob name is now auto-populated by the SAS generation methods provided on the desired blob client.
      */
     @Deprecated
     public String getBlobName() {
@@ -336,7 +336,7 @@ public final class BlobServiceSasSignatureValues {
      *
      * @param blobName The name of the blob. Use {@code null} or an empty string to create a container SAS.
      * @return The updated BlobServiceSASSignatureValues object.
-     * @deprecated Please use the generate*Sas methods provided on the desired blob client that will auto-populate the
+     * @deprecated Please use the SAS generation methods provided on the desired blob client that will auto-populate the
      * blob name.
      */
     @Deprecated
@@ -347,8 +347,8 @@ public final class BlobServiceSasSignatureValues {
 
     /**
      * @return the specific snapshot the SAS user may access.
-     * @deprecated Snapshot id is now auto-populated by the generate*Sas methods provided on the desired (snapshot) blob
-     * client.
+     * @deprecated Snapshot id is now auto-populated by the SAS generation methods provided on the desired (snapshot)
+     * blob client.
      */
     @Deprecated
     public String getSnapshotId() {
@@ -363,7 +363,7 @@ public final class BlobServiceSasSignatureValues {
      *
      * @param snapshotId Identifier of the snapshot
      * @return the updated BlobServiceSASSignatureValues object
-     * @deprecated Please use the generate*Sas methods provided on the desired (snapshot) blob client that will
+     * @deprecated Please use the SAS generation methods provided on the desired (snapshot) blob client that will
      * auto-populate the snapshot id.
      */
     @Deprecated
