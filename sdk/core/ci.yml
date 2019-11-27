@@ -6,10 +6,13 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
+      ref: refs/heads/feature/dev-package-builds
     - repository: azure-sdk-tools
       type: github
       name: Azure/azure-sdk-tools
       endpoint: azure
+      ref: refs/heads/feature/dev-package-builds
+
 trigger:
   branches:
     include:
