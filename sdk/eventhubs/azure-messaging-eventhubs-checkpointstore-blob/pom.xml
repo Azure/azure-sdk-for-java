@@ -15,6 +15,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
+  <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
   <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
 
