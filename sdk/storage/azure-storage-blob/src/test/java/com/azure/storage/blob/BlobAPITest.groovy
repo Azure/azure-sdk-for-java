@@ -498,7 +498,7 @@ class BlobAPITest extends APISpec {
          * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
          * to change the ETag therefore failing the download.
          */
-        def options = new ParallelTransferOptions(8 * Constants.KB, null, null)
+        def options = new ParallelTransferOptions(Constants.KB, null, null)
 
         /*
          * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is
