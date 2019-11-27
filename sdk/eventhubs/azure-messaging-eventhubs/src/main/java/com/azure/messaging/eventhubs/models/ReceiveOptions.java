@@ -30,7 +30,7 @@ public class ReceiveOptions {
     }
 
     /**
-     * Sets the {@code ownerLevel} value on this recieve operation. When populated, the level indicates that the receive
+     * Sets the {@code ownerLevel} value on this receive operation. When populated, the level indicates that the receive
      * operation is intended to be the only reader of events for the requested partition and associated consumer group.
      * To do so, this receive operation will attempt to assert ownership over the partition; in the case where
      * there is more than one exclusive receive operation for the same partition/consumer group pair, the one having a
