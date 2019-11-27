@@ -111,7 +111,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
             })
             .doOnRequest(request -> {
                 if (request < MINIMUM_REQUEST) {
-                    logger.warning("Back pressure request value not valid. It must be between {} and {}.",
+                    logger.warning(Messages.REQUEST_VALUE_NOT_VALID,
                         MINIMUM_REQUEST, MAXIMUM_REQUEST);
                     return;
                 }
