@@ -556,8 +556,8 @@ public final class BlobServiceAsyncClient {
     }
 
     /**
-     * Generates an account sas for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
-     * @see AccountSasSignatureValues for more information on how to construct an account SAS.
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
      * containers and file shares.</p>

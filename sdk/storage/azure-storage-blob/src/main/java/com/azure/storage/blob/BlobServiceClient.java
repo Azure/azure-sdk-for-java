@@ -375,8 +375,8 @@ public final class BlobServiceClient {
     }
 
     /**
-     * Generates an account sas for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
-     * @see AccountSasSignatureValues for more information on how to construct an account SAS.
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
      *
      * <p><strong>Generating an account SAS</strong></p>
      * <p>The snippet below generates an AccountSasSignatureValues object that lasts for two days and gives the user

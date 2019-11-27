@@ -805,9 +805,8 @@ public class BlobClientBase {
     }
 
     /**
-     * Generates a user delegation sas for the blob using the specified
-     * {@link BlobServiceSasSignatureValues}.
-     * @see BlobServiceSasSignatureValues for more information on how to construct a user delegation SAS.
+     * Generates a user delegation SAS for the blob using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -825,8 +824,8 @@ public class BlobClientBase {
     }
 
     /**
-     * Generates a service sas for the blob using the specified {@link BlobServiceSasSignatureValues}
-     * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
+     * Generates a service SAS for the blob using the specified {@link BlobServiceSasSignatureValues}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *

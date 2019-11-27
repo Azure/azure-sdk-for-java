@@ -557,9 +557,8 @@ public final class BlobContainerClient {
     }
 
     /**
-     * Generates a user delegation sas for the container using the specified
-     * {@link BlobServiceSasSignatureValues}.
-     * @see BlobServiceSasSignatureValues for more information on how to construct a user delegation SAS.
+     * Generates a user delegation SAS for the container using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -578,8 +577,8 @@ public final class BlobContainerClient {
     }
 
     /**
-     * Generates a service sas for the container using the specified {@link BlobServiceSasSignatureValues}
-     * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
+     * Generates a service SAS for the container using the specified {@link BlobServiceSasSignatureValues}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *

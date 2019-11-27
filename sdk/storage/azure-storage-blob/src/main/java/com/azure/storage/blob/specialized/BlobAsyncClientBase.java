@@ -131,21 +131,6 @@ public class BlobAsyncClientBase {
         this.customerProvidedKey = customerProvidedKey;
     }
 
-    BlobClientBuilder prepareBuilder() {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .pipeline(getHttpPipeline())
-            .endpoint(getBlobUrl())
-            .snapshot(getSnapshotId())
-            .serviceVersion(getServiceVersion());
-
-        CpkInfo cpk = getCustomerProvidedKey();
-        if (cpk != null) {
-            builder.customerProvidedKey(new CustomerProvidedKey(cpk.getEncryptionKey()));
-        }
-
-        return builder;
-    }
-
     /**
      * Creates a new {@link BlobAsyncClientBase} linked to the {@code snapshot} of this blob resource.
      *
@@ -1409,9 +1394,8 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Generates a user delegation sas for the blob using the specified
-     * {@link BlobServiceSasSignatureValues}.
-     * @see BlobServiceSasSignatureValues for more information on how to construct a user delegation SAS.
+     * Generates a user delegation SAS for the blob using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1431,8 +1415,8 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Generates a service sas for the blob using the specified {@link BlobServiceSasSignatureValues}
-     * @see BlobServiceSasSignatureValues for more information on how to construct a service SAS.
+     * Generates a service SAS for the blob using the specified {@link BlobServiceSasSignatureValues}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
