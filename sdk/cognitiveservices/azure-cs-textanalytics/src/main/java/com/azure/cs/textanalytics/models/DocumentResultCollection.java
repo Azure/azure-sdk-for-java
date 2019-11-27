@@ -16,7 +16,7 @@ public class DocumentResultCollection<T> extends IterableStream<T> {
      *
      * @param flux Flux of items to iterate over.
      */
-    public DocumentResultCollection(Flux<T> flux) {
+    DocumentResultCollection(Flux<T> flux) {
         super(flux);
     }
 
@@ -24,7 +24,7 @@ public class DocumentResultCollection<T> extends IterableStream<T> {
         return modelVersion;
     }
 
-    DocumentResultCollection setModelVersion(String modelVersion) {
+    DocumentResultCollection<T> setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
     }
@@ -33,7 +33,7 @@ public class DocumentResultCollection<T> extends IterableStream<T> {
         return statistics;
     }
 
-    DocumentResultCollection setBatchStatistics(TextBatchStatistics statistics) {
+    DocumentResultCollection<T> setBatchStatistics(TextBatchStatistics statistics) {
         this.statistics = statistics;
         return this;
     }
