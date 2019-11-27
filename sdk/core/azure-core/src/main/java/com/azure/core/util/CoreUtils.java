@@ -169,7 +169,7 @@ public final class CoreUtils {
      * @param propertiesFileName The file name defining the properties.
      * @return {@link UserAgentProperties}.
      */
-    public static UserAgentProperties getUserAgentPropertiesFromProperties(String propertiesFileName) {
+    public static UserAgentProperties getUserAgentProperties(String propertiesFileName) {
         Map<String, String> propertyMap = getProperties(propertiesFileName);
         String name = propertyMap.getOrDefault(NAME, "UnknownName");
         String version = propertyMap.getOrDefault(VERSION, "UnknownVersion");

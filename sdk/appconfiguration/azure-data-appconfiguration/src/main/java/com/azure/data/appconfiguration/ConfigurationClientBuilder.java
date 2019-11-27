@@ -35,7 +35,6 @@ import java.security.NoSuchAlgorithmException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -103,7 +102,7 @@ public final class ConfigurationClientBuilder {
         policies = new ArrayList<>();
         httpLogOptions = new HttpLogOptions();
 
-        properties = CoreUtils.getUserAgentPropertiesFromProperties(APP_CONFIG_PROPERTIES);
+        properties = CoreUtils.getUserAgentProperties(APP_CONFIG_PROPERTIES);
 
         headers = new HttpHeaders()
             .put(ECHO_REQUEST_ID_HEADER, "true")

@@ -84,7 +84,7 @@ public final class CryptographyClientBuilder {
         retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
-        properties = CoreUtils.getUserAgentPropertiesFromProperties(AZURE_KEY_VAULT_KEYS);
+        properties = CoreUtils.getUserAgentProperties(AZURE_KEY_VAULT_KEYS);
     }
 
     /**

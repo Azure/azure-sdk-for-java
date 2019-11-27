@@ -4,6 +4,9 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UserAgentProperties;
+
 final class CryptographyConstants {
     static final String ENCRYPTION_PROTOCOL_V1 = "1.0";
 
@@ -15,7 +18,13 @@ final class CryptographyConstants {
 
     static final String AES = "AES";
 
-    static final String AGENT_METADATA_VALUE = "JavaTrack2" + BlobCryptographyConfiguration.VERSION;
+    static final String AZURE_STORAGE_PROPERTIES = "azure-storage-blob.properties";
+
+    static final String BLOB_CRYPTOGRAPHY_NAME = getName();
+
+    static final String BLOB_CRYPTOGRAPHY_VERSION = getVersion();
+
+    static final String AGENT_METADATA_VALUE = "JavaTrack2" + BLOB_CRYPTOGRAPHY_VERSION;
 
     static final String ENCRYPTION_DATA_KEY = "encryptiondata";
 
@@ -35,5 +44,15 @@ final class CryptographyConstants {
         + "that it is not encrypted.";
 
     private CryptographyConstants() {
+    }
+
+    private static String getName() {
+        UserAgentProperties properties = CoreUtils.getUserAgentProperties(AZURE_STORAGE_PROPERTIES);
+        return properties.getName();
+    }
+
+    private static String getVersion() {
+        UserAgentProperties properties = CoreUtils.getUserAgentProperties(AZURE_STORAGE_PROPERTIES);
+        return properties.getVersion();
     }
 }

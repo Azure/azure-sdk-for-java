@@ -79,7 +79,7 @@ public final class SecretClientBuilder {
         retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
-        properties = CoreUtils.getUserAgentPropertiesFromProperties(AZURE_KEY_VAULT_SECRETS);
+        properties = CoreUtils.getUserAgentProperties(AZURE_KEY_VAULT_SECRETS);
     }
 
     /**

@@ -40,7 +40,7 @@ import java.util.List;
  */
 public final class BuilderHelper {
     private static final UserAgentProperties PROPERTIES =
-        CoreUtils.getUserAgentPropertiesFromProperties("");
+        CoreUtils.getUserAgentProperties("azure-storage-blob.properties");
 
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.

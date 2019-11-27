@@ -4,7 +4,6 @@
 package com.azure.core.util;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -42,17 +41,17 @@ public class CoreUtilsTests {
     @Test
     public void testProperties() {
         UserAgentProperties properties =
-            CoreUtils.getUserAgentPropertiesFromProperties("azure-core.properties");
+            CoreUtils.getUserAgentProperties("azure-core.properties");
         assertFalse(properties.getName().matches("UnknownName"));
-        assertTrue(CoreUtils.getUserAgentPropertiesFromProperties("azure-core.properties").getVersion()
+        assertTrue(CoreUtils.getUserAgentProperties("azure-core.properties").getVersion()
             .matches("\\d.\\d.\\d([-a-zA-Z0-9.])*"));
     }
 
     @Test
     public void testMissingProperties() {
-        assertTrue(CoreUtils.getUserAgentPropertiesFromProperties("foo.properties")
+        assertTrue(CoreUtils.getUserAgentProperties("foo.properties")
             .getVersion().matches("UnknownVersion"));
-        assertTrue(CoreUtils.getUserAgentPropertiesFromProperties("foo.properties")
+        assertTrue(CoreUtils.getUserAgentProperties("foo.properties")
             .getName().matches("UnknownName"));
     }
 }
