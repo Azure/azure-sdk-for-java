@@ -132,7 +132,7 @@ var codegen = function(project, cb) {
                         ' --azure-arm ' +
                         ' --azure-libraries-for-java-folder=' + process.cwd() + ' ' +
                         ` --license-header=MICROSOFT_MIT_NO_CODEGEN ` +
-						` --use=@microsoft.azure/autorest.java@preview ` +
+                        ` --use=@microsoft.azure/autorest.java@preview ` +						
                         generatorPath +
                         regenManager +
                         genInterface +
