@@ -14,7 +14,7 @@
   <name>Microsoft Azure Search client for Java</name>
   <description>This package contains client functionality for Microsoft Azure Search</description>
 
-  <groupId>com.azure.search</groupId>
+  <groupId>com.azure</groupId>
   <artifactId>azure-search</artifactId>
   <version>1.0.0-preview.2</version>
   <packaging>jar</packaging>
