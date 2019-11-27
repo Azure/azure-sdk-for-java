@@ -4,6 +4,7 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeRequest;
 import com.azure.search.models.Analyzer;
@@ -44,7 +45,6 @@ import com.azure.search.models.PatternTokenizer;
 import com.azure.search.models.PhoneticEncoder;
 import com.azure.search.models.PhoneticTokenFilter;
 import com.azure.search.models.RegexFlags;
-import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.ShingleTokenFilter;
@@ -137,7 +137,7 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
         searchIndexClient.uploadDocuments(documents);
         waitForIndexing();
 
-        Iterator iterator = searchIndexClient.search("someone@somewhere.something", new SearchOptions(), new RequestOptions())
+        Iterator iterator = searchIndexClient.search("someone@somewhere.something", new SearchOptions(), generateRequestOptions())
             .iterator();
         SearchResult searchResult = (SearchResult) iterator.next();
 
@@ -212,10 +212,10 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
             .setText("One two")
             .setAnalyzer(AnalyzerName.WHITESPACE);
         PagedIterable<TokenInfo> results = searchServiceClient.analyzeIndex(index.getName(), request);
-        Iterator<TokenInfo> it = results.stream().iterator();
-        assertTokenInfoEqual("One", 0, 3, 0, it.next());
-        assertTokenInfoEqual("two", 4, 7, 1, it.next());
-        Assert.assertFalse(it.hasNext());
+        Iterator<TokenInfo> iterator = results.stream().iterator();
+        assertTokenInfoEqual("One", 0, 3, 0, iterator.next());
+        assertTokenInfoEqual("two", 4, 7, 1, iterator.next());
+        Assert.assertFalse(iterator.hasNext());
 
         request = new AnalyzeRequest()
             .setText("One's <two/>")
@@ -224,9 +224,22 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
             .setCharFilters(Arrays.asList(CharFilterName.HTML_STRIP));
         results = searchServiceClient.analyzeIndex(index.getName(), request);
         // End offset is based on the original token, not the one emitted by the filters.
-        it = results.stream().iterator();
-        assertTokenInfoEqual("One", 0, 5, 0, it.next());
-        Assert.assertFalse(it.hasNext());
+        iterator = results.stream().iterator();
+        assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
+        Assert.assertFalse(iterator.hasNext());
+
+        results = searchServiceClient.analyzeIndex(index.getName(), request, generateRequestOptions());
+        // End offset is based on the original token, not the one emitted by the filters.
+        iterator = results.stream().iterator();
+        assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
+        Assert.assertFalse(iterator.hasNext());
+
+        List<TokenInfo> analyzeResponse = searchServiceClient.analyzeIndexWithResponse(index.getName(),
+            request, generateRequestOptions(), Context.NONE).getItems();
+        // End offset is based on the original token, not the one emitted by the filters.
+        iterator = analyzeResponse.stream().iterator();
+        assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
+        Assert.assertFalse(iterator.hasNext());
     }
 
     @Override

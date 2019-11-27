@@ -1,44 +1,44 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk87f65015bead.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkf504284644e3.search-dogfood.windows-int.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "0a55df9b-94cf-4d96-9e6b-d4dca5ece500",
+      "request-id" : "a49682d8-0d17-45e9-9b50-d1556f21c385",
       "StatusCode" : "200",
-      "Date" : "Fri, 18 Oct 2019 00:31:13 GMT",
+      "Date" : "Mon, 25 Nov 2019 23:33:35 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "114",
+      "elapsed-time" : "133",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "227",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk87f65015bead.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Content-Length" : "239",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkf504284644e3.search-dogfood.windows-int.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk87f65015bead.search.windows.net/indexes('hotels')/docs('1')?$select=HotelId%2cRooms&api-version=2019-05-06",
+    "Uri" : "https://azs-sdkf504284644e3.search-dogfood.windows-int.net/indexes('hotels')/docs('1')?$select=HotelId%2cRooms&api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "48c2c2b5-5957-42a9-a106-87f455201075",
+      "request-id" : "30daa5da-1505-4988-8249-13de10714308",
       "StatusCode" : "200",
-      "Date" : "Fri, 18 Oct 2019 00:31:16 GMT",
+      "Date" : "Mon, 25 Nov 2019 23:33:37 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
       "elapsed-time" : "9",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "415",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk87f65015bead.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"1\",\"Rooms\":[{\"Description\":null,\"Description_fr\":null,\"Type\":null,\"BaseRate\":null,\"BedOptions\":null,\"SleepsCount\":null,\"SmokingAllowed\":null,\"Tags\":[]},{\"Description\":null,\"Description_fr\":null,\"Type\":null,\"BaseRate\":null,\"BedOptions\":null,\"SleepsCount\":null,\"SmokingAllowed\":null,\"Tags\":[]}]}",
+      "Content-Length" : "427",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkf504284644e3.search-dogfood.windows-int.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"1\",\"Rooms\":[{\"Description\":null,\"Description_fr\":null,\"Type\":null,\"BaseRate\":null,\"BedOptions\":null,\"SleepsCount\":null,\"SmokingAllowed\":null,\"Tags\":[]},{\"Description\":null,\"Description_fr\":null,\"Type\":null,\"BaseRate\":null,\"BedOptions\":null,\"SleepsCount\":null,\"SmokingAllowed\":null,\"Tags\":[]}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

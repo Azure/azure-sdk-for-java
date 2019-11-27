@@ -33,7 +33,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy("HotelId");
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("more", "sg", suggestOptions, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("more", "sg", suggestOptions, generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -50,7 +50,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         SuggestOptions suggestOptions = new SuggestOptions()
             .setSearchFields("HotelName");
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("luxury", "sg", suggestOptions, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("luxury", "sg", suggestOptions, generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -70,7 +70,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .setFilter("Category eq 'Luxury'")
             .setTop(1);
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -87,7 +87,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         SuggestOptions suggestOptions = new SuggestOptions()
             .setUseFuzzyMatching(true);
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hitel", "sg", suggestOptions, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hitel", "sg", suggestOptions, generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -106,7 +106,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .setOrderBy("HotelId");
 
         //act
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("more", "sg", suggestOptions, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("more", "sg", suggestOptions, generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -134,7 +134,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         SuggestOptions suggestOptions = new SuggestOptions();
         suggestOptions.setSelect("ISBN", "Title", "PublishDate");
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("War", "sg", suggestOptions, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("War", "sg", suggestOptions, generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -149,10 +149,18 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hitel", "sg", null, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hitel", "sg", null, generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())
+            .assertNext(this::verifyFuzzyIsOffByDefault)
+            .verifyComplete();
+
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResultWithoutSuggestOptions = client.suggest(
+            "hitel", "sg");
+
+        StepVerifier
+            .create(suggestResultWithoutSuggestOptions.byPage())
             .assertNext(this::verifyFuzzyIsOffByDefault)
             .verifyComplete();
     }
@@ -162,7 +170,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("Hotel", "Suggester does not exist", null, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("Hotel", "Suggester does not exist", new SuggestOptions(), generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -178,7 +186,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy("This is not a valid orderby.");
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -198,7 +206,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .setMinimumCoverage(50.0);
 
         //act
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("luxury", "sg", suggestOptions, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("luxury", "sg", suggestOptions, generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -219,7 +227,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         suggestOptions.setTop(3);
 
         //act
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -237,7 +245,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         SuggestOptions suggestOptions = new SuggestOptions()
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
             .setOrderBy("HotelId");
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, generateRequestOptions());
 
         StepVerifier.create(suggestResult.byPage())
             .assertNext(nextPage -> {
@@ -260,7 +268,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
                 "LastRenovationDate asc",
                 "geo.distance(Location, geography'POINT(-122.0 49.0)')");
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse>suggestResult = client.suggest("hotel", "sg", suggestOptions, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse>suggestResult = client.suggest("hotel", "sg", suggestOptions, generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -281,7 +289,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("secret", "sg", suggestOptions, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("secret", "sg", suggestOptions, generateRequestOptions());
 
         StepVerifier
             .create(suggestResult.byPage())

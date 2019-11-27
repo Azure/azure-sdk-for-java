@@ -45,7 +45,6 @@ import com.azure.search.models.PatternTokenizer;
 import com.azure.search.models.PhoneticEncoder;
 import com.azure.search.models.PhoneticTokenFilter;
 import com.azure.search.models.RegexFlags;
-import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.ShingleTokenFilter;
@@ -138,7 +137,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         waitForIndexing();
 
         PagedFluxBase<SearchResult, SearchPagedResponse> results =
-            searchIndexClient.search("someone@somewhere.something", new SearchOptions(), new RequestOptions());
+            searchIndexClient.search("someone@somewhere.something", new SearchOptions(), generateRequestOptions());
 
         StepVerifier.create(results.collectList())
             .assertNext(firstPage -> {
@@ -236,6 +235,22 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
             .assertNext(onlyTokenInfo -> {
                 // End offset is based on the original token, not the one emitted by the filters.
                 assertTokenInfoEqual("One", 0, 5, 0, onlyTokenInfo);
+            })
+            .verifyComplete();
+
+        StepVerifier
+            .create(searchServiceClient.analyzeIndex(index.getName(), request, generateRequestOptions()))
+            .assertNext(onlyTokenInfo -> {
+                // End offset is based on the original token, not the one emitted by the filters.
+                assertTokenInfoEqual("One", 0, 5, 0, onlyTokenInfo);
+            })
+            .verifyComplete();
+
+        StepVerifier
+            .create(searchServiceClient.analyzeIndexWithResponse(index.getName(), request, generateRequestOptions()))
+            .assertNext(onlyTokenInfo -> {
+                // End offset is based on the original token, not the one emitted by the filters.
+                assertTokenInfoEqual("One", 0, 5, 0, onlyTokenInfo.getItems().get(0));
             })
             .verifyComplete();
     }

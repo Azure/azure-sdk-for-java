@@ -204,14 +204,29 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     public void canResetIndexerAndGetIndexerStatus() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
-        Mono<IndexerExecutionInfo> indexerStatusAfterReset = client.resetIndexerWithResponse(indexer.getName(), generateRequestOptions())
-            .flatMap(res -> client.getIndexerStatus(indexer.getName()));
-
-        StepVerifier.create(indexerStatusAfterReset)
+        client.resetIndexer(indexer.getName()).block();
+        StepVerifier.create(client.getIndexerStatus(indexer.getName()))
             .assertNext(indexerStatus -> {
                 Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
                 Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
-            }).verifyComplete();
+            })
+            .verifyComplete();
+
+        client.resetIndexer(indexer.getName(), generateRequestOptions()).block();
+        StepVerifier.create(client.getIndexerStatus(indexer.getName(), generateRequestOptions()))
+            .assertNext(indexerStatus -> {
+                Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
+                Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
+            })
+            .verifyComplete();
+
+        client.resetIndexerWithResponse(indexer.getName(), generateRequestOptions()).block();
+        StepVerifier.create(client.getIndexerStatusWithResponse(indexer.getName(), generateRequestOptions()))
+            .assertNext(indexerStatus -> {
+                Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getValue().getStatus());
+                Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getValue().getLastResult().getStatus());
+            })
+            .verifyComplete();
     }
 
     @Override
@@ -294,7 +309,6 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     @Override
     public void canRunIndexer() {
         Indexer indexer = createTestDataSourceAndIndexer();
-
         client.runIndexer(indexer.getName());
         IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName()).block();
 

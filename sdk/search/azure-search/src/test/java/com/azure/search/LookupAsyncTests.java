@@ -3,7 +3,6 @@
 package com.azure.search;
 
 import com.azure.search.models.GeoPoint;
-import com.azure.search.models.RequestOptions;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
@@ -99,7 +98,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, indexedDoc);
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
-        Mono<Document> result = client.getDocument(indexedDoc.hotelId(), selectedFields, new RequestOptions());
+        Mono<Document> result = client.getDocument(indexedDoc.hotelId(), selectedFields, generateRequestOptions());
 
         StepVerifier.create(result)
             .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
@@ -138,7 +137,7 @@ public class LookupAsyncTests extends LookupTestBase {
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
-        Mono<Document> result = client.getDocument("1", selectedFields, new RequestOptions());
+        Mono<Document> result = client.getDocument("1", selectedFields, generateRequestOptions());
         StepVerifier.create(result)
             .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
             .verifyComplete();
@@ -174,7 +173,7 @@ public class LookupAsyncTests extends LookupTestBase {
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "Address");
 
-        Mono<Document> result = client.getDocument("1", selectedFields, new RequestOptions());
+        Mono<Document> result = client.getDocument("1", selectedFields, generateRequestOptions());
         StepVerifier.create(result)
             .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
             .verifyComplete();
@@ -277,7 +276,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms");
 
-        Mono<Document> result = client.getDocument("1", selectedFields, new RequestOptions());
+        Mono<Document> result = client.getDocument("1", selectedFields, generateRequestOptions());
         StepVerifier.create(result)
             .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
             .verifyComplete();
@@ -325,7 +324,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
-        Mono<Document> result = client.getDocument("1", selectedFields, new RequestOptions());
+        Mono<Document> result = client.getDocument("1", selectedFields, generateRequestOptions());
         StepVerifier.create(result)
             .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
             .verifyComplete();

@@ -15,7 +15,9 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
         ServiceStatistics serviceStatistics = serviceClient.getServiceStatistics();
+        assertReflectionEquals(serviceStatistics, getExpectedServiceStatistics(), IGNORE_DEFAULTS);
 
+        serviceStatistics = serviceClient.getServiceStatistics(generateRequestOptions());
         assertReflectionEquals(serviceStatistics, getExpectedServiceStatistics(), IGNORE_DEFAULTS);
     }
 }

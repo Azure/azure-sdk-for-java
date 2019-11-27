@@ -1,19 +1,19 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdkaa1331150309.search.windows.net/indexes('hotels')/docs/search.post.search?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkf7767541cbd6.search-dogfood.windows-int.net/indexes('hotels')/docs/search.post.search?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "8c0a3e08-6f31-4c88-b546-8ce13ad7ddc7",
+      "request-id" : "adf6d026-0edc-4982-a269-a94a5db446a4",
       "StatusCode" : "400",
-      "Date" : "Sun, 27 Oct 2019 12:12:26 GMT",
+      "Date" : "Mon, 25 Nov 2019 23:24:18 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "124",
+      "elapsed-time" : "223",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "148",

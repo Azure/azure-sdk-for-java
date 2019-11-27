@@ -613,7 +613,8 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> resetIndexer(String indexerName) {
-        return this.resetIndexerWithResponse(indexerName, null).map(Response::getValue);
+        return this.resetIndexerWithResponse(indexerName, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -625,7 +626,8 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> resetIndexer(String indexerName, RequestOptions requestOptions) {
-        return this.resetIndexerWithResponse(indexerName, requestOptions).map(Response::getValue);
+        return this.resetIndexerWithResponse(indexerName, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -643,8 +645,7 @@ public class SearchServiceAsyncClient {
     Mono<Response<Void>> resetIndexerWithResponse(String indexerName,
                                                   RequestOptions requestOptions,
                                                   Context context) {
-        return restClient.indexers().resetWithRestResponseAsync(
-            indexerName, requestOptions, context)
+        return restClient.indexers().resetWithRestResponseAsync(indexerName, requestOptions, context)
             .map(Function.identity());
     }
 

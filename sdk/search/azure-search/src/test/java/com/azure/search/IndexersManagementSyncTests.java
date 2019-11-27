@@ -287,19 +287,28 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     public void canResetIndexerAndGetIndexerStatus() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
-        client.resetIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
-
+        client.resetIndexer(indexer.getName());
         IndexerExecutionInfo indexerStatus = client.getIndexerStatus(indexer.getName());
-
         Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
         Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
+
+        client.resetIndexer(indexer.getName(), generateRequestOptions());
+        indexerStatus = client.getIndexerStatus(indexer.getName(), generateRequestOptions());
+        Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
+        Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
+
+        client.resetIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
+        IndexerExecutionInfo indexerStatusResponse = client.getIndexerStatusWithResponse(indexer.getName(),
+            generateRequestOptions(), Context.NONE).getValue();
+        Assert.assertEquals(IndexerStatus.RUNNING, indexerStatusResponse.getStatus());
+        Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatusResponse.getLastResult().getStatus());
     }
 
     @Override
     public void canRunIndexer() {
         Indexer indexer = createTestDataSourceAndIndexer();
-
         client.runIndexer(indexer.getName());
+
         IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
         Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
@@ -307,9 +316,9 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     @Override
     public void canRunIndexerWithResponse() {
         Indexer indexer = createTestDataSourceAndIndexer();
-
         Response<Void> response = client.runIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
         IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
+
         Assert.assertEquals(HttpStatus.SC_ACCEPTED, response.getStatusCode());
         Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
@@ -494,7 +503,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Indexer indexer = createBaseTestIndexerObject(indexerName, TARGET_INDEX_NAME)
             .setDataSourceName(dataSource.getName());
 
-        createIndexer(indexer, null, null);
+        createIndexer(indexer, new AccessCondition(), generateRequestOptions());
 
         Indexer indexerResult = getIndexer(indexerName);
         assertIndexersEqual(indexer, indexerResult);
