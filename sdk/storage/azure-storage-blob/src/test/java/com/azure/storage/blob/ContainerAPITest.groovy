@@ -813,7 +813,9 @@ class ContainerAPITest extends APISpec {
 
         expect: "Get first page of blob listings (sync and async)"
         cc.listBlobs(options, null).iterableByPage().iterator().next().getValue().size() == PAGE_SIZE
-        ccAsync.listBlobs(options).byPage().blockFirst().getValue().size() == PAGE_SIZE
+        StepVerifier.create(ccAsync.listBlobs(options).byPage().limitRequest(1))
+            .assertNext({ assert it.getValue().size() == PAGE_SIZE })
+            .verifyComplete()
     }
 
     def "List blobs flat options fail"() {

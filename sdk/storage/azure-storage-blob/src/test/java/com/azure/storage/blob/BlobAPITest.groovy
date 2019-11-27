@@ -1058,17 +1058,19 @@ class BlobAPITest extends APISpec {
         }).blockLast()
 
         expect:
-        def properties = copyDestBlob.getProperties().block()
-
-        properties.getCopyStatus() == CopyStatusType.SUCCESS
-        properties.getCopyCompletionTime() != null
-        properties.getCopyProgress() != null
-        properties.getCopySource() != null
-        properties.getCopyId() != null
-
         lastResponse != null
         lastResponse.getValue() != null
-        lastResponse.getValue().getCopyId() == properties.getCopyId()
+
+        StepVerifier.create(copyDestBlob.getProperties())
+            .assertNext({
+                assert it.getCopyId() == lastResponse.getValue().getCopyId()
+                assert it.getCopyStatus() == CopyStatusType.SUCCESS
+                assert it.getCopyCompletionTime() != null
+                assert it.getCopyProgress() != null
+                assert it.getCopySource() != null
+                assert it.getCopyId() != null
+            })
+            .verifyComplete()
     }
 
     @Unroll
@@ -1088,7 +1090,9 @@ class BlobAPITest extends APISpec {
         poller.blockLast()
 
         then:
-        bu2.getProperties().block().getMetadata() == metadata
+        StepVerifier.create(bu2.getProperties())
+            .assertNext({ assert it.getMetadata() == metadata })
+            .verifyComplete()
 
         where:
         key1  | value1 | key2   | value2
