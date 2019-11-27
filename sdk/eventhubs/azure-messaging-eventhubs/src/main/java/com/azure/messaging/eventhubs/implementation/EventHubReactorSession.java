@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -39,6 +40,8 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
     private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
         Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
+
+    private final ClientLogger logger = new ClientLogger(EventHubReactorSession.class);
 
     /**
      * Creates a new AMQP session using proton-j.

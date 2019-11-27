@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.credential.TokenCredential;
@@ -94,13 +94,11 @@ public class EventHubConsumerClientTest {
         MockitoAnnotations.initMocks(this);
 
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
-        when(amqpReceiveLink.getErrors()).thenReturn(Flux.never());
-        when(amqpReceiveLink.getConnectionStates()).thenReturn(Flux.never());
-        when(amqpReceiveLink.getShutdownSignals()).thenReturn(Flux.never());
+        when(amqpReceiveLink.getEndpointStates()).thenReturn(Flux.never());
         when(amqpReceiveLink.getCredits()).thenReturn(10);
 
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         linkProvider = new EventHubConnection(Mono.just(connection), connectionOptions);
         when(connection.createSession(argThat(name -> name.endsWith(PARTITION_ID))))
@@ -237,9 +235,7 @@ public class EventHubConsumerClientTest {
         EmitterProcessor<Message> processor = EmitterProcessor.create(100, false);
         FluxSink<Message> sink2 = processor.sink(FluxSink.OverflowStrategy.BUFFER);
         when(amqpReceiveLink2.receive()).thenReturn(processor);
-        when(amqpReceiveLink2.getErrors()).thenReturn(Flux.never());
-        when(amqpReceiveLink2.getConnectionStates()).thenReturn(Flux.never());
-        when(amqpReceiveLink2.getShutdownSignals()).thenReturn(Flux.never());
+        when(amqpReceiveLink2.getEndpointStates()).thenReturn(Flux.never());
         when(amqpReceiveLink2.getCredits()).thenReturn(10);
 
         // Act

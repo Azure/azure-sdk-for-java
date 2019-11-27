@@ -64,7 +64,7 @@ public final class CertificateOperation {
      * Error encountered, if any, during the certificate operation.
      */
     @JsonProperty(value = "error")
-    private Error error;
+    private CertificateOperationError error;
 
     /**
      * Location which contains the result of the certificate operation.
@@ -155,7 +155,7 @@ public final class CertificateOperation {
      *
      * @return the error
      */
-    public Error getError() {
+    public CertificateOperationError getError() {
         return this.error;
     }
 

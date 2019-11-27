@@ -11,7 +11,7 @@ import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
-import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -59,7 +59,7 @@ public class EventHubConnectionTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         ConnectionOptions connectionOptions = new ConnectionOptions(HOST_NAME, "event-hub-path", tokenCredential,
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         provider = new EventHubConnection(Mono.just(connection), connectionOptions);
     }
