@@ -39,7 +39,7 @@ public class AmqpExceptionTest {
     public void constructorErrorCondition() {
         // Arrange
         IllegalArgumentException innerException = new IllegalArgumentException("Some parameter");
-        ErrorCondition condition = ErrorCondition.ILLEGAL_STATE;
+        AmqpErrorCondition condition = AmqpErrorCondition.ILLEGAL_STATE;
 
         // Act
         AmqpException exception = new AmqpException(false, condition, message, innerException, context);

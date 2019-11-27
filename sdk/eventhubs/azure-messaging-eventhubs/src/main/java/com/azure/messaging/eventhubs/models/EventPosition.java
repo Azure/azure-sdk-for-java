@@ -62,8 +62,8 @@ public final class EventPosition {
 
     /**
      * Corresponds to the end of the partition, where no more events are currently enqueued. Use this position to begin
-     * receiving from the next event to be enqueued in the partition after an {@link EventHubConsumerAsyncClient} is
-     * created with this position.
+     * receiving from the next event to be enqueued in the partition when
+     * {@link EventHubConsumerAsyncClient#receiveFromPartition(String, EventPosition) receiveFromPartition()} invoked.
      *
      * @return An {@link EventPosition} set to the end of an Event Hubs stream and listens for new events.
      */
@@ -108,7 +108,7 @@ public final class EventPosition {
      *     received.
      * @return An {@link EventPosition} object.
      */
-    public static EventPosition fromOffset(long offset, boolean isInclusive) {
+    private static EventPosition fromOffset(long offset, boolean isInclusive) {
         return new EventPosition(isInclusive, offset, null, null);
     }
 

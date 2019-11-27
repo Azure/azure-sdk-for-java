@@ -37,7 +37,7 @@ public class ListOperationsAsync {
         // Let's create a self signed certificate valid for 1 year. if the certificate
         //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
+            .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
             .setReuseKey(true)
             .setKeyCurveName(CertificateKeyCurveName.P_256);
         Map<String, String> tags = new HashMap<>();
@@ -74,7 +74,8 @@ public class ListOperationsAsync {
 
         // Let's list all the certificates in the key vault.
         certificateAsyncClient.listPropertiesOfCertificates()
-            .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
+            .subscribe(certificateProeprties -> certificateAsyncClient
+                .getCertificateVersion(certificateProeprties.getName(), certificateProeprties.getVersion())
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s \n",
                     certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
 
@@ -82,15 +83,16 @@ public class ListOperationsAsync {
 
         // Let's list all certificate versions of the certificate.
         certificateAsyncClient.listPropertiesOfCertificateVersions("myCertificate")
-            .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
+            .subscribe(certificateProeprties -> certificateAsyncClient
+                .getCertificateVersion(certificateProeprties.getName(), certificateProeprties.getVersion())
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s\n",
                     certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
 
         Thread.sleep(5000);
 
         //Let's list all certificate issuers in the key vault.
-        certificateAsyncClient.listIssuers()
-            .subscribe(issuerBase -> certificateAsyncClient.getIssuer(issuerBase)
+        certificateAsyncClient.listPropertiesOfIssuers()
+            .subscribe(issuerProperties -> certificateAsyncClient.getIssuer(issuerProperties.getName())
                 .subscribe(issuerResponse -> System.out.printf("Received issuer with name %s and provider %s\n",
                     issuerResponse.getName(), issuerResponse.getProperties().getProvider())));
 

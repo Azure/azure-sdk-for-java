@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
+import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
@@ -1549,6 +1550,20 @@ class BlockBlobAPITest extends APISpec {
         String endpoint = BlobUrlParts.parse(blockBlobClient.getBlobUrl()).setScheme("http").toUrl()
         def builder = new SpecializedBlobClientBuilder()
             .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
+            .endpoint(endpoint)
+
+        when:
+        builder.buildBlockBlobClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Builder bearer token validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(blockBlobClient.getBlobUrl()).setScheme("http").toUrl()
+        def builder = new SpecializedBlobClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
 
         when:

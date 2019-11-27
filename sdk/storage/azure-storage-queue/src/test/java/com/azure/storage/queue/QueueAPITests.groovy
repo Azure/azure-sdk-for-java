@@ -5,7 +5,9 @@ package com.azure.storage.queue
 
 import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.util.Context
+import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.queue.implementation.util.BuilderHelper
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueMessageItem
@@ -476,5 +478,20 @@ class QueueAPITests extends APISpec {
     def "Get Queue Name"() {
         expect:
         queueName == queueClient.getQueueName()
+    }
+
+    def "Builder bearer token validation"() {
+        setup:
+        URL url = new URL(queueClient.getQueueUrl())
+        String endpoint = new URL("http", url.getHost(), url.getPort(), url.getFile()).toString()
+        def builder = new QueueClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }

@@ -7,4 +7,7 @@ jobs:
       EnvVars:
         AZURE_TEST_MODE: LIVE
         AZURE_APPCONFIG_CONNECTION_STRING: $(java-azconfig-test-connection-string)
-        AZURE_LOG_LEVEL: 2
+        AZURE_CLIENT_ID: $(java-azconfig-aad-client-id)
+        AZURE_CLIENT_SECRET: $(java-azconfig-aad-client-secret)
+        AZURE_TENANT_ID: $(java-azconfig-aad-tenant-id)
+        AZURE_LOG_LEVEL: 3

@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
@@ -28,7 +28,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
     private final TokenManagerProvider tokenManagerProvider;
-    private final RetryOptions retryOptions;
+    private final AmqpRetryOptions retryOptions;
     private final MessageSerializer messageSerializer;
 
     /**
@@ -69,7 +69,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
 
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
-            tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer);
+        return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
+            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer);
     }
 }

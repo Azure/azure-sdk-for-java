@@ -47,7 +47,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client.listConfigurationSettings(new SettingSelector().setKeys(keyPrefix + "*"))
             .flatMap(configurationSetting -> {
                 logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
-                Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.clearReadOnlyWithResponse(configurationSetting) : Mono.empty();
+                Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.setReadOnlyWithResponse(configurationSetting, false) : Mono.empty();
                 return unlock.then(client.deleteConfigurationSettingWithResponse(configurationSetting, false));
             })
             .blockLast();
@@ -320,7 +320,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // read-only setting
-            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel()))
+            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), true))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -342,7 +342,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // read-only setting
-            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel()))
+            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), true))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -351,7 +351,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
 
             // clear read-only of setting and delete
-            StepVerifier.create(client.clearReadOnly(expected.getKey(), expected.getLabel()))
+            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), false))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -373,7 +373,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // read-only setting
-            StepVerifier.create(client.setReadOnlyWithResponse(expected))
+            StepVerifier.create(client.setReadOnlyWithResponse(expected, true))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -394,7 +394,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // read-only setting
-            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel()))
+            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), true))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -403,7 +403,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
 
             // clear read-only setting and delete
-            StepVerifier.create(client.clearReadOnlyWithResponse(expected))
+            StepVerifier.create(client.setReadOnlyWithResponse(expected, false))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 

@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
@@ -18,17 +18,17 @@ import java.util.Objects;
 @Immutable
 public class ConnectionOptions {
     private final TokenCredential tokenCredential;
-    private final TransportType transport;
-    private final RetryOptions retryOptions;
+    private final AmqpTransportType transport;
+    private final AmqpRetryOptions retryOptions;
     private final ProxyOptions proxyOptions;
     private final Scheduler scheduler;
     private final String fullyQualifiedNamespace;
     private final String entityPath;
-    private final CBSAuthorizationType authorizationType;
+    private final CbsAuthorizationType authorizationType;
 
     public ConnectionOptions(String fullyQualifiedNamespace, String entityPath, TokenCredential tokenCredential,
-                             CBSAuthorizationType authorizationType, TransportType transport, RetryOptions retryOptions,
-                             ProxyOptions proxyOptions, Scheduler scheduler) {
+            CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
+            ProxyOptions proxyOptions, Scheduler scheduler) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' is required.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' is required.");
@@ -52,15 +52,15 @@ public class ConnectionOptions {
         return tokenCredential;
     }
 
-    public CBSAuthorizationType getAuthorizationType() {
+    public CbsAuthorizationType getAuthorizationType() {
         return authorizationType;
     }
 
-    public TransportType getTransportType() {
+    public AmqpTransportType getTransportType() {
         return transport;
     }
 
-    public RetryOptions getRetry() {
+    public AmqpRetryOptions getRetry() {
         return retryOptions;
     }
 

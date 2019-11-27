@@ -7,6 +7,9 @@ import com.azure.core.http.RequestConditions
 import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
+import com.azure.identity.DefaultAzureCredential
+import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.identity.implementation.IdentityClientOptions
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobErrorCode
@@ -1887,5 +1890,17 @@ class BlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    def "Builder bearer token validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(bc.getBlobUrl()).setScheme("http").toUrl()
+        def builder = new BlobClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
 
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
 }

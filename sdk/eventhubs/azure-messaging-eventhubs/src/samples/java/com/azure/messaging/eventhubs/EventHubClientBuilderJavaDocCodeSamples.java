@@ -19,11 +19,10 @@ public class EventHubClientBuilderJavaDocCodeSamples {
             .shareConnection();
 
         // Both the producer and consumer created share the same underlying connection.
-        EventHubProducerAsyncClient producer = builder.buildAsyncProducer();
-
+        EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
         EventHubConsumerAsyncClient consumer = builder
             .consumerGroup("my-consumer-group")
-            .buildAsyncConsumer();
+            .buildAsyncConsumerClient();
         // END: com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation
     }
 }

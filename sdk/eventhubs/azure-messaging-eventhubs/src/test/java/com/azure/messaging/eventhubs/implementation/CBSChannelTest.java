@@ -3,14 +3,14 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CBSChannel;
+import com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -34,13 +34,13 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-import static com.azure.core.amqp.implementation.CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
+import static com.azure.core.amqp.implementation.CbsAuthorizationType.SHARED_ACCESS_SIGNATURE;
 
 public class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
 
     private TestReactorConnection connection;
-    private CBSChannel cbsChannel;
+    private ClaimsBasedSecurityChannel cbsChannel;
     private ConnectionStringProperties connectionString;
     private AzureTokenManagerProvider azureTokenManagerProvider;
     @Mock
@@ -62,9 +62,9 @@ public class CBSChannelTest extends IntegrationTestBase {
                 connectionString.getSharedAccessKey());
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionString.getEndpoint().getHost(),
-            connectionString.getEntityPath(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
+            connectionString.getEntityPath(), tokenCredential, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
             RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.elastic());
-        final RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofMinutes(5));
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(5));
 
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
@@ -73,7 +73,7 @@ public class CBSChannelTest extends IntegrationTestBase {
 
         final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 
-        cbsChannel = new CBSChannel(requestResponseChannel, tokenCredential, connectionOptions.getAuthorizationType(),
+        cbsChannel = new ClaimsBasedSecurityChannel(requestResponseChannel, tokenCredential, connectionOptions.getAuthorizationType(),
             retryOptions);
     }
 
@@ -109,8 +109,8 @@ public class CBSChannelTest extends IntegrationTestBase {
 
         final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 
-        final CBSNode node = new CBSChannel(requestResponseChannel, tokenProvider, SHARED_ACCESS_SIGNATURE,
-            new RetryOptions().setTryTimeout(Duration.ofMinutes(5)));
+        final ClaimsBasedSecurityNode node = new ClaimsBasedSecurityChannel(requestResponseChannel, tokenProvider, SHARED_ACCESS_SIGNATURE,
+            new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(5)));
 
         // Act & Assert
         StepVerifier.create(node.authorize(tokenAudience, tokenAudience))
@@ -118,7 +118,7 @@ public class CBSChannelTest extends IntegrationTestBase {
                 Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
-                Assertions.assertEquals(ErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
+                Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
                 Assertions.assertFalse(exception.isTransient());
                 Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })

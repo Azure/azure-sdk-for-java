@@ -743,7 +743,7 @@ public final class FileReadHeaders {
      *
      * @return the fileContentMD5 value.
      */
-    public byte[] getFileContentMD5() {
+    public byte[] getFileContentMd5() {
         return CoreUtils.clone(this.fileContentMD5);
     }
 
@@ -754,11 +754,11 @@ public final class FileReadHeaders {
      * value may or may not be equal to the value returned in Content-MD5
      * header, with the latter calculated from the requested range.
      *
-     * @param fileContentMD5 the fileContentMD5 value to set.
+     * @param fileContentMd5 the fileContentMD5 value to set.
      * @return the FileReadHeaders object itself.
      */
-    public FileReadHeaders setFileContentMD5(byte[] fileContentMD5) {
-        this.fileContentMD5 = CoreUtils.clone(fileContentMD5);
+    public FileReadHeaders setFileContentMd5(byte[] fileContentMd5) {
+        this.fileContentMD5 = CoreUtils.clone(fileContentMd5);
         return this;
     }
 

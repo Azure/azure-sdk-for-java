@@ -238,7 +238,6 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         }
     }
 
-
     /**
      * Tests that we can get an event using the inclusive offset.
      */
@@ -273,7 +272,9 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         // Arrange
         final EventData[] events = EVENTS_PUSHED.get();
         final EventData expectedEvent = events[4];
-        final EventPosition position = EventPosition.fromOffset(events[3].getOffset(), false);
+
+        // Choose the offset before it, so we get that event back.
+        final EventPosition position = EventPosition.fromOffset(expectedEvent.getOffset() - 1);
         final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
 
         // Act & Assert

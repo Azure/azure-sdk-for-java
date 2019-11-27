@@ -3,11 +3,10 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
-import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
@@ -61,7 +60,7 @@ public class RequestResponseChannel implements Closeable {
     private final SendLinkHandler sendLinkHandler;
     private final ReceiveLinkHandler receiveLinkHandler;
     private final Disposable subscription;
-    private final RetryPolicy retryPolicy;
+    private final AmqpRetryPolicy retryPolicy;
 
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the
@@ -77,7 +76,7 @@ public class RequestResponseChannel implements Closeable {
      * @param provider The reactor provider that the request will be sent with.
      */
     public RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
-            String entityPath, Session session, RetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
+            String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
             ReactorProvider provider, MessageSerializer messageSerializer) {
         this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
