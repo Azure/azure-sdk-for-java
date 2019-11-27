@@ -363,8 +363,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 if (encryptionData.getWrappedContentKey().getKeyId().equals(keyId)) {
                     return Mono.just(this.keyWrapper);
                 } else {
-                    throw logger.logExceptionAsError(Exceptions.propagate(new IllegalArgumentException("Key mismatch. " +
-                        "The key id stored on the service does not match the specified key.")));
+                    throw logger.logExceptionAsError(Exceptions.propagate(new IllegalArgumentException("Key mismatch. "
+                        + "The key id stored on the service does not match the specified key.")));
                 }
             });
         }
