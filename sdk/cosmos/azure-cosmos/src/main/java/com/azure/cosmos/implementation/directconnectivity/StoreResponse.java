@@ -25,6 +25,7 @@ public class StoreResponse {
     final private String content;
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
+    private RntbdRequestTimeline rntbdRequestTimeline;
 
     public StoreResponse(int status, List<Entry<String, String>> headerEntries, InputStream inputStream) {
         this(status, headerEntries, null, inputStream);
@@ -36,7 +37,7 @@ public class StoreResponse {
 
     private StoreResponse(
             int status,
-            List<Entry<String, String>> headerEntries, 
+            List<Entry<String, String>> headerEntries,
             String content,
             InputStream inputStream) {
         responseHeaderNames = new String[headerEntries.size()];
@@ -112,8 +113,18 @@ public class StoreResponse {
         return cosmosResponseDiagnostics;
     }
 
-    void setCosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
+    StoreResponse setCosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
         this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
+        return this;
+    }
+
+    public RntbdRequestTimeline getRntbdRequestTimeline() {
+        return this.rntbdRequestTimeline;
+    }
+
+    public StoreResponse setRntbdRequestTimeline(RntbdRequestTimeline rntbdRequestTimeline) {
+        this.rntbdRequestTimeline = rntbdRequestTimeline;
+        return this;
     }
 
     int getSubStatusCode() {

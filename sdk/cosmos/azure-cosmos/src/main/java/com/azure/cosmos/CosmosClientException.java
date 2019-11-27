@@ -5,6 +5,8 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.directconnectivity.RntbdRequestTimeline;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;
@@ -34,6 +36,7 @@ public class CosmosClientException extends Exception {
     private final Map<String, String> responseHeaders;
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
+    private RntbdRequestTimeline rntbdRequestTimeline;
     private CosmosError cosmosError;
 
     long lsn;
@@ -240,6 +243,15 @@ public class CosmosClientException extends Exception {
 
     CosmosClientException setCosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
         this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
+        return this;
+    }
+
+    public RntbdRequestTimeline getRntbdRequestTimeline() {
+        return this.rntbdRequestTimeline;
+    }
+
+    public CosmosClientException setRntbdRequestTimeline(RntbdRequestTimeline rntbdRequestTimeline) {
+        this.rntbdRequestTimeline = rntbdRequestTimeline;
         return this;
     }
 

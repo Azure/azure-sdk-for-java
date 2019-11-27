@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -111,6 +112,7 @@ public final class RntbdTransportClient extends TransportClient {
         this.throwIfClosed();
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, address);
+
         requestArgs.traceOperation(logger, null, "invokeStoreAsync");
 
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
@@ -118,14 +120,26 @@ public final class RntbdTransportClient extends TransportClient {
 
         logger.debug("RntbdTransportClient.invokeStoreAsync({}, {}): {}", address, request, record);
 
-        return Mono.fromFuture(record).doFinally(signalType -> {
+        return Mono.fromFuture(record.whenComplete((response, throwable) -> {
+
+            record.stage(RntbdRequestRecord.Stage.COMPLETED);
+
+            if (throwable == null) {
+                response.setRntbdRequestTimeline(record.timeline());
+            } else {
+                checkArgument(throwable instanceof CosmosClientException, "expected %s, not %s: %s",
+                    CosmosClientException.class,
+                    throwable.getClass(),
+                    throwable);
+                CosmosClientException error = (CosmosClientException) throwable;
+                error.setRntbdRequestTimeline(record.timeline());
+            }
+
+        })).doFinally(signalType -> {
             logger.debug("SignalType.{} received from reactor: {\n  endpoint: {},\n  record: {}\n}",
                 signalType.name(),
                 endpoint,
                 record);
-            if (signalType == SignalType.CANCEL) {
-                record.stage(RntbdRequestRecord.Stage.CANCELLED_BY_CLIENT);
-            }
         });
     }
 

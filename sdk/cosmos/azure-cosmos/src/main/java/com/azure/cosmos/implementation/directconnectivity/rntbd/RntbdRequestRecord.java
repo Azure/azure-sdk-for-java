@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.RequestTimeoutException;
+import com.azure.cosmos.implementation.directconnectivity.RntbdRequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -17,30 +17,38 @@ import io.netty.util.TimerTask;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 @JsonSerialize(using = RntbdRequestRecord.JsonSerializer.class)
 public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
-    private static final AtomicReferenceFieldUpdater<RntbdRequestRecord, Stage>
-        stageUpdater = AtomicReferenceFieldUpdater.newUpdater(RntbdRequestRecord.class, Stage.class, "stage");
+    private static final AtomicReferenceFieldUpdater<RntbdRequestRecord, Stage> updater = AtomicReferenceFieldUpdater
+        .newUpdater(RntbdRequestRecord.class, Stage.class, "stage");
 
     private final RntbdRequestArgs args;
     private final RntbdRequestTimer timer;
+
     private volatile Stage stage;
+
+    private volatile OffsetDateTime timeCompleted;
+    private volatile OffsetDateTime timeCreated;
+    private volatile OffsetDateTime timeQueued;
+    private volatile OffsetDateTime timeSent;
 
     public RntbdRequestRecord(final RntbdRequestArgs args, final RntbdRequestTimer timer) {
 
-        checkNotNull(args, "args");
-        checkNotNull(timer, "timer");
+        checkNotNull(args, "expected non-null args");
+        checkNotNull(timer, "expected non-null timer");
 
+        this.timeCreated = OffsetDateTime.now();
         this.stage = Stage.CREATED;
         this.args = args;
         this.timer = timer;
@@ -56,10 +64,6 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
         return this.args;
     }
 
-    public long creationTime() {
-        return this.args.creationTime();
-    }
-
     public boolean expire() {
         final RequestTimeoutException error = new RequestTimeoutException(this.toString(), this.args.physicalAddress());
         BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
@@ -70,21 +74,61 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
         return this.args.lifetime();
     }
 
-    public Timeout newTimeout(final TimerTask task) {
-        return this.timer.newTimeout(task);
-    }
-
     public Stage stage() {
-        return stageUpdater.get(this);
+        return updater.get(this);
     }
 
-    public RntbdRequestRecord stage(Stage value) {
-        stageUpdater.set(this, value);
+    public RntbdRequestRecord stage(final Stage value) {
+
+        final OffsetDateTime time = OffsetDateTime.now();
+
+        updater.updateAndGet(this, current -> {
+
+            switch (value) {
+                case QUEUED:
+                    checkState(current == Stage.CREATED,
+                        "expected transition from Stage.CREATED to Stage.QUEUED, not Stage.%s",
+                        value);
+                    this.timeQueued = time;
+                    break;
+                case SENT:
+                    checkState(current == Stage.QUEUED,
+                        "expected transition from Stage.QUEUED to Stage.SENT, not Stage.%s",
+                        value);
+                    this.timeSent = time;
+                    break;
+                case COMPLETED:
+                    checkState(current == Stage.SENT,
+                        "expected transition from Stage.SENT to Stage.COMPLETED, not Stage.%s",
+                        value);
+                    this.timeCompleted = time;
+                    break;
+    }
+
+            return value;
+        });
+
         return this;
     }
 
-    public long timeoutIntervalInMillis() {
-        return this.timer.getRequestTimeout(TimeUnit.MILLISECONDS);
+    public OffsetDateTime timeCompleted() {
+        return this.timeCompleted;
+    }
+
+    public OffsetDateTime timeCreated() {
+        return this.timeCreated;
+    }
+
+    public OffsetDateTime timeQueued() {
+        return this.timeQueued;
+    }
+
+    public OffsetDateTime timeSent() {
+        return this.timeSent;
+    }
+
+    public RntbdRequestTimeline timeline() {
+        return new RntbdRequestTimeline(this);
     }
 
     public long transportRequestId() {
@@ -94,6 +138,10 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
     // endregion
 
     // region Methods
+
+    public Timeout newTimeout(final TimerTask task) {
+        return this.timer.newTimeout(task);
+    }
 
     public long stop(Timer requests, Timer responses) {
         return this.args.stop(requests, responses);
@@ -109,7 +157,7 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
     // region Types
 
     public enum Stage {
-        CREATED, QUEUED, SENT, UNSENT, CANCELLED_BY_CLIENT
+        CREATED, QUEUED, SENT, COMPLETED
     }
 
     static final class JsonSerializer extends StdSerializer<RntbdRequestRecord> {
@@ -125,6 +173,7 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
             final SerializerProvider provider) throws IOException {
 
             generator.writeStartObject();
+
             generator.writeObjectFieldStart("status");
             generator.writeBooleanField("done", value.isDone());
             generator.writeBooleanField("cancelled", value.isCancelled());
@@ -155,9 +204,40 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
             }
 
             generator.writeEndObject();
+
             generator.writeObjectField("args", value.args);
+
+            generator.writeStartObject("timeline");
+
+            if (value.timeCreated() != null) {
+                generator.writeStringField("created", value.timeCreated().toString());
+            } else {
+                generator.writeNullField("created");
+            }
+
+            if (value.timeQueued() != null) {
+                generator.writeStringField("queued", value.timeQueued().toString());
+            } else {
+                generator.writeNullField("queued");
+            }
+
+            if (value.timeSent() != null) {
+                generator.writeStringField("sent", value.timeSent().toString());
+            } else {
+                generator.writeNullField("sent");
+            }
+
+            if (value.timeCompleted() != null) {
+                generator.writeStringField("completed", value.timeCompleted().toString());
+            } else {
+                generator.writeNullField("completed");
+            }
+
+            generator.writeEndObject();
+
             generator.writeEndObject();
         }
     }
+
     // endregion
 }
