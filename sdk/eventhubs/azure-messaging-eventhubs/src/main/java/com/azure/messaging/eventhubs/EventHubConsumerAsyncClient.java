@@ -12,7 +12,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.BaseSubscriber;
@@ -33,21 +32,21 @@ import static com.azure.core.util.FluxUtil.monoError;
  * or all partitions in the context of a specific consumer group.
  *
  * <p><strong>Creating an {@link EventHubConsumerAsyncClient}</strong></p>
- * <p>Required parameters are {@code consumerGroup}, and credentials are required when
- * creating a consumer.</p> {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
  *
  * <p><strong>Consuming events a single partition from Event Hub</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition}
  *
- * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
- * <p>For event consumers that need to limit the number of events they receive at a given time, they can use {@link
- * BaseSubscriber#request(long)}.</p> {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber}
- *
  * <p><strong>Viewing latest partition information</strong></p>
  * <p>Latest partition information as events are received can by setting
- * {@link ReceiveOptions#setTrackLastEnqueuedEventProperties(boolean) setTrackLastEnqueuedEventProperties} to {@code
- * true}. As events come in, explore the {@link PartitionContext} object. {@codesnippet
- * com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean-receiveoptions}
+ * {@link ReceiveOptions#setTrackLastEnqueuedEventProperties(boolean) setTrackLastEnqueuedEventProperties} to
+ * {@code true}. As events come in, explore the {@link PartitionEvent} object.
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions}
+ *
+ * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
+ * <p>For event consumers that need to limit the number of events they receive at a given time, they can use
+ * {@link BaseSubscriber#request(long)}.</p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber}
  *
  * <p><strong>Receiving from all partitions</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean}
@@ -138,6 +137,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @param partitionId The unique identifier of a partition associated with the Event Hub.
      *
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     *
+     * @throws NullPointerException if {@code partitionId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
@@ -171,10 +172,10 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * <ul>
      * <li>If receive is invoked where {@link ReceiveOptions#getOwnerLevel()} has a value, then Event Hubs service will
-     * guarantee only one active consumer exists per partitionId and consumer group combination. This consumer is
-     * sometimes referred to as an "Epoch Consumer."</li>
+     * guarantee only one active consumer exists per partitionId and consumer group combination. This receive operation
+     * is sometimes referred to as an "Epoch Consumer".</li>
      * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
-     * {@link ReceiveOptions#getOwnerLevel()} when creating consumers. This non-exclusive consumer is sometimes
+     * {@link ReceiveOptions#getOwnerLevel()} when invoking receive operations. This non-exclusive consumer is sometimes
      * referred to as a "Non-Epoch Consumer."</li>
      * </ul>
      *
@@ -208,17 +209,16 @@ public class EventHubConsumerAsyncClient implements Closeable {
     /**
      * Consumes events from all partitions starting from the beginning of each partition.
      *
-     * <p>
-     * This method is not recommended for production use; the {@link EventProcessorClient} should be used for reading
-     * events from all partitions in a production scenario, as it offers a much more robust experience with higher
-     * throughput.
+     * <p>This method is <b>not</b> recommended for production use; the {@link EventProcessorClient} should be used for
+     * reading events from all partitions in a production scenario, as it offers a much more robust experience with
+     * higher throughput.
      *
      * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
      * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
-     * given partition or subset of partitions.
-     * </p>
+     * given partition or subset of partitions.</p>
      *
-     * @return A stream of events for every partition in the Event Hub starting from {@code startingPosition}.
+     *
+     * @return A stream of events for every partition in the Event Hub starting from the beginning of each partition.
      */
     public Flux<PartitionEvent> receive() {
         return receive(true, defaultReceiveOptions);
@@ -227,15 +227,13 @@ public class EventHubConsumerAsyncClient implements Closeable {
     /**
      * Consumes events from all partitions.
      *
-     * <p>
-     * This method is not recommended for production use; the {@link EventProcessorClient} should be used for reading
-     * events from all partitions in a production scenario, as it offers a much more robust experience with higher
-     * throughput.
+     * <p>This method is <b>not</b> recommended for production use; the {@link EventProcessorClient} should be used for
+     * reading events from all partitions in a production scenario, as it offers a much more robust experience with
+     * higher throughput.
      *
      * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
      * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
-     * given partition or subset of partitions.
-     * </p>
+     * given partition or subset of partitions.</p>
      *
      * @param startReadingAtEarliestEvent {@code true} to begin reading at the first events available in each
      *     partition; otherwise, reading will begin at the end of each partition seeing only new events as they are
@@ -248,17 +246,24 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     /**
-     * Consumes events from all partitions.
+     * Consumes events from all partitions configured with a set of {@code receiveOptions}.
      *
-     * <p>
-     * This method is not recommended for production use; the {@link EventProcessorClient} should be used for reading
-     * events from all partitions in a production scenario, as it offers a much more robust experience with higher
-     * throughput.
+     * <p>This method is <b>not</b> recommended for production use; the {@link EventProcessorClient} should be used for
+     * reading events from all partitions in a production scenario, as it offers a much more robust experience with
+     * higher throughput.
      *
      * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
      * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
-     * given partition or subset of partitions.
-     * </p>
+     * given partition or subset of partitions.</p>
+     *
+     * <ul>
+     * <li>If receive is invoked where {@link ReceiveOptions#getOwnerLevel()} has a value, then Event Hubs service will
+     * guarantee only one active consumer exists per partitionId and consumer group combination. This receive operation
+     * is sometimes referred to as an "Epoch Consumer".</li>
+     * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
+     * {@link ReceiveOptions#getOwnerLevel()} when invoking receive operations. This non-exclusive consumer is sometimes
+     * referred to as a "Non-Epoch Consumer."</li>
+     * </ul>
      *
      * @param startReadingAtEarliestEvent {@code true} to begin reading at the first events available in each
      *     partition; otherwise, reading will begin at the end of each partition seeing only new events as they are

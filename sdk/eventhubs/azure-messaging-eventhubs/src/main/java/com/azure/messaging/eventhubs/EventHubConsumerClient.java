@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * a specific consumer group.
  *
  * <p><strong>Creating a synchronous consumer</strong></p>
- * <p>Required parameters are {@code consumerGroup} and credentials when creating a consumer.</p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation}
  *
  * <p><strong>Consuming events from a single partition</strong></p>
@@ -56,7 +55,7 @@ public class EventHubConsumerClient implements Closeable {
      * Gets the fully qualified Event Hubs namespace that the connection is associated with. This is likely similar to
      * {@code {yournamespace}.servicebus.windows.net}.
      *
-     * @return The fully qualified Event Hubs namespace that the connection is associated with
+     * @return The fully qualified Event Hubs namespace that the connection is associated with.
      */
     public String getFullyQualifiedNamespace() {
         return consumer.getFullyQualifiedNamespace();
@@ -93,7 +92,7 @@ public class EventHubConsumerClient implements Closeable {
     /**
      * Retrieves the identifiers for the partitions of an Event Hub.
      *
-     * @return A Flux of identifiers for the partitions of an Event Hub.
+     * @return The set of identifiers for the partitions of an Event Hub.
      */
     public IterableStream<String> getPartitionIds() {
         return new IterableStream<>(consumer.getPartitionIds());
@@ -106,6 +105,8 @@ public class EventHubConsumerClient implements Closeable {
      * @param partitionId The unique identifier of a partition associated with the Event Hub.
      *
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     *
+     * @throws NullPointerException if {@code partitionId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionProperties getPartitionProperties(String partitionId) {
@@ -123,7 +124,9 @@ public class EventHubConsumerClient implements Closeable {
      *     {@code maximumMessageCount} events. If a stream for the events was opened before, the same position within
      *     that partition is returned. Otherwise, events are read starting from {@code startingPosition}.
      *
-     * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1.
+     * @throws NullPointerException if {@code partitionId}, or {@code startingPosition} is null.
+     * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1, or if {@code partitionId} is an
+     *     empty string.
      */
     public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
         EventPosition startingPosition) {
@@ -142,7 +145,8 @@ public class EventHubConsumerClient implements Closeable {
      * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
      *     {@code maximumMessageCount} events.
      *
-     * @throws NullPointerException if {@code maximumWaitTime} or {@code eventPosition} is null.
+     * @throws NullPointerException if {@code partitionId}, {@code maximumWaitTime}, or {@code startingPosition} is
+     *     {@code null}.
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
      *     zero or a negative duration.
      */
@@ -188,7 +192,7 @@ public class EventHubConsumerClient implements Closeable {
      * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
      *     {@code maximumMessageCount} events.
      *
-     * @throws NullPointerException if {@code maximumWaitTime}, {@code eventPosition}, {@code partitionId}, or
+     * @throws NullPointerException if {@code maximumWaitTime}, {@code startingPosition}, {@code partitionId}, or
      *     {@code receiveOptions} is {@code null}.
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
      *     zero or a negative duration.
