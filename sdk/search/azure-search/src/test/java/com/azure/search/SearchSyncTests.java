@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -271,12 +270,12 @@ public class SearchSyncTests extends SearchTestBase {
         HashMap<String, Object> expectedHotel2 = new HashMap<>();
         expectedHotel2.put("HotelName", "Secret Point Motel");
         expectedHotel2.put("Rating", 4);
-        HashMap<String, Object> address = new LinkedHashMap<>();
+        HashMap<String, Object> address = new HashMap<>();
         address.put("City", "New York");
         expectedHotel2.put("Address", address);
-        HashMap<String, Object> rooms = new LinkedHashMap<>();
+        HashMap<String, Object> rooms = new HashMap<>();
         rooms.put("Type", "Budget Room");
-        HashMap<String, Object> rooms2 = new LinkedHashMap<>();
+        HashMap<String, Object> rooms2 = new HashMap<>();
         rooms2.put("Type", "Budget Room");
         expectedHotel2.put("Rooms", Arrays.asList(rooms, rooms2));
 
@@ -700,33 +699,34 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     private Map<String, Object> extractAndTransformSingleResult(SearchResult result) {
-        return dropUnnecessaryFields(convertLinkedHashMapToMap(
+        return dropUnnecessaryFields(convertHashMapToMap(
                 (result.getDocument())));
     }
 
     /**
-     * Convert a Linked HashMap object to Map object
+     * Convert a HashMap object to Map object
      *
-     * @param linkedMapObject object to convert
+     * @param mapObject object to convert
      * @return {@link Map}{@code <}{@link String}{@code ,}{@link Object}{@code >}
      */
-    private static Map<String, Object> convertLinkedHashMapToMap(Object linkedMapObject) {
+    private static Map<String, Object> convertHashMapToMap(Object mapObject) {
         /** This SuppressWarnings is for the checkstyle
          it is used because api return type can be anything and therefore is an Object
-         in our case we know and we use it only when the return type is LinkedHashMap
+         in our case we know and we use it only when the return type is LinkedHashMap.
+         The object is converted into HashMap (which LinkedHashMap extends)
          **/
         @SuppressWarnings(value = "unchecked")
-        LinkedHashMap<String, Object> linkedMap = (LinkedHashMap<String, Object>) linkedMapObject;
+        HashMap<String, Object> map = (HashMap<String, Object>) mapObject;
 
-        Set<Map.Entry<String, Object>> entries = linkedMap.entrySet();
+        Set<Map.Entry<String, Object>> entries = map.entrySet();
 
         Map<String, Object> convertedMap = new HashMap<>();
 
         for (Map.Entry<String, Object> entry : entries) {
             Object value = entry.getValue();
 
-            if (value instanceof LinkedHashMap) {
-                value = convertLinkedHashMapToMap(entry.getValue());
+            if (value instanceof HashMap) {
+                value = convertHashMapToMap(entry.getValue());
             }
             if (value instanceof ArrayList) {
                 value = convertArray((ArrayList) value);
@@ -748,8 +748,8 @@ public class SearchSyncTests extends SearchTestBase {
     private static ArrayList<Object> convertArray(ArrayList<Object> array) {
         ArrayList<Object> convertedArray = new ArrayList<>();
         for (Object arrayValue : array) {
-            if (arrayValue instanceof LinkedHashMap) {
-                convertedArray.add(convertLinkedHashMapToMap(arrayValue));
+            if (arrayValue instanceof HashMap) {
+                convertedArray.add(convertHashMapToMap(arrayValue));
             } else {
                 convertedArray.add(arrayValue);
             }

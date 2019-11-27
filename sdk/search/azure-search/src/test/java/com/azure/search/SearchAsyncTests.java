@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -122,12 +121,12 @@ public class SearchAsyncTests extends SearchTestBase {
         HashMap<String, Object> expectedHotel2 = new HashMap<>();
         expectedHotel2.put("HotelName", "Secret Point Motel");
         expectedHotel2.put("Rating", 4);
-        HashMap<String, Object> address = new LinkedHashMap<>();
+        HashMap<String, Object> address = new HashMap<>();
         address.put("City", "New York");
         expectedHotel2.put("Address", address);
-        HashMap<String, Object> rooms = new LinkedHashMap<>();
+        HashMap<String, Object> rooms = new HashMap<>();
         rooms.put("Type", "Budget Room");
-        HashMap<String, Object> rooms2 = new LinkedHashMap<>();
+        HashMap<String, Object> rooms2 = new HashMap<>();
         rooms2.put("Type", "Budget Room");
         expectedHotel2.put("Rooms", Arrays.asList(rooms, rooms2));
 
