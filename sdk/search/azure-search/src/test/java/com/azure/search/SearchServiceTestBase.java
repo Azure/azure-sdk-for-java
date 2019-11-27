@@ -62,7 +62,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import static com.azure.search.DataSourceTestBase.azureSql;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -72,23 +71,20 @@ public abstract class SearchServiceTestBase extends TestBase {
     private static final String DOGFOOD_DNS_SUFFIX = "search-dogfood.windows-int.net";
 
     private static final String FAKE_DESCRIPTION = "Some data source";
-    private static final String RESOURCE_NAME_PREFIX = "azs-";
+
     // The connection string we use here, as well as table name and target index schema, use the USGS database
     // that we set up to support our code samples.
     //
     // ASSUMPTION: Change tracking has already been enabled on the database with ALTER DATABASE ... SET CHANGE_TRACKING = ON
     // and it has been enabled on the table with ALTER TABLE ... ENABLE CHANGE_TRACKING
-    private static final String SQL_CONN_STRING_FIXTURE = "Server=tcp:xxx.database.windows.net,1433;Database=xxx;User ID=reader;Password=xxx;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-
-    protected static final String HOTEL_INDEX_NAME = "hotels";
-
-    public static final String AZURE_SQL_CONN_STRING_READONLY =
+    private static final String AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND =
         "Server=tcp:azs-playground.database.windows.net,1433;Database=usgs;User ID=reader;Password=EdrERBt3j6mZDP;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;"; // [SuppressMessage("Microsoft.Security", "CS001:SecretInline")]
 
-    public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
-    public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
-    public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
-    public static final String COSMOS_DATASOURCE_NAME = "azs-java-live-blob";
+    static final String HOTEL_INDEX_NAME = "hotels";
+
+    static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
+    static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
+    static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
 
     private String searchServiceName;
     private String searchDnsSuffix;
@@ -453,53 +449,22 @@ public abstract class SearchServiceTestBase extends TestBase {
                 .setSourceFields(Arrays.asList("HotelName"))));
     }
 
-    protected DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
-        return DataSources.azureBlobStorage(
-            BLOB_DATASOURCE_NAME,
-            "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;",
-            "fakecontainer",
-            "/fakefolder/",
-            deletionDetectionPolicy,
-            FAKE_DESCRIPTION
-        );
-    }
-
-    protected DataSource createTestSqlDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy, DataChangeDetectionPolicy changeDetectionPolicy) {
-        return azureSql(
-            SQL_DATASOURCE_NAME,
-            SQL_CONN_STRING_FIXTURE,
-            "GeoNamesRI",
-            changeDetectionPolicy,
-            deletionDetectionPolicy,
-            FAKE_DESCRIPTION
-        );
-    }
-
-    protected DataSource createTestSqlDataSource() {
-        DataDeletionDetectionPolicy deletionDetectionPolicy = null;
-        return azureSql(
-            SQL_DATASOURCE_NAME,
-            AZURE_SQL_CONN_STRING_READONLY,
-            "GeoNamesRI",
-            null,
-            deletionDetectionPolicy,
-            FAKE_DESCRIPTION
-        );
-    }
-
-    protected DataSource createTestCosmosDbDataSource(
+    DataSource createTestSqlDataSourceObject(
+        String dataSourceName,
         DataDeletionDetectionPolicy deletionDetectionPolicy,
-        boolean useChangeDetection) {
-
-        return DataSources.cosmosDb(
-            COSMOS_DATASOURCE_NAME,
-            "AccountEndpoint=https://NotaRealAccount.documents.azure.com;AccountKey=fake;Database=someFakeDatabase",
-            "faketable",
-            "SELECT ... FROM x where x._ts > @HighWaterMark",
-            useChangeDetection,
-            deletionDetectionPolicy,
-            FAKE_DESCRIPTION
+        DataChangeDetectionPolicy changeDetectionPolicy) {
+        return DataSources.azureSql(
+            dataSourceName,
+            AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND,
+            "GeoNamesRI",
+            FAKE_DESCRIPTION,
+            changeDetectionPolicy,
+            deletionDetectionPolicy
         );
+    }
+
+    DataSource createTestSqlDataSourceObject(String dataSourceName) {
+        return createTestSqlDataSourceObject(dataSourceName, null, null);
     }
 
     /**

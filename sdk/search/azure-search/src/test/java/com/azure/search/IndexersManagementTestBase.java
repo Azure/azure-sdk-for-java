@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.search.models.DataType;
+import com.azure.search.models.Field;
 import com.azure.search.models.FieldMapping;
+import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexingParameters;
 import com.azure.search.models.IndexingSchedule;
@@ -11,6 +14,7 @@ import com.azure.search.models.OcrSkill;
 import com.azure.search.models.OutputFieldMappingEntry;
 import com.azure.search.models.Skill;
 import com.azure.search.models.Skillset;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
@@ -23,6 +27,8 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
+    static final String TARGET_INDEX_NAME = "indexforindexers";
+
     @Test
     public abstract void createIndexerReturnsCorrectDefinition();
 
@@ -81,41 +87,6 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void canCreateIndexerWithSkillset();
 
-    /**
-     * Create a new valid skillset object
-     * @return the newly created skillset object
-     */
-    Skillset createSkillsetObject() {
-        List<InputFieldMappingEntry> inputs = Arrays.asList(
-            new InputFieldMappingEntry()
-                .setName("url")
-                .setSource("/document/url"),
-            new InputFieldMappingEntry()
-                .setName("queryString")
-                .setSource("/document/queryString")
-        );
-
-        List<OutputFieldMappingEntry> outputs = Collections.singletonList(
-            new OutputFieldMappingEntry()
-                .setName("text")
-                .setTargetName("mytext")
-        );
-
-        List<Skill> skills = Collections.singletonList(
-            new OcrSkill()
-                .setShouldDetectOrientation(true)
-                .setName("myocr")
-                .setDescription("Tested OCR skill")
-                .setContext("/document")
-                .setInputs(inputs)
-                .setOutputs(outputs)
-        );
-        return new Skillset()
-            .setName("ocr-skillset")
-            .setDescription("Skillset for testing default configuration")
-            .setSkills(skills);
-    }
-
     @Test
     public abstract void deleteIndexerIsIdempotent();
 
@@ -158,6 +129,42 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void existsReturnsFalseForNonExistingIndexer();
 
+
+    /**
+     * Create a new valid skillset object
+     * @return the newly created skillset object
+     */
+    Skillset createSkillsetObject() {
+        List<InputFieldMappingEntry> inputs = Arrays.asList(
+            new InputFieldMappingEntry()
+                .setName("url")
+                .setSource("/document/url"),
+            new InputFieldMappingEntry()
+                .setName("queryString")
+                .setSource("/document/queryString")
+        );
+
+        List<OutputFieldMappingEntry> outputs = Collections.singletonList(
+            new OutputFieldMappingEntry()
+                .setName("text")
+                .setTargetName("mytext")
+        );
+
+        List<Skill> skills = Collections.singletonList(
+            new OcrSkill()
+                .setShouldDetectOrientation(true)
+                .setName("myocr")
+                .setDescription("Tested OCR skill")
+                .setContext("/document")
+                .setInputs(inputs)
+                .setOutputs(outputs)
+        );
+        return new Skillset()
+            .setName("ocr-skillset")
+            .setDescription("Skillset for testing default configuration")
+            .setSkills(skills);
+    }
+
     void assertIndexersEqual(Indexer expected, Indexer actual) {
         expected.setETag("none");
         actual.setETag("none");
@@ -167,12 +174,41 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
-    Indexer createTestIndexer(String indexerName) {
+    Indexer createBaseTestIndexerObject(String indexerName, String targetIndexName) {
         return new Indexer()
             .setName(indexerName)
-            .setTargetIndexName("indexforindexers")
+            .setTargetIndexName(targetIndexName)
             .setSchedule(new IndexingSchedule().setInterval(Duration.ofDays(1)));
     }
+
+    /**
+     * This index contains fields that are declared on the live datasource
+     * we use to test the indexers
+     *
+     * @return the newly created Index object
+     */
+    Index createTestIndexForLiveDatasource(String indexName) {
+        return new Index()
+            .setName(indexName)
+            .setFields(Arrays.asList(
+                new Field()
+                    .setName("county_name")
+                    .setType(DataType.EDM_STRING)
+                    .setSearchable(Boolean.FALSE)
+                    .setFilterable(Boolean.TRUE),
+                new Field()
+                    .setName("state")
+                    .setType(DataType.EDM_STRING)
+                    .setSearchable(Boolean.TRUE)
+                    .setFilterable(Boolean.TRUE),
+                new Field()
+                    .setName("feature_id")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(Boolean.TRUE)
+                    .setSearchable(Boolean.TRUE)
+                    .setFilterable(Boolean.FALSE)));
+    }
+
 
     /**
      * Create a new indexer and change its description property
@@ -180,13 +216,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      * @return the created indexer
      */
     Indexer createIndexerWithDifferentDescription() {
-        // create a new indexer object
-        Indexer indexer = createTestIndexer("indexer");
-
-        // modify it
-        indexer.setDescription("somethingdifferent");
-
-        return indexer;
+        // create a new indexer object with a modified description
+        return createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
+            .setDescription("somethingdifferent");
     }
 
     /**
@@ -196,7 +228,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      */
     Indexer createIndexerWithDifferentFieldMapping() {
         // create a new indexer object
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
 
         // Create field mappings
         List<FieldMapping> fieldMappings = Collections.singletonList(new FieldMapping()
@@ -216,7 +248,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      */
     Indexer createDisabledIndexer() {
         // create a new indexer object
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
 
         // modify it
         indexer.setIsDisabled(false);
@@ -231,7 +263,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      */
     Indexer createIndexerWithDifferentSchedule() {
         // create a new indexer object
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
 
         IndexingSchedule is = new IndexingSchedule()
             .setInterval(Duration.ofMinutes(10));
@@ -249,7 +281,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
      */
     Indexer createIndexerWithDifferentSkillset(String skillsetName) {
         // create a new indexer object
-        return createTestIndexer("indexer")
+        return createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
             .setSkillsetName(skillsetName);
     }
 
@@ -274,7 +306,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     protected Indexer createIndexerWithStorageConfig() {
         // create an indexer object
         Indexer updatedExpected =
-            createTestIndexer("indexer");
+            createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
 
         // just adding some(valid) config values for blobs
         HashMap<String, Object> config = new HashMap<>();
@@ -291,4 +323,23 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
         return updatedExpected;
     }
+
+    void setSameStartTime(Indexer expected, Indexer actual) {
+        // There ought to be a start time in the response; We just can't know what it is because it would
+        // make the test timing-dependent.
+        expected.getSchedule().setStartTime(actual.getSchedule().getStartTime());
+    }
+
+    void assertAllIndexerFieldsNullExceptName(Indexer indexer) {
+        Assert.assertNull(indexer.getParameters());
+        Assert.assertNull(indexer.getDataSourceName());
+        Assert.assertNull(indexer.getDescription());
+        Assert.assertNull(indexer.getETag());
+        Assert.assertNull(indexer.getFieldMappings());
+        Assert.assertNull(indexer.getOutputFieldMappings());
+        Assert.assertNull(indexer.getSchedule());
+        Assert.assertNull(indexer.getSkillsetName());
+        Assert.assertNull(indexer.getTargetIndexName());
+    }
+
 }

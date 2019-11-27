@@ -7,8 +7,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataSource;
-import com.azure.search.models.DataType;
-import com.azure.search.models.Field;
 import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
@@ -50,7 +48,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
                 createIndexerWithResponse(indexer, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Indexer> newIndexerFunc =
-        () -> createTestIndexer("name")
+        () -> createBaseTestIndexerObject("name", TARGET_INDEX_NAME)
             .setDataSourceName(SQL_DATASOURCE_NAME);
 
     private Function<Indexer, Indexer> changeIndexerFunc =
@@ -61,27 +59,25 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             deleteIndexer(name, ac.getAccessCondition(), ac.getRequestOptions());
 
 
-    protected void createDatasourceAndIndex() {
-        DataSource datasource = createTestSqlDataSource();
+    protected void createDatasourceAndIndex(String dataSourceName, String indexName) {
+        // Create DataSource
+        DataSource datasource = createTestSqlDataSourceObject(dataSourceName);
         createDatasource(datasource);
 
         // Create an index
-        Index index = createTestIndexForLiveDatasource();
+        Index index = createTestIndexForLiveDatasource(indexName);
         createIndex(index);
     }
 
     List<Indexer> prepareIndexersForCreateAndListIndexers() {
-        // Create the data source, note it is a valid DS with actual connection string
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        createIndex(index);
+        // Create DataSource and Index
+        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         // Create two indexers
-        Indexer indexer1 = createTestIndexer("indexer1").setDataSourceName(datasource.getName());
-        Indexer indexer2 = createTestIndexer("indexer2").setDataSourceName(datasource.getName());
+        Indexer indexer1 = createBaseTestIndexerObject("indexer1", TARGET_INDEX_NAME)
+            .setDataSourceName(SQL_DATASOURCE_NAME);
+        Indexer indexer2 = createBaseTestIndexerObject("indexer2", TARGET_INDEX_NAME)
+            .setDataSourceName(SQL_DATASOURCE_NAME);
         createIndexer(indexer1, null, null);
         createIndexer(indexer2, null, null);
 
@@ -90,66 +86,15 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
 
     protected Indexer createTestDataSourceAndIndexer() {
-        // Create Datasource
-        DataSource datasource = createTestSqlDataSource();
-        createDatasource(datasource);
-
-        // Create an index
-        Index index = createTestIndexForLiveDatasource();
-        createIndex(index);
+        // Create DataSource and Index
+        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         // Create the indexer object
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
         createIndexer(indexer, null, null);
 
         return indexer;
-    }
-
-    static void expectSameStartTime(Indexer expected, Indexer actual) {
-        // There ought to be a start time in the response; We just can't know what it is because it would
-        // make the test timing-dependent.
-        expected.getSchedule().setStartTime(actual.getSchedule().getStartTime());
-    }
-
-    /**
-     * This index contains fields that are declared on the live datasource
-     * we use to test the indexers
-     *
-     * @return the newly created Index object
-     */
-    protected Index createTestIndexForLiveDatasource() {
-        return new Index()
-            .setName("indexforindexers")
-            .setFields(Arrays.asList(
-                new Field()
-                    .setName("county_name")
-                    .setType(DataType.EDM_STRING)
-                    .setSearchable(Boolean.FALSE)
-                    .setFilterable(Boolean.TRUE),
-                new Field()
-                    .setName("state")
-                    .setType(DataType.EDM_STRING)
-                    .setSearchable(Boolean.TRUE)
-                    .setFilterable(Boolean.TRUE),
-                new Field()
-                    .setName("feature_id")
-                    .setType(DataType.EDM_STRING)
-                    .setKey(Boolean.TRUE)
-                    .setSearchable(Boolean.TRUE)
-                    .setFilterable(Boolean.FALSE)));
-    }
-
-    void assertAllIndexerFieldsNullExceptName(Indexer indexer) {
-        Assert.assertNull(indexer.getParameters());
-        Assert.assertNull(indexer.getDataSourceName());
-        Assert.assertNull(indexer.getDescription());
-        Assert.assertNull(indexer.getETag());
-        Assert.assertNull(indexer.getFieldMappings());
-        Assert.assertNull(indexer.getOutputFieldMappings());
-        Assert.assertNull(indexer.getSchedule());
-        Assert.assertNull(indexer.getSkillsetName());
-        Assert.assertNull(indexer.getTargetIndexName());
     }
 
     /**
@@ -162,11 +107,11 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         updatedIndexer.setDataSourceName(datasourceName);
 
         // Create an index
-        Index index = createTestIndexForLiveDatasource();
+        Index index = createTestIndexForLiveDatasource(TARGET_INDEX_NAME);
         createIndex(index);
 
         Indexer initial =
-            createTestIndexer("indexer")
+            createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
                 .setDataSourceName(datasourceName)
                 .setIsDisabled(true);
 
@@ -177,7 +122,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Indexer indexerResponse = createIndexer(updatedIndexer, null, null);
 
         // verify the returned updated indexer is as expected
-        expectSameStartTime(updatedIndexer, indexerResponse);
+        setSameStartTime(updatedIndexer, indexerResponse);
         assertIndexersEqual(updatedIndexer, indexerResponse);
     }
 
@@ -188,14 +133,14 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
      */
     void createAndValidateIndexer(Indexer indexer) {
         // Create an index
-        Index index = createTestIndexForLiveDatasource();
+        Index index = createTestIndexForLiveDatasource(TARGET_INDEX_NAME);
         createIndex(index);
 
         // create this indexer in the service
         Indexer indexerResponse = createIndexer(indexer, null, null);
 
         // verify the returned updated indexer is as expected
-        expectSameStartTime(indexer, indexerResponse);
+        setSameStartTime(indexer, indexerResponse);
         assertIndexersEqual(indexer, indexerResponse);
     }
 
@@ -261,7 +206,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     @Override
     public void createIndexerReturnsCorrectDefinition() {
         Indexer expectedIndexer =
-            createTestIndexer("indexer")
+            createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
                 .setIsDisabled(true)
                 .setDataSourceName(SQL_DATASOURCE_NAME)
                 .setParameters(
@@ -276,7 +221,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Map<String, Object> config = new HashMap<>();
         ip.setConfiguration(config);
         expectedIndexer.setParameters(ip); // Get returns empty dictionary.
-        expectSameStartTime(expectedIndexer, actualIndexer);
+        setSameStartTime(expectedIndexer, actualIndexer);
 
         assertIndexersEqual(expectedIndexer, actualIndexer);
     }
@@ -286,16 +231,18 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         // Create the data source, note it a valid DS with actual
         // connection string
-        DataSource datasource = createTestSqlDataSource();
+        DataSource datasource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(datasource);
 
         // Create an index
-        Index index = createTestIndexForLiveDatasource();
+        Index index = createTestIndexForLiveDatasource(TARGET_INDEX_NAME);
         client.createOrUpdateIndex(index);
 
         // Create two indexers
-        Indexer indexer1 = createTestIndexer("indexer1").setDataSourceName(datasource.getName());
-        Indexer indexer2 = createTestIndexer("indexer2").setDataSourceName(datasource.getName());
+        Indexer indexer1 = createBaseTestIndexerObject("indexer1", TARGET_INDEX_NAME)
+            .setDataSourceName(datasource.getName());
+        Indexer indexer2 = createBaseTestIndexerObject("indexer2", TARGET_INDEX_NAME)
+            .setDataSourceName(datasource.getName());
         client.createOrUpdateIndexer(indexer1);
         client.createOrUpdateIndexer(indexer2);
 
@@ -324,7 +271,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void createIndexerFailsWithUsefulMessageOnUserError() {
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
         indexer.setDataSourceName("thisdatasourcedoesnotexist");
 
         assertException(
@@ -361,7 +308,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         // Prepare datasource and index
         AccessConditionTests act = new AccessConditionTests();
 
-        createDatasourceAndIndex();
+        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         act.createOrUpdateIfNotExistsFailsOnExistingResource(
             createOrUpdateFunc,
@@ -371,7 +318,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canUpdateIndexer() {
-        DataSource datasource = createTestSqlDataSource();
+        DataSource datasource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         createDatasource(datasource);
 
         Indexer updatedExpected = createIndexerWithDifferentDescription();
@@ -381,7 +328,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canUpdateIndexerFieldMapping() {
-        DataSource datasource = createTestSqlDataSource();
+        DataSource datasource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         createDatasource(datasource);
 
         Indexer updatedExpected = createIndexerWithDifferentFieldMapping();
@@ -391,7 +338,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canCreateIndexerWithFieldMapping() {
-        DataSource datasource = createTestSqlDataSource();
+        DataSource datasource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         createDatasource(datasource);
 
         Indexer indexer = createIndexerWithDifferentFieldMapping()
@@ -402,7 +349,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canUpdateIndexerDisabled() {
-        DataSource datasource = createTestSqlDataSource();
+        DataSource datasource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         createDatasource(datasource);
 
         Indexer updatedExpected = createDisabledIndexer();
@@ -412,7 +359,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canUpdateIndexerSchedule() {
-        DataSource datasource = createTestSqlDataSource();
+        DataSource datasource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         createDatasource(datasource);
 
         Indexer updatedExpected = createIndexerWithDifferentSchedule();
@@ -422,7 +369,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canCreateIndexerWithSchedule() {
-        DataSource datasource = createTestSqlDataSource();
+        DataSource datasource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         createDatasource(datasource);
 
         Indexer indexer = createIndexerWithDifferentSchedule()
@@ -433,10 +380,10 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canUpdateIndexerBatchSizeMaxFailedItems() {
-        DataSource datasource = createTestSqlDataSource();
+        DataSource datasource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         createDatasource(datasource);
 
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
 
         Indexer updatedExpected = createIndexerWithDifferentIndexingParameters(indexer);
 
@@ -445,10 +392,10 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canCreateIndexerWithBatchSizeMaxFailedItems() {
-        DataSource datasource = createTestSqlDataSource();
+        DataSource datasource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         createDatasource(datasource);
 
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
         Indexer updatedExpected = createIndexerWithDifferentIndexingParameters(indexer)
             .setDataSourceName(SQL_DATASOURCE_NAME);
 
@@ -491,10 +438,10 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     @Override
     public void deleteIndexerIsIdempotent() {
         // Create Datasource
-        createDatasourceAndIndex();
+        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         // Create the indexer object
-        Indexer indexer = createTestIndexer("indexer");
+        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
 
         // Try delete before the indexer even exists.
@@ -517,13 +464,14 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     public void canCreateAndGetIndexer() {
         String indexerName = "indexer";
 
-        DataSource datasource = createTestSqlDataSource();
+        DataSource datasource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         createDatasource(datasource);
 
-        Index index = createTestIndexForLiveDatasource();
+        Index index = createTestIndexForLiveDatasource(TARGET_INDEX_NAME);
         createIndex(index);
 
-        Indexer indexer = createTestIndexer(indexerName).setDataSourceName(datasource.getName());
+        Indexer indexer = createBaseTestIndexerObject(indexerName, TARGET_INDEX_NAME)
+            .setDataSourceName(datasource.getName());
 
         createIndexer(indexer, null, null);
 
@@ -545,7 +493,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         // Prepare datasource and index
-        createDatasourceAndIndex();
+        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         Indexer indexerResult = act.createOrUpdateIfNotExistsSucceedsOnNoResource(
             createOrUpdateFunc,
@@ -559,7 +507,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         // Prepare datasource and index
-        createDatasourceAndIndex();
+        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         Indexer indexerResult = act.createOrUpdateIfNotExistsSucceedsOnNoResource(
             createOrUpdateWithResponseFunc,
@@ -573,7 +521,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         // Prepare datasource and index
-        createDatasourceAndIndex();
+        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         String indexerName = "name";
         act.deleteIfExistsWorksOnlyWhenResourceExists(
@@ -588,7 +536,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         // Prepare datasource and index
-        createDatasourceAndIndex();
+        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         String indexerName = "name";
         act.deleteIfNotChangedWorksOnlyOnCurrentResource(
@@ -609,7 +557,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     @Override
     public void updateIndexerIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException {
         // Prepare datasource and index
-        createDatasourceAndIndex();
+        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsSucceedsOnExistingResource(
@@ -621,7 +569,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     @Override
     public void updateIndexerIfNotChangedFailsWhenResourceChanged() throws NoSuchFieldException, IllegalAccessException {
         // Prepare datasource and index
-        createDatasourceAndIndex();
+        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedFailsWhenResourceChanged(
@@ -633,7 +581,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     @Override
     public void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged() throws NoSuchFieldException, IllegalAccessException {
         // Prepare datasource and index
-        createDatasourceAndIndex();
+        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchanged(
@@ -644,7 +592,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canUpdateIndexerSkillset() {
-        DataSource datasource = createTestSqlDataSource();
+        DataSource datasource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         createDatasource(datasource);
 
         // Create a new skillset object
@@ -660,7 +608,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Override
     public void canCreateIndexerWithSkillset() {
-        DataSource dataSource = createTestSqlDataSource();
+        DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         createDatasource(dataSource);
 
         // Create a new skillset object
