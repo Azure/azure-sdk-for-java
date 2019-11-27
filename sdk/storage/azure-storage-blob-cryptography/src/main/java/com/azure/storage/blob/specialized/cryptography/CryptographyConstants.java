@@ -18,13 +18,13 @@ final class CryptographyConstants {
 
     static final String AES = "AES";
 
-    static final String AZURE_STORAGE_PROPERTIES = "azure-storage-blob.properties";
+    static final UserAgentProperties USER_AGENT_PROPERTIES = getProperties();
 
-    static final String BLOB_CRYPTOGRAPHY_NAME = getName();
+//    static final String BLOB_CRYPTOGRAPHY_NAME = getName();
+//
+//    static final String BLOB_CRYPTOGRAPHY_VERSION = getVersion();
 
-    static final String BLOB_CRYPTOGRAPHY_VERSION = getVersion();
-
-    static final String AGENT_METADATA_VALUE = "JavaTrack2" + BLOB_CRYPTOGRAPHY_VERSION;
+    static final String AGENT_METADATA_VALUE = "JavaTrack2" + USER_AGENT_PROPERTIES.getVersion();
 
     static final String ENCRYPTION_DATA_KEY = "encryptiondata";
 
@@ -43,16 +43,23 @@ final class CryptographyConstants {
     static final String DECRYPT_UNENCRYPTED_BLOB = "Encryption client is being used but the blob metadata indicates "
         + "that it is not encrypted.";
 
+    // This is properties file's name.
+    private static final String AZURE_STORAGE_PROPERTIES = "azure-storage-blob.properties";
+
     private CryptographyConstants() {
     }
+//
+//    private static String getName() {
+//        UserAgentProperties properties = CoreUtils.getUserAgentProperties(AZURE_STORAGE_PROPERTIES);
+//        return properties.getName();
+//    }
+//
+//    private static String getVersion() {
+//        UserAgentProperties properties = CoreUtils.getUserAgentProperties(AZURE_STORAGE_PROPERTIES);
+//        return properties.getVersion();
+//    }
 
-    private static String getName() {
-        UserAgentProperties properties = CoreUtils.getUserAgentProperties(AZURE_STORAGE_PROPERTIES);
-        return properties.getName();
-    }
-
-    private static String getVersion() {
-        UserAgentProperties properties = CoreUtils.getUserAgentProperties(AZURE_STORAGE_PROPERTIES);
-        return properties.getVersion();
+    private static UserAgentProperties getProperties() {
+        return CoreUtils.getUserAgentProperties(AZURE_STORAGE_PROPERTIES);
     }
 }

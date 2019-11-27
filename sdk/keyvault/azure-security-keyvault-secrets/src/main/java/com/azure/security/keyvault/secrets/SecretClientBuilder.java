@@ -59,6 +59,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = SecretClient.class)
 public final class SecretClientBuilder {
     private final ClientLogger logger = new ClientLogger(SecretClientBuilder.class);
+    // This is properties file's name.
     private static final String AZURE_KEY_VAULT_SECRETS = "azure-key-vault-secrets.properties";
 
     private final List<HttpPipelinePolicy> policies;

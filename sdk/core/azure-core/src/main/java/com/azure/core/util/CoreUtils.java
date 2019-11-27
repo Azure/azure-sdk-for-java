@@ -26,6 +26,8 @@ public final class CoreUtils {
     private static final String COMMA = ",";
     private static final String NAME = "name";
     private static final String VERSION = "version";
+    private static final String UNKNOWN_NAME = "UnknownName";
+    private static final String UNKNOWN_VERSION = "UnknownVersion";
 
     private CoreUtils() {
         // Exists only to defeat instantiation.
@@ -171,8 +173,8 @@ public final class CoreUtils {
      */
     public static UserAgentProperties getUserAgentProperties(String propertiesFileName) {
         Map<String, String> propertyMap = getProperties(propertiesFileName);
-        String name = propertyMap.getOrDefault(NAME, "UnknownName");
-        String version = propertyMap.getOrDefault(VERSION, "UnknownVersion");
+        String name = propertyMap.getOrDefault(NAME, UNKNOWN_NAME);
+        String version = propertyMap.getOrDefault(VERSION, UNKNOWN_VERSION);
         return new UserAgentProperties(name, version);
     }
 

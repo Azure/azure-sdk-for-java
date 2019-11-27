@@ -76,6 +76,7 @@ public final class ConfigurationClientBuilder {
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     private static final String ACCEPT_HEADER = "Accept";
     private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
+    // This is properties file's name.
     private static final String APP_CONFIG_PROPERTIES = "azure-appconfig.properties";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 

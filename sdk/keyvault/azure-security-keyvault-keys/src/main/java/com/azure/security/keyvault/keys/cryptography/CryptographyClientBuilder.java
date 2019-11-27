@@ -66,6 +66,7 @@ public final class CryptographyClientBuilder {
     final List<HttpPipelinePolicy> policies;
     final UserAgentProperties properties;
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
+    // This is properties file's name.
     private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
     private TokenCredential credential;
     private HttpPipeline pipeline;

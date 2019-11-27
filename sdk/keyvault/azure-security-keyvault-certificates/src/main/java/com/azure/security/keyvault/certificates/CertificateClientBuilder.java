@@ -56,6 +56,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {CertificateClient.class, CertificateAsyncClient.class})
 public final class CertificateClientBuilder {
     private final ClientLogger logger = new ClientLogger(CertificateClientBuilder.class);
+    // This is properties file's name.
     private static final String AZURE_KEY_VAULT_CERTIFICATES_PROPERTIES = "azure-key-vault-certificates.properties";
     private final List<HttpPipelinePolicy> policies;
     private final UserAgentProperties properties;
