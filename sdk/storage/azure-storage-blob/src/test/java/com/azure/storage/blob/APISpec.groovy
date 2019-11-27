@@ -144,6 +144,8 @@ class APISpec extends Specification {
     }
 
     def setup() {
+        System.out.printf("=============== %s ===============%n", specificationContext.getCurrentIteration().getName())
+
         String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
         String className = specificationContext.getCurrentSpec().getName()
         int iterationIndex = fullTestName.lastIndexOf("[")
