@@ -111,8 +111,8 @@ public final class CertificateClientBuilder {
      * {@link CertificateClientBuilder#vaultUrl(String)} have not been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
-        Configuration buildConfiguration = (configuration == null) ? Configuration.getGlobalConfiguration().clone() :
-            configuration;
+        Configuration buildConfiguration = (configuration == null) ? Configuration.getGlobalConfiguration().clone()
+            : configuration;
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
