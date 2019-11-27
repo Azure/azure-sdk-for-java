@@ -564,8 +564,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
-
-
     boolean uploadInBlocks(String filePath) {
         AsynchronousFileChannel channel = uploadFileResourceSupplier(filePath);
         boolean retVal;
