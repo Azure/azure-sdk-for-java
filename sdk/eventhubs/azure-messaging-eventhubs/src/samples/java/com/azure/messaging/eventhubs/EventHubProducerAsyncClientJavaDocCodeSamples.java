@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -52,7 +53,10 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
             batch.tryAdd(new EventData("test-event-1"));
             batch.tryAdd(new EventData("test-event-2"));
             return producer.send(batch);
-        }).block();
+        }).subscribe(unused -> {
+        },
+            error -> System.err.println("Error occurred while sending batch:" + error),
+            () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch
 
         producer.close();
@@ -71,7 +75,10 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
             batch.tryAdd(new EventData("test-event-1"));
             batch.tryAdd(new EventData("test-event-2"));
             return producer.send(batch);
-        }).block();
+        }).subscribe(unused -> {
+        },
+            error -> System.err.println("Error occurred while sending batch:" + error),
+            () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionId
 
         producer.close();
@@ -91,7 +98,10 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
             batch.tryAdd(new EventData("sourdough"));
             batch.tryAdd(new EventData("rye"));
             return producer.send(batch);
-        }).block();
+        }).subscribe(unused -> {
+        },
+            error -> System.err.println("Error occurred while sending batch:" + error),
+            () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey
     }
 
@@ -126,8 +136,13 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
                 producer.send(batch),
                 producer.createBatch(options).map(newBatch -> {
                     currentBatch.set(newBatch);
+
                     // Add the event that did not fit in the previous batch.
-                    newBatch.tryAdd(event);
+                    if (!newBatch.tryAdd(event)) {
+                        throw Exceptions.propagate(new IllegalArgumentException(
+                            "Event was too large to fit in an empty batch. Max size: " + newBatch.getMaxSizeInBytes()));
+                    }
+
                     return newBatch;
                 }));
         }).then()

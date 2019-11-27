@@ -37,7 +37,7 @@ public class EventHubConsumerJavaDocCodeSamples {
     public void receive() {
         EventHubConsumerClient consumer = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .consumerGroup("consumer-group-name")
             .buildConsumerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration
