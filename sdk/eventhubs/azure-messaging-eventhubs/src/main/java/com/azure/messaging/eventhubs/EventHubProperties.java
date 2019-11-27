@@ -41,7 +41,7 @@ public final class EventHubProperties {
     }
 
     /**
-     * Gets the Event Hub name
+     * Gets the name of the Event Hub.
      *
      * @return Name of the Event Hub.
      */
@@ -50,7 +50,7 @@ public final class EventHubProperties {
     }
 
     /**
-     * Gets the instant, in UTC, at which Event Hub was created at.
+     * Gets the instant, in UTC, at which Event Hub was created.
      *
      * @return The instant, in UTC, at which the Event Hub was created.
      */

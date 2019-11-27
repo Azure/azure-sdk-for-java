@@ -22,8 +22,8 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * A consumer responsible for reading {@link EventData} from either a specific Event Hub partition or all partitions in
- * the context of a consumer group.
+ * A <b>synchronous</b> consumer responsible for reading {@link EventData} from an Event Hub partition in the context of
+ * a specific consumer group.
  *
  * <p><strong>Creating a synchronous consumer</strong></p>
  * <p>Required parameters are {@code consumerGroup} and credentials when creating a consumer.</p>

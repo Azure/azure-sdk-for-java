@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,53 +14,50 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to sent events to specific event hub by defining partition id using
- * {@link CreateBatchOptions#setPartitionId(String)}.
+ * Sample demonstrates how to send an {@link EventDataBatch} to an Azure Event Hub using Azure Identity.
  */
-public class PublishEventsToSpecificPartition {
+public class PublishEventsWithAzureIdentity {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
-     * Main method to invoke this demo about how to send a batch of events with partition id configured.
+     * Main method to invoke this demo on how to send an {@link EventDataBatch} to an Azure Event Hub.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        // The connection string value can be obtained by:
-        // 1. Going to your Event Hubs namespace in Azure Portal.
-        // 2. Creating an Event Hub instance.
-        // 3. Creating a "Shared access policy" for your Event Hub instance.
-        // 4. Copying the connection string from the policy's properties.
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
+        Flux<EventData> telemetryEvents = Flux.just(
+            new EventData("Roast beef".getBytes(UTF_8)),
+            new EventData("Cheese".getBytes(UTF_8)),
+            new EventData("Tofu".getBytes(UTF_8)),
+            new EventData("Turkey".getBytes(UTF_8)));
 
-        // Instantiate a client that will be used to call the service.
+        // The default azure credential checks multiple locations for credentials and determines the best one to use.
+        // For the purpose of this sample, create a service principal and set the following environment variables.
+        // See https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal for
+        // information on how to create a service principal.
+        System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-id>>");
+        System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-application-secret>>");
+        System.setProperty("AZURE_TENANT_ID", "<<insert-service-principal-tenant-id>>");
+
+        // DefaultAzureCredentialBuilder exists inside the azure-identity package.
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+
+        // Create a producer.
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString(connectionString)
+            .credential(
+                "<<fully-qualified-namespace>>",
+                "<<event-hub-name>>",
+                credential)
             .buildAsyncProducerClient();
 
-        // To send our events, we need to know what partition to send it to. For the sake of this example, we take the
-        // first partition id.
-        // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
-        // time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
-        // TimeoutException is thrown.
-        String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
-
-        // We will publish three events based on simple sentences.
-        Flux<EventData> data = Flux.just(
-            new EventData("EventData Sample 1".getBytes(UTF_8)),
-            new EventData("EventData Sample 2".getBytes(UTF_8)),
-            new EventData("EventData Sample 3".getBytes(UTF_8)));
-
-        // Create a batch to send the events.
-        final CreateBatchOptions options = new CreateBatchOptions()
-            .setPartitionId(firstPartition);
         final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
-            producer.createBatch(options).block());
+            producer.createBatch().block());
 
-        // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
-        // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
-        // are sent.
-        final Mono<Void> sendOperation = data.flatMap(event -> {
+        // The sample Flux contains three events, but it could be an infinite stream of telemetry events.
+        final Mono<Void> sendOperation = telemetryEvents.flatMap(event -> {
             final EventDataBatch batch = currentBatch.get();
             if (batch.tryAdd(event)) {
                 return Mono.empty();
@@ -69,7 +67,7 @@ public class PublishEventsToSpecificPartition {
             // have completed.
             return Mono.when(
                 producer.send(batch),
-                producer.createBatch(options).map(newBatch -> {
+                producer.createBatch().map(newBatch -> {
                     currentBatch.set(newBatch);
 
                     // Add that event that we couldn't before.
