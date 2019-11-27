@@ -841,34 +841,35 @@ public class BlobAsyncClientBase {
 
                 return Mono.zip(Mono.just(newCount), Mono.just(newConditions), Mono.just(response));
             })
-            .onErrorResume(throwable -> {
+            .onErrorResume(BlobStorageException.class, blobStorageException -> {
                 /*
-                 * In the case of an empty blob, we still want to report success and give back valid headers. Attempting a
-                 * range download on an empty blob will return an InvalidRange error code and a Content-Range header of the
-                 * format "bytes * /0". We need to double check that the total size is zero in the case that the customer
-                 * has attempted an invalid range on a non-zero length blob.
+                 * In the case of an empty blob, we still want to report success and give back valid headers.
+                 * Attempting a range download on an empty blob will return an InvalidRange error code and a
+                 * Content-Range header of the format "bytes * /0". We need to double check that the total size is zero
+                 * in the case that the customer has attempted an invalid range on a non-zero length blob.
                  */
-                if (!(throwable instanceof BlobStorageException)) {
-                    return false;
+                if (blobStorageException.getErrorCode() == BlobErrorCode.INVALID_RANGE
+                    && extractTotalBlobLength(blobStorageException.getResponse()
+                    .getHeaders().getValue("Content-Range")) == 0) {
+
+                    return this.downloadWithResponse(new BlobRange(0, 0L), downloadRetryOptions, requestConditions,
+                        rangeGetContentMd5, context)
+                        .subscribeOn(Schedulers.elastic())
+                        .flatMap(response -> {
+                            /*
+                            Ensure the blob is still 0 length by checking our download was the full length.
+                            (200 is for full blob; 206 is partial).
+                             */
+                            if (response.getStatusCode() != 200) {
+                                Mono.error(new IllegalStateException("Blob was modified mid download. It was "
+                                    + "originally 0 bytes and is now larger."));
+                            }
+                            return Mono.zip(Mono.just(0L), Mono.just(requestConditions), Mono.just(response));
+                        });
                 }
 
-                BlobStorageException storageException = (BlobStorageException) throwable;
-                return storageException.getErrorCode() == BlobErrorCode.INVALID_RANGE
-                    && extractTotalBlobLength(storageException.getResponse().getHeaderValue("Content-Range")) == 0;
-            }, blobStorageException -> this.downloadWithResponse(new BlobRange(0, 0L), downloadRetryOptions,
-                requestConditions, rangeGetContentMd5, context)
-                .subscribeOn(Schedulers.elastic())
-                .flatMap(response -> {
-                    /*
-                     * Ensure the blob is still 0 length by checking our download was the full length.
-                     * (200 is for full blob; 206 is partial).
-                     */
-                    if (response.getStatusCode() != 200) {
-                        Mono.error(new IllegalStateException("Blob was modified mid download. It was "
-                            + "originally 0 bytes and is now larger."));
-                    }
-                    return Mono.zip(Mono.just(0L), Mono.just(requestConditions), Mono.just(response));
-                }));
+                return Mono.error(blobStorageException);
+            });
     }
 
     private static BlobRequestConditions setEtag(BlobRequestConditions requestConditions, String etag) {
