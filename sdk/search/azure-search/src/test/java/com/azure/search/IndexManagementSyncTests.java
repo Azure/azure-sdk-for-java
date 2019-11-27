@@ -43,21 +43,19 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     // commonly used lambda definitions
     private BiFunction<Index,
         AccessOptions,
-        Index> createOrUpdateFunc =
+        Index> createOrUpdateIndexFunc =
             (Index index, AccessOptions ac) ->
                 createIndex(index, false, ac.getAccessCondition(), ac.getRequestOptions());
 
     private BiFunction<Index,
         AccessOptions,
-        Index> createOrUpdateWithResponseFunc =
+        Index> createOrUpdateIndexWithResponseFunc =
             (Index index, AccessOptions ac) ->
                 createIndexWithResponse(index, false, ac.getAccessCondition(), ac.getRequestOptions());
 
-    private Supplier<Index> newIndexFunc =
-        () -> createTestIndex();
+    private Supplier<Index> newIndexFunc = this::createTestIndex;
 
-    private Function<Index, Index> changeIndexFunc =
-        (Index index) -> mutateCorsOptionsInIndex(index);
+    private Function<Index, Index> mutateIndexFunc = this::mutateCorsOptionsInIndex;
 
     private BiConsumer<String, AccessOptions> deleteIndexFunc =
         (String name, AccessOptions ac) ->
@@ -195,13 +193,13 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     }
 
     @Override
-    public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException {
+    public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests act = new AccessConditionTests();
 
         act.deleteIfNotChangedWorksOnlyOnCurrentResource(
             deleteIndexFunc,
             newIndexFunc,
-            createOrUpdateFunc,
+            createOrUpdateIndexFunc,
             HOTEL_INDEX_NAME);
     }
 
@@ -211,7 +209,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         act.deleteIfExistsWorksOnlyWhenResourceExists(
             deleteIndexFunc,
-            createOrUpdateFunc,
+            createOrUpdateIndexFunc,
             newIndexFunc,
             HOTEL_INDEX_NAME);
     }
@@ -352,7 +350,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         // Update an existing index
         Index existingIndex = client.getIndex(index.getName());
         hotelNameField = getFieldByName(existingIndex, "HotelName");
-        hotelNameField.setSynonymMaps(Collections.<String>emptyList());
+        hotelNameField.setSynonymMaps(Collections.emptyList());
 
         Index updatedIndex = client.createOrUpdateIndex(existingIndex,
             true, new AccessCondition(), generateRequestOptions());
@@ -483,9 +481,9 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         act.createOrUpdateIfNotExistsFailsOnExistingResource(
-            createOrUpdateFunc,
+            createOrUpdateIndexFunc,
             newIndexFunc,
-            changeIndexFunc);
+            mutateIndexFunc);
     }
 
     @Override
@@ -493,7 +491,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateFunc,
+            createOrUpdateIndexFunc,
             newIndexFunc);
     }
 
@@ -502,47 +500,43 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateWithResponseFunc,
+            createOrUpdateIndexWithResponseFunc,
             newIndexFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfExistsSucceedsOnExistingResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsSucceedsOnExistingResource(
             newIndexFunc,
-            createOrUpdateFunc,
-            changeIndexFunc);
+            createOrUpdateIndexFunc,
+            mutateIndexFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfExistsFailsOnNoResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateIndexIfExistsFailsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsFailsOnNoResource(
             newIndexFunc,
-            createOrUpdateFunc);
+            createOrUpdateIndexFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchanged(
             newIndexFunc,
-            createOrUpdateFunc,
-            changeIndexFunc);
+            createOrUpdateIndexFunc,
+            mutateIndexFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedFailsWhenResourceChanged(
             newIndexFunc,
-            createOrUpdateFunc,
-            changeIndexFunc);
+            createOrUpdateIndexFunc,
+            mutateIndexFunc);
     }
 
     @Override

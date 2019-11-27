@@ -170,13 +170,13 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void deleteSkillsetIfExistsWorksOnlyWhenResourceExists();
 
-    protected void assertSkillsetsEqual(Skillset expected, Skillset actual) {
+    void assertSkillsetsEqual(Skillset expected, Skillset actual) {
         expected.setETag("none");
         actual.setETag("none");
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
-    protected Skillset createTestSkillsetImageAnalysisKeyPhrase() {
+    Skillset createTestSkillsetImageAnalysisKeyPhrase() {
         List<Skill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
@@ -224,7 +224,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createTestSkillsetLanguageDetection() {
+    Skillset createTestSkillsetLanguageDetection() {
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry()
                 .setName("text")
@@ -251,7 +251,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createTestSkillsetMergeText() {
+    Skillset createTestSkillsetMergeText() {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
                 .setName("text")
@@ -286,7 +286,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createTestSkillsetOcrShaper() {
+    Skillset createTestSkillsetOcrShaper() {
         List<Skill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
@@ -332,7 +332,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createSkillsetWithCognitiveServicesKey() {
+    Skillset createSkillsetWithCognitiveServicesKey() {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
                 .setName("url")
@@ -365,7 +365,61 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setCognitiveServices(new DefaultCognitiveServices());
     }
 
-    protected Skillset createTestSkillsetOcrEntity(TextExtractionAlgorithm algorithm, List<EntityCategory> categories) {
+    Skillset createTestSkillsetConditional() {
+        List<InputFieldMappingEntry> inputs = Arrays.asList(
+            new InputFieldMappingEntry()
+                .setName("condition")
+                .setSource("= $(/document/language) == null"),
+            new InputFieldMappingEntry()
+                .setName("whenTrue")
+                .setSource("= 'es'"),
+            new InputFieldMappingEntry()
+                .setName("whenFalse")
+                .setSource("= $(/document/language)")
+        );
+
+        List<OutputFieldMappingEntry> outputs = Collections.singletonList(
+            new OutputFieldMappingEntry()
+                .setName("output")
+                .setTargetName("myLanguageCode")
+        );
+
+        List<Skill> skills = Collections.singletonList(
+            new ConditionalSkill()
+                .setName("myconditional")
+                .setDescription("Tested Conditional skill")
+                .setContext(CONTEXT_VALUE)
+                .setInputs(inputs)
+                .setOutputs(outputs)
+        );
+
+        return new Skillset()
+            .setName("conditional-skillset")
+            .setDescription("Skillset for testing")
+            .setSkills(skills);
+    }
+
+    Skillset mutateSkillsInSkillset(Skillset skillset) {
+        skillset.setSkills(Collections.singletonList(
+            new KeyPhraseExtractionSkill()
+                .setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage.EN)
+                .setName("mykeyphrases")
+                .setDescription("Tested Key Phrase skill")
+                .setContext(CONTEXT_VALUE)
+                .setInputs(Collections.singletonList(
+                    new InputFieldMappingEntry()
+                        .setName("text")
+                        .setSource("/document/mydescription/*/Tags/*")))
+                .setOutputs(Collections.singletonList(
+                    new OutputFieldMappingEntry()
+                        .setName("keyPhrases")
+                        .setTargetName("myKeyPhrases")
+                ))
+        ));
+        return skillset;
+    }
+
+    Skillset createTestSkillsetOcrEntity(TextExtractionAlgorithm algorithm, List<EntityCategory> categories) {
         List<Skill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
@@ -416,7 +470,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createTestSkillsetOcrSentiment(OcrSkillLanguage ocrLanguageCode, SentimentSkillLanguage sentimentLanguageCode, TextExtractionAlgorithm algorithm) {
+    Skillset createTestSkillsetOcrSentiment(OcrSkillLanguage ocrLanguageCode, SentimentSkillLanguage sentimentLanguageCode, TextExtractionAlgorithm algorithm) {
         List<Skill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
@@ -463,7 +517,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createTestSkillsetOcrKeyPhrase(OcrSkillLanguage ocrLanguageCode, KeyPhraseExtractionSkillLanguage keyPhraseLanguageCode) {
+    Skillset createTestSkillsetOcrKeyPhrase(OcrSkillLanguage ocrLanguageCode, KeyPhraseExtractionSkillLanguage keyPhraseLanguageCode) {
         List<Skill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
@@ -510,7 +564,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createTestSkillsetOcrSplitText(OcrSkillLanguage ocrLanguageCode, SplitSkillLanguage splitLanguageCode, TextSplitMode textSplitMode) {
+    Skillset createTestSkillsetOcrSplitText(OcrSkillLanguage ocrLanguageCode, SplitSkillLanguage splitLanguageCode, TextSplitMode textSplitMode) {
         List<Skill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
@@ -558,7 +612,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createTestOcrSkillSet(int repeat, TextExtractionAlgorithm algorithm, boolean shouldDetectOrientation) {
+    Skillset createTestOcrSkillSet(int repeat, TextExtractionAlgorithm algorithm, boolean shouldDetectOrientation) {
         List<Skill> skills = new ArrayList<>();
 
         List<InputFieldMappingEntry> inputs = Arrays.asList(
@@ -593,7 +647,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createSkillsetWithOcrDefaultSettings(String skillsetName, Boolean shouldDetectOrientation) {
+    Skillset createSkillsetWithOcrDefaultSettings(String skillsetName, Boolean shouldDetectOrientation) {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
                 .setName("url")
@@ -624,7 +678,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createSkillsetWithImageAnalysisDefaultSettings() {
+    Skillset createSkillsetWithImageAnalysisDefaultSettings() {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
                 .setName("url")
@@ -654,7 +708,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createSkillsetWithKeyPhraseExtractionDefaultSettings() {
+    Skillset createSkillsetWithKeyPhraseExtractionDefaultSettings() {
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry()
                 .setName("text")
@@ -682,7 +736,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createSkillsetWithMergeDefaultSettings() {
+    Skillset createSkillsetWithMergeDefaultSettings() {
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             new InputFieldMappingEntry()
                 .setName("text")
@@ -716,7 +770,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createSkillsetWithSentimentDefaultSettings() {
+    Skillset createSkillsetWithSentimentDefaultSettings() {
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry()
                 .setName("text")
@@ -744,7 +798,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createSkillsetWithEntityRecognitionDefaultSettings() {
+    Skillset createSkillsetWithEntityRecognitionDefaultSettings() {
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry()
                 .setName("text")
@@ -772,7 +826,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createSkillsetWithSplitDefaultSettings() {
+    Skillset createSkillsetWithSplitDefaultSettings() {
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry()
                 .setName("text")
@@ -801,7 +855,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createSkillsetWithCustomSkills() {
+    Skillset createSkillsetWithCustomSkills() {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Ocp-Apim-Subscription-Key", "foobar");
 
@@ -832,7 +886,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(Collections.singletonList(webApiSkill));
     }
 
-    protected Skillset createSkillsetWithSharperSkillWithNestedInputs() {
+    Skillset createSkillsetWithSharperSkillWithNestedInputs() {
         List<InputFieldMappingEntry> inputs = this.createNestedInputFieldMappingEntry();
         List<OutputFieldMappingEntry> outputs = this.createOutputFieldMappingEntry();
 
@@ -851,7 +905,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setSkills(skills);
     }
 
-    protected Skillset createSkillsetWithNonSharperSkillWithNestedInputs() {
+    Skillset createSkillsetWithNonSharperSkillWithNestedInputs() {
         List<InputFieldMappingEntry> inputs = this.createNestedInputFieldMappingEntry();
         List<OutputFieldMappingEntry> outputs = this.createOutputFieldMappingEntry();
 
@@ -872,7 +926,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     }
 
     private List<InputFieldMappingEntry> createNestedInputFieldMappingEntry() {
-        List<InputFieldMappingEntry> inputs = Collections.singletonList(
+        return Collections.singletonList(
             new InputFieldMappingEntry()
                 .setName("doc")
                 .setSourceContext("/document")
@@ -885,69 +939,13 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
                         .setSource("/document/normalized_images/*"))
                 )
         );
-        return inputs;
     }
 
     private List<OutputFieldMappingEntry> createOutputFieldMappingEntry() {
-        List<OutputFieldMappingEntry> outputs = Collections.singletonList(
+        return Collections.singletonList(
             new OutputFieldMappingEntry()
                 .setName("output")
                 .setTargetName("myOutput")
         );
-        return outputs;
-    }
-
-    protected Skillset createTestSkillsetConditional() {
-        List<InputFieldMappingEntry> inputs = Arrays.asList(
-            new InputFieldMappingEntry()
-                .setName("condition")
-                .setSource("= $(/document/language) == null"),
-            new InputFieldMappingEntry()
-                .setName("whenTrue")
-                .setSource("= 'es'"),
-            new InputFieldMappingEntry()
-                .setName("whenFalse")
-                .setSource("= $(/document/language)")
-        );
-
-        List<OutputFieldMappingEntry> outputs = Collections.singletonList(
-            new OutputFieldMappingEntry()
-                .setName("output")
-                .setTargetName("myLanguageCode")
-        );
-
-        List<Skill> skills = Collections.singletonList(
-            new ConditionalSkill()
-                .setName("myconditional")
-                .setDescription("Tested Conditional skill")
-                .setContext(CONTEXT_VALUE)
-                .setInputs(inputs)
-                .setOutputs(outputs)
-        );
-
-        return new Skillset()
-            .setName("conditional-skillset")
-            .setDescription("Skillset for testing")
-            .setSkills(skills);
-    }
-
-    protected Skillset mutateSkillsInSkillset(Skillset skillset) {
-        skillset.setSkills(Collections.singletonList(
-            new KeyPhraseExtractionSkill()
-                .setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage.EN)
-                .setName("mykeyphrases")
-                .setDescription("Tested Key Phrase skill")
-                .setContext(CONTEXT_VALUE)
-                .setInputs(Collections.singletonList(
-                    new InputFieldMappingEntry()
-                        .setName("text")
-                        .setSource("/document/mydescription/*/Tags/*")))
-                .setOutputs(Collections.singletonList(
-                    new OutputFieldMappingEntry()
-                        .setName("keyPhrases")
-                        .setTargetName("myKeyPhrases")
-                ))
-        ));
-        return skillset;
     }
 }

@@ -129,7 +129,6 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void existsReturnsFalseForNonExistingIndexer();
 
-
     /**
      * Create a new valid skillset object
      * @return the newly created skillset object
@@ -303,7 +302,7 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         return indexer;
     }
 
-    protected Indexer createIndexerWithStorageConfig() {
+    Indexer createIndexerWithStorageConfig() {
         // create an indexer object
         Indexer updatedExpected =
             createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);

@@ -70,18 +70,18 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
     @Test
     public abstract void existsReturnsFalseForNonExistingSynonymMap();
 
-    protected void assertSynonymMapsEqual(SynonymMap actual, SynonymMap expected) {
+    void assertSynonymMapsEqual(SynonymMap actual, SynonymMap expected) {
         Assert.assertEquals(actual.getName(), expected.getName());
         Assert.assertEquals(actual.getSynonyms(), expected.getSynonyms());
     }
 
-    protected SynonymMap createTestSynonymMap() {
+    SynonymMap createTestSynonymMap() {
         return new SynonymMap()
             .setName("test-synonym")
             .setSynonyms("word1,word2");
     }
 
-    protected SynonymMap mutateSynonymsInSynonymMap(SynonymMap synonymMap) {
+    SynonymMap mutateSynonymsInSynonymMap(SynonymMap synonymMap) {
         synonymMap.setSynonyms("mutated1, mutated2");
         return synonymMap;
     }

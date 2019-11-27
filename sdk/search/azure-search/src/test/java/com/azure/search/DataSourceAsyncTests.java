@@ -35,20 +35,20 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     // commonly used lambda definitions
     private BiFunction<DataSource,
         AccessOptions,
-        Mono<DataSource>> createOrUpdateFunc =
+        Mono<DataSource>> createOrUpdateDataSourceFunc =
             (DataSource ds, AccessOptions ac) ->
                 createOrUpdateDataSource(ds, ac.getAccessCondition(), ac.getRequestOptions());
 
     private BiFunction<DataSource,
         AccessOptions,
-        Mono<DataSource>> createOrUpdateWithResponseFunc =
+        Mono<DataSource>> createOrUpdateDataSourceWithResponseFunc =
             (DataSource ds, AccessOptions ac) ->
-                createOrUpdateWithResponseDataSource(ds, ac.getAccessCondition(), ac.getRequestOptions());
+                createOrUpdateDataSourceWithResponse(ds, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<DataSource> newDataSourceFunc =
         () -> createTestBlobDataSource(null);
 
-    private Function<DataSource, DataSource> changeDataSourceFunc =
+    private Function<DataSource, DataSource> mutateDataSourceFunc =
         (DataSource ds) -> ds.setDescription("somethingnew");
 
     private BiFunction<String, AccessOptions, Mono<Void>> deleteDataSourceFunc =
@@ -61,20 +61,20 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         client = getSearchServiceClientBuilder().buildAsyncClient();
     }
 
-    public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource,
-                                               AccessCondition accessCondition,
-                                               RequestOptions requestOptions) {
-        return client.createOrUpdateDataSource(dataSource, accessCondition, requestOptions);
+    private Mono<DataSource> createOrUpdateDataSource(DataSource datasource,
+                                                      AccessCondition accessCondition,
+                                                      RequestOptions requestOptions) {
+        return client.createOrUpdateDataSource(datasource, accessCondition, requestOptions);
     }
 
-    public Mono<DataSource> createOrUpdateWithResponseDataSource(DataSource dataSource,
-                                                                 AccessCondition accessCondition,
-                                                                 RequestOptions requestOptions) {
-        return client.createOrUpdateDataSourceWithResponse(dataSource, accessCondition, requestOptions, Context.NONE)
+    private Mono<DataSource> createOrUpdateDataSourceWithResponse(DataSource datasource,
+                                                                  AccessCondition accessCondition,
+                                                                  RequestOptions requestOptions) {
+        return client.createOrUpdateDataSourceWithResponse(datasource, accessCondition, requestOptions, Context.NONE)
             .map(Response::getValue);
     }
 
-    public Mono<Void> deleteDataSource(String name, AccessCondition accessCondition, RequestOptions requestOptions) {
+    private Mono<Void> deleteDataSource(String name, AccessCondition accessCondition, RequestOptions requestOptions) {
         return client.deleteDataSource(name, accessCondition, requestOptions);
     }
 
@@ -116,17 +116,21 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         // Try to delete before the data source exists, expect a NOT FOUND return status code
         Response<Void> res = client.deleteDataSourceWithResponse(dataSource1.getName(), null, null).block();
-        Assert.assertTrue(res.getStatusCode() == HttpStatus.SC_NOT_FOUND);
+        assert res != null;
+        Assert.assertEquals(HttpStatus.SC_NOT_FOUND, res.getStatusCode());
 
         // Create the data source
         client.createOrUpdateDataSource(dataSource1).block();
 
         // Delete twice, expect the first to succeed (with NO CONTENT status code) and the second to return NOT FOUND
         res = client.deleteDataSourceWithResponse(dataSource1.getName(), null, null).block();
-        Assert.assertTrue(res.getStatusCode() == HttpStatus.SC_NO_CONTENT);
+        assert res != null;
+        Assert.assertEquals(HttpStatus.SC_NO_CONTENT, res.getStatusCode());
+
         // Again, expect to fail
         res = client.deleteDataSourceWithResponse(dataSource1.getName(), null, null).block();
-        Assert.assertTrue(res.getStatusCode() == HttpStatus.SC_NOT_FOUND);
+        assert res != null;
+        Assert.assertEquals(HttpStatus.SC_NOT_FOUND, res.getStatusCode());
     }
 
     @Override
@@ -156,9 +160,9 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.createOrUpdateIfNotExistsFailsOnExistingResourceAsync(
-            createOrUpdateFunc,
+            createOrUpdateDataSourceFunc,
             newDataSourceFunc,
-            changeDataSourceFunc);
+            mutateDataSourceFunc);
     }
 
     @Override
@@ -166,7 +170,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateFunc,
+            createOrUpdateDataSourceFunc,
             newDataSourceFunc);
     }
 
@@ -175,7 +179,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateWithResponseFunc,
+            createOrUpdateDataSourceWithResponseFunc,
             newDataSourceFunc);
     }
 
@@ -185,20 +189,20 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         act.deleteIfExistsWorksOnlyWhenResourceExistsAsync(
             deleteDataSourceFunc,
-            createOrUpdateFunc,
+            createOrUpdateDataSourceFunc,
             newDataSourceFunc,
             BLOB_DATASOURCE_TEST_NAME);
     }
 
     @Override
-    public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException {
+    public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.deleteIfNotChangedWorksOnlyOnCurrentResourceAsync(
             deleteDataSourceFunc,
             newDataSourceFunc,
-            createOrUpdateFunc,
-            changeDataSourceFunc,
+            createOrUpdateDataSourceFunc,
+            mutateDataSourceFunc,
             BLOB_DATASOURCE_TEST_NAME);
     }
 
@@ -208,37 +212,37 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         act.updateIfExistsFailsOnNoResourceAsync(
             newDataSourceFunc,
-            createOrUpdateFunc);
+            createOrUpdateDataSourceFunc);
     }
 
     @Override
-    public void updateDataSourceIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException {
+    public void updateDataSourceIfExistsSucceedsOnExistingResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.updateIfExistsSucceedsOnExistingResourceAsync(
             newDataSourceFunc,
-            createOrUpdateFunc,
-            changeDataSourceFunc);
+            createOrUpdateDataSourceFunc,
+            mutateDataSourceFunc);
     }
 
     @Override
-    public void updateDataSourceIfNotChangedFailsWhenResourceChanged() throws NoSuchFieldException, IllegalAccessException {
+    public void updateDataSourceIfNotChangedFailsWhenResourceChanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.updateIfNotChangedFailsWhenResourceChangedAsync(
             newDataSourceFunc,
-            createOrUpdateFunc,
-            changeDataSourceFunc);
+            createOrUpdateDataSourceFunc,
+            mutateDataSourceFunc);
     }
 
     @Override
-    public void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged() throws NoSuchFieldException, IllegalAccessException {
+    public void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.updateIfNotChangedSucceedsWhenResourceUnchangedAsync(
             newDataSourceFunc,
-            createOrUpdateFunc,
-            changeDataSourceFunc);
+            createOrUpdateDataSourceFunc,
+            mutateDataSourceFunc);
     }
 
     @Override
@@ -310,6 +314,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
     private void createAndValidateDataSource(DataSource expectedDataSource) {
         DataSource actualDataSource = client.createOrUpdateDataSource(expectedDataSource).block();
+        assert actualDataSource != null;
 
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null));
         assertDataSourcesEqual(expectedDataSource, actualDataSource);
@@ -331,6 +336,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         client.createOrUpdateDataSource(expectedDataSource).block();
         String dataSourceName = expectedDataSource.getName();
         DataSource actualDataSource = client.getDataSource(dataSourceName).block();
+        assert actualDataSource != null;
 
         expectedDataSource.setCredentials(
             new DataSourceCredentials().setConnectionString(null)); // Get doesn't return connection strings.
@@ -354,5 +360,24 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
                         ((HttpResponseException) error).getResponse().getStatusCode());
                 }
             );
+    }
+
+    @Override
+    public void canUpdateConnectionData() {
+        // Note: since connection string is not returned when queried from the service, actually saving the
+        // datasource, retrieving it and verifying the change, won't work.
+        // Hence, we only validate that the properties on the local items can change.
+
+        // Create an initial datasource
+        DataSource initial = createTestBlobDataSource(null);
+        Assert.assertEquals(initial.getCredentials().getConnectionString(),
+            "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;");
+
+        // tweak the connection string and verify it was changed
+        String newConnString =
+            "DefaultEndpointsProtocol=https;AccountName=NotaRealYetDifferentAccount;AccountKey=AnotherFakeKey;";
+        initial.setCredentials(new DataSourceCredentials().setConnectionString(newConnString));
+
+        Assert.assertEquals(initial.getCredentials().getConnectionString(), newConnString);
     }
 }

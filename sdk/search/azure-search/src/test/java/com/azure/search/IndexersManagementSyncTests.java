@@ -37,13 +37,13 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     // commonly used lambda definitions
     private BiFunction<Indexer,
         AccessOptions,
-        Indexer> createOrUpdateFunc =
+        Indexer> createOrUpdateIndexerFunc =
             (Indexer indexer, AccessOptions ac) ->
                 createIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
 
     private BiFunction<Indexer,
         AccessOptions,
-        Indexer> createOrUpdateWithResponseFunc =
+        Indexer> createOrUpdateIndexerWithResponseFunc =
             (Indexer indexer, AccessOptions ac) ->
                 createIndexerWithResponse(indexer, ac.getAccessCondition(), ac.getRequestOptions());
 
@@ -51,7 +51,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         () -> createBaseTestIndexerObject("name", TARGET_INDEX_NAME)
             .setDataSourceName(SQL_DATASOURCE_NAME);
 
-    private Function<Indexer, Indexer> changeIndexerFunc =
+    private Function<Indexer, Indexer> mutateIndexerFunc =
         (Indexer indexer) -> indexer.setDescription("ABrandNewDescription");
 
     private BiConsumer<String, AccessOptions> deleteIndexerFunc =
@@ -131,7 +131,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
      *
      * @param indexer the indexer to be created
      */
-    void createAndValidateIndexer(Indexer indexer) {
+    private void createAndValidateIndexer(Indexer indexer) {
         // Create an index
         Index index = createTestIndexForLiveDatasource(TARGET_INDEX_NAME);
         createIndex(index);
@@ -150,27 +150,27 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         client = getSearchServiceClientBuilder().buildClient();
     }
 
-    protected DataSource createDatasource(DataSource ds) {
+    private DataSource createDatasource(DataSource ds) {
         return client.createOrUpdateDataSource(ds);
     }
 
-    protected Index createIndex(Index index) {
+    private Index createIndex(Index index) {
         return client.createOrUpdateIndex(index);
     }
 
-    protected Indexer createIndexer(Indexer indexer) {
+    private Indexer createIndexer(Indexer indexer) {
         return client.createOrUpdateIndexer(indexer);
     }
 
-    protected Skillset createSkillset(Skillset skillset) {
+    private Skillset createSkillset(Skillset skillset) {
         return client.createOrUpdateSkillset(skillset);
     }
 
-    protected Indexer getIndexer(String indexerName) {
+    private Indexer getIndexer(String indexerName) {
         return client.getIndexer(indexerName);
     }
 
-    protected Indexer createIndexer(Indexer indexer,
+    private Indexer createIndexer(Indexer indexer,
                                     AccessCondition accessCondition,
                                     RequestOptions requestOptions) {
         return client.createOrUpdateIndexer(
@@ -179,7 +179,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             requestOptions);
     }
 
-    protected Indexer createIndexerWithResponse(Indexer indexer,
+    private Indexer createIndexerWithResponse(Indexer indexer,
                                     AccessCondition accessCondition,
                                     RequestOptions requestOptions) {
         return client.createOrUpdateIndexerWithResponse(
@@ -190,7 +190,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             .getValue();
     }
 
-    protected Response<Void> deleteIndexer(String indexerName,
+    private Response<Void> deleteIndexer(String indexerName,
                                            AccessCondition accessCondition,
                                            RequestOptions requestOptions) {
         return client.deleteIndexerWithResponse(indexerName,
@@ -199,7 +199,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             Context.NONE);
     }
 
-    protected Response<Void> deleteIndexer(String indexerName) {
+    private Response<Void> deleteIndexer(String indexerName) {
         return deleteIndexer(indexerName, null, null);
     }
 
@@ -311,9 +311,9 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         act.createOrUpdateIfNotExistsFailsOnExistingResource(
-            createOrUpdateFunc,
+            createOrUpdateIndexerFunc,
             newIndexerFunc,
-            changeIndexerFunc);
+            mutateIndexerFunc);
     }
 
     @Override
@@ -496,7 +496,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         Indexer indexerResult = act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateFunc,
+            createOrUpdateIndexerFunc,
             newIndexerFunc);
 
         Assert.assertTrue(StringUtils.isNoneEmpty(indexerResult.getETag()));
@@ -510,7 +510,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         Indexer indexerResult = act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateWithResponseFunc,
+            createOrUpdateIndexerWithResponseFunc,
             newIndexerFunc);
 
         Assert.assertTrue(StringUtils.isNoneEmpty(indexerResult.getETag()));
@@ -526,13 +526,13 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         String indexerName = "name";
         act.deleteIfExistsWorksOnlyWhenResourceExists(
             deleteIndexerFunc,
-            createOrUpdateFunc,
+            createOrUpdateIndexerFunc,
             newIndexerFunc,
             indexerName);
     }
 
     @Override
-    public void deleteIndexerIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException {
+    public void deleteIndexerIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests act = new AccessConditionTests();
 
         // Prepare data source and index
@@ -542,52 +542,52 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         act.deleteIfNotChangedWorksOnlyOnCurrentResource(
             deleteIndexerFunc,
             newIndexerFunc,
-            createOrUpdateFunc,
+            createOrUpdateIndexerFunc,
             indexerName);
     }
 
     @Override
-    public void updateIndexerIfExistsFailsOnNoResource() throws NoSuchFieldException, IllegalAccessException {
+    public void updateIndexerIfExistsFailsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsFailsOnNoResource(
             newIndexerFunc,
-            createOrUpdateFunc);
+            createOrUpdateIndexerFunc);
     }
 
     @Override
-    public void updateIndexerIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException {
-        // Prepare data source and index
+    public void updateIndexerIfExistsSucceedsOnExistingResource() {
+        // Prepare datasource and index
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsSucceedsOnExistingResource(
             newIndexerFunc,
-            createOrUpdateFunc,
-            changeIndexerFunc);
+            createOrUpdateIndexerFunc,
+            mutateIndexerFunc);
     }
 
     @Override
-    public void updateIndexerIfNotChangedFailsWhenResourceChanged() throws NoSuchFieldException, IllegalAccessException {
-        // Prepare data source and index
+    public void updateIndexerIfNotChangedFailsWhenResourceChanged() {
+        // Prepare datasource and index
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedFailsWhenResourceChanged(
             newIndexerFunc,
-            createOrUpdateFunc,
-            changeIndexerFunc);
+            createOrUpdateIndexerFunc,
+            mutateIndexerFunc);
     }
 
     @Override
-    public void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged() throws NoSuchFieldException, IllegalAccessException {
-        // Prepare data source and index
+    public void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged() {
+        // Prepare datasource and index
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchanged(
             newIndexerFunc,
-            createOrUpdateFunc,
-            changeIndexerFunc);
+            createOrUpdateIndexerFunc,
+            mutateIndexerFunc);
     }
 
     @Override

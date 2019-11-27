@@ -40,21 +40,19 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     // commonly used lambda definitions
     private BiFunction<Index,
         AccessOptions,
-        Mono<Index>> createOrUpdateAsyncFunc =
+        Mono<Index>> createOrUpdateIndexAsyncFunc =
             (Index index, AccessOptions ac) ->
                 createIndex(index, false, ac.getAccessCondition(), ac.getRequestOptions());
 
     private BiFunction<Index,
         AccessOptions,
-        Mono<Index>> createOrUpdateWithResponseAsyncFunc =
+        Mono<Index>> createOrUpdateIndexWithResponseAsyncFunc =
             (Index index, AccessOptions ac) ->
                 createIndexWithResponse(index, false, ac.getAccessCondition(), ac.getRequestOptions());
 
-    private Supplier<Index> newIndexFunc =
-        () -> createTestIndex();
+    private Supplier<Index> newIndexFunc = this::createTestIndex;
 
-    private Function<Index, Index> changeIndexFunc =
-        (Index index) -> mutateCorsOptionsInIndex(index);
+    private Function<Index, Index> mutateIndexFunc = this::mutateCorsOptionsInIndex;
 
     private BiFunction<String, AccessOptions, Mono<Void>> deleteIndexAsyncFunc =
         (String name, AccessOptions ac) ->
@@ -230,14 +228,14 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     }
 
     @Override
-    public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException {
+    public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.deleteIfNotChangedWorksOnlyOnCurrentResourceAsync(
             deleteIndexAsyncFunc,
             newIndexFunc,
-            createOrUpdateAsyncFunc,
-            changeIndexFunc,
+            createOrUpdateIndexAsyncFunc,
+            mutateIndexFunc,
             HOTEL_INDEX_NAME);
     }
 
@@ -247,7 +245,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         act.deleteIfExistsWorksOnlyWhenResourceExistsAsync(
             deleteIndexAsyncFunc,
-            createOrUpdateAsyncFunc,
+            createOrUpdateIndexAsyncFunc,
             newIndexFunc,
             HOTEL_INDEX_NAME);
     }
@@ -430,8 +428,9 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         // Update an existing index
         Index existingIndex = client.getIndex(index.getName()).block();
+        assert existingIndex != null;
         hotelNameField = getFieldByName(existingIndex, "HotelName");
-        hotelNameField.setSynonymMaps(Collections.<String>emptyList());
+        hotelNameField.setSynonymMaps(Collections.emptyList());
 
         StepVerifier
             .create(client.createOrUpdateIndex(existingIndex,
@@ -453,6 +452,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .setCorsOptions(initialIndex.getCorsOptions().setAllowedOrigins("*"));
 
         Index index = client.createIndex(initialIndex).block();
+        assert index != null;
 
         // Now update the index.
         String[] allowedOrigins = fullFeaturedIndex.getCorsOptions()
@@ -469,11 +469,13 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         // Modify the fields on an existing index
         Index existingIndex = client.getIndex(fullFeaturedIndex.getName()).block();
+        assert existingIndex != null;
 
         SynonymMap synonymMap = client.createSynonymMap(new SynonymMap()
             .setName("names")
             .setSynonyms("hotel,motel")
         ).block();
+        assert synonymMap != null;
 
         Field tagsField = getFieldByName(existingIndex, "Description_Custom");
         tagsField.setRetrievable(false)
@@ -503,6 +505,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         client.createIndex(index).block();
 
         Index existingIndex = client.getIndex(index.getName()).block();
+        assert existingIndex != null;
 
         existingIndex.getFields().addAll(Arrays.asList(
             new Field()
@@ -529,6 +532,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         client.createIndex(index).block();
 
         Index existingIndex = client.getIndex(index.getName()).block();
+        assert existingIndex != null;
+
         String existingFieldName = "Category";
         existingIndex.setSuggesters(Collections.singletonList(new Suggester()
             .setName("Suggestion")
@@ -575,9 +580,9 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.createOrUpdateIfNotExistsFailsOnExistingResourceAsync(
-            createOrUpdateAsyncFunc,
+            createOrUpdateIndexAsyncFunc,
             newIndexFunc,
-            changeIndexFunc);
+            mutateIndexFunc);
     }
 
     @Override
@@ -585,7 +590,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateAsyncFunc,
+            createOrUpdateIndexAsyncFunc,
             newIndexFunc);
     }
 
@@ -594,18 +599,17 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateWithResponseAsyncFunc,
+            createOrUpdateIndexWithResponseAsyncFunc,
             newIndexFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfExistsSucceedsOnExistingResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsSucceedsOnExistingResourceAsync(
             newIndexFunc,
-            createOrUpdateAsyncFunc,
-            changeIndexFunc);
+            createOrUpdateIndexAsyncFunc,
+            mutateIndexFunc);
     }
 
     @Override
@@ -613,33 +617,32 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsFailsOnNoResourceAsync(
             newIndexFunc,
-            createOrUpdateAsyncFunc);
+            createOrUpdateIndexAsyncFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchangedAsync(
             newIndexFunc,
-            createOrUpdateAsyncFunc,
-            changeIndexFunc);
+            createOrUpdateIndexAsyncFunc,
+            mutateIndexFunc);
     }
 
     @Override
-    public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedFailsWhenResourceChangedAsync(
             newIndexFunc,
-            createOrUpdateAsyncFunc,
-            changeIndexFunc);
+            createOrUpdateIndexAsyncFunc,
+            mutateIndexFunc);
     }
 
     @Override
     public void canCreateAndGetIndexStats() {
         Index testIndex = createTestIndex();
         Index index = client.createOrUpdateIndex(testIndex).block();
+        assert index != null;
 
         StepVerifier
             .create(client.getIndexStatistics(index.getName()))

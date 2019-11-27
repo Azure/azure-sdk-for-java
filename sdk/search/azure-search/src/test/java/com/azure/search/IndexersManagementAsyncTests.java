@@ -37,13 +37,13 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     // commonly used lambda definitions
     private BiFunction<Indexer,
         AccessOptions,
-        Mono<Indexer>> createOrUpdateAsyncFunc =
+        Mono<Indexer>> createOrUpdateIndexerAsyncFunc =
             (Indexer indexer, AccessOptions ac) ->
                 createIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
 
     private BiFunction<Indexer,
         AccessOptions,
-        Mono<Indexer>> createOrUpdateWithResponseAsyncFunc =
+        Mono<Indexer>> createOrUpdateIndexerWithResponseAsyncFunc =
             (Indexer indexer, AccessOptions ac) ->
                 createIndexerWithResponse(indexer, ac.getAccessCondition(), ac.getRequestOptions());
 
@@ -51,7 +51,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         () -> createBaseTestIndexerObject("name", TARGET_INDEX_NAME)
             .setDataSourceName(SQL_DATASOURCE_NAME);
 
-    private Function<Indexer, Indexer> changeIndexerFunc =
+    private Function<Indexer, Indexer> mutateIndexerFunc =
         (Indexer indexer) -> indexer.setDescription("ABrandNewDescription");
 
     private BiFunction<String, AccessOptions, Mono<Void>> deleteIndexerAsyncFunc =
@@ -158,7 +158,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
      * @param updatedIndexer the indexer to be updated
      * @param dataSourceName the data source name for this indexer
      */
-    void createUpdateAndValidateIndexer(Indexer updatedIndexer, String dataSourceName) {
+    private void createUpdateAndValidateIndexer(Indexer updatedIndexer, String dataSourceName) {
         updatedIndexer.setDataSourceName(dataSourceName);
 
         // Create an index
@@ -177,6 +177,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         Indexer indexerResponse = createIndexer(updatedIndexer, null, null).block();
 
         // verify the returned updated indexer is as expected
+        assert indexerResponse != null;
         setSameStartTime(updatedIndexer, indexerResponse);
         assertIndexersEqual(updatedIndexer, indexerResponse);
     }
@@ -186,7 +187,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
      *
      * @param indexer the indexer to be created
      */
-    void createAndValidateIndexer(Indexer indexer) {
+    private void createAndValidateIndexer(Indexer indexer) {
         // Create an index
         Index index = createTestIndexForLiveDatasource(TARGET_INDEX_NAME);
         createIndex(index);
@@ -195,6 +196,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         Indexer indexerResponse = createIndexer(indexer).block();
 
         // verify the returned updated indexer is as expected
+        assert indexerResponse != null;
         setSameStartTime(indexer, indexerResponse);
         assertIndexersEqual(indexer, indexerResponse);
     }
@@ -232,6 +234,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
                         .setMaxFailedItemsPerBatch(10));
 
         Indexer actualIndexer = client.createOrUpdateIndexer(expectedIndexer).block();
+        assert actualIndexer != null;
 
         IndexingParameters ip = new IndexingParameters();
         Map<String, Object> config = new HashMap<>();
@@ -292,9 +295,11 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
         Response<Void> response =
             client.runIndexerWithResponse(indexer.getName(), null, null).block();
+        assert response != null;
         Assert.assertEquals(HttpStatus.SC_ACCEPTED, response.getStatusCode());
 
         IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName()).block();
+        assert indexerExecutionInfo != null;
         Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 
@@ -306,9 +311,9 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         act.createOrUpdateIfNotExistsFailsOnExistingResourceAsync(
-            createOrUpdateAsyncFunc,
+            createOrUpdateIndexerAsyncFunc,
             newIndexerFunc,
-            changeIndexerFunc);
+            mutateIndexerFunc);
     }
 
     @Override
@@ -443,6 +448,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         Response<Void> result = deleteIndexerWithResponse(indexer.getName(), null, null)
             .block();
 
+        assert result != null;
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
 
         // Actually create the indexer
@@ -451,10 +457,12 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         // Now delete twice.
         result = deleteIndexerWithResponse(indexer.getName(), null, null)
             .block();
+        assert result != null;
         Assert.assertEquals(HttpStatus.SC_NO_CONTENT, result.getStatusCode());
 
         result = deleteIndexerWithResponse(indexer.getName(), null, null)
             .block();
+        assert result != null;
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
     }
 
@@ -494,7 +502,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateAsyncFunc,
+            createOrUpdateIndexerAsyncFunc,
             newIndexerFunc);
     }
 
@@ -506,7 +514,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateWithResponseAsyncFunc,
+            createOrUpdateIndexerWithResponseAsyncFunc,
             newIndexerFunc);
     }
 
@@ -520,13 +528,13 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         String indexerName = "name";
         act.deleteIfExistsWorksOnlyWhenResourceExistsAsync(
             deleteIndexerAsyncFunc,
-            createOrUpdateAsyncFunc,
+            createOrUpdateIndexerAsyncFunc,
             newIndexerFunc,
             indexerName);
     }
 
     @Override
-    public void deleteIndexerIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException {
+    public void deleteIndexerIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         // Prepare data source and index
@@ -536,53 +544,53 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         act.deleteIfNotChangedWorksOnlyOnCurrentResourceAsync(
             deleteIndexerAsyncFunc,
             newIndexerFunc,
-            createOrUpdateAsyncFunc,
-            changeIndexerFunc,
+            createOrUpdateIndexerAsyncFunc,
+            mutateIndexerFunc,
             indexerName);
     }
 
     @Override
-    public void updateIndexerIfExistsFailsOnNoResource() throws NoSuchFieldException, IllegalAccessException {
+    public void updateIndexerIfExistsFailsOnNoResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsFailsOnNoResourceAsync(
             newIndexerFunc,
-            createOrUpdateAsyncFunc);
+            createOrUpdateIndexerAsyncFunc);
     }
 
     @Override
-    public void updateIndexerIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException {
-        // Prepare data source and index
+    public void updateIndexerIfExistsSucceedsOnExistingResource() {
+        // Prepare datasource and index
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsSucceedsOnExistingResourceAsync(
             newIndexerFunc,
-            createOrUpdateAsyncFunc,
-            changeIndexerFunc);
+            createOrUpdateIndexerAsyncFunc,
+            mutateIndexerFunc);
     }
 
     @Override
-    public void updateIndexerIfNotChangedFailsWhenResourceChanged() throws NoSuchFieldException, IllegalAccessException {
-        // Prepare data source and index
+    public void updateIndexerIfNotChangedFailsWhenResourceChanged() {
+        // Prepare datasource and index
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedFailsWhenResourceChangedAsync(
             newIndexerFunc,
-            createOrUpdateAsyncFunc,
-            changeIndexerFunc);
+            createOrUpdateIndexerAsyncFunc,
+            mutateIndexerFunc);
     }
 
     @Override
-    public void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged() throws NoSuchFieldException, IllegalAccessException {
-        // Prepare data source and index
+    public void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged() {
+        // Prepare datasource and index
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchangedAsync(
             newIndexerFunc,
-            createOrUpdateAsyncFunc,
-            changeIndexerFunc);
+            createOrUpdateIndexerAsyncFunc,
+            mutateIndexerFunc);
     }
 
     @Override

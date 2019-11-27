@@ -27,37 +27,35 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
     // commonly used lambda definitions
     private BiFunction<SynonymMap,
         AccessOptions,
-        Mono<SynonymMap>> createOrUpdateAsyncFunc =
+        Mono<SynonymMap>> createOrUpdateSynonymMapAsyncFunc =
             (SynonymMap sm, AccessOptions ac) ->
                 createOrUpdateSynonymMap(sm, ac.getAccessCondition(), ac.getRequestOptions());
 
     private BiFunction<SynonymMap,
         AccessOptions,
-        Mono<SynonymMap>> createOrUpdateWithResponseAsyncFunc =
+        Mono<SynonymMap>> createOrUpdateSynonymMapWithResponseAsyncFunc =
             (SynonymMap sm, AccessOptions ac) ->
                 createOrUpdateSynonymMapWithResponse(sm, ac.getAccessCondition(), ac.getRequestOptions());
 
-    private Supplier<SynonymMap> newSynonymMapFunc =
-        () -> createTestSynonymMap();
+    private Supplier<SynonymMap> newSynonymMapFunc = this::createTestSynonymMap;
 
-    private Function<SynonymMap, SynonymMap> changeSynonymMapFunc =
-        (SynonymMap sm) -> mutateSynonymsInSynonymMap(sm);
+    private Function<SynonymMap, SynonymMap> mutateSynonymMapFunc = this::mutateSynonymsInSynonymMap;
 
     private BiFunction<String, AccessOptions, Mono<Void>> deleteSynonymMapAsyncFunc =
         (String name, AccessOptions ac) ->
             deleteSynonymMap(name, ac.getAccessCondition(), ac.getRequestOptions());
 
-    protected Mono<SynonymMap> createOrUpdateSynonymMap(
+    private Mono<SynonymMap> createOrUpdateSynonymMap(
         SynonymMap sm, AccessCondition ac, RequestOptions ro) {
         return client.createOrUpdateSynonymMap(sm, ac, ro);
     }
 
-    protected Mono<SynonymMap> createOrUpdateSynonymMapWithResponse(
+    private Mono<SynonymMap> createOrUpdateSynonymMapWithResponse(
         SynonymMap sm, AccessCondition ac, RequestOptions ro) {
         return client.createOrUpdateSynonymMapWithResponse(sm, ac, ro, Context.NONE).map(Response::getValue);
     }
 
-    protected Mono<Void> deleteSynonymMap(
+    private Mono<Void> deleteSynonymMap(
         String name, AccessCondition ac, RequestOptions ro) {
         return client.deleteSynonymMap(name, ac, ro);
     }
@@ -216,7 +214,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateAsyncFunc,
+            createOrUpdateSynonymMapAsyncFunc,
             newSynonymMapFunc);
     }
 
@@ -225,18 +223,17 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateWithResponseAsyncFunc,
+            createOrUpdateSynonymMapWithResponseAsyncFunc,
             newSynonymMapFunc);
     }
 
     @Override
-    public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsSucceedsOnExistingResourceAsync(
             newSynonymMapFunc,
-            createOrUpdateAsyncFunc,
-            changeSynonymMapFunc);
+            createOrUpdateSynonymMapAsyncFunc,
+            mutateSynonymMapFunc);
     }
 
     @Override
@@ -244,7 +241,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsFailsOnNoResourceAsync(
             newSynonymMapFunc,
-            createOrUpdateAsyncFunc);
+            createOrUpdateSynonymMapAsyncFunc);
     }
 
     @Override
@@ -252,8 +249,8 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchangedAsync(
             newSynonymMapFunc,
-            createOrUpdateAsyncFunc,
-            changeSynonymMapFunc);
+            createOrUpdateSynonymMapAsyncFunc,
+            mutateSynonymMapFunc);
     }
 
     @Override
@@ -261,8 +258,8 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedFailsWhenResourceChangedAsync(
             newSynonymMapFunc,
-            createOrUpdateAsyncFunc,
-            changeSynonymMapFunc);
+            createOrUpdateSynonymMapAsyncFunc,
+            mutateSynonymMapFunc);
     }
 
     @Override
@@ -433,22 +430,21 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.createOrUpdateIfNotExistsFailsOnExistingResourceAsync(
-            createOrUpdateAsyncFunc,
+            createOrUpdateSynonymMapAsyncFunc,
             newSynonymMapFunc,
-            changeSynonymMapFunc);
+            mutateSynonymMapFunc);
     }
 
     @Override
-    public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         String synonymName = "test-synonym";
         act.deleteIfNotChangedWorksOnlyOnCurrentResourceAsync(
             deleteSynonymMapAsyncFunc,
             newSynonymMapFunc,
-            createOrUpdateAsyncFunc,
-            changeSynonymMapFunc,
+            createOrUpdateSynonymMapAsyncFunc,
+            mutateSynonymMapFunc,
             synonymName);
     }
 
@@ -458,7 +454,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
         act.deleteIfExistsWorksOnlyWhenResourceExistsAsync(
             deleteSynonymMapAsyncFunc,
-            createOrUpdateAsyncFunc,
+            createOrUpdateSynonymMapAsyncFunc,
             newSynonymMapFunc,
             "test-synonym");
     }

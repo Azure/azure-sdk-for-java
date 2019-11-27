@@ -28,37 +28,36 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     // commonly used lambda definitions
     private BiFunction<SynonymMap,
         AccessOptions,
-        SynonymMap> createOrUpdateFunc =
+        SynonymMap> createOrUpdateSynonymMapFunc =
             (SynonymMap sm, AccessOptions ac) ->
                 createOrUpdateSynonymMap(sm, ac.getAccessCondition(), ac.getRequestOptions());
 
     private BiFunction<SynonymMap,
         AccessOptions,
-        SynonymMap> createOrUpdateWithResponseFunc =
+        SynonymMap> createOrUpdateSynonymMapWithResponseFunc =
             (SynonymMap sm, AccessOptions ac) ->
                 createOrUpdateSynonymMapWithResponse(sm, ac.getAccessCondition(), ac.getRequestOptions());
 
-    private Supplier<SynonymMap> newSynonymMapFunc =
-        () -> createTestSynonymMap();
+    private Supplier<SynonymMap> newSynonymMapFunc = this::createTestSynonymMap;
 
-    private Function<SynonymMap, SynonymMap> changeSynonymMapFunc =
+    private Function<SynonymMap, SynonymMap> mutateSynonymMapFunc =
         (SynonymMap sm) -> mutateSynonymsInSynonymMap(sm);
 
     private BiConsumer<String, AccessOptions> deleteSynonymMapFunc =
         (String name, AccessOptions ac) ->
             deleteSynonymMap(name, ac.getAccessCondition(), ac.getRequestOptions());
 
-    protected SynonymMap createOrUpdateSynonymMap(
+    private SynonymMap createOrUpdateSynonymMap(
         SynonymMap sm, AccessCondition ac, RequestOptions ro) {
         return client.createOrUpdateSynonymMap(sm, ac, ro);
     }
 
-    protected SynonymMap createOrUpdateSynonymMapWithResponse(
+    private SynonymMap createOrUpdateSynonymMapWithResponse(
         SynonymMap sm, AccessCondition ac, RequestOptions ro) {
         return client.createOrUpdateSynonymMapWithResponse(sm, ac, ro, Context.NONE).getValue();
     }
 
-    protected void deleteSynonymMap(
+    private void deleteSynonymMap(
         String name, AccessCondition ac, RequestOptions ro) {
         client.deleteSynonymMap(name, ac, ro);
     }
@@ -165,7 +164,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     @Override
     public void createOrUpdateSynonymMapIfNotExistsFailsOnExistingResource() {
         AccessConditionTests act = new AccessConditionTests();
-        act.createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateFunc, newSynonymMapFunc, changeSynonymMapFunc);
+        act.createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateSynonymMapFunc, newSynonymMapFunc, mutateSynonymMapFunc);
     }
 
     @Override
@@ -173,7 +172,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         AccessConditionTests act = new AccessConditionTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateFunc,
+            createOrUpdateSynonymMapFunc,
             newSynonymMapFunc);
     }
 
@@ -182,47 +181,43 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         AccessConditionTests act = new AccessConditionTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateWithResponseFunc,
+            createOrUpdateSynonymMapWithResponseFunc,
             newSynonymMapFunc);
     }
 
     @Override
-    public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsSucceedsOnExistingResource(
             newSynonymMapFunc,
-            createOrUpdateFunc,
-            changeSynonymMapFunc);
+            createOrUpdateSynonymMapFunc,
+            mutateSynonymMapFunc);
     }
 
     @Override
-    public void createOrUpdateSynonymMapIfExistsFailsOnNoResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateSynonymMapIfExistsFailsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsFailsOnNoResource(
             newSynonymMapFunc,
-            createOrUpdateFunc);
+            createOrUpdateSynonymMapFunc);
     }
 
     @Override
-    public void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchanged(
             newSynonymMapFunc,
-            createOrUpdateFunc,
-            changeSynonymMapFunc);
+            createOrUpdateSynonymMapFunc,
+            mutateSynonymMapFunc);
     }
 
     @Override
-    public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedFailsWhenResourceChanged(
             newSynonymMapFunc,
-            createOrUpdateFunc,
-            changeSynonymMapFunc);
+            createOrUpdateSynonymMapFunc,
+            mutateSynonymMapFunc);
     }
 
     @Override
@@ -329,15 +324,14 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     }
 
     @Override
-    public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests act = new AccessConditionTests();
 
         String synonymName = "test-synonym";
         act.deleteIfNotChangedWorksOnlyOnCurrentResource(
             deleteSynonymMapFunc,
             newSynonymMapFunc,
-            createOrUpdateFunc,
+            createOrUpdateSynonymMapFunc,
             synonymName);
     }
 
@@ -347,7 +341,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
 
         act.deleteIfExistsWorksOnlyWhenResourceExists(
             deleteSynonymMapFunc,
-            createOrUpdateFunc,
+            createOrUpdateSynonymMapFunc,
             newSynonymMapFunc,
             "test-synonym");
     }

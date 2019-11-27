@@ -42,21 +42,20 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     // commonly used lambda definitions
     private BiFunction<Skillset,
         AccessOptions,
-        Mono<Skillset>> createOrUpdateAsyncFunc =
+        Mono<Skillset>> createOrUpdateSkillsetAsyncFunc =
             (Skillset skillset, AccessOptions ac) ->
                 createSkillset(skillset, ac.getAccessCondition(), ac.getRequestOptions());
 
     private BiFunction<Skillset,
         AccessOptions,
-        Mono<Skillset>> createOrUpdateWithResponseAsyncFunc =
+        Mono<Skillset>> createOrUpdateSkillsetWithResponseAsyncFunc =
             (Skillset skillset, AccessOptions ac) ->
                 createSkillsetWithResponse(skillset, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Skillset> newSkillsetFunc =
         () -> createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
-    private Function<Skillset, Skillset> changeSkillsetFunc =
-        (Skillset skillset) -> mutateSkillsInSkillset(skillset);
+    private Function<Skillset, Skillset> mutateSkillsetFunc = this::mutateSkillsInSkillset;
 
     private BiFunction<String, AccessOptions, Mono<Void>> deleteSkillsetAsyncFunc =
         (String name, AccessOptions ac) ->
@@ -563,6 +562,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
         Skillset createdSkillset = client.createSkillset(skillset).block();
+        assert createdSkillset != null;
 
         // update skills
         createdSkillset.setSkills(Collections.singletonList(
@@ -591,6 +591,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
         Skillset createdSkillset = client.createSkillset(skillset).block();
+        assert createdSkillset != null;
 
         // update Cognitive Service
         createdSkillset.setCognitiveServices(new DefaultCognitiveServices().setDescription("description"));
@@ -616,9 +617,9 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.createOrUpdateIfNotExistsFailsOnExistingResourceAsync(
-            createOrUpdateAsyncFunc,
+            createOrUpdateSkillsetAsyncFunc,
             newSkillsetFunc,
-            changeSkillsetFunc);
+            mutateSkillsetFunc);
     }
 
     @Override
@@ -626,7 +627,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateAsyncFunc,
+            createOrUpdateSkillsetAsyncFunc,
             newSkillsetFunc);
     }
 
@@ -635,18 +636,17 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateWithResponseAsyncFunc,
+            createOrUpdateSkillsetWithResponseAsyncFunc,
             newSkillsetFunc);
     }
 
     @Override
-    public void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsSucceedsOnExistingResourceAsync(
             newSkillsetFunc,
-            createOrUpdateAsyncFunc,
-            changeSkillsetFunc);
+            createOrUpdateSkillsetAsyncFunc,
+            mutateSkillsetFunc);
     }
 
     @Override
@@ -676,39 +676,36 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsFailsOnNoResourceAsync(
             newSkillsetFunc,
-            createOrUpdateAsyncFunc);
+            createOrUpdateSkillsetAsyncFunc);
     }
 
     @Override
-    public void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchangedAsync(
             newSkillsetFunc,
-            createOrUpdateAsyncFunc,
-            changeSkillsetFunc);
+            createOrUpdateSkillsetAsyncFunc,
+            mutateSkillsetFunc);
     }
 
     @Override
-    public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedFailsWhenResourceChangedAsync(
             newSkillsetFunc,
-            createOrUpdateAsyncFunc,
-            changeSkillsetFunc);
+            createOrUpdateSkillsetAsyncFunc,
+            mutateSkillsetFunc);
     }
 
     @Override
-    public void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
         act.deleteIfNotChangedWorksOnlyOnCurrentResourceAsync(
             deleteSkillsetAsyncFunc,
             newSkillsetFunc,
-            createOrUpdateAsyncFunc,
-            changeSkillsetFunc,
+            createOrUpdateSkillsetAsyncFunc,
+            mutateSkillsetFunc,
             OCR_SKILLSET_NAME);
     }
 
@@ -718,7 +715,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         act.deleteIfExistsWorksOnlyWhenResourceExistsAsync(
             deleteSkillsetAsyncFunc,
-            createOrUpdateAsyncFunc,
+            createOrUpdateSkillsetAsyncFunc,
             newSkillsetFunc,
             OCR_SKILLSET_NAME);
     }

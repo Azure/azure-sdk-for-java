@@ -4,10 +4,9 @@
 package com.azure.search;
 
 import com.azure.search.common.DataSources;
+import com.azure.search.models.DataChangeDetectionPolicy;
 import com.azure.search.models.DataDeletionDetectionPolicy;
 import com.azure.search.models.DataSource;
-import com.azure.search.models.DataSourceCredentials;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
@@ -15,6 +14,18 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 public abstract class DataSourceTestBase extends SearchServiceTestBase {
 
     private static final String FAKE_DESCRIPTION = "Some data source";
+    // The connection string we use here, as well as table name and target index schema, use the USGS database
+    // that we set up to support our code samples.
+    //
+    // ASSUMPTION: Change tracking has already been enabled on the database with ALTER DATABASE ... SET CHANGE_TRACKING = ON
+    // and it has been enabled on the table with ALTER TABLE ... ENABLE CHANGE_TRACKING
+    private static final String SQL_CONN_STRING_FIXTURE =
+        "Server=tcp:azs-playground.database.windows.net,1433;Database=usgs;User ID=reader;Password=EdrERBt3j6mZDP;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
+    }
 
     @Test
     public abstract void createAndListDataSources();
@@ -71,23 +82,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     public abstract void existsReturnsTrueForExistingDatasource();
 
     @Test
-    public void canUpdateConnectionData() {
-        // Note: since connection string is not returned when queried from the service, actually saving the
-        // data source, retrieving it and verifying the change, won't work.
-        // Hence, we only validate that the properties on the local items can change.
-
-        // Create an initial data source
-        DataSource initial = createTestBlobDataSource(null);
-        Assert.assertEquals(initial.getCredentials().getConnectionString(),
-            "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;");
-
-        // tweak the connection string and verify it was changed
-        String newConnString =
-            "DefaultEndpointsProtocol=https;AccountName=NotaRealYetDifferentAccount;AccountKey=AnotherFakeKey;";
-        initial.setCredentials(new DataSourceCredentials().setConnectionString(newConnString));
-
-        Assert.assertEquals(initial.getCredentials().getConnectionString(), newConnString);
-    }
+    public abstract void canUpdateConnectionData();
 
     protected DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
         return DataSources.azureBlobStorage(
@@ -126,7 +121,36 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
         );
     }
 
-    protected void assertDataSourcesEqual(DataSource updatedExpected, DataSource actualDataSource) {
+    /**
+     * Creates a new DataSource to connect to an Azure SQL database.
+     *
+     * @param name The name of the datasource.
+     * @param sqlConnectionString The connection string for the Azure SQL database.
+     * @param tableOrViewName The name of the table or view from which to read rows.
+     * @param changeDetectionPolicy The change detection policy for the datasource.
+     * Note that only high watermark change detection
+     * is allowed for Azure SQL when deletion detection is enabled.
+     * @param deletionDetectionPolicy The data deletion detection policy for the datasource.
+     * @param description Optional. Description of the datasource.
+     * @return A new DataSource instance.
+     */
+    static DataSource azureSql(
+        String name,
+        String sqlConnectionString,
+        String tableOrViewName,
+        DataChangeDetectionPolicy changeDetectionPolicy,
+        DataDeletionDetectionPolicy deletionDetectionPolicy,
+        String description) {
+        return DataSources.azureSql(
+            name,
+            sqlConnectionString,
+            tableOrViewName,
+            description,
+            changeDetectionPolicy,
+            deletionDetectionPolicy);
+    }
+
+    void assertDataSourcesEqual(DataSource updatedExpected, DataSource actualDataSource) {
         // Using assertReflectionEquals also checks the etag, however we do not care
         // for that value, hence, we change both to the same value to make sure it
         // won't fail the assertion

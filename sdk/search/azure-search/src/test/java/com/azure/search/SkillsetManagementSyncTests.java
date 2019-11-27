@@ -43,21 +43,20 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     // commonly used lambda definitions
     private BiFunction<Skillset,
         AccessOptions,
-        Skillset> createOrUpdateFunc =
+        Skillset> createOrUpdateSkillsetFunc =
             (Skillset skillset, AccessOptions ac) ->
                 createSkillset(skillset, ac.getAccessCondition(), ac.getRequestOptions());
 
     private BiFunction<Skillset,
         AccessOptions,
-        Skillset> createOrUpdateWithResponseFunc =
+        Skillset> createOrUpdateSkillsetWithResponseFunc =
             (Skillset skillset, AccessOptions ac) ->
                 createSkillsetWithResponse(skillset, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Skillset> newSkillsetFunc =
         () -> createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
-    private Function<Skillset, Skillset> changeSkillsetFunc =
-        (Skillset skillset) -> mutateSkillsInSkillset(skillset);
+    private Function<Skillset, Skillset> mutateSkillsetFunc = this::mutateSkillsInSkillset;
 
     private BiConsumer<String, AccessOptions> deleteSkillsetFunc =
         (String name, AccessOptions ac) ->
@@ -514,9 +513,9 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         act.createOrUpdateIfNotExistsFailsOnExistingResource(
-            createOrUpdateFunc,
+            createOrUpdateSkillsetFunc,
             newSkillsetFunc,
-            changeSkillsetFunc);
+            mutateSkillsetFunc);
     }
 
     @Override
@@ -524,7 +523,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateFunc,
+            createOrUpdateSkillsetFunc,
             newSkillsetFunc);
     }
 
@@ -533,58 +532,53 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateWithResponseFunc,
+            createOrUpdateSkillsetWithResponseFunc,
             newSkillsetFunc);
     }
 
     @Override
-    public void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsSucceedsOnExistingResource(
             newSkillsetFunc,
-            createOrUpdateFunc,
-            changeSkillsetFunc);
+            createOrUpdateSkillsetFunc,
+            mutateSkillsetFunc);
     }
 
     @Override
-    public void createOrUpdateSkillsetIfExistsFailsOnNoResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateSkillsetIfExistsFailsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsFailsOnNoResource(
             newSkillsetFunc,
-            createOrUpdateFunc);
+            createOrUpdateSkillsetFunc);
     }
 
     @Override
-    public void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchanged(
             newSkillsetFunc,
-            createOrUpdateFunc,
-            changeSkillsetFunc);
+            createOrUpdateSkillsetFunc,
+            mutateSkillsetFunc);
     }
 
     @Override
-    public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedFailsWhenResourceChanged(
             newSkillsetFunc,
-            createOrUpdateFunc,
-            changeSkillsetFunc);
+            createOrUpdateSkillsetFunc,
+            mutateSkillsetFunc);
     }
 
     @Override
-    public void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource()
-        throws NoSuchFieldException, IllegalAccessException {
+    public void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests act = new AccessConditionTests();
 
         act.deleteIfNotChangedWorksOnlyOnCurrentResource(
             deleteSkillsetFunc,
             newSkillsetFunc,
-            createOrUpdateFunc,
+            createOrUpdateSkillsetFunc,
             OCR_SKILLSET_NAME);
     }
 
@@ -594,7 +588,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
         act.deleteIfExistsWorksOnlyWhenResourceExists(
             deleteSkillsetFunc,
-            createOrUpdateFunc,
+            createOrUpdateSkillsetFunc,
             newSkillsetFunc,
             OCR_SKILLSET_NAME);
     }
