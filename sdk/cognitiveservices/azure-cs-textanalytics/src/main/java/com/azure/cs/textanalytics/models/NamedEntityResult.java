@@ -4,20 +4,21 @@
 package com.azure.cs.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.IterableStream;
+
+import java.util.List;
 
 /**
  * The NamedEntityResult model.
  */
 @Fluent
 public final class NamedEntityResult extends DocumentResult {
-    private IterableStream<NamedEntity> namedEntities;
+    private List<NamedEntity> namedEntities;
 
-    public IterableStream<NamedEntity> getNamedEntities() {
+    public List<NamedEntity> getNamedEntities() {
         return namedEntities;
     }
 
-    NamedEntityResult setNamedEntities(IterableStream<NamedEntity> namedEntities) {
+    NamedEntityResult setNamedEntities(List<NamedEntity> namedEntities) {
         this.namedEntities = namedEntities;
         return this;
     }

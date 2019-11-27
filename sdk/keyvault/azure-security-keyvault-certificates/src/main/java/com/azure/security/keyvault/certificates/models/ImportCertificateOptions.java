@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * Represents the configuration used to import a certificate in the key vault.
  */
-public final class CertificateImportOptions {
+public final class ImportCertificateOptions {
 
     /**
      * The file location of the certificate.
@@ -49,7 +49,7 @@ public final class CertificateImportOptions {
      * @param name The name of the key.
      * @param value The PFX or PEM formatted value of the certificate containing both the x509 certificates and the private key.
      */
-    public CertificateImportOptions(String name, byte[] value) {
+    public ImportCertificateOptions(String name, byte[] value) {
         Objects.requireNonNull(value, "The certificate value parameter cannot be null.");
         this.name = name;
         this.value = CoreUtils.clone(value);
@@ -60,7 +60,7 @@ public final class CertificateImportOptions {
      * @param enabled The enabled status to set.
      * @return the CertificateImportOptions itself
      */
-    public CertificateImportOptions setEnabled(Boolean enabled) {
+    public ImportCertificateOptions setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -87,7 +87,7 @@ public final class CertificateImportOptions {
      * @param certificatePolicy the management policy for the certificate
      * @return the updated CertificateImportOptions itself
      */
-    public CertificateImportOptions setCertificatePolicy(CertificatePolicy certificatePolicy) {
+    public ImportCertificateOptions setCertificatePolicy(CertificatePolicy certificatePolicy) {
         this.certificatePolicy = certificatePolicy;
         return this;
     }
@@ -97,7 +97,7 @@ public final class CertificateImportOptions {
      * @param tags The metadata to set.
      * @return the updated CertificateImportOptions itself
      */
-    public CertificateImportOptions setTags(Map<String, String> tags) {
+    public ImportCertificateOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -116,7 +116,7 @@ public final class CertificateImportOptions {
      * @param password The password used to encrypt the certificate.
      * @return the updated CertificateImportOptions itself
      */
-    public CertificateImportOptions setPassword(String password) {
+    public ImportCertificateOptions setPassword(String password) {
         this.password = password;
         return this;
     }

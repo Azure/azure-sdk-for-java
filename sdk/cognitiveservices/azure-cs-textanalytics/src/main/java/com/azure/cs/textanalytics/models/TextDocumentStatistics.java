@@ -17,13 +17,13 @@ public final class TextDocumentStatistics {
      * Number of text elements recognized in the document.
      */
     @JsonProperty(value = "charactersCount", required = true)
-    private int charactersCount;
+    private int characterCount;
 
     /*
      * Number of transactions for the document.
      */
     @JsonProperty(value = "transactionsCount", required = true)
-    private int transactionsCount;
+    private int transactionCount;
 
     /**
      * Get the charactersCount property: Number of text elements recognized in
@@ -31,19 +31,19 @@ public final class TextDocumentStatistics {
      *
      * @return the charactersCount value.
      */
-    public int getCharactersCount() {
-        return this.charactersCount;
+    public int getCharacterCount() {
+        return this.characterCount;
     }
 
     /**
      * Set the charactersCount property: Number of text elements recognized in
      * the document.
      *
-     * @param charactersCount the charactersCount value to set.
+     * @param characterCount the charactersCount value to set.
      * @return the TextDocumentStatistics object itself.
      */
-    TextDocumentStatistics setCharactersCount(int charactersCount) {
-        this.charactersCount = charactersCount;
+    TextDocumentStatistics setCharacterCount(int characterCount) {
+        this.characterCount = characterCount;
         return this;
     }
 
@@ -54,18 +54,18 @@ public final class TextDocumentStatistics {
      * @return the transactionsCount value.
      */
     public int getTransactionsCount() {
-        return this.transactionsCount;
+        return this.transactionCount;
     }
 
     /**
      * Set the transactionsCount property: Number of transactions for the
      * document.
      *
-     * @param transactionsCount the transactionsCount value to set.
+     * @param transactionCount the transactionsCount value to set.
      * @return the TextDocumentStatistics object itself.
      */
-    TextDocumentStatistics setTransactionsCount(int transactionsCount) {
-        this.transactionsCount = transactionsCount;
+    TextDocumentStatistics setTransactionCount(int transactionCount) {
+        this.transactionCount = transactionCount;
         return this;
     }
 }

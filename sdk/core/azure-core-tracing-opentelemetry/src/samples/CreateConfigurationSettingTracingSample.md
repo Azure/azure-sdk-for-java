@@ -10,22 +10,22 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
     <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-sdk</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.2.0</version>
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-data-appconfiguration</artifactId>
-        <version>1.0.0-beta.7</version>
+        <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-core-tracing-opentelemetry</artifactId>
-        <version>1.0.0-beta.1</version>
+        <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
     </dependency>
     <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-exporters-logging</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.2.0</version>
     </dependency>
 </dependencies>
 

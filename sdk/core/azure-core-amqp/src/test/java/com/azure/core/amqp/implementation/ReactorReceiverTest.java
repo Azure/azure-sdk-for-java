@@ -26,6 +26,8 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -85,7 +87,7 @@ public class ReactorReceiverTest {
      */
     @Test
     public void updateEndpointState() {
-        StepVerifier.create(reactorReceiver.getConnectionStates())
+        StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
@@ -149,6 +151,7 @@ public class ReactorReceiverTest {
         // Act & Assert
         StepVerifier.create(reactorReceiver.receive())
             .then(() -> receiverHandler.onLinkRemoteClose(event))
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
     }
 }

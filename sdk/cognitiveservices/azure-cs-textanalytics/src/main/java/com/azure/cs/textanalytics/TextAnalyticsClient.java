@@ -65,7 +65,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<DetectedLanguageResult>> detectLanguagesWithResponse(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.detectLanguagesWithResponse(inputs, options, context).block();
+        return client.detectBatchLanguagesWithResponse(inputs, options, context).block();
     }
 
     // (2) entities
@@ -106,7 +106,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<NamedEntityResult>> recognizeEntitiesWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizeEntitiesWithResponse(inputs, options, context).block();
+        return client.recognizeBatchEntitiesWithResponse(inputs, options, context).block();
     }
 
     // (3) PII entities
@@ -147,7 +147,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<NamedEntityResult>> recognizePiiEntitiesWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizePiiEntitiesWithResponse(inputs, options, context).block();
+        return client.recognizeBatchPiiEntitiesWithResponse(inputs, options, context).block();
     }
 
     // (4) Link entities
@@ -188,7 +188,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<LinkedEntityResult>> recognizeLinkedEntitiesWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizeLinkedEntitiesWithResponse(inputs, options, context).block();
+        return client.recognizeBatchLinkedEntitiesWithResponse(inputs, options, context).block();
     }
 
     // (5) key phrase
@@ -229,7 +229,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrasesWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.extractKeyPhrasesWithResponse(inputs, options, context).block();
+        return client.extractBatchKeyPhrasesWithResponse(inputs, options, context).block();
     }
 
     // (6) sentiment
@@ -271,6 +271,6 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<TextSentimentResult>> analyzeSentimentWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.analyzeDocumentSentimentWithResponse(inputs, options, context).block();
+        return client.analyzeBatchSentimentWithResponse(inputs, options, context).block();
     }
 }

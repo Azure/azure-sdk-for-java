@@ -66,17 +66,6 @@ public final class DetectLanguageInput {
     }
 
     /**
-     * Set the text property: The text property.
-     *
-     * @param text the text value to set.
-     * @return the UnknownLanguageInput object itself.
-     */
-    public DetectLanguageInput setText(String text) {
-        this.text = text;
-        return this;
-    }
-
-    /**
      * Get the countryHint property: The countryHint property.
      *
      * @return the countryHint value.

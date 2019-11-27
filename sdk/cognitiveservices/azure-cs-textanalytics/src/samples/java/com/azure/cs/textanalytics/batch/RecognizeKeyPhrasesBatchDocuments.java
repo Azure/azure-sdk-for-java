@@ -25,8 +25,8 @@ public class RecognizeKeyPhrasesBatchDocuments {
 
         // The texts that need be analysed.
         List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("1", "My cat might need to see a veterinarian").setLanguage("US"),
-            new TextDocumentInput("2", "The pitot tube is used to measure airspeed.").setLanguage("US")
+            new TextDocumentInput("1", "My cat might need to see a veterinarian", "US"),
+            new TextDocumentInput("2", "The pitot tube is used to measure airspeed.", "US")
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
@@ -35,14 +35,14 @@ public class RecognizeKeyPhrasesBatchDocuments {
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
-            batchStatistics.getDocumentsCount(),
-            batchStatistics.getErroneousDocumentsCount(),
+            batchStatistics.getDocumentCount(),
+            batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionsCount(),
-            batchStatistics.getValidDocumentsCount());
+            batchStatistics.getValidDocumentCount());
 
         // Detecting key phrase for each of document from a batch of documents
         detectedBatchResult.stream().forEach(keyPhraseResult ->
-            keyPhraseResult.getKeyPhrases().stream().forEach(keyPhrases ->
+            keyPhraseResult.getKeyPhrases().forEach(keyPhrases ->
                 System.out.printf("Recognized Phrases: %s", keyPhrases)));
     }
 }
