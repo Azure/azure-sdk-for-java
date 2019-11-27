@@ -4,20 +4,21 @@
 package com.azure.cs.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.IterableStream;
+
+import java.util.List;
 
 /**
  * The KeyPhraseResult model.
  */
 @Fluent
 public final class KeyPhraseResult extends DocumentResult {
-    private IterableStream<KeyPhraseResult> keyPhrases;
+    private List<KeyPhraseResult> keyPhrases;
 
-    public IterableStream<KeyPhraseResult> getKeyPhrases() {
+    public List<KeyPhraseResult> getKeyPhrases() {
         return keyPhrases;
     }
 
-    KeyPhraseResult setKeyPhrases(IterableStream<KeyPhraseResult> keyPhrases) {
+    KeyPhraseResult setKeyPhrases(List<KeyPhraseResult> keyPhrases) {
         this.keyPhrases = keyPhrases;
         return this;
     }

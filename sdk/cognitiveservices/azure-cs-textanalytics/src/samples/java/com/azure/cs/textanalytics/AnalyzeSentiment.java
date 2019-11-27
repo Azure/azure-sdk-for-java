@@ -3,9 +3,10 @@
 
 package com.azure.cs.textanalytics;
 
-import com.azure.core.util.IterableStream;
 import com.azure.cs.textanalytics.models.TextSentiment;
 import com.azure.cs.textanalytics.models.TextSentimentResult;
+
+import java.util.List;
 
 public class AnalyzeSentiment {
 
@@ -27,8 +28,8 @@ public class AnalyzeSentiment {
             documentSentiment.getNeutralScore(),
             documentSentiment.getNegativeScore());
 
-        final IterableStream<TextSentiment> sentiments = sentimentResult.getSentenceSentiments();
-        sentiments.stream().forEach(textSentiment -> System.out.printf(
+        final List<TextSentiment> sentiments = sentimentResult.getSentenceSentiments();
+        sentiments.forEach(textSentiment -> System.out.printf(
             "Recognized Sentence TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.",
             textSentiment.getTextSentimentClass(),
             textSentiment.getPositiveScore(),

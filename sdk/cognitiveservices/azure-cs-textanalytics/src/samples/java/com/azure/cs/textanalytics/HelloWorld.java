@@ -3,9 +3,10 @@
 
 package com.azure.cs.textanalytics;
 
-import com.azure.core.util.IterableStream;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
 import com.azure.cs.textanalytics.models.DetectedLanguageResult;
+
+import java.util.List;
 
 public class HelloWorld {
 
@@ -25,8 +26,8 @@ public class HelloWorld {
             detectedDocumentLanguage.getIso6391Name(),
             detectedDocumentLanguage.getScore());
 
-        final IterableStream<DetectedLanguage> detectedLanguages = detectedLanguageResult.getDetectedLanguages();
-        detectedLanguages.stream().forEach(detectedLanguage ->
+        final List<DetectedLanguage> detectedLanguages = detectedLanguageResult.getDetectedLanguages();
+        detectedLanguages.forEach(detectedLanguage ->
             System.out.printf("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
             detectedLanguage.getName(),
             detectedLanguage.getIso6391Name(),
