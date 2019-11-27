@@ -26,7 +26,7 @@ import java.time.OffsetDateTime;
  * injects mock status query , which results in service
  * returning a well-known mock response
  */
-public class IndexerTest extends SearchServiceTestBase {
+public class IndexerSyncTest extends SearchServiceTestBase {
 
     private SearchServiceClient client;
 
