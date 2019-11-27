@@ -9,7 +9,6 @@ import com.azure.cs.textanalytics.models.LinkedEntityResult;
 import com.azure.cs.textanalytics.models.TextBatchStatistics;
 import com.azure.cs.textanalytics.models.TextDocumentInput;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
-import com.azure.cs.textanalytics.models.LinkedEntity;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
 import java.util.Arrays;
@@ -25,8 +24,8 @@ public class RecognizeLinkedEntitiesBatchDocuments {
 
         // The texts that need be analysed.
         List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("1", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("US"),
-            new TextDocumentInput("2", "Mount Shasta has lenticular clouds.").setLanguage("US")
+            new TextDocumentInput("1", "Old Faithful is a geyser at Yellowstone Park.", "US"),
+            new TextDocumentInput("2", "Mount Shasta has lenticular clouds.", "US")
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
@@ -35,13 +34,13 @@ public class RecognizeLinkedEntitiesBatchDocuments {
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
-            batchStatistics.getDocumentsCount(),
-            batchStatistics.getErroneousDocumentsCount(),
+            batchStatistics.getDocumentCount(),
+            batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionsCount(),
-            batchStatistics.getValidDocumentsCount());
+            batchStatistics.getValidDocumentCount());
 
         // Detecting language from a batch of documents
-        detectedBatchResult.stream().forEach(linkedEntityDocumentResult ->
+        detectedBatchResult.forEach(linkedEntityDocumentResult ->
             linkedEntityDocumentResult.getLinkedEntities().stream().forEach(linkedEntity ->
                 System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s",
                     linkedEntity.getName(), linkedEntity.getUri(), linkedEntity.getDataSource())));

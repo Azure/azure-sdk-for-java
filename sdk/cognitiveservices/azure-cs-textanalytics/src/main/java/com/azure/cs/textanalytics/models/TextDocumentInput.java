@@ -38,6 +38,12 @@ public final class TextDocumentInput {
         this.text = text;
     }
 
+    public TextDocumentInput (String id, String text, String language) {
+        this.id = id;
+        this.text = text;
+        this.language = language;
+    }
+
     /**
      * Get the id property: A unique, non-empty document identifier.
      *
@@ -65,18 +71,5 @@ public final class TextDocumentInput {
      */
     public String getLanguage() {
         return this.language;
-    }
-
-    /**
-     * Set the language property: (Optional) This is the 2 letter ISO 639-1
-     * representation of a language. For example, use "en" for English; "es"
-     * for Spanish etc. If not set, use "en" for English as default.
-     *
-     * @param language the language value to set.
-     * @return the MultiLanguageInput object itself.
-     */
-    public TextDocumentInput setLanguage(String language) {
-        this.language = language;
-        return this;
     }
 }

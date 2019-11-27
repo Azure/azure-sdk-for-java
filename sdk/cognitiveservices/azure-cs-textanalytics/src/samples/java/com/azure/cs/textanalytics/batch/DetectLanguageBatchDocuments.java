@@ -10,7 +10,6 @@ import com.azure.cs.textanalytics.models.DetectedLanguage;
 import com.azure.cs.textanalytics.models.DetectedLanguageResult;
 import com.azure.cs.textanalytics.models.TextBatchStatistics;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
-import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
 import java.util.Arrays;
@@ -36,10 +35,10 @@ public class DetectLanguageBatchDocuments {
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
-            batchStatistics.getDocumentsCount(),
-            batchStatistics.getErroneousDocumentsCount(),
+            batchStatistics.getDocumentCount(),
+            batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionsCount(),
-            batchStatistics.getValidDocumentsCount());
+            batchStatistics.getValidDocumentCount());
 
 
         // Detecting languages for a document from a batch of documents
@@ -50,7 +49,7 @@ public class DetectLanguageBatchDocuments {
                 detectedPrimaryLanguage.getIso6391Name(),
                 detectedPrimaryLanguage.getScore());
 
-            result.getDetectedLanguages().stream().forEach(detectedLanguage ->
+            result.getDetectedLanguages().forEach(detectedLanguage ->
                 System.out.printf("Detected primary Language: %s, ISO 6391 Name: %s, Score: %s",
                     detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(),
