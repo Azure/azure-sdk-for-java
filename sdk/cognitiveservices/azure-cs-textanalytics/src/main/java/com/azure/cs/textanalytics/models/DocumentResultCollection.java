@@ -29,7 +29,7 @@ public class DocumentResultCollection<T> extends IterableStream<T> {
         return this;
     }
 
-    public TextBatchStatistics getBatchStatistics() {
+    public TextBatchStatistics getStatistics() {
         return statistics;
     }
 

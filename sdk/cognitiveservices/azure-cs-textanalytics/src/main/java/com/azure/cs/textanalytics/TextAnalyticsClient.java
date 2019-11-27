@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.cs.textanalytics.models.DetectLanguageInput;
-import com.azure.cs.textanalytics.models.DetectedLanguageResult;
+import com.azure.cs.textanalytics.models.DetectLanguageResult;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.LinkedEntityResult;
@@ -31,39 +31,44 @@ public final class TextAnalyticsClient {
     // (1) language
     // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectedLanguageResult detectLanguage(String text) { return null; }
+    public DetectLanguageResult detectLanguage(String text) { return null; }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectedLanguageResult detectLanguage(String text, String countryHint) {
+    public DetectLanguageResult detectLanguage(String text, String countryHint) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DetectedLanguageResult> detectLanguageWithResponse(
+    public Response<DetectLanguageResult> detectLanguageWithResponse(
         String text, String countryHint, Context context) {
         return null;
     }
 
     // hackathon user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<DetectedLanguageResult> detectLanguages(List<String> inputs, String countryHint) {
+    public DocumentResultCollection<DetectLanguageResult> detectLanguages(List<String> inputs) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentResultCollection<DetectLanguageResult> detectLanguages(List<String> inputs, String countryHint) {
         return null;
     }
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<DetectedLanguageResult> detectLanguages(List<DetectLanguageInput> inputs) {
+    public DocumentResultCollection<DetectLanguageResult> detectBatchLanguages(List<DetectLanguageInput> inputs) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<DetectedLanguageResult> detectLanguages(
+    public DocumentResultCollection<DetectLanguageResult> detectBatchLanguages(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<DetectedLanguageResult>> detectLanguagesWithResponse(
+    public Response<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguagesWithResponse(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         return client.detectBatchLanguagesWithResponse(inputs, options, context).block();
     }
@@ -81,11 +86,15 @@ public final class TextAnalyticsClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NamedEntityResult> recognizeEntitiesWithResponse(String text, String language, Context context) {
+    public Response<NamedEntityResult> recognizeBatchEntitiesWithResponse(String text, String language, Context context) {
         return null;
     }
 
     // hackathon user
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentResultCollection<NamedEntityResult> recognizeEntities(List<String> inputs) {
+        return null;
+    }
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<NamedEntityResult> recognizeEntities(List<String> inputs, String language) {
         return null;
@@ -93,18 +102,18 @@ public final class TextAnalyticsClient {
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<NamedEntityResult> recognizeEntities(List<TextDocumentInput> inputs) {
+    public DocumentResultCollection<NamedEntityResult> recognizeBatchEntities(List<TextDocumentInput> inputs) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<NamedEntityResult> recognizeEntities(
+    public DocumentResultCollection<NamedEntityResult> recognizeBatchEntities(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<NamedEntityResult>> recognizeEntitiesWithResponse(
+    public Response<DocumentResultCollection<NamedEntityResult>> recognizeBatchEntitiesWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         return client.recognizeBatchEntitiesWithResponse(inputs, options, context).block();
     }
@@ -122,11 +131,15 @@ public final class TextAnalyticsClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NamedEntityResult> recognizePiiEntitiesWithResponse(String text, String language) {
+    public Response<NamedEntityResult> recognizeBatchPiiEntitiesWithResponse(String text, String language) {
         return null;
     }
 
     // hackathon user
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentResultCollection<NamedEntityResult> recognizePiiEntities(List<String> inputs) {
+        return null;
+    }
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<NamedEntityResult> recognizePiiEntities(List<String> inputs, String language) {
         return null;
@@ -134,18 +147,18 @@ public final class TextAnalyticsClient {
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<NamedEntityResult> recognizePiiEntities(List<TextDocumentInput> inputs) {
+    public DocumentResultCollection<NamedEntityResult> recognizeBatchPiiEntities(List<TextDocumentInput> inputs) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<NamedEntityResult> recognizePiiEntities(
+    public DocumentResultCollection<NamedEntityResult> recognizeBatchPiiEntities(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<NamedEntityResult>> recognizePiiEntitiesWithResponse(
+    public Response<DocumentResultCollection<NamedEntityResult>> recognizeBatchPiiEntitiesWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         return client.recognizeBatchPiiEntitiesWithResponse(inputs, options, context).block();
     }
@@ -163,11 +176,15 @@ public final class TextAnalyticsClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkedEntityResult> recognizeLinkedEntitiesWithResponse(String text, String language) {
+    public Response<LinkedEntityResult> recognizeBatchLinkedEntitiesWithResponse(String text, String language) {
         return null;
     }
 
     // hackathon user
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentResultCollection<LinkedEntityResult> recognizeLinkedEntities(List<String> inputs) {
+        return null;
+    }
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<LinkedEntityResult> recognizeLinkedEntities(List<String> inputs, String language) {
         return null;
@@ -175,18 +192,18 @@ public final class TextAnalyticsClient {
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<LinkedEntityResult> recognizeLinkedEntities(List<TextDocumentInput> inputs) {
+    public DocumentResultCollection<LinkedEntityResult> recognizeBatchLinkedEntities(List<TextDocumentInput> inputs) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<LinkedEntityResult> recognizeLinkedEntities(
+    public DocumentResultCollection<LinkedEntityResult> recognizeBatchLinkedEntities(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<LinkedEntityResult>> recognizeLinkedEntitiesWithResponse(
+    public Response<DocumentResultCollection<LinkedEntityResult>> recognizeBatchLinkedEntitiesWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         return client.recognizeBatchLinkedEntitiesWithResponse(inputs, options, context).block();
     }
@@ -204,11 +221,15 @@ public final class TextAnalyticsClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyPhraseResult> extractKeyPhrasesWithResponse(String text, String language) {
+    public Response<KeyPhraseResult> extractBatchKeyPhrasesWithResponse(String text, String language) {
         return null;
     }
 
     // hackathon user
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentResultCollection<KeyPhraseResult> extractKeyPhrases(List<String> inputs) {
+        return null;
+    }
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<KeyPhraseResult> extractKeyPhrases(List<String> inputs, String language) {
         return null;
@@ -216,18 +237,18 @@ public final class TextAnalyticsClient {
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<KeyPhraseResult> extractKeyPhrases(List<TextDocumentInput> inputs) {
+    public DocumentResultCollection<KeyPhraseResult> extractBatchKeyPhrases(List<TextDocumentInput> inputs) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<KeyPhraseResult> extractKeyPhrases(
+    public DocumentResultCollection<KeyPhraseResult> extractBatchKeyPhrases(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrasesWithResponse(
+    public Response<DocumentResultCollection<KeyPhraseResult>> extractBatchKeyPhrasesWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         return client.extractBatchKeyPhrasesWithResponse(inputs, options, context).block();
     }
@@ -245,12 +266,16 @@ public final class TextAnalyticsClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TextSentimentResult> analyzeSentimentWithResponse(
+    public Response<TextSentimentResult> analyzeBatchSentimentWithResponse(
         String input, String language, Context context) {
         return null;
     }
 
     // hackathon user
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentResultCollection<TextSentimentResult> analyzeSentiment(List<String> inputs) {
+        return null;
+    }
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<TextSentimentResult> analyzeSentiment(List<String> inputs, String language) {
         return null;
@@ -258,18 +283,18 @@ public final class TextAnalyticsClient {
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<TextSentimentResult> analyzeSentiment(List<TextDocumentInput> inputs) {
+    public DocumentResultCollection<TextSentimentResult> analyzeBatchSentiment(List<TextDocumentInput> inputs) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<TextSentimentResult> analyzeSentiment(
+    public DocumentResultCollection<TextSentimentResult> analyzeBatchSentiment(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<TextSentimentResult>> analyzeSentimentWithResponse(
+    public Response<DocumentResultCollection<TextSentimentResult>> analyzeBatchSentimentWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         return client.analyzeBatchSentimentWithResponse(inputs, options, context).block();
     }

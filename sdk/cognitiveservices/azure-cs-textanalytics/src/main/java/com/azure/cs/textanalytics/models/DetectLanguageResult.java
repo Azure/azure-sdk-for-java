@@ -4,7 +4,6 @@
 package com.azure.cs.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.IterableStream;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
  * The DetectedLanguageResult model.
  */
 @Fluent
-public final class DetectedLanguageResult extends DocumentResult {
+public final class DetectLanguageResult extends DocumentResult {
     private DetectedLanguage primaryLanguage;
     private List<DetectedLanguage> detectedLanguages;
 
@@ -20,7 +19,7 @@ public final class DetectedLanguageResult extends DocumentResult {
         return primaryLanguage;
     }
 
-    DetectedLanguageResult setPrimaryLanguage(DetectedLanguage detectedLanguage) {
+    DetectLanguageResult setPrimaryLanguage(DetectedLanguage detectedLanguage) {
         this.primaryLanguage = detectedLanguage;
         return this;
     }
@@ -29,7 +28,7 @@ public final class DetectedLanguageResult extends DocumentResult {
         return detectedLanguages;
     }
 
-    DetectedLanguageResult setDetectedLanguages(List<DetectedLanguage> detectedLanguages) {
+    DetectLanguageResult setDetectedLanguages(List<DetectedLanguage> detectedLanguages) {
         this.detectedLanguages = detectedLanguages;
         return this;
     }
