@@ -7,7 +7,7 @@ import com.azure.cs.textanalytics.TextAnalyticsClient;
 import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
-import com.azure.cs.textanalytics.models.DetectedLanguageResult;
+import com.azure.cs.textanalytics.models.DetectLanguageResult;
 import com.azure.cs.textanalytics.models.TextBatchStatistics;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
@@ -25,19 +25,19 @@ public class DetectLanguageBatchDocuments {
 
         // The texts that need be analysed.
         List<DetectLanguageInput> inputs = Arrays.asList(
-            new DetectLanguageInput("1", "This is written in English").setCountryHint("US"),
-            new DetectLanguageInput("2", "Este es un document escrito en Español.").setCountryHint("es")
+            new DetectLanguageInput("1", "This is written in English","US"),
+            new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
-        final DocumentResultCollection<DetectedLanguageResult> detectedBatchResult = client.detectLanguages(inputs, requestOptions);
+        final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = client.detectBatchLanguages(inputs, requestOptions);
         System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
 
-        final TextBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
+        final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
-            batchStatistics.getTransactionsCount(),
+            batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
 

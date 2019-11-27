@@ -53,7 +53,7 @@ public final class TextDocumentStatistics {
      *
      * @return the transactionsCount value.
      */
-    public int getTransactionsCount() {
+    public int getTransactionCount() {
         return this.transactionCount;
     }
 
