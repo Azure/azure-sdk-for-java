@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -57,7 +58,7 @@ public class PublishEventsWithAzureIdentity {
             producer.createBatch().block());
 
         // The sample Flux contains three events, but it could be an infinite stream of telemetry events.
-        final Mono<Void> sendOperation = telemetryEvents.flatMap(event -> {
+        telemetryEvents.flatMap(event -> {
             final EventDataBatch batch = currentBatch.get();
             if (batch.tryAdd(event)) {
                 return Mono.empty();
@@ -85,13 +86,17 @@ public class PublishEventsWithAzureIdentity {
                 if (batch != null) {
                     producer.send(batch).block(OPERATION_TIMEOUT);
                 }
-            });
+            })
+            .subscribe(unused -> System.out.println("Complete"),
+                error -> System.out.println("Error sending events: " + error),
+                () -> System.out.println("Completed sending events."));
 
-        // The sendOperation creation and assignment is not a blocking call. It does not get invoked until there is a
-        // subscriber to that operation. For the purpose of this example, we block so the program does not end before
-        // the send operation is complete. Any of the `.subscribe` overloads also work to start the Mono asynchronously.
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
         try {
-            sendOperation.block(OPERATION_TIMEOUT);
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException ignored) {
         } finally {
             // Disposing of our producer.
             producer.close();
