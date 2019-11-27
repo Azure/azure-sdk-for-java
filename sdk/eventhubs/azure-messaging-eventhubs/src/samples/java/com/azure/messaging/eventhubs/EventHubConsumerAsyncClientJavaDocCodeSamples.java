@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class EventHubConsumerAsyncClientJavaDocCodeSamples {
     private final EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
         .connectionString("fake-string")
-        .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+        .consumerGroup("consumer-group-name")
         .buildAsyncConsumerClient();
 
     public void initialization() {
@@ -29,7 +29,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
                 + "SharedAccessKey={key};EntityPath={eh-name}")
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .consumerGroup("consumer-group-name")
             .buildAsyncConsumerClient();
         // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
 
@@ -71,7 +71,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
 
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("fake-string")
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .consumerGroup("consumer-group-name")
             .buildAsyncConsumerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber
@@ -106,7 +106,7 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
     public void receiveAll() {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("fake-string")
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .consumerGroup("consumer-group-name")
             .buildAsyncConsumerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean
@@ -123,13 +123,16 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
      * Receives from all partitions with last enqueued information.
      */
     public void receiveLastEnqueuedInformation() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions
-        ReceiveOptions receiveOptions = new ReceiveOptions()
-            .setTrackLastEnqueuedEventProperties(true);
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .consumerGroup("consumer-group-name")
             .buildAsyncConsumerClient();
+
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions
+        // Set `setTrackLastEnqueuedEventProperties` to true to get the last enqueued information from the partition for
+        // each event that is received.
+        ReceiveOptions receiveOptions = new ReceiveOptions()
+            .setTrackLastEnqueuedEventProperties(true);
 
         // Receives events from partition "0" as they come in.
         consumer.receiveFromPartition("0", EventPosition.earliest(), receiveOptions)
