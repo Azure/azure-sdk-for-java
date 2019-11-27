@@ -190,15 +190,21 @@ the event to an available partition.
 
 ```java
 List<EventData> eventDataList = Arrays.asList(new EventData("Foo"), new EventData("Bar"));
-
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .buildProducerClient();
+
 EventDataBatch eventDataBatch = producer.createBatch();
 for (EventData eventData : eventDataList) {
     if (!eventDataBatch.tryAdd(eventData)) {
         producer.send(eventDataBatch);
         eventDataBatch = producer.createBatch();
+
+        // Try to add that event that couldn't fit before.
+        if (!eventDataBatch.tryAdd(eventData)) {
+            throw new IllegalArgumentException("Event is too large for an empty batch. Max size: "
+                + eventDataBatch.getMaxSizeInBytes());
+        }
     }
 }
 
