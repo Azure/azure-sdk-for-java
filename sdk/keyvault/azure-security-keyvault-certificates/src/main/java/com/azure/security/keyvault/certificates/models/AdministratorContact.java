@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Represents an administrator in {@link CertificateIssuer}
  */
-public final class Administrator {
+public final class AdministratorContact {
     /**
      * First name.
      */
@@ -31,7 +31,7 @@ public final class Administrator {
      * Phone number.
      */
     @JsonProperty(value = "phone")
-    private String contact;
+    private String phone;
 
     /**
      * Creates an administrator of the issuer.
@@ -39,7 +39,7 @@ public final class Administrator {
      * @param lastName the last name of the issuer.
      * @param email the email of the issuer.
      */
-    public Administrator(String firstName, String lastName, String email) {
+    public AdministratorContact(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -50,13 +50,13 @@ public final class Administrator {
      * @param firstName the firstName of the admin.
      * @param lastName the last name of the admin.
      * @param email the email of the admin.
-     * @param contact tne contact info of the admin.
+     * @param phone the contact info of the admin.
      */
-    public Administrator(String firstName, String lastName, String email, String contact) {
+    public AdministratorContact(String firstName, String lastName, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.contact = contact;
+        this.phone = phone;
     }
 
     /**
@@ -87,7 +87,7 @@ public final class Administrator {
      * Get the contact of the admin.
      * @return the contact of admin.
      */
-    public String getContact() {
-        return contact;
+    public String getPhone() {
+        return phone;
     }
 }

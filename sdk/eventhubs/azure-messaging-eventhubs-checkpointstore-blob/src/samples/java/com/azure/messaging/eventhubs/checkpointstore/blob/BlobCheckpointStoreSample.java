@@ -9,6 +9,8 @@ import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringJoiner;
 
 /**
@@ -47,14 +49,14 @@ public class BlobCheckpointStoreSample {
             .subscribe(etag -> System.out.println(etag), error -> System.out
                 .println(error.getMessage()));
 
-        PartitionOwnership[] pos = new PartitionOwnership[5];
+        List<PartitionOwnership> pos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             PartitionOwnership po = new PartitionOwnership()
                 .setEventHubName("abc")
                 .setConsumerGroup("xyz")
                 .setOwnerId("owner1")
                 .setPartitionId(String.valueOf(i));
-            pos[i] = po;
+            pos.add(po);
         }
         blobCheckpointStore.claimOwnership(pos).subscribe(BlobCheckpointStoreSample::printPartitionOwnership,
             System.out::println);

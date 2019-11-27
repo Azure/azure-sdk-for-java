@@ -91,8 +91,6 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * <p>If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be
      * included in the user agent.</p>
      *
-     * @deprecated This method has been deprecated in favor of {@link
-     * #UserAgentPolicy(String, String, String, Configuration)}.
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
      * @param version {@link ServiceVersion} of the service to be used when making requests.
@@ -100,7 +98,6 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * Configuration#PROPERTY_AZURE_TELEMETRY_DISABLED}. If {@code null} is passed the {@link
      * Configuration#getGlobalConfiguration() global configuration} will be checked.
      */
-    @Deprecated
     public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration, ServiceVersion version) {
         this.userAgent = buildUserAgent(null, sdkName, sdkVersion, configuration);
     }

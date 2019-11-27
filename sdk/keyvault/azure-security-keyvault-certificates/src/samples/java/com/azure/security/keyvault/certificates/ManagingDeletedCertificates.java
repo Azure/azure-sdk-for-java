@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -45,37 +46,48 @@ public class ManagingDeletedCertificates {
         // Let's create a self signed certificate valid for 1 year. if the certificate
         //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
+            .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
             .setReuseKey(true)
             .setKeyCurveName(CertificateKeyCurveName.P_256);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName", policy, tags);
+        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName", policy, true,  tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
 
         // The certificate is no longer needed, need to delete it from the key vault.
-        DeletedCertificate deletedCertificate = certificateClient.deleteCertificate("certificateName");
-        System.out.printf("Certificate is deleted with name %s and its recovery id is %s %n", deletedCertificate.getName(), deletedCertificate.getRecoveryId());
-
+        SyncPoller<DeletedCertificate, Void> deletedCertificatePoller =
+            certificateClient.beginDeleteCertificate("certificateName");
+        // Deleted Certificate is accessible as soon as polling beings.
+        PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
+        System.out.printf("Deleted certitifcate with name %s and recovery id %s", pollResponse.getValue().getName(),
+            pollResponse.getValue().getRecoveryId());
+        deletedCertificatePoller.waitForCompletion();
         //To ensure certificate is deleted on server side.
         Thread.sleep(30000);
 
         // We accidentally deleted the certificate. Let's recover it.
         // A deleted certificate can only be recovered if the key vault is soft-delete enabled.
-        KeyVaultCertificate certificate = certificateClient.recoverDeletedCertificate("certificateName");
-        System.out.printf(" Recovered Deleted certificate with name %s and id %s", certificate.getProperties().getName(),
-            certificate.getProperties().getId());
+        SyncPoller<KeyVaultCertificate, Void> recoverCertPoller = certificateClient
+            .beginRecoverDeletedCertificate("certificateName");
+        // Recovered certificate is accessible as soon as polling beings
+        PollResponse<KeyVaultCertificate> recoverPollResponse = recoverCertPoller.poll();
+        System.out.printf(" Recovered Deleted certificate with name %s and id %s", recoverPollResponse.getValue()
+            .getProperties().getName(), recoverPollResponse.getValue().getProperties().getId());
+        recoverCertPoller.waitForCompletion();
 
         //To ensure certificate is recovered on server side.
         Thread.sleep(30000);
 
         // The certificates are no longer needed, need to delete them from the key vault.
-        deletedCertificate = certificateClient.deleteCertificate("certificateName");
-        System.out.printf("Certificate is deleted with name %s and its recovery id is %s %n", deletedCertificate.getName(), deletedCertificate.getRecoveryId());
-
+        deletedCertificatePoller = certificateClient.beginDeleteCertificate("certificateName");
+        // Deleted Certificate is accessible as soon as polling beings.
+        PollResponse<DeletedCertificate> deletePollResponse = deletedCertificatePoller.poll();
+        System.out.printf("Deleted certitifcate with name %s and recovery id %s", deletePollResponse.getValue().getName(),
+            deletePollResponse.getValue().getRecoveryId());
+        deletedCertificatePoller.waitForCompletion();
         //To ensure certificate is deleted on server side.
         Thread.sleep(30000);
 

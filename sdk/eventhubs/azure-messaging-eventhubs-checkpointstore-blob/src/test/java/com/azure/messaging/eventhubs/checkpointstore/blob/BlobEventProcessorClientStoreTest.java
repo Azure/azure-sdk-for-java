@@ -99,6 +99,8 @@ public class BlobEventProcessorClientStoreTest {
 
         when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh/cg/checkpoint/0")).thenReturn(blobAsyncClient);
         when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
+        when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
+        when(blobAsyncClient.exists()).thenReturn(Mono.just(true));
         when(blobAsyncClient.setMetadata(ArgumentMatchers.<Map<String, String>>any()))
             .thenReturn(Mono.empty());
 
@@ -123,7 +125,7 @@ public class BlobEventProcessorClientStoreTest {
             .thenReturn(Mono.just(new ResponseBase<>(null, 200, httpHeaders, null, null)));
 
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        StepVerifier.create(blobCheckpointStore.claimOwnership(po))
+        StepVerifier.create(blobCheckpointStore.claimOwnership(Arrays.asList(po)))
             .assertNext(partitionOwnership -> {
                 assertEquals("owner1", partitionOwnership.getOwnerId());
                 assertEquals("0", partitionOwnership.getPartitionId());
@@ -157,7 +159,7 @@ public class BlobEventProcessorClientStoreTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("eTag", "etag2");
         when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh/cg/checkpoint/0")).thenReturn(blobAsyncClient);
-
+        when(blobAsyncClient.exists()).thenReturn(Mono.just(true));
         when(blobAsyncClient.setMetadata(ArgumentMatchers.<Map<String, String>>any()))
             .thenReturn(Mono.error(new SocketTimeoutException()));
 
@@ -179,7 +181,7 @@ public class BlobEventProcessorClientStoreTest {
             any(BlobRequestConditions.class)))
             .thenReturn(Mono.error(new ResourceModifiedException("Etag did not match", null)));
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        StepVerifier.create(blobCheckpointStore.claimOwnership(po)).verifyComplete();
+        StepVerifier.create(blobCheckpointStore.claimOwnership(Arrays.asList(po))).verifyComplete();
     }
 
     private PartitionOwnership createPartitionOwnership(String fullyQualifiedNamespace, String eventHubName,
