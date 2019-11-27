@@ -92,7 +92,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_ResourceTokenTest() throws Exception {
         client = clientBuilder().build();
         Database d = new Database();
         d.setId(databaseId);

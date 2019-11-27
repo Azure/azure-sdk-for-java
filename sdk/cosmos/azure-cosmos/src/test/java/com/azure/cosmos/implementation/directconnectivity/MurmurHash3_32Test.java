@@ -23,7 +23,7 @@ public class MurmurHash3_32Test {
     private MurmurHash3_32 murmurHash3_32;
 
     @BeforeClass(groups = "unit")
-    public void setup() {
+    public void before_MurmurHash3_32Test() {
         murmurHash3_32 = new MurmurHash3_32();
     }
 

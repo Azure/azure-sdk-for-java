@@ -57,7 +57,7 @@ public class GlobalAddressResolverTest {
     private URL urlforWrite3;
 
     @BeforeClass(groups = "unit")
-    public void setup() throws Exception {
+    public void before_GlobalAddressResolverTest() throws Exception {
         urlforRead1 = new URL("http://testRead1.com/");
         urlforRead2 = new URL("http://testRead2.com/");
         urlforRead3 = new URL("http://testRead3.com/");
