@@ -18,6 +18,11 @@ public final class DetectLanguageInput {
         this.text = text;
     }
 
+    public DetectLanguageInput(String id, String text, String countryHint) {
+        this.id = id;
+        this.text = text;
+        this.countryHint = countryHint;
+    }
     /*
      * Unique, non-empty document identifier.
      */
@@ -72,16 +77,5 @@ public final class DetectLanguageInput {
      */
     public String getCountryHint() {
         return this.countryHint;
-    }
-
-    /**
-     * Set the countryHint property: The countryHint property.
-     *
-     * @param countryHint the countryHint value to set.
-     * @return the UnknownLanguageInput object itself.
-     */
-    public DetectLanguageInput setCountryHint(String countryHint) {
-        this.countryHint = countryHint;
-        return this;
     }
 }

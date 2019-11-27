@@ -29,14 +29,14 @@ public class RecognizePIIBatchDocuments {
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
-        final DocumentResultCollection<NamedEntityResult> detectedBatchResult = client.recognizePiiEntities(inputs, requestOptions);
+        final DocumentResultCollection<NamedEntityResult> detectedBatchResult = client.recognizeBatchPiiEntities(inputs, requestOptions);
         System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
 
-        final TextBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
+        final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
-            batchStatistics.getTransactionsCount(),
+            batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
 

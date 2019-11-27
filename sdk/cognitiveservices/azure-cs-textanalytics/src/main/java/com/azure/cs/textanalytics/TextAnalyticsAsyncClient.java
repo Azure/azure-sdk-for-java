@@ -13,7 +13,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.cs.textanalytics.implementation.TextAnalyticsAPIImpl;
 import com.azure.cs.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.cs.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.cs.textanalytics.models.DetectedLanguageResult;
+import com.azure.cs.textanalytics.models.DetectLanguageResult;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.LinkedEntityResult;
@@ -54,18 +54,18 @@ public final class TextAnalyticsAsyncClient {
     // (1) language
     // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectedLanguageResult> detectLanguage(String text) { return detectLanguage(text, null);}
+    public Mono<DetectLanguageResult> detectLanguage(String text) { return detectLanguage(text, null);}
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectedLanguageResult> detectLanguage(String text, String countryHint) {
+    public Mono<DetectLanguageResult> detectLanguage(String text, String countryHint) {
         return detectLanguageWithResponse(text, countryHint)
             .flatMap(response ->  Mono.justOrEmpty(response.getValue()));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DetectedLanguageResult>> detectLanguageWithResponse(String text, String countryHint) {
+    public Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint) {
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
-        languageInputs.add(new DetectLanguageInput(Integer.toString(0), text).setCountryHint(countryHint));
+        languageInputs.add(new DetectLanguageInput(Integer.toString(0), text, countryHint));
         // TODO: correct it
 //        return detectLanguagesWithResponse(languageInputs, null).flatMap(
 //            response -> {
@@ -80,15 +80,15 @@ public final class TextAnalyticsAsyncClient {
 
     // Hackathon user
    @ServiceMethod(returns = ReturnType.SINGLE)
-   public Mono<DocumentResultCollection<DetectedLanguageResult>> detectLanguages(List<String> inputs)  {
+   public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs)  {
        return null;
    }
 
-    public Mono<DocumentResultCollection<DetectedLanguageResult>> detectLanguages(List<String> inputs,
-                                                                                  String countryHint) {
+    public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs,
+                                                                                String countryHint) {
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
         for (int i = 0; i < inputs.size(); i++) {
-            languageInputs.add(new DetectLanguageInput(Integer.toString(i), inputs.get(i)).setCountryHint(countryHint));
+            languageInputs.add(new DetectLanguageInput(Integer.toString(i), inputs.get(i), countryHint));
         }
 
         return detectBatchLanguages(languageInputs, null);
@@ -96,12 +96,12 @@ public final class TextAnalyticsAsyncClient {
 
     // Advanced user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<DetectedLanguageResult>> detectBatchLanguages(List<DetectLanguageInput> inputs) {
+    public Mono<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguages(List<DetectLanguageInput> inputs) {
         return detectBatchLanguages(inputs, null);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<DetectedLanguageResult>> detectBatchLanguages(
+    public Mono<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguages(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options) {
         try {
             return withContext(context -> detectBatchLanguagesWithResponse(inputs, options, context)
@@ -112,7 +112,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<DetectedLanguageResult>>> detectBatchLanguagesWithResponse(
+    public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options) {
         try {
             return withContext(
@@ -122,7 +122,7 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<DocumentResultCollection<DetectedLanguageResult>>> detectBatchLanguagesWithResponse(
+    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate inputs
         final LanguageBatchInput languageBatchInput = new LanguageBatchInput().setDocuments(inputs);

@@ -113,7 +113,7 @@ public final class TextBatchStatistics {
      *
      * @return the transactionsCount value.
      */
-    public long getTransactionsCount() {
+    public long getTransactionCount() {
         return this.transactionCount;
     }
 
@@ -124,7 +124,7 @@ public final class TextBatchStatistics {
      * @param transactionCount the transactionsCount value to set.
      * @return the DocumentBatchStatistics object itself.
      */
-    TextBatchStatistics setTransactionsCount(long transactionCount) {
+    TextBatchStatistics setTransactionCount(long transactionCount) {
         this.transactionCount = transactionCount;
         return this;
     }

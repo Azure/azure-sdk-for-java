@@ -4,7 +4,7 @@
 package com.azure.cs.textanalytics;
 
 import com.azure.cs.textanalytics.models.DetectedLanguage;
-import com.azure.cs.textanalytics.models.DetectedLanguageResult;
+import com.azure.cs.textanalytics.models.DetectLanguageResult;
 
 import java.util.List;
 
@@ -19,14 +19,14 @@ public class HelloWorld {
         // The text that need be analysed.
         String text = "hello world";
 
-        final DetectedLanguageResult detectedLanguageResult = client.detectLanguage(text, "US");
-        final DetectedLanguage detectedDocumentLanguage = detectedLanguageResult.getPrimaryLanguage();
+        final DetectLanguageResult detectLanguageResult = client.detectLanguage(text, "US");
+        final DetectedLanguage detectedDocumentLanguage = detectLanguageResult.getPrimaryLanguage();
         System.out.printf("Detected Primary Language: %s, ISO 6391 Name: %s, Score: %s",
             detectedDocumentLanguage.getName(),
             detectedDocumentLanguage.getIso6391Name(),
             detectedDocumentLanguage.getScore());
 
-        final List<DetectedLanguage> detectedLanguages = detectedLanguageResult.getDetectedLanguages();
+        final List<DetectedLanguage> detectedLanguages = detectLanguageResult.getDetectedLanguages();
         detectedLanguages.forEach(detectedLanguage ->
             System.out.printf("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
             detectedLanguage.getName(),
