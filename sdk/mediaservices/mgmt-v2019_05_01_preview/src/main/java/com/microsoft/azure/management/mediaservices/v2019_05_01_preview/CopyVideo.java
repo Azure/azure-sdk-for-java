@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A codec flag, which tells the encoder to copy the input video bitstream
  * without re-encoding.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = CopyVideo.class)
 @JsonTypeName("#Microsoft.Media.CopyVideo")
 public class CopyVideo extends Codec {
 }
