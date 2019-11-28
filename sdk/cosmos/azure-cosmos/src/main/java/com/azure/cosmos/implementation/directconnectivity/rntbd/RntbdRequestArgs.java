@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static io.micrometer.core.instrument.Timer.Sample;
 
 @JsonPropertyOrder({
-    "transportRequestId", "origin", "replicaPath", "activityId", "operationType", "resourceType", "creationTime",
+    "transportRequestId", "activityId", "origin", "replicaPath", "operationType", "resourceType", "timeCreated",
     "lifetime"
 })
 public final class RntbdRequestArgs {
@@ -36,7 +37,8 @@ public final class RntbdRequestArgs {
 
     private final Sample sample;
     private final UUID activityId;
-    private final long creationTime;
+    private final OffsetDateTime timeCreated;
+    private final long nanoTimeCreated;
     private final Stopwatch lifetime;
     private final String origin;
     private final URI physicalAddress;
@@ -47,7 +49,8 @@ public final class RntbdRequestArgs {
     public RntbdRequestArgs(final RxDocumentServiceRequest serviceRequest, final URI physicalAddress) {
         this.sample = Timer.start();
         this.activityId = UUID.fromString(serviceRequest.getActivityId());
-        this.creationTime = System.nanoTime();
+        this.timeCreated = OffsetDateTime.now();
+        this.nanoTimeCreated = System.nanoTime();
         this.lifetime = Stopwatch.createStarted();
         this.origin = physicalAddress.getScheme() + "://" + physicalAddress.getAuthority();
         this.physicalAddress = physicalAddress;
@@ -63,15 +66,15 @@ public final class RntbdRequestArgs {
         return this.activityId;
     }
 
-    @JsonProperty
-    public long creationTime() {
-        return this.creationTime;
-    }
-
     @JsonSerialize(using = ToStringSerializer.class)
     @JsonProperty
     public Duration lifetime() {
         return this.lifetime.elapsed();
+    }
+
+    @JsonIgnore
+    public long nanoTimeCreated() {
+        return this.nanoTimeCreated;
     }
 
     @JsonProperty
@@ -92,6 +95,11 @@ public final class RntbdRequestArgs {
     @JsonIgnore
     public RxDocumentServiceRequest serviceRequest() {
         return this.serviceRequest;
+    }
+
+    @JsonProperty
+    public OffsetDateTime timeCreated() {
+        return this.timeCreated;
     }
 
     @JsonProperty
@@ -120,7 +128,7 @@ public final class RntbdRequestArgs {
 
         if (logger.isTraceEnabled()) {
             final BigDecimal lifetime = BigDecimal.valueOf(this.lifetime.elapsed().toNanos(), 6);
-            logger.trace("{},{},\"{}({})\",\"{}\",\"{}\"", this.creationTime, lifetime, operationName,
+            logger.trace("{},{},\"{}({})\",\"{}\",\"{}\"", this.nanoTimeCreated, lifetime, operationName,
                 Stream.of(args).map(arg ->
                     arg == null ? "null" : arg.toString()).collect(Collectors.joining(",")
                 ),

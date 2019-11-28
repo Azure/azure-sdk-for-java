@@ -578,7 +578,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 pendingRequestTimeout.cancel();
             });
 
-            return record.stage(RntbdRequestRecord.Stage.QUEUED);
+            return record;
 
         }).args();
     }

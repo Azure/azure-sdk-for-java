@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Strings.lenientFormat;
 
 @JsonSerialize(using = RntbdRequestRecord.JsonSerializer.class)
 public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
@@ -39,7 +40,7 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
     private volatile Stage stage;
 
     private volatile OffsetDateTime timeCompleted;
-    private volatile OffsetDateTime timeCreated;
+    private volatile OffsetDateTime timePipelined;
     private volatile OffsetDateTime timeQueued;
     private volatile OffsetDateTime timeSent;
 
@@ -48,8 +49,8 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
         checkNotNull(args, "expected non-null args");
         checkNotNull(timer, "expected non-null timer");
 
-        this.timeCreated = OffsetDateTime.now();
-        this.stage = Stage.CREATED;
+        this.timeQueued = OffsetDateTime.now();
+        this.stage = Stage.QUEUED;
         this.args = args;
         this.timer = timer;
     }
@@ -62,12 +63,6 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
     public RntbdRequestArgs args() {
         return this.args;
-    }
-
-    public boolean expire() {
-        final RequestTimeoutException error = new RequestTimeoutException(this.toString(), this.args.physicalAddress());
-        BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
-        return this.completeExceptionally(error);
     }
 
     public Duration lifetime() {
@@ -85,21 +80,25 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
         updater.updateAndGet(this, current -> {
 
             switch (value) {
-                case QUEUED:
-                    checkState(current == Stage.CREATED,
-                        "expected transition from CREATED to QUEUED, not %s",
+                case PIPELINED:
+                    checkState(current == Stage.QUEUED,
+                        "expected transition from QUEUED to PIPELINED, not %s",
                         current);
-                    this.timeQueued = time;
+                    this.timePipelined = time;
                     break;
                 case SENT:
-                    checkState(current == Stage.QUEUED,
-                        "expected transition from QUEUED to SENT, not %s",
+                    checkState(current == Stage.PIPELINED,
+                        "expected transition from PIPELINED to SENT, not %s",
                         current);
                     this.timeSent = time;
                     break;
                 case COMPLETED:
                     this.timeCompleted = time;
                     break;
+                default:
+                    throw new IllegalStateException(lenientFormat("there is no transition from %s to %s",
+                        current,
+                        value));
             }
 
             return value;
@@ -113,7 +112,11 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
     }
 
     public OffsetDateTime timeCreated() {
-        return this.timeCreated;
+        return this.args.timeCreated();
+    }
+
+    public OffsetDateTime timePipelined() {
+        return this.timePipelined;
     }
 
     public OffsetDateTime timeQueued() {
@@ -124,10 +127,6 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
         return this.timeSent;
     }
 
-    public RequestTimeline timeline() {
-        return RequestTimeline.from(this);
-    }
-
     public long transportRequestId() {
         return this.args.transportRequestId();
     }
@@ -136,8 +135,18 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
     // region Methods
 
+    public boolean expire() {
+        final RequestTimeoutException error = new RequestTimeoutException(this.toString(), this.args.physicalAddress());
+        BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
+        return this.completeExceptionally(error);
+    }
+
     public Timeout newTimeout(final TimerTask task) {
         return this.timer.newTimeout(task);
+    }
+
+    public RequestTimeline takeTimelineSnapshot() {
+        return RequestTimeline.from(this);
     }
 
     public long stop(Timer requests, Timer responses) {
@@ -154,7 +163,7 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
     // region Types
 
     public enum Stage {
-        CREATED, QUEUED, SENT, COMPLETED
+        QUEUED, PIPELINED, SENT, COMPLETED
     }
 
     static final class JsonSerializer extends StdSerializer<RntbdRequestRecord> {
@@ -205,7 +214,7 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
             generator.writeEndObject();
 
-            generator.writeObjectField("timeline", value.timeline().getEvents());
+            generator.writeObjectField("timeline", value.takeTimelineSnapshot().getEvents());
             generator.writeEndObject();
         }
     }

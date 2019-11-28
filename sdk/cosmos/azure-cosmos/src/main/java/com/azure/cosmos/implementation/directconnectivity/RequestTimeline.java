@@ -31,7 +31,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
 import java.io.IOException;
@@ -71,18 +70,20 @@ public final class RequestTimeline {
 
         OffsetDateTime timeCreated = requestRecord.timeCreated();
         OffsetDateTime timeQueued = requestRecord.timeQueued();
+        OffsetDateTime timePipelined = requestRecord.timePipelined();
         OffsetDateTime timeSent = requestRecord.timeSent();
         OffsetDateTime timeCompleted = requestRecord.timeCompleted();
-
-        OffsetDateTime timeCompletedOrNow = MoreObjects.firstNonNull(timeCompleted, now);
+        OffsetDateTime timeCompletedOrNow = timeCompleted == null ? now : timeCompleted;
 
         ImmutableList<Event> events = ImmutableList.of(
             new Event("created",
-                timeCreated, MoreObjects.firstNonNull(timeQueued, timeCompletedOrNow)),
+                timeCreated, timeQueued == null ? timeCompletedOrNow : timeQueued),
             new Event("queued",
-                timeQueued, MoreObjects.firstNonNull(timeSent, timeCompletedOrNow)),
+                timeQueued, timePipelined == null ? timeCompletedOrNow : timePipelined),
+            new Event("pipelined",
+                timePipelined, timeSent == null ? timeCompletedOrNow : timeSent),
             new Event("sent",
-                timeSent, MoreObjects.firstNonNull(timeCompleted, timeCompletedOrNow)),
+                timeSent, timeCompletedOrNow),
             new Event("completed",
                 timeCompleted, now));
 

@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestTimer;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -20,7 +19,6 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.google.common.base.Strings;
 import io.micrometer.core.instrument.Tag;
 import io.netty.handler.ssl.SslContext;
-import io.netty.util.HashedWheelTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -126,14 +124,14 @@ public final class RntbdTransportClient extends TransportClient {
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
             if (throwable == null) {
-                response.setRequestTimeline(record.timeline());
+                response.setRequestTimeline(record.takeTimelineSnapshot());
             } else {
                 checkArgument(throwable instanceof CosmosClientException, "expected %s, not %s: %s",
                     CosmosClientException.class,
                     throwable.getClass(),
                     throwable);
                 CosmosClientException error = (CosmosClientException) throwable;
-                error.setRequestTimeline(record.timeline());
+                error.setRequestTimeline(record.takeTimelineSnapshot());
             }
 
         }));

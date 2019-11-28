@@ -16,7 +16,6 @@ import io.micrometer.core.instrument.Tag;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -173,7 +172,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.throwIfClosed();
 
         this.concurrentRequests.incrementAndGet();
-        this.lastRequestTime.set(args.creationTime());
+        this.lastRequestTime.set(args.nanoTimeCreated());
 
         if (logger.isDebugEnabled()) {
             args.traceOperation(logger, null, "request");
@@ -239,11 +238,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 requestArgs.traceOperation(logger, null, "write");
                 final Channel channel = (Channel)connected.get();
                 this.releaseToPool(channel);
-
-                channel.write(requestRecord).addListener((ChannelFuture future) -> {
-                    requestArgs.traceOperation(logger, null, "writeComplete", channel);
-                });
-
+                channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
                 return;
             }
 

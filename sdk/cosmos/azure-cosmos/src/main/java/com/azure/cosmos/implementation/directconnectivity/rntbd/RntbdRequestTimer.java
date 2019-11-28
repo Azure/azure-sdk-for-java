@@ -20,13 +20,9 @@ public final class RntbdRequestTimer implements AutoCloseable {
 
     private static final long TIMER_RESOLUTION_IN_NANOS = 100_000_000L; // 100 ms
 
-    private static final AtomicInteger closedInstanceCount = new AtomicInteger();
-    private static final AtomicInteger createdInstanceCount = new AtomicInteger();
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestTimer.class);
-
     private final AtomicBoolean closed = new AtomicBoolean();
 
-    private final int id;
     private final long requestTimeout;
     private final HashedWheelTimer timer;
 
@@ -34,7 +30,6 @@ public final class RntbdRequestTimer implements AutoCloseable {
         // HashedWheelTimer code inspection shows that timeout tasks expire within two timer resolution units
         this.timer = new HashedWheelTimer(TIMER_RESOLUTION_IN_NANOS, TimeUnit.NANOSECONDS);
         this.requestTimeout = requestTimeoutInNanos;
-        this.id = createdInstanceCount.incrementAndGet();
     }
 
     public long getRequestTimeout(final TimeUnit unit) {
@@ -49,28 +44,18 @@ public final class RntbdRequestTimer implements AutoCloseable {
             final Set<Timeout> timeouts = this.timer.stop();
             final int count = timeouts.size();
 
-            if (count == 0) {
-                logger.debug("request timer {} has no outstanding timeout tasks", this.id);
-                return;
-            }
+            if (count > 0) {
 
-            logger.debug("request timer {} is stopping {} timeout tasks", this.id, count);
-
-            for (final Timeout timeout : timeouts) {
-                if (!timeout.isExpired()) {
-                    try {
-                        timeout.task().run(timeout);
-                    } catch (Throwable error) {
-                        logger.warn(lenientFormat("request timer {} timeout task failed due to ", this.id, error));
+                for (final Timeout timeout : timeouts) {
+                    if (!timeout.isExpired()) {
+                        try {
+                            timeout.task().run(timeout);
+                        } catch (Throwable error) {
+                            logger.warn("timeout task failed due to ", error);
+                        }
                     }
                 }
             }
-
-            logger.info("request timer {} has {} timeout tasks pending", this.id, this.timer.pendingTimeouts());
-            logger.info("request timer {} stopped {} timeout tasks", this.id, count);
-            logger.info("request timer {} closed", this.id);
-
-            closedInstanceCount.decrementAndGet();
         }
     }
 
