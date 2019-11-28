@@ -44,7 +44,7 @@ gulp.task('default', function() {
     console.log("\tUsually you'll only need to provide this and not a --autorest argument in order to work on Java code generation.");
     console.log("\tSee https://github.com/Azure/autorest/blob/master/.attic/developer/autorest-extension.md");
 
-	console.log("--use");
+    console.log("--use");
     console.log("\tThe version of AutoRest.Java. E.g. 2.0.9. You can also directly pass latest or preview.");
 
     console.log("--debug");
@@ -76,11 +76,11 @@ var autoRestExe;
 const mgmtPomFilename = 'pom.mgmt.xml'
 
 gulp.task('codegen', function(cb) {
-	if (!autoRestJavaVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) &&
+    if (!autoRestJavaVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) &&
         autoRestJavaVersion != 'preview' && autoRestJavaVersion != 'latest') {
-		console.error('Invalid autorest.java version "' + autoRestJavaVersion + '"!');
-		process.exit(1);
-	}
+            console.error('Invalid autorest.java version "' + autoRestJavaVersion + '"!');
+			process.exit(1);
+    }
     if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) ||
         autoRestVersion == 'preview' || autoRestVersion == 'latest') {
             autoRestExe = 'autorest --version=' + autoRestVersion;
