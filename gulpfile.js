@@ -61,7 +61,7 @@ var autoRestVersion = 'preview'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
-var autoRestJavaVersion = 'preview'; // default
+var autoRestJavaVersion = ''; // default
 if (args['autorest-java'] !== undefined) {
     autoRestJavaVersion = args['autorest-java'];
 }
@@ -72,7 +72,7 @@ var autoRestExe;
 gulp.task('codegen', function(cb) {
     if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) ||
         autoRestVersion == 'preview' || autoRestVersion == 'latest') {
-            autoRestExe = 'autorest ---version=' + autoRestVersion;
+            autoRestExe = 'autorest --version=' + autoRestVersion;
             handleInput(projects, cb);
     } else {
         autoRestExe = "node " + path.join(autoRestVersion, "src/autorest-core/dist/app.js");
@@ -112,7 +112,7 @@ var codegen = function(project, cb) {
     const generatorPath = autoRestJavaVersion == 'preview' || autoRestJavaVersion == 'latest' 
 		|| autoRestJavaVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/)
         ? `--use=@microsoft.azure/autorest.java@` + autoRestJavaVersion +` `
-        : `--use=${path.resolve(args['autorest-java'])} `;
+        : (autoRestJavaVersion == '' ? '' : `--use=${path.resolve(args['autorest-java'])} `);
 
     const regenManager = args['regenerate-manager'] ? ' --regenerate-manager=true ' : '';
 
