@@ -55,13 +55,13 @@ jobs:
       # HACK!!!!
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
-            python --version --update-type library --build-type client --build-qualifier .run$(Build.BuildId) --artifact-id ${{artifact.name}}
-            python eng/versioning/set_versions.py
+            python3 --version --update-type library --build-type client --build-qualifier .run$(Build.BuildId) --artifact-id ${{artifact.name}}
+            python3 eng/versioning/set_versions.py
           displayName: Apped dev package version suffix for ${{artifact.name}}
       
       - script: |
-          python --version
-          python eng/versioning/update_versions.py --update-type library --build-type client
+          python3 --version
+          python3 eng/versioning/update_versions.py --update-type library --build-type client
         displayName: Apply version settings to repository
 
       - script: |
