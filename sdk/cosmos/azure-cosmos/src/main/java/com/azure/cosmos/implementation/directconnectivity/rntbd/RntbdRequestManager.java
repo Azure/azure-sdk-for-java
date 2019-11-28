@@ -488,7 +488,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             final RntbdRequestRecord record = (RntbdRequestRecord) message;
             this.timestamps.channelWriteAttempted();
 
-            context.writeAndFlush(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
+            context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
                 record.stage(RntbdRequestRecord.Stage.SENT);
                 if (completed.isSuccess()) {
                     this.timestamps.channelWriteCompleted();
@@ -500,7 +500,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         if (message == RntbdHealthCheckRequest.MESSAGE) {
 
-            context.writeAndFlush(RntbdHealthCheckRequest.MESSAGE, promise).addListener(completed -> {
+            context.write(RntbdHealthCheckRequest.MESSAGE, promise).addListener(completed -> {
                 if (completed.isSuccess()) {
                     this.timestamps.channelPingCompleted();
                 }
@@ -560,7 +560,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         return this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
 
             reportIssueUnless(current == null, context, "id: {}, current: {}, request: {}", record);
-            record.stage(RntbdRequestRecord.Stage.QUEUED);
 
             final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
 

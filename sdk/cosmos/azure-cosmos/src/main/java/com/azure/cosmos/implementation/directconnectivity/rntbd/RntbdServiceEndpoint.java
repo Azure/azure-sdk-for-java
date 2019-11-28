@@ -330,8 +330,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
             this.transportClient = transportClient;
             this.config = new Config(options, sslContext, wireLogLevel);
-            this.requestTimer = new RntbdRequestTimer(config.requestTimeoutInNanos());
             this.eventLoopGroup = new NioEventLoopGroup(threadCount, threadFactory);
+            this.requestTimer = new RntbdRequestTimer(config.requestTimeoutInNanos());
 
             this.endpoints = new ConcurrentHashMap<>();
             this.evictions = new AtomicInteger();
@@ -342,8 +342,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         public void close() {
 
             if (this.closed.compareAndSet(false, true)) {
-
-                this.requestTimer.close();
 
                 for (final RntbdEndpoint endpoint : this.endpoints.values()) {
                     endpoint.close();
@@ -358,6 +356,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                         logger.error("\n  [{}]\n  failed to close endpoints due to ", this, future.cause());
                     });
 
+                this.requestTimer.close();
                 return;
             }
 

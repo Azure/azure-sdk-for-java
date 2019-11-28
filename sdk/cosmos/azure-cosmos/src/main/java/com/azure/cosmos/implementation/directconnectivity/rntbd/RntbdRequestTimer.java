@@ -5,13 +5,14 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import io.netty.util.HashedWheelTimer;
 import io.netty.util.Timeout;
-import io.netty.util.Timer;
 import io.netty.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.google.common.base.Strings.lenientFormat;
 
@@ -19,14 +20,21 @@ public final class RntbdRequestTimer implements AutoCloseable {
 
     private static final long TIMER_RESOLUTION_IN_NANOS = 100_000_000L; // 100 ms
 
+    private static final AtomicInteger closedInstanceCount = new AtomicInteger();
+    private static final AtomicInteger createdInstanceCount = new AtomicInteger();
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestTimer.class);
-    private final long requestTimeout;
-    private final Timer timer;
 
-    public RntbdRequestTimer(final long requestTimeout) {
+    private final AtomicBoolean closed = new AtomicBoolean();
+
+    private final int id;
+    private final long requestTimeout;
+    private final HashedWheelTimer timer;
+
+    public RntbdRequestTimer(final long requestTimeoutInNanos) {
         // HashedWheelTimer code inspection shows that timeout tasks expire within two timer resolution units
         this.timer = new HashedWheelTimer(TIMER_RESOLUTION_IN_NANOS, TimeUnit.NANOSECONDS);
-        this.requestTimeout = requestTimeout;
+        this.requestTimeout = requestTimeoutInNanos;
+        this.id = createdInstanceCount.incrementAndGet();
     }
 
     public long getRequestTimeout(final TimeUnit unit) {
@@ -36,27 +44,34 @@ public final class RntbdRequestTimer implements AutoCloseable {
     @Override
     public void close() {
 
-        final Set<Timeout> timeouts = this.timer.stop();
-        final int count = timeouts.size();
+        if (this.closed.compareAndSet(false, true)) {
 
-        if (count == 0) {
-            logger.debug("no outstanding request timeout tasks");
-            return;
-        }
+            final Set<Timeout> timeouts = this.timer.stop();
+            final int count = timeouts.size();
 
-        logger.debug("stopping {} request timeout tasks", count);
+            if (count == 0) {
+                logger.debug("request timer {} has no outstanding timeout tasks", this.id);
+                return;
+            }
 
-        for (final Timeout timeout : timeouts) {
-            if (!timeout.isExpired()) {
-                try {
-                    timeout.task().run(timeout);
-                } catch (Throwable error) {
-                    logger.warn(lenientFormat("request timeout task failed due to ", error));
+            logger.debug("request timer {} is stopping {} timeout tasks", this.id, count);
+
+            for (final Timeout timeout : timeouts) {
+                if (!timeout.isExpired()) {
+                    try {
+                        timeout.task().run(timeout);
+                    } catch (Throwable error) {
+                        logger.warn(lenientFormat("request timer {} timeout task failed due to ", this.id, error));
+                    }
                 }
             }
-        }
 
-        logger.debug("{} request timeout tasks stopped", count);
+            logger.info("request timer {} has {} timeout tasks pending", this.id, this.timer.pendingTimeouts());
+            logger.info("request timer {} stopped {} timeout tasks", this.id, count);
+            logger.info("request timer {} closed", this.id);
+
+            closedInstanceCount.decrementAndGet();
+        }
     }
 
     public Timeout newTimeout(final TimerTask task) {

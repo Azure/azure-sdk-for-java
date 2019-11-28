@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
 import java.io.IOException;
@@ -63,12 +64,28 @@ public final class RequestTimeline {
     }
 
     public static RequestTimeline from(RntbdRequestRecord requestRecord) {
+
         checkNotNull(requestRecord, "expected non-null requestRecord");
+
+        OffsetDateTime now = OffsetDateTime.now();
+
+        OffsetDateTime timeCreated = requestRecord.timeCreated();
+        OffsetDateTime timeQueued = requestRecord.timeQueued();
+        OffsetDateTime timeSent = requestRecord.timeSent();
+        OffsetDateTime timeCompleted = requestRecord.timeCompleted();
+
+        OffsetDateTime timeCompletedOrNow = MoreObjects.firstNonNull(timeCompleted, now);
+
         ImmutableList<Event> events = ImmutableList.of(
-            new Event("created", requestRecord.timeCreated(), requestRecord.timeQueued()),
-            new Event("queued", requestRecord.timeQueued(), requestRecord.timeSent()),
-            new Event("sent", requestRecord.timeSent(), requestRecord.timeCompleted()),
-            new Event("completed", requestRecord.timeCompleted(), null));
+            new Event("created",
+                timeCreated, MoreObjects.firstNonNull(timeQueued, timeCompletedOrNow)),
+            new Event("queued",
+                timeQueued, MoreObjects.firstNonNull(timeSent, timeCompletedOrNow)),
+            new Event("sent",
+                timeSent, MoreObjects.firstNonNull(timeCompleted, timeCompletedOrNow)),
+            new Event("completed",
+                timeCompleted, now));
+
         return new RequestTimeline(events);
     }
 

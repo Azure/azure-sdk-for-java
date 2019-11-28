@@ -87,23 +87,20 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
             switch (value) {
                 case QUEUED:
                     checkState(current == Stage.CREATED,
-                        "expected transition from Stage.CREATED to Stage.QUEUED, not Stage.%s",
-                        value);
+                        "expected transition from CREATED to QUEUED, not %s",
+                        current);
                     this.timeQueued = time;
                     break;
                 case SENT:
                     checkState(current == Stage.QUEUED,
-                        "expected transition from Stage.QUEUED to Stage.SENT, not Stage.%s",
-                        value);
+                        "expected transition from QUEUED to SENT, not %s",
+                        current);
                     this.timeSent = time;
                     break;
                 case COMPLETED:
-                    checkState(current == Stage.SENT,
-                        "expected transition from Stage.SENT to Stage.COMPLETED, not Stage.%s",
-                        value);
                     this.timeCompleted = time;
                     break;
-    }
+            }
 
             return value;
         });
@@ -173,6 +170,9 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
             final SerializerProvider provider) throws IOException {
 
             generator.writeStartObject();
+            generator.writeObjectField("args", value.args());
+
+            // status
 
             generator.writeObjectFieldStart("status");
             generator.writeBooleanField("done", value.isDone());
@@ -205,36 +205,7 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
             generator.writeEndObject();
 
-            generator.writeObjectField("args", value.args);
-
-            generator.writeStartObject("timeline");
-
-            if (value.timeCreated() != null) {
-                generator.writeStringField("created", value.timeCreated().toString());
-            } else {
-                generator.writeNullField("created");
-            }
-
-            if (value.timeQueued() != null) {
-                generator.writeStringField("queued", value.timeQueued().toString());
-            } else {
-                generator.writeNullField("queued");
-            }
-
-            if (value.timeSent() != null) {
-                generator.writeStringField("sent", value.timeSent().toString());
-            } else {
-                generator.writeNullField("sent");
-            }
-
-            if (value.timeCompleted() != null) {
-                generator.writeStringField("completed", value.timeCompleted().toString());
-            } else {
-                generator.writeNullField("completed");
-            }
-
-            generator.writeEndObject();
-
+            generator.writeObjectField("timeline", value.timeline().getEvents());
             generator.writeEndObject();
         }
     }
