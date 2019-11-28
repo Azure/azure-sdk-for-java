@@ -25,7 +25,7 @@ public class StoreResponse {
     final private String content;
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
-    private RntbdRequestTimeline rntbdRequestTimeline;
+    private RequestTimeline requestTimeline;
 
     public StoreResponse(int status, List<Entry<String, String>> headerEntries, InputStream inputStream) {
         this(status, headerEntries, null, inputStream);
@@ -40,6 +40,8 @@ public class StoreResponse {
             List<Entry<String, String>> headerEntries,
             String content,
             InputStream inputStream) {
+
+        requestTimeline = RequestTimeline.EMPTY;
         responseHeaderNames = new String[headerEntries.size()];
         responseHeaderValues = new String[headerEntries.size()];
 
@@ -118,12 +120,12 @@ public class StoreResponse {
         return this;
     }
 
-    public RntbdRequestTimeline getRntbdRequestTimeline() {
-        return this.rntbdRequestTimeline;
+    public RequestTimeline getRequestTimeline() {
+        return this.requestTimeline;
     }
 
-    public StoreResponse setRntbdRequestTimeline(RntbdRequestTimeline rntbdRequestTimeline) {
-        this.rntbdRequestTimeline = rntbdRequestTimeline;
+    public StoreResponse setRequestTimeline(RequestTimeline requestTimeline) {
+        this.requestTimeline = requestTimeline;
         return this;
     }
 

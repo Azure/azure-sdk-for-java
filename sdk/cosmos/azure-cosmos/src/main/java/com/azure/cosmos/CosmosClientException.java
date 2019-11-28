@@ -5,8 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.directconnectivity.RntbdRequestTimeline;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.RequestTimeline;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;
@@ -36,7 +35,7 @@ public class CosmosClientException extends Exception {
     private final Map<String, String> responseHeaders;
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
-    private RntbdRequestTimeline rntbdRequestTimeline;
+    private RequestTimeline requestTimeline;
     private CosmosError cosmosError;
 
     long lsn;
@@ -48,6 +47,7 @@ public class CosmosClientException extends Exception {
     CosmosClientException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;
+        this.requestTimeline = RequestTimeline.EMPTY;
         this.responseHeaders = responseHeaders == null ? new HashMap<>() : new HashMap<>(responseHeaders);
     }
 
@@ -246,12 +246,12 @@ public class CosmosClientException extends Exception {
         return this;
     }
 
-    public RntbdRequestTimeline getRntbdRequestTimeline() {
-        return this.rntbdRequestTimeline;
+    public RequestTimeline getRequestTimeline() {
+        return this.requestTimeline;
     }
 
-    public CosmosClientException setRntbdRequestTimeline(RntbdRequestTimeline rntbdRequestTimeline) {
-        this.rntbdRequestTimeline = rntbdRequestTimeline;
+    public CosmosClientException setRequestTimeline(RequestTimeline requestTimeline) {
+        this.requestTimeline = requestTimeline;
         return this;
     }
 

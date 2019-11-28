@@ -22,7 +22,6 @@ import io.netty.handler.ssl.SslContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
 
 import java.io.IOException;
 import java.net.URI;
@@ -125,22 +124,17 @@ public final class RntbdTransportClient extends TransportClient {
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
             if (throwable == null) {
-                response.setRntbdRequestTimeline(record.timeline());
+                response.setRequestTimeline(record.timeline());
             } else {
                 checkArgument(throwable instanceof CosmosClientException, "expected %s, not %s: %s",
                     CosmosClientException.class,
                     throwable.getClass(),
                     throwable);
                 CosmosClientException error = (CosmosClientException) throwable;
-                error.setRntbdRequestTimeline(record.timeline());
+                error.setRequestTimeline(record.timeline());
             }
 
-        })).doFinally(signalType -> {
-            logger.debug("SignalType.{} received from reactor: {\n  endpoint: {},\n  record: {}\n}",
-                signalType.name(),
-                endpoint,
-                record);
-        });
+        }));
     }
 
     public Tag tag() {

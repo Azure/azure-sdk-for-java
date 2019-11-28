@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.RequestTimeoutException;
-import com.azure.cosmos.implementation.directconnectivity.RntbdRequestTimeline;
+import com.azure.cosmos.implementation.directconnectivity.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -127,8 +127,8 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
         return this.timeSent;
     }
 
-    public RntbdRequestTimeline timeline() {
-        return new RntbdRequestTimeline(this);
+    public RequestTimeline timeline() {
+        return RequestTimeline.from(this);
     }
 
     public long transportRequestId() {
