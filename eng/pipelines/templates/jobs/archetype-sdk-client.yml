@@ -52,6 +52,18 @@ jobs:
 
       - template: tools/daily-dev-build-variable/daily-dev-build-variable.yml@azure-sdk-tools
 
+      # HACK!!!!
+      - ${{ each artifact in parameters.Artifacts }}:
+        - script: |
+            python --version --update-type library --build-type client --build-qualifier .run$(Build.BuildId) --artifact-id ${{artifact.name}}
+            python eng/versioning/set_versions.py
+          displayName: Apped dev package version suffix for ${{artifact.name}}
+      
+      - script: |
+          python --version
+          python eng/versioning/update_versions.py --update-type library --build-type client
+        displayName: Apply version settings to repository
+
       - script: |
           pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
