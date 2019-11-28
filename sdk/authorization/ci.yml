@@ -22,7 +22,7 @@ trigger:
     include:
       - sdk/authorization/
     exclude:
-      - sdk/authorization/azure-mgmt-
+      - sdk/authorization/mgmt-
 
 pr:
   branches:
@@ -35,7 +35,7 @@ pr:
     include:
       - sdk/authorization/
     exclude:
-      - sdk/authorization/azure-mgmt-
+      - sdk/authorization/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

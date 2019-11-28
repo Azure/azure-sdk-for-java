@@ -6,7 +6,7 @@
   <parent>
     <artifactId>azure-client-sdk-parent</artifactId>
     <groupId>com.azure</groupId>
-    <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -25,6 +25,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>add-client-source</id>
@@ -82,6 +83,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>add-data-source</id>
@@ -114,6 +116,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <!-- Added to override the -snippetpath arg which is not applicable here-->
           <additionalOptions>-maxLineLength 120</additionalOptions>
@@ -141,7 +144,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+          <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -151,7 +154,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-netty</artifactId>
-          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+          <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -186,7 +189,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+          <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -249,7 +252,7 @@
         <dependency>
           <groupId>com.google.code.findbugs</groupId>
           <artifactId>jsr305</artifactId>
-          <version>3.0.2</version>
+          <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
           <scope>provided</scope>
         </dependency>
       </dependencies>
@@ -324,7 +327,7 @@
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-servicebus</artifactId>
-          <version>3.1.1</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;current} -->
+          <version>3.1.4</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;current} -->
         </dependency>
       </dependencies>
       <properties>

@@ -12,33 +12,34 @@ import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Code snippets demonstrating various {@link EventHubConsumerAsyncClient} scenarios.
  */
 public class EventHubConsumerAsyncClientJavaDocCodeSamples {
+    private final EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
+        .connectionString("fake-string")
+        .consumerGroup("consumer-group-name")
+        .buildAsyncConsumerClient();
 
     public void initialization() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
         // The required parameters are `consumerGroup` and a way to authenticate with Event Hubs using credentials.
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
-            .connectionString("event-hub-instance-connection-string")
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
+                + "SharedAccessKey={key};EntityPath={eh-name}")
+            .consumerGroup("consumer-group-name")
+            .buildAsyncConsumerClient();
         // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
+
+        consumer.close();
     }
 
     /**
      * Receives event data from a single partition.
      */
     public void receive() {
-        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
-            .connectionString("fake-string")
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition
         // Obtain partitionId from EventHubConsumerAsyncClient.getPartitionIds()
@@ -70,8 +71,8 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
 
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("fake-string")
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .consumerGroup("consumer-group-name")
+            .buildAsyncConsumerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber
         consumer.receiveFromPartition(partitionId, EventPosition.latest()).subscribe(new BaseSubscriber<PartitionEvent>() {
@@ -105,40 +106,42 @@ public class EventHubConsumerAsyncClientJavaDocCodeSamples {
     public void receiveAll() {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("fake-string")
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .consumerGroup("consumer-group-name")
+            .buildAsyncConsumerClient();
 
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition
-        EventPosition startingPosition = EventPosition.fromEnqueuedTime(Instant.now().minus(Duration.ofHours(1)));
-
-        // Receives events from all partitions starting from an hour ago.
-        consumer.receive(startingPosition).subscribe(partitionEvent -> {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean
+        // Receives events from all partitions from the beginning of each partition.
+        consumer.receive(true).subscribe(partitionEvent -> {
             PartitionContext context = partitionEvent.getPartitionContext();
             EventData event = partitionEvent.getData();
             System.out.printf("Event %s is from partition %s%n.", event.getSequenceNumber(), context.getPartitionId());
         });
-        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition
+        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean
     }
 
     /**
      * Receives from all partitions with last enqueued information.
      */
     public void receiveLastEnqueuedInformation() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition-receiveoptions
-        ReceiveOptions receiveOptions = new ReceiveOptions()
-            .setTrackLastEnqueuedEventProperties(true);
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumer();
+            .consumerGroup("consumer-group-name")
+            .buildAsyncConsumerClient();
 
-        // Receives events from all partitions as they come in.
-        consumer.receive(EventPosition.latest(), receiveOptions).subscribe(partitionEvent -> {
-            PartitionContext context = partitionEvent.getPartitionContext();
-            LastEnqueuedEventProperties properties = context.getLastEnqueuedEventProperties();
-            System.out.printf("Information received at %s. Sequence Id: %s%n", properties.getRetrievalTime(),
-                properties.getSequenceNumber());
-        });
-        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#eventposition-receiveoptions
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions
+        // Set `setTrackLastEnqueuedEventProperties` to true to get the last enqueued information from the partition for
+        // each event that is received.
+        ReceiveOptions receiveOptions = new ReceiveOptions()
+            .setTrackLastEnqueuedEventProperties(true);
+
+        // Receives events from partition "0" as they come in.
+        consumer.receiveFromPartition("0", EventPosition.earliest(), receiveOptions)
+            .subscribe(partitionEvent -> {
+                LastEnqueuedEventProperties properties = partitionEvent.getLastEnqueuedEventProperties();
+                System.out.printf("Information received at %s. Last enqueued sequence number: %s%n",
+                    properties.getRetrievalTime(),
+                    properties.getSequenceNumber());
+            });
+        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions
     }
 }

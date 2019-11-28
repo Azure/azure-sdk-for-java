@@ -2,6 +2,8 @@ package com.azure.storage.file.datalake
 
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
+import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 
@@ -1503,6 +1505,21 @@ class DirectoryAPITest extends APISpec {
         pathName     || _
         "dir/file"   || _
         "dir%2Ffile" || _
+    }
+
+    def "Builder bearer token validation"() {
+        // Technically no additional checks need to be added to datalake builder since the corresponding blob builder fails
+        setup:
+        String endpoint = BlobUrlParts.parse(dc.getDirectoryUrl()).setScheme("http").toUrl()
+        def builder = new DataLakePathClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildDirectoryClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 
 }

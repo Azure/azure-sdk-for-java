@@ -4,154 +4,71 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventProcessor;
-import com.azure.messaging.eventhubs.EventProcessorStore;
-import com.azure.messaging.eventhubs.PartitionProcessor;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-import reactor.core.publisher.Mono;
 
 /**
- * A model class to contain partition information that will be provided to each instance of {@link PartitionProcessor}.
+ * A model class to contain partition information of an Event Hub.
  */
 @Immutable
 public class PartitionContext {
 
+    private final String fullyQualifiedNamespace;
     private final String partitionId;
     private final String eventHubName;
     private final String consumerGroup;
-    private final LastEnqueuedEventProperties lastEnqueuedEventProperties;
-    private final String ownerId;
-    private final AtomicReference<String> eTag;
-    private final EventProcessorStore eventProcessorStore;
 
     /**
-     * Creates an instance of PartitionContext that contains partition information available to each {@link
-     * PartitionProcessor}.
+     * Creates an instance of PartitionContext that contains partition information.
      *
-     * @param partitionId The partition id of the partition processed by the {@link PartitionProcessor}.
-     * @param eventHubName The Event Hub name associated with the {@link EventProcessor}.
-     * @param consumerGroup The consumer group name associated with the {@link EventProcessor}.
-     * @param ownerId The unique identifier of the {@link EventProcessor} instance.
-     * @param eTag The last known ETag stored in {@link EventProcessorStore} for this partition.
-     * @param eventProcessorStore A {@link EventProcessorStore} implementation to read and update partition ownership
-     * and checkpoint information.
-     * @throws NullPointerException if {@code partitionId} or {@code eventHubName} or {@code consumerGroup}
-     * or {@code ownerId} or {@code eTag} or {@code eventProcessorStore} is {@code null}.
-     */
-    public PartitionContext(String partitionId, String eventHubName, String consumerGroup,
-        String ownerId, String eTag, EventProcessorStore eventProcessorStore) {
-        this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null.");
-        this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null.");
-        this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
-        this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null.");
-        this.eTag = new AtomicReference<>(eTag);
-        this.eventProcessorStore = Objects.requireNonNull(eventProcessorStore, "eventProcessorStore cannot be null.");
-        this.lastEnqueuedEventProperties = null;
-    }
-
-    /**
-     * Creates an instance of PartitionContext that contains partition information available for each event.
-     *
+     * @param fullyQualifiedNamespace The fully qualified namespace of the Event Hub.
+     * @param eventHubName The Event Hub name.
+     * @param consumerGroup The consumer group name associated with the consumer of an Event Hub.
      * @param partitionId The partition id of the partition.
-     * @param eventHubName The Event Hub name that the event originated from.
-     * @param consumerGroup The consumer group name the event originated from.
-     * @param lastEnqueuedEventProperties Set of information about the last enqueued event of a partition.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code partitionId}, {@code eventHubName} or
+     * {@code consumerGroup} or is {@code null}.
      */
-    public PartitionContext(String partitionId, String eventHubName, String consumerGroup,
-        LastEnqueuedEventProperties lastEnqueuedEventProperties) {
-        this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null.");
+    public PartitionContext(String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
+        String partitionId) {
+        this.fullyQualifiedNamespace = Objects
+            .requireNonNull(fullyQualifiedNamespace, "fullyQualifiedNamespace cannot be null");
         this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null.");
         this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
-        this.lastEnqueuedEventProperties = lastEnqueuedEventProperties;
-        this.ownerId = null;
-        this.eTag = new AtomicReference<>();
-        this.eventProcessorStore = null;
+        this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null.");
     }
 
+    /**
+     * Returns the fully qualified namespace of the Event Hub.
+     *
+     * @return the fully qualified namespace of the Event Hub.
+     */
+    public String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
+    }
 
     /**
-     * Gets the partition id associated to an instance of {@link PartitionProcessor}.
+     * Gets the partition id of the Event Hub.
      *
-     * @return The partition id associated to an instance of {@link PartitionProcessor}.
+     * @return the partition id of the Event Hub.
      */
     public String getPartitionId() {
         return partitionId;
     }
 
     /**
-     * Gets the Event Hub name associated to an instance of {@link PartitionProcessor}.
+     * Gets the Event Hub name.
      *
-     * @return The Event Hub name associated to an instance of {@link PartitionProcessor}.
+     * @return The Event Hub name.
      */
     public String getEventHubName() {
         return eventHubName;
     }
 
     /**
-     * Gets the consumer group name associated to an instance of {@link PartitionProcessor}.
+     * Gets the consumer group name associated with the consumer of an Event Hub.
      *
-     * @return The consumer group name associated to an instance of {@link PartitionProcessor}.
+     * @return The consumer group name associated with the consumer of an Event Hub.
      */
     public String getConsumerGroup() {
         return consumerGroup;
-    }
-
-    /**
-     * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
-     * received from the Event Hubs service.
-     *
-     * @return {@code null} if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} was not set when
-     * creating the consumer. Otherwise, the properties describing the most recently enqueued event in the partition.
-     */
-    public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
-        return lastEnqueuedEventProperties;
-    }
-
-    /**
-     * Updates the checkpoint for this partition using the event data. This will serve as the last known successfully
-     * processed event in this partition if the update is successful.
-     *
-     * @param eventData The event data to use for updating the checkpoint.
-     * @return a representation of deferred execution of this call.
-     */
-    public Mono<Void> updateCheckpoint(EventData eventData) {
-        String previousETag = this.eTag.get();
-        Checkpoint checkpoint = new Checkpoint()
-            .setConsumerGroupName(consumerGroup)
-            .setEventHubName(eventHubName)
-            .setOwnerId(ownerId)
-            .setPartitionId(partitionId)
-            .setSequenceNumber(eventData.getSequenceNumber())
-            .setOffset(eventData.getOffset())
-            .setETag(previousETag);
-        return this.eventProcessorStore.updateCheckpoint(checkpoint)
-            .map(eTag -> this.eTag.compareAndSet(previousETag, eTag))
-            .then();
-    }
-
-    /**
-     * Updates a checkpoint using the given offset and sequence number. This will serve as the last known successfully
-     * processed event in this partition if the update is successful.
-     *
-     * @param sequenceNumber The sequence number to update the checkpoint.
-     * @param offset The offset to update the checkpoint.
-     * @return a representation of deferred execution of this call.
-     */
-    public Mono<Void> updateCheckpoint(long sequenceNumber, Long offset) {
-        String previousETag = this.eTag.get();
-        Checkpoint checkpoint = new Checkpoint()
-            .setConsumerGroupName(consumerGroup)
-            .setEventHubName(eventHubName)
-            .setOwnerId(ownerId)
-            .setPartitionId(partitionId)
-            .setSequenceNumber(sequenceNumber)
-            .setOffset(offset)
-            .setETag(previousETag);
-
-        return this.eventProcessorStore.updateCheckpoint(checkpoint)
-            .map(eTag -> this.eTag.compareAndSet(previousETag, eTag))
-            .then();
     }
 }

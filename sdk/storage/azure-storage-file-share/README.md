@@ -6,7 +6,7 @@ Files stored in Azure File Share service shares are accessible via the SMB proto
 The File Share service offers the following four resources: the storage account, shares, directories, and files.
 Shares provide a way to organize sets of files and also can be mounted as an SMB file share that is hosted in the cloud.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][storage_docs] |
+[Source code][source_code] | [API reference documentation][reference_docs] | [REST API documentation][rest_api_documentation] | [Product documentation][storage_docs] |
 [Samples][samples]
 
 ## Getting started
@@ -524,9 +524,10 @@ If you would like to become an active contributor to this project please follow 
 
 <!-- LINKS -->
 [source_code]: src/
-[api_documentation]: https://docs.microsoft.com/rest/api/storageservices/file-service-rest-api
+[reference_docs]: https://azure.github.io/azure-sdk-for-java/
+[rest_api_documentation]: https://docs.microsoft.com/rest/api/storageservices/file-service-rest-api
 [storage_docs]: https://docs.microsoft.com/azure/storage/files/storage-files-introduction
-[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/free/
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
