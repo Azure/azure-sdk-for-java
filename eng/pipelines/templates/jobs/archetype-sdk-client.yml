@@ -61,7 +61,7 @@ jobs:
       
       - script: |
           python3 --version
-          python3 eng/versioning/update_versions.py --update-type library --build-type client
+          python3 eng/versioning/update_versions.py --update-type library --build-type client --skip-readme
         displayName: Apply version settings to repository
 
       - script: |
