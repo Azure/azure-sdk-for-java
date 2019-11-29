@@ -129,8 +129,6 @@ public final class RequestTimeline {
 
     static final class JsonSerializer extends StdSerializer<RequestTimeline> {
 
-        com.fasterxml.jackson.databind.JsonSerializer<Object> elementSerializer;
-
         JsonSerializer() {
             super(RequestTimeline.class);
         }
