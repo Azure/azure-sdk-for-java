@@ -26,27 +26,22 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.common.collect.ImmutableList;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Iterator;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Represents the time and duration of important events in the lifetime of a request.
  */
-@JsonSerialize(using = RequestTimeline.JsonSerializer.class)
-public final class RequestTimeline {
+public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
 
-    public static final RequestTimeline EMPTY = new RequestTimeline();
+    private static final RequestTimeline EMPTY = new RequestTimeline();
     private final ImmutableList<Event> events;
 
     private RequestTimeline() {
@@ -58,8 +53,8 @@ public final class RequestTimeline {
         this.events = events;
     }
 
-    public List<Event> getEvents() {
-        return this.events;
+    public static RequestTimeline empty() {
+        return EMPTY;
     }
 
     public static RequestTimeline from(RntbdRequestRecord requestRecord) {
@@ -75,7 +70,7 @@ public final class RequestTimeline {
         OffsetDateTime timeCompleted = requestRecord.timeCompleted();
         OffsetDateTime timeCompletedOrNow = timeCompleted == null ? now : timeCompleted;
 
-        ImmutableList<Event> events = ImmutableList.of(
+        return RequestTimeline.of(
             new Event("created",
                 timeCreated, timeQueued == null ? timeCompletedOrNow : timeQueued),
             new Event("queued",
@@ -86,8 +81,39 @@ public final class RequestTimeline {
                 timeSent, timeCompletedOrNow),
             new Event("completed",
                 timeCompleted, now));
+    }
 
-        return new RequestTimeline(events);
+    @Override
+    public Iterator<Event> iterator() {
+        return this.events.iterator();
+    }
+
+    public static RequestTimeline of() {
+        return EMPTY;
+    }
+
+    public static RequestTimeline of(final Event event) {
+        return new RequestTimeline(ImmutableList.of(event));
+    }
+
+    public static RequestTimeline of(final Event e1, final Event e2) {
+        return new RequestTimeline(ImmutableList.of(e1, e2));
+    }
+
+    public static RequestTimeline of(final Event e1, final Event e2, final Event e3) {
+        return new RequestTimeline(ImmutableList.of(e1, e2, e3));
+    }
+
+    public static RequestTimeline of(final Event e1, final Event e2, final Event e3, final Event e4) {
+        return new RequestTimeline(ImmutableList.of(e1, e2, e3, e4));
+    }
+
+    public static RequestTimeline of(final Event e1, final Event e2, final Event e3, final Event e4, final Event e5) {
+        return new RequestTimeline(ImmutableList.of(e1, e2, e3, e4, e5));
+    }
+
+    public static RequestTimeline of(final Event... events) {
+        return new RequestTimeline(ImmutableList.copyOf(events));
     }
 
     @Override
@@ -124,28 +150,6 @@ public final class RequestTimeline {
         @JsonSerialize(using = ToStringSerializer.class)
         public OffsetDateTime getTime() {
             return time;
-        }
-    }
-
-    static final class JsonSerializer extends StdSerializer<RequestTimeline> {
-
-        JsonSerializer() {
-            super(RequestTimeline.class);
-        }
-
-        @Override
-        public void serialize(
-            final RequestTimeline value,
-            final JsonGenerator generator,
-            final SerializerProvider provider) throws IOException {
-
-            generator.writeStartArray(value.events.size());
-
-            for (Event event : value.events) {
-                generator.writeObject(event);
-            }
-
-            generator.writeEndObject();
         }
     }
 }

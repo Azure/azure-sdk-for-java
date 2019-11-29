@@ -47,7 +47,7 @@ public class CosmosClientException extends Exception {
     CosmosClientException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;
-        this.requestTimeline = RequestTimeline.EMPTY;
+        this.requestTimeline = RequestTimeline.empty();
         this.responseHeaders = responseHeaders == null ? new HashMap<>() : new HashMap<>(responseHeaders);
     }
 

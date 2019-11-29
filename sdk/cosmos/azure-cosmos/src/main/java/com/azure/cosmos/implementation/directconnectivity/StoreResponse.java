@@ -41,7 +41,7 @@ public class StoreResponse {
             String content,
             InputStream inputStream) {
 
-        requestTimeline = RequestTimeline.EMPTY;
+        requestTimeline = RequestTimeline.empty();
         responseHeaderNames = new String[headerEntries.size()];
         responseHeaderValues = new String[headerEntries.size()];
 

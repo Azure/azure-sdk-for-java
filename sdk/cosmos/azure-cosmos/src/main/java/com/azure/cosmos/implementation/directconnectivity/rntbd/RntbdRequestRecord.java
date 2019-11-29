@@ -214,7 +214,7 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
             generator.writeEndObject();
 
-            generator.writeObjectField("timeline", value.takeTimelineSnapshot().getEvents());
+            generator.writeObjectField("timeline", value.takeTimelineSnapshot());
             generator.writeEndObject();
         }
     }
