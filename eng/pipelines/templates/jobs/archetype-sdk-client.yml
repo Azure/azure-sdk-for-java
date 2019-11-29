@@ -59,10 +59,10 @@ jobs:
             python3 eng/versioning/set_versions.py --update-type library --build-type client --build-qualifier foo --artifact-id ${{artifact.name}}
           displayName: Apped dev package version suffix for ${{artifact.name}}
       
-      # - script: |
-      #     python3 --version
-      #     python3 eng/versioning/update_versions.py --update-type library --build-type client
-      #   displayName: Apply version settings to repository
+      - script: |
+          python3 --version
+          python3 eng/versioning/update_versions.py --update-type library --build-type client
+        displayName: Apply version settings to repository
 
       - script: |
           pip install markdown2 BeautifulSoup4
