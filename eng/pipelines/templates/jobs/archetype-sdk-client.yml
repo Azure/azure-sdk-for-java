@@ -52,12 +52,12 @@ jobs:
 
       - template: tools/daily-dev-build-variable/daily-dev-build-variable.yml@azure-sdk-tools
 
-      # # HACK!!!!
-      # - ${{ each artifact in parameters.Artifacts }}:
-      #   - script: |
-      #       python3 --version 
-      #       python3 eng/versioning/set_versions.py --update-type library --build-type client --build-qualifier foo --artifact-id ${{artifact.name}}
-      #     displayName: Apped dev package version suffix for ${{artifact.name}}
+      # HACK!!!!
+      - ${{ each artifact in parameters.Artifacts }}:
+        - script: |
+            python3 --version 
+            python3 eng/versioning/set_versions.py --update-type library --build-type client --build-qualifier foo --artifact-id ${{artifact.name}}
+          displayName: Apped dev package version suffix for ${{artifact.name}}
       
       # - script: |
       #     python3 --version
