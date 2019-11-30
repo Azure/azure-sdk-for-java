@@ -164,7 +164,7 @@ DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().b
 
 SecretClient client = new SecretClientBuilder()
     .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-    .credential(credential)
+    .credential(defaultCredential)
     .buildClient();
 ```
 
