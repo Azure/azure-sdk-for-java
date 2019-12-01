@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
@@ -13,6 +12,7 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -29,16 +29,14 @@ class EventHubConnection implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConnection.class);
     private final AtomicBoolean hasConnection = new AtomicBoolean();
     private final ConnectionOptions connectionOptions;
-    private final Mono<EventHubAmqpConnection> currentConnection;
+    private final EventHubConnectionProcessor eventHubConnectionProcessor;
 
     /**
      * Creates a new instance of {@link EventHubConnection}.
      */
     EventHubConnection(Mono<EventHubAmqpConnection> createConnectionMono, ConnectionOptions connectionOptions) {
         this.connectionOptions = connectionOptions;
-        this.currentConnection = createConnectionMono
-            .doOnSubscribe(c -> hasConnection.set(true))
-            .cache();
+        this.eventHubConnectionProcessor = createConnectionMono.subscribeWith(new EventHubConnectionProcessor());
     }
 
     /**
@@ -69,12 +67,12 @@ class EventHubConnection implements Closeable {
      * @return The Event Hub management node.
      */
     Mono<EventHubManagementNode> getManagementNode() {
-        return currentConnection.flatMap(EventHubAmqpConnection::getManagementNode);
+        return eventHubConnectionProcessor.flatMap(EventHubAmqpConnection::getManagementNode);
     }
 
     /**
-     * Creates or gets a send link. The same link is returned if there is an existing send link with the same
-     * {@code linkName}. Otherwise, a new link is created and returned.
+     * Creates or gets a send link. The same link is returned if there is an existing send link with the same {@code
+     * linkName}. Otherwise, a new link is created and returned.
      *
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
@@ -83,7 +81,7 @@ class EventHubConnection implements Closeable {
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions) {
-        return currentConnection.flatMap(connection -> connection.createSession(entityPath))
+        return eventHubConnectionProcessor.flatMap(connection -> connection.createSession(entityPath))
             .flatMap(session -> {
                 logger.verbose("Creating producer for {}", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
@@ -106,7 +104,8 @@ class EventHubConnection implements Closeable {
      */
     Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
         ReceiveOptions options) {
-        return currentConnection.flatMap(connection -> connection.createSession(entityPath).cast(EventHubSession.class))
+        return eventHubConnectionProcessor
+            .flatMap(connection -> connection.createSession(entityPath).cast(EventHubSession.class))
             .flatMap(session -> {
                 logger.verbose("Creating consumer for path: {}", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
@@ -127,10 +126,7 @@ class EventHubConnection implements Closeable {
             return;
         }
 
-        final AmqpConnection connection = currentConnection.block(connectionOptions.getRetry().getTryTimeout());
-        if (connection != null) {
-            connection.close();
-        }
+        eventHubConnectionProcessor.dispose();
 
         if (connectionOptions.getScheduler() != null && !connectionOptions.getScheduler().isDisposed()) {
             connectionOptions.getScheduler().dispose();
