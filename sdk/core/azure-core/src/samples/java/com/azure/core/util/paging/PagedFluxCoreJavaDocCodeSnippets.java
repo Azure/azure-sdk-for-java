@@ -4,123 +4,20 @@
 package com.azure.core.util.paging;
 
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Code snippets for {@link PagedFluxCore}
+ * Code snippets for {@link ContinuablePagedFluxCore}
  */
 public class PagedFluxCoreJavaDocCodeSnippets {
     /**
-     * Code snippets for showing usage of {@link PagedFluxCore} in class docs
-     */
-    public void classDocSnippet() {
-        // BEGIN: com.azure.core.util.paging.pagedfluxcore.provider
-
-        /**
-         * Blob entry in a BlobPage.
-         */
-        class Blob {
-        }
-
-        /**
-         * BlobPage that does not have user facing continuation token.
-         */
-        class BlobPage implements PageCore<Blob> {
-            @Override
-            public List<Blob> getItems() {
-                // The Blob items in the page
-                return null;
-            }
-        }
-
-        /**
-         * Type to store state specific to one subscription
-         */
-        class State {
-            boolean hasMorePage() {
-                return true;
-            }
-            // Other state variables
-        }
-
-        /**
-         * Service client to make API calls.
-         */
-        class ContainerServiceClient {
-            /**
-             * Retrieve next set of pages using the given state.
-             *
-             * @param state the current state
-             * @return the Flux of BlobPage
-             */
-            Flux<BlobPage> getBlobsPages(State state) {
-                return null;
-            }
-        }
-        ContainerServiceClient client = null; // Initialize client
-
-        /**
-         * A provider, upon invocation returns Page Retrieval Function.
-         * Provider is called for each Subscription to PagedFluxCore, For each call
-         * it create a state and associate it with instance of Page Retrieval Function.
-         */
-        Supplier<Supplier<Flux<BlobPage>>> pageRetrieverProvider = new Supplier<Supplier<Flux<BlobPage>>>() {
-            @Override
-            public Supplier<Flux<BlobPage>> get() {
-                State state = new State();
-                return new Supplier<Flux<BlobPage>>() {
-                    @Override
-                    public Flux<BlobPage> get() {
-                        if (state.hasMorePage()) {
-                            // Pass current state to service method that make API call.
-                            // state contains necessary data that service method needed
-                            // to prepare next set of pages. Before returning, the service
-                            // method updates the state for the next call.
-                            //
-                            Flux<BlobPage> pages = client.getBlobsPages(state);
-                            return pages;
-                        } else {
-                            // Null indicates no more Pages, upon receiving this
-                            // the PagedFluxCore send completion signal to the subscriber.
-                            return null;
-                        }
-                    }
-                };
-            }
-        };
-
-        /**
-         * A Paged Flux specialized to for BlobPage.
-         */
-        class BlobPagedFlux extends PagedFluxCore<Blob, BlobPage> {
-            /**
-             * Creates an instance of {@link PagedFluxCore}.
-             *
-             * @param pageRetrieverProvider a provider that returns Page Retriever Function.
-             */
-            BlobPagedFlux(Supplier<Supplier<Flux<BlobPage>>> pageRetrieverProvider) {
-                super(pageRetrieverProvider);
-            }
-        }
-
-        BlobPagedFlux blobPagedFlux = new BlobPagedFlux(pageRetrieverProvider);
-        // END: com.azure.core.util.paging.pagedfluxcore.provider
-    }
-
-    /**
-     * Code snippets for extending from {@link PagedFluxCore} and enabling custom continuation token.
+     * Code snippets for extending from {@link ContinuablePagedFluxCore} and enabling custom continuation token.
      */
     public void customContinuationTokenSnippet() {
         // BEGIN: com.azure.core.util.paging.pagedfluxcore.continuationtoken
-
-        abstract class ContinuablePage<C, T> implements PageCore<T> {
-            abstract C getContinuationToken();
-        }
-
         class ContinuationState<C> {
             private C lastContinuationToken;
             private boolean isDone;
@@ -143,45 +40,6 @@ public class PagedFluxCoreJavaDocCodeSnippets {
             }
         }
 
-        class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>>
-            extends PagedFluxCore<T, P> {
-
-            private final Supplier<Function<C, Flux<P>>> pageRetrieverProvider;
-
-            ContinuablePagedFlux(Supplier<Function<C, Flux<P>>> pageRetrieverProvider) {
-                super(new Supplier<Supplier<Flux<P>>>() {
-                    final ContinuationState<C> state = new ContinuationState<>(null);
-                    final Function<C, Flux<P>> pageRetriever = pageRetrieverProvider.get();
-                    @Override
-                    public Supplier<Flux<P>> get() {
-                        return () -> {
-                            if (state.isDone()) {
-                                // PagedFluxCore contract to send completion signal to subscriber.
-                                return null;
-                            } else {
-                                return pageRetriever
-                                    .apply(state.getLastContinuationToken())
-                                    .doOnNext(p -> state
-                                        .setLastContinuationToken(p.getContinuationToken()));
-                            }
-                        };
-                    }
-                });
-                this.pageRetrieverProvider = pageRetrieverProvider;
-            }
-
-            public Flux<P> byPage(C continuationToken) {
-                final ContinuationState<C> state = new ContinuationState<>(continuationToken);
-                final Function<C, Flux<P>> pageRetriever = this.pageRetrieverProvider.get();
-                return Mono.just(true)
-                    .repeat(() -> !state.isDone())
-                    .concatMap(b -> pageRetriever
-                        .apply(state.getLastContinuationToken())
-                        .doOnNext(p -> state
-                            .setLastContinuationToken(p.getContinuationToken())));
-            }
-        }
-
         class FileContinuationToken {
             public int getNextLinkId() {
                 return 0;
@@ -191,14 +49,14 @@ public class PagedFluxCoreJavaDocCodeSnippets {
         class File {
         }
 
-        class FilePage extends ContinuablePage<FileContinuationToken, File> {
+        class FilePage implements ContinuablePage<FileContinuationToken, File> {
             @Override
             public List<File> getItems() {
                 return null;
             }
 
             @Override
-            FileContinuationToken getContinuationToken() {
+            public FileContinuationToken getContinuationToken() {
                 return null;
             }
         }
@@ -223,7 +81,7 @@ public class PagedFluxCoreJavaDocCodeSnippets {
                 }
             };
 
-        class FilePagedFlux extends ContinuablePagedFlux<FileContinuationToken, File, FilePage> {
+        class FilePagedFlux extends ContinuablePagedFluxCore<FileContinuationToken, File, FilePage> {
             FilePagedFlux(Supplier<Function<FileContinuationToken, Flux<FilePage>>>
                                      pageRetrieverProvider) {
                 super(pageRetrieverProvider);

@@ -3,7 +3,7 @@
 
 package com.azure.core.http.rest;
 
-import com.azure.core.util.paging.SimplePagedFlux;
+import com.azure.core.util.paging.ContinuablePagedFluxCore;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -37,7 +37,7 @@ import java.util.function.Supplier;
  * @see Page
  * @see Flux
  */
-public class PagedFluxBase<T, P extends PagedResponse<T>> extends SimplePagedFlux<T, P> {
+public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePagedFluxCore<String, T, P> {
     /**
      * Creates an instance of {@link PagedFluxBase} that consists of only a single page of results.
      * The only argument to this constructor therefore is a supplier that fetches the first
@@ -65,9 +65,16 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends SimplePagedFlu
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever,
                          Function<String, Mono<P>> nextPageRetriever) {
-        super((continuationToken) -> continuationToken == null
-                ? firstPageRetriever.get().flux()
-                : nextPageRetriever.apply(continuationToken).flux());
+        super(new Supplier<Function<String, Flux<P>>>() {
+            @Override
+            public Function<String, Flux<P>> get() {
+                return continuationToken -> {
+                    return continuationToken == null
+                        ? firstPageRetriever.get().flux()
+                        : nextPageRetriever.apply(continuationToken).flux();
+                };
+            }
+        });
     }
 
     /**
