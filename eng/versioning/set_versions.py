@@ -45,7 +45,7 @@ def update_versions_file(update_type, build_type, build_qualifier, artifact_id):
                 if not artifact_id or module.artifact_id == artifact_id:
                     if update_type == UpdateType.library or update_type == UpdateType.all:
                         if '-' in module.current:
-                            module.current += build_qualifier
+                            module.current += "." + build_qualifier
                         else:
                             module.current += '-' + build_qualifier
                         match = version_regex.match(module.current)
