@@ -128,7 +128,7 @@ public final class RntbdRequestArgs {
 
         if (logger.isTraceEnabled()) {
             final BigDecimal lifetime = BigDecimal.valueOf(this.lifetime.elapsed().toNanos(), 6);
-            logger.trace("{},{},\"{}({})\",\"{}\",\"{}\"", this.nanoTimeCreated, lifetime, operationName,
+            logger.trace("{},{},\"{}({})\",\"{}\",\"{}\"", this.timeCreated, lifetime, operationName,
                 Stream.of(args).map(arg ->
                     arg == null ? "null" : arg.toString()).collect(Collectors.joining(",")
                 ),
