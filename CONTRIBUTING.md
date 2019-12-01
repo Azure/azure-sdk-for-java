@@ -77,6 +77,19 @@ mvn -f sdk/{projectForlderDir}/pom.xml -Dgpg.skip clean install
 //example: mvn -f sdk/keyvault/azure-security-keyvault-keys/pom.xml clean install
 ```
 
+### Workaround for Checkstyle error
+
+You may run across an error on checkstyle, something like:
+
+```
+Failed to load suppressions file from: ./maven-java-parent/java-8-parent/target/checkstyle-suppressions.xml: 
+Unable to find: ./maven-java-parent/java-8-parent/target/checkstyle-suppressions.xml: 
+http://www.puppycrawl.com/dtds/suppressions_1_0.dtd
+```
+
+This is because the `sdk-build-tools` project doesn't currently get released to Maven.  To install it you'll need to have the `eng` folder copied locally and then run: 
+`mvn clean install eng/code-quality-reports/pom.xml`.
+
 ## Versions and versioning
 
 Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists version text files, one for client ([version_client.txt](./eng/versioning/version_client.txt)) and one for data ([version_data.txt](./eng/versioning/version_data.txt)). The format of the version files is as follows:
