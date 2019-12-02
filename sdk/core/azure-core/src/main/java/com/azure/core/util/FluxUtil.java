@@ -3,10 +3,12 @@
 
 package com.azure.core.util;
 
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
+import java.io.InputStream;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -320,6 +322,59 @@ public final class FluxUtil {
         } catch (IOException e) {
             return Flux.error(new RuntimeException("Failed to read the file.", e));
         }
+    }
+
+    /**
+     * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of entity length
+     * and the input length.
+     *
+     * @param data The input data which needs to convert to ByteBuffer.
+     * @param length The expected input data length.
+     * @param blockSize The size of each ByteBuffer.
+     * @return {@link ByteBuffer} which contains the input data.
+     * @throws UnexpectedLengthException when input data length mismatch input length.
+     * @throws RuntimeException When I/O error occurs.
+     */
+    public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize, 
+        ClientLogger logger) {
+        final long[] currentTotalLength = new long[1];
+        return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
+            .map(i -> i * blockSize)
+            .concatMap(pos -> Mono.fromCallable(() -> {
+                long count = pos + blockSize > length ? length - pos : blockSize;
+                byte[] cache = new byte[(int) count];
+                int numOfBytes = 0;
+                int offset = 0;
+                // Revise the casting if the max allowed network data transmission is over 2G.
+                int len = (int) count;
+                while (numOfBytes != -1 && offset < count) {
+                    numOfBytes = data.read(cache, offset, len);
+                    offset += numOfBytes;
+                    len -= numOfBytes;
+                    if (numOfBytes != -1) {
+                        currentTotalLength[0] += numOfBytes;
+                    }
+                }
+                if (numOfBytes == -1 && currentTotalLength[0] < length) {
+                    throw logger.logExceptionAsError(new UnexpectedLengthException(
+                        String.format("Request body emitted %d bytes, less than the expected %d bytes.",
+                            currentTotalLength[0], length), currentTotalLength[0], length));
+                }
+                return ByteBuffer.wrap(cache);
+            }))
+            .doOnComplete(() -> {
+                try {
+                    if (data.available() > 0) {
+                        long totalLength = currentTotalLength[0] + data.available();
+                        throw logger.logExceptionAsError(new UnexpectedLengthException(
+                            String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                                totalLength, length), totalLength, length));
+                    }
+                } catch (IOException e) {
+                    throw logger.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
+                        + e.getMessage()));
+                }
+            });
     }
 
     private static final int DEFAULT_CHUNK_SIZE = 1024 * 64;
