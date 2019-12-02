@@ -152,22 +152,22 @@ principal authentication with these environment variables:
 This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste.
 
 ```java
-// ./src/samples/java/com/azure/identity/credential/ReadmeSamples.java#L24-L37
+// ./src/samples/java/com/azure/identity/credential/ReadmeSamples.java#L26-L39
 
-public class ReadmeSamples {
-
-    /**
-     * The default credential first checks environment variables for configuration.
-     * If environment configuration is incomplete, it will try managed identity.
-     */
-    public void createDefaultAzureCredential() {
-        DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-        /*
-        Azure SDK client builders accept the credential as a parameter
-        SecretClient client = new SecretClientBuilder()
-            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-            .credential(credential)
-            .buildClient();
+/**
+ * The default credential first checks environment variables for configuration.
+ * If environment configuration is incomplete, it will try managed identity.
+ */
+public void createDefaultAzureCredential() {
+    DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+    /*
+    Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(credential)
+        .buildClient();
+    */
+}
 ```
 
 When executing this in a development machine you need to first [configure the environment](#environment-variables) setting the variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` and `AZURE_CLIENT_SECRET` to the appropriate values for your service principal.
