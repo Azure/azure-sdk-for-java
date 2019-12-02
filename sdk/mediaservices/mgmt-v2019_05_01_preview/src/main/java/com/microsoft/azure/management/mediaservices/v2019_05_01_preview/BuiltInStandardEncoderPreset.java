@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Describes a built-in preset for encoding the input video with the Standard
  * Encoder.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = BuiltInStandardEncoderPreset.class)
 @JsonTypeName("#Microsoft.Media.BuiltInStandardEncoderPreset")
 public class BuiltInStandardEncoderPreset extends Preset {
     /**
