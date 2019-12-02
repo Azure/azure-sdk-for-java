@@ -4,49 +4,13 @@
 package com.azure.core.implementation;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class LoggingUtil {
-    public enum LogLevel {
-        /**
-         * Indicates that log level is at verbose level.
-         */
-        VERBOSE(1),
-
-        /**
-         * Indicates that log level is at information level.
-         */
-        INFORMATIONAL(2),
-
-        /**
-         * Indicates that log level is at warning level.
-         */
-        WARNING(3),
-
-        /**
-         * Indicates that log level is at error level.
-         */
-        ERROR(4),
-
-        /**
-         * Indicates that logging is disabled.
-         */
-        DISABLED(5);
-
-        private final int numericValue;
-
-        LogLevel(int numericValue) {
-            this.numericValue = numericValue;
-        }
-
-        public int toNumeric() {
-            return numericValue;
-        }
-    }
-
     private static final Map<Integer, LogLevel> LOG_LEVEL_MAPPER = Arrays.stream(LogLevel.values())
         .collect(Collectors.toMap(LogLevel::toNumeric, logLevel -> logLevel));
 
@@ -59,8 +23,11 @@ public final class LoggingUtil {
      * @return Environment logging level if set, otherwise {@link LogLevel#DISABLED}.
      */
     public static LogLevel getEnvironmentLoggingLevel() {
-        return Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL,
-            loadedValue -> LOG_LEVEL_MAPPER.getOrDefault(Integer.parseInt(loadedValue), LogLevel.DISABLED));
+        String environmentLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+
+        return CoreUtils.isNullOrEmpty(environmentLogLevel)
+            ? LogLevel.DISABLED
+            : LOG_LEVEL_MAPPER.getOrDefault(Integer.parseInt(environmentLogLevel), LogLevel.DISABLED);
     }
 
     // Private constructor

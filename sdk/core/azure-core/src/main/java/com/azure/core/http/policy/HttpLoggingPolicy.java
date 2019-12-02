@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.LogLevel;
 import com.azure.core.implementation.LoggingUtil;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -98,8 +99,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
          * in nothing being logged so perform a no-op.
          */
         int numericLogLevel = LoggingUtil.getEnvironmentLoggingLevel().toNumeric();
-        if (numericLogLevel == LoggingUtil.LogLevel.DISABLED.toNumeric()
-            || numericLogLevel > LoggingUtil.LogLevel.INFORMATIONAL.toNumeric()) {
+        if (numericLogLevel == LogLevel.DISABLED.toNumeric()
+            || numericLogLevel > LogLevel.INFORMATIONAL.toNumeric()) {
             return Mono.empty();
         }
 
@@ -141,8 +142,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
          * in nothing being logged so perform a no-op.
          */
         int numericLogLevel = LoggingUtil.getEnvironmentLoggingLevel().toNumeric();
-        if (numericLogLevel == LoggingUtil.LogLevel.DISABLED.toNumeric()
-            || numericLogLevel > LoggingUtil.LogLevel.INFORMATIONAL.toNumeric()) {
+        if (numericLogLevel == LogLevel.DISABLED.toNumeric()
+            || numericLogLevel > LogLevel.INFORMATIONAL.toNumeric()) {
             return Mono.just(response);
         }
 
@@ -221,7 +222,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private void addHeadersToLogMessage(HttpHeaders headers, StringBuilder sb, int logLevel) {
         // Either headers shouldn't be logged or the logging level isn't set to VERBOSE, don't add headers.
-        if (!httpLogDetailLevel.shouldLogHeaders() || logLevel > LoggingUtil.LogLevel.VERBOSE.toNumeric()) {
+        if (!httpLogDetailLevel.shouldLogHeaders() || logLevel > LogLevel.VERBOSE.toNumeric()) {
             return;
         }
 
