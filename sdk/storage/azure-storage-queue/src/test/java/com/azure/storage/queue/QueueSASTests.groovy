@@ -3,6 +3,8 @@
 
 package com.azure.storage.queue
 
+import com.azure.core.http.rest.PagedIterable
+import com.azure.core.test.utils.TestResourceNamer
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
@@ -12,6 +14,7 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.sas.SasIpRange
 
 import com.azure.storage.queue.models.QueueAccessPolicy
+import com.azure.storage.queue.models.QueueItem
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
 import com.azure.storage.queue.models.SendMessageResult
@@ -312,6 +315,43 @@ class QueueSASTests extends APISpec {
 
         then:
         notThrown(QueueStorageException)
+    }
+
+    def "accountSAS network account sas token on endpoint"() {
+        setup:
+        def service = new AccountSasService()
+            .setQueueAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setWritePermission(true)
+            .setListPermission(true)
+            .setDeletePermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
+
+        def queueName = testResourceName.randomName(methodName, 60)
+
+        when:
+        def sc = getServiceClientBuilder(null, primaryQueueServiceClient.getQueueServiceUrl() + "?" + sas, null).buildClient()
+        sc.createQueue(queueName)
+
+        def qc = getQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl() + "/" + queueName + "?" + sas).buildClient()
+        qc.delete()
+
+        then:
+        notThrown(Exception)
     }
 
 }

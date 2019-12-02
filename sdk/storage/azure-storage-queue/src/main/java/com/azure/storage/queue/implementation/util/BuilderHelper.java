@@ -19,6 +19,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
@@ -103,11 +104,12 @@ public final class BuilderHelper {
                 parts.setEndpoint(String.format("%s://%s", url.getProtocol(), url.getAuthority()));
             }
 
+            // TODO : What happens if a user has custom queries?
             // Attempt to get the SAS token from the URL passed
-            String sasToken = new QueueServiceSasQueryParameters(
+            String sasToken = new CommonSasQueryParameters(
                 StorageImplUtils.parseQueryStringSplitValues(url.getQuery()), false).encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
-                parts.setQueueName(sasToken);
+                parts.setSasToken(sasToken);
             }
 
             return parts;

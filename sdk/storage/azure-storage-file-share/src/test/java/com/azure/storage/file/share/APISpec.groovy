@@ -8,11 +8,13 @@ import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
 import spock.lang.Specification
 
@@ -27,6 +29,8 @@ class APISpec extends Specification {
     InterceptorManager interceptorManager
     TestResourceNamer testResourceName
 
+    static def PRIMARY_STORAGE = "AZURE_STORAGE_FILE_"
+    protected static StorageSharedKeyCredential primaryCredential
     // Primary Clients used for API tests
     ShareServiceClient primaryFileServiceClient
     ShareServiceAsyncClient primaryFileServiceAsyncClient
@@ -45,6 +49,7 @@ class APISpec extends Specification {
      * Setup the File service clients commonly used for the API tests.
      */
     def setup() {
+        primaryCredential = getCredential(PRIMARY_STORAGE)
         String testName = reformat(specificationContext.currentIteration.getName())
         String className = specificationContext.getCurrentSpec().getName()
         methodName = className + testName
@@ -74,6 +79,26 @@ class APISpec extends Specification {
                 cleanupFileServiceClient.deleteShare(it.getName())
             }
         }
+    }
+
+    private StorageSharedKeyCredential getCredential(String accountType) {
+        String accountName
+        String accountKey
+
+        if (testMode == TestMode.RECORD) {
+            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
+            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
+        } else {
+            accountName = "azstoragesdkaccount"
+            accountKey = "astorageaccountkey"
+        }
+
+        if (accountName == null || accountKey == null) {
+            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
+            return null
+        }
+
+        return new StorageSharedKeyCredential(accountName, accountKey)
     }
 
     /**
@@ -117,6 +142,41 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
+    }
+
+    ShareServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
+                                                     HttpPipelinePolicy... policies) {
+        ShareServiceClientBuilder builder = new ShareServiceClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (liveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        return builder
+    }
+
+    ShareClientBuilder getShareClientBuilder(String endpoint) {
+        ShareClientBuilder builder = new ShareClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder
     }
 
     def shareBuilderHelper(final InterceptorManager interceptorManager, final String shareName) {
@@ -169,6 +229,23 @@ class APISpec extends Specification {
                 .resourcePath(filePath)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
+    }
+
+    ShareFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        ShareFileClientBuilder builder = new ShareFileClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildFileClient()
     }
 
     private def reformat(String text) {

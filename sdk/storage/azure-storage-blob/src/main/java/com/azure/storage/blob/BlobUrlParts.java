@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.sas.BlobServiceSasQueryParameters;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.Constants;
 
 import java.net.MalformedURLException;
@@ -34,7 +35,7 @@ public final class BlobUrlParts {
     private String snapshot;
     private String accountName;
     private boolean isIpUrl;
-    private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
+    private CommonSasQueryParameters commonSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
     /**
@@ -166,24 +167,24 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Gets the {@link BlobServiceSasQueryParameters} representing the SAS query parameters that will be used to
+     * Gets the {@link CommonSasQueryParameters} representing the SAS query parameters that will be used to
      * generate the SAS token for this URL.
      *
-     * @return the {@link BlobServiceSasQueryParameters} of the URL
+     * @return the {@link CommonSasQueryParameters} of the URL
      */
-    public BlobServiceSasQueryParameters getSasQueryParameters() {
-        return blobServiceSasQueryParameters;
+    public CommonSasQueryParameters getSasQueryParameters() {
+        return commonSasQueryParameters;
     }
 
     /**
-     * Sets the {@link BlobServiceSasQueryParameters} representing the SAS query parameters that will be used to
+     * Sets the {@link CommonSasQueryParameters} representing the SAS query parameters that will be used to
      * generate the SAS token for this URL.
      *
-     * @param blobServiceSasQueryParameters The SAS query parameters.
+     * @param commonSasQueryParameters The SAS query parameters.
      * @return the updated BlobUrlParts object.
      */
-    public BlobUrlParts setSasQueryParameters(BlobServiceSasQueryParameters blobServiceSasQueryParameters) {
-        this.blobServiceSasQueryParameters = blobServiceSasQueryParameters;
+    public BlobUrlParts setSasQueryParameters(CommonSasQueryParameters commonSasQueryParameters) {
+        this.commonSasQueryParameters = commonSasQueryParameters;
         return this;
     }
 
@@ -239,8 +240,8 @@ public final class BlobUrlParts {
         if (this.snapshot != null) {
             url.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
         }
-        if (this.blobServiceSasQueryParameters != null) {
-            String encodedSAS = this.blobServiceSasQueryParameters.encode();
+        if (this.commonSasQueryParameters != null) {
+            String encodedSAS = this.commonSasQueryParameters.encode();
             if (encodedSAS.length() != 0) {
                 url.setQuery(encodedSAS);
             }
@@ -312,10 +313,9 @@ public final class BlobUrlParts {
             parts.setSnapshot(snapshotArray[0]);
         }
 
-        BlobServiceSasQueryParameters blobServiceSasQueryParameters =
-            new BlobServiceSasQueryParameters(queryParamsMap, true);
+        CommonSasQueryParameters commonSasQueryParameters = new CommonSasQueryParameters(queryParamsMap, true);
 
-        return parts.setSasQueryParameters(blobServiceSasQueryParameters)
+        return parts.setSasQueryParameters(commonSasQueryParameters)
             .setUnparsedParameters(queryParamsMap);
     }
 
