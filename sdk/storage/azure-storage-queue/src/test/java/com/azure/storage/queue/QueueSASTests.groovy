@@ -3,8 +3,6 @@
 
 package com.azure.storage.queue
 
-import com.azure.core.http.rest.PagedIterable
-import com.azure.core.test.utils.TestResourceNamer
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
@@ -14,7 +12,6 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.sas.SasIpRange
 
 import com.azure.storage.queue.models.QueueAccessPolicy
-import com.azure.storage.queue.models.QueueItem
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
 import com.azure.storage.queue.models.SendMessageResult

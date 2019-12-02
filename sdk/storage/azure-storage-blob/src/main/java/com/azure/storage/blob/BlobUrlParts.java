@@ -35,6 +35,7 @@ public final class BlobUrlParts {
     private String snapshot;
     private String accountName;
     private boolean isIpUrl;
+    private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
     private CommonSasQueryParameters commonSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
@@ -167,12 +168,36 @@ public final class BlobUrlParts {
     }
 
     /**
+     * Gets the {@link BlobServiceSasQueryParameters} representing the SAS query parameters
+     *
+     * @return the {@link BlobServiceSasQueryParameters} of the URL
+     * @deprecated Please use {@link #getCommonSasQueryParameters()}
+     */
+    @Deprecated
+    public BlobServiceSasQueryParameters getSasQueryParameters() {
+        return blobServiceSasQueryParameters;
+    }
+
+    /**
+     * Sets the {@link BlobServiceSasQueryParameters} representing the SAS query parameters.
+     *
+     * @param blobServiceSasQueryParameters The SAS query parameters.
+     * @return the updated BlobUrlParts object.
+     * @deprecated Please use {@link #setSasQueryParameters(CommonSasQueryParameters)}
+     */
+    @Deprecated
+    public BlobUrlParts setSasQueryParameters(BlobServiceSasQueryParameters blobServiceSasQueryParameters) {
+        this.blobServiceSasQueryParameters = blobServiceSasQueryParameters;
+        return this;
+    }
+
+    /**
      * Gets the {@link CommonSasQueryParameters} representing the SAS query parameters that will be used to
      * generate the SAS token for this URL.
      *
      * @return the {@link CommonSasQueryParameters} of the URL
      */
-    public CommonSasQueryParameters getSasQueryParameters() {
+    public CommonSasQueryParameters getCommonSasQueryParameters() {
         return commonSasQueryParameters;
     }
 
@@ -194,6 +219,7 @@ public final class BlobUrlParts {
      * @return the non-SAS token query string values.
      */
     public Map<String, String[]> getUnparsedParameters() {
+        // TODO (gapra) : Investigate if this is ever added back into the URL.
         return unparsedParameters;
     }
 
@@ -313,9 +339,13 @@ public final class BlobUrlParts {
             parts.setSnapshot(snapshotArray[0]);
         }
 
+        BlobServiceSasQueryParameters blobServiceSasQueryParameters
+            = new BlobServiceSasQueryParameters(queryParamsMap, false);
+
         CommonSasQueryParameters commonSasQueryParameters = new CommonSasQueryParameters(queryParamsMap, true);
 
-        return parts.setSasQueryParameters(commonSasQueryParameters)
+        return parts.setSasQueryParameters(blobServiceSasQueryParameters)
+            .setSasQueryParameters(commonSasQueryParameters)
             .setUnparsedParameters(queryParamsMap);
     }
 

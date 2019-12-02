@@ -244,8 +244,11 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
+        if (credential != null) {
+            builder.credential(credential)
+        }
 
-        return builder.credential(credential).buildFileClient()
+        return builder.buildFileClient()
     }
 
     private def reformat(String text) {
@@ -258,13 +261,18 @@ class APISpec extends Specification {
         return matcher[0][1] + matcher[0][3]
     }
 
-    static HttpClient getHttpClient() {
-        if (enableDebugging) {
-            def builder = new NettyAsyncHttpClientBuilder()
-            builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+    HttpClient getHttpClient() {
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
+        if (testMode == TestMode.RECORD) {
+            builder.wiretap(true)
+
+            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+            }
+
             return builder.build()
         } else {
-            return HttpClient.createDefault()
+            return interceptorManager.getPlaybackClient()
         }
     }
 

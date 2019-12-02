@@ -165,7 +165,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode != TestMode.RECORD) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -214,6 +214,8 @@ class APISpec extends Specification {
             }
 
             return builder.build()
+        } else {
+            return interceptorManager.getPlaybackClient()
         }
     }
 

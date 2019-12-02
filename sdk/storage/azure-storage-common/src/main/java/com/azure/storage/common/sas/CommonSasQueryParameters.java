@@ -5,8 +5,6 @@ package com.azure.storage.common.sas;
 
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.sas.AccountSasQueryParameters;
-import com.azure.storage.common.sas.BaseSasQueryParameters;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
