@@ -16,6 +16,10 @@ import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import reactor.core.publisher.Mono;
 
 /**
+ * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
+ * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
+ * LINE NUMBERS OF EXISTING CODE SAMPLES.
+ *
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {

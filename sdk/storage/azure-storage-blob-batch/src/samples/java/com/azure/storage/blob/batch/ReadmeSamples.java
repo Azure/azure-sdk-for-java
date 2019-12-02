@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.batch;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -14,9 +16,13 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Code samples for the READEME.md
+ * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
+ * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
+ * LINE NUMBERS OF EXISTING CODE SAMPLES.
+ *
+ * Code samples for the README.md
  */
-public class ReadmeCodeSamples {
+public class ReadmeSamples {
     private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().buildClient();
     private BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
     private String blobUrl = "https://account.core.windows.net/containerName/blobName";
@@ -24,6 +30,13 @@ public class ReadmeCodeSamples {
     private String blobUrlWithSnapshot = "https://account.core.windows.net/containerName/blobName?snapshot=<DateTime>";
     private String blobUrlWithLease = "https://account.core.windows.net/containerName/blobNameWithLease";
     private List<String> blobUrls = Arrays.asList(blobUrl, blobUrl2, blobUrlWithSnapshot, blobUrlWithLease);
+
+    public void createHttpClient() {
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .port(8080)
+            .wiretap(true)
+            .build();
+    }
 
     public void creatingBlobBatchClient() {
         BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();

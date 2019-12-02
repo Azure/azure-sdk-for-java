@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.netty;
+package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
@@ -20,14 +20,14 @@ public class ReadmeSamples {
      * Sample code for creating async Netty HTTP client.
      */
     public void createBasicClient() {
-        HttpClient client = new NettyAsyncHttpClientBuilder().build();
+        HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
     }
 
     /**
      * Sample code for creating async Netty HTTP client with proxy.
      */
     public void createProxyClient() {
-        HttpClient client = new NettyAsyncHttpClientBuilder()
+        HttpClient client = new OkHttpAsyncHttpClientBuilder()
             .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
             .build();
     }

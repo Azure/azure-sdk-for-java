@@ -19,6 +19,10 @@ import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 
 /**
+ * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
+ * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
+ * LINE NUMBERS OF EXISTING CODE SAMPLES.
+ *
  * Code snippet for creating various credentials that will be used in README.md.
  */
 public class ReadmeSamples {

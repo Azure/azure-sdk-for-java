@@ -37,7 +37,7 @@ Use [TestBase][TestBase.java] to easily create live and playback test cases. Ext
 `interceptorManager` that keeps track of all network calls.
 
 ```java
-// ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L23-L35
+// ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L27-L39
 
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
@@ -60,7 +60,7 @@ Record network calls using [RecordNetworkCallPolicy][RecordNetworkCallPolicy.jav
 client, is persisted to [RecordedData][RecordedData.java].
 
 ```java
-// ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L37-L56
+// ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L41-L60
 
 /**
  * Sample code for recording network calls.
@@ -89,7 +89,7 @@ public class Foo {
 Playback test session records by creating a [RecordedData][RecordedData.java].
 
 ```java
-// ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L58-L74
+// ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L62-L78
 
 /**
  * Sample code for using playback to test.
