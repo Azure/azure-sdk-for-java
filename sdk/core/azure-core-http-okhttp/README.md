@@ -33,9 +33,8 @@ The following sections provide several code snippets covering some of the most c
 
 Create an OkHttp client using a connection timeout of 60 seconds and a read timeout of 120 seconds.
 
+<!-- embedme ./src/samples/java/com/azure/core/http/okhttp/ReadmeSamples.java#L23-L23 -->
 ```java
-// ./src/samples/java/com/azure/core/http/okhttp/ReadmeSamples.java#L23-L23
-
 HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
 ```
 
@@ -43,9 +42,8 @@ HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
 
 Create an OkHttp client that is using a proxy.
 
+<!-- embedme ./src/samples/java/com/azure/core/http/okhttp/ReadmeSamples.java#L30-L32 -->
 ```java
-// ./src/samples/java/com/azure/core/http/okhttp/ReadmeSamples.java#L30-L32
-
 HttpClient client = new OkHttpAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
     .build();

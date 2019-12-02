@@ -113,17 +113,15 @@ The following sections provide several code snippets covering some of the most c
 
 Create a BlobBatchClient from a [`BlobServiceClient`]().
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L42-L42 -->
 ```java
-// ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L42-L42
-
 BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
 ```
 
 ### Bulk Deleting Blobs
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L46-L48 -->
 ```java
-// ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L46-L48
-
 blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach(response ->
     System.out.printf("Deleting blob with URL %s completed with status code %d%n",
         response.getRequest().getUrl(), response.getStatusCode()));
@@ -131,9 +129,8 @@ blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach
 
 ### Bulk Setting AccessTier
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L52-L54 -->
 ```java
-// ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L52-L54
-
 blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
     System.out.printf("Setting blob access tier with URL %s completed with status code %d%n",
         response.getRequest().getUrl(), response.getStatusCode()));
@@ -143,9 +140,8 @@ blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
 
 Deleting blobs in a batch that have different pre-requisites.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L58-L77 -->
 ```java
-// ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L58-L77
-
 BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
 // Delete a blob.
@@ -170,9 +166,8 @@ System.out.printf("Deleting blob with lease completed with status code %d%n",
 
 Setting `AccessTier` on blobs in batch that have different pre-requisites. 
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L81-L97 -->
 ```java
-// ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L81-L97
-
 BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
 // Set AccessTier on a blob.

@@ -36,9 +36,8 @@ To use this package, add the following to your _pom.xml_.
 Use [TestBase][TestBase.java] to easily create live and playback test cases. Extending from `TestBase` provides an
 `interceptorManager` that keeps track of all network calls.
 
+<!-- embedme ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L27-L39 -->
 ```java
-// ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L27-L39
-
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
  * live. By default, tests are run in playback mode.
@@ -59,9 +58,8 @@ public class SessionTests extends TestBase {
 Record network calls using [RecordNetworkCallPolicy][RecordNetworkCallPolicy.java]. Each HTTP request sent from the test
 client, is persisted to [RecordedData][RecordedData.java].
 
+<!-- embedme ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L41-L60 -->
 ```java
-// ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L41-L60
-
 /**
  * Sample code for recording network calls.
  */
@@ -88,9 +86,8 @@ public class Foo {
 
 Playback test session records by creating a [RecordedData][RecordedData.java].
 
+<!-- embedme ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L62-L78 -->
 ```java
-// ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L62-L78
-
 /**
  * Sample code for using playback to test.
  */
