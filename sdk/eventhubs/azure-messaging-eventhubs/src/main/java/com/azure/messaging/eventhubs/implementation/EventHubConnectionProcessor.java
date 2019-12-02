@@ -40,14 +40,13 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
     private final ClientLogger logger = new ClientLogger(EventHubConnectionProcessor.class);
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicBoolean isRequested = new AtomicBoolean();
-
     private final Object lock = new Object();
 
     private Subscription upstream;
     private ConcurrentLinkedDeque<ConnectionSubscriber> subscribers = new ConcurrentLinkedDeque<>();
+    private EventHubAmqpConnection currentConnection;
+    private Disposable connectionSubscription;
 
-    private volatile EventHubAmqpConnection currentConnection;
-    private volatile Disposable connectionSubscription;
     private volatile Throwable lastError;
 
     @Override
