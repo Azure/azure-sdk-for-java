@@ -13,16 +13,16 @@
 # Output:
 # This script will process the entire enlistment. If any errors are encountered, will report them at
 # time they are encountered and continue processing.
-# Errors for any duplicate entries in the versious version files will be reported before any POM files
+# Errors for any duplicate entries in the various version files will be reported before any POM files
 # are processed.
 # Errors for a given pom file will appear after the "processing pomFile=<fullPathAndFileName" line for
-# that file and before the processing line for the next file. Missing version x-version-update tags
-# errors will cause the output of what the tag should be, in the cases where it is known (ie. pom file's
-# version or parent's version) but in the cases of dependencies it'll output a tag and the appropriate
+# that file and before the processing line for the next file. Missing version x-version-update tag
+# errors will cause the output of what the tag should be in the cases where it is known (ie. pom file's
+# version or parent's version). In the cases of dependencies it'll output a tag and the appropriate
 # type (current, dependency or external_dependency) will have to be selected. For example:
 # <!-- {x-version-update;<groupId>:<artifactId>;current|dependency|external_dependency<select one>} -->"
 #
-# This script can be run locally from the root of an enlisment. .\eng\pom_file_version_scanner.ps1
+# This script can be run locally from the root of an enlisment. .\eng\versioning\pom_file_version_scanner.ps1
 
 # Since we're skipping Management for the moment, only look for files with certain parents. These
 # limitations will vanish once Management track is updated.
