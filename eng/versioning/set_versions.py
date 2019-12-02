@@ -53,7 +53,7 @@ def update_versions_file(update_type, build_type, build_qualifier, artifact_id):
                             raise ValueError('{}\'s current version + build qualifier {} is not a valid semver version'.format(module.name, module.current + build_qualifier))
                     if update_type == UpdateType.external_dependency or update_type == UpdateType.all:
                         if '-' in module.dependency:
-                            module.dependency += build_qualifier
+                            module.dependency += "." + build_qualifier
                         else:
                             module.dependency += '-' + build_qualifier
                         match = version_regex.match(module.dependency)
