@@ -1534,5 +1534,4 @@ class DirectoryAPITest extends APISpec {
         then:
         notThrown(StorageErrorException)
     }
-
 }

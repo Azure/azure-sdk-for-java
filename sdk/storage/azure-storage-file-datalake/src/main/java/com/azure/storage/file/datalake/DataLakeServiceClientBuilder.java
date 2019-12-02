@@ -85,19 +85,16 @@ public class DataLakeServiceClientBuilder {
      * @return a {@link DataLakeServiceAsyncClient} created from the configurations in this builder.
      */
     public DataLakeServiceAsyncClient buildAsyncClient() {
+        if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)
+            && Objects.isNull(sasTokenCredential)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Data Lake Service Client cannot be accessed "
+                + "anonymously. Please provide a form of authentication"));
+        }
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (storageSharedKeyCredential != null) {
-                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Authorization credentials must be set."));
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
+            httpClient, additionalPolicies, configuration, logger);
 
         return new DataLakeServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName,
             blobServiceClientBuilder.buildAsyncClient());

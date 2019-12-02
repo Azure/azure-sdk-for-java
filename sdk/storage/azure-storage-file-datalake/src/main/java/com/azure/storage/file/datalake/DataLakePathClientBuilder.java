@@ -120,17 +120,9 @@ public final class DataLakePathClientBuilder {
 
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (storageSharedKeyCredential != null) {
-                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                return null;
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
+            httpClient, additionalPolicies, configuration, logger);
 
         return new DataLakeFileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
             pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
@@ -176,17 +168,9 @@ public final class DataLakePathClientBuilder {
 
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (storageSharedKeyCredential != null) {
-                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                return null;
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
+            httpClient, additionalPolicies, configuration, logger);
 
         return new DataLakeDirectoryAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
             pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
