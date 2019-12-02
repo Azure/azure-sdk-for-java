@@ -39,17 +39,16 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
     private final ClientLogger logger = new ClientLogger(EventHubConnectionProcessor.class);
     private final AtomicBoolean isTerminated = new AtomicBoolean();
-    private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicBoolean isRequested = new AtomicBoolean();
 
     private final Object lock = new Object();
 
     private Subscription upstream;
+    private ConcurrentLinkedDeque<ConnectionSubscriber> subscribers = new ConcurrentLinkedDeque<>();
 
     private volatile EventHubAmqpConnection currentConnection;
     private volatile Disposable connectionSubscription;
     private volatile Throwable lastError;
-    private ConcurrentLinkedDeque<ConnectionSubscriber> subscribers = new ConcurrentLinkedDeque<>();
 
     @Override
     public void onSubscribe(Subscription subscription) {
@@ -71,10 +70,8 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
             currentConnection = eventHubAmqpConnection;
 
-            final ConcurrentLinkedDeque<ConnectionSubscriber> current = subscribers;
+            subscribers.forEach(subscriber -> subscriber.complete(eventHubAmqpConnection));
             subscribers = new ConcurrentLinkedDeque<>();
-
-            current.forEach(subscriber -> subscriber.complete(eventHubAmqpConnection));
 
             connectionSubscription = eventHubAmqpConnection.getEndpointStates().subscribe(
                 state -> {
@@ -112,12 +109,11 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
         logger.warning("Non-retryable error occurred in connection. Error: {}", throwable);
         lastError = throwable;
         isTerminated.set(true);
+        dispose();
 
         synchronized (lock) {
-            final ConcurrentLinkedDeque<ConnectionSubscriber> current = subscribers;
+            subscribers.forEach(subscriber -> subscriber.onError(throwable));
             subscribers = new ConcurrentLinkedDeque<>();
-
-            current.forEach(subscriber -> subscriber.onError(throwable));
         }
     }
 
@@ -127,10 +123,8 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
         isTerminated.set(true);
         synchronized (lock) {
-            final ConcurrentLinkedDeque<ConnectionSubscriber> current = subscribers;
+            subscribers.forEach(subscriber -> subscriber.onComplete());
             subscribers = new ConcurrentLinkedDeque<>();
-
-            current.forEach(subscriber -> subscriber.onComplete());
         }
     }
 
@@ -167,10 +161,6 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
     @Override
     public void dispose() {
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
-
         synchronized (lock) {
             if (currentConnection != null) {
                 currentConnection.close();
@@ -182,9 +172,12 @@ public class EventHubConnectionProcessor extends Mono<EventHubAmqpConnection>
 
     @Override
     public boolean isDisposed() {
-        return isDisposed.get();
+        return isTerminated.get();
     }
 
+    /**
+     * Represents a subscriber, waiting for an AMQP connection.
+     */
     private static class ConnectionSubscriber
         extends Operators.MonoSubscriber<EventHubAmqpConnection, EventHubAmqpConnection> {
         private final EventHubConnectionProcessor processor;
