@@ -6,7 +6,7 @@ package com.azure.security.keyvault.certificates;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 
 import java.util.Arrays;
@@ -56,7 +56,7 @@ public class ListOperationsAsync {
         //Let's create a certificate issuer.
         certificateAsyncClient.createIssuer("myIssuer", "Test")
             .subscribe(issuer -> {
-                System.out.printf("Issuer created with %s and %s\n", issuer.getName(), issuer.getProperties().getProvider());
+                System.out.printf("Issuer created with %s and %s\n", issuer.getName(), issuer.getProvider());
             });
 
         Thread.sleep(2000);
@@ -94,7 +94,7 @@ public class ListOperationsAsync {
         certificateAsyncClient.listPropertiesOfIssuers()
             .subscribe(issuerProperties -> certificateAsyncClient.getIssuer(issuerProperties.getName())
                 .subscribe(issuerResponse -> System.out.printf("Received issuer with name %s and provider %s\n",
-                    issuerResponse.getName(), issuerResponse.getProperties().getProvider())));
+                    issuerResponse.getName(), issuerResponse.getProvider())));
 
         Thread.sleep(5000);
 

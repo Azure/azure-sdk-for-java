@@ -6,7 +6,7 @@ package com.azure.security.keyvault.certificates;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
 
 import java.util.Arrays;
 import java.util.HashMap;

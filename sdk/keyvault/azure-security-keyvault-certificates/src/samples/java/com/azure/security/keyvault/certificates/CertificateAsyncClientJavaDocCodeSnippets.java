@@ -12,12 +12,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.CertificateContact;
-import com.azure.security.keyvault.certificates.models.CertificateIssuer;
-import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
-import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.*;
 import reactor.util.context.Context;
 
 import java.util.ArrayList;
@@ -213,7 +208,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuer -> {
                 System.out.printf("Issuer created with %s and %s", issuer.getName(),
-                    issuer.getProperties().getProvider());
+                    issuer.getProvider());
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#String-String
 
@@ -225,7 +220,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponse -> {
                 System.out.printf("Issuer created with %s and %s", issuerResponse.getName(),
-                    issuerResponse.getProperties().getProvider());
+                    issuerResponse.getProvider());
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#CertificateIssuer
 
@@ -237,7 +232,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponse -> {
                 System.out.printf("Issuer created with %s and %s", issuerResponse.getValue().getName(),
-                    issuerResponse.getValue().getProperties().getProvider());
+                    issuerResponse.getValue().getProvider());
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuerWithResponse#CertificateIssuer
     }
@@ -252,7 +247,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuer -> {
                 System.out.printf("Issuer returned with %s and %s", issuer.getName(),
-                    issuer.getProperties().getProvider());
+                    issuer.getProvider());
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuer#string
 
@@ -261,7 +256,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponse -> {
                 System.out.printf("Issuer returned with %s and %s", issuerResponse.getValue().getName(),
-                    issuerResponse.getValue().getProperties().getProvider());
+                    issuerResponse.getValue().getProvider());
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuerWithResponse#string
     }
@@ -540,7 +535,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerProperties -> certificateAsyncClient.getIssuer(issuerProperties.getName())
                 .subscribe(issuerResponse -> System.out.printf("Received issuer with name %s and provider %s",
-                    issuerResponse.getName(), issuerResponse.getProperties().getProvider())));
+                    issuerResponse.getName(), issuerResponse.getProvider())));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.listPropertiesOfIssuers
     }
 
@@ -638,5 +633,30 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscribe(certificateResponse -> System.out.printf("Received Certificate with name %s and key id %s",
                 certificateResponse.getValue().getProperties().getName(), certificateResponse.getValue().getKeyId()));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificateWithResponse#config
+    }
+
+
+    /**
+     * Method to insert code snippets for {@link CertificateAsyncClient#importCertificate(ImportCertificateOptions)}
+     */
+    public void importCertificate() {
+        CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.importCertificate#options
+        byte[] certificateToImport = new byte[100];
+        ImportCertificateOptions config =
+            new ImportCertificateOptions("certificateName", certificateToImport).setEnabled(false);
+        certificateAsyncClient.importCertificate(config)
+            .subscribe(certificate -> System.out.printf("Received Certificate with name %s and key id %s",
+                certificate.getProperties().getName(), certificate.getKeyId()));
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.importCertificate#options
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.importCertificateWithResponse#options
+        byte[] certToImport = new byte[100];
+        ImportCertificateOptions importCertificateOptions  =
+            new ImportCertificateOptions("certificateName", certToImport).setEnabled(false);
+        certificateAsyncClient.importCertificateWithResponse(importCertificateOptions)
+            .subscribe(certificateResponse -> System.out.printf("Received Certificate with name %s and key id %s",
+                certificateResponse.getValue().getProperties().getName(), certificateResponse.getValue().getKeyId()));
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.importCertificateWithResponse#options
     }
 }

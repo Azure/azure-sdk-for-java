@@ -7,8 +7,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.CertificateKeyType;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -80,7 +80,7 @@ public class HelloWorldAsync {
         //Let's create a certificate issuer.
         certificateAsyncClient.createIssuer("myIssuer", "Test")
             .subscribe(issuer -> {
-                System.out.printf("Issuer created with %s and %s", issuer.getName(), issuer.getProperties().getProvider());
+                System.out.printf("Issuer created with %s and %s", issuer.getName(), issuer.getProvider());
             });
 
         Thread.sleep(2000);
@@ -89,7 +89,7 @@ public class HelloWorldAsync {
         // Let's fetch the issuer we just created from the key vault.
         certificateAsyncClient.getIssuer("myIssuer")
             .subscribe(issuer -> {
-                System.out.printf("Issuer returned with %s and %s", issuer.getName(), issuer.getProperties().getProvider());
+                System.out.printf("Issuer returned with %s and %s", issuer.getName(), issuer.getProvider());
             });
 
         Thread.sleep(2000);

@@ -7,12 +7,8 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -52,7 +48,7 @@ public class ManagingDeletedCertificates {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName", policy, true,  tags);
+        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller = certificateClient.beginCreateCertificate("certificateName", policy, true,  tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
@@ -70,10 +66,10 @@ public class ManagingDeletedCertificates {
 
         // We accidentally deleted the certificate. Let's recover it.
         // A deleted certificate can only be recovered if the key vault is soft-delete enabled.
-        SyncPoller<KeyVaultCertificate, Void> recoverCertPoller = certificateClient
+        SyncPoller<KeyVaultCertificateWithPolicy, Void> recoverCertPoller = certificateClient
             .beginRecoverDeletedCertificate("certificateName");
         // Recovered certificate is accessible as soon as polling beings
-        PollResponse<KeyVaultCertificate> recoverPollResponse = recoverCertPoller.poll();
+        PollResponse<KeyVaultCertificateWithPolicy> recoverPollResponse = recoverCertPoller.poll();
         System.out.printf(" Recovered Deleted certificate with name %s and id %s", recoverPollResponse.getValue()
             .getProperties().getName(), recoverPollResponse.getValue().getProperties().getId());
         recoverCertPoller.waitForCompletion();

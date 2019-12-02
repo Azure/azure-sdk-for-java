@@ -29,7 +29,7 @@ public final class CertificateContact {
     private String phone;
 
     /**
-     * Creates a new contact instance.
+     * Creates a new certificate contact.
      *
      * @param name The name of the contact
      * @param email The email address of the contact
@@ -42,7 +42,7 @@ public final class CertificateContact {
     }
 
     /**
-     * Creates a new contact instance.
+     * Creates a new certificate contact.
      *
      * @param name The name of the contact
      * @param email The email address of the contact
@@ -55,18 +55,18 @@ public final class CertificateContact {
     CertificateContact() { }
 
     /**
-     * Get the emailAddress.
+     * Get the email address.
      *
-     * @return the emailAddress
+     * @return the email address
      */
     public String getEmail() {
         return this.email;
     }
 
     /**
-     * Get the name value.
+     * Get the name.
      *
-     * @return the name value
+     * @return the name
      */
     public String getName() {
         return this.name;

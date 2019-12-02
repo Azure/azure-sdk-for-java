@@ -7,14 +7,9 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
-import com.azure.security.keyvault.certificates.models.CertificateIssuer;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
+import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.CertificateKeyType;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,7 +48,7 @@ public class HelloWorld {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName92", policy, true, tags);
+        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller = certificateClient.beginCreateCertificate("certificateName92", policy, true, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
@@ -73,11 +68,11 @@ public class HelloWorld {
         //Let's create a certificate issuer.
         CertificateIssuer issuer = new CertificateIssuer("myIssuer", "Test");
         CertificateIssuer myIssuer = certificateClient.createIssuer(issuer);
-        System.out.printf("Issuer created with name %s and provider %s", myIssuer.getName(), myIssuer.getProperties().getProvider());
+        System.out.printf("Issuer created with name %s and provider %s", myIssuer.getName(), myIssuer.getProvider());
 
         // Let's fetch the issuer we just created from the key vault.
         myIssuer = certificateClient.getIssuer("myIssuer");
-        System.out.printf("Issuer retrieved with name %s and provider %s", myIssuer.getName(), myIssuer.getProperties().getProvider());
+        System.out.printf("Issuer retrieved with name %s and provider %s", myIssuer.getName(), myIssuer.getProvider());
 
 
         //Let's create a certificate signed by our issuer.
@@ -108,7 +103,7 @@ public class HelloWorld {
         deletedCertificatePoller.waitForCompletion();
 
         CertificateIssuer deleteCertificateIssuer = certificateClient.deleteIssuer("myIssuer");
-        System.out.printf("Certificate issuer is permanently deleted with name %s and provider is %s \n", deleteCertificateIssuer.getName(), deleteCertificateIssuer.getProperties().getProvider());
+        System.out.printf("Certificate issuer is permanently deleted with name %s and provider is %s \n", deleteCertificateIssuer.getName(), deleteCertificateIssuer.getProvider());
 
         // To ensure certificate is deleted on server side.
         Thread.sleep(30000);

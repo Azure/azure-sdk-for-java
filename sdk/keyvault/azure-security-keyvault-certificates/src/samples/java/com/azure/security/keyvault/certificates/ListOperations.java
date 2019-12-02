@@ -6,13 +6,7 @@ package com.azure.security.keyvault.certificates;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.CertificateIssuer;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.CertificateProperties;
-import com.azure.security.keyvault.certificates.models.CertificateContact;
-import com.azure.security.keyvault.certificates.models.IssuerProperties;
+import com.azure.security.keyvault.certificates.models.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,7 +38,7 @@ public class ListOperations {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        SyncPoller<CertificateOperation, KeyVaultCertificate> certificatePoller = certificateClient.beginCreateCertificate("certName", policy, true, tags);
+        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller = certificateClient.beginCreateCertificate("certName", policy, true, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
@@ -53,7 +47,7 @@ public class ListOperations {
         CertificateIssuer issuer = new CertificateIssuer("myIssuer", "Test");
         CertificateIssuer myIssuer = certificateClient.createIssuer(issuer);
         System.out.printf("Issuer created with name %s and provider %s", myIssuer.getName(),
-            myIssuer.getProperties().getProvider());
+            myIssuer.getProvider());
 
         //Let's create a certificate signed by our issuer.
         certificateClient.beginCreateCertificate("myCertificate",
@@ -83,7 +77,7 @@ public class ListOperations {
         for (IssuerProperties certIssuer : certificateClient.listPropertiesOfIssuers()) {
             CertificateIssuer retrievedIssuer = certificateClient.getIssuer(certIssuer.getName());
             System.out.printf("Received issuer with name %s and provider %s", retrievedIssuer.getName(),
-                retrievedIssuer.getProperties().getProvider());
+                retrievedIssuer.getProvider());
         }
 
         // Let's set certificate contacts on the Key vault.

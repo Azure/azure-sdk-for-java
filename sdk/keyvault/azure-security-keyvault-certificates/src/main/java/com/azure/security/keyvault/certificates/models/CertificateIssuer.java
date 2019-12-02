@@ -202,7 +202,7 @@ public final class CertificateIssuer {
     }
 
     /**
-     * Get tje created UTC time.
+     * Get the created UTC time.
      * @return the created UTC time.
      */
     public OffsetDateTime getCreated() {

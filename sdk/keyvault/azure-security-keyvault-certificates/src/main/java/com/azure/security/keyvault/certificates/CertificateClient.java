@@ -24,7 +24,7 @@ import com.azure.security.keyvault.certificates.models.CertificateProperties;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
-import com.azure.security.keyvault.certificates.models.LifeTimeAction;
+import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 
 import java.util.List;
@@ -89,7 +89,7 @@ public class CertificateClient {
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
         return  client.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
     }
 
@@ -109,7 +109,7 @@ public class CertificateClient {
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<CertificateOperation, KeyVaultCertificate> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
         return client.beginCreateCertificate(certificateName, policy).getSyncPoller();
     }
 
@@ -127,7 +127,7 @@ public class CertificateClient {
      * @return A {@link SyncPoller} to poll on the certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<CertificateOperation, KeyVaultCertificate> getCertificateOperation(String certificateName) {
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
         return  client.getCertificateOperation(certificateName).getSyncPoller();
     }
 
@@ -369,10 +369,10 @@ public class CertificateClient {
      * @param certificateName The name of the deleted certificate to be recovered.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the certificate vault.
      * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
-     * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultCertificate recovered certificate}.
+     * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultCertificateWithPolicy recovered certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<KeyVaultCertificate, Void> beginRecoverDeletedCertificate(String certificateName) {
+    public SyncPoller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
         return client.beginRecoverDeletedCertificate(certificateName).getSyncPoller();
     }
 
@@ -887,7 +887,7 @@ public class CertificateClient {
     /**
      * Sets the certificate contacts on the key vault. This operation requires the {@code certificates/managecontacts} permission.
      *
-     *<p>The {@link LifeTimeAction} of type {@link CertificatePolicyAction#EMAIL_CONTACTS} set on a {@link CertificatePolicy} emails the contacts set on the vault when triggered.</p>
+     *<p>The {@link LifetimeAction} of type {@link CertificatePolicyAction#EMAIL_CONTACTS} set on a {@link CertificatePolicy} emails the contacts set on the vault when triggered.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the certificate contacts in the Azure Key Vault. Prints out the returned contacts details.</p>
@@ -906,7 +906,7 @@ public class CertificateClient {
     /**
      * Sets the certificate contacts on the key vault. This operation requires the {@code certificates/managecontacts} permission.
      *
-     *<p>The {@link LifeTimeAction} of type {@link CertificatePolicyAction#EMAIL_CONTACTS} set on a {@link CertificatePolicy} emails the contacts set on the vault when triggered.</p>
+     *<p>The {@link LifetimeAction} of type {@link CertificatePolicyAction#EMAIL_CONTACTS} set on a {@link CertificatePolicy} emails the contacts set on the vault when triggered.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the certificate contacts in the Azure Key Vault. Prints out the returned contacts details.</p>
@@ -1043,7 +1043,7 @@ public class CertificateClient {
      * @return The merged certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultCertificate mergeCertificate(MergeCertificateOptions mergeCertificateOptions) {
+    public KeyVaultCertificateWithPolicy mergeCertificate(MergeCertificateOptions mergeCertificateOptions) {
         return mergeCertificateWithResponse(mergeCertificateOptions, Context.NONE).getValue();
     }
 
@@ -1063,7 +1063,7 @@ public class CertificateClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the merged certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificate> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions, Context context) {
+    public Response<KeyVaultCertificateWithPolicy> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions, Context context) {
         Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
         return client.mergeCertificateWithResponse(mergeCertificateOptions, context).block();
     }
@@ -1072,11 +1072,16 @@ public class CertificateClient {
      * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
      * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p> Imports a certificate into the key vault.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.importCertificate#options}
+     *
      * @param importCertificateOptions The details of the certificate to import to the key vault
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
-     * @return the {@link KeyVaultCertificate imported certificate}.
+     * @return the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
-    public KeyVaultCertificate importCertificate(ImportCertificateOptions importCertificateOptions) {
+    public KeyVaultCertificateWithPolicy importCertificate(ImportCertificateOptions importCertificateOptions) {
         return importCertificateWithResponse(importCertificateOptions, Context.NONE).getValue();
     }
 
@@ -1084,12 +1089,17 @@ public class CertificateClient {
      * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
      * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p> Imports a certificate into the key vault.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.importCertificateWithResponse#options}
+     *
      * @param importCertificateOptions The details of the certificate to import to the key vault
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificate imported certificate}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
-    public Response<KeyVaultCertificate> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
+    public Response<KeyVaultCertificateWithPolicy> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
         return client.importCertificateWithResponse(importCertificateOptions, context).block();
     }
 }

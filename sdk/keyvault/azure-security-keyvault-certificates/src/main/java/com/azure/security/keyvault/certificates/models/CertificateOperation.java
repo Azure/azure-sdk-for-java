@@ -110,7 +110,7 @@ public final class CertificateOperation {
      *
      * @return the certificateTransparency status.
      */
-    public boolean getCertificateTransparency() {
+    public boolean isCertificateTransparent() {
         return this.certificateTransparency;
     }
 
@@ -181,6 +181,6 @@ public final class CertificateOperation {
     private void unpackIssuerParameters(Map<String, Object> issuerParameters) {
         issuerName = (String) issuerParameters.get("name");
         certificateType =  (String) issuerParameters.get("cty");
-        certificateTransparency = (Boolean) issuerParameters.get("cert_transparency");
+        certificateTransparency = issuerParameters.get("cert_transparency") != null ? (Boolean) issuerParameters.get("cert_transparency") : false;
     }
 }

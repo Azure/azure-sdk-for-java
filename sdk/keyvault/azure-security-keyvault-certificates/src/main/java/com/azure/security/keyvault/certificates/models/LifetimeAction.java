@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Represents a LifeTimeAction in {@link CertificatePolicy}
  */
-public final class LifeTimeAction {
+public final class LifetimeAction {
 
     /**
      * The type of the action. Possible values include: 'EmailContacts',
@@ -31,13 +31,13 @@ public final class LifeTimeAction {
      */
     private Integer daysBeforeExpiry;
 
-    LifeTimeAction() { }
+    LifetimeAction() { }
 
     /**
      * Creates a new LifetimeAction instance, with the provided {@link CertificatePolicyAction}.
      * @param action The action type of this LifetimeAction.
      */
-    public LifeTimeAction(CertificatePolicyAction action) {
+    public LifetimeAction(CertificatePolicyAction action) {
         this.certificatePolicyAction = action;
     }
 
@@ -56,7 +56,7 @@ public final class LifeTimeAction {
      * @param lifetimePercentage The lifetimePercentage value to set
      * @return the LifeTimeAction object itself.
      */
-    public LifeTimeAction setLifetimePercentage(Integer lifetimePercentage) {
+    public LifetimeAction setLifetimePercentage(Integer lifetimePercentage) {
         this.lifetimePercentage = lifetimePercentage;
         return this;
     }
@@ -76,7 +76,7 @@ public final class LifeTimeAction {
      * @param daysBeforeExpiry The daysBeforeExpiry value to set
      * @return the LifeTimeAction object itself.
      */
-    public LifeTimeAction setDaysBeforeExpiry(Integer daysBeforeExpiry) {
+    public LifetimeAction setDaysBeforeExpiry(Integer daysBeforeExpiry) {
         this.daysBeforeExpiry = daysBeforeExpiry;
         return this;
     }
