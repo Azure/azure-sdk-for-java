@@ -4,7 +4,7 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.security.keyvault.certificates.models.Administrator;
+import com.azure.security.keyvault.certificates.models.AdministratorContact;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -23,7 +23,7 @@ class OrganizationDetails {
      * Details of the organization administrator.
      */
     @JsonProperty(value = "admin_details")
-    private List<Administrator> adminDetails;
+    private List<AdministratorContact> adminDetails;
 
     /**
      * Get the id value.
@@ -50,7 +50,7 @@ class OrganizationDetails {
      *
      * @return the adminDetails value
      */
-    List<Administrator> adminDetails() {
+    List<AdministratorContact> adminDetails() {
         return this.adminDetails;
     }
 
@@ -60,7 +60,7 @@ class OrganizationDetails {
      * @param adminDetails the adminDetails value to set
      * @return the OrganizationDetails object itself.
      */
-    OrganizationDetails adminDetails(List<Administrator> adminDetails) {
+    OrganizationDetails adminDetails(List<AdministratorContact> adminDetails) {
         this.adminDetails = adminDetails;
         return this;
     }

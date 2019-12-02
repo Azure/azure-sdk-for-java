@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Represents a token restriction. Provided token must match these requirements
  * for successful license or key delivery.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ContentKeyPolicyTokenRestriction.class)
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyTokenRestriction")
 public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestriction {
     /**

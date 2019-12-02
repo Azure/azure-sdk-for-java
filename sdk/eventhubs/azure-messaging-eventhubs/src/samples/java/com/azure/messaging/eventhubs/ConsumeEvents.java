@@ -16,7 +16,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Sample demonstrates how to receive events from an Azure Event Hub instance.
  */
-public class ConsumeEvent {
+public class ConsumeEvents {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     private static final int NUMBER_OF_EVENTS = 10;
 

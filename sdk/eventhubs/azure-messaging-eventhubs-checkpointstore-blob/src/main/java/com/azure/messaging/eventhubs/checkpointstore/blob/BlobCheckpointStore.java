@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import reactor.core.Exceptions;
@@ -127,13 +128,13 @@ public class BlobCheckpointStore implements CheckpointStore {
      * This method is called by the {@link EventProcessorClient} to claim ownership of a list of partitions. This will
      * return the list of partitions that were owned successfully.
      *
-     * @param requestedPartitionOwnerships Array of partition ownerships this instance is requesting to own.
+     * @param requestedPartitionOwnerships List of partition ownerships this instance is requesting to own.
      * @return A flux of partitions this instance successfully claimed ownership.
      */
     @Override
-    public Flux<PartitionOwnership> claimOwnership(PartitionOwnership... requestedPartitionOwnerships) {
+    public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
 
-        return Flux.fromArray(requestedPartitionOwnerships).flatMap(partitionOwnership -> {
+        return Flux.fromIterable(requestedPartitionOwnerships).flatMap(partitionOwnership -> {
             String partitionId = partitionOwnership.getPartitionId();
             String blobName = getBlobName(partitionOwnership.getFullyQualifiedNamespace(),
                 partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId,
@@ -204,7 +205,14 @@ public class BlobCheckpointStore implements CheckpointStore {
         metadata.put(OFFSET, offset);
         BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
-        return blobAsyncClient.setMetadata(metadata);
+        return blobAsyncClient.exists().flatMap(exists -> {
+            if (exists) {
+                return blobAsyncClient.setMetadata(metadata);
+            } else {
+                return blobAsyncClient.getBlockBlobAsyncClient().uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null,
+                    metadata, null, null, null).then();
+            }
+        });
     }
 
     private String getBlobPrefix(String fullyQualifiedNamespace, String eventHubName, String consumerGroupName,

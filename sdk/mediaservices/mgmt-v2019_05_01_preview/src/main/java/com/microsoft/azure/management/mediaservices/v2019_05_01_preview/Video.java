@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Describes the basic properties for encoding the input video.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = Video.class)
 @JsonTypeName("#Microsoft.Media.Video")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.Image", value = Image.class),

@@ -32,6 +32,12 @@ import java.util.stream.StreamSupport;
  * @see Iterable
  */
 public class IterableStream<T> implements Iterable<T> {
+    /*
+     * This is the default batch size that will be requested when using stream or iterable by page, this will indicate
+     * to Reactor how many elements should be prefetched before another batch is requested.
+     */
+    private static final int DEFAULT_BATCH_SIZE = 1;
+
     private final ClientLogger logger = new ClientLogger(IterableStream.class);
     private final Flux<T> flux;
     private final Iterable<T> iterable;
@@ -66,7 +72,7 @@ public class IterableStream<T> implements Iterable<T> {
      */
     public Stream<T> stream() {
         if (flux != null) {
-            return flux.toStream();
+            return flux.toStream(DEFAULT_BATCH_SIZE);
         } else if (iterable != null) {
             return StreamSupport.stream(iterable.spliterator(), false);
         } else {
@@ -84,7 +90,7 @@ public class IterableStream<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         if (flux != null) {
-            return flux.toIterable().iterator();
+            return flux.toIterable(DEFAULT_BATCH_SIZE).iterator();
         } else if (iterable != null) {
             return iterable.iterator();
         } else {

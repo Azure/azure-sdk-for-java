@@ -6,6 +6,8 @@ package com.azure.storage.common.sas;
 import com.azure.storage.common.Utility;
 
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.function.Function;
@@ -174,12 +176,7 @@ public abstract class BaseSasQueryParameters {
      * @param value The value of the parameter to append.
      */
     protected void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {
-        if (value != null) {
-            if (sb.length() != 0) {
-                sb.append('&');
-            }
-            sb.append(Utility.urlEncode(param)).append('=').append(Utility.urlEncode(value.toString()));
-        }
+        SasImplUtils.tryAppendQueryParameter(sb, param, value);
     }
 
     /**
@@ -189,11 +186,7 @@ public abstract class BaseSasQueryParameters {
      * @return A String representing the SAS date time.
      */
     protected String formatQueryParameterDate(OffsetDateTime dateTime) {
-        if (dateTime == null) {
-            return null;
-        } else {
-            return Constants.ISO_8601_UTC_DATE_FORMATTER.format(dateTime);
-        }
+        return SasImplUtils.formatQueryParameterDate(dateTime);
     }
 
     /**

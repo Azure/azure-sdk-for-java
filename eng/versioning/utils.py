@@ -18,6 +18,10 @@ version_update_marker = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
 # https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
 version_regex_str_no_anchor = r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?'
 
+# External dependency versions do not have to match semver format and the semver regular expressions
+# will partially match and produce some hilarious results.
+external_dependency_version_regex = r'(?<=<version>).+?(?=</version>)'
+
 # This is the original regular expression for semver. This differs from the
 # previous one in that start of line and end of line anchors are left in place.
 # This is the regex that would be used to ensure the entire string matches
@@ -39,6 +43,7 @@ class BuildType(Enum):
     client = 'client'
     data = 'data'
     management = 'management'
+    none = 'none' # in the case where only external dependencies is being updated
     
     # defining string is necessary to get ArgumentParser's help output to produce
     # human readable values of BuildType
@@ -54,11 +59,13 @@ class CodeModule:
         items = module_str.split(';')
         if len(items) == 2: 
             self.name = items[0]
-            self.dependency = items[1].strip()
+            self.external_dependency = items[1].strip()
+            self.update_type = UpdateType.external_dependency
         elif len(items) == 3:
             self.name = items[0]
             self.dependency = items[1]
             self.current = items[2].strip()
+            self.update_type = UpdateType.library
         else: 
             raise ValueError('unable to parse module string: ' + module_str)
 
@@ -68,7 +75,7 @@ class CodeModule:
         try:
             return self.name + ': Dependency version=' + self.dependency + ': Current version=' + self.current
         except AttributeError:
-            return self.name + ': External Dependency version=' + self.dependency
+            return self.name + ': External Dependency version=' + self.external_dependency
     
     # return the CodeModule string formatted for a version file
     def string_for_version_file(self):
