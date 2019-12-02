@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -159,7 +160,8 @@ public abstract class IntegrationTestBase extends TestBase {
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retry(RETRY_OPTIONS)
-            .transportType(AmqpTransportType.AMQP);
+            .transportType(AmqpTransportType.AMQP)
+            .scheduler(Schedulers.newParallel("eh-integration"));
 
         if (useCredentials) {
             final String fqdn = getFullyQualifiedDomainName();
