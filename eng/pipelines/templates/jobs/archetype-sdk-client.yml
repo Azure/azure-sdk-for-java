@@ -95,6 +95,10 @@ jobs:
       vmImage: 'ubuntu-16.04'
 
     steps:
+      - pwsh: |
+          $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
+        displayName: "Verify versions in POM files"
+        
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:
