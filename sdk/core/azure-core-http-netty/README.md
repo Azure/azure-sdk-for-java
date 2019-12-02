@@ -34,6 +34,8 @@ The following sections provide several code snippets covering some of the most c
 Create a Netty Http client that uses port 80 and has no proxy.
 
 ```java
+// ./src/samples/java/com/azure/core/http/netty/ReadmeSamples.java#L19-L19
+
 HttpClient client = new NettyAsyncHttpClientBuilder().build();
 ```
 
@@ -42,6 +44,8 @@ HttpClient client = new NettyAsyncHttpClientBuilder().build();
 Create a Netty Http client that is using a proxy.
 
 ```java
+// ./src/samples/java/com/azure/core/http/netty/ReadmeSamples.java#L26-L28
+
 HttpClient client = new NettyAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
     .build();

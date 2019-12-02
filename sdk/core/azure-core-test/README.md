@@ -37,14 +37,7 @@ Use [TestBase][TestBase.java] to easily create live and playback test cases. Ext
 `interceptorManager` that keeps track of all network calls.
 
 ```java
-// Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
-// live. By default, tests are run in playback mode.
-public class SessionTests extends TestBase {
-    // Use your JUnit or TestNG annotation here for your testcase
-    public void fooTest() {
-        // Do some network calls.
-    }
-}
+// ./src/test/java/com/azure/core/test/ReadmeSamples.java#L23-L35
 ```
 
 ### Record network calls
@@ -53,22 +46,7 @@ Record network calls using [RecordNetworkCallPolicy][RecordNetworkCallPolicy.jav
 client, is persisted to [RecordedData][RecordedData.java].
 
 ```java
-public class Foo {
-    public void recordNetworkCalls() {
-        // All network calls are kept in the networkData variable.
-        RecordedData networkData = new RecordedData();
-        HttpPipeline pipeline = new HttpPipeline(new RecordNetworkCallPolicy(recordedData));
-    
-        // Send requests through the HttpPipeline.
-        pipeline.send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
-    
-        // Get a record that was sent through the pipeline.
-        NetworkCallRecord networkCall = networkData.findFirstAndRemoveNetworkCall(record -> {
-            return record.uri().equals("http://bing.com");
-        });
-    }
-}
-
+// ./src/test/java/com/azure/core/test/ReadmeSamples.java#L37-L56
 ```
 
 ### Playback session records
@@ -76,20 +54,7 @@ public class Foo {
 Playback test session records by creating a [RecordedData][RecordedData.java].
 
 ```java
-public class Foo {
-    public void playbackNetworkCalls() {
-        RecordedData recordedData = new RecordedData();
-    
-        // Add some network calls to be replayed by playbackClient
-    
-        // Creates a HTTP client that plays back responses in recordedData.
-        HttpClient playbackClient = new PlaybackClient(recordedData, null);
-    
-        // Send an HTTP GET request to http://bing.com. If recordedData contains a NetworkCallRecord with a matching HTTP
-        // method and matching URL, it is returned as a response.
-        Mono<HttpResponse> response = playbackClient.send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
-    }
-}
+// ./src/test/java/com/azure/core/test/ReadmeSamples.java#L58-L74
 ```
 
 ## Troubleshooting
