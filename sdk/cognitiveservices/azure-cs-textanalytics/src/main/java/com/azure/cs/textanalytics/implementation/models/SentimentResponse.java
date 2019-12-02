@@ -5,8 +5,6 @@
 package com.azure.cs.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.cs.textanalytics.models.TextBatchStatistics;
-import com.azure.cs.textanalytics.models.DocumentError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,7 +14,7 @@ import java.util.List;
 @Fluent
 public final class SentimentResponse {
     /*
-     * TextSentiment analysis per document.
+     * Sentiment analysis per document.
      */
     @JsonProperty(value = "documents", required = true)
     private List<DocumentSentiment> documents;
@@ -31,7 +29,7 @@ public final class SentimentResponse {
      * The statistics property.
      */
     @JsonProperty(value = "statistics")
-    private TextBatchStatistics statistics;
+    private RequestStatistics statistics;
 
     /*
      * This field indicates which model is used for scoring.
@@ -40,7 +38,7 @@ public final class SentimentResponse {
     private String modelVersion;
 
     /**
-     * Get the documents property: TextSentiment analysis per document.
+     * Get the documents property: Sentiment analysis per document.
      *
      * @return the documents value.
      */
@@ -49,7 +47,7 @@ public final class SentimentResponse {
     }
 
     /**
-     * Set the documents property: TextSentiment analysis per document.
+     * Set the documents property: Sentiment analysis per document.
      *
      * @param documents the documents value to set.
      * @return the SentimentResponse object itself.
@@ -84,7 +82,7 @@ public final class SentimentResponse {
      *
      * @return the statistics value.
      */
-    public TextBatchStatistics getStatistics() {
+    public RequestStatistics getStatistics() {
         return this.statistics;
     }
 
@@ -94,7 +92,7 @@ public final class SentimentResponse {
      * @param statistics the statistics value to set.
      * @return the SentimentResponse object itself.
      */
-    public SentimentResponse setStatistics(TextBatchStatistics statistics) {
+    public SentimentResponse setStatistics(RequestStatistics statistics) {
         this.statistics = statistics;
         return this;
     }

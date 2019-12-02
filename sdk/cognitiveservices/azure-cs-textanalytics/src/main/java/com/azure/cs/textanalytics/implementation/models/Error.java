@@ -14,7 +14,8 @@ import java.util.List;
 @Fluent
 public final class Error {
     /*
-     * Error code.
+     * Error code. Possible values include: 'invalidRequest',
+     * 'invalidArgument', 'internalServerError', 'serviceUnavailable'
      */
     @JsonProperty(value = "code", required = true)
     private String code;
@@ -44,7 +45,9 @@ public final class Error {
     private List<Error> details;
 
     /**
-     * Get the code property: Error code.
+     * Get the code property: Error code. Possible values include:
+     * 'invalidRequest', 'invalidArgument', 'internalServerError',
+     * 'serviceUnavailable'.
      *
      * @return the code value.
      */
@@ -53,7 +56,9 @@ public final class Error {
     }
 
     /**
-     * Set the code property: Error code.
+     * Set the code property: Error code. Possible values include:
+     * 'invalidRequest', 'invalidArgument', 'internalServerError',
+     * 'serviceUnavailable'.
      *
      * @param code the code value to set.
      * @return the Error object itself.

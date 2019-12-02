@@ -9,12 +9,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The DocumentSentiment model.
+ * The SentenceSentiment model.
  */
 @Fluent
 public final class SentenceSentiment {
     /*
-     * The predicted TextSentiment for the sentence. Possible values include:
+     * The predicted Sentiment for the sentence. Possible values include:
      * 'positive', 'neutral', 'negative'
      */
     @JsonProperty(value = "sentiment", required = true)
@@ -42,11 +42,11 @@ public final class SentenceSentiment {
     /*
      * The warnings generated for the sentence.
      */
-    @JsonProperty(value = "warnings", required = true)
+    @JsonProperty(value = "warnings")
     private List<String> warnings;
 
     /**
-     * Get the sentiment property: The predicted TextSentiment for the sentence.
+     * Get the sentiment property: The predicted Sentiment for the sentence.
      * Possible values include: 'positive', 'neutral', 'negative'.
      *
      * @return the sentiment value.
@@ -56,11 +56,11 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Set the sentiment property: The predicted TextSentiment for the sentence.
+     * Set the sentiment property: The predicted Sentiment for the sentence.
      * Possible values include: 'positive', 'neutral', 'negative'.
      *
      * @param sentiment the sentiment value to set.
-     * @return the DocumentSentiment object itself.
+     * @return the SentenceSentiment object itself.
      */
     public SentenceSentiment setSentiment(String sentiment) {
         this.sentiment = sentiment;
@@ -82,7 +82,7 @@ public final class SentenceSentiment {
      * 0 and 1 for the sentence for all classes.
      *
      * @param sentenceScores the sentenceScores value to set.
-     * @return the DocumentSentiment object itself.
+     * @return the SentenceSentiment object itself.
      */
     public SentenceSentiment setSentenceScores(Object sentenceScores) {
         this.sentenceScores = sentenceScores;
@@ -104,7 +104,7 @@ public final class SentenceSentiment {
      * document.
      *
      * @param offset the offset value to set.
-     * @return the DocumentSentiment object itself.
+     * @return the SentenceSentiment object itself.
      */
     public SentenceSentiment setOffset(int offset) {
         this.offset = offset;
@@ -124,7 +124,7 @@ public final class SentenceSentiment {
      * Set the length property: The length of the sentence by Unicode standard.
      *
      * @param length the length value to set.
-     * @return the DocumentSentiment object itself.
+     * @return the SentenceSentiment object itself.
      */
     public SentenceSentiment setLength(int length) {
         this.length = length;
@@ -144,7 +144,7 @@ public final class SentenceSentiment {
      * Set the warnings property: The warnings generated for the sentence.
      *
      * @param warnings the warnings value to set.
-     * @return the DocumentSentiment object itself.
+     * @return the SentenceSentiment object itself.
      */
     public SentenceSentiment setWarnings(List<String> warnings) {
         this.warnings = warnings;
