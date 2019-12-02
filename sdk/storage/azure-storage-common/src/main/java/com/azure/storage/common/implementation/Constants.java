@@ -6,9 +6,6 @@ package com.azure.storage.common.implementation;
 import com.azure.storage.common.sas.SasProtocol;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 /**

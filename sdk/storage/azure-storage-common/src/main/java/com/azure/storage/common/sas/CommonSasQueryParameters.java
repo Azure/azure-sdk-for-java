@@ -1,6 +1,10 @@
-package com.azure.storage.common.implementation;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.storage.common.sas;
 
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.AccountSasQueryParameters;
 import com.azure.storage.common.sas.BaseSasQueryParameters;
 

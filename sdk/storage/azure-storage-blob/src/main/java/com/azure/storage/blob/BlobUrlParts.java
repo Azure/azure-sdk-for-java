@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.sas.BlobServiceSasQueryParameters;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.CommonSasQueryParameters;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.Constants;
 
 import java.net.MalformedURLException;
