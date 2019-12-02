@@ -60,7 +60,7 @@ jobs:
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
             python3 --version 
-            python3 eng/versioning/set_versions.py --update-type all --build-type client --build-qualifier dev.$(Build.BuildID) --artifact-id ${{artifact.name}}
+            python3 eng/versioning/set_versions.py --update-type all --build-type client --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
           displayName: Apped dev package version suffix for ${{artifact.name}}
       
       - script: |
