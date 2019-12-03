@@ -9,6 +9,7 @@ import com.azure.search.Document;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,7 @@ public final class SearchResult {
      *
      * @return the additionalProperties value.
      */
+    @JsonIgnore
     public Document getDocument() {
         return this.additionalProperties;
     }

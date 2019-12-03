@@ -200,4 +200,12 @@ directive:
     .replace(/(getAdditionalProperties)/g, "getDocument")
     .replace(/(setAdditionalProperties)/g, "setDocument")
   reason: Provides a better description of the getter/setter for addtionalProperties
+  
+- from:
+  - SearchResult.java
+  where: $
+  transform: >-
+	return $
+	.replace(/(package com.azure.search.models;)/g, "$1\nimport com.fasterxml.jackson.annotation.JsonIgnore;")
+	.replace(/(public Document getDocument())/g, "@JsonIgnore\n$1")
 ```
