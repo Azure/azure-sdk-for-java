@@ -4,25 +4,25 @@
 # Use case: This script verifies the following:
 # 1. There are no duplicate entries in any of the version_*.txt files
 # 2. There are no duplicate entries in the external_dependencies.txt file
-# 3. POM file verification across the enlistment which includes the following:
+# 3. POM file verification across the repo which includes the following:
 #    a. There are no <dependencyManagement> sections
 #    a. Every <dependency> and <plugin> has a <groupId>, <artifactId> and <version>
 #    b. Every <version> has the appropriate x-version-update tag
 #    c. The <version>'s value is the same as the value in the version_*txt file or external_dependency
 #
 # Output:
-# This script will process the entire enlistment. If any errors are encountered, will report them at
-# time they are encountered and continue processing.
+# This script will process the entire repo. If any errors are encountered, it will report them at
+# the time they are encountered and continue processing.
 # Errors for any duplicate entries in the various version files will be reported before any POM files
 # are processed.
-# Errors for a given pom file will appear after the "processing pomFile=<fullPathAndFileName" line for
+# Errors for a given pom file will appear after the "processing pomFile=<fullPathAndFileName>" line for
 # that file and before the processing line for the next file. Missing version x-version-update tag
 # errors will cause the output of what the tag should be in the cases where it is known (ie. pom file's
 # version or parent's version). In the cases of dependencies it'll output a tag and the appropriate
 # type (current, dependency or external_dependency) will have to be selected. For example:
 # <!-- {x-version-update;<groupId>:<artifactId>;current|dependency|external_dependency<select one>} -->"
 #
-# This script can be run locally from the root of an enlisment. .\eng\versioning\pom_file_version_scanner.ps1
+# This script can be run locally from the root of the repo. .\eng\versioning\pom_file_version_scanner.ps1
 
 # Since we're skipping Management for the moment, only look for files with certain parents. These
 # limitations will vanish once Management track is updated.
@@ -432,7 +432,7 @@ Write-Output "Total run time=$($TotalRunTime)"
 if ($script:FoundError)
 {
     Write-Output "There were errors encountered during execution. Please fix any errors and run the script again."
-    Write-Output "This script can be run locally from the root of an enlisment. .\eng\pom_file_version_scanner.ps1"
+    Write-Output "This script can be run locally from the root of the repo. .\eng\pom_file_version_scanner.ps1"
     exit(1)
 }
 
