@@ -1099,37 +1099,37 @@ class BlockBlobAPITest extends APISpec {
         10 * Constants.MB | 10 * Constants.KB | 100
     }
 
-    // Only run these tests in live mode as they use variables that can't be captured.
-    @Unroll
-    @Requires({ liveMode() })
-    def "Buffered upload chunked source"() {
-        /*
-        This test should validate that the upload should work regardless of what format the passed data is in because
-        it will be chunked appropriately.
-         */
-        setup:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize * Constants.MB, numBuffers, null)
-        def dataList = [] as List
-        dataSizeList.each { size -> dataList.add(getRandomData(size * Constants.MB)) }
-        blobAsyncClient.upload(Flux.fromIterable(dataList), parallelTransferOptions, true).block()
-
-        expect:
-        StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
-            .assertNext({ assert compareListToBuffer(dataList, it) })
-            .verifyComplete()
-
-        StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext({ assert it.getCommittedBlocks().size() == blockCount })
-            .verifyComplete()
-
-        where:
-        dataSizeList          | bufferSize | numBuffers || blockCount
-        [7, 7]                | 10         | 2          || 2 // First item fits entirely in the buffer, next item spans two buffers
-        [3, 3, 3, 3, 3, 3, 3] | 10         | 2          || 3 // Multiple items fit non-exactly in one buffer.
-        [10, 10]              | 10         | 2          || 2 // Data fits exactly and does not need chunking.
-        [50, 51, 49]          | 10         | 2          || 15 // Data needs chunking and does not fit neatly in buffers. Requires waiting for buffers to be released.
-        // The case of one large buffer needing to be broken up is tested in the previous test.
-    }
+//    // Only run these tests in live mode as they use variables that can't be captured.
+//    @Unroll
+//    @Requires({ liveMode() })
+//    def "Buffered upload chunked source"() {
+//        /*
+//        This test should validate that the upload should work regardless of what format the passed data is in because
+//        it will be chunked appropriately.
+//         */
+//        setup:
+//        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize * Constants.MB, numBuffers, null)
+//        def dataList = [] as List
+//        dataSizeList.each { size -> dataList.add(getRandomData(size * Constants.MB)) }
+//        blobAsyncClient.upload(Flux.fromIterable(dataList), parallelTransferOptions, true).block()
+//
+//        expect:
+//        StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
+//            .assertNext({ assert compareListToBuffer(dataList, it) })
+//            .verifyComplete()
+//
+//        StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
+//            .assertNext({ assert it.getCommittedBlocks().size() == blockCount })
+//            .verifyComplete()
+//
+//        where:
+//        dataSizeList          | bufferSize | numBuffers || blockCount
+//        [7, 7]                | 10         | 2          || 2 // First item fits entirely in the buffer, next item spans two buffers
+//        [3, 3, 3, 3, 3, 3, 3] | 10         | 2          || 3 // Multiple items fit non-exactly in one buffer.
+//        [10, 10]              | 10         | 2          || 2 // Data fits exactly and does not need chunking.
+//        [50, 51, 49]          | 10         | 2          || 15 // Data needs chunking and does not fit neatly in buffers. Requires waiting for buffers to be released.
+//        // The case of one large buffer needing to be broken up is tested in the previous test.
+//    }
 
     @Unroll
     @Requires({ liveMode() })
