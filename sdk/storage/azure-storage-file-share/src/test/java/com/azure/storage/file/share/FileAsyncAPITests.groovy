@@ -683,7 +683,9 @@ class FileAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.forceCloseHandle("1"))
-            .verifyComplete()
+            .assertNext {
+                assert it.getClosedHandles() == 0
+            }.verifyComplete()
     }
 
     def "Force close handle invalid handle ID"() {
@@ -701,7 +703,7 @@ class FileAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.forceCloseAllHandles())
-            .assertNext({ it == 0 })
+            .assertNext({ it.getClosedHandles() == 0 })
             .verifyComplete()
     }
 
