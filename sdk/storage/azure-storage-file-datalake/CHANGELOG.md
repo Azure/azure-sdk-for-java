@@ -1,5 +1,14 @@
 # Change Log azure-storage-file-datalake
 
+## Version XX.X.X-preview.X (XXXX-XX-XX)
+- Fixed bug in ClientBuilders that prevented OAuth from functioning
+- Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
+- Added support for URl encoding
+- Moved LeaseClients to the specialized package
+- Split setAccessControl API into setPermissions and setAccessControlList
+- Renamed setters and getters in PathPermissions and RolePermissions to be more detailed.
+- Fixed camel-casing of the word SubDirectory
+
 ## Version 12.0.0-preview.5 (2019-11-06)
 - Initial Release. Please see the README and wiki for information on the new design.
 - Support for Azure Data Lake Storage REST APIs.
