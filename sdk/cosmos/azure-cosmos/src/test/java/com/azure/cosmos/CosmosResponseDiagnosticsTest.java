@@ -5,10 +5,10 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
@@ -22,20 +22,18 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     private CosmosContainer container;
     private CosmosAsyncContainer cosmosAsyncContainer;
 
-    @Factory(dataProvider = "clientBuilders")
-    public CosmosResponseDiagnosticsTest(CosmosClientBuilder clientBuilder) {
-        super(clientBuilder);
-    }
-
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         assertThat(this.gatewayClient).isNull();
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .setEndpoint(TestConfigurations.HOST)
+            .setKey(TestConfigurations.MASTER_KEY);
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-        gatewayClient = clientBuilder().setConnectionPolicy(connectionPolicy).buildClient();
+        gatewayClient = cosmosClientBuilder.setConnectionPolicy(connectionPolicy).buildClient();
         connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
-        directClient = clientBuilder().setConnectionPolicy(connectionPolicy).buildClient();
+        directClient = cosmosClientBuilder.setConnectionPolicy(connectionPolicy).buildClient();
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient.asyncClient());
         container = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
     }
