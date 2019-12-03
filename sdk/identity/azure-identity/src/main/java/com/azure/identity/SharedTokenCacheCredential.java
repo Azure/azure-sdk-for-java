@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 public class SharedTokenCacheCredential implements TokenCredential {
     private final String username;
     private final String clientId;
+    private final String tenantId;
 
     private PublicClientApplication pubClient = null;
 
@@ -41,7 +42,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * @param clientId the client ID of the application
      * @param identityClientOptions the options for configuring the identity client
      */
-    SharedTokenCacheCredential(String username, String clientId, IdentityClientOptions identityClientOptions) {
+    SharedTokenCacheCredential(String username, String clientId, String tenantId, IdentityClientOptions identityClientOptions) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         if (username == null) {
@@ -49,8 +50,16 @@ public class SharedTokenCacheCredential implements TokenCredential {
         } else {
             this.username = username;
         }
-
-        this.clientId = clientId;
+        if (clientId == null) {
+            this.clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        } else {
+            this.clientId = clientId;
+        }
+        if (tenantId == null) {
+            this.tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
+        } else {
+            this.tenantId = tenantId;
+        }
     }
 
     /**
