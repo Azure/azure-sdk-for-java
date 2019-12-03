@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -44,12 +45,12 @@ public class InMemoryCheckpointStore implements CheckpointStore {
      * already claimed by an instance or if the ETag in the request doesn't match the previously stored ETag, then
      * ownership claim is denied.
      *
-     * @param requestedPartitionOwnerships Array of partition ownerships this instance is requesting to own.
+     * @param requestedPartitionOwnerships List of partition ownerships this instance is requesting to own.
      * @return Successfully claimed partition ownerships.
      */
     @Override
-    public Flux<PartitionOwnership> claimOwnership(PartitionOwnership... requestedPartitionOwnerships) {
-        return Flux.fromArray(requestedPartitionOwnerships)
+    public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
+        return Flux.fromIterable(requestedPartitionOwnerships)
             .filter(partitionOwnership -> {
                 return !partitionOwnershipMap.containsKey(partitionOwnership.getPartitionId())
                     || partitionOwnershipMap.get(partitionOwnership.getPartitionId()).getETag()

@@ -307,14 +307,15 @@ public class EventProcessorClientBuilder {
      * </p>
      *
      * @return A new instance of {@link EventProcessorClient}.
-     * @throws NullPointerException if {@code processEvent} or {@code checkpointStore} or {@code consumerGroup} is
-     * {@code null}.
+     * @throws NullPointerException if {@code processEvent} or {@code processError} or {@code checkpointStore} or
+     * {@code consumerGroup} is {@code null}.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventProcessorClient buildEventProcessorClient() {
         Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
+        Objects.requireNonNull(processError, "'processError' cannot be null");
         Objects.requireNonNull(checkpointStore, "'checkpointStore' cannot be null");
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null");
 

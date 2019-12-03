@@ -76,6 +76,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     protected void beforeTest() {
         EventHubClientBuilder builder = new EventHubClientBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .shareConnection()
             .connectionString(getConnectionString());
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {

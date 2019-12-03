@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -73,7 +73,7 @@ import java.util.ServiceLoader;
  * <p>In the sample, the namespace connection string is used to create a synchronous Event Hub consumer. Notice that
  * {@code "EntityPath"} <b>is</b> in the connection string.</p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation}
  *
  * <p><strong>Creating producers and consumers that share the same connection</strong></p>
  * <p>By default, a dedicated connection is created for each producer and consumer created from the builder. If users
@@ -81,8 +81,10 @@ import java.util.ServiceLoader;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation}
  *
- * @see EventHubClient
- * @see EventHubAsyncClient
+ * @see EventHubProducerAsyncClient
+ * @see EventHubProducerClient
+ * @see EventHubConsumerAsyncClient
+ * @see EventHubConsumerClient
  */
 @ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class,
     EventHubConsumerAsyncClient.class, EventHubConsumerClient.class})
@@ -344,6 +346,21 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Package-private method that sets the scheduler for the created Event Hub client.
+     *
+     * TODO (conniey): Currently, the default is to use an elastic scheduler if none is specified to facilitate the
+     * possibility of legacy blocking code. However, we should consider if we should give consumers an option to use a
+     * parallel Scheduler. https://github.com/Azure/azure-sdk-for-java/issues/5466
+     *
+     * @param scheduler Scheduler to set.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    EventHubClientBuilder scheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
+        return this;
+    }
+
+    /**
      * Creates a new {@link EventHubConsumerAsyncClient} based on the options set on this builder. Every time
      * {@code buildAsyncConsumer()} is invoked, a new instance of {@link EventHubConsumerAsyncClient} is created.
      *
@@ -532,9 +549,9 @@ public class EventHubClientBuilder {
             proxyOptions = getDefaultProxyConfiguration(configuration);
         }
 
-        final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
-            ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
-            : CBSAuthorizationType.JSON_WEB_TOKEN;
+        final CbsAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
+            ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
+            : CbsAuthorizationType.JSON_WEB_TOKEN;
 
         return new ConnectionOptions(fullyQualifiedNamespace, eventHubName, credentials, authorizationType,
             transport, retryOptions, proxyOptions, scheduler);
