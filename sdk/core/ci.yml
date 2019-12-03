@@ -55,3 +55,6 @@ stages:
         - name: azure-core-tracing-opencensus
           safeName: azurecoretracingopencensus
           stagingProfileId: 88192f04117501
+        - name: azure-core-tracing-opentelemetry
+          safeName: azurecoretracingopentelemetry
+          stagingProfileId: 88192f04117501

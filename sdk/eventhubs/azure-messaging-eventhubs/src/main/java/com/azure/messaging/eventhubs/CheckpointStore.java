@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -31,10 +32,10 @@ public interface CheckpointStore {
      * Called to claim ownership of a list of partitions. This will return the list of partitions that were owned
      * successfully.
      *
-     * @param requestedPartitionOwnerships Array of partition ownerships this instance is requesting to own.
+     * @param requestedPartitionOwnerships List of partition ownerships this instance is requesting to own.
      * @return A flux of partitions this instance successfully claimed ownership.
      */
-    Flux<PartitionOwnership> claimOwnership(PartitionOwnership... requestedPartitionOwnerships);
+    Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships);
 
     /**
      * Called to get the list of checkpoints from the underlying data store. This method could return empty results if

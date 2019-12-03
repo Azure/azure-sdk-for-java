@@ -27,7 +27,12 @@ public final class SubjectAlternativeNames {
      * User principal names.
      */
     @JsonProperty(value = "upns")
-    private List<String> upns;
+    private List<String> userPrincipalNames;
+
+    /**
+     * Create an instance of SubjectAlternativeNames
+     */
+    public SubjectAlternativeNames() { }
 
     /**
      * Get the emails.
@@ -38,36 +43,15 @@ public final class SubjectAlternativeNames {
         return this.emails;
     }
 
-    /*
-     * Constructor to setup the SubjectAlternativeNames
-     * @param sans the subject alternative names content
-     * @param sansType the type of the content.
-     */
-    SubjectAlternativeNames(List<String> sans, SubjectAlternativeNamesType sansType) {
-        switch (sansType) {
-            case EMAILS:
-                this.emails = sans;
-                break;
-            case DNS_NAMES:
-                this.dnsNames = sans;
-                break;
-            case UPNS:
-                this.upns = sans;
-                break;
-            default:
-                //should never reach here
-                return;
-        }
-    }
-
     /**
-     * Create Subject Alternative names with emails.
+     * Set the emails.
      *
      * @param emails the emails to set
-     * @return the SubjectAlternativeNames.
+     * @return the updated SubjectAlternativeNames object itself.
      */
-    public static SubjectAlternativeNames fromEmails(List<String> emails) {
-        return new SubjectAlternativeNames(emails, SubjectAlternativeNamesType.EMAILS);
+    public SubjectAlternativeNames setEmails(List<String> emails) {
+        this.emails = emails;
+        return this;
     }
 
     /**
@@ -80,13 +64,14 @@ public final class SubjectAlternativeNames {
     }
 
     /**
-     * Create Subject Alternative names with dns names.
+     * Set the dns names.
      *
      * @param dnsNames the dns names to set
-     * @return the SubjectAlternativeNames.
+     * @return the updated SubjectAlternativeNames object itself.
      */
-    public static SubjectAlternativeNames fromDnsNames(List<String> dnsNames) {
-        return new SubjectAlternativeNames(dnsNames, SubjectAlternativeNamesType.DNS_NAMES);
+    public SubjectAlternativeNames setDnsNames(List<String> dnsNames) {
+        this.dnsNames = dnsNames;
+        return this;
     }
 
     /**
@@ -95,22 +80,17 @@ public final class SubjectAlternativeNames {
      * @return the list of  User Principal Names
      */
     public List<String> getUserPrincipalNames() {
-        return this.upns;
+        return this.userPrincipalNames;
     }
 
     /**
-     * Create Subject Alternative names with User Principal names.
+     * Set the User Principal Names.
      *
-     * @param upns the user principal names value to set
-     * @return the SubjectAlternativeNames.
+     * @param userPrincipalNames the user principal names to set
+     * @return the updated SubjectAlternativeNames object itself.
      */
-    public static SubjectAlternativeNames fromUserPrincipalNames(List<String> upns) {
-        return new SubjectAlternativeNames(upns, SubjectAlternativeNamesType.UPNS);
-    }
-
-    private enum SubjectAlternativeNamesType {
-        EMAILS,
-        DNS_NAMES,
-        UPNS;
+    public SubjectAlternativeNames setUserPrincipalNames(List<String> userPrincipalNames) {
+        this.userPrincipalNames = userPrincipalNames;
+        return this;
     }
 }

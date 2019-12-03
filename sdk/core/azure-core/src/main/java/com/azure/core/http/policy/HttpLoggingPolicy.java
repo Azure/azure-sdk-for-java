@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -83,13 +82,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
         final HttpLogDetailLevel httpLogLevel = httpLogOptions.getLogLevel();
         if (httpLogLevel.shouldLogUrl()) {
-            try {
-                UrlBuilder requestUrl = UrlBuilder.parse(request.getUrl());
-                requestUrl.setQuery(getAllowedQueryString(request.getUrl().getQuery()));
-                logger.info("--> {} {}", request.getHttpMethod(), requestUrl.toUrl());
-            } catch (MalformedURLException ex) {
-                return Mono.error(logger.logExceptionAsWarning(new IllegalStateException("Invalid request URL.")));
-            }
+            UrlBuilder requestUrl = UrlBuilder.parse(request.getUrl());
+            requestUrl.setQuery(getAllowedQueryString(request.getUrl().getQuery()));
+            logger.info("--> {} {}", request.getHttpMethod(), requestUrl.toString());
         }
 
         if (httpLogLevel.shouldLogHeaders()) {
@@ -196,9 +191,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 bodySize = contentLengthString + "-byte";
             }
             HttpLogDetailLevel httpLogLevel = httpLogOptions.getLogLevel();
-            // HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
             if (httpLogLevel.shouldLogUrl()) {
-                logger.info("<-- {} {} ({} ms, {} body)", response.getStatusCode(), url, tookMs, bodySize);
+                UrlBuilder requestUrl = UrlBuilder.parse(url);
+                requestUrl.setQuery(getAllowedQueryString(url.getQuery()));
+                logger.info("<-- {} {} ({} ms, {} body)", response.getStatusCode(), requestUrl.toString(), tookMs,
+                    bodySize);
             }
 
             if (httpLogLevel.shouldLogHeaders()) {

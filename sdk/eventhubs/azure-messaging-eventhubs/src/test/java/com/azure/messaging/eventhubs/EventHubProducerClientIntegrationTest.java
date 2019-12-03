@@ -140,4 +140,23 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
             producer.send(batch);
         }
     }
+
+    /**
+     * Sending with credentials.
+     */
+    @Test
+    public void sendWithCredentials() {
+        // Arrange
+        final EventData event = new EventData("body");
+        final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
+        final EventHubProducerClient client = createBuilder(true)
+            .buildProducerClient();
+
+        // Act & Assert
+        try {
+            client.send(event, options);
+        } finally {
+            dispose(client);
+        }
+    }
 }

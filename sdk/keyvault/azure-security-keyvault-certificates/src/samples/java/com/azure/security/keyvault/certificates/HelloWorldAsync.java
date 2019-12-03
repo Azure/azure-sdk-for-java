@@ -38,7 +38,7 @@ public class HelloWorldAsync {
         // Let's create a self signed certificate valid for 1 year. if the certificate
         //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
+            .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
             .setReuseKey(true)
             .setKeyType(CertificateKeyType.EC)
             .setKeyCurveName(CertificateKeyCurveName.P_256);
@@ -114,14 +114,19 @@ public class HelloWorldAsync {
         Thread.sleep(2000);
 
         // The certificates and issuers are no longer needed, need to delete it from the key vault.
-        certificateAsyncClient.deleteCertificate("certificateName")
-            .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
+        certificateAsyncClient.beginDeleteCertificate("certificateName")
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
+                System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
 
-        certificateAsyncClient.deleteCertificate("myCertificate")
-            .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
-
+        certificateAsyncClient.beginDeleteCertificate("myCertificate")
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
+                System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
 
         certificateAsyncClient.deleteIssuerWithResponse("myIssuer")
             .subscribe(deletedIssuerResponse ->
