@@ -11,6 +11,7 @@ var ghPages = require('gulp-gh-pages');
 var argv = require('yargs').argv;
 var gulpif = require('gulp-if');
 var exec = require('child_process').exec;
+const xmlparser = require('fast-xml-parser');
 
 const mappings = require('./api-specs.json');
 const defaultSpecRoot = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
@@ -64,6 +65,7 @@ if (args['autorest'] !== undefined) {
 var debug = args['debug'];
 var autoRestArgs = args['autorest-args'] || '';
 var autoRestExe;
+const mgmtPomFilename = 'pom.mgmt.xml'
 
 gulp.task('codegen', function(cb) {
     if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) ||
@@ -153,12 +155,26 @@ var codegen = function(project, cb) {
 };
 
 var deleteMgmtFolders = function(project) {
+    var modules = []
+
     project = project.split('/')[0]
     var projectRoot = path.join(sdkRoot, 'sdk', project);
-    fs.readdirSync(projectRoot).forEach(function(file, index) {
-        projectDir = path.join(projectRoot, file)
-        if(fs.lstatSync(projectDir).isDirectory() && file.startsWith('mgmt-')) {
-            deleteFolderRecursive(projectDir);
+    var projectPom = path.join(projectRoot, mgmtPomFilename);
+    // find all modules from pom
+    if(fs.existsSync(projectPom)) {
+        var xml = fs.readFileSync(projectPom, {encoding: 'utf-8'});
+        var mods = xmlparser.parse(xml).project.modules.module
+        if (typeof mods === 'string') {
+            modules.push(mods);
+        } else {
+            modules = mods;
+        }
+    }
+
+    modules.forEach(function(mod, index) {
+        moduleDir = path.join(projectRoot, mod);
+        if(fs.lstatSync(moduleDir).isDirectory()) {
+            deleteFolderRecursive(moduleDir);
         }
     });
 }

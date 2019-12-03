@@ -24,7 +24,8 @@
     "gulp-if": "^2.0.0",
     "gulp-shell": "^0.5.1",
     "p-all": "^1.0.0",
-    "yargs": "3.31.0"
+    "yargs": "3.31.0",
+    "fast-xml-parser": "3.15.0"
   },
   "dependencies": {
     "node": "^10.15.3"
