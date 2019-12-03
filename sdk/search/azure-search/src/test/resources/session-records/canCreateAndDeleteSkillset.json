@@ -1,62 +1,62 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk8c1433310d0a.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc6618322e3fe.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "2a1e95db-afe8-4fc5-8fe6-3e3691825598",
+      "request-id" : "a9a990a9-2bf1-4627-a7d4-beecb5d16a56",
       "StatusCode" : "201",
-      "Date" : "Mon, 25 Nov 2019 07:23:18 GMT",
+      "Date" : "Mon, 02 Dec 2019 22:49:46 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D77178583A861F\"",
-      "elapsed-time" : "62",
+      "ETag" : "W/\"0x8D77779EDD8AACC\"",
+      "elapsed-time" : "57",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "709",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk8c1433310d0a.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D77178583A861F\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkc6618322e3fe.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D77779EDD8AACC\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk8c1433310d0a.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkc6618322e3fe.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk8c1433310d0a.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc6618322e3fe.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "34",
+      "elapsed-time" : "58",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d7235916-4c71-4a4d-876e-2c39e0661347",
+      "request-id" : "56bf977d-507d-4bb5-a2c1-39d25d8f0702",
       "StatusCode" : "204",
-      "Date" : "Mon, 25 Nov 2019 07:23:18 GMT"
+      "Date" : "Mon, 02 Dec 2019 22:49:46 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk8c1433310d0a.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc6618322e3fe.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "2fb5d2c4-fbf5-446c-9d28-9e0b2e445c1b",
+      "request-id" : "2eed2c02-63f6-4c89-a213-77723017c67a",
       "StatusCode" : "404",
-      "Date" : "Mon, 25 Nov 2019 07:23:18 GMT",
+      "Date" : "Mon, 02 Dec 2019 22:49:46 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
       "elapsed-time" : "12",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "118",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in service 'azs-sdk8c1433310d0a'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in service 'azs-sdkc6618322e3fe'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

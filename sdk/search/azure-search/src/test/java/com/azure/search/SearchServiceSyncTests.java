@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.util.Context;
 import com.azure.search.models.ServiceStatistics;
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
         ServiceStatistics serviceStatistics = serviceClient.getServiceStatistics();
         assertReflectionEquals(serviceStatistics, getExpectedServiceStatistics(), IGNORE_DEFAULTS);
 
-        serviceStatistics = serviceClient.getServiceStatistics(generateRequestOptions());
+        serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(), Context.NONE).getValue();
         assertReflectionEquals(serviceStatistics, getExpectedServiceStatistics(), IGNORE_DEFAULTS);
     }
 }

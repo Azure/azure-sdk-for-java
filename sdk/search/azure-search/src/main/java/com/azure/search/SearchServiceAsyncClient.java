@@ -145,23 +145,6 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource the definition of the data source to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the data source that was created or updated.
-     */
-    public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource,
-                                                     AccessCondition accessCondition,
-                                                     RequestOptions requestOptions) {
-        return this.createOrUpdateDataSourceWithResponse(dataSource, accessCondition, requestOptions)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
-     *
      * @param dataSource The definition of the data source to create or update.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
      * doesn't match specified values
@@ -195,19 +178,6 @@ public class SearchServiceAsyncClient {
      */
     public Mono<DataSource> getDataSource(String dataSourceName) {
         return this.getDataSourceWithResponse(dataSourceName, null)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Retrieves a DataSource from an Azure Cognitive Search service.
-     *
-     * @param dataSourceName the name of the data source to retrieve
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging.
-     * @return the DataSource.
-     */
-    public Mono<DataSource> getDataSource(String dataSourceName, RequestOptions requestOptions) {
-        return this.getDataSourceWithResponse(dataSourceName, requestOptions)
             .map(Response::getValue);
     }
 
@@ -254,26 +224,19 @@ public class SearchServiceAsyncClient {
      */
     public PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> this.listDataSourcesWithResponse(select, requestOptions),
+            () -> withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)),
             nextLink -> Mono.empty());
     }
 
-    /**
-     * List all DataSources from an Azure Cognitive Search service.
-     *
-     * @param select Selects which top-level properties of DataSource definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
-     * @param requestOptions Additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging.
-     * @return a response containing the list of DataSources.
-     */
-    public Mono<PagedResponse<DataSource>> listDataSourcesWithResponse(String select, RequestOptions requestOptions) {
-        return withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context));
+    PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+            () -> this.listDataSourcesWithResponse(select, requestOptions, context),
+            nextLink -> Mono.empty());
     }
 
-    Mono<PagedResponse<DataSource>> listDataSourcesWithResponse(String select,
-                                                                RequestOptions requestOptions, Context context) {
+    private Mono<PagedResponse<DataSource>> listDataSourcesWithResponse(String select,
+                                                                        RequestOptions requestOptions,
+                                                                        Context context) {
         return restClient.dataSources()
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -294,23 +257,6 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Void> deleteDataSource(String dataSourceName) {
         return this.deleteDataSourceWithResponse(dataSourceName, null, null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search data source.
-     *
-     * @param dataSourceName The name of the data source to delete.
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a valid Mono
-     */
-    public Mono<Void> deleteDataSource(String dataSourceName,
-                                       AccessCondition accessCondition,
-                                       RequestOptions requestOptions) {
-        return this.deleteDataSourceWithResponse(dataSourceName, accessCondition, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -362,18 +308,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return true if the data source exists; false otherwise.
      */
-    public Mono<Boolean> dataSourceExists(String dataSourceName, RequestOptions requestOptions) {
-        return this.dataSourceExistsWithResponse(dataSourceName, requestOptions).map(Response::getValue);
-    }
-
-    /**
-     * Determines whether or not the given data source exists.
-     *
-     * @param dataSourceName the name of the data source
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the data source exists; false otherwise.
-     */
     public Mono<Response<Boolean>> dataSourceExistsWithResponse(String dataSourceName, RequestOptions requestOptions) {
         return withContext(context -> this.dataSourceExistsWithResponse(dataSourceName, requestOptions, context));
     }
@@ -392,26 +326,7 @@ public class SearchServiceAsyncClient {
      * @return a response containing the created Indexer.
      */
     public Mono<Indexer> createOrUpdateIndexer(Indexer indexer) {
-        return createOrUpdateIndexer(
-            indexer,
-            null,
-            null);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
-     *
-     * @param indexer The definition of the indexer to create or update.
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response containing the created Indexer.
-     */
-    public Mono<Indexer> createOrUpdateIndexer(Indexer indexer,
-                                               AccessCondition accessCondition,
-                                               RequestOptions requestOptions) {
-        return this.createOrUpdateIndexerWithResponse(indexer, accessCondition, requestOptions)
+        return this.createOrUpdateIndexerWithResponse(indexer, null, null)
             .map(Response::getValue);
     }
 
@@ -459,19 +374,6 @@ public class SearchServiceAsyncClient {
      * @param indexerName the name of the indexer to retrieve
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return the indexer.
-     */
-    public Mono<Indexer> getIndexer(String indexerName, RequestOptions requestOptions) {
-        return this.getIndexerWithResponse(indexerName, requestOptions)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Retrieves an indexer definition.
-     *
-     * @param indexerName the name of the indexer to retrieve
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the indexer.
      */
     public Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
@@ -491,9 +393,7 @@ public class SearchServiceAsyncClient {
      * @return all Indexers from the Search service.
      */
     public PagedFlux<Indexer> listIndexers() {
-        return new PagedFlux<>(
-            () -> this.listIndexersWithResponse(null, null),
-            nextLink -> Mono.empty());
+        return this.listIndexers(null, null);
     }
 
     /**
@@ -507,26 +407,19 @@ public class SearchServiceAsyncClient {
      */
     public PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> this.listIndexersWithResponse(select, requestOptions),
+            () -> withContext(context -> this.listIndexersWithResponse(select, requestOptions, context)),
             nextLink -> Mono.empty());
     }
 
-    /**
-     * Lists all indexers available for an Azure Cognitive Search service.
-     *
-     * @param select Selects which top-level properties of the indexers to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
-     * @param requestOptions Additional parameters for the operation.
-     * @return a response containing all Indexers from the Search service.
-     */
-    public Mono<PagedResponse<Indexer>> listIndexersWithResponse(String select, RequestOptions requestOptions) {
-        return withContext(context -> this.listIndexersWithResponse(select, requestOptions, context));
+    PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+            () -> this.listIndexersWithResponse(select, requestOptions, context),
+            nextLink -> Mono.empty());
     }
 
-    Mono<PagedResponse<Indexer>> listIndexersWithResponse(String select,
-                                                          RequestOptions requestOptions,
-                                                          Context context) {
+    private Mono<PagedResponse<Indexer>> listIndexersWithResponse(String select,
+                                                                  RequestOptions requestOptions,
+                                                                  Context context) {
         return restClient
             .indexers()
             .listWithRestResponseAsync(select, requestOptions, context)
@@ -561,31 +454,11 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Void> deleteIndexer(String indexerName,
-                                    AccessCondition accessCondition,
-                                    RequestOptions requestOptions) {
-        return this.deleteIndexerWithResponse(indexerName, accessCondition, requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search indexer.
-     *
-     * @param indexerName the name of the indexer to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response signalling completion.
-     */
     public Mono<Response<Void>> deleteIndexerWithResponse(String indexerName,
                                                           AccessCondition accessCondition,
                                                           RequestOptions requestOptions) {
-        return withContext(context -> this.deleteIndexerWithResponse(
-            indexerName,
-            accessCondition,
-            requestOptions,
-            context));
+        return withContext(context -> this.deleteIndexerWithResponse(indexerName,
+            accessCondition, requestOptions, context));
     }
 
     /**
@@ -625,19 +498,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Void> resetIndexer(String indexerName, RequestOptions requestOptions) {
-        return this.resetIndexerWithResponse(indexerName, requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Resets the change tracking state associated with an indexer.
-     *
-     * @param indexerName the name of the indexer to reset
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response signalling completion.
-     */
     public Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
         return withContext(context -> this.resetIndexerWithResponse(indexerName, requestOptions, context));
     }
@@ -656,20 +516,7 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> runIndexer(String indexerName) {
-        return restClient.indexers().runWithRestResponseAsync(indexerName, null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Runs an indexer on-demand.
-     *
-     * @param indexerName the name of the indexer to run
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response signalling completion.
-     */
-    public Mono<Void> runIndexer(String indexerName, RequestOptions requestOptions) {
-        return restClient.indexers().runWithRestResponseAsync(indexerName, requestOptions, null)
+        return this.runIndexerWithResponse(indexerName, null)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -682,10 +529,7 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
-        return withContext(context -> this.runIndexerWithResponse(
-            indexerName,
-            requestOptions,
-            context));
+        return withContext(context -> this.runIndexerWithResponse(indexerName, requestOptions, context));
     }
 
     Mono<Response<Void>> runIndexerWithResponse(String indexerName,
@@ -703,18 +547,6 @@ public class SearchServiceAsyncClient {
      */
     public Mono<IndexerExecutionInfo> getIndexerStatus(String indexerName) {
         return this.getIndexerStatusWithResponse(indexerName, null).map(Response::getValue);
-    }
-
-    /**
-     * Returns the current status and execution history of an indexer.
-     *
-     * @param indexerName the name of the indexer for which to retrieve status
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the indexer execution info.
-     */
-    public Mono<IndexerExecutionInfo> getIndexerStatus(String indexerName, RequestOptions requestOptions) {
-        return this.getIndexerStatusWithResponse(indexerName, requestOptions).map(Response::getValue);
     }
 
     /**
@@ -757,27 +589,14 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return true if the indexer exists; false otherwise.
      */
-    public Mono<Boolean> indexerExists(String indexerName, RequestOptions requestOptions) {
-        return this.indexerExistsWithResponse(indexerName, requestOptions).map(Response::getValue);
-    }
-
-    /**
-     * Determines whether or not the given indexer exists.
-     *
-     * @param indexerName the name of the indexer
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the indexer exists; false otherwise.
-     */
     public Mono<Response<Boolean>> indexerExistsWithResponse(String indexerName, RequestOptions requestOptions) {
         return withContext(context -> this.indexerExistsWithResponse(indexerName, requestOptions, context));
     }
 
     Mono<Response<Boolean>> indexerExistsWithResponse(String indexerName,
-                                                         RequestOptions requestOptions,
-                                                         Context context) {
-        return resourceExistsWithResponse(() ->
-            this.getIndexerWithResponse(indexerName, requestOptions, context));
+                                                      RequestOptions requestOptions,
+                                                      Context context) {
+        return resourceExistsWithResponse(() -> this.getIndexerWithResponse(indexerName, requestOptions, context));
     }
 
     /**
@@ -797,28 +616,13 @@ public class SearchServiceAsyncClient {
      * @param index definition of the index to create
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return the created Index.
-     */
-    public Mono<Index> createIndex(Index index, RequestOptions requestOptions) {
-        return this.createIndexWithResponse(index, requestOptions)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index.
-     *
-     * @param index definition of the index to create
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Index.
      */
     public Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions) {
         return withContext(context -> this.createIndexWithResponse(index, requestOptions, context));
     }
 
-    Mono<Response<Index>> createIndexWithResponse(Index index,
-                                                  RequestOptions requestOptions,
-                                                  Context context) {
+    Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions, Context context) {
         return restClient
             .indexes()
             .createWithRestResponseAsync(index, requestOptions, context)
@@ -833,19 +637,6 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Index> getIndex(String indexName) {
         return this.getIndexWithResponse(indexName, null)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Retrieves an index definition from the Azure Cognitive Search.
-     *
-     * @param indexName The name of the index to retrieve
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the Index.
-     */
-    public Mono<Index> getIndex(String indexName, RequestOptions requestOptions) {
-        return this.getIndexWithResponse(indexName, requestOptions)
             .map(Response::getValue);
     }
 
@@ -886,18 +677,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
      */
-    public Mono<Boolean> indexExists(String indexName, RequestOptions requestOptions) {
-        return this.indexExistsWithResponse(indexName, requestOptions).map(Response::getValue);
-    }
-
-    /**
-     * Determines whether or not the given index exists in the Azure Cognitive Search.
-     *
-     * @param indexName the name of the index
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the index exists; false otherwise.
-     */
     public Mono<Response<Boolean>> indexExistsWithResponse(String indexName, RequestOptions requestOptions) {
         return withContext(context -> this.indexExistsWithResponse(indexName, requestOptions, context));
     }
@@ -916,19 +695,6 @@ public class SearchServiceAsyncClient {
      */
     public Mono<IndexGetStatisticsResult> getIndexStatistics(String indexName) {
         return this.getIndexStatisticsWithResponse(indexName, null)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Returns statistics for the given index, including a document count and storage usage.
-     *
-     * @param indexName the name of the index for which to retrieve statistics
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the index statistics result.
-     */
-    public Mono<IndexGetStatisticsResult> getIndexStatistics(String indexName, RequestOptions requestOptions) {
-        return this.getIndexStatisticsWithResponse(indexName, requestOptions)
             .map(Response::getValue);
     }
 
@@ -975,25 +741,18 @@ public class SearchServiceAsyncClient {
      */
     public PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> this.listIndexesWithResponse(select, requestOptions),
+            () -> withContext(context -> this.listIndexesWithResponse(select, requestOptions, context)),
             nextLink -> Mono.empty());
     }
 
-    /**
-     * Lists all indexes available for an Azure Cognitive Search service.
-     *
-     * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response emitting the list of indexes.
-     */
-    public Mono<PagedResponse<Index>> listIndexesWithResponse(String select, RequestOptions requestOptions) {
-        return withContext(context -> this.listIndexesWithResponse(select, requestOptions, context));
+    PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+            () -> this.listIndexesWithResponse(select, requestOptions, context),
+            nextLink -> Mono.empty());
     }
 
-    Mono<PagedResponse<Index>> listIndexesWithResponse(String select, RequestOptions requestOptions, Context context) {
+    private Mono<PagedResponse<Index>> listIndexesWithResponse(String select,
+                                                               RequestOptions requestOptions, Context context) {
         return restClient.indexes()
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -1013,37 +772,9 @@ public class SearchServiceAsyncClient {
      * @return the index that was created or updated.
      */
     public Mono<Index> createOrUpdateIndex(Index index) {
-        return this.createOrUpdateIndexWithResponse(
-            index,
-            false,
-            null,
-            null)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
-     *
-     * @param index the definition of the index to create or update
-     * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     * index by taking the index offline for at least a few seconds. This temporarily causes
-     * indexing and query requests to fail. Performance and write availability of the index
-     * can be impaired for several minutes after the index is updated, or longer for very
-     * large indexes
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the index that was created or updated
-     */
-    public Mono<Index> createOrUpdateIndex(Index index,
-                                           boolean allowIndexDowntime,
-                                           AccessCondition accessCondition,
-                                           RequestOptions requestOptions) {
         return this.createOrUpdateIndexWithResponse(index,
-            allowIndexDowntime,
-            accessCondition,
-            requestOptions).map(Response::getValue);
+            false, null, null)
+            .map(Response::getValue);
     }
 
     /**
@@ -1077,11 +808,7 @@ public class SearchServiceAsyncClient {
         return restClient
             .indexes()
             .createOrUpdateWithRestResponseAsync(index.getName(),
-                index,
-                allowIndexDowntime,
-                requestOptions,
-                accessCondition,
-                context)
+                index, allowIndexDowntime, requestOptions, accessCondition, context)
             .map(Function.identity());
     }
 
@@ -1093,21 +820,6 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Void> deleteIndex(String indexName) {
         return this.deleteIndexWithResponse(indexName, null, null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search index and all the documents it contains.
-     *
-     * @param indexName the name of the index to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response signalling completion.
-     */
-    public Mono<Void> deleteIndex(String indexName, AccessCondition accessCondition, RequestOptions requestOptions) {
-        return this.deleteIndexWithResponse(indexName, accessCondition, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -1159,33 +871,26 @@ public class SearchServiceAsyncClient {
      * @return a response containing analyze result.
      */
     public PagedFlux<TokenInfo> analyzeIndex(String indexName,
-                                             AnalyzeRequest analyzeRequest,
-                                             RequestOptions requestOptions) {
+                                             AnalyzeRequest analyzeRequest, RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> this.analyzeIndexWithResponse(indexName, analyzeRequest, requestOptions),
+            () -> withContext(context -> this.analyzeIndexWithResponse(indexName,
+                analyzeRequest, requestOptions, context)),
             nextLink -> Mono.empty());
     }
 
-    /**
-     * Shows how an analyzer breaks text into tokens.
-     *
-     * @param indexName the name of the index for which to test an analyzer
-     * @param analyzeRequest the text and analyzer or analysis components to test
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response containing analyze result.
-     */
-    public Mono<PagedResponse<TokenInfo>> analyzeIndexWithResponse(String indexName,
-                                                                   AnalyzeRequest analyzeRequest,
-                                                                   RequestOptions requestOptions) {
-        return withContext(context -> this.analyzeIndexWithResponse(indexName,
-            analyzeRequest, requestOptions, context));
+    PagedFlux<TokenInfo> analyzeIndex(String indexName,
+                                      AnalyzeRequest analyzeRequest,
+                                      RequestOptions requestOptions,
+                                      Context context) {
+        return new PagedFlux<>(
+            () -> this.analyzeIndexWithResponse(indexName, analyzeRequest, requestOptions, context),
+            nextLink -> Mono.empty());
     }
 
-    Mono<PagedResponse<TokenInfo>> analyzeIndexWithResponse(String indexName,
-                                                            AnalyzeRequest analyzeRequest,
-                                                            RequestOptions requestOptions,
-                                                            Context context) {
+    private Mono<PagedResponse<TokenInfo>> analyzeIndexWithResponse(String indexName,
+                                                                    AnalyzeRequest analyzeRequest,
+                                                                    RequestOptions requestOptions,
+                                                                    Context context) {
         return restClient.indexes()
             .analyzeWithRestResponseAsync(indexName, analyzeRequest, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -1205,19 +910,6 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Skillset> createSkillset(Skillset skillset) {
         return this.createSkillsetWithResponse(skillset, null)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Creates a new skillset in an Azure Cognitive Search service.
-     *
-     * @param skillset definition of the skillset containing one or more cognitive skills
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the created Skillset.
-     */
-    public Mono<Skillset> createSkillset(Skillset skillset, RequestOptions requestOptions) {
-        return this.createSkillsetWithResponse(skillset, requestOptions)
             .map(Response::getValue);
     }
 
@@ -1250,19 +942,6 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Skillset> getSkillset(String skillsetName) {
         return this.getSkillsetWithResponse(skillsetName, null)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Retrieves a skillset definition.
-     *
-     * @param skillsetName the name of the skillset to retrieve
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the Skillset.
-     */
-    public Mono<Skillset> getSkillset(String skillsetName, RequestOptions requestOptions) {
-        return this.getSkillsetWithResponse(skillsetName, requestOptions, null)
             .map(Response::getValue);
     }
 
@@ -1310,27 +989,19 @@ public class SearchServiceAsyncClient {
      */
     public PagedFlux<Skillset> listSkillsets(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> this.listSkillsetsWithResponse(select, requestOptions),
+            () -> withContext(context -> this.listSkillsetsWithResponse(select, requestOptions, context)),
             nextLink -> Mono.empty());
     }
 
-    /**
-     * Lists all skillsets available for an Azure Cognitive Search service.
-     *
-     * @param select selects which top-level properties of the skillset definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response emitting the list of skillsets.
-     */
-    public Mono<PagedResponse<Skillset>> listSkillsetsWithResponse(String select, RequestOptions requestOptions) {
-        return withContext(context -> this.listSkillsetsWithResponse(select, requestOptions, context));
+    PagedFlux<Skillset> listSkillsets(String select, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+            () -> this.listSkillsetsWithResponse(select, requestOptions, context),
+            nextLink -> Mono.empty());
     }
 
-    Mono<PagedResponse<Skillset>> listSkillsetsWithResponse(String select,
-                                                            RequestOptions requestOptions,
-                                                            Context context) {
+    private Mono<PagedResponse<Skillset>> listSkillsetsWithResponse(String select,
+                                                                    RequestOptions requestOptions,
+                                                                    Context context) {
         return this.restClient.skillsets()
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -1362,23 +1033,6 @@ public class SearchServiceAsyncClient {
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return the skillset that was created or updated.
-     */
-    public Mono<Skillset> createOrUpdateSkillset(Skillset skillset,
-                                                 AccessCondition accessCondition,
-                                                 RequestOptions requestOptions) {
-        return this.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
-     *
-     * @param skillset the definition of the skillset to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the skillset that was created or updated.
      */
     public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
@@ -1397,10 +1051,7 @@ public class SearchServiceAsyncClient {
         return restClient
             .skillsets()
             .createOrUpdateWithRestResponseAsync(skillset.getName(),
-                skillset,
-                requestOptions,
-                accessCondition,
-                context)
+                skillset, requestOptions, accessCondition, context)
             .map(Function.identity());
     }
 
@@ -1412,23 +1063,6 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Void> deleteSkillset(String skillsetName) {
         return this.deleteSkillsetWithResponse(skillsetName, null, null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a cognitive skillset in an Azure Cognitive Search service.
-     *
-     * @param skillsetName the name of the skillset to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response signalling completion.
-     */
-    public Mono<Void> deleteSkillset(String skillsetName,
-                                     AccessCondition accessCondition,
-                                     RequestOptions requestOptions) {
-        return this.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -1477,18 +1111,6 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return true if the skillset exists; false otherwise.
      */
-    public Mono<Boolean> skillsetExists(String skillsetName, RequestOptions requestOptions) {
-        return this.skillsetExistsWithResponse(skillsetName, requestOptions).map(Response::getValue);
-    }
-
-    /**
-     * Determines whether or not the given skillset exists.
-     *
-     * @param skillsetName the name of the skillset
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the skillset exists; false otherwise.
-     */
     public Mono<Response<Boolean>> skillsetExistsWithResponse(String skillsetName, RequestOptions requestOptions) {
         return withContext(context -> this.skillsetExistsWithResponse(skillsetName, requestOptions, context));
     }
@@ -1517,26 +1139,11 @@ public class SearchServiceAsyncClient {
      * @param synonymMap the definition of the synonym map to create
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return the created {@link SynonymMap}.
-     */
-    public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap, RequestOptions requestOptions) {
-        return this.createSynonymMapWithResponse(synonymMap, requestOptions)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search synonym map.
-     *
-     * @param synonymMap the definition of the synonym map to create
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created SynonymMap.
      */
     public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
                                                                    RequestOptions requestOptions) {
-        return withContext(context -> this.createSynonymMapWithResponse(synonymMap,
-            requestOptions,
-            context));
+        return withContext(context -> this.createSynonymMapWithResponse(synonymMap, requestOptions, context));
     }
 
     Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
@@ -1565,23 +1172,9 @@ public class SearchServiceAsyncClient {
      * @param synonymMapName name of the synonym map to retrieve
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return the {@link SynonymMap} definition
-     */
-    public Mono<SynonymMap> getSynonymMap(String synonymMapName, RequestOptions requestOptions) {
-        return this.getSynonymMapWithResponse(synonymMapName, requestOptions)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Retrieves a synonym map definition.
-     *
-     * @param synonymMapName name of the synonym map to retrieve
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the SynonymMap.
      */
-    public Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName,
-                                                                RequestOptions requestOptions) {
+    public Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName, RequestOptions requestOptions) {
         return withContext(context -> this.getSynonymMapWithResponse(synonymMapName, requestOptions, context));
     }
 
@@ -1615,27 +1208,19 @@ public class SearchServiceAsyncClient {
      */
     public PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> this.listSynonymMapsWithResponse(select, requestOptions),
+            () -> withContext(context -> this.listSynonymMapsWithResponse(select, requestOptions, context)),
             nextLink -> Mono.empty());
     }
 
-    /**
-     * Lists all synonym maps available for an Azure Cognitive Search service.
-     *
-     * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response containing the list of synonym maps.
-     */
-    public Mono<PagedResponse<SynonymMap>> listSynonymMapsWithResponse(String select, RequestOptions requestOptions) {
-        return withContext(context -> this.listSynonymMapsWithResponse(select, requestOptions, context));
+    PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+            () -> this.listSynonymMapsWithResponse(select, requestOptions, context),
+            nextLink -> Mono.empty());
     }
 
-    Mono<PagedResponse<SynonymMap>> listSynonymMapsWithResponse(String select,
-                                                                RequestOptions requestOptions,
-                                                                Context context) {
+    private Mono<PagedResponse<SynonymMap>> listSynonymMapsWithResponse(String select,
+                                                                        RequestOptions requestOptions,
+                                                                        Context context) {
         return restClient
             .synonymMaps()
             .listWithRestResponseAsync(select, requestOptions, context)
@@ -1657,23 +1242,6 @@ public class SearchServiceAsyncClient {
      */
     public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap) {
         return this.createOrUpdateSynonymMapWithResponse(synonymMap, null, null)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
-     *
-     * @param synonymMap the definition of the synonym map to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the synonym map that was created or updated.
-     */
-    public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap,
-                                                     AccessCondition accessCondition,
-                                                     RequestOptions requestOptions) {
-        return this.createOrUpdateSynonymMapWithResponse(synonymMap, accessCondition, requestOptions)
             .map(Response::getValue);
     }
 
@@ -1715,23 +1283,7 @@ public class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteSynonymMap(String synonymMapName) {
-        return this.deleteSynonymMap(synonymMapName, null, null);
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search synonym map.
-     *
-     * @param synonymMapName the name of the synonym map to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response signalling completion.
-     */
-    public Mono<Void> deleteSynonymMap(String synonymMapName,
-                                       AccessCondition accessCondition,
-                                       RequestOptions requestOptions) {
-        return this.deleteSynonymMapWithResponse(synonymMapName, accessCondition, requestOptions)
+        return this.deleteSynonymMapWithResponse(synonymMapName, null, null)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -1770,18 +1322,6 @@ public class SearchServiceAsyncClient {
      */
     public Mono<Boolean> synonymMapExists(String synonymMapName) {
         return this.synonymMapExistsWithResponse(synonymMapName, null).map(Response::getValue);
-    }
-
-    /**
-     * Determines whether or not the given synonym map exists.
-     *
-     * @param synonymMapName the name of the synonym map
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the synonym map exists; false otherwise.
-     */
-    public Mono<Boolean> synonymMapExists(String synonymMapName, RequestOptions requestOptions) {
-        return this.synonymMapExistsWithResponse(synonymMapName, requestOptions).map(Response::getValue);
     }
 
     /**
@@ -1841,31 +1381,12 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return the search service statistics result.
      */
-    public Mono<ServiceStatistics> getServiceStatistics(RequestOptions requestOptions) {
-        return this.getServiceStatisticsWithResponse(requestOptions).map(Response::getValue);
-    }
-
-    /**
-     * Returns service level statistics for a search service, including service counters and limits.
-     *
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the search service statistics result.
-     */
     public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
         return withContext(context -> this.getServiceStatisticsWithResponse(requestOptions, context));
     }
 
-    /**
-     * Returns service level statistics for a search service, including service counters and limits.
-     *
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return the search service statistics result.
-     */
-    public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions,
-                                                                        Context context) {
+    Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions,
+                                                                       Context context) {
         return restClient.getServiceStatisticsWithRestResponseAsync(requestOptions, context).map(Function.identity());
     }
 

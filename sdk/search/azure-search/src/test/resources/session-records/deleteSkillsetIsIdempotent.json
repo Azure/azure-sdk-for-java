@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk32135373ae26.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkd5396133d913.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "fc0614b2-589a-401a-8760-29976a7d1dc3",
+      "request-id" : "7e9c0e7d-5f68-4f37-8bad-cf4f59345923",
       "StatusCode" : "404",
-      "Date" : "Mon, 25 Nov 2019 07:21:34 GMT",
+      "Date" : "Mon, 02 Dec 2019 22:48:19 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "32",
+      "elapsed-time" : "44",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "126",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in a service named 'azs-sdk32135373ae26'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in a service named 'azs-sdkd5396133d913'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
@@ -23,62 +23,62 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk32135373ae26.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkd5396133d913.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "222efb60-355d-43f5-978e-f50a713d8e52",
+      "request-id" : "ac8af076-053e-4c2d-9b18-1d82fa029ef0",
       "StatusCode" : "201",
-      "Date" : "Mon, 25 Nov 2019 07:21:34 GMT",
+      "Date" : "Mon, 02 Dec 2019 22:48:19 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D771781A76ACF6\"",
-      "elapsed-time" : "41",
+      "ETag" : "W/\"0x8D77779BA165139\"",
+      "elapsed-time" : "45",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "709",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk32135373ae26.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D771781A76ACF6\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkd5396133d913.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D77779BA165139\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk32135373ae26.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkd5396133d913.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk32135373ae26.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkd5396133d913.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "243",
+      "elapsed-time" : "31",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "bad6bd1a-7fbb-44bd-b64f-480dece5dac7",
+      "request-id" : "2e7496b0-e438-4835-80a1-819b0793d934",
       "StatusCode" : "204",
-      "Date" : "Mon, 25 Nov 2019 07:21:34 GMT"
+      "Date" : "Mon, 02 Dec 2019 22:48:19 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk32135373ae26.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkd5396133d913.search-dogfood.windows-int.net/skillsets('ocr-skillset')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "86ba67aa-bade-485d-bcf2-9971294a287c",
+      "request-id" : "102012dc-eaf0-4b21-a7e2-8fa9d7908d47",
       "StatusCode" : "404",
-      "Date" : "Mon, 25 Nov 2019 07:21:34 GMT",
+      "Date" : "Mon, 02 Dec 2019 22:48:19 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "14",
+      "elapsed-time" : "12",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "126",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in a service named 'azs-sdk32135373ae26'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'ocr-skillset' was found in a service named 'azs-sdkd5396133d913'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

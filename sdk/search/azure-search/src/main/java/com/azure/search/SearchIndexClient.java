@@ -8,7 +8,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedIterableBase;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.common.SearchPagedResponse;
@@ -404,33 +403,15 @@ public class SearchIndexClient {
      * @param autocompleteOptions autocomplete options
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return auto complete result.
      */
     public PagedIterable<AutocompleteItem> autocomplete(String searchText,
                                                         String suggesterName,
                                                         AutocompleteOptions autocompleteOptions,
-                                                        RequestOptions requestOptions) {
+                                                        RequestOptions requestOptions,
+                                                        Context context) {
         return new PagedIterable<>(asyncClient.autocomplete(searchText,
-            suggesterName, autocompleteOptions, requestOptions));
-    }
-
-    /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
-     *
-     * @param searchText search text
-     * @param suggesterName suggester name
-     * @param autocompleteOptions autocomplete options
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return a response containing auto complete result.
-     */
-    public PagedResponse<AutocompleteItem> autocompleteWithResponse(String searchText,
-                                                                    String suggesterName,
-                                                                    AutocompleteOptions autocompleteOptions,
-                                                                    RequestOptions requestOptions,
-                                                                    Context context) {
-        return asyncClient.autocompleteWithResponse(searchText,
-            suggesterName, autocompleteOptions, requestOptions, context).block();
+            suggesterName, autocompleteOptions, requestOptions, context));
     }
 }

@@ -150,9 +150,6 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     public abstract void createOrUpdateSkillsetIfNotExistsSucceedsOnNoResource();
 
     @Test
-    public abstract void createOrUpdateSkillsetWithResponseIfNotExistsSucceedsOnNoResource();
-
-    @Test
     public abstract void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException;
 
     @Test

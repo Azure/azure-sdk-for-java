@@ -32,9 +32,6 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
     public abstract void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResource();
 
     @Test
-    public abstract void createOrUpdateSynonymMapWithResponseIfNotExistsSucceedsOnNoResource();
-
-    @Test
     public abstract void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException;
 
     @Test

@@ -18,8 +18,9 @@ public class SearchServiceAsyncTests extends SearchServiceTestBase {
             .assertNext(serviceStatistics -> assertReflectionEquals(serviceStatistics, getExpectedServiceStatistics(), IGNORE_DEFAULTS))
             .verifyComplete();
 
-        StepVerifier.create(serviceClient.getServiceStatistics(generateRequestOptions()))
-            .assertNext(serviceStatistics -> assertReflectionEquals(serviceStatistics, getExpectedServiceStatistics(), IGNORE_DEFAULTS))
+        StepVerifier.create(serviceClient.getServiceStatisticsWithResponse(generateRequestOptions()))
+            .assertNext(serviceStatistics -> assertReflectionEquals(serviceStatistics.getValue(),
+                getExpectedServiceStatistics(), IGNORE_DEFAULTS))
             .verifyComplete();
     }
 }

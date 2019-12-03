@@ -6,6 +6,7 @@ package com.azure.search;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
@@ -49,7 +50,7 @@ public class AutoCompleteExample {
             .setClientRequestId(UUID.randomUUID());
 
         PagedIterable<AutocompleteItem> results = searchClient.autocomplete("coffee m",
-            "sg", params, requestOptions);
+            "sg", params, requestOptions, Context.NONE);
 
         Iterator<PagedResponse<AutocompleteItem>> iterator = results.iterableByPage().iterator();
 
@@ -77,7 +78,7 @@ public class AutoCompleteExample {
             .setClientRequestId(UUID.randomUUID());
 
         PagedIterable<AutocompleteItem> results = searchClient.autocomplete("co", "sg", params,
-            requestOptions);
+            requestOptions, Context.NONE);
 
         Iterator<PagedResponse<AutocompleteItem>> iterator = results.iterableByPage().iterator();
 
@@ -104,7 +105,7 @@ public class AutoCompleteExample {
             .setClientRequestId(UUID.randomUUID());
 
         PagedIterable<AutocompleteItem> results = searchClient.autocomplete("su", "sg", params,
-            requestOptions);
+            requestOptions, Context.NONE);
 
         Iterator<PagedResponse<AutocompleteItem>> iterator = results.iterableByPage().iterator();
 

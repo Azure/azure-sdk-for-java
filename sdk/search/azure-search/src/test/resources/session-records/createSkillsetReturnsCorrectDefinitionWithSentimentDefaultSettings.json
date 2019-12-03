@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk03567582442f.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk30f657607d8c.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "1519ac9b-e628-4a39-97dc-e470cb7f71e2",
+      "request-id" : "56e88c12-9bf9-4bb0-848e-f54e83c0607a",
       "StatusCode" : "201",
-      "Date" : "Mon, 25 Nov 2019 07:20:27 GMT",
+      "Date" : "Mon, 02 Dec 2019 22:47:27 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D77177F21B229D\"",
-      "elapsed-time" : "81",
+      "ETag" : "W/\"0x8D777799AF5B39E\"",
+      "elapsed-time" : "79",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "577",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk03567582442f.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D77177F21B229D\\\"\",\"name\":\"sentiment-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.SentimentSkill\",\"name\":\"mysentiment\",\"description\":\"Tested Sentiment skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"score\",\"targetName\":\"mySentiment\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk30f657607d8c.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D777799AF5B39E\\\"\",\"name\":\"sentiment-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.SentimentSkill\",\"name\":\"mysentiment\",\"description\":\"Tested Sentiment skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"score\",\"targetName\":\"mySentiment\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk03567582442f.search-dogfood.windows-int.net/skillsets('sentiment-skillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk30f657607d8c.search-dogfood.windows-int.net/skillsets('sentiment-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

@@ -1,55 +1,55 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk5a562489b194.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk778145145073.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "dd766028-04bb-4369-8e7e-02bb94f3b675",
+      "request-id" : "9a8a16ea-708b-48bf-812a-54db3e6b20fe",
       "StatusCode" : "201",
-      "Date" : "Mon, 25 Nov 2019 06:59:51 GMT",
+      "Date" : "Mon, 02 Dec 2019 21:55:46 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D771751162C81D\"",
-      "elapsed-time" : "49",
+      "ETag" : "W/\"0x8D7777262CF7191\"",
+      "elapsed-time" : "56",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "410",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk5a562489b194.search-dogfood.windows-int.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D771751162C81D\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk778145145073.search-dogfood.windows-int.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7777262CF7191\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk5a562489b194.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk778145145073.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk5a562489b194.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk778145145073.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "52",
+      "elapsed-time" : "16",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "4eff3d38-bb92-4429-a69b-5654ee435264",
+      "request-id" : "56131783-ed41-4fb3-b545-81b47e25a611",
       "StatusCode" : "204",
-      "Date" : "Mon, 25 Nov 2019 06:59:51 GMT"
+      "Date" : "Mon, 02 Dec 2019 21:55:46 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk5a562489b194.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk778145145073.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "5f02cc8b-3fec-40c0-88ef-8b870ff63d28",
+      "request-id" : "a811024f-b4b1-45f4-be5d-08ac3d739bc0",
       "StatusCode" : "412",
-      "Date" : "Mon, 25 Nov 2019 06:59:51 GMT",
+      "Date" : "Mon, 02 Dec 2019 21:55:46 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
       "elapsed-time" : "5",

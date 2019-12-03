@@ -6,6 +6,7 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataContainer;
 import com.azure.search.models.DataSource;
@@ -37,12 +38,6 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             (DataSource ds, AccessOptions ac) ->
                 createOrUpdateDataSource(ds, ac.getAccessCondition(), ac.getRequestOptions());
 
-    private BiFunction<DataSource,
-        AccessOptions,
-        Mono<DataSource>> createOrUpdateDataSourceWithResponseFunc =
-            (DataSource ds, AccessOptions ac) ->
-                createOrUpdateDataSourceWithResponse(ds, ac.getAccessCondition(), ac.getRequestOptions());
-
     private Supplier<DataSource> newDataSourceFunc =
         () -> createTestBlobDataSource(null);
 
@@ -59,21 +54,15 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         client = getSearchServiceClientBuilder().buildAsyncClient();
     }
 
-    private Mono<DataSource> createOrUpdateDataSource(DataSource datasource,
+    private Mono<DataSource> createOrUpdateDataSource(DataSource dataSource,
                                                       AccessCondition accessCondition,
                                                       RequestOptions requestOptions) {
-        return client.createOrUpdateDataSource(datasource, accessCondition, requestOptions);
-    }
-
-    private Mono<DataSource> createOrUpdateDataSourceWithResponse(DataSource dataSource,
-                                                                 AccessCondition accessCondition,
-                                                                 RequestOptions requestOptions) {
         return client.createOrUpdateDataSourceWithResponse(dataSource, accessCondition, requestOptions)
             .map(Response::getValue);
     }
 
     private Mono<Void> deleteDataSource(String name, AccessCondition accessCondition, RequestOptions requestOptions) {
-        return client.deleteDataSource(name, accessCondition, requestOptions);
+        return client.deleteDataSourceWithResponse(name, accessCondition, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     @Override
@@ -95,12 +84,14 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             })
             .verifyComplete();
 
+        results = client.listDataSources("name", generateRequestOptions());
+
         StepVerifier
-            .create(client.listDataSourcesWithResponse("name", generateRequestOptions()))
+            .create(results.collectList())
             .assertNext(result -> {
-                Assert.assertEquals(2, result.getItems().size());
-                Assert.assertEquals(dataSource1.getName(), result.getValue().get(0).getName());
-                Assert.assertEquals(dataSource2.getName(), result.getValue().get(1).getName());
+                Assert.assertEquals(2, result.size());
+                Assert.assertEquals(dataSource1.getName(), result.get(0).getName());
+                Assert.assertEquals(dataSource2.getName(), result.get(1).getName());
             })
             .verifyComplete();
     }
@@ -166,15 +157,6 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
             createOrUpdateDataSourceFunc,
-            newDataSourceFunc);
-    }
-
-    @Override
-    public void createOrUpdateDatasourceWithResponseIfNotExistsSucceedsOnNoResource() {
-        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
-
-        act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateDataSourceWithResponseFunc,
             newDataSourceFunc);
     }
 
@@ -270,11 +252,6 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .verifyComplete();
 
         StepVerifier
-            .create(client.dataSourceExists(dataSource.getName(), generateRequestOptions()))
-            .assertNext(Assert::assertTrue)
-            .verifyComplete();
-
-        StepVerifier
             .create(client.dataSourceExistsWithResponse(dataSource.getName(), generateRequestOptions()))
             .assertNext(res -> Assert.assertTrue(res.getValue()))
             .verifyComplete();
@@ -355,10 +332,6 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null));
 
         DataSource actualDataSource = client.getDataSource(dataSourceName).block();
-        assert actualDataSource != null;
-        assertDataSourcesEqual(expectedDataSource, actualDataSource);
-
-        actualDataSource = client.getDataSource(dataSourceName, generateRequestOptions()).block();
         assert actualDataSource != null;
         assertDataSourcesEqual(expectedDataSource, actualDataSource);
 

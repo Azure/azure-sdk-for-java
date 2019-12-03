@@ -5,7 +5,6 @@ package com.azure.search;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -90,22 +89,6 @@ public class SearchServiceClient {
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return the data source that was created or updated.
-     */
-    public DataSource createOrUpdateDataSource(DataSource dataSource,
-                                               AccessCondition accessCondition,
-                                               RequestOptions requestOptions) {
-        return asyncClient.createOrUpdateDataSource(dataSource, accessCondition, requestOptions).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
-     *
-     * @param dataSource the definition of the data source to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing data source that was created or updated.
      */
@@ -125,18 +108,6 @@ public class SearchServiceClient {
      */
     public DataSource getDataSource(String dataSourceName) {
         return asyncClient.getDataSource(dataSourceName).block();
-    }
-
-    /**
-     * Retrieves a DataSource from an Azure Cognitive Search service.
-     *
-     * @param dataSourceName the name of the data source to retrieve
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging.
-     * @return the DataSource.
-     */
-    public DataSource getDataSource(String dataSourceName, RequestOptions requestOptions) {
-        return asyncClient.getDataSource(dataSourceName, requestOptions).block();
     }
 
     /**
@@ -171,26 +142,11 @@ public class SearchServiceClient {
      * The default is all properties.
      * @param requestOptions Additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging.
-     * @return a list of DataSources
-     */
-    public PagedIterable<DataSource> listDataSources(String select, RequestOptions requestOptions) {
-        return new PagedIterable<>(asyncClient.listDataSources(select, requestOptions));
-    }
-
-    /**
-     * List all DataSources from an Azure Cognitive Search service.
-     *
-     * @param select Selects which top-level properties of DataSource definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
-     * @param requestOptions Additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return a response containing the list of DataSources.
      */
-    public PagedResponse<DataSource> listDataSourcesWithResponse(String select,
-                                                                 RequestOptions requestOptions, Context context) {
-        return asyncClient.listDataSourcesWithResponse(select, requestOptions, context).block();
+    public PagedIterable<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listDataSources(select, requestOptions, context));
     }
 
     /**
@@ -200,21 +156,6 @@ public class SearchServiceClient {
      */
     public void deleteDataSource(String dataSourceName) {
         asyncClient.deleteDataSource(dataSourceName).block();
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search data source.
-     *
-     * @param dataSourceName The name of the data source to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     */
-    public void deleteDataSource(String dataSourceName,
-                                 AccessCondition accessCondition,
-                                 RequestOptions requestOptions) {
-        asyncClient.deleteDataSource(dataSourceName, accessCondition, requestOptions).block();
     }
 
     /**
@@ -252,27 +193,13 @@ public class SearchServiceClient {
      * @param dataSourceName the name of the data source
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the data source exists; false otherwise.
-     */
-    public Boolean dataSourceExists(String dataSourceName, RequestOptions requestOptions) {
-        return asyncClient.dataSourceExists(dataSourceName, requestOptions).block();
-    }
-
-    /**
-     * Determines whether or not the given data source exists.
-     *
-     * @param dataSourceName the name of the data source
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the data source exists; false otherwise.
      */
     public Response<Boolean> dataSourceExistsWithResponse(String dataSourceName,
-        RequestOptions requestOptions,
-        Context context) {
+                                                          RequestOptions requestOptions, Context context) {
         return asyncClient
-            .dataSourceExistsWithResponse(dataSourceName, requestOptions, context)
-            .block();
+            .dataSourceExistsWithResponse(dataSourceName, requestOptions, context).block();
     }
 
     /**
@@ -309,22 +236,6 @@ public class SearchServiceClient {
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return a response containing the created Indexer.
-     */
-    public Indexer createOrUpdateIndexer(Indexer indexer,
-                                         AccessCondition accessCondition,
-                                         RequestOptions requestOptions) {
-        return asyncClient.createOrUpdateIndexer(indexer, accessCondition, requestOptions).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
-     *
-     * @param indexer The definition of the indexer to create or update.
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context Context
      * @return A response object containing the Indexer.
      */
@@ -336,6 +247,8 @@ public class SearchServiceClient {
     }
 
     /**
+     * Lists all indexers available for an Azure Cognitive Search service.
+     *
      * @return all Indexers from the Search service.
      */
     public PagedIterable<Indexer> listIndexers() {
@@ -349,26 +262,11 @@ public class SearchServiceClient {
      * Specified as a comma-separated list of JSON property names, or '*' for all properties.
      * The default is all properties.
      * @param requestOptions Additional parameters for the operation.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return all Indexers from the Search service.
      */
-    public PagedIterable<Indexer> listIndexers(String select, RequestOptions requestOptions) {
-        return new PagedIterable<>(asyncClient.listIndexers(select, requestOptions));
-    }
-
-    /**
-     * Lists all indexers available for an Azure Cognitive Search service.
-     *
-     * @param select Selects which top-level properties of the indexers to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @return a response containing all Indexers from the Search service.
-     */
-    public PagedResponse<Indexer> listIndexersWithResponse(String select,
-                                                           RequestOptions requestOptions,
-                                                           Context context) {
-        return asyncClient.listIndexersWithResponse(select, requestOptions, context).block();
+    public PagedIterable<Indexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listIndexers(select, requestOptions, context));
     }
 
     /**
@@ -387,23 +285,11 @@ public class SearchServiceClient {
      * @param indexerName the name of the indexer to retrieve
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return the indexer.
-     */
-    public Indexer getIndexer(String indexerName, RequestOptions requestOptions) {
-        return asyncClient.getIndexer(indexerName, requestOptions).block();
-    }
-
-    /**
-     * Retrieves an indexer definition.
-     *
-     * @param indexerName the name of the indexer to retrieve
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the indexer.
      */
-    public Response<Indexer> getIndexerWithResponse(String indexerName, RequestOptions requestOptions,
-        Context context) {
+    public Response<Indexer> getIndexerWithResponse(String indexerName,
+                                                    RequestOptions requestOptions, Context context) {
         return asyncClient.getIndexerWithResponse(indexerName, requestOptions, context).block();
     }
 
@@ -413,20 +299,7 @@ public class SearchServiceClient {
      * @param indexerName the name of the indexer to delete
      */
     public void deleteIndexer(String indexerName) {
-        asyncClient.deleteIndexerWithResponse(indexerName, null, null).block();
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search indexer.
-     *
-     * @param indexerName the name of the indexer to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     */
-    public void deleteIndexer(String indexerName, AccessCondition accessCondition, RequestOptions requestOptions) {
-        asyncClient.deleteIndexerWithResponse(indexerName, accessCondition, requestOptions).block();
+        asyncClient.deleteIndexer(indexerName).block();
     }
 
     /**
@@ -440,10 +313,11 @@ public class SearchServiceClient {
      * @param context the context
      * @return a response signalling completion.
      */
-    public Response<Void> deleteIndexerWithResponse(String indexerName, AccessCondition accessCondition,
-                                                          RequestOptions requestOptions, Context context) {
-        return asyncClient.deleteIndexerWithResponse(
-            indexerName, accessCondition, requestOptions, context).block();
+    public Response<Void> deleteIndexerWithResponse(String indexerName,
+                                                    AccessCondition accessCondition,
+                                                    RequestOptions requestOptions,
+                                                    Context context) {
+        return asyncClient.deleteIndexerWithResponse(indexerName, accessCondition, requestOptions, context).block();
     }
 
     /**
@@ -453,17 +327,6 @@ public class SearchServiceClient {
      */
     public void resetIndexer(String indexerName) {
         asyncClient.resetIndexer(indexerName).block();
-    }
-
-    /**
-     * Resets the change tracking state associated with an indexer.
-     *
-     * @param indexerName the name of the indexer to reset
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     */
-    public void resetIndexer(String indexerName, RequestOptions requestOptions) {
-        asyncClient.resetIndexer(indexerName, requestOptions).block();
     }
 
     /**
@@ -494,17 +357,6 @@ public class SearchServiceClient {
      * @param indexerName the name of the indexer to run
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     */
-    public void runIndexer(String indexerName, RequestOptions requestOptions) {
-        asyncClient.runIndexer(indexerName, requestOptions).block();
-    }
-
-    /**
-     * Runs an indexer on-demand.
-     *
-     * @param indexerName the name of the indexer to run
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response signalling completion.
      */
@@ -522,18 +374,6 @@ public class SearchServiceClient {
      */
     public IndexerExecutionInfo getIndexerStatus(String indexerName) {
         return asyncClient.getIndexerStatus(indexerName).block();
-    }
-
-    /**
-     * Returns the current status and execution history of an indexer.
-     *
-     * @param indexerName the name of the indexer for which to retrieve status
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response with the indexer execution info.
-     */
-    public IndexerExecutionInfo getIndexerStatus(String indexerName, RequestOptions requestOptions) {
-        return asyncClient.getIndexerStatus(indexerName, requestOptions).block();
     }
 
     /**
@@ -569,18 +409,6 @@ public class SearchServiceClient {
      * @param indexerName the name of the indexer
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the indexer exists; false otherwise.
-     */
-    public Boolean indexerExists(String indexerName, RequestOptions requestOptions) {
-        return asyncClient.indexerExists(indexerName, requestOptions).block();
-    }
-
-    /**
-     * Determines whether or not the given indexer exists.
-     *
-     * @param indexerName the name of the indexer
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the indexer exists; false otherwise.
      */
@@ -606,24 +434,10 @@ public class SearchServiceClient {
      * @param index definition of the index to create
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return the created Index.
-     */
-    public Index createIndex(Index index, RequestOptions requestOptions) {
-        return asyncClient.createIndex(index, requestOptions).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index
-     *
-     * @param index definition of the index to create
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Index.
      */
-    public Response<Index> createIndexWithResponse(Index index,
-                                                   RequestOptions requestOptions,
-                                                   Context context) {
+    public Response<Index> createIndexWithResponse(Index index, RequestOptions requestOptions, Context context) {
         return asyncClient.createIndexWithResponse(index, requestOptions, context).block();
     }
 
@@ -643,24 +457,10 @@ public class SearchServiceClient {
      * @param indexName the name of the index to retrieve
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return the Index.
-     */
-    public Index getIndex(String indexName, RequestOptions requestOptions) {
-        return asyncClient.getIndex(indexName, requestOptions).block();
-    }
-
-    /**
-     * Retrieves an index definition from the Azure Cognitive Search.
-     *
-     * @param indexName the name of the index to retrieve
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the Index.
      */
-    public Response<Index> getIndexWithResponse(String indexName,
-                                                RequestOptions requestOptions,
-                                                Context context) {
+    public Response<Index> getIndexWithResponse(String indexName, RequestOptions requestOptions, Context context) {
         return asyncClient.getIndexWithResponse(indexName, requestOptions, context).block();
     }
 
@@ -680,24 +480,10 @@ public class SearchServiceClient {
      * @param indexName the name of the index
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the index exists; false otherwise.
-     */
-    public Boolean indexExists(String indexName, RequestOptions requestOptions) {
-        return asyncClient.indexExists(indexName, requestOptions).block();
-    }
-
-    /**
-     * Determines whether or not the given index exists in the Azure Cognitive Search.
-     *
-     * @param indexName the name of the index
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the index exists; false otherwise.
      */
-    public Response<Boolean> indexExistsWithResponse(String indexName,
-                                                     RequestOptions requestOptions,
-                                                     Context context) {
+    public Response<Boolean> indexExistsWithResponse(String indexName, RequestOptions requestOptions, Context context) {
         return asyncClient.indexExistsWithResponse(indexName, requestOptions, context).block();
     }
 
@@ -709,18 +495,6 @@ public class SearchServiceClient {
      */
     public IndexGetStatisticsResult getIndexStatistics(String indexName) {
         return asyncClient.getIndexStatistics(indexName).block();
-    }
-
-    /**
-     * Returns statistics for the given index, including a document count and storage usage.
-     *
-     * @param indexName the name of the index for which to retrieve statistics
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the index statistics result.
-     */
-    public IndexGetStatisticsResult getIndexStatistics(String indexName, RequestOptions requestOptions) {
-        return asyncClient.getIndexStatistics(indexName, requestOptions).block();
     }
 
     /**
@@ -755,25 +529,11 @@ public class SearchServiceClient {
      * The default is all properties
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of indexes.
      */
-    public PagedIterable<Index> listIndexes(String select, RequestOptions requestOptions) {
-        return new PagedIterable<>(asyncClient.listIndexes(select, requestOptions));
-    }
-
-    /**
-     * Lists all indexes available for an Azure Cognitive Search service.
-     *
-     * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return a response emitting the list of indexes.
-     */
-    public PagedResponse<Index> listIndexesWithResponse(String select, RequestOptions requestOptions, Context context) {
-        return asyncClient.listIndexesWithResponse(select, requestOptions, context).block();
+    public PagedIterable<Index> listIndexes(String select, RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listIndexes(select, requestOptions, context));
     }
 
     /**
@@ -799,31 +559,6 @@ public class SearchServiceClient {
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return the index that was created or updated.
-     */
-    public Index createOrUpdateIndex(Index index,
-                                     boolean allowIndexDowntime,
-                                     AccessCondition accessCondition,
-                                     RequestOptions requestOptions) {
-        return asyncClient.createOrUpdateIndex(index,
-            allowIndexDowntime,
-            accessCondition,
-            requestOptions).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
-     *
-     * @param index the definition of the index to create or update
-     * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     * index by taking the index offline for at least a few seconds. This temporarily causes
-     * indexing and query requests to fail. Performance and write availability of the index
-     * can be impaired for several minutes after the index is updated, or longer for very
-     * large indexes.
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the Index that was created or updated.
      */
@@ -833,10 +568,7 @@ public class SearchServiceClient {
                                                            RequestOptions requestOptions,
                                                            Context context) {
         return asyncClient.createOrUpdateIndexWithResponse(index,
-            allowIndexDowntime,
-            accessCondition,
-            requestOptions,
-            context).block();
+            allowIndexDowntime, accessCondition, requestOptions, context).block();
     }
 
     /**
@@ -856,19 +588,6 @@ public class SearchServiceClient {
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     */
-    public void deleteIndex(String indexName, AccessCondition accessCondition, RequestOptions requestOptions) {
-        asyncClient.deleteIndex(indexName, accessCondition, requestOptions).block();
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search index and all the documents it contains.
-     *
-     * @param indexName the name of the index to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
@@ -877,9 +596,7 @@ public class SearchServiceClient {
                                                   RequestOptions requestOptions,
                                                   Context context) {
         return asyncClient.deleteIndexWithResponse(indexName,
-            accessCondition,
-            requestOptions,
-            context).block();
+            accessCondition, requestOptions, context).block();
     }
 
     /**
@@ -889,8 +606,7 @@ public class SearchServiceClient {
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @return analyze result.
      */
-    public PagedIterable<TokenInfo> analyzeIndex(String indexName,
-                                                 AnalyzeRequest analyzeRequest) {
+    public PagedIterable<TokenInfo> analyzeIndex(String indexName, AnalyzeRequest analyzeRequest) {
         return new PagedIterable<>(asyncClient.analyzeIndex(indexName, analyzeRequest));
     }
 
@@ -901,29 +617,14 @@ public class SearchServiceClient {
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return analyze result.
      */
     public PagedIterable<TokenInfo> analyzeIndex(String indexName,
                                                  AnalyzeRequest analyzeRequest,
-                                                 RequestOptions requestOptions) {
-        return new PagedIterable<>(asyncClient.analyzeIndex(indexName, analyzeRequest, requestOptions));
-    }
-
-    /**
-     * Shows how an analyzer breaks text into tokens.
-     *
-     * @param indexName the name of the index for which to test an analyzer
-     * @param analyzeRequest the text and analyzer or analysis components to test
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return a response containing analyze result.
-     */
-    public PagedResponse<TokenInfo> analyzeIndexWithResponse(String indexName,
-                                                             AnalyzeRequest analyzeRequest,
-                                                             RequestOptions requestOptions,
-                                                             Context context) {
-        return asyncClient.analyzeIndexWithResponse(indexName, analyzeRequest, requestOptions, context).block();
+                                                 RequestOptions requestOptions,
+                                                 Context context) {
+        return new PagedIterable<>(asyncClient.analyzeIndex(indexName, analyzeRequest, requestOptions, context));
     }
 
     /**
@@ -935,18 +636,6 @@ public class SearchServiceClient {
      */
     public Skillset createSkillset(Skillset skillset) {
         return asyncClient.createSkillset(skillset).block();
-    }
-
-    /**
-     * Creates a new skillset in an Azure Cognitive Search service.
-     *
-     * @param skillset definition of the skillset containing one or more cognitive skills
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the created Skillset.
-     */
-    public Skillset createSkillset(Skillset skillset, RequestOptions requestOptions) {
-        return asyncClient.createSkillset(skillset, requestOptions).block();
     }
 
     /**
@@ -972,18 +661,6 @@ public class SearchServiceClient {
      */
     public Skillset getSkillset(String skillsetName) {
         return asyncClient.getSkillset(skillsetName).block();
-    }
-
-    /**
-     * Retrieves a skillset definition.
-     *
-     * @param skillsetName the name of the skillset to retrieve
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
-     * @return the Skillset.
-     */
-    public Skillset getSkillset(String skillsetName, RequestOptions requestOptions) {
-        return asyncClient.getSkillset(skillsetName, requestOptions).block();
     }
 
     /**
@@ -1018,27 +695,11 @@ public class SearchServiceClient {
      *               The default is all properties
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of skillsets.
      */
-    public PagedIterable<Skillset> listSkillsets(String select, RequestOptions requestOptions) {
-        return new PagedIterable<>(asyncClient.listSkillsets(select, requestOptions));
-    }
-
-    /**
-     * Lists all skillsets available for an Azure Cognitive Search service.
-     *
-     * @param select selects which top-level properties of the skillset definitions to retrieve.
-     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *               The default is all properties
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return a response emitting the list of skillsets.
-     */
-    public PagedResponse<Skillset> listSkillsetsWithResponse(String select,
-                                                             RequestOptions requestOptions,
-                                                             Context context) {
-        return asyncClient.listSkillsetsWithResponse(select, requestOptions, context).block();
+    public PagedIterable<Skillset> listSkillsets(String select, RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listSkillsets(select, requestOptions, context));
     }
 
     /**
@@ -1049,22 +710,6 @@ public class SearchServiceClient {
      */
     public Skillset createOrUpdateSkillset(Skillset skillset) {
         return asyncClient.createOrUpdateSkillset(skillset).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
-     *
-     * @param skillset the definition of the skillset to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the skillset that was created or updated.
-     */
-    public Skillset createOrUpdateSkillset(Skillset skillset,
-                                           AccessCondition accessCondition,
-                                           RequestOptions requestOptions) {
-        return asyncClient.createOrUpdateSkillset(skillset, accessCondition, requestOptions).block();
     }
 
     /**
@@ -1105,19 +750,6 @@ public class SearchServiceClient {
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     */
-    public void deleteSkillset(String skillsetName, AccessCondition accessCondition, RequestOptions requestOptions) {
-        asyncClient.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions).block();
-    }
-
-    /**
-     * Deletes a cognitive skillset in an Azure Cognitive Search service.
-     *
-     * @param skillsetName the name of the skillset to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response signalling completion.
      */
@@ -1144,18 +776,6 @@ public class SearchServiceClient {
      * @param skillsetName the name of the skillset
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the skillset exists; false otherwise.
-     */
-    public Boolean skillsetExists(String skillsetName, RequestOptions requestOptions) {
-        return asyncClient.skillsetExists(skillsetName, requestOptions).block();
-    }
-
-    /**
-     * Determines whether or not the given skillset exists.
-     *
-     * @param skillsetName the name of the skillset
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return true if the skillset exists; false otherwise.
      */
@@ -1163,8 +783,7 @@ public class SearchServiceClient {
                                                         RequestOptions requestOptions,
                                                         Context context) {
         return asyncClient
-            .skillsetExistsWithResponse(skillsetName, requestOptions, context)
-            .block();
+            .skillsetExistsWithResponse(skillsetName, requestOptions, context).block();
     }
 
     /**
@@ -1175,18 +794,6 @@ public class SearchServiceClient {
      */
     public SynonymMap createSynonymMap(SynonymMap synonymMap) {
         return asyncClient.createSynonymMap(synonymMap).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search synonym map.
-     *
-     * @param synonymMap the definition of the synonym map to create
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the created {@link SynonymMap}.
-     */
-    public SynonymMap createSynonymMap(SynonymMap synonymMap, RequestOptions requestOptions) {
-        return asyncClient.createSynonymMap(synonymMap, requestOptions).block();
     }
 
     /**
@@ -1212,18 +819,6 @@ public class SearchServiceClient {
      */
     public SynonymMap getSynonymMap(String synonymMapName) {
         return asyncClient.getSynonymMap(synonymMapName).block();
-    }
-
-    /**
-     * Retrieves a synonym map definition.
-     *
-     * @param synonymMapName name of the synonym map to retrieve
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the {@link SynonymMap} definition.
-     */
-    public SynonymMap getSynonymMap(String synonymMapName, RequestOptions requestOptions) {
-        return asyncClient.getSynonymMap(synonymMapName, requestOptions).block();
     }
 
     /**
@@ -1258,26 +853,11 @@ public class SearchServiceClient {
      * The default is all properties
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of synonym maps.
      */
-    public PagedIterable<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions) {
-        return new PagedIterable<>(asyncClient.listSynonymMaps(select, requestOptions));
-    }
-
-    /**
-     * Lists all synonym maps available for an Azure Cognitive Search service.
-     *
-     * @param select selects which top-level properties of the index definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return a response containing the list of synonym maps.
-     */
-    public PagedResponse<SynonymMap> listSynonymMapsWithResponse(String select,
-                                                                 RequestOptions requestOptions, Context context) {
-        return asyncClient.listSynonymMapsWithResponse(select, requestOptions, context).block();
+    public PagedIterable<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listSynonymMaps(select, requestOptions, context));
     }
 
     /**
@@ -1288,22 +868,6 @@ public class SearchServiceClient {
      */
     public SynonymMap createOrUpdateSynonymMap(SynonymMap synonymMap) {
         return asyncClient.createOrUpdateSynonymMap(synonymMap).block();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
-     *
-     * @param synonymMap the definition of the synonym map to create or update
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the synonym map that was created or updated.
-     */
-    public SynonymMap createOrUpdateSynonymMap(SynonymMap synonymMap,
-                                               AccessCondition accessCondition,
-                                               RequestOptions requestOptions) {
-        return asyncClient.createOrUpdateSynonymMap(synonymMap, accessCondition, requestOptions).block();
     }
 
     /**
@@ -1342,21 +906,6 @@ public class SearchServiceClient {
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     */
-    public void deleteSynonymMap(String synonymMapName,
-                                 AccessCondition accessCondition,
-                                 RequestOptions requestOptions) {
-        asyncClient.deleteSynonymMap(synonymMapName, accessCondition, requestOptions).block();
-    }
-
-    /**
-     * Deletes an Azure Cognitive Search synonym map.
-     *
-     * @param synonymMapName the name of the synonym map to delete
-     * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     * doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
@@ -1376,18 +925,6 @@ public class SearchServiceClient {
      */
     public Boolean synonymMapExists(String synonymMapName) {
         return asyncClient.synonymMapExists(synonymMapName).block();
-    }
-
-    /**
-     * Determines whether or not the given synonym map exists.
-     *
-     * @param synonymMapName the name of the synonym map
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return true if the synonym map exists; false otherwise.
-     */
-    public Boolean synonymMapExists(String synonymMapName, RequestOptions requestOptions) {
-        return asyncClient.synonymMapExists(synonymMapName, requestOptions).block();
     }
 
     /**
@@ -1417,29 +954,6 @@ public class SearchServiceClient {
         return asyncClient.getServiceStatistics().block();
     }
 
-
-    /**
-     * Returns service level statistics for a search service, including service counters and limits.
-     *
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the search service statistics result.
-     */
-    public ServiceStatistics getServiceStatistics(RequestOptions requestOptions) {
-        return asyncClient.getServiceStatistics(requestOptions).block();
-    }
-
-    /**
-     * Returns service level statistics for a search service, including service counters and limits.
-     *
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return the search service statistics result.
-     */
-    public Response<ServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
-        return asyncClient.getServiceStatisticsWithResponse(requestOptions).block();
-    }
-
     /**
      * Returns service level statistics for a search service, including service counters and limits.
      *
@@ -1449,7 +963,7 @@ public class SearchServiceClient {
      * @return the search service statistics result.
      */
     public Response<ServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions,
-                                                                              Context context) {
+                                                                        Context context) {
         return asyncClient.getServiceStatisticsWithResponse(requestOptions, context).block();
     }
 }

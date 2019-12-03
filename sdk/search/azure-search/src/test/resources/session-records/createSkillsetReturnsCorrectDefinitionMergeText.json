@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk9ca499449a36.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkf4308090a46e.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "e751389f-2e85-4dcc-a44e-9c814aa72a92",
+      "request-id" : "de035277-ddc6-4ca6-b5d6-1bba0944e783",
       "StatusCode" : "201",
-      "Date" : "Mon, 25 Nov 2019 07:22:51 GMT",
+      "Date" : "Mon, 02 Dec 2019 22:49:22 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D771784825AB85\"",
-      "elapsed-time" : "60",
+      "ETag" : "W/\"0x8D77779DFCCB83E\"",
+      "elapsed-time" : "63",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "739",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk9ca499449a36.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D771784825AB85\\\"\",\"name\":\"merge-text-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.MergeSkill\",\"name\":\"mymerge\",\"description\":\"Tested Merged Text skill\",\"context\":\"/document\",\"insertPreTag\":\"__\",\"insertPostTag\":\"__e\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"itemsToInsert\",\"source\":\"/document/textitems\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"offsets\",\"source\":\"/document/offsets\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"mergedText\",\"targetName\":\"myMergedText\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkf4308090a46e.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D77779DFCCB83E\\\"\",\"name\":\"merge-text-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.MergeSkill\",\"name\":\"mymerge\",\"description\":\"Tested Merged Text skill\",\"context\":\"/document\",\"insertPreTag\":\"__\",\"insertPostTag\":\"__e\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"itemsToInsert\",\"source\":\"/document/textitems\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"offsets\",\"source\":\"/document/offsets\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"mergedText\",\"targetName\":\"myMergedText\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk9ca499449a36.search-dogfood.windows-int.net/skillsets('merge-text-skillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkf4308090a46e.search-dogfood.windows-int.net/skillsets('merge-text-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

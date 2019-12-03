@@ -1,92 +1,92 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk207547340c9f.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc5d01954f060.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "313e1b6a-1e71-4897-ad54-a8b7d088aff5",
+      "request-id" : "2af4e9f1-5d38-408d-ad2e-5b868e4add11",
       "StatusCode" : "201",
-      "Date" : "Mon, 25 Nov 2019 07:24:05 GMT",
+      "Date" : "Mon, 02 Dec 2019 23:26:13 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7717874E029F8\"",
-      "elapsed-time" : "92",
+      "ETag" : "W/\"0x8D7777F05CD8BB4\"",
+      "elapsed-time" : "62",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "791",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk207547340c9f.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7717874E029F8\\\"\",\"name\":\"cognitive-services-key-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":{\"@odata.type\":\"#Microsoft.Azure.Search.DefaultCognitiveServices\",\"description\":null}}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkc5d01954f060.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7777F05CD8BB4\\\"\",\"name\":\"cognitive-services-key-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":{\"@odata.type\":\"#Microsoft.Azure.Search.DefaultCognitiveServices\",\"description\":null}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk207547340c9f.search-dogfood.windows-int.net/skillsets('cognitive-services-key-skillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkc5d01954f060.search-dogfood.windows-int.net/skillsets('cognitive-services-key-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk207547340c9f.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc5d01954f060.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "badca2fb-1030-4fae-8000-873741443a4c",
+      "request-id" : "e52e2ec2-1c54-4a8f-8fc6-49ff593755a2",
       "StatusCode" : "201",
-      "Date" : "Mon, 25 Nov 2019 07:24:06 GMT",
+      "Date" : "Mon, 02 Dec 2019 23:26:13 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D771787501267E\"",
-      "elapsed-time" : "41",
+      "ETag" : "W/\"0x8D7777F05E49B06\"",
+      "elapsed-time" : "39",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "673",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk207547340c9f.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D771787501267E\\\"\",\"name\":\"entity-recognition-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.EntityRecognitionSkill\",\"name\":\"myentity\",\"description\":\"Tested Entity Recognition skill\",\"context\":\"/document\",\"categories\":[],\"defaultLanguageCode\":null,\"minimumPrecision\":null,\"includeTypelessEntities\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"entities\",\"targetName\":\"myEntities\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkc5d01954f060.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7777F05E49B06\\\"\",\"name\":\"entity-recognition-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.EntityRecognitionSkill\",\"name\":\"myentity\",\"description\":\"Tested Entity Recognition skill\",\"context\":\"/document\",\"categories\":[],\"defaultLanguageCode\":null,\"minimumPrecision\":null,\"includeTypelessEntities\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"entities\",\"targetName\":\"myEntities\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk207547340c9f.search-dogfood.windows-int.net/skillsets('entity-recognition-skillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkc5d01954f060.search-dogfood.windows-int.net/skillsets('entity-recognition-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk207547340c9f.search-dogfood.windows-int.net/skillsets?$select=name&api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc5d01954f060.search-dogfood.windows-int.net/skillsets?$select=name&api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d6deed61-3429-498e-a9dc-7d29529354c2",
+      "request-id" : "68e37424-8d0c-45d2-87e0-f0a2d7f57db8",
       "StatusCode" : "200",
-      "Date" : "Mon, 25 Nov 2019 07:24:06 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "elapsed-time" : "18",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "197",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk207547340c9f.search-dogfood.windows-int.net/$metadata#skillsets(name)\",\"value\":[{\"name\":\"cognitive-services-key-skillset\"},{\"name\":\"entity-recognition-skillset\"}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://azs-sdk207547340c9f.search-dogfood.windows-int.net/skillsets?$select=name&api-version=2019-05-06",
-    "Headers" : { },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "d6deed61-3429-498e-a9dc-7d29529354c2",
-      "StatusCode" : "200",
-      "Date" : "Mon, 25 Nov 2019 07:24:06 GMT",
+      "Date" : "Mon, 02 Dec 2019 23:26:13 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
       "elapsed-time" : "12",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "197",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk207547340c9f.search-dogfood.windows-int.net/$metadata#skillsets(name)\",\"value\":[{\"name\":\"cognitive-services-key-skillset\"},{\"name\":\"entity-recognition-skillset\"}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkc5d01954f060.search-dogfood.windows-int.net/$metadata#skillsets(name)\",\"value\":[{\"name\":\"cognitive-services-key-skillset\"},{\"name\":\"entity-recognition-skillset\"}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdkc5d01954f060.search-dogfood.windows-int.net/skillsets?$select=name&api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "68e37424-8d0c-45d2-87e0-f0a2d7f57db8",
+      "StatusCode" : "200",
+      "Date" : "Mon, 02 Dec 2019 23:26:13 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "11",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "197",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkc5d01954f060.search-dogfood.windows-int.net/$metadata#skillsets(name)\",\"value\":[{\"name\":\"cognitive-services-key-skillset\"},{\"name\":\"entity-recognition-skillset\"}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

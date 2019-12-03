@@ -5,7 +5,7 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DefaultCognitiveServices;
 import com.azure.search.models.EntityCategory;
@@ -46,12 +46,6 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             (Skillset skillset, AccessOptions ac) ->
                 createSkillset(skillset, ac.getAccessCondition(), ac.getRequestOptions());
 
-    private BiFunction<Skillset,
-        AccessOptions,
-        Mono<Skillset>> createOrUpdateSkillsetWithResponseAsyncFunc =
-            (Skillset skillset, AccessOptions ac) ->
-                createSkillsetWithResponse(skillset, ac.getAccessCondition(), ac.getRequestOptions());
-
     private Supplier<Skillset> newSkillsetFunc =
         () -> createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
@@ -64,21 +58,13 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     private Mono<Void> deleteSkillset(String skillsetName,
                                       AccessCondition accessCondition,
                                       RequestOptions requestOptions) {
-        return client.deleteSkillset(skillsetName,
-            accessCondition,
-            requestOptions);
+        return client.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     private Mono<Skillset> createSkillset(Skillset skillset,
                                           AccessCondition accessCondition,
                                           RequestOptions requestOptions) {
-        return client.createOrUpdateSkillset(skillset, accessCondition, requestOptions);
-    }
-
-    private Mono<Skillset> createSkillsetWithResponse(Skillset skillset,
-                                                      AccessCondition accessCondition,
-                                                      RequestOptions requestOptions) {
-        return client.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions, Context.NONE)
+        return client.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions)
             .map(Response::getValue);
     }
 
@@ -94,12 +80,6 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(expectedSkillset))
-            .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
-            .verifyComplete();
-
-        StepVerifier
-            .create(client.createSkillset(expectedSkillset.setName("image-analysis-key-phrase-skillset1"),
-                generateRequestOptions()))
             .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
             .verifyComplete();
 
@@ -270,11 +250,6 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
 
         StepVerifier
-            .create(client.getSkillset(expected.getName(), generateRequestOptions()))
-            .assertNext(actual -> assertSkillsetsEqual(expected, actual))
-            .verifyComplete();
-
-        StepVerifier
             .create(client.getSkillsetWithResponse(expected.getName(), generateRequestOptions()))
             .assertNext(actual -> assertSkillsetsEqual(expected, actual.getValue()))
             .verifyComplete();
@@ -391,26 +366,6 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
                 Assert.assertEquals(skillset2.getName(), result.get(1).getName());
             })
             .verifyComplete();
-
-        listResponse = client.listSkillsets("name", generateRequestOptions());
-
-        StepVerifier
-            .create(listResponse.collectList())
-            .assertNext(result -> {
-                Assert.assertEquals(2, result.size());
-                Assert.assertEquals(skillset1.getName(), result.get(0).getName());
-                Assert.assertEquals(skillset2.getName(), result.get(1).getName());
-            })
-            .verifyComplete();
-
-        StepVerifier
-            .create(client.listSkillsetsWithResponse("name", generateRequestOptions()))
-            .assertNext(result -> {
-                Assert.assertEquals(2, result.getItems().size());
-                Assert.assertEquals(skillset1.getName(), result.getValue().get(0).getName());
-                Assert.assertEquals(skillset2.getName(), result.getValue().get(1).getName());
-            })
-            .verifyComplete();
     }
 
     @Override
@@ -498,12 +453,6 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
 
         StepVerifier
-            .create(client.createOrUpdateSkillset(expected.setName("testskillset1"), new AccessCondition(),
-                generateRequestOptions()))
-            .assertNext(res -> assertSkillsetsEqual(expected, res))
-            .verifyComplete();
-
-        StepVerifier
             .create(client.createOrUpdateSkillsetWithResponse(expected.setName("testskillset2"), new AccessCondition(),
                     generateRequestOptions()))
             .assertNext(res -> Assert.assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode()))
@@ -543,11 +492,6 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.skillsetExists(skillset.getName()))
-            .assertNext(res -> Assert.assertTrue(res))
-            .verifyComplete();
-
-        StepVerifier
-            .create(client.skillsetExists(skillset.getName(), generateRequestOptions()))
             .assertNext(res -> Assert.assertTrue(res))
             .verifyComplete();
 
@@ -628,15 +572,6 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
             createOrUpdateSkillsetAsyncFunc,
-            newSkillsetFunc);
-    }
-
-    @Override
-    public void createOrUpdateSkillsetWithResponseIfNotExistsSucceedsOnNoResource() {
-        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
-
-        act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateSkillsetWithResponseAsyncFunc,
             newSkillsetFunc);
     }
 

@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.models.AutocompleteItem;
@@ -88,7 +89,8 @@ public class RunningSearchSolutionExample {
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(
             AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
-        PagedIterable<AutocompleteItem> results = client.autocomplete("co", SUGGESTER_NAME, params, new RequestOptions());
+        PagedIterable<AutocompleteItem> results = client.autocomplete("co",
+            SUGGESTER_NAME, params, new RequestOptions(), Context.NONE);
 
         Iterator<PagedResponse<AutocompleteItem>> iterator = results.iterableByPage().iterator();
 

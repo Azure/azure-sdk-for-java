@@ -1,46 +1,46 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk2da7453288d6.search-dogfood.windows-int.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk3fe588431070.search-dogfood.windows-int.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "885f0570-887c-4cce-9983-4ad5436da00a",
+      "request-id" : "53f2dc9d-3a32-430e-a5a4-433375a97cdb",
       "StatusCode" : "200",
-      "Date" : "Wed, 13 Nov 2019 23:57:00 GMT",
+      "Date" : "Mon, 02 Dec 2019 20:32:39 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "244",
+      "elapsed-time" : "157",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "807",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk2da7453288d6.search-dogfood.windows-int.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"3\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"4\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"5\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"6\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"7\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"8\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"9\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"10\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk3fe588431070.search-dogfood.windows-int.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"3\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"4\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"5\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"6\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"7\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"8\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"9\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"10\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk2da7453288d6.search-dogfood.windows-int.net/indexes('hotels')/docs/search.post.autocomplete?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk3fe588431070.search-dogfood.windows-int.net/indexes('hotels')/docs/search.post.autocomplete?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "087fbc01-7136-4f96-a83e-9190ff6d8097",
+      "request-id" : "dcd08e31-df07-48db-92ee-bf9b763d48ed",
       "StatusCode" : "200",
-      "Date" : "Wed, 13 Nov 2019 23:57:02 GMT",
+      "Date" : "Mon, 02 Dec 2019 20:32:41 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "9",
+      "elapsed-time" : "8",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "265",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk2da7453288d6.search-dogfood.windows-int.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.AutocompleteItem)\",\"value\":[{\"text\":\"point\",\"queryPlusText\":\"point\"},{\"text\":\"police\",\"queryPlusText\":\"police\"}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk3fe588431070.search-dogfood.windows-int.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.AutocompleteItem)\",\"value\":[{\"text\":\"point\",\"queryPlusText\":\"point\"},{\"text\":\"police\",\"queryPlusText\":\"police\"}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

@@ -5,6 +5,7 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
@@ -42,13 +43,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         AccessOptions,
         Mono<Index>> createOrUpdateIndexAsyncFunc =
             (Index index, AccessOptions ac) ->
-                createIndex(index, false, ac.getAccessCondition(), ac.getRequestOptions());
-
-    private BiFunction<Index,
-        AccessOptions,
-        Mono<Index>> createOrUpdateIndexWithResponseAsyncFunc =
-            (Index index, AccessOptions ac) ->
-                createIndexWithResponse(index, false, ac.getAccessCondition(), ac.getRequestOptions());
+                this.createIndex(index, false, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Index> newIndexFunc = this::createTestIndex;
 
@@ -56,25 +51,17 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     private BiFunction<String, AccessOptions, Mono<Void>> deleteIndexAsyncFunc =
         (String name, AccessOptions ac) ->
-            deleteIndex(name, ac.getAccessCondition(), ac.getRequestOptions());
+            this.deleteIndex(name, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Mono<Void> deleteIndex(String indexName,
-                                     AccessCondition accessCondition,
-                                     RequestOptions requestOptions) {
-        return client.deleteIndex(indexName,
-            accessCondition,
-            requestOptions);
+                                   AccessCondition accessCondition,
+                                   RequestOptions requestOptions) {
+        return client.deleteIndexWithResponse(indexName, accessCondition, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     private Mono<Index> createIndex(Index index, boolean allowDowntime,
                                     AccessCondition accessCondition,
                                     RequestOptions requestOptions) {
-        return client.createOrUpdateIndex(index, allowDowntime, accessCondition, requestOptions);
-    }
-
-    private Mono<Index> createIndexWithResponse(Index index, boolean allowDowntime,
-                                                          AccessCondition accessCondition,
-                                                          RequestOptions requestOptions) {
         return client.createOrUpdateIndexWithResponse(index, allowDowntime, accessCondition, requestOptions)
             .map(Response::getValue);
     }
@@ -90,13 +77,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         StepVerifier
             .create(client.createIndex(index))
-            .assertNext(createdIndex -> {
-                assertIndexesEqual(index, createdIndex);
-            })
-            .verifyComplete();
-
-        StepVerifier
-            .create(client.createIndex(index.setName("hotel1"), generateRequestOptions()))
             .assertNext(createdIndex -> {
                 assertIndexesEqual(index, createdIndex);
             })
@@ -173,13 +153,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
 
         StepVerifier
-            .create(client.getIndex(index.getName(), generateRequestOptions()))
-            .assertNext(res -> {
-                assertIndexesEqual(index, res);
-            })
-            .verifyComplete();
-
-        StepVerifier
             .create(client.getIndexWithResponse(index.getName(), generateRequestOptions()))
             .assertNext(res -> {
                 assertIndexesEqual(index, res.getValue());
@@ -205,11 +178,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.indexExists(index.getName()))
-            .assertNext(res -> Assert.assertTrue(res))
-            .verifyComplete();
-
-        StepVerifier
-            .create(client.indexExists(index.getName(), generateRequestOptions()))
             .assertNext(res -> Assert.assertTrue(res))
             .verifyComplete();
 
@@ -322,26 +290,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
                 Assert.assertEquals(index2.getName(), result.get(1).getName());
             })
             .verifyComplete();
-
-        listResponse = client.listIndexes("name", generateRequestOptions());
-
-        StepVerifier
-            .create(listResponse.collectList())
-            .assertNext(result -> {
-                Assert.assertEquals(2, result.size());
-                Assert.assertEquals(index1.getName(), result.get(0).getName());
-                Assert.assertEquals(index2.getName(), result.get(1).getName());
-            })
-            .verifyComplete();
-
-        StepVerifier
-            .create(client.listIndexesWithResponse("name", generateRequestOptions()))
-            .assertNext(result -> {
-                Assert.assertEquals(2, result.getItems().size());
-                Assert.assertEquals(index1.getName(), result.getValue().get(0).getName());
-                Assert.assertEquals(index2.getName(), result.getValue().get(1).getName());
-            })
-            .verifyComplete();
     }
 
     @Override
@@ -433,10 +381,10 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         hotelNameField.setSynonymMaps(Collections.emptyList());
 
         StepVerifier
-            .create(client.createOrUpdateIndex(existingIndex,
+            .create(client.createOrUpdateIndexWithResponse(existingIndex,
                 true, new AccessCondition(), generateRequestOptions()))
             .assertNext(res  -> {
-                assertIndexesEqual(existingIndex, res);
+                assertIndexesEqual(existingIndex, res.getValue());
             })
             .verifyComplete();
     }
@@ -493,9 +441,9 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         hotelNameField.setRetrievable(false);
 
         StepVerifier
-            .create(client.createOrUpdateIndex(existingIndex,
+            .create(client.createOrUpdateIndexWithResponse(existingIndex,
                 true, new AccessCondition(), generateRequestOptions()))
-            .assertNext(res -> assertIndexesEqual(existingIndex, res))
+            .assertNext(res -> assertIndexesEqual(existingIndex, res.getValue()))
             .verifyComplete();
     }
 
@@ -520,9 +468,9 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         ));
 
         StepVerifier
-            .create(client.createOrUpdateIndex(existingIndex,
+            .create(client.createOrUpdateIndexWithResponse(existingIndex,
                 true, new AccessCondition(), generateRequestOptions()))
-            .assertNext(res -> assertIndexesEqual(existingIndex, res))
+            .assertNext(res -> assertIndexesEqual(existingIndex, res.getValue()))
             .verifyComplete();
     }
 
@@ -541,8 +489,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         ));
 
         StepVerifier
-            .create(client.createOrUpdateIndex(existingIndex,
-                true, new AccessCondition(), generateRequestOptions()))
+            .create(client.createOrUpdateIndex(existingIndex))
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
                 Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error)
@@ -563,9 +510,9 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
 
         StepVerifier
-            .create(client.createOrUpdateIndex(expected.setName("hotel1"),
+            .create(client.createOrUpdateIndexWithResponse(expected.setName("hotel1"),
                 false, new AccessCondition(), generateRequestOptions()))
-            .assertNext(res -> assertIndexesEqual(expected, res))
+            .assertNext(res -> assertIndexesEqual(expected, res.getValue()))
             .verifyComplete();
 
         StepVerifier
@@ -591,15 +538,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
             createOrUpdateIndexAsyncFunc,
-            newIndexFunc);
-    }
-
-    @Override
-    public void createOrUpdateIndexWithResponseIfNotExistsSucceedsOnNoResource() {
-        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
-
-        act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateIndexWithResponseAsyncFunc,
             newIndexFunc);
     }
 
@@ -646,14 +584,6 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.getIndexStatistics(index.getName()))
-            .assertNext(stats -> {
-                Assert.assertEquals(0, stats.getDocumentCount());
-                Assert.assertEquals(0, stats.getStorageSize());
-            })
-            .verifyComplete();
-
-        StepVerifier
-            .create(client.getIndexStatistics(index.getName(), generateRequestOptions()))
             .assertNext(stats -> {
                 Assert.assertEquals(0, stats.getDocumentCount());
                 Assert.assertEquals(0, stats.getStorageSize());

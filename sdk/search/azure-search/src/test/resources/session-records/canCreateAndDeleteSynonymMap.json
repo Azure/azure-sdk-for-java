@@ -1,62 +1,62 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk584715112338.search-dogfood.windows-int.net/synonymmaps?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkbab59354f112.search-dogfood.windows-int.net/synonymmaps?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "4c2c5145-4673-4a4c-8ddf-cd0447128156",
+      "request-id" : "6fd8b8ab-7526-4973-ba89-98c260c04098",
       "StatusCode" : "201",
-      "Date" : "Mon, 25 Nov 2019 07:30:31 GMT",
+      "Date" : "Mon, 02 Dec 2019 22:53:46 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D771795A63D7DC\"",
-      "elapsed-time" : "56",
+      "ETag" : "W/\"0x8D7777A7CF45BF9\"",
+      "elapsed-time" : "42",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "210",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk584715112338.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D771795A63D7DC\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\"}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkbab59354f112.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7777A7CF45BF9\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\"}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk584715112338.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkbab59354f112.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk584715112338.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkbab59354f112.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "13",
+      "elapsed-time" : "12",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "20f0f75a-670e-4a94-ac4f-ac4d6cf5a3f0",
+      "request-id" : "c74c79bd-df0a-4eb4-bb14-f80a7498e602",
       "StatusCode" : "204",
-      "Date" : "Mon, 25 Nov 2019 07:30:31 GMT"
+      "Date" : "Mon, 02 Dec 2019 22:53:46 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk584715112338.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkbab59354f112.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "7f3110e0-195e-4ab3-ad10-19c785663f6e",
+      "request-id" : "84f3f2ce-c399-4077-bc49-1433b768aea8",
       "StatusCode" : "404",
-      "Date" : "Mon, 25 Nov 2019 07:30:31 GMT",
+      "Date" : "Mon, 02 Dec 2019 22:53:46 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "14",
+      "elapsed-time" : "5",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "121",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'test-synonym' was found in service 'azs-sdk584715112338'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'test-synonym' was found in service 'azs-sdkbab59354f112'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

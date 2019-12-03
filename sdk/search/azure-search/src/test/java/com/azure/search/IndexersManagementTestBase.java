@@ -106,9 +106,6 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public abstract void createOrUpdateIndexerIfNotExistsSucceedsOnNoResource();
 
     @Test
-    public abstract void createOrUpdateIndexerWithResponseIfNotExistsSucceedsOnNoResource();
-
-    @Test
     public abstract void deleteIndexerIfExistsWorksOnlyWhenResourceExists();
 
     @Test

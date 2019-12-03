@@ -245,14 +245,6 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                 assertTokenInfoEqual("One", 0, 5, 0, onlyTokenInfo);
             })
             .verifyComplete();
-
-        StepVerifier
-            .create(searchServiceClient.analyzeIndexWithResponse(index.getName(), request, generateRequestOptions()))
-            .assertNext(onlyTokenInfo -> {
-                // End offset is based on the original token, not the one emitted by the filters.
-                assertTokenInfoEqual("One", 0, 5, 0, onlyTokenInfo.getItems().get(0));
-            })
-            .verifyComplete();
     }
 
     @Override
@@ -317,9 +309,9 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
 
         StepVerifier
-            .create(searchServiceClient.createOrUpdateIndex(index,
+            .create(searchServiceClient.createOrUpdateIndexWithResponse(index,
                 true, new AccessCondition(), generateRequestOptions()))
-            .assertNext(res -> assertAnalysisComponentsEqual(index, res))
+            .assertNext(res -> assertAnalysisComponentsEqual(index, res.getValue()))
             .verifyComplete();
     }
 

@@ -74,9 +74,6 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     public abstract void createOrUpdateIndexIfNotExistsSucceedsOnNoResource();
 
     @Test
-    public abstract void createOrUpdateIndexWithResponseIfNotExistsSucceedsOnNoResource();
-
-    @Test
     public abstract void createOrUpdateIndexIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException;
 
     @Test

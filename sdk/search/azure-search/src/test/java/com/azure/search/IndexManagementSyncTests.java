@@ -4,7 +4,6 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
@@ -47,12 +46,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             (Index index, AccessOptions ac) ->
                 createIndex(index, false, ac.getAccessCondition(), ac.getRequestOptions());
 
-    private BiFunction<Index,
-        AccessOptions,
-        Index> createOrUpdateIndexWithResponseFunc =
-            (Index index, AccessOptions ac) ->
-                createIndexWithResponse(index, false, ac.getAccessCondition(), ac.getRequestOptions());
-
     private Supplier<Index> newIndexFunc = this::createTestIndex;
 
     private Function<Index, Index> mutateIndexFunc = this::mutateCorsOptionsInIndex;
@@ -62,22 +55,14 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             deleteIndex(name, ac.getAccessCondition(), ac.getRequestOptions());
 
     private void deleteIndex(String indexName,
-                                   AccessCondition accessCondition,
-                                   RequestOptions requestOptions) {
-        client.deleteIndex(indexName,
-            accessCondition,
-            requestOptions);
+                             AccessCondition accessCondition,
+                             RequestOptions requestOptions) {
+        client.deleteIndexWithResponse(indexName, accessCondition, requestOptions, Context.NONE);
     }
 
     private Index createIndex(Index index, boolean allowDowntime,
                               AccessCondition accessCondition,
                               RequestOptions requestOptions) {
-        return client.createOrUpdateIndex(index, allowDowntime, accessCondition, requestOptions);
-    }
-
-    private Index createIndexWithResponse(Index index, boolean allowDowntime,
-                                          AccessCondition accessCondition,
-                                          RequestOptions requestOptions) {
         return client.createOrUpdateIndexWithResponse(index,
             allowDowntime,
             accessCondition,
@@ -95,9 +80,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     public void createIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
         Index createdIndex = client.createIndex(index);
-        assertIndexesEqual(index, createdIndex);
-
-        createdIndex = client.createIndex(index.setName("hotel1"), generateRequestOptions());
         assertIndexesEqual(index, createdIndex);
 
         Response<Index> createIndexResponse = client.createIndexWithResponse(index.setName("hotel2"), generateRequestOptions(), Context.NONE);
@@ -158,9 +140,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index createdIndex = client.getIndex(index.getName());
         assertIndexesEqual(index, createdIndex);
 
-        createdIndex = client.getIndex(index.getName(), generateRequestOptions());
-        assertIndexesEqual(index, createdIndex);
-
         Response<Index> getIndexResponse = client.getIndexWithResponse(index.getName(), generateRequestOptions(), Context.NONE);
         assertIndexesEqual(index, getIndexResponse.getValue());
     }
@@ -183,7 +162,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         client.createIndex(index);
 
         Assert.assertTrue(client.indexExists(index.getName()));
-        Assert.assertTrue(client.indexExists(index.getName(), generateRequestOptions()));
         Assert.assertTrue(client.indexExistsWithResponse(index.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
@@ -260,21 +238,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertEquals(2, result.size());
         Assert.assertEquals(index1.getName(), result.get(0).getName());
         Assert.assertEquals(index2.getName(), result.get(1).getName());
-
-        actual = client.listIndexes("name", generateRequestOptions());
-        result = actual.stream().collect(Collectors.toList());
-
-        Assert.assertEquals(2, result.size());
-        Assert.assertEquals(index1.getName(), result.get(0).getName());
-        Assert.assertEquals(index2.getName(), result.get(1).getName());
-
-        PagedResponse<Index> listResponse = client.listIndexesWithResponse("name",
-            generateRequestOptions(), Context.NONE);
-        result = listResponse.getItems();
-
-        Assert.assertEquals(2, result.size());
-        Assert.assertEquals(index1.getName(), result.get(0).getName());
-        Assert.assertEquals(index2.getName(), result.get(1).getName());
     }
 
     @Override
@@ -285,7 +248,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         client.createIndex(index1);
         client.createIndex(index2);
 
-        PagedIterable<Index> selectedFieldListResponse = client.listIndexes("name", generateRequestOptions());
+        PagedIterable<Index> selectedFieldListResponse = client.listIndexes("name",
+            generateRequestOptions(), Context.NONE);
         List<Index> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
         result.forEach(res -> {
@@ -352,8 +316,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         hotelNameField = getFieldByName(existingIndex, "HotelName");
         hotelNameField.setSynonymMaps(Collections.emptyList());
 
-        Index updatedIndex = client.createOrUpdateIndex(existingIndex,
-            true, new AccessCondition(), generateRequestOptions());
+        Index updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
+            true, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
         assertIndexesEqual(existingIndex, updatedIndex);
     }
 
@@ -404,8 +368,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Field hotelNameField = getFieldByName(existingIndex, "HotelName");
         hotelNameField.setRetrievable(false);
 
-        updatedIndex = client.createOrUpdateIndex(existingIndex,
-            true, new AccessCondition(), generateRequestOptions());
+        updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
+            true, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
         assertIndexesEqual(existingIndex, updatedIndex);
     }
 
@@ -428,8 +392,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             .setSourceFields(Arrays.asList("HotelAmenities", "HotelRewards"))
         ));
 
-        Index updatedIndex = client.createOrUpdateIndex(existingIndex,
-            true, new AccessCondition(), generateRequestOptions());
+        Index updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
+            true, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
 
         assertIndexesEqual(existingIndex, updatedIndex);
     }
@@ -447,8 +411,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         ));
 
         try {
-            client.createOrUpdateIndex(existingIndex,
-                true, new AccessCondition(), generateRequestOptions());
+            client.createOrUpdateIndex(existingIndex);
             Assert.fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
             Assert.assertEquals(HttpResponseException.class, ex.getClass());
@@ -467,8 +430,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index actual = client.createOrUpdateIndex(expected);
         assertIndexesEqual(expected, actual);
 
-        actual = client.createOrUpdateIndex(expected.setName("hotel1"),
-            false, new AccessCondition(), generateRequestOptions());
+        actual = client.createOrUpdateIndexWithResponse(expected.setName("hotel1"),
+            false, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
         assertIndexesEqual(expected, actual);
 
         Response<Index> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(expected.setName("hotel2"),
@@ -495,14 +458,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             newIndexFunc);
     }
 
-    @Override
-    public void createOrUpdateIndexWithResponseIfNotExistsSucceedsOnNoResource() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateIndexWithResponseFunc,
-            newIndexFunc);
-    }
 
     @Override
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
@@ -544,10 +499,6 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createOrUpdateIndex(index);
         IndexGetStatisticsResult indexStatistics = client.getIndexStatistics(index.getName());
-        Assert.assertEquals(0, indexStatistics.getDocumentCount());
-        Assert.assertEquals(0, indexStatistics.getStorageSize());
-
-        indexStatistics = client.getIndexStatistics(index.getName(), generateRequestOptions());
         Assert.assertEquals(0, indexStatistics.getDocumentCount());
         Assert.assertEquals(0, indexStatistics.getStorageSize());
 

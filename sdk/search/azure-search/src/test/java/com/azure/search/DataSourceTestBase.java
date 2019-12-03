@@ -49,9 +49,6 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     public abstract void createOrUpdateDatasourceIfNotExistsSucceedsOnNoResource();
 
     @Test
-    public abstract void createOrUpdateDatasourceWithResponseIfNotExistsSucceedsOnNoResource();
-
-    @Test
     public abstract void getDataSourceReturnsCorrectDefinition();
 
     @Test

@@ -38,12 +38,12 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
 
         PagedFlux<AutocompleteItem> results = client.autocomplete("very po", "Invalid suggester", params, generateRequestOptions());
         StepVerifier
-                .create(results)
-                .verifyErrorSatisfies(error -> {
-                    assertEquals(HttpResponseException.class, error.getClass());
-                    assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).getResponse().getStatusCode());
-                    assertTrue(error.getMessage().contains("The specified suggester name 'Invalid suggester' does not exist in this index definition.\\r\\nParameter name: name"));
-                });
+            .create(results)
+            .verifyErrorSatisfies(error -> {
+                assertEquals(HttpResponseException.class, error.getClass());
+                assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+                assertTrue(error.getMessage().contains("The specified suggester name 'Invalid suggester' does not exist in this index definition.\\r\\nParameter name: name"));
+            });
     }
 
     @Override

@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdkd8f8222645ea.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk8651091349d1.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d866c045-be9c-4796-af1e-775139268e67",
+      "request-id" : "35c89671-9c56-499e-ac1f-b8f511bb5f45",
       "StatusCode" : "201",
-      "Date" : "Mon, 25 Nov 2019 07:21:07 GMT",
+      "Date" : "Mon, 02 Dec 2019 22:47:56 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D771780A5635B6\"",
-      "elapsed-time" : "91",
+      "ETag" : "W/\"0x8D77779AC5D23EF\"",
+      "elapsed-time" : "93",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "693",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkd8f8222645ea.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D771780A5635B6\\\"\",\"name\":\"nested-skillset-with-sharperskill\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Util.ShaperSkill\",\"name\":\"myshaper\",\"description\":\"Tested Shaper skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"doc\",\"source\":null,\"sourceContext\":\"/document\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/content\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"images\",\"source\":\"/document/normalized_images/*\",\"sourceContext\":null,\"inputs\":[]}]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myOutput\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk8651091349d1.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D77779AC5D23EF\\\"\",\"name\":\"nested-skillset-with-sharperskill\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Util.ShaperSkill\",\"name\":\"myshaper\",\"description\":\"Tested Shaper skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"doc\",\"source\":null,\"sourceContext\":\"/document\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/content\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"images\",\"source\":\"/document/normalized_images/*\",\"sourceContext\":null,\"inputs\":[]}]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myOutput\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdkd8f8222645ea.search-dogfood.windows-int.net/skillsets('nested-skillset-with-sharperskill')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk8651091349d1.search-dogfood.windows-int.net/skillsets('nested-skillset-with-sharperskill')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

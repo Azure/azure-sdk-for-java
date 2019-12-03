@@ -5,6 +5,7 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.Index;
@@ -40,12 +41,6 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             (Indexer indexer, AccessOptions ac) ->
                 createIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
 
-    private BiFunction<Indexer,
-        AccessOptions,
-        Mono<Indexer>> createOrUpdateIndexerWithResponseAsyncFunc =
-            (Indexer indexer, AccessOptions ac) ->
-                createIndexerWithResponse(indexer, ac.getAccessCondition(), ac.getRequestOptions());
-
     private Supplier<Indexer> newIndexerFunc =
         () -> createBaseTestIndexerObject("name", TARGET_INDEX_NAME)
             .setDataSourceName(SQL_DATASOURCE_NAME);
@@ -70,17 +65,8 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     }
 
     private Mono<Indexer> createIndexer(Indexer indexer,
-                                         AccessCondition accessCondition,
-                                         RequestOptions requestOptions) {
-        return client.createOrUpdateIndexer(
-            indexer,
-            accessCondition,
-            requestOptions);
-    }
-
-    private Mono<Indexer> createIndexerWithResponse(Indexer indexer,
-                                         AccessCondition accessCondition,
-                                         RequestOptions requestOptions) {
+                                        AccessCondition accessCondition,
+                                        RequestOptions requestOptions) {
         return client.createOrUpdateIndexerWithResponse(
             indexer,
             accessCondition,
@@ -99,13 +85,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     private Mono<Void> deleteIndexer(String indexerName,
                                      AccessCondition accessCondition,
                                      RequestOptions requestOptions) {
-        return client.deleteIndexer(indexerName, accessCondition, requestOptions);
-    }
-
-    private Mono<Response<Void>> deleteIndexerWithResponse(String indexerName,
-                                                           AccessCondition accessCondition,
-                                                           RequestOptions requestOptions) {
-        return client.deleteIndexerWithResponse(indexerName, accessCondition, requestOptions);
+        return client.deleteIndexerWithResponse(indexerName, accessCondition, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     protected void createDatasourceAndIndex(String dataSourceName, String indexName) {
@@ -167,7 +147,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createIndexer(initial).block();
 
         // update the indexer in the service
-        Indexer indexerResponse = createIndexer(updatedIndexer, new AccessCondition(), generateRequestOptions()).block();
+        Indexer indexerResponse = createIndexer(updatedIndexer).block();
 
         // verify the returned updated indexer is as expected
         assert indexerResponse != null;
@@ -206,14 +186,6 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
         client.resetIndexer(indexer.getName()).block();
         StepVerifier.create(client.getIndexerStatus(indexer.getName()))
-            .assertNext(indexerStatus -> {
-                Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
-                Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
-            })
-            .verifyComplete();
-
-        client.resetIndexer(indexer.getName(), generateRequestOptions()).block();
-        StepVerifier.create(client.getIndexerStatus(indexer.getName(), generateRequestOptions()))
             .assertNext(indexerStatus -> {
                 Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
                 Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
@@ -263,15 +235,6 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
                 Assert.assertEquals(2, indexersRes.size());
                 assertIndexersEqual(indexers.get(0), indexersRes.get(0));
                 assertIndexersEqual(indexers.get(1), indexersRes.get(1));
-            })
-            .verifyComplete();
-
-        StepVerifier
-            .create(client.listIndexersWithResponse("name", generateRequestOptions()))
-            .assertNext(indexersRes -> {
-                Assert.assertEquals(2, indexersRes.getItems().size());
-                Assert.assertEquals(indexers.get(0).getName(), indexersRes.getItems().get(0).getName());
-                Assert.assertEquals(indexers.get(1).getName(), indexersRes.getItems().get(1).getName());
             })
             .verifyComplete();
     }
@@ -486,7 +449,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
 
         // Try delete before the indexer even exists.
-        Response<Void> result = deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), generateRequestOptions())
+        Response<Void> result = client.deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), generateRequestOptions())
             .block();
 
         assert result != null;
@@ -496,12 +459,12 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createIndexer(indexer).block();
 
         // Now delete twice.
-        result = deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), generateRequestOptions())
+        result = client.deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), generateRequestOptions())
             .block();
         assert result != null;
         Assert.assertEquals(HttpStatus.SC_NO_CONTENT, result.getStatusCode());
 
-        result = deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), generateRequestOptions())
+        result = client.deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), generateRequestOptions())
             .block();
         assert result != null;
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
@@ -521,10 +484,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             createBaseTestIndexerObject(indexerName, TARGET_INDEX_NAME).setDataSourceName(dataSource.getName());
 
         createIndexer(indexer).block();
-        Indexer indexerResult = getIndexer(indexerName);
-        assertIndexersEqual(indexer, indexerResult);
-
-        indexerResult = client.getIndexer(indexerName, generateRequestOptions()).block();
+        Indexer indexerResult = client.getIndexer(indexerName).block();
         assertIndexersEqual(indexer, indexerResult);
 
         indexerResult = client.getIndexerWithResponse(indexerName, generateRequestOptions())
@@ -549,18 +509,6 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
             createOrUpdateIndexerAsyncFunc,
-            newIndexerFunc);
-    }
-
-    @Override
-    public void createOrUpdateIndexerWithResponseIfNotExistsSucceedsOnNoResource() {
-        AccessConditionAsyncTests act = new AccessConditionAsyncTests();
-
-        // Prepare data source and index
-        createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
-
-        act.createOrUpdateIfNotExistsSucceedsOnNoResourceAsync(
-            createOrUpdateIndexerWithResponseAsyncFunc,
             newIndexerFunc);
     }
 
@@ -678,10 +626,6 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         Indexer indexer = createTestDataSourceAndIndexer();
 
         StepVerifier.create(client.indexerExists(indexer.getName()))
-            .expectNext(true)
-            .verifyComplete();
-
-        StepVerifier.create(client.indexerExists(indexer.getName(), generateRequestOptions()))
             .expectNext(true)
             .verifyComplete();
 

@@ -228,16 +228,9 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
         assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
         Assert.assertFalse(iterator.hasNext());
 
-        results = searchServiceClient.analyzeIndex(index.getName(), request, generateRequestOptions());
+        results = searchServiceClient.analyzeIndex(index.getName(), request, generateRequestOptions(), Context.NONE);
         // End offset is based on the original token, not the one emitted by the filters.
         iterator = results.stream().iterator();
-        assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
-        Assert.assertFalse(iterator.hasNext());
-
-        List<TokenInfo> analyzeResponse = searchServiceClient.analyzeIndexWithResponse(index.getName(),
-            request, generateRequestOptions(), Context.NONE).getItems();
-        // End offset is based on the original token, not the one emitted by the filters.
-        iterator = analyzeResponse.stream().iterator();
         assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
         Assert.assertFalse(iterator.hasNext());
     }
@@ -301,8 +294,8 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
         searchServiceClient.createIndex(index);
 
         addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
-        Index updatedIndex = searchServiceClient.createOrUpdateIndex(index,
-            true, new AccessCondition(), generateRequestOptions());
+        Index updatedIndex = searchServiceClient.createOrUpdateIndexWithResponse(index,
+            true, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
 
         assertAnalysisComponentsEqual(index, updatedIndex);
     }

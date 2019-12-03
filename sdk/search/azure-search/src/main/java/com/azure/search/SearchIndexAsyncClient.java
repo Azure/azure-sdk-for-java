@@ -503,37 +503,31 @@ public class SearchIndexAsyncClient {
      * @return auto complete result.
      */
     public PagedFlux<AutocompleteItem> autocomplete(String searchText,
-                                        String suggesterName,
-                                        AutocompleteOptions autocompleteOptions,
-                                        RequestOptions requestOptions) {
+                                                    String suggesterName,
+                                                    AutocompleteOptions autocompleteOptions,
+                                                    RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> this.autocompleteWithResponse(searchText, suggesterName, autocompleteOptions, requestOptions),
+            () -> withContext(context -> this.autocompleteWithResponse(searchText,
+                suggesterName, autocompleteOptions, requestOptions, context)),
             nextLink -> Mono.empty());
     }
 
-    /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
-     *
-     * @param searchText search text
-     * @param suggesterName suggester name
-     * @param autocompleteOptions autocomplete options
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return a response containing auto complete result.
-     */
-    public Mono<PagedResponse<AutocompleteItem>> autocompleteWithResponse(String searchText,
-                                                                          String suggesterName,
-                                                                          AutocompleteOptions autocompleteOptions,
-                                                                          RequestOptions requestOptions) {
-        return withContext(context -> this.autocompleteWithResponse(searchText,
-            suggesterName, autocompleteOptions, requestOptions, context));
+    PagedFlux<AutocompleteItem> autocomplete(String searchText,
+                                             String suggesterName,
+                                             AutocompleteOptions autocompleteOptions,
+                                             RequestOptions requestOptions,
+                                             Context context) {
+        return new PagedFlux<>(
+            () -> this.autocompleteWithResponse(searchText,
+                suggesterName, autocompleteOptions, requestOptions, context),
+            nextLink -> Mono.empty());
     }
 
-    Mono<PagedResponse<AutocompleteItem>> autocompleteWithResponse(String searchText,
-                                                                   String suggesterName,
-                                                                   AutocompleteOptions autocompleteOptions,
-                                                                   RequestOptions requestOptions,
-                                                                   Context context) {
+    private Mono<PagedResponse<AutocompleteItem>> autocompleteWithResponse(String searchText,
+                                                                           String suggesterName,
+                                                                           AutocompleteOptions autocompleteOptions,
+                                                                           RequestOptions requestOptions,
+                                                                           Context context) {
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
             suggesterName, autocompleteOptions);
         return restClient.documents()

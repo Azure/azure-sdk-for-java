@@ -4,7 +4,6 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
@@ -47,12 +46,6 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
             (Skillset skillset, AccessOptions ac) ->
                 createSkillset(skillset, ac.getAccessCondition(), ac.getRequestOptions());
 
-    private BiFunction<Skillset,
-        AccessOptions,
-        Skillset> createOrUpdateSkillsetWithResponseFunc =
-            (Skillset skillset, AccessOptions ac) ->
-                createSkillsetWithResponse(skillset, ac.getAccessCondition(), ac.getRequestOptions());
-
     private Supplier<Skillset> newSkillsetFunc =
         () -> createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
@@ -63,22 +56,14 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
             deleteSkillset(name, ac.getAccessCondition(), ac.getRequestOptions());
 
     private void deleteSkillset(String skillsetName,
-                                      AccessCondition accessCondition,
-                                      RequestOptions requestOptions) {
-        client.deleteSkillset(skillsetName,
-            accessCondition,
-            requestOptions);
+                                AccessCondition accessCondition,
+                                RequestOptions requestOptions) {
+        client.deleteSkillsetWithResponse(skillsetName, accessCondition,  requestOptions, Context.NONE);
     }
 
     private Skillset createSkillset(Skillset skillset,
                                     AccessCondition accessCondition,
                                     RequestOptions requestOptions) {
-        return client.createOrUpdateSkillset(skillset, accessCondition, requestOptions);
-    }
-
-    private Skillset createSkillsetWithResponse(Skillset skillset,
-                                                AccessCondition accessCondition,
-                                                RequestOptions requestOptions) {
         return client.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions, Context.NONE)
             .getValue();
     }
@@ -93,10 +78,6 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     public void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhrase() {
         Skillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
         Skillset actualSkillset = client.createSkillset(expectedSkillset);
-        assertSkillsetsEqual(expectedSkillset, actualSkillset);
-
-        actualSkillset = client.createSkillset(expectedSkillset.setName("image-analysis-key-phrase-skillset1"),
-            generateRequestOptions());
         assertSkillsetsEqual(expectedSkillset, actualSkillset);
 
         Response<Skillset> skillsetResponse = client.createSkillsetWithResponse(expectedSkillset
@@ -261,9 +242,6 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset actual = client.getSkillset(expected.getName());
         assertSkillsetsEqual(expected, actual);
 
-        actual = client.getSkillset(expected.getName(), generateRequestOptions());
-        assertSkillsetsEqual(expected, actual);
-
         actual = client.getSkillsetWithResponse(expected.getName(), generateRequestOptions(), Context.NONE).getValue();
         assertSkillsetsEqual(expected, actual);
     }
@@ -331,20 +309,6 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Assert.assertEquals(2, result.size());
         Assert.assertEquals(skillset1.getName(), result.get(0).getName());
         Assert.assertEquals(skillset2.getName(), result.get(1).getName());
-
-        actual = client.listSkillsets("name", generateRequestOptions());
-        result = actual.stream().collect(Collectors.toList());
-
-        Assert.assertEquals(2, result.size());
-        Assert.assertEquals(skillset1.getName(), result.get(0).getName());
-        Assert.assertEquals(skillset2.getName(), result.get(1).getName());
-
-        PagedResponse<Skillset> listResponse = client.listSkillsetsWithResponse("name", generateRequestOptions(), Context.NONE);
-        result = listResponse.getValue().stream().collect(Collectors.toList());
-
-        Assert.assertEquals(2, result.size());
-        Assert.assertEquals(skillset1.getName(), result.get(0).getName());
-        Assert.assertEquals(skillset2.getName(), result.get(1).getName());
     }
 
     @Override
@@ -355,7 +319,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         client.createSkillset(skillset1);
         client.createSkillset(skillset2);
 
-        PagedIterable<Skillset> selectedFieldListResponse = client.listSkillsets("name", generateRequestOptions());
+        PagedIterable<Skillset> selectedFieldListResponse = client.listSkillsets("name", generateRequestOptions(), Context.NONE);
         List<Skillset> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
         result.forEach(res -> {
@@ -407,9 +371,6 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset actual = client.createOrUpdateSkillset(expected);
         assertSkillsetsEqual(expected, actual);
 
-        actual = client.createOrUpdateSkillset(expected.setName("testskillset1"), new AccessCondition(), generateRequestOptions());
-        assertSkillsetsEqual(expected, actual);
-
         Response<Skillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(expected.setName("testskillset2"),
                 new AccessCondition(), generateRequestOptions(), Context.NONE);
         Assert.assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
@@ -441,7 +402,6 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         client.createSkillset(skillset);
 
         Assert.assertTrue(client.skillsetExists(skillset.getName()));
-        Assert.assertTrue(client.skillsetExists(skillset.getName(), generateRequestOptions()));
         Assert.assertTrue(client.skillsetExistsWithResponse(skillset.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
@@ -524,15 +484,6 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
         act.createOrUpdateIfNotExistsSucceedsOnNoResource(
             createOrUpdateSkillsetFunc,
-            newSkillsetFunc);
-    }
-
-    @Override
-    public void createOrUpdateSkillsetWithResponseIfNotExistsSucceedsOnNoResource() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateSkillsetWithResponseFunc,
             newSkillsetFunc);
     }
 

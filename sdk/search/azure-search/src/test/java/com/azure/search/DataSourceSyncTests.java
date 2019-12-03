@@ -5,7 +5,6 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
@@ -40,12 +39,6 @@ public class DataSourceSyncTests extends DataSourceTestBase {
             (DataSource ds, AccessOptions ac) ->
                 createOrUpdateDataSource(ds, ac.getAccessCondition(), ac.getRequestOptions());
 
-    private BiFunction<DataSource,
-        AccessOptions,
-        DataSource> createOrUpdateDataSourceWithResponseFunc =
-            (DataSource ds, AccessOptions ac) ->
-                createOrUpdateDataSourceWithResponse(ds, ac.getAccessCondition(), ac.getRequestOptions());
-
     private Supplier<DataSource> newDataSourceFunc =
         () -> createTestBlobDataSource(null);
 
@@ -62,21 +55,15 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         client = getSearchServiceClientBuilder().buildClient();
     }
 
-    private DataSource createOrUpdateDataSource(DataSource dataSource,
+    private DataSource createOrUpdateDataSource(DataSource datasource,
                                                 AccessCondition accessCondition,
                                                 RequestOptions requestOptions) {
-        return client.createOrUpdateDataSource(dataSource, accessCondition, requestOptions);
-    }
-
-    private DataSource createOrUpdateDataSourceWithResponse(DataSource datasource,
-                                                            AccessCondition accessCondition,
-                                                            RequestOptions requestOptions) {
         return client.createOrUpdateDataSourceWithResponse(datasource, accessCondition, requestOptions, Context.NONE)
             .getValue();
     }
 
     private void deleteDataSource(String name, AccessCondition accessCondition, RequestOptions requestOptions) {
-        client.deleteDataSource(name, accessCondition, requestOptions);
+        client.deleteDataSourceWithResponse(name, accessCondition, requestOptions, Context.NONE);
     }
 
     @Override
@@ -94,9 +81,8 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         Assert.assertEquals(dataSource1.getName(), resultList.get(0).getName());
         Assert.assertEquals(dataSource2.getName(), resultList.get(1).getName());
 
-        PagedResponse<DataSource> listResponse = client.listDataSourcesWithResponse("name",
-            generateRequestOptions(), Context.NONE);
-        resultList = listResponse.getItems();
+        results = client.listDataSources("name", generateRequestOptions(), Context.NONE);
+        resultList = results.stream().collect(Collectors.toList());
 
         Assert.assertEquals(2, resultList.size());
         Assert.assertEquals(dataSource1.getName(), resultList.get(0).getName());
@@ -190,15 +176,6 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     }
 
     @Override
-    public void createOrUpdateDatasourceWithResponseIfNotExistsSucceedsOnNoResource() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateDataSourceWithResponseFunc,
-            newDataSourceFunc);
-    }
-
-    @Override
     public void deleteDataSourceIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -270,7 +247,6 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         client.createOrUpdateDataSource(dataSource);
 
         Assert.assertTrue(client.dataSourceExists(dataSource.getName()));
-        Assert.assertTrue(client.dataSourceExists(dataSource.getName(), generateRequestOptions()));
         Assert.assertTrue(client.dataSourceExistsWithResponse(dataSource.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
@@ -332,9 +308,6 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null)); // Get doesn't return connection strings.
 
         DataSource actualDataSource = client.getDataSource(dataSourceName);
-        assertDataSourcesEqual(expectedDataSource, actualDataSource);
-
-        actualDataSource = client.getDataSource(dataSourceName, generateRequestOptions());
         assertDataSourcesEqual(expectedDataSource, actualDataSource);
 
         actualDataSource = client.getDataSourceWithResponse(dataSourceName, generateRequestOptions(), Context.NONE).getValue();

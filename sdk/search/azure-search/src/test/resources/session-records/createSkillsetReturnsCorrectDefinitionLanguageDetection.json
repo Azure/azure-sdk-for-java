@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdkb2b155726c7c.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkfe69964029c7.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d8c034bd-c40e-4a18-b4db-fbb6c28fb49d",
+      "request-id" : "6d1993cf-5bcb-42e2-9080-5cbddc14ce9b",
       "StatusCode" : "201",
-      "Date" : "Mon, 25 Nov 2019 07:22:31 GMT",
+      "Date" : "Mon, 02 Dec 2019 22:49:05 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D771783C5EF34F\"",
-      "elapsed-time" : "65",
+      "ETag" : "W/\"0x8D77779D5E84504\"",
+      "elapsed-time" : "60",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "561",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkb2b155726c7c.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D771783C5EF34F\\\"\",\"name\":\"language-detection-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.LanguageDetectionSkill\",\"name\":\"mylanguage\",\"description\":\"Tested Language Detection skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"languageCode\",\"targetName\":\"myLanguageCode\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkfe69964029c7.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D77779D5E84504\\\"\",\"name\":\"language-detection-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.LanguageDetectionSkill\",\"name\":\"mylanguage\",\"description\":\"Tested Language Detection skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"languageCode\",\"targetName\":\"myLanguageCode\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdkb2b155726c7c.search-dogfood.windows-int.net/skillsets('language-detection-skillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkfe69964029c7.search-dogfood.windows-int.net/skillsets('language-detection-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

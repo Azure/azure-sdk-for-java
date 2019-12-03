@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk15233393f9fb.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkcb43547974aa.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "905bd8fe-8d74-421d-b376-f4f72e5d1b62",
+      "request-id" : "40274cb8-20d1-4b4b-bd35-69ee20fb1110",
       "StatusCode" : "201",
-      "Date" : "Mon, 25 Nov 2019 07:24:27 GMT",
+      "Date" : "Mon, 02 Dec 2019 22:50:47 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D771788134297E\"",
+      "ETag" : "W/\"0x8D7777A12772682\"",
       "elapsed-time" : "142",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "720",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk15233393f9fb.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D771788134297E\\\"\",\"name\":\"conditional-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Util.ConditionalSkill\",\"name\":\"myconditional\",\"description\":\"Tested Conditional skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"condition\",\"source\":\"= $(/document/language) == null\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"whenTrue\",\"source\":\"= 'es'\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"whenFalse\",\"source\":\"= $(/document/language)\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myLanguageCode\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkcb43547974aa.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7777A12772682\\\"\",\"name\":\"conditional-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Util.ConditionalSkill\",\"name\":\"myconditional\",\"description\":\"Tested Conditional skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"condition\",\"source\":\"= $(/document/language) == null\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"whenTrue\",\"source\":\"= 'es'\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"whenFalse\",\"source\":\"= $(/document/language)\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myLanguageCode\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk15233393f9fb.search-dogfood.windows-int.net/skillsets('conditional-skillset')?api-version=2019-05-06"
+      "Location" : "https://azs-sdkcb43547974aa.search-dogfood.windows-int.net/skillsets('conditional-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],
