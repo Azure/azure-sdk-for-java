@@ -18,7 +18,7 @@ public class CreateIndexExample {
     public static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
     public static final String SEARCH_SERVICE_NAME = "<Your Search Service Name>";
 
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
         String endpoint = String.format("https://%s.%s", SEARCH_SERVICE_NAME, "search.windows.net"); // search.windows.net is the default DNS SUFFIX
         ApiKeyCredentials apiKeyCredentials = new ApiKeyCredentials(ADMIN_KEY);
 
@@ -27,13 +27,13 @@ public class CreateIndexExample {
             .credential(apiKeyCredentials)
             .buildClient();
 
-        Index newIndex  = new Index()
+        Index newIndex = new Index()
             .setName("good-food")
             .setFields(
-                Arrays.asList( new Field()
-                    .setName("Name")
-                    .setType(DataType.EDM_STRING)
-                    .setKey(Boolean.TRUE) ,
+                Arrays.asList(new Field()
+                        .setName("Name")
+                        .setType(DataType.EDM_STRING)
+                        .setKey(Boolean.TRUE),
                     new Field()
                         .setName("Cuisine")
                         .setType(DataType.EDM_STRING)));

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.search;
 
 import com.azure.core.util.Configuration;
@@ -10,7 +11,7 @@ import reactor.core.publisher.Flux;
 
 /**
  * This example shows how to perform basic searches using the Azure Cognitive Search SDK for Java
- *
+ * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
  * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
  */

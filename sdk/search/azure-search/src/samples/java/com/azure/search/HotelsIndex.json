@@ -195,12 +195,12 @@
         {
             "name": "sg",
             "sourceFields": [
-                "Description", "HotelName"
+                "Description",
+                "HotelName"
             ]
         }
     ],
-    "scoringProfiles":
-    [
+    "scoringProfiles": [
         {
             "name": "nearest",
             "functions": [

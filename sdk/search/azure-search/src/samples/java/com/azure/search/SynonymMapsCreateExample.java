@@ -8,6 +8,7 @@ import com.azure.search.models.SynonymMap;
 import com.azure.search.models.Index;
 import com.azure.search.models.Field;
 import com.azure.search.models.DataType;
+
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -24,8 +25,7 @@ public class SynonymMapsCreateExample {
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String API_ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         SearchServiceClient serviceClient = new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new ApiKeyCredentials(API_ADMIN_KEY))
@@ -34,7 +34,7 @@ public class SynonymMapsCreateExample {
         String synonymMapName = "desc-synonymmap";
 
         System.out.println("Create synonym map...\n");
-        createSynonymMap(serviceClient,synonymMapName);
+        createSynonymMap(serviceClient, synonymMapName);
 
         System.out.println("Create index and assign synonym to it...\n");
         assignSynonymMapToIndex(synonymMapName);
@@ -42,16 +42,14 @@ public class SynonymMapsCreateExample {
         System.out.println("Complete....\n");
     }
 
-    private static void createSynonymMap(SearchServiceClient serviceClient, String synonymMapName)
-    {
+    private static void createSynonymMap(SearchServiceClient serviceClient, String synonymMapName) {
         SynonymMap synonymMap = new SynonymMap()
             .setName(synonymMapName)
             .setSynonyms("hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
         serviceClient.createSynonymMap(synonymMap);
     }
 
-    private static void assignSynonymMapToIndex(String synonymMapName)
-    {
+    private static void assignSynonymMapToIndex(String synonymMapName) {
         Index index = new Index()
             .setName("hotels")
             .setFields(Arrays.asList(

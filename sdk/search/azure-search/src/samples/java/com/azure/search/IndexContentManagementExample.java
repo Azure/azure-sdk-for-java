@@ -6,14 +6,14 @@ package com.azure.search;
 import com.azure.core.util.Configuration;
 import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexBatch;
-import models.Hotel;
+import com.azure.search.models.Hotel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This example shows how to manage the contents of an Azure Cognitive Search index.
- *
+ * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
  * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
  */

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package models;
+package com.azure.search.models;
 
 import com.azure.search.test.environment.models.ModelComparer;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License
+// Licensed under the MIT License.
 
 package com.azure.search;
 
@@ -17,7 +17,7 @@ import com.azure.search.models.Skill;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.WebApiSkill;
-import models.Hotel;
+import com.azure.search.models.Hotel;
 
 import java.util.ArrayList;
 import java.util.Collections;

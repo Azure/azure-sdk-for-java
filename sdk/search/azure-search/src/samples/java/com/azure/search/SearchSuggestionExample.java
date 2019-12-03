@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * This example shows how to work with suggestions and search results
- *
+ * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
  * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
  */

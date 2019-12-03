@@ -9,7 +9,7 @@ import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.core.util.Configuration;
 import com.azure.search.models.SearchResult;
-import models.Hotel;
+import com.azure.search.models.Hotel;
 
 /**
  * This example shows how to convert a search result into a fully typed object.

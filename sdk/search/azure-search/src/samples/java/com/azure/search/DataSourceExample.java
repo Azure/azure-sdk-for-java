@@ -54,16 +54,16 @@ public class DataSourceExample {
          * Get all existing data sources; list should include the ones we just created.
          * */
         PagedIterable<DataSource> dataSources = client.listDataSources();
-        for (DataSource dataSource: dataSources) {
+        for (DataSource dataSource : dataSources) {
             if (names.contains(dataSource.getName())) {
-                System.out.println(String.format("Found data source %s of type %s", dataSource.getName(), dataSource.getType().toString() ));
+                System.out.println(String.format("Found data source %s of type %s", dataSource.getName(), dataSource.getType().toString()));
             }
         }
 
         /*
          * Delete the data sources we just created.
          * */
-        for (String name: names) {
+        for (String name : names) {
             deleteDataSource(client, name);
         }
     }
