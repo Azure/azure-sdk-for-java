@@ -13,6 +13,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.MessageIdUpdateHeaders;
@@ -903,7 +904,7 @@ public final class QueueAsyncClient {
 
     /**
      * Generates a service sas for the queue using the specified {@link QueueServiceSasSignatureValues}
-     * @see QueueServiceSasSignatureValues for more information on how to construct a service SAS.
+     * <p>See {@link QueueServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *

@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://gapradev.queue.core.windows.net/6ea898ac58",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d02bd6a6-5b04-4326-8c2e-7c639c44b38b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "c338fd0d-9003-002b-7df6-a912f7000000",
+      "Date" : "Tue, 03 Dec 2019 16:30:05 GMT",
+      "x-ms-client-request-id" : "d02bd6a6-5b04-4326-8c2e-7c639c44b38b"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://gapradev.queue.core.windows.net/6ea898ac58/messages",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "96a0ffdf-c03c-4fd9-83e5-1da26c54e727",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "c338fd10-9003-002b-7ef6-a912f7000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>9aab594c-812b-44f0-bbd0-c9fa53e868a1</MessageId><InsertionTime>Tue, 03 Dec 2019 16:30:06 GMT</InsertionTime><ExpirationTime>Tue, 10 Dec 2019 16:30:06 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAf7lA7Pap1QE=</PopReceipt><TimeNextVisible>Tue, 03 Dec 2019 16:30:06 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Tue, 03 Dec 2019 16:30:06 GMT",
+      "x-ms-client-request-id" : "96a0ffdf-c03c-4fd9-83e5-1da26c54e727",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "6ea898ac58", "2019-12-03T16:30:06.808736100Z" ]
+}

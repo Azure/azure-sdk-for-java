@@ -11,6 +11,8 @@ import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.sas.ShareFileSasPermission;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -469,5 +471,21 @@ public class ShareDirectoryJavaDocCodeSamples {
         String directoryPath = shareDirectoryClient.getDirectoryPath();
         System.out.println("The name of the directory is " + directoryPath);
         // END: com.azure.storage.file.share.ShareDirectoryClient.getDirectoryPath
+    }
+
+    /**
+     * Code snippet for {@link ShareDirectoryClient#generateSas(ShareServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        ShareDirectoryClient shareDirectoryClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareFileSasPermission permission = new ShareFileSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        shareDirectoryClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues
     }
 }

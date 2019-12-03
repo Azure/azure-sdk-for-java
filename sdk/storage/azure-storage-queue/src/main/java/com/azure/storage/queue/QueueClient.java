@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
@@ -705,7 +704,7 @@ public final class QueueClient {
 
     /**
      * Generates a service sas for the queue using the specified {@link QueueServiceSasSignatureValues}
-     * @see QueueServiceSasSignatureValues for more information on how to construct a service SAS.
+     * <p>See {@link QueueServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -716,7 +715,6 @@ public final class QueueClient {
      * @return A {@code String} representing all SAS query parameters.
      */
     public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues) {
-        return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+        return this.client.generateSas(queueServiceSasSignatureValues);
     }
 }

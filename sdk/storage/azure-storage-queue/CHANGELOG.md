@@ -1,4 +1,7 @@
 # Release History
+## Version X.X.X (XXXX-XX-XX)
+- Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setQueueName, generateSasQueryParameters methods on QueueServiceSasSignatureValues to direct users to using the methods added on clients.
+
 ## Version 12.0.0 (2019-10-31)
 - Removed QueueMessage from public API
 - Removed BaseQueueClientBuilder

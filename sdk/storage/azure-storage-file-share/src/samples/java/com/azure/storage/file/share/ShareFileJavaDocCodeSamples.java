@@ -16,6 +16,8 @@ import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.sas.ShareFileSasPermission;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -629,5 +631,21 @@ public class ShareFileJavaDocCodeSamples {
         String filePath = fileClient.getFilePath();
         System.out.println("The name of the file is " + filePath);
         // END: com.azure.storage.file.share.ShareFileClient.getFilePath
+    }
+
+    /**
+     * Code snippet for {@link ShareFileClient#generateSas(ShareServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        ShareFileClient shareFileClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.generateSas#ShareServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareFileSasPermission permission = new ShareFileSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        shareFileClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.share.ShareFileClient.generateSas#ShareServiceSasSignatureValues
     }
 }

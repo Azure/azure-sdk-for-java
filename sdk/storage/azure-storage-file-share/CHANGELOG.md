@@ -1,4 +1,6 @@
 # Release History
+## Version X.X.X (XXXX-XX-XX)
+- Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setFilePath, setShareName generateSasQueryParameters methods on ShareServiceSasSignatureValues to direct users to using the methods added on clients.
 
 ## Version 12.0.0-preview.5 (2019-10-31)
 

@@ -3,13 +3,14 @@
 
 package com.azure.storage.queue.implementation.util;
 
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.queue.QueueServiceVersion;
+import com.azure.storage.queue.sas.QueueSasPermission;
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
 
 import java.time.OffsetDateTime;
@@ -24,6 +25,8 @@ import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQuer
  * RESERVED FOR INTERNAL USE.
  */
 public class QueueSasImplUtil {
+
+    private final ClientLogger logger = new ClientLogger(QueueSasImplUtil.class);
 
     private String version;
 
@@ -68,12 +71,10 @@ public class QueueSasImplUtil {
     public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
-        if (CoreUtils.isNullOrEmpty(version)) {
-            version = QueueServiceVersion.getLatest().getVersion();
-        }
+        ensureState();
 
         // Signature is generated on the un-url-encoded values.
-        String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName(), queueName);
+        String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
         String stringToSign = stringToSign(canonicalName);
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
@@ -100,12 +101,40 @@ public class QueueSasImplUtil {
     }
 
     /**
+     * Ensures that the builder's properties are in a consistent state.
+
+     * 1. If there is no version, use latest.
+     * 2. If there is no identifier set, ensure expiryTime and permissions are set.
+     * 4. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
+     */
+    private void ensureState() {
+        if (version == null) {
+            version = QueueServiceVersion.getLatest().getVersion();
+        }
+
+        if (identifier == null) {
+            if (expiryTime == null || permissions == null) {
+                throw logger.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
+                    + "and permissions must be set"));
+            }
+        }
+
+        if (permissions != null) {
+            if (queueName != null) {
+                permissions = QueueSasPermission.parse(permissions).toString();
+            } else {
+                // We won't reparse the permissions if we don't know the type.
+                logger.info("Not re-parsing permissions. Resource type is not queue.");
+            }
+        }
+    }
+
+    /**
      * Computes the canonical name for a queue resource for SAS signing.
      * @param account Account of the storage account.
-     * @param queueName Name of the queue.
      * @return Canonical name as a string.
      */
-    private static String getCanonicalName(String account, String queueName) {
+    private String getCanonicalName(String account) {
         // Queue: "/queue/account/queuename"
         return String.join("", new String[] { "/queue/", account, "/", queueName });
     }

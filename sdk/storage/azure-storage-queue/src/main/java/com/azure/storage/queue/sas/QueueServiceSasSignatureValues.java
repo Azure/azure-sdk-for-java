@@ -14,24 +14,11 @@ import com.azure.storage.queue.QueueServiceVersion;
 import java.time.OffsetDateTime;
 
 /**
- * Used to generate a Shared Access Signature (SAS) for Azure Storage Queues service. Once all the values here are set,
- * call {@link
- * #generateSasQueryParameters(StorageSharedKeyCredential) generateSasQueryParameters(StorageSharedKeyCredential)}
- * to obtain a representation of the SAS which can be applied to queue urls.
+ * Used to initialize parameters for a Shared Access Signature (SAS) for an Azure Queue Storage service. Once all the
+ * values here are set, use the appropriate SAS generation method on the desired queue client to obtain a
+ * representation of the SAS which can then be applied to a new client using the .sasToken(String) method on the
+ * desired client builder.
  *
- * <p><strong>Generating a queue SAS with expiryTime and permissions</strong></p>
- * <p>The snippet below generates a queue SAS that lasts for two days and gives the user read, add, and update
- * permissions to the queue.
- *
- * {@codesnippet com.azure.storage.queue.queueServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential}
- *
- * <p><strong>Generating a queue SAS with stored access policy identifier</strong></p>
- * <p>The snippet below generates a queue SAS that has the same duration and permissions specified by the
- * {@link #setIdentifier(String) stored access policy}.
- *
- * {@codesnippet com.azure.storage.queue.queueServiceSasSignatureValues.generateSasQueryParameters.identifier#StorageSharedKeyCredential}
- *
- * @see QueueServiceSasQueryParameters
  * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
  * SAS</a>
@@ -203,7 +190,9 @@ public final class QueueServiceSasSignatureValues {
      * Gets the name of the queue this SAS may access.
      *
      * @return The name of the queue the SAS user may access.
+     * @deprecated Queue name is now auto-populated by the SAS generation methods provided on the desired queue client.
      */
+    @Deprecated
     public String getQueueName() {
         return queueName;
     }
