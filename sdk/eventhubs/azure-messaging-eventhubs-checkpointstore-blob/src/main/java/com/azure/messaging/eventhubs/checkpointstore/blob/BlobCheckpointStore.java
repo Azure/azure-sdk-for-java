@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import reactor.core.Exceptions;
@@ -44,7 +45,6 @@ public class BlobCheckpointStore implements CheckpointStore {
     private static final String OFFSET = "Offset";
     private static final String OWNER_ID = "OwnerId";
     private static final String ETAG = "eTag";
-    private static final String CLAIM_ERROR = "Couldn't claim ownership of partition {}, error {}";
 
     private static final String BLOB_PATH_SEPARATOR = "/";
     private static final String CHECKPOINT_PATH = "/checkpoint/";
@@ -97,14 +97,14 @@ public class BlobCheckpointStore implements CheckpointStore {
 
     private Mono<Checkpoint> convertToCheckpoint(BlobItem blobItem) {
         String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
-        logger.info("Found blob for partition {}", blobItem.getName());
+        logger.info(Messages.FOUND_BLOB_FOR_PARTITION, blobItem.getName());
         if (names.length == 5) {
             // Blob names should be of the pattern
             // fullyqualifiednamespace/eventhub/consumergroup/checkpoints/<partitionId>
             // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
 
             if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
-                logger.warning("No metadata available for blob {}", blobItem.getName());
+                logger.warning(Messages.NO_METADATA_AVAILABLE_FOR_BLOB, blobItem.getName());
                 return Mono.empty();
             }
 
@@ -127,13 +127,13 @@ public class BlobCheckpointStore implements CheckpointStore {
      * This method is called by the {@link EventProcessorClient} to claim ownership of a list of partitions. This will
      * return the list of partitions that were owned successfully.
      *
-     * @param requestedPartitionOwnerships Array of partition ownerships this instance is requesting to own.
+     * @param requestedPartitionOwnerships List of partition ownerships this instance is requesting to own.
      * @return A flux of partitions this instance successfully claimed ownership.
      */
     @Override
-    public Flux<PartitionOwnership> claimOwnership(PartitionOwnership... requestedPartitionOwnerships) {
+    public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
 
-        return Flux.fromArray(requestedPartitionOwnerships).flatMap(partitionOwnership -> {
+        return Flux.fromIterable(requestedPartitionOwnerships).flatMap(partitionOwnership -> {
             String partitionId = partitionOwnership.getPartitionId();
             String blobName = getBlobName(partitionOwnership.getFullyQualifiedNamespace(),
                 partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId,
@@ -155,7 +155,7 @@ public class BlobCheckpointStore implements CheckpointStore {
                 return blobAsyncClient.getBlockBlobAsyncClient()
                     .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null, blobRequestConditions)
                     .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
-                        logger.info(CLAIM_ERROR, partitionId, error.getMessage());
+                        logger.info(Messages.CLAIM_ERROR, partitionId, error.getMessage());
                         return Mono.empty();
                     }, Mono::empty);
             } else {
@@ -163,7 +163,7 @@ public class BlobCheckpointStore implements CheckpointStore {
                 blobRequestConditions.setIfMatch(partitionOwnership.getETag());
                 return blobAsyncClient.setMetadataWithResponse(metadata, blobRequestConditions)
                     .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
-                        logger.info(CLAIM_ERROR, partitionId, error.getMessage());
+                        logger.info(Messages.CLAIM_ERROR, partitionId, error.getMessage());
                         return Mono.empty();
                     }, Mono::empty);
             }
@@ -204,7 +204,14 @@ public class BlobCheckpointStore implements CheckpointStore {
         metadata.put(OFFSET, offset);
         BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
-        return blobAsyncClient.setMetadata(metadata);
+        return blobAsyncClient.exists().flatMap(exists -> {
+            if (exists) {
+                return blobAsyncClient.setMetadata(metadata);
+            } else {
+                return blobAsyncClient.getBlockBlobAsyncClient().uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null,
+                    metadata, null, null, null).then();
+            }
+        });
     }
 
     private String getBlobPrefix(String fullyQualifiedNamespace, String eventHubName, String consumerGroupName,
@@ -220,14 +227,14 @@ public class BlobCheckpointStore implements CheckpointStore {
     }
 
     private Mono<PartitionOwnership> convertToPartitionOwnership(BlobItem blobItem) {
-        logger.info("Found blob for partition {}", blobItem.getName());
+        logger.info(Messages.FOUND_BLOB_FOR_PARTITION, blobItem.getName());
         String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
         if (names.length == 5) {
             // Blob names should be of the pattern
             // fullyqualifiednamespace/eventhub/consumergroup/ownership/<partitionId>
             // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
             if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
-                logger.warning("No metadata available for blob {}", blobItem.getName());
+                logger.warning(Messages.NO_METADATA_AVAILABLE_FOR_BLOB, blobItem.getName());
                 return Mono.empty();
             }
 

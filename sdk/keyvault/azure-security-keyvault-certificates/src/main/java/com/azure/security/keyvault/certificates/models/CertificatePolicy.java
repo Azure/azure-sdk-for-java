@@ -20,8 +20,6 @@ import java.util.Map;
  */
 public final class CertificatePolicy {
 
-    public static final CertificatePolicy DEFAULT = new CertificatePolicy("Self", "CN=DefaultPolicy");
-
     /**
      * The subject name. Should be a valid X509 distinguished Name.
      */
@@ -74,12 +72,12 @@ public final class CertificatePolicy {
     /**
      * Creation time in UTC.
      */
-    private OffsetDateTime created;
+    private OffsetDateTime createdOn;
 
     /**
      * Last updated time in UTC.
      */
-    private OffsetDateTime updated;
+    private OffsetDateTime updatedOn;
 
     /**
      * Determines whether the object is enabled.
@@ -149,6 +147,19 @@ public final class CertificatePolicy {
         this.issuerName = issuerName;
         this.subjectAlternativeNames = subjectAlternativeNames;
     }
+
+    /**
+     * Creates certificate policy.
+     * @param issuerName The issuer name to set.
+     * @param subjectName The subject name to set.
+     * @param subjectAlternativeNames The subject alternative names to set.
+     */
+    public CertificatePolicy(String issuerName, String subjectName, SubjectAlternativeNames subjectAlternativeNames) {
+        this.issuerName = issuerName;
+        this.subjectName = subjectName;
+        this.subjectAlternativeNames = subjectAlternativeNames;
+    }
+
 
     CertificatePolicy() {
 
@@ -277,8 +288,8 @@ public final class CertificatePolicy {
      *
      * @return the created UTC time.
      */
-    public OffsetDateTime getCreated() {
-        return created;
+    public OffsetDateTime getCreatedOn() {
+        return createdOn;
     }
 
     /**
@@ -286,8 +297,8 @@ public final class CertificatePolicy {
      *
      * @return the last updated UTC time.
      */
-    public OffsetDateTime getUpdated() {
-        return updated;
+    public OffsetDateTime getUpdatedOn() {
+        return updatedOn;
     }
 
 
@@ -491,6 +502,14 @@ public final class CertificatePolicy {
         return this.lifeTimeActions;
     }
 
+    /**
+     * Get the default certificate policy.
+     * @return the default certificate policy.
+     */
+    public static CertificatePolicy getDefaultPolicy() {
+        return  new CertificatePolicy("Self", "CN=DefaultPolicy");
+    }
+
 
     @JsonProperty("key_props")
     private void unpackKeyProperties(Map<String, Object> keyProps) {
@@ -576,8 +595,8 @@ public final class CertificatePolicy {
     @JsonProperty("attributes")
     private void unpackAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
-        this.created = epochToOffsetDateTime(attributes.get("created"));
-        this.updated = epochToOffsetDateTime(attributes.get("updated"));
+        this.createdOn = epochToOffsetDateTime(attributes.get("created"));
+        this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
     }
 
     private OffsetDateTime epochToOffsetDateTime(Object epochValue) {

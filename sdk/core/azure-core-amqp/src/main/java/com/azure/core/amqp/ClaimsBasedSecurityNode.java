@@ -6,7 +6,6 @@ package com.azure.core.amqp;
 import com.azure.core.credential.TokenCredential;
 import reactor.core.publisher.Mono;
 
-import java.io.Closeable;
 import java.time.OffsetDateTime;
 
 /**
@@ -15,7 +14,7 @@ import java.time.OffsetDateTime;
  * @see <a href="https://www.oasis-open.org/committees/download.php/62097/amqp-cbs-v1.0-wd05.doc">
  * AMPQ Claims-based Security v1.0</a>
  */
-public interface ClaimsBasedSecurityNode extends EndpointStateNotifier, Closeable {
+public interface ClaimsBasedSecurityNode extends AutoCloseable {
     /**
      * Authorizes the caller with the CBS node to access resources for the {@code audience}.
      *
@@ -26,4 +25,10 @@ public interface ClaimsBasedSecurityNode extends EndpointStateNotifier, Closeabl
      * CBS node.
      */
     Mono<OffsetDateTime> authorize(String audience, String scopes);
+
+    /**
+     * Closes session to the claims-based security node.
+     */
+    @Override
+    void close();
 }

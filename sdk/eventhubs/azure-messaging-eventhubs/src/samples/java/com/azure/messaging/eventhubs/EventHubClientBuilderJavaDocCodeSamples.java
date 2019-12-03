@@ -20,7 +20,6 @@ public class EventHubClientBuilderJavaDocCodeSamples {
 
         // Both the producer and consumer created share the same underlying connection.
         EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
-
         EventHubConsumerAsyncClient consumer = builder
             .consumerGroup("my-consumer-group")
             .buildAsyncConsumerClient();

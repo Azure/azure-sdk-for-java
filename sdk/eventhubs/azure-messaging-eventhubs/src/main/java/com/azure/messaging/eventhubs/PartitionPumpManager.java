@@ -90,7 +90,7 @@ class PartitionPumpManager {
             try {
                 eventHubConsumer.close();
             } catch (Exception ex) {
-                logger.warning("Failed to close consumer for partition {}", partitionId, ex);
+                logger.warning(Messages.FAILED_CLOSE_CONSUMER_PARTITION, partitionId, ex);
             } finally {
                 partitionPumps.remove(partitionId);
             }
@@ -168,7 +168,7 @@ class PartitionPumpManager {
             // also fails just log and continue
             partitionProcessor.processError(new ErrorContext(partitionContext, error));
         } catch (Exception ex) {
-            logger.warning("Failed while processing error {}", claimedOwnership.getPartitionId(), ex);
+            logger.warning(Messages.FAILED_WHILE_PROCESSING_ERROR, claimedOwnership.getPartitionId(), ex);
         }
     }
 
@@ -186,7 +186,7 @@ class PartitionPumpManager {
             }
             partitionProcessor.close(new CloseContext(partitionContext, closeReason));
         } catch (Exception ex) {
-            logger.warning("Failed while processing error on receive {}", claimedOwnership.getPartitionId(), ex);
+            logger.warning(Messages.FAILED_PROCESSING_ERROR_RECEIVE, claimedOwnership.getPartitionId(), ex);
         } finally {
             try {
                 // close the consumer
@@ -225,12 +225,12 @@ class PartitionPumpManager {
                 close.close();
                 tracerProvider.endSpan(processSpanContext, signal);
             } catch (IOException ioException) {
-                logger.error("EventProcessor.run() endTracingSpan().close() failed with an error %s", ioException);
+                logger.error(Messages.EVENT_PROCESSOR_RUN_END, ioException);
             }
 
         } else {
             logger.warning(String.format(Locale.US,
-                "Process span scope type is not of type Closeable, but type: %s. Not closing the scope and span",
+                Messages.PROCESS_SPAN_SCOPE_TYPE_ERROR,
                 spanScope.get() != null ? spanScope.getClass() : "null"));
         }
     }

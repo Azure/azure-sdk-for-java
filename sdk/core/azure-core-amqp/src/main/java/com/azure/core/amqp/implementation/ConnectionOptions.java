@@ -24,10 +24,10 @@ public class ConnectionOptions {
     private final Scheduler scheduler;
     private final String fullyQualifiedNamespace;
     private final String entityPath;
-    private final CBSAuthorizationType authorizationType;
+    private final CbsAuthorizationType authorizationType;
 
     public ConnectionOptions(String fullyQualifiedNamespace, String entityPath, TokenCredential tokenCredential,
-            CBSAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
+            CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
             ProxyOptions proxyOptions, Scheduler scheduler) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' is required.");
@@ -52,7 +52,7 @@ public class ConnectionOptions {
         return tokenCredential;
     }
 
-    public CBSAuthorizationType getAuthorizationType() {
+    public CbsAuthorizationType getAuthorizationType() {
         return authorizationType;
     }
 
