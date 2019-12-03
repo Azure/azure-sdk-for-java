@@ -12,15 +12,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.cs.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.cs.textanalytics.implementation.models.LanguageBatchInput;
+import com.azure.cs.textanalytics.implementation.models.LanguageResult;
 import com.azure.cs.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.DetectLanguageResult;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.LinkedEntityResult;
-import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.NamedEntityResult;
-import com.azure.cs.textanalytics.models.TextDocumentInput;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.cs.textanalytics.models.TextDocumentInput;
 import com.azure.cs.textanalytics.models.TextSentimentResult;
 import reactor.core.publisher.Mono;
 
@@ -126,13 +127,27 @@ public final class TextAnalyticsAsyncClient {
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate inputs
         final LanguageBatchInput languageBatchInput = new LanguageBatchInput().setDocuments(inputs);
-//         return client.languagesWithRestResponseAsync(languageBatchInput, options.getModelVersion(),
-//             options.showStatistics(), context)
-//             .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", languageBatchInput))
-//             .doOnSuccess(response -> logger.info("A batch of detected language output - {}", languageBatchInput))
-//             .doOnError(error -> logger.warning("Failed to detected languages - {}", languageBatchInput))
-//             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
-        return null;
+        return client.languagesWithRestResponseAsync(languageBatchInput, options.getModelVersion(),
+            options.showStatistics(), context)
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", languageBatchInput))
+            .doOnSuccess(response -> logger.info("A batch of detected language output - {}", languageBatchInput))
+            .doOnError(error -> logger.warning("Failed to detected languages - {}", languageBatchInput))
+            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
+    }
+
+    private DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(LanguageResult value) {
+        return new
+            DocumentResultCollection<>(getDetectedLanguages(value), value.getModelVersion(), value.getStatistics());
+    }
+
+    public List<DetectLanguageResult> getDetectedLanguages(LanguageResult value) {
+        List<DetectLanguageResult> detectedLanguageList = new ArrayList<>();
+        value.getDocuments().forEach(documentLanguage ->
+            detectedLanguageList.add(new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(),
+                value.getErrors().get(0),
+                documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages())
+        ));
+        return detectedLanguageList;
     }
 
     // (2) entities

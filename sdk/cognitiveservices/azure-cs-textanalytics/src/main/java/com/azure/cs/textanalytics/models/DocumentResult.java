@@ -17,6 +17,12 @@ public class DocumentResult {
     private TextDocumentStatistics textDocumentStatistics;
     private DocumentError error;
 
+    public DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics, final DocumentError error) {
+        this.id = id;
+        this.textDocumentStatistics = textDocumentStatistics;
+        this.error = error;
+    }
+
     public String getId() {
         return id;
     }

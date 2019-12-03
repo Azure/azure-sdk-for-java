@@ -11,13 +11,10 @@ public class DocumentResultCollection<T> extends IterableStream<T> {
     private String modelVersion;
     private TextBatchStatistics statistics;
 
-    /**
-     * Creates instance with the given {@link Flux}.
-     *
-     * @param flux Flux of items to iterate over.
-     */
-    DocumentResultCollection(Flux<T> flux) {
-        super(flux);
+    public DocumentResultCollection(Iterable<T> iterable, String modelVersion, TextBatchStatistics statistics) {
+        super(iterable);
+        this.modelVersion = modelVersion;
+        this.statistics = statistics;
     }
 
     public String getModelVersion() {

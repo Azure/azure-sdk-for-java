@@ -15,6 +15,12 @@ public final class TextSentimentResult extends DocumentResult {
     private TextSentiment documentSentiment;
     private List<TextSentiment> sentenceSentiments;
 
+    public TextSentimentResult(String id, TextDocumentStatistics textDocumentStatistics, DocumentError error, TextSentiment documentSentiment, List<TextSentiment> sentenceSentiments) {
+        super(id, textDocumentStatistics, error);
+        this.documentSentiment = documentSentiment;
+        this.sentenceSentiments = sentenceSentiments;
+    }
+
     public TextSentiment getDocumentSentiment() {
         return documentSentiment;
     }
