@@ -75,7 +75,7 @@ public class ReadMyWritesConsistencyTest {
     }
 
     @BeforeClass(groups = "e2e")
-    public void beforeClass() {
+    public void before_ReadMyWritesConsistencyTest() {
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(initialCollectionThroughput);
         AsyncDocumentClient housekeepingClient = Utils.housekeepingClient();

@@ -44,7 +44,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
     DocumentCollection createdCollection;
 
     @BeforeClass(groups = {"direct"}, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_ConsistencyTestsBase() throws Exception {
         initClient = createGatewayRxDocumentClient().build();
         createdDatabase = SHARED_DATABASE;
         createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
@@ -105,7 +105,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
     }
 
     void validateReadQuorum(ConsistencyLevel consistencyLevel, ResourceType childResourceType, boolean isBoundedStaleness) {
-        //TODO this need to complete once we implement emulator container in java, and then we can do operation 
+        //TODO this need to complete once we implement emulator container in java, and then we can do operation
         // like pause, resume, stop, recycle on it needed for this test.
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355053
     }

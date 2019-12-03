@@ -38,7 +38,7 @@ public class StoreHeaderTests extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_StoreHeaderTests() {
         client = clientBuilder().build();
 
         createdDatabase = SHARED_DATABASE;

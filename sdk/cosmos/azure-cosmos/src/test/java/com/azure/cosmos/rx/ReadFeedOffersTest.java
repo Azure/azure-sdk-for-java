@@ -65,7 +65,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_ReadFeedOffersTest() {
         client = clientBuilder().build();
         createdDatabase = createDatabase(client, databaseId);
 
@@ -90,7 +90,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
     public DocumentCollection createCollections(AsyncDocumentClient client) {
         DocumentCollection collection = new DocumentCollection();
         collection.setId(UUID.randomUUID().toString());
-        
+
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
