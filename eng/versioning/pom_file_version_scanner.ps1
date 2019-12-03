@@ -26,7 +26,7 @@
 
 # Since we're skipping Management for the moment, only look for files with certain parents. These
 # limitations will vanish once Management track is updated.
-$ValidParents = ("azure-client-sdk-parent", "azure-data-sdk-parent", "azure-cosmos-parent")
+$ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-parent", "azure-cosmos-parent")
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
 
 # Not all POM files have a parent entry
@@ -166,7 +166,7 @@ function Test-Dependency-Tag-And-Version {
         {
             if ($versionString -ne $extDepHash[$depKey].ver)
             {
-                return "Error: $($depKey)'s <version> is $($versionString) but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
+                return "Error: $($depKey)'s <version> is '$($versionString)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
             }
         }
     }
@@ -183,14 +183,14 @@ function Test-Dependency-Tag-And-Version {
             {
                 if ($versionString -ne $libHash[$depKey].depVer)
                 {
-                    return "Error: $($depKey)'s <version> is $($versionString) but the dependency version is listed as $($libHash[$depKey].depVer)"
+                    return "Error: $($depKey)'s <version> is '$($versionString)' but the dependency version is listed as $($libHash[$depKey].depVer)"
                 }
             }
             elseif ($depType -eq $DependencyTypeCurrent) 
             {
                 if ($versionString -ne $libHash[$depKey].curVer)
                 {
-                    return "Error: $($depKey)'s <version> is $($versionString) but the current version is listed as $($libHash[$depKey].curVer)"
+                    return "Error: $($depKey)'s <version> is '$($versionString)' but the current version is listed as $($libHash[$depKey].curVer)"
                 }
             }
             # At this point the version update string, itself, has an incorrect dependency tag
@@ -217,6 +217,11 @@ Build-Dependency-Hash-From-File $extDepHash $Path\eng\versioning\external_depend
 Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     $pomFile = $_.FullName
     $xmlPomFile = $null
+
+    if ($_.Name -eq "pom.management.xml")
+    {
+        return
+    }
 
     if ($PomFilesIgnoreParent -contains $pomFile)
     {
@@ -340,6 +345,12 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         $artifactId = $dependencyNode.artifactId
         $groupId = $dependencyNode.groupId
         $versionNode = $dependencyNode.GetElementsByTagName("version")[0]
+        if (!$versionNode) 
+        {
+            $script:FoundError = $true
+            Write-Output "Error: dependency is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            continue
+        }
         if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment") 
         {
             # unfortunately because there are POM exceptions we need to wildcard the group which may be 
@@ -376,9 +387,17 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         # plugins will always have an artifact but may not have a groupId
         if (!$groupId)
         {
+            $script:FoundError = $true
             Write-Output "Error: plugin $($artifactId) is missing its groupId tag"
+            continue
         }
         $versionNode = $pluginNode.GetElementsByTagName("version")[0]
+        if (!$versionNode) 
+        {
+            $script:FoundError = $true
+            Write-Output "Error: plugin is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            continue
+        }
         if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment") 
         {
             # unfortunately because there are POM exceptions we need to wildcard the group which may be 
