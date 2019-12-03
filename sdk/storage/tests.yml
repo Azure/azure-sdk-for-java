@@ -4,25 +4,54 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: storage
+      PreRunSteps:
+        - pwsh: |
+            # $uniqueIdentifier generates a pseudorandom value that represents a unique name that can be used with all resources
+            $uniqueIdentifier =  "t" + [guid]::NewGuid().ToString().Replace("-", "").Substring(0,16)
+            $jobName = "$(Agent.JobName)".Replace(" ", "_")
+            $resourceGroupName = "Tests-$(Build.BuildId)-" + $jobName + "-" + $uniqueIdentifier
+            echo "##vso[task.setvariable variable=ResourceGroupName]$resourceGroupName"
+            echo "##vso[task.setvariable variable=ScopedIdentifier]$uniqueIdentifier"
+            $resourceGroupExpiration = (Get-Date).ToUniversalTime().AddHours(24).ToString("o")
+
+            az login --service-principal -u $env:PROVISIONER_AAD_ID -p $env:PROVISIONER_AAD_SECRET --tenant $env:PROVISIONER_AAD_TENANT
+            az account set --subscription $env:PROVISIONER_SUBSCRIPTION
+
+            az group create --name $resourceGroupName --location $env:PROVISIONER_RG_LOCATION --tags DeleteAfter=$resourceGroupExpiration
+            az group wait --created --resource-group $resourceGroupName
+            # TODO: use more correct tests-resources.json location
+            $rawDeployOutput = az group deployment create --resource-group $resourceGroupName --template-file .\tests-resources.json --parameters unique_id=$uniqueIdentifier tenant_id="$env:PROVISIONER_AAD_TENANT" test_app_id="$env:TEST_APP_ID"
+
+            $deploymentOutput = $rawDeployOutput | ConvertFrom-JSON -AsHashtable
+            $deploymentOutput.properties.outputs.GetEnumerator() | foreach { Write-Host "##vso[task.setvariable variable=$($_.Name.ToUpper());issecret=true]$($_.value.value)" }
+          env:
+            PROVISIONER_AAD_ID: $(provisioner-aad-id)
+            PROVISIONER_AAD_SECRET: $(provisioner-aad-secret)
+            PROVISIONER_AAD_TENANT: $(provisioner-aad-tenant)
+            PROVISIONER_SUBSCRIPTION: $(provisioner-subscription)
+            PROVISIONER_RG_LOCATION: westus2
+            TEST_APP_ID: $(provisioner-test-app-id)
+          displayName: Provision Test-Specific Azure Resources
+
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
-        PRIMARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-primary-account-name)
-        PRIMARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-primary-account-key)
-        SECONDARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-secondary-account-name)
-        SECONDARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-secondary-account-key)
-        BLOB_STORAGE_ACCOUNT_NAME: $(java-storage-test-blob-account-name)
-        BLOB_STORAGE_ACCOUNT_KEY: $(java-storage-test-blob-account-key)
-        PREMIUM_STORAGE_ACCOUNT_NAME: $(java-storage-test-premium-account-name)
-        PREMIUM_STORAGE_ACCOUNT_KEY: $(java-storage-test-premium-account-key)
-        AZURE_STORAGE_ACCESS_KEY: $(java-storage-test-access-key)
-        AZURE_STORAGE_FILE_ENDPOINT: $(java-storage-test-file-endpoint)
-        AZURE_STORAGE_FILE_CONNECTION_STRING: $(java-storage-test-file-connection-string)
-        AZURE_STORAGE_QUEUE_ENDPOINT: $(java-storage-test-queue-endpoint)
-        AZURE_STORAGE_QUEUE_CONNECTION_STRING: $(java-storage-test-queue-connection-string)
-        AZURE_STORAGE_BLOB_CONNECTION_STRING: $(java-storage-test-blob-connection-string)
-        STORAGE_DATA_LAKE_ACCOUNT_NAME: $(java-storage-data-lake-account-name)
-        STORAGE_DATA_LAKE_ACCOUNT_KEY: $(java-storage-data-lake-account-key)
+        #PRIMARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-primary-account-name)
+        #PRIMARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-primary-account-key)
+        #SECONDARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-secondary-account-name)
+        #SECONDARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-secondary-account-key)
+        #BLOB_STORAGE_ACCOUNT_NAME: $(java-storage-test-blob-account-name)
+        #BLOB_STORAGE_ACCOUNT_KEY: $(java-storage-test-blob-account-key)
+        #PREMIUM_STORAGE_ACCOUNT_NAME: $(java-storage-test-premium-account-name)
+        #PREMIUM_STORAGE_ACCOUNT_KEY: $(java-storage-test-premium-account-key)
+        # WHAT DOES THIS REFER TO? -- NOT USED -- AZURE_STORAGE_ACCESS_KEY: $(java-storage-test-access-key)
+        # AZURE_STORAGE_FILE_ENDPOINT: $(java-storage-test-file-endpoint)
+        # AZURE_STORAGE_FILE_CONNECTION_STRING: $(java-storage-test-file-connection-string)
+        # AZURE_STORAGE_QUEUE_ENDPOINT: $(java-storage-test-queue-endpoint)
+        # AZURE_STORAGE_QUEUE_CONNECTION_STRING: $(java-storage-test-queue-connection-string)
+        # AZURE_STORAGE_BLOB_CONNECTION_STRING: $(java-storage-test-blob-connection-string)
+        # STORAGE_DATA_LAKE_ACCOUNT_NAME: $(java-storage-data-lake-account-name)
+        # STORAGE_DATA_LAKE_ACCOUNT_KEY: $(java-storage-data-lake-account-key)
       TimeoutInMinutes: 120

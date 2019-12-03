@@ -1,0 +1,225 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "unique_id": {
+            "defaultValue": "djurekstorage4",
+            "type": "String"
+        },
+        "tenant_id": {
+            "type": "string",
+            "defaultValue": "not-specified"
+        },
+        "test_app_id": {
+            "type": "string",
+            "defaultValue": "not-specified"
+        },
+        "endpoint_suffix": {
+            "type": "string",
+            "defaultValue": "core.windows.net"
+        }
+    },
+    "variables": {
+        "storageApiVersion": "[providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]]",
+        "primaryAccountName": "[concat('prim', parameters('unique_id'))]",
+        "secondaryAccountName": "[concat('sec', parameters('unique_id'))]",
+        "premiumAccountName": "[concat('prem', parameters('unique_id'))]",
+        "dataLakeAccountName": "[concat('dtlk', parameters('unique_id'))]",
+        "location": "[resourceGroup().location]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "name": "[variables('primaryAccountName')]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "name": "[variables('secondaryAccountName')]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "name": "[variables('premiumAccountName')]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "Premium_LRS",
+                "tier": "Premium"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "name": "[variables('dataLakeAccountName')]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "isHnsEnabled": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        }
+    ],
+    "outputs": {
+        "PRIMARY_STORAGE_ACCOUNT_NAME": {
+            "type": "string",
+            "value": "[variables('primaryAccountName')]"
+        },
+        "PRIMARY_STORAGE_ACCOUNT_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
+        },
+        "SECONDARY_STORAGE_ACCOUNT_NAME": {
+            "type": "string",
+            "value": "[variables('secondaryAccountName')]"
+        },
+        "SECONDARY_STORAGE_ACCOUNT_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
+        },
+        "BLOB_STORAGE_ACCOUNT_NAME": {
+            "type": "string",
+            "value": "[variables('secondaryAccountName')]"
+        },
+        "BLOB_STORAGE_ACCOUNT_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
+        },
+        "PREMIUM_STORAGE_ACCOUNT_NAME": {
+            "type": "string",
+            "value": "[variables('premiumAccountName')]"
+        },
+        "PREMIUM_STORAGE_ACCOUNT_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumAccountName')), variables('storageApiVersion')).keys[0].value]"
+        },
+        "AZURE_STORAGE_FILE_ENDPOINT": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.file]"
+        },
+        "AZURE_STORAGE_QUEUE_ENDPOINT": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.queue]"
+        },
+        "STORAGE_DATA_LAKE_ACCOUNT_NAME": {
+            "type": "string",
+            "value": "[variables('dataLakeAccountName')]"
+        },
+        "STORAGE_DATA_LAKE_ACCOUNT_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value]"
+        },
+
+        "AZURE_STORAGE_BLOB_CONNECTION_STRING": {
+            "type": "string",
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpoint_suffix'))]"
+        },
+        "AZURE_STORAGE_FILE_CONNECTION_STRING": {
+            "type": "string",
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpoint_suffix'))]"
+        },
+        "AZURE_STORAGE_QUEUE_CONNECTION_STRING": {
+            "type": "string",
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpoint_suffix'))]"
+        }
+
+    }
+}
