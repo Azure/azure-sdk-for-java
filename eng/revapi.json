@@ -7,5 +7,17 @@
                 "exclude" : ["class com\\.azure\\..*\\.implementation(\\..*)?"]
             }
         }
-    }
+    },
+    {
+        "extension": "revapi.semver.ignore",
+        "configuration": {
+          "enabled" : true,
+          "versionIncreaseAllows" : {
+            "major" : "breaking",
+            "minor" : "nonBreaking",
+            "patch" : "equivalent"
+          },
+          "passThroughDifferences": ["java.class.nonPublicPartOfAPI"]
+        }
+      }
 ]
