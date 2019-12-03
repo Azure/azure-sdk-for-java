@@ -39,7 +39,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private final HttpLogDetailLevel httpLogDetailLevel;
     private final Set<String> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
-    private final boolean prettyPrintJSON;
+    private final boolean prettyPrintJson;
 
     /**
      * Creates an HttpLoggingPolicy with the given log configurations.
@@ -58,7 +58,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * include body logging, this flag does nothing.
      */
     private HttpLoggingPolicy(HttpLogOptions httpLogOptions, boolean prettyPrintJson) {
-        this.prettyPrintJSON = prettyPrintJson;
+        this.prettyPrintJson = prettyPrintJson;
 
         if (httpLogOptions == null) {
             this.httpLogDetailLevel = HttpLogDetailLevel.NONE;
@@ -182,9 +182,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         if (httpLogDetailLevel.shouldLogUrl()) {
             responseLogMessage.append("<-- ")
                 .append(response.getStatusCode())
-                .append(" ").append(getRedactedUrl(response.getRequest().getUrl()))
-                .append(" (").append(tookMs).append(" ms, ")
-                .append(bodySize).append(")")
+                .append(" ")
+                .append(getRedactedUrl(response.getRequest().getUrl()))
+                .append(" (")
+                .append(tookMs)
+                .append(" ms, ")
+                .append(bodySize)
+                .append(")")
                 .append(System.lineSeparator());
         }
 
@@ -228,7 +232,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A flag indicating if logging should be skipped.
      */
     private boolean shouldLoggingBeSkipped(int environmentLogLevel) {
-        return environmentLogLevel <= LogLevel.INFORMATIONAL.toNumeric();
+        return environmentLogLevel > LogLevel.INFORMATIONAL.toNumeric();
     }
 
     /*
@@ -314,7 +318,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     private String prettyPrintIfNeeded(ClientLogger logger, String contentType, String body) {
         String result = body;
-        if (prettyPrintJSON && contentType != null
+        if (prettyPrintJson && contentType != null
             && (contentType.startsWith(ContentType.APPLICATION_JSON) || contentType.startsWith("text/json"))) {
             try {
                 final Object deserialized = PRETTY_PRINTER.readTree(body);
