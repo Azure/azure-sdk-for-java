@@ -10,7 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.cs.textanalytics.implementation.TextAnalyticsAPIImpl;
+import com.azure.cs.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.cs.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.cs.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.cs.textanalytics.models.DetectLanguageResult;
@@ -34,10 +34,10 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class TextAnalyticsAsyncClient {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsAsyncClient.class);
 
-    private final TextAnalyticsAPIImpl client;
+    private final TextAnalyticsClientImpl client;
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    TextAnalyticsAsyncClient(TextAnalyticsAPIImpl client, TextAnalyticsServiceVersion serviceVersion) {
+    TextAnalyticsAsyncClient(TextAnalyticsClientImpl client, TextAnalyticsServiceVersion serviceVersion) {
         this.client = client;
         this.serviceVersion = serviceVersion;
     }

@@ -22,8 +22,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.cs.textanalytics.implementation.TextAnalyticsAPIBuilder;
-import com.azure.cs.textanalytics.implementation.TextAnalyticsAPIImpl;
+import com.azure.cs.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.cs.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.cs.textanalytics.models.TextAnalyticsClientOptions;
 
 import java.time.temporal.ChronoUnit;
@@ -131,7 +131,7 @@ public final class TextAnalyticsClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        TextAnalyticsAPIImpl textAnalyticsAPI = new TextAnalyticsAPIBuilder()
+        TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
             .endpoint(endpoint)
             .pipeline(pipeline)
             .build();
