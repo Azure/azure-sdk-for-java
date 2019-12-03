@@ -13,7 +13,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class InnerError {
     /*
-     * Error code.
+     * Error code. Possible values include: 'invalidParameterValue',
+     * 'invalidRequestBodyFormat', 'emptyRequest', 'missingInputRecords',
+     * 'invalidDocument', 'modelVersionIncorrect', 'invalidDocumentBatch',
+     * 'unsupportedLanguageCode', 'invalidCountryHint'
      */
     @JsonProperty(value = "code", required = true)
     private String code;
@@ -37,7 +40,10 @@ public final class InnerError {
     private InnerError innererror;
 
     /**
-     * Get the code property: Error code.
+     * Get the code property: Error code. Possible values include:
+     * 'invalidParameterValue', 'invalidRequestBodyFormat', 'emptyRequest',
+     * 'missingInputRecords', 'invalidDocument', 'modelVersionIncorrect',
+     * 'invalidDocumentBatch', 'unsupportedLanguageCode', 'invalidCountryHint'.
      *
      * @return the code value.
      */
@@ -46,7 +52,10 @@ public final class InnerError {
     }
 
     /**
-     * Set the code property: Error code.
+     * Set the code property: Error code. Possible values include:
+     * 'invalidParameterValue', 'invalidRequestBodyFormat', 'emptyRequest',
+     * 'missingInputRecords', 'invalidDocument', 'modelVersionIncorrect',
+     * 'invalidDocumentBatch', 'unsupportedLanguageCode', 'invalidCountryHint'.
      *
      * @param code the code value to set.
      * @return the InnerError object itself.

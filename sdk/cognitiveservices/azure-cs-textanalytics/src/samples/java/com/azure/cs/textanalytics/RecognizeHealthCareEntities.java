@@ -17,7 +17,7 @@
 ////        String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
 ////
 ////        // Instantiate a client that will be used to call the service.
-////        TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+////        TextAnalyticsClient client = new TextAnalyticsClientImplBuilder()
 ////            .connectionString(connectionString)
 ////            .buildClient();
 ////

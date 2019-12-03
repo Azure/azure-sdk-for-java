@@ -26,7 +26,7 @@ public class DocumentResult {
         return this;
     }
 
-    public TextDocumentStatistics getTextDocumentStatistics() {
+    public TextDocumentStatistics getStatistics() {
         return textDocumentStatistics;
     }
 

@@ -48,7 +48,7 @@ public final class KeyPhraseResult {
         return this.documents;
     }
 
-    /**JacksonAdapter
+    /**
      * Set the documents property: Response by document.
      *
      * @param documents the documents value to set.

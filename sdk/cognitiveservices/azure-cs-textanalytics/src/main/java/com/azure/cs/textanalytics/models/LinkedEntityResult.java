@@ -4,20 +4,22 @@
 package com.azure.cs.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.IterableStream;
+
+import java.util.List;
+
 
 /**
  * The LinkedEntityResult model.
  */
 @Fluent
 public final class LinkedEntityResult extends DocumentResult {
-    private IterableStream<LinkedEntity> linkedEntities;
+    private List<LinkedEntity> linkedEntities;
 
-    public IterableStream<LinkedEntity> getLinkedEntities() {
+    public List<LinkedEntity> getLinkedEntities() {
         return linkedEntities;
     }
 
-    LinkedEntityResult setLinkedEntities(IterableStream<LinkedEntity> linkedEntities) {
+    LinkedEntityResult setLinkedEntities(List<LinkedEntity> linkedEntities) {
         this.linkedEntities = linkedEntities;
         return this;
     }

@@ -6,12 +6,16 @@ package com.azure.cs.textanalytics.implementation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 
 /**
- * A builder for creating a new instance of the TextAnalyticsAPI type.
+ * A builder for creating a new instance of the TextAnalyticsClient type.
  */
-@ServiceClientBuilder(serviceClients = TextAnalyticsAPIImpl.class)
-public final class TextAnalyticsAPIBuilder {
+@ServiceClientBuilder(serviceClients = TextAnalyticsClientImpl.class)
+public final class TextAnalyticsClientImplBuilder {
     /*
      * Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
      */
@@ -21,9 +25,9 @@ public final class TextAnalyticsAPIBuilder {
      * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
      *
      * @param endpoint the endpoint value.
-     * @return the TextAnalyticsAPIBuilder.
+     * @return the TextAnalyticsClientImplBuilder.
      */
-    public TextAnalyticsAPIBuilder endpoint(String endpoint) {
+    public TextAnalyticsClientImplBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -37,24 +41,23 @@ public final class TextAnalyticsAPIBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the TextAnalyticsAPIBuilder.
+     * @return the TextAnalyticsClientImplBuilder.
      */
-    public TextAnalyticsAPIBuilder pipeline(HttpPipeline pipeline) {
+    public TextAnalyticsClientImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
 
     /**
-     * Builds an instance of TextAnalyticsAPIImpl with the provided parameters.
+     * Builds an instance of TextAnalyticsClientImpl with the provided parameters.
      *
-     * @return an instance of TextAnalyticsAPIImpl.
+     * @return an instance of TextAnalyticsClientImpl.
      */
-    public TextAnalyticsAPIImpl build() {
-//        if (pipeline == null) {
-//            // TODO: fix it in swagger
-////            this.pipeline = RestProxy.createDefaultPipeline();
-//        }
-        TextAnalyticsAPIImpl client = new TextAnalyticsAPIImpl(pipeline);
+    public TextAnalyticsClientImpl build() {
+        if (pipeline == null) {
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+        }
+        TextAnalyticsClientImpl client = new TextAnalyticsClientImpl(pipeline);
         if (this.endpoint != null) {
             client.setEndpoint(this.endpoint);
         }

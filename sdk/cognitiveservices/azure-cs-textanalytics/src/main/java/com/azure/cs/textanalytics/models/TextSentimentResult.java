@@ -4,7 +4,6 @@
 package com.azure.cs.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.IterableStream;
 
 import java.util.List;
 
@@ -14,13 +13,13 @@ import java.util.List;
 @Fluent
 public final class TextSentimentResult extends DocumentResult {
     private TextSentiment documentSentiment;
-    private IterableStream<TextSentiment> sentenceSentiments;
+    private List<TextSentiment> sentenceSentiments;
 
     public TextSentiment getDocumentSentiment() {
         return documentSentiment;
     }
 
-    public IterableStream<TextSentiment> getSentenceSentiments() {
+    public List<TextSentiment> getSentenceSentiments() {
         return sentenceSentiments;
     }
 
@@ -29,7 +28,7 @@ public final class TextSentimentResult extends DocumentResult {
         return this;
     }
 
-    TextSentimentResult setSentenceSentiments(IterableStream<TextSentiment> sentenceSentiments) {
+    TextSentimentResult setSentenceSentiments(List<TextSentiment> sentenceSentiments) {
         this.sentenceSentiments = sentenceSentiments;
         return this;
     }

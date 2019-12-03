@@ -5,7 +5,7 @@
 //
 //import com.azure.core.util.Context;
 //import com.azure.cs.textanalytics.TextAnalyticsClient;
-//import com.azure.cs.textanalytics.TextAnalyticsClientBuilder;
+//import com.azure.cs.textanalytics.TextAnalyticsClientImplBuilder;
 //import com.azure.cs.textanalytics.implementation.models.DocumentEntities;
 //import com.azure.cs.textanalytics.implementation.models.EntitiesResult;
 //import com.azure.cs.textanalytics.models.NamedEntity;
@@ -21,7 +21,7 @@
 //
 //        // TODO: user AAD token to do the authentication
 //        // Instantiate a client that will be used to call the service.
-//        TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+//        TextAnalyticsClient client = new TextAnalyticsClientImplBuilder()
 //            .buildClient();
 //
 //        // The texts that need be analysed.

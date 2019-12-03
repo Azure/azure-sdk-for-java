@@ -25,20 +25,20 @@ public class AnalyzeSentimentBatchDocuments {
 
         // The texts that need be analysed.
         List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("1", "The hotel was dark and unclean.").setLanguage("US"),
-            new TextDocumentInput("2", "The restaurant had amazing gnocci.").setLanguage("US")
+            new TextDocumentInput("1", "The hotel was dark and unclean.", "US"),
+            new TextDocumentInput("2", "The restaurant had amazing gnocci.", "US")
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
-        DocumentResultCollection<TextSentimentResult> detectedBatchResult = client.analyzeSentiment(inputs, requestOptions);
+        DocumentResultCollection<TextSentimentResult> detectedBatchResult = client.analyzeBatchSentiment(inputs, requestOptions);
         System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
 
-        final TextBatchStatistics batchStatistics = detectedBatchResult.getBatchStatistics();
+        final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
-            batchStatistics.getDocumentsCount(),
-            batchStatistics.getErroneousDocumentsCount(),
-            batchStatistics.getTransactionsCount(),
-            batchStatistics.getValidDocumentsCount());
+            batchStatistics.getDocumentCount(),
+            batchStatistics.getErroneousDocumentCount(),
+            batchStatistics.getTransactionCount(),
+            batchStatistics.getValidDocumentCount());
 
         // Detecting sentiment for each of document from a batch of documents
         detectedBatchResult.stream().forEach(result -> {
@@ -51,7 +51,7 @@ public class AnalyzeSentimentBatchDocuments {
                 documentSentiment.getLength(),
                 documentSentiment.getOffSet());
 
-            result.getSentenceSentiments().stream().forEach(sentenceSentiment ->
+            result.getSentenceSentiments().forEach(sentenceSentiment ->
                 System.out.printf("Recognized sentence sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s",
                     sentenceSentiment.getTextSentimentClass(),
                     sentenceSentiment.getPositiveScore(),
