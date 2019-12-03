@@ -3,6 +3,7 @@
 package com.azure.search;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a document
@@ -11,4 +12,21 @@ import java.util.HashMap;
  */
 public class Document extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Default empty constructor
+     */
+    public Document() {
+        super();
+    }
+
+    /**
+     * Constructs a new {@code Document} with the same mappings as the
+     * specified {@code Map}.
+     *
+     * @param   m the map whose mappings are to be placed in this map
+     */
+    public Document(Map<? extends String, ?> m) {
+        super(m);
+    }
 }
