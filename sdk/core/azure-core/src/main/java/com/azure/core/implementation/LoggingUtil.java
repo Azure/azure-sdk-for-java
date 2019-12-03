@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * This class contains utility methods useful for logging.
+ */
 public final class LoggingUtil {
     private static final Map<Integer, LogLevel> LOG_LEVEL_MAPPER = Arrays.stream(LogLevel.values())
         .collect(Collectors.toMap(LogLevel::toNumeric, logLevel -> logLevel));
