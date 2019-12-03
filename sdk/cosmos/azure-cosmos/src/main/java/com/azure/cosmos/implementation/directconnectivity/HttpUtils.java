@@ -45,14 +45,14 @@ public class HttpUtils {
         }
     }
 
-    public static URI toURI(String uri) {
-        try {
-            return new URI(uri);
-        } catch (Exception e) {
-            log.error("failed to parse {}", uri, e);
-            throw new IllegalArgumentException("failed to parse uri " + uri, e);
-        }
-    }
+//    public static URI toURI(String uri) {
+//        try {
+//            return new URI(uri);
+//        } catch (Exception e) {
+//            log.error("failed to parse {}", uri, e);
+//            throw new IllegalArgumentException("failed to parse uri " + uri, e);
+//        }
+//    }
 
     public static Map<String, String> asMap(HttpHeaders headers) {
         if (headers == null) {
