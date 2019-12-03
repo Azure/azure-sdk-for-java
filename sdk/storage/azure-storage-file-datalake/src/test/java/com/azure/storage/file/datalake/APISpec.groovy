@@ -630,4 +630,11 @@ class APISpec extends Specification {
         return false
     }
 
+    def sleepIfLive(long milliseconds) {
+        if (testMode == TestMode.PLAYBACK) {
+            return
+        }
+        sleep(milliseconds)
+    }
+
 }

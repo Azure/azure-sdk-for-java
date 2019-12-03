@@ -11,6 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
@@ -245,5 +246,21 @@ public class DataLakeServiceClient {
      */
     public String getAccountName() {
         return this.dataLakeServiceAsyncClient.getAccountName();
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to file
+     * systems and file shares.</p>
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.generateAccountSas#AccountSasSignatureValues}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
+        return dataLakeServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
     }
 }
