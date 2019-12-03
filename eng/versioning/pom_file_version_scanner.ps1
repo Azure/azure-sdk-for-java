@@ -32,8 +32,15 @@ $Path = Resolve-Path ($PSScriptRoot + "/../../")
 # Not all POM files have a parent entry
 $PomFilesIgnoreParent = ("$($Path)\parent\pom.xml")
 $script:FoundError = $false
+$DependencyTypeCurrent = "current"
+$DependencyTypeDependency = "dependency"
+$DependencyTypeExternal = "external_dependency"
+$DependencyTypeForError = "$($DependencyTypeCurrent)|$($DependencyTypeDependency)|$($DependencyTypeExternal)"
+$UpdateTagFormat = "{x-version-update;<groupId>:<artifactId>;$($DependencyTypeForError)}"
 $StartTime = $(get-date)
 
+# The expected format for a depenency, as found in the eng\versioning\version_*.txt files, is as follows:
+# groupId:artifactId;dependency-version;current-version
 class Dependency {
     [string]$id
     [string]$depVer
@@ -42,12 +49,20 @@ class Dependency {
         [string]$inputString
     ){
         $split = $inputString.Split(";")
+        if ($split.Count -ne 3)
+        {
+            # throw and let the caller handle the error since it'll have access to the
+            # filename of the file with the malformed line for reporting
+            throw
+        }
         $this.id = $split[0]
         $this.depVer = $split[1]
         $this.curVer = $split[2]
     }    
 }
 
+# The expected format for an external depenency, as found in the eng\versioning\external_dependencies.txt file, is as follows:
+# groupId:artifactId;dependency-version
 class ExternalDependency {
     [string]$id
     [string]$ver
@@ -55,6 +70,12 @@ class ExternalDependency {
         [string]$inputString
     ){
         $split = $inputString.Split(";")
+        if ($split.Count -ne 2)
+        {
+            # throw and let the caller handle the error since it'll have access to the
+            # filename of the file with the malformed line for reporting
+            throw
+        }
         $this.id = $split[0]
         $this.ver = $split[1]
     }    
@@ -73,27 +94,35 @@ function Build-Dependency-Hash-From-File {
         }
         if (!$extDepHash)
         {
-            [Dependency]$dep = [Dependency]::new($line)
-            if ($depHash.ContainsKey($dep.id))
-            {
-                # shouldn't happen but error anyways
-                Write-Error "Error: Duplicate dependency encountered. '$($dep.id)' defined in '$($depFile)' already exists in the dependency list which means it is defined in multiple version_*.txt files."
-                $script:FoundError = $true
-                continue
+            try {
+                [Dependency]$dep = [Dependency]::new($line)
+                if ($depHash.ContainsKey($dep.id))
+                {
+                    Write-Error "Error: Duplicate dependency encountered. '$($dep.id)' defined in '$($depFile)' already exists in the dependency list which means it is defined in multiple version_*.txt files."
+                    $script:FoundError = $true
+                    continue
+                }
+                $depHash.Add($dep.id, $dep)
             }
-            $depHash.Add($dep.id, $dep)
+            catch {
+                Write-Error "Invalid dependency line='$($line) in file=$($depFile)"
+            }
         } 
         else 
         {
-            [ExternalDependency]$dep = [ExternalDependency]::new($line)
-            if ($depHash.ContainsKey($dep.id))
-            {
-                # shouldn't happen but error anyways
-                Write-Error "Error: Duplicate external_dependency encountered. '$($dep.id)' has a duplicate entry defined in '$($depFile)'. Please ensure that all entries are unique."
-                $script:FoundError = $true
-                continue
+            try {
+                [ExternalDependency]$dep = [ExternalDependency]::new($line)
+                if ($depHash.ContainsKey($dep.id))
+                {
+                    Write-Error "Error: Duplicate external_dependency encountered. '$($dep.id)' has a duplicate entry defined in '$($depFile)'. Please ensure that all entries are unique."
+                    $script:FoundError = $true
+                    continue
+                }
+                $depHash.Add($dep.id, $dep)
             }
-            $depHash.Add($dep.id, $dep)
+            catch {
+                Write-Error "Invalid external dependency line='$($line) in file=$($depFile)"
+            }
         }
     }
 }
@@ -105,12 +134,29 @@ function Test-Dependency-Tag-And-Version {
         [string]$versionString, 
         [string]$versionUpdateString)
 
+    # This is the format of the versionUpdateString and there should be 3 parts:
+    # 1. The update tag, itself eg. x-version-update
+    # 2. The <groupId>:<artifactId> which is verified using the hash lookup
+    # 3. The dependency type which will be current or dependency or external_dependency
+
     # instead of creating the key from the groupId/artifactId it's necessary to pull the key
     # from the versionUpdateString in case it ends up being one of the dependency exceptions
     # which will have a <unique identifier>_ prepended to the groupId:artifactId
-    $depKey = $versionUpdateString.Split(";")[1]
+    $split = $versionUpdateString.Trim().Split(";")
+    if ($split.Count -ne 3)
+    {
+        return "Error: malformed dependency update tag='$($versionUpdateString)'. The dependency tag should have the following format: $($UpdateTagFormat)"
+    }
+    $depKey = $split[1]
+    $depType = $split[2]
+    # remove the trailing end brace
+    if (-not $depType.EndsWith("}"))
+    {
+        return "Error: malformed dependency update tag='$($versionUpdateString)' is missing the end brace."
+    }
+    $depType = $depType.Substring(0, $depType.IndexOf("}"))
 
-    if ($versionUpdateString.Contains(";external_dependency}"))
+    if ($depType -eq $DependencyTypeExternal)
     {
         if (!$extDepHash.ContainsKey($depKey))
         {
@@ -133,19 +179,24 @@ function Test-Dependency-Tag-And-Version {
         }
         else
         {
-            if ($versionUpdateString.Contains(";dependency}"))
+            if ($depType -eq $DependencyTypeDependency)
             {
                 if ($versionString -ne $libHash[$depKey].depVer)
                 {
                     return "Error: $($depKey)'s <version> is $($versionString) but the dependency version is listed as $($libHash[$depKey].depVer)"
                 }
             }
-            elseif ($versionUpdateString.Contains(";current}")) 
+            elseif ($depType -eq $DependencyTypeCurrent) 
             {
                 if ($versionString -ne $libHash[$depKey].curVer)
                 {
                     return "Error: $($depKey)'s <version> is $($versionString) but the current version is listed as $($libHash[$depKey].curVer)"
                 }
+            }
+            # At this point the version update string, itself, has an incorrect dependency tag
+            else 
+            {
+                return "Error: Invalid dependency type '$($depType)' in version update string $($versionUpdateString). Dependency type must be one of $($DependencyTypeForError)"
             }
         }
     }
@@ -187,7 +238,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     $dependencyManagement = $xmlPomFile.GetElementsByTagName("dependencyManagement")[0]
     if ($dependencyManagement)
     {
-        Write-Error "Error: <dependencyManagement> is not allowed. Every dependency must have its own version and version update tag"
+        Write-Output "Error: <dependencyManagement> is not allowed. Every dependency must have its own version and version update tag"
     }
 
     # Ensure that the project has a version tag with the exception of projects under the eng directory which
@@ -293,7 +344,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         {
             # unfortunately because there are POM exceptions we need to wildcard the group which may be 
             # something like <area>_groupId
-            if (!$versionNode.NextSibling.Value.Trim() -like ("{x-version-update;*$($groupId):$($artifactId);"))
+            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(\w+)?$($groupId):$($artifactId);\w+}")
             {
                 $script:FoundError = $true
                 Write-Output "Error: dependency version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
@@ -312,12 +363,11 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         else 
         {   
             $script:FoundError = $true
-            # <!-- {x-version-update;<groupId>:<artifactId>;current} -->
             Write-Output "Error: Missing dependency version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
         }
     }
-    # Verify every plugin as a group, artifact and version
-    # Verify every dependency as a group, artifact and version
+    # Verify every plugin has a group, artifact and version
+    # Verify every dependency has a group, artifact and version
     # GetElementsByTagName should get all dependencies including dependencies under plugins
     foreach($pluginNode in $xmlPomFile.GetElementsByTagName("plugin"))
     {
@@ -333,7 +383,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         {
             # unfortunately because there are POM exceptions we need to wildcard the group which may be 
             # something like <area>_groupId
-            if (!$versionNode.NextSibling.Value.Trim() -like ("{x-version-update;*$($groupId):$($artifactId);"))
+            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(\w+)?$($groupId):$($artifactId);\w+}")
             {
                 $script:FoundError = $true
                 Write-Output "Error: plugin version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
@@ -352,7 +402,6 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         else 
         {   
             $script:FoundError = $true
-            # <!-- {x-version-update;<groupId>:<artifactId>;current} -->
             Write-Output "Error: Missing plugin version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
         }
     }    
