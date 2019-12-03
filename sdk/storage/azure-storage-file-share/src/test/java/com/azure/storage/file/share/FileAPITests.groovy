@@ -42,8 +42,8 @@ class FileAPITests extends APISpec {
     static String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
-        filePath = testResourceName.randomName(methodName, 60)
+        shareName = generateRandomName()
+        filePath = generateRandomName()
         shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
         primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
@@ -98,9 +98,9 @@ class FileAPITests extends APISpec {
     def "Create file with args fpk"() {
         when:
         def filePermissionKey = shareClient.createPermission(filePermission)
-        // We recreate file properties for each test since we need to store the times for the test with getUTCNow()
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        // We recreate file properties for each test since we need to store the times for the test with getUtcNow()
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
             .setFilePermissionKey(filePermissionKey)
         def resp = primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties, null, testMetadata, null, null)
 
@@ -120,8 +120,8 @@ class FileAPITests extends APISpec {
 
     def "Create file with args fp"() {
         when:
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
         def resp = primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission, testMetadata, null, null)
         then:
         FileTestHelper.assertResponseStatusCode(resp, 201)
@@ -326,7 +326,7 @@ class FileAPITests extends APISpec {
     def "Upload and download file exists"() {
         given:
         def data = "Download file exists"
-        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), testName))
 
         if (!downloadFile.exists()) {
             assert downloadFile.createNewFile()
@@ -349,7 +349,7 @@ class FileAPITests extends APISpec {
     def "Upload and download to file does not exist"() {
         given:
         def data = "Download file does not exist"
-        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), testName))
 
         if (downloadFile.exists()) {
             assert downloadFile.delete()
@@ -381,7 +381,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.upload(getInputStream(data.getBytes()), data.length())
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
-            .setExpiryTime(getUTCNow().plusDays(1))
+            .setExpiryTime(getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
             .setShareName(primaryFileClient.getShareName())
             .setFilePath(primaryFileClient.getFilePath())
@@ -467,8 +467,8 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         when:
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
         def resp = primaryFileClient.getPropertiesWithResponse(null, null)
 
         then:
@@ -498,8 +498,8 @@ class FileAPITests extends APISpec {
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
         def filePermissionKey = shareClient.createPermission(filePermission)
         when:
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
             .setFilePermissionKey(filePermissionKey)
 
         def resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, null, null, null)
@@ -521,8 +521,8 @@ class FileAPITests extends APISpec {
         given:
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
         when:
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
 
         def resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, filePermission, null, null)
         then:

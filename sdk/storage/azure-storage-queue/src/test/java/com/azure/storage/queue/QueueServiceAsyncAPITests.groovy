@@ -21,14 +21,14 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "Get queue client"() {
         given:
-        def queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(testResourceName.randomName(methodName, 60))
+        def queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(generateRandomName(60))
         expect:
         queueAsyncClient instanceof QueueAsyncClient
     }
 
     def "Create queue"() {
         given:
-        def queueName = testResourceName.randomName(methodName, 60)
+        def queueName = generateRandomName(60)
         expect:
         StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, null)).assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 201)
@@ -67,7 +67,7 @@ class QueueServiceAsyncAPITests extends APISpec {
     @Unroll
     def "Create queue maxOverload"() {
         given:
-        def queueName = testResourceName.randomName(methodName, 60)
+        def queueName = generateRandomName(60)
         when:
         def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, metadata))
         def enqueueMessageVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
@@ -90,7 +90,7 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "Create queue with invalid metadata"() {
         given:
-        def queueName = testResourceName.randomName(methodName, 60)
+        def queueName = generateRandomName(60)
         when:
         def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, Collections.singletonMap("metadata!", "value")))
         then:
@@ -101,7 +101,7 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "Delete queue"() {
         given:
-        def queueName = testResourceName.randomName(methodName, 60)
+        def queueName = generateRandomName(60)
         primaryQueueServiceAsyncClient.createQueue(queueName).block()
         when:
         def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueueWithResponse(queueName))
@@ -118,7 +118,7 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "Delete queue error"() {
         when:
-        def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueueWithResponse(testResourceName.randomName(methodName, 16)))
+        def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueueWithResponse(generateRandomName(16)))
         then:
         deleteQueueVerifier.verifyErrorSatisfies {
             assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, QueueErrorCode.QUEUE_NOT_FOUND)
@@ -128,7 +128,7 @@ class QueueServiceAsyncAPITests extends APISpec {
     @Unroll
     def "List queues"() {
         given:
-        def queueName = testResourceName.randomName(methodName, 60)
+        def queueName = generateRandomName(60)
         LinkedList<QueueItem> testQueues = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
             String version = Integer.toString(i)

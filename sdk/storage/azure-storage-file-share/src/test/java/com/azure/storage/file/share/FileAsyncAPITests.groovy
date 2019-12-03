@@ -43,8 +43,8 @@ class FileAsyncAPITests extends APISpec {
     static String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
-        filePath = testResourceName.randomName(methodName, 60)
+        shareName = generateRandomName()
+        filePath = generateRandomName()
         shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
         primaryFileAsyncClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileAsyncClient()
@@ -87,8 +87,8 @@ class FileAsyncAPITests extends APISpec {
     def "Create file with args fpk"() {
         setup:
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
             .setFilePermissionKey(filePermissionKey)
 
         expect:
@@ -109,8 +109,8 @@ class FileAsyncAPITests extends APISpec {
 
     def "Create file with args fp"() {
         setup:
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission, testMetadata))
@@ -356,7 +356,7 @@ class FileAsyncAPITests extends APISpec {
     def "Upload and download file exists"() {
         given:
         def data = "Download file exists"
-        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), testName))
 
         if (!downloadFile.exists()) {
             assert downloadFile.createNewFile()
@@ -378,7 +378,7 @@ class FileAsyncAPITests extends APISpec {
     def "Upload and download to file does not exist"() {
         given:
         def data = "Download file does not exist"
-        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), testName))
 
         if (downloadFile.exists()) {
             assert downloadFile.delete()
@@ -413,7 +413,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
-            .setExpiryTime(getUTCNow().plusDays(1))
+            .setExpiryTime(getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
             .setShareName(primaryFileAsyncClient.getShareName())
             .setFilePath(primaryFileAsyncClient.getFilePath())
@@ -534,8 +534,8 @@ class FileAsyncAPITests extends APISpec {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
             .setFilePermissionKey(filePermissionKey)
 
         expect:
@@ -556,8 +556,8 @@ class FileAsyncAPITests extends APISpec {
     def "Set httpHeaders fp"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, filePermission))

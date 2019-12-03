@@ -68,8 +68,8 @@ class SASTest extends APISpec {
             .setCreatePermission(true)
             .setDeletePermission(true)
             .setAddPermission(true)
-        def startTime = getUTCNow().minusDays(1)
-        def expiryTime = getUTCNow().plusDays(1)
+        def startTime = getUtcNow().minusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
         def ipRange = new SasIpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
@@ -118,7 +118,7 @@ class SASTest extends APISpec {
         def identifier = new DataLakeSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new DataLakeAccessPolicy().setPermissions("racwdl")
-                .setExpiresOn(getUTCNow().plusDays(1)))
+                .setExpiresOn(getUtcNow().plusDays(1)))
         fsc.setAccessPolicy(null, Arrays.asList(identifier))
 
         // Check containerSASPermissions
@@ -131,7 +131,7 @@ class SASTest extends APISpec {
             .setAddPermission(true)
             .setListPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
 
         when:
         def sasWithId = new DataLakeServiceSasSignatureValues()
@@ -173,8 +173,8 @@ class SASTest extends APISpec {
             .setDeletePermission(true)
             .setAddPermission(true)
 
-        def startTime = getUTCNow().minusDays(1)
-        def expiryTime = getUTCNow().plusDays(1)
+        def startTime = getUtcNow().minusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
 
         def ipRange = new SasIpRange()
             .setIpMin("0.0.0.0")
@@ -241,7 +241,7 @@ class SASTest extends APISpec {
             .setAddPermission(true)
             .setListPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
@@ -281,7 +281,7 @@ class SASTest extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
 
         when:
         def sas = new AccountSasSignatureValues()
@@ -313,7 +313,7 @@ class SASTest extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
 
         when:
         def sas = new AccountSasSignatureValues()
@@ -341,7 +341,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(false)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
 
         when:
         def sas = new AccountSasSignatureValues()
@@ -369,7 +369,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
 
         when:
         def sas = new AccountSasSignatureValues()

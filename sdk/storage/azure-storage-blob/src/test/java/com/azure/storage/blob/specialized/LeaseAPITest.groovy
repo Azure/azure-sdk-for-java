@@ -140,7 +140,7 @@ class LeaseAPITest extends APISpec {
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
 
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRecord(16000)
+        sleepIfLive(16000)
         def renewLeaseResponse = createLeaseClient(bc, leaseID).renewLeaseWithResponse(null, null, null)
 
         expect:
@@ -579,7 +579,7 @@ class LeaseAPITest extends APISpec {
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
 
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRecord(16000)
+        sleepIfLive(16000)
         def renewLeaseResponse = createLeaseClient(cc, leaseID).renewLeaseWithResponse(null, null, null)
 
         expect:
@@ -753,7 +753,7 @@ class LeaseAPITest extends APISpec {
         validateBasicHeaders(breakLeaseResponse.getHeaders())
         if (breakPeriod != null) {
             // If running in live mode wait for the lease to break so we can delete the container after the test completes
-            sleepIfRecord(breakPeriod * 1000)
+            sleepIfLive(breakPeriod * 1000)
         }
 
         where:

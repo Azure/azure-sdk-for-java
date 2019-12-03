@@ -11,14 +11,14 @@ class StorageFileInputOutputStreamTests extends APISpec {
     int length
 
     def setup() {
-        def shareName = testResourceName.randomName(methodName, 60)
-        def filePath = testResourceName.randomName(methodName, 60)
+        def shareName = generateRandomName()
+        def filePath = generateRandomName()
         def shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
         fileClient = shareClient.getFileClient(filePath)
     }
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
     def "Upload download"() {
         when:
         length = 30 * Constants.MB
@@ -45,7 +45,7 @@ class StorageFileInputOutputStreamTests extends APISpec {
     }
 
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
     def "Stream with offset"() {
         when:
         length = 7 * Constants.MB

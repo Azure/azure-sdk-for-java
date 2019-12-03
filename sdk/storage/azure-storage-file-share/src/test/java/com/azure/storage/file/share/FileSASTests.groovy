@@ -29,7 +29,7 @@ class FileSASTests extends APISpec {
     private String filePath = "filename"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
+        shareName = generateRandomName()
 
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         primaryShareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
@@ -152,8 +152,8 @@ class FileSASTests extends APISpec {
             .setWritePermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
-        def startTime = getUTCNow().minusDays(1)
-        def expiryTime = getUTCNow().plusDays(1)
+        def startTime = getUtcNow().minusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
         def ipRange = new SasIpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
@@ -212,8 +212,8 @@ class FileSASTests extends APISpec {
             .setWritePermission(false)
             .setCreatePermission(true)
             .setDeletePermission(true)
-        def startTime = getUTCNow().minusDays(1)
-        def expiryTime = getUTCNow().plusDays(1)
+        def startTime = getUtcNow().minusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
         def ipRange = new SasIpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
@@ -264,7 +264,7 @@ class FileSASTests extends APISpec {
         ShareSignedIdentifier identifier = new ShareSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new ShareAccessPolicy().setPermissions("rcwdl")
-                .setExpiresOn(getUTCNow().plusDays(1)))
+                .setExpiresOn(getUtcNow().plusDays(1)))
         primaryShareClient.create()
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))
 
@@ -276,7 +276,7 @@ class FileSASTests extends APISpec {
             .setDeletePermission(true)
             .setListPermission(true)
 
-        OffsetDateTime expiryTime = getUTCNow().plusDays(1)
+        OffsetDateTime expiryTime = getUtcNow().plusDays(1)
 
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
@@ -325,7 +325,7 @@ class FileSASTests extends APISpec {
             .setReadPermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
 
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)

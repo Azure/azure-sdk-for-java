@@ -3,61 +3,32 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.http.HttpClient
-import com.azure.core.http.ProxyOptions
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
-import com.azure.core.util.logging.ClientLogger
+import com.azure.storage.common.StorageTestBase
 import com.azure.storage.file.share.models.ListSharesOptions
-import spock.lang.Specification
 
 import java.time.Duration
-import java.time.OffsetDateTime
 
-class APISpec extends Specification {
-    // Field common used for all APIs.
-    static ClientLogger logger = new ClientLogger(APISpec.class)
-    static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
+class APISpec extends StorageTestBase {
     URL testFolder = getClass().getClassLoader().getResource("testfiles")
-    InterceptorManager interceptorManager
-    TestResourceNamer testResourceName
 
     // Primary Clients used for API tests
     ShareServiceClient primaryFileServiceClient
     ShareServiceAsyncClient primaryFileServiceAsyncClient
 
-
-    // Test name for test method name.
-    String methodName
-
-    static TestMode testMode = getTestMode()
     String connectionString
-
-    // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = false
 
     /**
      * Setup the File service clients commonly used for the API tests.
      */
     def setup() {
-        String testName = reformat(specificationContext.currentIteration.getName())
-        String className = specificationContext.getCurrentSpec().getName()
-        methodName = className + testName
-        logger.info("Test Mode: {}, Name: {}", testMode, methodName)
-        interceptorManager = new InterceptorManager(methodName, testMode)
-        testResourceName = new TestResourceNamer(methodName, testMode,
-            interceptorManager.getRecordedData())
-        if (getTestMode() == TestMode.RECORD) {
-            connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
-        } else {
-            connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
-                "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
-        }
+        connectionString = (testMode == TestMode.PLAYBACK)
+            ? "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
+            : Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
     }
 
     /**
@@ -65,44 +36,18 @@ class APISpec extends Specification {
      */
     def cleanup() {
         interceptorManager.close()
-        if (getTestMode() == TestMode.RECORD) {
-            ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
-                .connectionString(connectionString)
-                .buildClient()
-            cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(methodName.toLowerCase()),
-                Duration.ofSeconds(30), null).each {
-                cleanupFileServiceClient.deleteShare(it.getName())
-            }
-        }
-    }
 
-    /**
-     * Test mode is initialized whenever test is executed. Helper method which is used to determine what to do under
-     * certain test mode.
-     * @return The TestMode:
-     * <ul>
-     *     <li>Record</li>
-     *     <li>Playback: (default if no test mode setup)</li>
-     * </ul>
-     */
-    static def getTestMode() {
-        def azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
-
-        if (azureTestMode != null) {
-            try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException e) {
-                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode)
-                return TestMode.PLAYBACK
-            }
+        if (testMode == TestMode.PLAYBACK) {
+            return
         }
 
-        logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE)
-        return TestMode.PLAYBACK
-    }
-
-    static boolean liveMode() {
-        return testMode == TestMode.RECORD
+        ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
+            .connectionString(connectionString)
+            .buildClient()
+        cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(testName.toLowerCase()),
+            Duration.ofSeconds(30), null).each {
+            cleanupFileServiceClient.deleteShare(it.getName())
+        }
     }
 
     def fileServiceBuilderHelper(final InterceptorManager interceptorManager) {
@@ -171,28 +116,8 @@ class APISpec extends Specification {
         }
     }
 
-    private def reformat(String text) {
-        def fullName = text.split(" ").collect { it.capitalize() }.join("")
-        def matcher = (fullName =~ /(.*)(\[)(.*)(\])/)
-
-        if (!matcher.find()) {
-            return fullName
-        }
-        return matcher[0][1] + matcher[0][3]
-    }
-
-    static HttpClient getHttpClient() {
-        if (enableDebugging) {
-            def builder = new NettyAsyncHttpClientBuilder()
-            builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            return builder.build()
-        } else {
-            return HttpClient.createDefault()
-        }
-    }
-
-    OffsetDateTime getUTCNow() {
-        return testResourceName.now()
+    String generateRandomName() {
+        return generateResourceName(testName, 60)
     }
 
     InputStream getInputStream(byte[] data) {

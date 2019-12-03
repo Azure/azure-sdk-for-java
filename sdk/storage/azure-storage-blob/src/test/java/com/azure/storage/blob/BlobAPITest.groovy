@@ -6,9 +6,7 @@ package com.azure.storage.blob
 import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
-import com.azure.identity.DefaultAzureCredential
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.identity.implementation.IdentityClientOptions
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobErrorCode
@@ -290,7 +288,7 @@ class BlobAPITest extends APISpec {
         testFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
     @Unroll
     def "Download file"() {
         setup:
@@ -322,7 +320,7 @@ class BlobAPITest extends APISpec {
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
     @Unroll
     def "Download file range"() {
         setup:
@@ -360,7 +358,7 @@ class BlobAPITest extends APISpec {
     This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
      */
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
     @Unroll
     def "Download file range fail"() {
         setup:
@@ -383,7 +381,7 @@ class BlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
     def "Download file count null"() {
         setup:
         def file = getRandomFile(defaultDataSize)
@@ -404,7 +402,7 @@ class BlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
     @Unroll
     def "Download file AC"() {
         setup:
@@ -441,7 +439,7 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
     @Unroll
     def "Download file AC fail"() {
         setup:
@@ -479,7 +477,7 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
     def "Download file etag lock"() {
         setup:
         def file = getRandomFile(1 * 1024 * 1024)
@@ -522,7 +520,7 @@ class BlobAPITest extends APISpec {
         outFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @Requires({ isLiveMode() })
     @Unroll
     def "Download file progress receiver"() {
         def file = getRandomFile(fileSize)

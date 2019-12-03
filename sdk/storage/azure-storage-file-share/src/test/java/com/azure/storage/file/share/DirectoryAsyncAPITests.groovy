@@ -26,8 +26,8 @@ class DirectoryAsyncAPITests extends APISpec {
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
-        directoryPath = testResourceName.randomName(methodName, 60)
+        shareName = generateRandomName()
+        directoryPath = generateRandomName()
         shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
         primaryDirectoryAsyncClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildDirectoryAsyncClient()
@@ -69,7 +69,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create directory error"() {
         given:
-        def testShareName = testResourceName.randomName(methodName, 60)
+        def testShareName = generateRandomName()
         when:
         def createDirErrorVerifier = StepVerifier.create(directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildDirectoryAsyncClient().create())
         then:
@@ -104,8 +104,8 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create dir with file perm key"() {
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
             .setFilePermissionKey(filePermissionKey)
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(smbProperties, null, null))
@@ -190,8 +190,8 @@ class DirectoryAsyncAPITests extends APISpec {
     def "Set properties file permission key"() {
         given:
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
             .setFilePermissionKey(filePermissionKey)
         primaryDirectoryAsyncClient.createWithResponse(null, null, null).block()
         expect:
@@ -306,7 +306,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         LinkedList<String> nameList = new LinkedList<>()
-        def dirPrefix = testResourceName.randomName(methodName, 60)
+        def dirPrefix = generateRandomName()
         for (int i = 0; i < 2; i++) {
             def subDirClient = primaryDirectoryAsyncClient.getSubdirectoryClient(dirPrefix + i)
             subDirClient.create().block()
@@ -443,8 +443,8 @@ class DirectoryAsyncAPITests extends APISpec {
     def "Create sub directory file perm key"() {
         given:
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
             .setFilePermissionKey(filePermissionKey)
         primaryDirectoryAsyncClient.create().block()
         expect:
@@ -509,8 +509,8 @@ class DirectoryAsyncAPITests extends APISpec {
         primaryDirectoryAsyncClient.create().block()
         ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("txt")
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
 
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, smbProperties, filePermission, testMetadata))

@@ -228,7 +228,7 @@ class ServiceAPITest extends APISpec {
         def headers = primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getHeaders()
 
         // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
-        sleepIfRecord(30 * 1000)
+        sleepIfLive(30 * 1000)
 
         def receivedProperties = primaryBlobServiceClient.getProperties()
 

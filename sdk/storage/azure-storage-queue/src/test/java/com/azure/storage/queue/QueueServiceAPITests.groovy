@@ -22,7 +22,7 @@ class QueueServiceAPITests extends APISpec {
 
     def "Get queue client"() {
         given:
-        def queueClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
+        def queueClient = primaryQueueServiceClient.getQueueClient(generateRandomName(60))
 
         expect:
         queueClient instanceof QueueClient
@@ -30,7 +30,7 @@ class QueueServiceAPITests extends APISpec {
 
     def "Create queue"() {
         when:
-        def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(testResourceName.randomName(methodName, 60),  null, null, null)
+        def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(generateRandomName(60),  null, null, null)
         def enqueueMessageResponse = queueClientResponse.getValue().sendMessageWithResponse("Testing service client creating a queue", null, null, null,null)
 
         then:
@@ -68,7 +68,7 @@ class QueueServiceAPITests extends APISpec {
     @Unroll
     def "Create queue maxOverload"() {
         when:
-        def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(testResourceName.randomName(methodName, 60), metadata,null, null)
+        def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(generateRandomName(60), metadata,null, null)
         def enqueueMessageResponse = queueClientResponse.getValue().sendMessageWithResponse("Testing service client creating a queue", null, null, null, null)
 
         then:
@@ -84,7 +84,7 @@ class QueueServiceAPITests extends APISpec {
 
     def "Create queue with invalid metadata"() {
         given:
-        def queueName = testResourceName.randomName(methodName, 16)
+        def queueName = generateRandomName(16)
 
         when:
         primaryQueueServiceClient.createQueueWithResponse(queueName, Collections.singletonMap("metadata!", "value"), null, null)
@@ -96,7 +96,7 @@ class QueueServiceAPITests extends APISpec {
 
     def "Delete queue"() {
         given:
-        def queueName = testResourceName.randomName(methodName, 60)
+        def queueName = generateRandomName(60)
 
         when:
         def queueClient = primaryQueueServiceClient.createQueue(queueName)
@@ -111,7 +111,7 @@ class QueueServiceAPITests extends APISpec {
 
     def "Delete queue error"() {
         when:
-        primaryQueueServiceClient.deleteQueueWithResponse(testResourceName.randomName(methodName, 60), null, null)
+        primaryQueueServiceClient.deleteQueueWithResponse(generateRandomName(60), null, null)
 
         then:
         def e = thrown(QueueStorageException)
@@ -121,7 +121,7 @@ class QueueServiceAPITests extends APISpec {
     @Unroll
     def "List queues"() {
         given:
-        def queueName = testResourceName.randomName(methodName, 60)
+        def queueName = generateRandomName(60)
         LinkedList<QueueItem> testQueues = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
             String version = Integer.toString(i)
@@ -149,10 +149,10 @@ class QueueServiceAPITests extends APISpec {
 
     def "List empty queues"() {
         when:
-        primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
+        primaryQueueServiceClient.getQueueClient(generateRandomName(60))
 
         then:
-        !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName), null, null).iterator().hasNext()
+        !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(testName), null, null).iterator().hasNext()
     }
 
     def "Get and set properties"() {

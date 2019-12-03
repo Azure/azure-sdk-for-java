@@ -29,7 +29,7 @@ class QueueSASTests extends APISpec {
 
     def setup() {
         primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
-        queueClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
+        queueClient = primaryQueueServiceClient.getQueueClient(generateRandomName(60))
     }
 
     @Unroll
@@ -106,8 +106,8 @@ class QueueSASTests extends APISpec {
             .setReadPermission(true)
             .setAddPermission(true)
             .setProcessPermission(true)
-        def startTime = getUTCNow().minusDays(1)
-        def expiryTime = getUTCNow().plusDays(1)
+        def startTime = getUtcNow().minusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
         def ipRange = new SasIpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
@@ -156,8 +156,8 @@ class QueueSASTests extends APISpec {
             .setAddPermission(true)
             .setProcessPermission(true)
             .setUpdatePermission(true)
-        def startTime = getUTCNow().minusDays(1)
-        def expiryTime = getUTCNow().plusDays(1)
+        def startTime = getUtcNow().minusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
         def ipRange = new SasIpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
@@ -206,8 +206,8 @@ class QueueSASTests extends APISpec {
             .setAddPermission(true)
             .setUpdatePermission(true)
             .setProcessPermission(true)
-        def expiryTime = getUTCNow().plusDays(1).truncatedTo(ChronoUnit.SECONDS)
-        def startTime = getUTCNow().minusDays(1).truncatedTo(ChronoUnit.SECONDS)
+        def expiryTime = getUtcNow().plusDays(1).truncatedTo(ChronoUnit.SECONDS)
+        def startTime = getUtcNow().minusDays(1).truncatedTo(ChronoUnit.SECONDS)
 
         QueueSignedIdentifier identifier = new QueueSignedIdentifier()
             .setId(testResourceName.randomUuid())
@@ -253,7 +253,7 @@ class QueueSASTests extends APISpec {
             .setReadPermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
 
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
@@ -291,7 +291,7 @@ class QueueSASTests extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setListPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = getUtcNow().plusDays(1)
 
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)

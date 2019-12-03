@@ -24,7 +24,7 @@ class ShareAsyncAPITests extends APISpec {
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
+        shareName = generateRandomName()
         primaryFileServiceAsyncClient = fileServiceBuilderHelper(interceptorManager).buildAsyncClient()
         primaryShareAsyncClient = primaryFileServiceAsyncClient.getShareAsyncClient(shareName)
         testMetadata = Collections.singletonMap("testmetadata", "value")
@@ -97,7 +97,7 @@ class ShareAsyncAPITests extends APISpec {
     def "Create snapshot"() {
         given:
         primaryShareAsyncClient.create().block()
-        def shareSnapshotName = testResourceName.randomName(methodName, 60)
+        def shareSnapshotName = generateRandomName()
         when:
         def createSnapshotVerifier = StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(null))
 
@@ -124,7 +124,7 @@ class ShareAsyncAPITests extends APISpec {
     def "Create snapshot metadata"() {
         given:
         primaryShareAsyncClient.create().block()
-        def shareSnapshotName = testResourceName.randomName(methodName, 60)
+        def shareSnapshotName = generateRandomName()
         when:
         def createSnapshotVerifier = StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(testMetadata))
         then:
@@ -285,8 +285,8 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         def permissionKey = primaryShareAsyncClient.createPermission(filePermission).block()
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
             .setFilePermissionKey(permissionKey)
         expect:
         StepVerifier.create(primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", smbProperties, null, null))
@@ -331,8 +331,8 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         def permissionKey = primaryShareAsyncClient.createPermission(filePermission).block()
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
             .setFilePermissionKey(permissionKey)
 
         expect:
@@ -363,8 +363,8 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders().setContentType("txt")
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUtcNow())
+            .setFileLastWriteTime(getUtcNow())
         expect:
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, smbProperties, filePermission, testMetadata))
                 .assertNext {
