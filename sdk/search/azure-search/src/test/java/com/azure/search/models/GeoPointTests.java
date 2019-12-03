@@ -4,7 +4,7 @@
 package com.azure.search.models;
 
 import com.azure.core.http.rest.PagedIterableBase;
-import com.azure.search.common.SearchPagedResponse;
+import com.azure.search.SearchPagedResponse;
 
 import com.azure.search.SearchIndexClient;
 import com.azure.search.implementation.SerializationUtil;

@@ -7,10 +7,12 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.Index;
 import com.azure.search.models.QueryType;
+import com.azure.search.models.RangeFacetResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.SynonymMap;
+import com.azure.search.models.ValueFacetResult;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -3,7 +3,6 @@
 package com.azure.search;
 
 import com.azure.core.http.rest.PagedFluxBase;
-import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;

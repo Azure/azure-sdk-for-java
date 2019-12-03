@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search;
-
-import com.azure.search.models.FacetResult;
+package com.azure.search.models;
 
 public class RangeFacetResult {
     private final Long count;

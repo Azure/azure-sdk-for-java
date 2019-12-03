@@ -5,7 +5,6 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.Configuration;
-import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;

@@ -7,7 +7,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.Configuration;
-import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 

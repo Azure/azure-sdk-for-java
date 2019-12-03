@@ -10,8 +10,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.common.SearchPagedResponse;
-import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.DocumentIndexResult;

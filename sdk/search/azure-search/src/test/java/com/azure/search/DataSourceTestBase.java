@@ -3,7 +3,6 @@
 
 package com.azure.search;
 
-import com.azure.search.common.DataSources;
 import com.azure.search.models.DataChangeDetectionPolicy;
 import com.azure.search.models.DataDeletionDetectionPolicy;
 import com.azure.search.models.DataSource;

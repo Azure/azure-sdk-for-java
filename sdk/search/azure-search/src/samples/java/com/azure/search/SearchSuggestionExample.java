@@ -5,7 +5,6 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Configuration;
-import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
 

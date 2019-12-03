@@ -12,7 +12,6 @@ import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
-import com.azure.search.common.DataSources;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataChangeDetectionPolicy;

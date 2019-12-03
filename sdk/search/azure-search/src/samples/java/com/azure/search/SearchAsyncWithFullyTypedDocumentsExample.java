@@ -8,7 +8,6 @@ import com.azure.core.implementation.serializer.jsonwrapper.JsonWrapper;
 import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.core.util.Configuration;
-import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.models.SearchResult;
 import models.Hotel;
 

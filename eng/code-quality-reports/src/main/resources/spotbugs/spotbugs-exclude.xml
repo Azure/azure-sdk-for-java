@@ -632,15 +632,17 @@
   <Match>
     <And>
       <Package name="~com\.azure\.search\.(implementation|models)(.*)"/>
-      <Not>        
+      <Not>
         <Or>
-          <!-- Hand-written classes should be specified here to be checked -->
+          <!-- Hand-written classes should be specified here to be checked  -->
           <Class name="com.azure.search.implementation.GeoPointDeserializer"/>
           <Class name="com.azure.search.implementation.ISO8601DateDeserializer"/>
           <Class name="com.azure.search.implementation.SerializationUtil"/>
           <Class name="com.azure.search.models.CoordinateSystem"/>
           <Class name="com.azure.search.models.GeoPoint"/>
           <Class name="com.azure.search.models.IndexBatch"/>
+          <Class name="com.azure.search.models.ValueFacetResult"/>
+          <Class name="com.azure.search.models.RangeFacetResult"/>
         </Or>
       </Not>
     </And>

@@ -8,7 +8,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.common.SearchApiKeyPipelinePolicy;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

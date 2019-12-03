@@ -8,8 +8,6 @@ import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.common.SearchPagedResponse;
-import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
@@ -20,7 +18,6 @@ import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
-import com.microsoft.azure.management.network.model.HasBackendNics;
 
 import java.util.Iterator;
 

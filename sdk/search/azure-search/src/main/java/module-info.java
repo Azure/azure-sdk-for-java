@@ -11,6 +11,5 @@ module com.azure.search {
     opens com.azure.search.implementation to com.fasterxml.jackson.databind;
 
     exports com.azure.search;
-    exports com.azure.search.common;
     exports com.azure.search.models;
 }
