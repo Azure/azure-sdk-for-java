@@ -12,7 +12,13 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.CertificateContact;
+import com.azure.security.keyvault.certificates.models.CertificateIssuer;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.CertificateProperties;
 import reactor.util.context.Context;
 
 import java.util.ArrayList;
@@ -331,7 +337,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
                 certificateAsyncClient.updateCertificatePolicy("certificateName", certificatePolicy)
                     .subscribe(updatedPolicy ->
                         System.out.printf("Certificate policy's updated transparency status %s %n",
-                            updatedPolicy.isCertificateTransparent().toString()));
+                            updatedPolicy.isCertificateTransparent()));
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicy#string
 
@@ -346,7 +352,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
                     certificatePolicy)
                     .subscribe(updatedPolicyResponse ->
                         System.out.printf("Certificate policy's updated transparency status %s %n",
-                            updatedPolicyResponse.getValue().isCertificateTransparent().toString()));
+                            updatedPolicyResponse.getValue().isCertificateTransparent()));
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicyWithResponse#string
     }
@@ -521,7 +527,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscribe(certificate -> certificateAsyncClient.getCertificateVersion(certificate.getName(),
                 certificate.getVersion())
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s",
-                    certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
+                    certificateResponse.getName(), certificateResponse.getKeyId())));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificates
     }
 

@@ -19,7 +19,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -42,6 +41,7 @@ import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1689,7 +1689,7 @@ public class CertificateAsyncClient {
 
     Mono<Response<KeyVaultCertificateWithPolicy>> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
         CertificateImportParameters parameters = new CertificateImportParameters()
-            .base64EncodedCertificate(Base64Url.encode(importCertificateOptions.getCertificate()).toString())
+            .base64EncodedCertificate(Base64.getEncoder().encodeToString(importCertificateOptions.getCertificate()))
             .certificateAttributes(new CertificateRequestAttributes(importCertificateOptions))
             .certificatePolicy(importCertificateOptions.getCertificatePolicy())
             .password(importCertificateOptions.getPassword())
@@ -1698,5 +1698,4 @@ public class CertificateAsyncClient {
         return service.importCertificate(vaultUrl, importCertificateOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context);
     }
-
 }

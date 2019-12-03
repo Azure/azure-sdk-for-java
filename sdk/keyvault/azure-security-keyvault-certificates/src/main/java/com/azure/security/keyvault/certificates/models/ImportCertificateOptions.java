@@ -50,7 +50,7 @@ public final class ImportCertificateOptions {
      * @param certificate The PFX or PEM formatted value of the certificate containing both the x509 certificates and the private key.
      */
     public ImportCertificateOptions(String name, byte[] certificate) {
-        Objects.requireNonNull(certificate, "The certificate value parameter cannot be null.");
+        Objects.requireNonNull(certificate, "The certificate parameter cannot be null.");
         this.name = name;
         this.certificate = CoreUtils.clone(certificate);
     }

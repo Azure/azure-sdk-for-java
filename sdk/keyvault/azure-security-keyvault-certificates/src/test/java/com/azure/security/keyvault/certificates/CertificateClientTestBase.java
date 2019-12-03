@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -24,21 +23,26 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
+import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.CertificateKeyUsage;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.AdministratorContact;
 import com.azure.security.keyvault.certificates.models.CertificateKeyType;
 import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
+import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -49,6 +53,7 @@ import java.util.function.Function;
 import java.util.function.BiConsumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class CertificateClientTestBase extends TestBase {
@@ -63,25 +68,25 @@ public abstract class CertificateClientTestBase extends TestBase {
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         final String endpoint = interceptorManager.isPlaybackMode()
-            ? "http://localhost:8080"
-            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+                                    ? "http://localhost:8080"
+                                    : System.getenv("AZURE_KEYVAULT_ENDPOINT");
 
-        TokenCredential credential;
+        TokenCredential credential = null;
 
-        if (interceptorManager.isPlaybackMode()) {
-            credential = resource -> Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
-        } else {
+        if (!interceptorManager.isPlaybackMode()) {
             credential = new DefaultAzureCredentialBuilder().build();
         }
 
         HttpClient httpClient;
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), CertificateServiceVersion.getLatest()));
+        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
+            Configuration.getGlobalConfiguration().clone(), CertificateServiceVersion.getLatest()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
-        policies.add(new BearerTokenAuthenticationPolicy(credential, CertificateAsyncClient.KEY_VAULT_SCOPE));
-        policies.addAll(policies);
+        if (credential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(credential, CertificateAsyncClient.KEY_VAULT_SCOPE));
+        }
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
@@ -94,9 +99,9 @@ public abstract class CertificateClientTestBase extends TestBase {
         }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
+                                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                                    .httpClient(httpClient)
+                                    .build();
 
         T client;
         client = clientBuilder.apply(pipeline);
@@ -358,20 +363,19 @@ public abstract class CertificateClientTestBase extends TestBase {
             && expected.getPhone().equals(actual.getPhone());
     }
 
-//    @Test
-//    public abstract void listCertificateVersions();
-//
-//    void listCertificateVersionsRunner(Consumer<List<String>> testRunner) {
-//        List<String> certificates = new ArrayList<>();
-//        String keyName;
-//        for (int i = 1; i < 5; i++) {
-//            keyName = "listKeyVersion";
-//            certificates.add(new CreateKeyOptions(keyName, RSA_KEY_TYPE)
-//                .setExpiresOn(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC)));
-//        }
-//
-//        testRunner.accept(keys);
-//    }
+    @Test
+    public abstract void listCertificateVersions();
+
+    void listCertificateVersionsRunner(Consumer<List<String>> testRunner) {
+        List<String> certificates = new ArrayList<>();
+        String certificateName;
+        for (int i = 1; i < 5; i++) {
+            certificateName = "listCertVersionTest";
+            certificates.add(certificateName);
+        }
+
+        testRunner.accept(certificates);
+    }
 
     @Test
     public abstract void listDeletedCertificates();
@@ -386,6 +390,26 @@ public abstract class CertificateClientTestBase extends TestBase {
         testRunner.accept(certificates);
     }
 
+    @Test
+    public abstract void importCertificate();
+
+    @Test
+    public abstract  void mergeCertificateNotFound();
+
+    void importCertificateRunner(Consumer<ImportCertificateOptions> testRunner) {
+        String certificateContent = "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";
+        String certificatePassword = "123";
+
+        String certificateName = "importCertPkcs";
+        HashMap<String, String> tags = new HashMap<>();
+        tags.put("key", "val");
+        ImportCertificateOptions importCertificateOptions = new ImportCertificateOptions(certificateName, Base64.getDecoder().decode(certificateContent))
+            .setPassword(certificatePassword)
+            .setEnabled(true)
+            .setTags(tags);
+        testRunner.accept(importCertificateOptions);
+    }
+
     CertificateIssuer setupIssuer(String issuerName) {
         return new CertificateIssuer(issuerName, "Test")
             .setAdministratorContacts(Arrays.asList(new AdministratorContact("first", "last", "first.last@hotmail.com", "12345")))
@@ -393,6 +417,33 @@ public abstract class CertificateClientTestBase extends TestBase {
             .setEnabled(true)
             .setOrganizationId("orgId")
             .setPassword("test123");
+    }
+
+
+    String toHexString(byte[] x5t) {
+        if (x5t == null) {
+            return "";
+        }
+
+        StringBuilder hexString = new StringBuilder();
+        for (int i = 0; i < x5t.length; i++) {
+            String hex = Integer.toHexString(0xFF & x5t[i]);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+
+        return hexString.toString().replace("-", "");
+    }
+
+    X509Certificate loadCerToX509Certificate(KeyVaultCertificateWithPolicy certificate) throws CertificateException, IOException {
+        assertNotNull(certificate.getCer());
+        ByteArrayInputStream cerStream = new ByteArrayInputStream(certificate.getCer());
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+        X509Certificate x509Certificate = (X509Certificate) certificateFactory.generateCertificate(cerStream);
+        cerStream.close();
+        return x509Certificate;
     }
 
 
@@ -450,42 +501,6 @@ public abstract class CertificateClientTestBase extends TestBase {
             && expected.getCer().length == actual.getCer().length;
     }
 
-//    /**
-//     * Helper method to verify that the Response matches what was expected. This method assumes a response status of 200.
-//     *
-//     * @param expected Key expected to be returned by the service
-//     * @param response Response returned by the service, the body should contain a Key
-//     */
-//    static void assertKeyEquals(CreateKeyOptions expected, Response<KeyVaultKey> response) {
-//        assertKeyEquals(expected, response, 200);
-//    }
-//
-//    /**
-//     * Helper method to verify that the RestResponse matches what was expected.
-//     *
-//     * @param expected ConfigurationSetting expected to be returned by the service
-//     * @param response RestResponse returned from the service, the body should contain a ConfigurationSetting
-//     * @param expectedStatusCode Expected HTTP status code returned by the service
-//     */
-//    static void assertKeyEquals(CreateKeyOptions expected, Response<KeyVaultKey> response, final int expectedStatusCode) {
-//        assertNotNull(response);
-//        assertEquals(expectedStatusCode, response.getStatusCode());
-//
-//        assertKeyEquals(expected, response.getValue());
-//    }
-//
-//    /**
-//     * Helper method to verify that the returned ConfigurationSetting matches what was expected.
-//     *
-//     * @param expected ConfigurationSetting expected to be returned by the service
-//     * @param actual ConfigurationSetting contained in the RestResponse body
-//     */
-//    static void assertKeyEquals(CreateKeyOptions expected, KeyVaultKey actual) {
-//        assertEquals(expected.getName(), actual.getName());
-//        assertEquals(expected.getKeyType(), actual.getKey().getKeyType());
-//        assertEquals(expected.getExpiresOn(), actual.getProperties().getExpiresOn());
-//        assertEquals(expected.getNotBefore(), actual.getProperties().getNotBefore());
-//    }
 
     public String getEndpoint() {
         final String endpoint = interceptorManager.isPlaybackMode()

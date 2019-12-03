@@ -42,19 +42,19 @@ public final class LifetimeAction {
     }
 
     /**
-     * Get the lifetimePercentage value.
+     * Get the lifetime percentage.
      *
-     * @return the lifetimePercentage value
+     * @return the lifetime percentage
      */
     public Integer getLifetimePercentage() {
         return this.lifetimePercentage;
     }
 
     /**
-     * Set the lifetimePercentage value.
+     * Set the lifetime percentage.
      *
-     * @param lifetimePercentage The lifetimePercentage value to set
-     * @return the LifeTimeAction object itself.
+     * @param lifetimePercentage The lifetime percentage to set
+     * @return the LifetimeAction object itself.
      */
     public LifetimeAction setLifetimePercentage(Integer lifetimePercentage) {
         this.lifetimePercentage = lifetimePercentage;
@@ -62,19 +62,19 @@ public final class LifetimeAction {
     }
 
     /**
-     * Get the daysBeforeExpiry value.
+     * Get the days before expiry.
      *
-     * @return the daysBeforeExpiry value
+     * @return the days before expiry
      */
     public Integer getDaysBeforeExpiry() {
         return this.daysBeforeExpiry;
     }
 
     /**
-     * Set the daysBeforeExpiry value.
+     * Set the days before expiry.
      *
-     * @param daysBeforeExpiry The daysBeforeExpiry value to set
-     * @return the LifeTimeAction object itself.
+     * @param daysBeforeExpiry The days before expiry to set
+     * @return the LifetimeAction object itself.
      */
     public LifetimeAction setDaysBeforeExpiry(Integer daysBeforeExpiry) {
         this.daysBeforeExpiry = daysBeforeExpiry;
@@ -82,9 +82,9 @@ public final class LifetimeAction {
     }
 
     /**
-     * Get the lifetimeAction value.
+     * Get the lifetime action.
      *
-     * @return the lifetimeAction value
+     * @return the lifetime action
      */
     public CertificatePolicyAction getAction() {
         return this.certificatePolicyAction;
