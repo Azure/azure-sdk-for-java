@@ -38,8 +38,9 @@ public final class TextAnalyticsClientBuilder {
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     private static final String ACCEPT_HEADER = "Accept";
-    private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json"; // TODO: update it with text analytics
+    private static final String ACCEPT_HEADER_VALUE = "application/json";
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-textanalytics.properties";
+    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
@@ -88,34 +89,32 @@ public final class TextAnalyticsClientBuilder {
 
         // Endpoint
         String buildEndpoint = endpoint;
-        if (tokenCredential == null) {
-            buildEndpoint = getBuildEndpoint();
-        }
 
         // endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(buildEndpoint, "'Endpoint' is required and can not be null.");
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddHeadersPolicy(headers));
-        policies.add(new AddDatePolicy());
 
         if (tokenCredential != null) {
             // User token based policy
             policies.add(
                 new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", buildEndpoint)));
-            // TODO: update subscription object
-//        } else if (credential != null) {
-//            // Use credential based policy
-//            policies.add(new ConfigurationCredentialsPolicy(credential));
+        } else if (subscriptionKey != null) {
+            //TODO: add additional policy for subscription key if it is required. But might be not
+            headers.put(OCP_APIM_SUBSCRIPTION_KEY, subscriptionKey);
         } else {
             // Throw exception that credential and tokenCredential cannot be null
             logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
+
+
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersPolicy(headers));
+        policies.add(new AddDatePolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
@@ -200,16 +199,5 @@ public final class TextAnalyticsClientBuilder {
 
     public TextAnalyticsClientBuilder clientOptions(TextAnalyticsClientOptions clientOptions) {
         return this;
-    }
-
-
-    private String getBuildEndpoint() {
-        if (endpoint != null) {
-            return endpoint;
-
-        } else {
-            return null;
-        }
-        // TODO: add support to get endpoint from subscription key if possible
     }
 }

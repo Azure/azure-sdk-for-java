@@ -126,12 +126,12 @@ public final class TextAnalyticsAsyncClient {
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate inputs
         final LanguageBatchInput languageBatchInput = new LanguageBatchInput().setDocuments(inputs);
-        // return client.languagesWithRestResponseAsync(languageBatchInput, options.getModelVersion(),
-        //     options.showStatistics(), context)
-        //     .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", languageBatchInput))
-        //     .doOnSuccess(response -> logger.info("A batch of detected language output - {}", languageBatchInput))
-        //     .doOnError(error -> logger.warning("Failed to detected languages - {}", languageBatchInput))
-        //     .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
+//         return client.languagesWithRestResponseAsync(languageBatchInput, options.getModelVersion(),
+//             options.showStatistics(), context)
+//             .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", languageBatchInput))
+//             .doOnSuccess(response -> logger.info("A batch of detected language output - {}", languageBatchInput))
+//             .doOnError(error -> logger.warning("Failed to detected languages - {}", languageBatchInput))
+//             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
         return null;
     }
 

@@ -2,15 +2,28 @@
 // Licensed under the MIT License.
 package com.azure.cs.textanalytics;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.cs.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.cs.textanalytics.implementation.TextAnalyticsClientImplBuilder;
+import com.azure.cs.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.cs.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.cs.textanalytics.implementation.models.LanguageResult;
 import com.azure.cs.textanalytics.models.DetectLanguageInput;
+import com.azure.cs.textanalytics.models.DetectedLanguage;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -31,9 +44,24 @@ public class Demo {
 
         subscriptionKey = Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY);
         System.out.println("Subscription Key = " + subscriptionKey);
+
+        HttpHeaders headers = new HttpHeaders()
+            .put("Ocp-Apim-Subscription-Key", subscriptionKey);
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersPolicy(headers));
+        policies.add(new AddDatePolicy());
+        // customized pipeline
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
+
+
         TextAnalyticsClientImpl ta = new TextAnalyticsClientImplBuilder()
             .endpoint(endpoint)
-//            .pipeline()
+            .pipeline(pipeline)
             .build();
 
         System.out.println("Endpoint = " + ta.getEndpoint());
@@ -49,6 +77,13 @@ public class Demo {
              .doOnError(error -> logger.warning("Failed to detected languages - {}", languageBatchInput))
              .map(response -> new SimpleResponse<>(response, response.getValue()));
 
+        List<DocumentLanguage> documentLanguages = result.block().getValue().getDocuments();
+        for (DocumentLanguage documentLanguage : documentLanguages) {
+            System.out.println("document language = " + documentLanguage.getId());
 
+            documentLanguage.getDetectedLanguages().forEach(detectedLanguage ->
+                System.out.printf("detected language, name = %s, iso name = %s, score = %s.",
+                    detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));
+        }
     }
 }
