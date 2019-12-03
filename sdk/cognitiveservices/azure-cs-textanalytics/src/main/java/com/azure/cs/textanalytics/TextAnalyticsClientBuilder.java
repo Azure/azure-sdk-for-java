@@ -81,8 +81,8 @@ public final class TextAnalyticsClientBuilder {
 
     public TextAnalyticsAsyncClient buildAsyncClient() {
         // Global Env configuration store
-        com.azure.core.util.Configuration buildConfiguration = (configuration == null)
-            ? com.azure.core.util.Configuration.getGlobalConfiguration().clone() : configuration;
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration().clone() : configuration;
         // Service Version
         TextAnalyticsServiceVersion serviceVersion =
             version != null ? version : TextAnalyticsServiceVersion.getLatest();

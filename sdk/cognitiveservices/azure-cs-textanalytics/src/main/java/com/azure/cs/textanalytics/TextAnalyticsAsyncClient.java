@@ -11,11 +11,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.cs.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.cs.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.cs.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.cs.textanalytics.implementation.models.LanguageResult;
 import com.azure.cs.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.DetectLanguageResult;
+import com.azure.cs.textanalytics.models.DocumentError;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.LinkedEntityResult;
@@ -27,6 +29,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -55,35 +58,46 @@ public final class TextAnalyticsAsyncClient {
     // (1) language
     // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectLanguageResult> detectLanguage(String text) { return detectLanguage(text, null);}
+    public Mono<DetectLanguageResult> detectLanguage(String text) {
+        return detectLanguage(text, null);
+    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectLanguageResult> detectLanguage(String text, String countryHint) {
         return detectLanguageWithResponse(text, countryHint)
-            .flatMap(response ->  Mono.justOrEmpty(response.getValue()));
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint) {
+        try {
+            return withContext(context -> detectLanguageWithResponse(text, countryHint, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
         languageInputs.add(new DetectLanguageInput(Integer.toString(0), text, countryHint));
         // TODO: correct it
-//        return detectLanguagesWithResponse(languageInputs, null).flatMap(
-//            response -> {
-//                final Iterator<DetectedLanguageResult> resultIterator = response.getValue().iterator();
-//                if (resultIterator.hasNext()) {
-//                    return Mono.justOrEmpty(resultIterator.next());
-//                }
-//                return monoError(logger, new RuntimeException(""));
-//            });
+        Mono<Response<DocumentResultCollection<DetectLanguageResult>>> test = detectBatchLanguagesWithResponse(languageInputs, null);
+        // return detectBatchLanguagesWithResponse(languageInputs, null).flatMap(
+        //    response -> {
+        //        if (resultIterator.hasNext()) {
+        //            return Mono.justOrEmpty(new SimpleResponse<DetectLanguageResult>(response.getValue()));
+        //        }
+        //        return monoError(logger, new RuntimeException(""));
+        //    });
         return null;
     }
 
     // Hackathon user
-   @ServiceMethod(returns = ReturnType.SINGLE)
-   public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs)  {
-       return null;
-   }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs) {
+        return null;
+    }
 
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs,
                                                                                 String countryHint) {
@@ -137,17 +151,32 @@ public final class TextAnalyticsAsyncClient {
 
     private DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(LanguageResult value) {
         return new
-            DocumentResultCollection<>(getDetectedLanguages(value), value.getModelVersion(), value.getStatistics());
+            DocumentResultCollection<>(getDocumentLanguages(value), value.getModelVersion(), value.getStatistics());
     }
 
-    public List<DetectLanguageResult> getDetectedLanguages(LanguageResult value) {
+    public List<DetectLanguageResult> getDocumentLanguages(LanguageResult value) {
         List<DetectLanguageResult> detectedLanguageList = new ArrayList<>();
-        value.getDocuments().forEach(documentLanguage ->
+        List<DocumentLanguage> documentLanguageList = value.getDocuments();
+        for (DocumentLanguage documentLanguage : documentLanguageList) {
             detectedLanguageList.add(new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(),
-                value.getErrors().get(0),
-                documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages())
-        ));
+                getDocumentError(value, documentLanguage),
+                documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages()));
+        }
+        // documentLanguageList.stream().map(documentLanguage ->
+        //     detectedLanguageList.add(new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(),
+        //         getDocumentError(value, documentLanguage),
+        //         documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages())));
         return detectedLanguageList;
+    }
+
+    private DocumentError getDocumentError(LanguageResult value, DocumentLanguage documentLanguage) {
+        value.getErrors().stream().map(val -> {
+            if (val.getId() == documentLanguage.getId()) {
+                return val.getError();
+            }
+            return null;
+        });
+        return null;
     }
 
     // (2) entities
@@ -465,19 +494,19 @@ public final class TextAnalyticsAsyncClient {
 //    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<TextSentimentResult>> analyzeSentiment(List<String> inputs)  {
+    public Mono<DocumentResultCollection<TextSentimentResult>> analyzeSentiment(List<String> inputs) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<TextSentimentResult>> analyzeSentiment(List<String> inputs, String language)  {
+    public Mono<DocumentResultCollection<TextSentimentResult>> analyzeSentiment(List<String> inputs, String language) {
         return null;
     }
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<TextSentimentResult>> analyzeBatchSentiment(List<TextDocumentInput> inputs) {
-       return null;
+        return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
