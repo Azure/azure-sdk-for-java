@@ -1,5 +1,8 @@
-# Azure Batch SDK for Java release notes
-## Changes in 7.0.0
+# Release History
+
+## 7.1.0-beta.1
+
+## 7.0.0
 ### Features
     - Added ability to specify a collection of public IPs on CloudPool via the new PublicIPs property. This guarantees nodes in the Pool will have an IP from the list user provided IPs.
     - Added ability to mount remote file-systems on each node of a pool via the MountConfiguration property on CloudPool.
@@ -9,7 +12,7 @@
 ### REST API version
     This version of the Batch .NET client library targets version 2019-08-01.10.0 of the Azure Batch REST API.
 
-## Changes in 6.0.0
+## 6.0.0
 ### Features
 - **[Breaking]** Replaced PoolOperations.ListNodeAgentSkus with PoolOperations.ListSupportedImages. ListSupportedImages contains all of the same information originally available in ListNodeAgentSKUs but in a clearer format. New non-verified images are also now returned. Additional information about Capabilities and BatchSupportEndOfLife is accessible on the ImageInformation object returned by ListSupportedImages.
 - Now support network security rules blocking network access to a CloudPool based on the source port of the traffic. This is done via the SourcePortRanges property on NetworkSecurityGroupRule.
@@ -18,12 +21,12 @@
 ### REST API version
 This version of the Batch .NET client library targets version 2019-06-01.9.0 of the Azure Batch REST API.
 
-## Changes in 5.0.1
+## 5.0.1
 ### Features
 ### Fixes
   - Fix corrupt signing of 5.0.0 Java SDK binary
 
-## Changes in 5.0.0
+## 5.0.0
 ### Features
 - **[Breaking]** Removed support for the `ChangeOSVersion` API on `CloudServiceConfiguration` pools. 
   - Removed `PoolOperations.ChangeOSVersion`.
@@ -49,11 +52,11 @@ This version of the Batch .NET client library targets version 2019-06-01.9.0 of 
 ### REST API version
 This version of the Batch .NET client library targets version 2018-12-01.8.0 of the Azure Batch REST API.
 
-## Changes in 4.0.1
+## 4.0.1
 ### Fixes
   - Fix missing signing of 4.0.0 Java SDK binary
 
-## Changes in 4.0.0
+## 4.0.0
 ### Features
  - Added the functionality to get which version of the Azure Batch Node Agent(https://github.com/Azure/Batch/blob/master/changelogs/nodeagent/CHANGELOG.md) is running on nodes via the NodeAgentInformation property of ComputeNode.
  - Added additional error handling to task add operations to prevent deadlock scenarios.
@@ -64,17 +67,17 @@ This version of the Batch .NET client library targets version 2018-12-01.8.0 of 
 ### REST API version
 This version of the Batch Java client library targets version 2018-08-01.7.1 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/en-us/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2018-08-0171) for detail.
 
-## Changes in 3.3.0
+## 3.3.0
 ### Features
  - `createTasks` rethrow `RuntimeException` catched by internal threads. 
  - `createTasks` handle `RequestSizeTooLarge` chunking errors for well behaved tasks.
 
-## Changes in 3.2.0
+## 3.2.0
 ### Features
  - Update comments for some classes and properties.
  - Added the `leavingPool` property to `NodeCounts` class.
 
-## Changes in 3.1.0
+## 3.1.0
 ### Features
  - Added the ability to query pool node counts by state, via the new `listPoolNodeCounts` method on `PoolOperations`.
  - Added the ability to upload Azure Batch node agent logs from a particular node, via the `uploadComputeNodeBatchServiceLogs` method on `ComputeNodeOperations`.
@@ -84,7 +87,7 @@ This version of the Batch Java client library targets version 2018-08-01.7.1 of 
 This version of the Batch Java client library targets version 2018-03-01.6.1 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/en-us/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2018-03-0161) for detail.
 
 
-## Changes in 3.0.0
+## 3.0.0
 ### Features
 - Added the ability to get a discount on Windows VM pricing if you have on-premises licenses for the OS SKUs you are deploying, via `licenseType` on `VirtualMachineConfiguration`.
 - Added support for attaching empty data drives to `VirtualMachineConfiguration` based pools, via the new `dataDisks` property on `VirtualMachineConfiguration`.

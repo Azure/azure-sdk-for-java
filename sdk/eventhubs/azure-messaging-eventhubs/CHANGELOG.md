@@ -1,4 +1,7 @@
 # Release History
+
+## 5.0.0-beta.7
+
 ## 5.0.0-beta.6 (2019-12-02)
 - Artifact name changed from `preview` to `beta`.
 - Producer clients (both sync and async) support sending events only using `EventDataBatch`. All other send overloads are removed.
