@@ -12,13 +12,18 @@ import java.util.List;
  */
 @Fluent
 public final class KeyPhraseResult extends DocumentResult {
-    private List<KeyPhraseResult> keyPhrases;
+    private List<String> keyPhrases;
 
-    public List<KeyPhraseResult> getKeyPhrases() {
+    public KeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, DocumentError error, List<String> keyPhrases) {
+        super(id, textDocumentStatistics, error);
+        this.keyPhrases = keyPhrases;
+    }
+
+    public List<String> getKeyPhrases() {
         return keyPhrases;
     }
 
-    KeyPhraseResult setKeyPhrases(List<KeyPhraseResult> keyPhrases) {
+    KeyPhraseResult setKeyPhrases(List<String> keyPhrases) {
         this.keyPhrases = keyPhrases;
         return this;
     }

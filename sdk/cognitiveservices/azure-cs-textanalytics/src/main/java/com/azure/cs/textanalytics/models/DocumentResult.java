@@ -5,8 +5,6 @@ package com.azure.cs.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.util.List;
-
 /**
  * The DocumentResult model.
  */
@@ -15,7 +13,13 @@ public class DocumentResult {
 
     private String id;
     private TextDocumentStatistics textDocumentStatistics;
-    private DocumentError error;
+    private Object error;
+
+    public DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics, final Object error) {
+        this.id = id;
+        this.textDocumentStatistics = textDocumentStatistics;
+        this.error = error;
+    }
 
     public String getId() {
         return id;
@@ -35,11 +39,11 @@ public class DocumentResult {
         return this;
     }
 
-    public DocumentError getError() {
+    public Object getError() {
         return error;
     }
 
-    DocumentResult setError(DocumentError error) {
+    DocumentResult setError(Object error) {
         this.error = error;
         return this;
     }

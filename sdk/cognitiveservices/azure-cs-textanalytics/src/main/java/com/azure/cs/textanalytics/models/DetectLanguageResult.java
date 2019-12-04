@@ -15,6 +15,12 @@ public final class DetectLanguageResult extends DocumentResult {
     private DetectedLanguage primaryLanguage;
     private List<DetectedLanguage> detectedLanguages;
 
+    public DetectLanguageResult(String id, TextDocumentStatistics textDocumentStatistics, Object error, DetectedLanguage primaryLanguage, List<DetectedLanguage> detectedLanguages) {
+        super(id, textDocumentStatistics, error);
+        this.primaryLanguage = primaryLanguage;
+        this.detectedLanguages = detectedLanguages;
+    }
+
     public DetectedLanguage getPrimaryLanguage() {
         return primaryLanguage;
     }

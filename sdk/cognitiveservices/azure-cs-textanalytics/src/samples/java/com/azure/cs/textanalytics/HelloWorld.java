@@ -14,6 +14,8 @@ public class HelloWorld {
         // TODO: user AAD token to do the authentication
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+            .subscriptionKey("subscriptionKey")
+            .endpoint("https://service.cognitiveservices.azure.com/")
             .buildClient();
 
         // The text that need be analysed.
@@ -21,14 +23,14 @@ public class HelloWorld {
 
         final DetectLanguageResult detectLanguageResult = client.detectLanguage(text, "US");
         final DetectedLanguage detectedDocumentLanguage = detectLanguageResult.getPrimaryLanguage();
-        System.out.printf("Detected Primary Language: %s, ISO 6391 Name: %s, Score: %s",
+        System.out.printf("Detected Primary Language: %s, ISO 6391 Name: %s, Score: %s%n",
             detectedDocumentLanguage.getName(),
             detectedDocumentLanguage.getIso6391Name(),
             detectedDocumentLanguage.getScore());
 
         final List<DetectedLanguage> detectedLanguages = detectLanguageResult.getDetectedLanguages();
         detectedLanguages.forEach(detectedLanguage ->
-            System.out.printf("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
+            System.out.printf("Other detected languages: %s, ISO 6391 Name: %s, Score: %s%n",
             detectedLanguage.getName(),
             detectedLanguage.getIso6391Name(),
             detectedLanguage.getScore()));
