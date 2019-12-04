@@ -2,12 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 import static com.azure.cosmos.Resource.validateResource;
 
@@ -248,8 +251,8 @@ public class CosmosAsyncContainer {
      * @return an {@link Flux} containing one or several feed response pages of the
      * read cosmos items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> readAllItems() {
-        return readAllItems(new FeedOptions());
+    public <T> Flux<FeedResponse<T>> readAllItems(Class<T> klass) {
+        return readAllItems(new FeedOptions(), klass);
     }
 
     /**
@@ -263,7 +266,7 @@ public class CosmosAsyncContainer {
      * @return an {@link Flux} containing one or several feed response pages of the
      * read cosmos items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> readAllItems(FeedOptions options) {
+    public <T> Flux<FeedResponse<T>> readAllItems(FeedOptions options, Class<T> klass) {
         return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
             response -> BridgeInternal.createFeedResponse(CosmosItemProperties.getFromV2Results(response.getResults()),
                 response.getResponseHeaders()));
@@ -280,7 +283,7 @@ public class CosmosAsyncContainer {
      * @return an {@link Flux} containing one or several feed response pages of the
      * obtained items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> queryItems(String query) {
+    public <T> Flux<FeedResponse<T>> queryItems(String query, Class<T> klass) {
         return queryItems(new SqlQuerySpec(query), null);
     }
 
@@ -296,8 +299,8 @@ public class CosmosAsyncContainer {
      * @return an {@link Flux} containing one or several feed response pages of the
      * obtained items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> queryItems(String query, FeedOptions options) {
-        return queryItems(new SqlQuerySpec(query), options);
+    public <T> Flux<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
+        return queryItems(new SqlQuerySpec(query), options, klass);
     }
 
     /**
@@ -311,8 +314,8 @@ public class CosmosAsyncContainer {
      * @return an {@link Flux} containing one or several feed response pages of the
      * obtained items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> queryItems(SqlQuerySpec querySpec) {
-        return queryItems(querySpec, null);
+    public <T> Flux<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, Class<T> klass) {
+        return queryItems(querySpec, klass);
     }
 
     /**
@@ -327,10 +330,12 @@ public class CosmosAsyncContainer {
      * @return an {@link Flux} containing one or several feed response pages of the
      * obtained items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> queryItems(SqlQuerySpec querySpec, FeedOptions options) {
-        return getDatabase().getDocClientWrapper().queryDocuments(getLink(), querySpec, options)
+    public <T> Flux<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
+        return getDatabase().getDocClientWrapper().queryDocuments(getLink(),
+            querySpec, options)
                    .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
-                       CosmosItemProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
+                       (CosmosItemProperties.getTypedResultsFromV2Results((List<Document>) (Object) response.getResults(),
+                           klass)), response.getResponseHeaders(),
                        response.queryMetrics()));
     }
 

@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,8 +27,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
 
-//FIXME: beforeClass method times out.
-@Ignore
 public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
     private final static int TIMEOUT = 60000;
@@ -43,12 +40,15 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    // TODO (DANOBLE) VeryLargeDocumentQueryTest::queryLargeDocuments intermittently times out
+    //  Move this test back into the emulator group after we've addressed query performance on 4.X.
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6377
+    @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
     public void queryLargeDocuments() {
 
         int cnt = 5;
 
-        for(int i = 0; i < cnt; i++) {
+        for (int i = 0; i < cnt; i++) {
             createLargeDocument();
         }
 
@@ -56,7 +56,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
-            options);
+            options, CosmosItemProperties.class);
 
         AtomicInteger totalCount = new AtomicInteger();
         StepVerifier.create(feedResponseFlux.subscribeOn(Schedulers.single()))
@@ -84,8 +84,10 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
                     .verify(Duration.ofMillis(subscriberValidationTimeout));
     }
 
+    // TODO (DANOBLE) beforeClass method intermittently times out within the SETUP_TIMEOUT interval.
+    //  see see https://github.com/Azure/azure-sdk-for-java/issues/6377
     @BeforeClass(groups = { "emulator" }, timeOut = 2 * SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_VeryLargeDocumentQueryTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);

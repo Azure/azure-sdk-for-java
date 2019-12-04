@@ -152,7 +152,6 @@ public class CollectionCrudTest extends TestSuiteBase {
             spec.setPath("/path" + index + "/*");
 
             List<SpatialType> collectionOfSpatialTypes = new ArrayList<SpatialType>(Arrays.asList(spatialTypes).subList(0, index + 3));
-
             spec.setSpatialTypes(collectionOfSpatialTypes);
             spatialIndexes.add(spec);
         }
@@ -300,7 +299,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_CollectionCrudTest() {
         client = clientBuilder().buildAsyncClient();
         database = createDatabase(client, databaseId);
     }

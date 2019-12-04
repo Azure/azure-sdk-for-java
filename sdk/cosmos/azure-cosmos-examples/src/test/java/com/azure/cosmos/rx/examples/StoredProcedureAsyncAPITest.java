@@ -47,7 +47,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
     private AsyncDocumentClient client;
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
-    public void setUp() {
+    public void before_StoredProcedureAsyncAPITest() {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 

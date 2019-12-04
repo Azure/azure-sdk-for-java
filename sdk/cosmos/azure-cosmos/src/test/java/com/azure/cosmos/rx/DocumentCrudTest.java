@@ -50,7 +50,7 @@ public class DocumentCrudTest extends TestSuiteBase {
             { "+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~" },
         };
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void createDocument(String documentId) throws InterruptedException {
 
@@ -64,6 +64,8 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
+    // TODO (DANOBLE) DocumentCrudTest::createLargeDocument fails in some  environments
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6335
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void createLargeDocument(String documentId) throws InterruptedException {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
@@ -99,6 +101,8 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
+    // TODO (DANOBLE) DocumentCrudTest::readDocumentWithVeryLargePartitionKey test fails in some environments
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6336
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void readDocumentWithVeryLargePartitionKey(String documentId) throws InterruptedException {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
@@ -159,8 +163,6 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    //FIXME test is flaky
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void timestamp(String documentId) throws Exception {
         OffsetDateTime before = OffsetDateTime.now();
@@ -200,6 +202,8 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateFailure(readObservable, validator);
     }
 
+    // TODO (DANOBLE) DocumentCrudTest::deleteDocument test fails in some test environments
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6337
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void deleteDocument(String documentId) throws InterruptedException {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
@@ -277,7 +281,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         options.setPartitionKey(new PartitionKey(docDefinition.get("mypk")));
         // replace document
         Mono<CosmosAsyncItemResponse> replaceObservable = document.replace(docDefinition, options);
-        
+
         // validate
         CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
                 .withProperty("newProp", newPropValue).build();
@@ -323,7 +327,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_DocumentCrudTest() {
         assertThat(this.client).isNull();
         this.client = this.clientBuilder().buildAsyncClient();
         this.container = getSharedMultiPartitionCosmosContainer(this.client);

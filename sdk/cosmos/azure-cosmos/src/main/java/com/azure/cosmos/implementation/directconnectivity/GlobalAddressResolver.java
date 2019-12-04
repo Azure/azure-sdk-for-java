@@ -8,15 +8,17 @@ import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.concurrent.Queues;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
-;
 
 public class GlobalAddressResolver implements IAddressResolver {
     private final static int MaxBackupReadRegions = 3;
@@ -78,18 +78,22 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     Mono<Void> openAsync(DocumentCollection collection) {
-        Mono<CollectionRoutingMap> routingMap = this.routingMapProvider.tryLookupAsync(collection.getId(), null, null);
+        Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMap = this.routingMapProvider.tryLookupAsync(collection.getId(), null, null);
         return routingMap.flatMap(collectionRoutingMap -> {
 
-            List<PartitionKeyRangeIdentity> ranges = ((List<PartitionKeyRange>)collectionRoutingMap.getOrderedPartitionKeyRanges()).stream().map(range ->
+            if ( collectionRoutingMap.v == null) {
+                return Mono.empty();
+            }
+
+            List<PartitionKeyRangeIdentity> ranges = collectionRoutingMap.v.getOrderedPartitionKeyRanges().stream().map(range ->
                     new PartitionKeyRangeIdentity(collection.getResourceId(), range.getId())).collect(Collectors.toList());
             List<Mono<Void>> tasks = new ArrayList<>();
+            Mono<Void>[] array = new Mono[this.addressCacheByEndpoint.values().size()];
             for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
                 tasks.add(endpointCache.addressCache.openAsync(collection, ranges));
             }
-            //  TODO: Not sure if this will work.
-            return Mono.whenDelayError(tasks);
-        }).switchIfEmpty(Mono.defer(Mono::empty));
+            return Flux.mergeDelayError(Queues.SMALL_BUFFER_SIZE, tasks.toArray(array)).then();
+        });
     }
 
     @Override

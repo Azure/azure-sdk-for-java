@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//FIXME beforeClass times out.
-@Ignore
 public class ReadFeedUdfsTest extends TestSuiteBase {
 
     private Database createdDatabase;
@@ -62,7 +60,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_ReadFeedUdfsTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);

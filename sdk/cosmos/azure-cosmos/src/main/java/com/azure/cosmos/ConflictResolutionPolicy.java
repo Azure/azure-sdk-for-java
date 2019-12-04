@@ -106,7 +106,7 @@ public class ConflictResolutionPolicy extends JsonSerializable {
      * <ul>
      * <li>In case the stored procedure fails or throws an exception,
      * the conflict resolution will default to registering conflicts in the conflicts feed</li>
-     * <li>The user can provide the stored procedure @see {@link Resource#getId()} ()}</li>
+     * <li>The user can provide the stored procedure @see {@link Resource#getId()} </li>
      * </ul>
      *
      * @param conflictResolutionSprocName stored procedure to perform conflict resolution.

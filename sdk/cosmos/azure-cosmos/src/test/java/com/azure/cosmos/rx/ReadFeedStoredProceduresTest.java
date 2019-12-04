@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//FIXME beforeClass times out inconsistently
-@Ignore
 public class ReadFeedStoredProceduresTest extends TestSuiteBase {
 
     private CosmosAsyncContainer createdCollection;
@@ -60,7 +58,7 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_ReadFeedStoredProceduresTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);

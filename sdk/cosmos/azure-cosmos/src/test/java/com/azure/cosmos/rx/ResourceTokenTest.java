@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.PartitionKey;
@@ -40,8 +41,7 @@ import java.util.UUID;
  *
  */
 
-// TODO: change to use external TestSuiteBase
-@Ignore
+// TODO change to use external TestSuiteBase
 public class ResourceTokenTest extends TestSuiteBase {
     public final String databaseId = DatabaseForTest.generateId();
 
@@ -92,7 +92,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_ResourceTokenTest() throws Exception {
         client = clientBuilder().build();
         Database d = new Database();
         d.setId(databaseId);
@@ -266,8 +266,10 @@ public class ResourceTokenTest extends TestSuiteBase {
         try {
             List<Permission> permissionFeed = new ArrayList<>();
             permissionFeed.add(permission);
+            ConnectionPolicy defaultPolicy = ConnectionPolicy.getDefaultPolicy();
+            defaultPolicy.setConnectionMode(ConnectionMode.GATEWAY);
             asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
+                    .withPermissionFeed(permissionFeed).withConnectionPolicy(defaultPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION).build();
             RequestOptions options = new RequestOptions();
             if (StringUtils.isNotEmpty(partitionKey)) {
@@ -322,8 +324,10 @@ public class ResourceTokenTest extends TestSuiteBase {
             List<Permission> permissionFeed = new ArrayList<>();
             permissionFeed.add(collPermission1);
             permissionFeed.add(collPermission2);
+            ConnectionPolicy defaultPolicy = ConnectionPolicy.getDefaultPolicy();
+            defaultPolicy.setConnectionMode(ConnectionMode.GATEWAY);
             asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
+                    .withPermissionFeed(permissionFeed).withConnectionPolicy(defaultPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION).build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(partitionKey));
@@ -349,8 +353,10 @@ public class ResourceTokenTest extends TestSuiteBase {
         try {
             List<Permission> permissionFeed = new ArrayList<>();
             permissionFeed.add(permission);
+            ConnectionPolicy defaultPolicy = ConnectionPolicy.getDefaultPolicy();
+            defaultPolicy.setConnectionMode(ConnectionMode.GATEWAY);
             asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
+                    .withPermissionFeed(permissionFeed).withConnectionPolicy(defaultPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION).build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(partitionKey));

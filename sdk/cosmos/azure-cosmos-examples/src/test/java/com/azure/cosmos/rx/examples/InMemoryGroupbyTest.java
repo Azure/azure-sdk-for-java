@@ -17,7 +17,6 @@ import com.azure.cosmos.SqlParameterList;
 import com.azure.cosmos.SqlQuerySpec;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.GroupedFlux;
@@ -28,8 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-//FIXME setup method times out occasionally when running against emulator.
-@Ignore
 public class InMemoryGroupbyTest extends DocumentClientTest {
 
     private final static int TIMEOUT = 60000;
@@ -39,7 +36,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
     private DocumentCollection createdCollection;
 
     @BeforeClass(groups = "samples", timeOut = 2 * TIMEOUT)
-    public void setUp() throws Exception {
+    public void before_InMemoryGroupbyTest() throws Exception {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
@@ -112,7 +109,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         options.setEnableCrossPartitionQuery(true);
 
         Flux<Document> documentsObservable = client
-                .queryDocuments(getCollectionLink(),
+                .<Document>queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
                                 new SqlParameterList(new SqlParameter("@site_id", "ABC"))),
                         options)
@@ -144,7 +141,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         options.setEnableCrossPartitionQuery(true);
 
         Flux<Document> documentsObservable = client
-                .queryDocuments(getCollectionLink(),
+                .<Document>queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
                                 new SqlParameterList(new SqlParameter("@site_id", "ABC"))),
                         options)

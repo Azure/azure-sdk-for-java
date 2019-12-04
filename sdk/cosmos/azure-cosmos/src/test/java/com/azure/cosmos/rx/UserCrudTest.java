@@ -25,7 +25,7 @@ public class UserCrudTest extends TestSuiteBase {
     public final String databaseId = CosmosDatabaseForTest.generateId();
 
     private CosmosAsyncDatabase createdDatabase;
-    
+
     private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuilders")
@@ -38,7 +38,7 @@ public class UserCrudTest extends TestSuiteBase {
         //create user
         CosmosUserProperties user = new CosmosUserProperties();
         user.setId(UUID.randomUUID().toString());
-        
+
         Mono<CosmosAsyncUserResponse> createObservable = createdDatabase.createUser(user);
 
         // validate user creation
@@ -51,22 +51,22 @@ public class UserCrudTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readUser() throws Exception {
- 
+
         //create user
         CosmosUserProperties user = new CosmosUserProperties();
         user.setId(UUID.randomUUID().toString());
-       
+
         CosmosAsyncUser readBackUser = createdDatabase.createUser(user).block().getUser();
 
         // read user
         Mono<CosmosAsyncUserResponse> readObservable = readBackUser.read();
-        
+
         //validate user read
         CosmosResponseValidator<CosmosAsyncUserResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
                 .withId(readBackUser.getId())
                 .notNullEtag()
                 .build();
-        
+
         validateSuccess(readObservable, validator);
     }
 
@@ -75,7 +75,7 @@ public class UserCrudTest extends TestSuiteBase {
         //create user
         CosmosUserProperties user = new CosmosUserProperties();
         user.setId(UUID.randomUUID().toString());
-        
+
         CosmosAsyncUser readBackUser = createdDatabase.createUser(user).block().getUser();
 
         // delete user
@@ -92,22 +92,22 @@ public class UserCrudTest extends TestSuiteBase {
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, notFoundValidator);
     }
-    
+
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void upsertUser() throws Exception {
 
         //create user
         CosmosUserProperties user = new CosmosUserProperties();
         user.setId(UUID.randomUUID().toString());
-        
+
         Mono<CosmosAsyncUserResponse> upsertObservable = createdDatabase.upsertUser(user);
-        
+
         //validate user upsert
         CosmosResponseValidator<CosmosAsyncUserResponse> validatorForUpsert = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
                 .withId(user.getId())
                 .notNullEtag()
                 .build();
-        
+
         validateSuccess(upsertObservable, validatorForUpsert);
     }
 
@@ -117,20 +117,20 @@ public class UserCrudTest extends TestSuiteBase {
         //create user
         CosmosUserProperties user = new CosmosUserProperties();
         user.setId(UUID.randomUUID().toString());
-        
+
         CosmosUserProperties readBackUser = createdDatabase.createUser(user).block().getProperties();
-        
+
         // read getUser to validate creation
         Mono<CosmosAsyncUserResponse> readObservable = createdDatabase.getUser(user.getId()).read();
-        
+
         //validate user read
         CosmosResponseValidator<CosmosAsyncUserResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
         .withId(readBackUser.getId())
                 .notNullEtag()
                 .build();
-        
+
         validateSuccess(readObservable, validatorForRead);
-        
+
         //update getUser
         String oldId = readBackUser.getId();
         readBackUser.setId(UUID.randomUUID().toString());
@@ -142,12 +142,12 @@ public class UserCrudTest extends TestSuiteBase {
                 .withId(readBackUser.getId())
                 .notNullEtag()
                 .build();
-        
-        validateSuccess(updateObservable, validatorForUpdate);  
+
+        validateSuccess(updateObservable, validatorForUpdate);
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_UserCrudTest() {
         client = clientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
     }

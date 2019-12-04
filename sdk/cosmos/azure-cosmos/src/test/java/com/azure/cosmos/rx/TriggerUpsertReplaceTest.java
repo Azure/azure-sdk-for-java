@@ -19,8 +19,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-//FIXME beforeClass times out inconsistently
-@Ignore
 public class TriggerUpsertReplaceTest extends TestSuiteBase {
 
     private CosmosAsyncContainer createdCollection;
@@ -42,7 +40,7 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
         CosmosTriggerProperties readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().getProperties();
-        
+
         // read trigger to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());
         Mono<CosmosAsyncTriggerResponse> readObservable = createdCollection.getScripts().getTrigger(readBackTrigger.getId()).read();
@@ -55,7 +53,7 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
                 .notNullEtag()
                 .build();
         validateSuccess(readObservable, validatorForRead);
-        
+
         //update getTrigger
         readBackTrigger.setBody("function() {var x = 11;}");
 
@@ -68,16 +66,16 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
                 .withTriggerInternals(TriggerType.PRE, TriggerOperation.CREATE)
                 .notNullEtag()
                 .build();
-        validateSuccess(updateObservable, validatorForUpdate);   
+        validateSuccess(updateObservable, validatorForUpdate);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_TriggerUpsertReplaceTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
     }
-    
+
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);

@@ -29,8 +29,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//FIXME beforeClass times out.
-@Ignore
 public class TriggerQueryTest extends TestSuiteBase {
 
     private CosmosAsyncContainer createdCollection;
@@ -138,7 +136,7 @@ public class TriggerQueryTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_TriggerQueryTest() throws Exception {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);

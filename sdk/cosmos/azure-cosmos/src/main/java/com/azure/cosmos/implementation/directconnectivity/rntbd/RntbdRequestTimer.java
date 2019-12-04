@@ -17,17 +17,15 @@ import static com.google.common.base.Strings.lenientFormat;
 
 public final class RntbdRequestTimer implements AutoCloseable {
 
-    private static final long FIVE_MILLISECONDS = 5000000L;
+    private static final long TIMER_RESOLUTION_IN_NANOS = 100_000_000L; // 100 ms
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestTimer.class);
     private final long requestTimeout;
     private final Timer timer;
 
     public RntbdRequestTimer(final long requestTimeout) {
-        // Inspection of the HashWheelTimer code indicates that our choice of a 5 millisecond timer resolution ensures
-        // a request will expire within 10 milliseconds of the specified requestTimeout interval. This is because
-        // cancellation of a timeout takes two timer resolution units to complete.
-        this.timer = new HashedWheelTimer(FIVE_MILLISECONDS, TimeUnit.NANOSECONDS);
+        // HashedWheelTimer code inspection shows that timeout tasks expire within two timer resolution units
+        this.timer = new HashedWheelTimer(TIMER_RESOLUTION_IN_NANOS, TimeUnit.NANOSECONDS);
         this.requestTimeout = requestTimeout;
     }
 

@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -37,8 +38,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-;
-
 public class GlobalAddressResolverTest {
 
     private HttpClient httpClient;
@@ -58,7 +57,7 @@ public class GlobalAddressResolverTest {
     private URL urlforWrite3;
 
     @BeforeClass(groups = "unit")
-    public void setup() throws Exception {
+    public void before_GlobalAddressResolverTest() throws Exception {
         urlforRead1 = new URL("http://testRead1.com/");
         urlforRead2 = new URL("http://testRead2.com/");
         urlforRead3 = new URL("http://testRead3.com/");
@@ -91,7 +90,7 @@ public class GlobalAddressResolverTest {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
         collectionCache = Mockito.mock(RxCollectionCache.class);
-        Mockito.when(collectionCache.resolveCollectionAsync(Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(collectionDefinition));
+        Mockito.when(collectionCache.resolveCollectionAsync(Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(new Utils.ValueHolder<>(collectionDefinition)));
         routingMapProvider = Mockito.mock(RxPartitionKeyRangeCache.class);
         userAgentContainer = Mockito.mock(UserAgentContainer.class);
         serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
@@ -148,7 +147,7 @@ public class GlobalAddressResolverTest {
         List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();
         partitionKeyRanges.add(range);
         Mockito.when(collectionRoutingMap.getOrderedPartitionKeyRanges()).thenReturn(partitionKeyRanges);
-        Mono<CollectionRoutingMap> collectionRoutingMapSingle = Mono.just(collectionRoutingMap);
+        Mono<Utils.ValueHolder<CollectionRoutingMap>> collectionRoutingMapSingle = Mono.just(new Utils.ValueHolder<>(collectionRoutingMap));
         Mockito.when(routingMapProvider.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(collectionRoutingMapSingle);
 
         List<PartitionKeyRangeIdentity> ranges = new ArrayList<>();

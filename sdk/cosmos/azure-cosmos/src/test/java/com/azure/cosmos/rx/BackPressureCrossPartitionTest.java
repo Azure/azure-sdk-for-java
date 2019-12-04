@@ -89,7 +89,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         return collectionDefinition;
     }
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirectHttps")
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public BackPressureCrossPartitionTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -98,7 +98,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         // ensure collection is cached
-        createdCollection.queryItems("SELECT * FROM r", options).blockFirst();
+        createdCollection.queryItems("SELECT * FROM r", options, CosmosItemProperties.class).blockFirst();
     }
 
     @DataProvider(name = "queryProvider")
@@ -114,16 +114,13 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         };
     }
 
-    // TODO: DANOBLE: Investigate DIRECT TCP performance issue
-    // Links: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
-
     @Test(groups = { "long" }, dataProvider = "queryProvider", timeOut = 2 * TIMEOUT)
     public void query(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(maxItemCount);
         options.setMaxDegreeOfParallelism(2);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
@@ -164,7 +161,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_BackPressureCrossPartitionTest() {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         client = new ClientUnderTestBuilder(clientBuilder()).buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
@@ -185,9 +182,6 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(clientBuilder());
         warmUp();
     }
-
-    // TODO: DANOBLE: Investigate DIRECT TCP performance issue
-    // Links: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
 
     @AfterClass(groups = { "long" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {

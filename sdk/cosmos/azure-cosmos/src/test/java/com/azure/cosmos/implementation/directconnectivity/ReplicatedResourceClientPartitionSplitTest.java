@@ -24,6 +24,7 @@ import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -44,8 +45,6 @@ public class ReplicatedResourceClientPartitionSplitTest {
         };
     }
 
-    //FIXME test times out inconsistently
-    @Ignore
     @Test(groups = { "unit" }, dataProvider = "partitionIsSplittingArgProvider", timeOut = TIMEOUT)
     public void partitionSplit_RefreshCache_Read(ConsistencyLevel consistencyLevel, int partitionIsSplitting) {
         URI secondary1AddressBeforeMove = URI.create("secondary");
@@ -192,7 +191,7 @@ public class ReplicatedResourceClientPartitionSplitTest {
         testSubscriber.assertNotComplete();
         testSubscriber.assertTerminated();
         Assertions.assertThat(testSubscriber.errorCount()).isEqualTo(1);
-        validator.validate(testSubscriber.errors().get(0));
+        validator.validate(Exceptions.unwrap(testSubscriber.errors().get(0)));
     }
 
     private PartitionKeyRange partitionKeyRangeWithId(String id) {

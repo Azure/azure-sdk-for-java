@@ -57,7 +57,7 @@ public class TokenResolverTest extends DocumentClientTest {
      * control authorization and access to Cosmos DB resources.
      */
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
-    public void setUp() {
+    public void before_TokenResolverTest() {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
@@ -145,7 +145,7 @@ public class TokenResolverTest extends DocumentClientTest {
             List<ResourceResponse<Document>> capturedResponse = Collections
                     .synchronizedList(new ArrayList<>());
             for (String documentLink : documentToReadUserMap.keySet()) {
-                
+
                 // Each document has one User who can only read it. Pass that User Id in the item.
                 // The token resolver will resolve the token for that User based on 'userId'.
                 ImmutableMap<String, Object> properties = ImmutableMap.<String, Object> builder()
@@ -183,7 +183,7 @@ public class TokenResolverTest extends DocumentClientTest {
             List<ResourceResponse<Document>> capturedResponse = Collections
                     .synchronizedList(new ArrayList<>());
             for (String documentLink : documentToReadWriteUserMap.keySet()) {
-                
+
                 // Each document has one User who can read and write it. Pass that User Id in the item.
                 // The token resolver will resolve the token for that User based on 'userId'.
                 ImmutableMap<String, Object> properties = ImmutableMap.<String, Object> builder()
@@ -222,7 +222,7 @@ public class TokenResolverTest extends DocumentClientTest {
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withTokenResolver(getTokenResolverWithBlockList(blockListedUserId, errorMessage))
                     .build();
-            
+
             // READ a document using a block listed user, passing the 'userId' in the item.
             // Token resolver will throw RuntimeException.
             RequestOptions options = new RequestOptions();
@@ -239,7 +239,7 @@ public class TokenResolverTest extends DocumentClientTest {
             assertThat(capturedErrors, hasSize(1));
             assertThat(capturedErrors.get(0), instanceOf(RuntimeException.class));
             assertThat(capturedErrors.get(0).getMessage(), equalTo(errorMessage));
-            
+
             // READ a document using a valid user, passing the 'userId' in the item.
             // Token resolver will pass on the correct token for authentication.
             String validUserId = userToReadWriteResourceTokenMap.keySet().iterator().next();
@@ -259,7 +259,7 @@ public class TokenResolverTest extends DocumentClientTest {
             Utils.safeClose(asyncClientWithTokenResolver);
         }
     }
-    
+
     /**
      * For Reading DatabaseAccount on client initialization, use any User's token.
      * For subsequent Reads, get the correct read only token based on 'userId'.

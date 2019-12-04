@@ -15,7 +15,7 @@ public class ConflictTests {
     private String conflictAsString;
 
     @BeforeClass(groups = { "unit" })
-    public void setup() throws Exception {
+    public void before_ConflictTests() throws Exception {
         conflictAsString = IOUtils.toString(
                 getClass().getClassLoader().getResourceAsStream("sampleConflict.json"), "UTF-8");
     }

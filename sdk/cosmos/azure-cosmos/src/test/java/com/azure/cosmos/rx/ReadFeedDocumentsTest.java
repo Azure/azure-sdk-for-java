@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//FIXME: beforeClass times out inconsistently
-@Ignore
 public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     private CosmosAsyncDatabase createdDatabase;
@@ -46,7 +44,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options);
+        Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(createdDocuments.size())
                 .numberOfPagesIsGreaterThanOrEqualTo(1)
@@ -64,7 +62,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options);
+        Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
         FailureValidator validator = FailureValidator.builder().instanceOf(CosmosClientException.class)
                 .statusCode(400)
                 .errorMessageContains("Cross partition query is required but disabled." +
@@ -75,15 +73,17 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         validateQueryFailure(feedObservable, validator, FEED_TIMEOUT);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
-    public void beforeClass() {
+    // TODO (DANOBLE) ReadFeedDocumentsTest initialization consistently times out in CI environments.
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6379
+    @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT, alwaysRun = true)
+    public void before_ReadFeedDocumentsTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
         List<CosmosItemProperties> docDefList = new ArrayList<>();
 
-        for(int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             docDefList.add(getDocumentDefinition());
         }
 

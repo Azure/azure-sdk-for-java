@@ -26,8 +26,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//FIXME beforeCLass times out inconsistently
-@Ignore
 public class StoredProcedureQueryTest extends TestSuiteBase {
 
     private CosmosAsyncContainer createdCollection;
@@ -128,7 +126,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_StoredProcedureQueryTest() throws Exception {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);

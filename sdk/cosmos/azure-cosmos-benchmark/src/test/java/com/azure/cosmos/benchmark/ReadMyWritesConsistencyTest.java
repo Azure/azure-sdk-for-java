@@ -75,7 +75,7 @@ public class ReadMyWritesConsistencyTest {
     }
 
     @BeforeClass(groups = "e2e")
-    public void beforeClass() {
+    public void before_ReadMyWritesConsistencyTest() {
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(initialCollectionThroughput);
         AsyncDocumentClient housekeepingClient = Utils.housekeepingClient();
@@ -94,7 +94,6 @@ public class ReadMyWritesConsistencyTest {
         };
     }
 
-    // FIXME: Test is flaky, fails inconsistently
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "e2e")
     public void readMyWrites(boolean useNameLink) throws Exception {
 

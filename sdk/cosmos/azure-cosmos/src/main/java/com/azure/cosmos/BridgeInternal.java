@@ -182,14 +182,13 @@ public class BridgeInternal {
         return rsp.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED;
     }
 
-    public static <T extends Resource> FeedResponse<T> createFeedResponse(List<T> results,
-                                                                          Map<String, String> headers) {
+    public static <T> FeedResponse<T> createFeedResponse(List<T> results,
+            Map<String, String> headers) {
         return new FeedResponse<>(results, headers);
     }
 
-    public static <T extends Resource> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
-                                                              Map<String, String> headers,
-                                                              ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
+    public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
+            Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         return new FeedResponse<>(results, headers, queryMetricsMap);
     }
 

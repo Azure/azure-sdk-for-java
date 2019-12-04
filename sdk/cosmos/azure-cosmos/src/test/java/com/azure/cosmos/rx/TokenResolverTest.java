@@ -86,7 +86,7 @@ public class TokenResolverTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_TokenResolverTest() {
         createdDatabase = SHARED_DATABASE;
         createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
 
@@ -154,8 +154,6 @@ public class TokenResolverTest extends TestSuiteBase {
         }
     }
 
-    //FIXME test is flaky
-    @Ignore
     @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void writeDocumentWithAllPermission(ConnectionMode connectionMode) {
         AsyncDocumentClient asyncClientWithTokenResolver = null;

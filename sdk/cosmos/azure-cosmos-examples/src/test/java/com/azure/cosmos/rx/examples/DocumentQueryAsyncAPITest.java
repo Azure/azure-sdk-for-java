@@ -75,7 +75,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     private int numberOfDocuments;
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
-    public void setUp() {
+    public void before_DocumentQueryAsyncAPITest() {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 

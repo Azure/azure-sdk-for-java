@@ -38,7 +38,7 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
         final FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(2);
-        final Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options);
+        final Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
         final int expectedPageSize = (createdDocuments.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
@@ -51,15 +51,17 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    // TODO (DANOBLE) SinglePartitionReadFeedDocumentsTest initialization consistently times out in CI environments.
+    //  see https://github.com/Azure/azure-sdk-for-java/issues/6380
+    @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
+    public void before_SinglePartitionReadFeedDocumentsTest() {
         client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedSinglePartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
         List<CosmosItemProperties> docDefList = new ArrayList<>();
 
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             docDefList.add(getDocumentDefinition());
         }
 

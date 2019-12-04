@@ -21,7 +21,6 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.hamcrest.Matchers;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -38,8 +37,6 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
     private AsyncDocumentClient client;
     private Database createdDatabase;
 
-    //FIXME: Times out when running in emulator tests.
-    @Ignore
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void uniqueIndex() {
         DocumentCollection collectionDefinition = new DocumentCollection();
@@ -81,7 +78,7 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
     }
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
-    public void setUp() {
+    public void before_UniqueIndexAsyncAPITest() {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 

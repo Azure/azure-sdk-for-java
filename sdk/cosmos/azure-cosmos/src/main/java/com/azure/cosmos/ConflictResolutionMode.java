@@ -11,12 +11,12 @@ import org.apache.commons.text.WordUtils;
 public enum ConflictResolutionMode {
     /**
      * Last writer wins conflict resolution mode
-     * <p>
+     * 
      * Setting the ConflictResolutionMode to "LAST_WRITER_WINS" indicates that conflict resolution should be done by 
      * inspecting a field in the conflicting documents
      * and picking the document which has the higher value in that path. See
      * {@link ConflictResolutionPolicy#getConflictResolutionPath()} for details on how to specify the path
-     * to be checked for conflict resolution. Also note that Deletes win.
+     *
      */
     LAST_WRITER_WINS,
 

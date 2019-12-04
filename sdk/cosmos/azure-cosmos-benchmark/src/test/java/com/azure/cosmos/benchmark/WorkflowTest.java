@@ -3,15 +3,15 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.DataType;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.IncludedPath;
 import com.azure.cosmos.Index;
 import com.azure.cosmos.IndexingPolicy;
 import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.beust.jcommander.JCommander;
@@ -270,15 +270,14 @@ public class WorkflowTest {
     }
 
     @BeforeClass(groups = "simple", timeOut = TIMEOUT)
-    public void beforeClass() {
+    public void before_WorkflowTest() {
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(10000);
         AsyncDocumentClient housekeepingClient = Utils.housekeepingClient();
         database = Utils.createDatabaseForTest(housekeepingClient);
-        collection = housekeepingClient.createCollection("dbs/"+ database.getId(),
-                                                         getCollectionDefinitionWithRangeRangeIndex(),
-                                                         options)
-                .single().block().getResource();
+        collection = housekeepingClient.createCollection("dbs/" + database.getId(),
+            getCollectionDefinitionWithRangeRangeIndex(),
+            options).single().block().getResource();
         housekeepingClient.close();
     }
 

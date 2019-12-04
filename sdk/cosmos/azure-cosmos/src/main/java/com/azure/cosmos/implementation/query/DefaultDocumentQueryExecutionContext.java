@@ -112,7 +112,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     			.getPaginatedQueryResultAsObservable(newFeedOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
     }
 
-    public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
+    public Mono<ValueHolder<List<PartitionKeyRange>>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
         // TODO: FIXME this needs to be revisited
 
         Range<String> r = new Range<>("", "FF", true, false);

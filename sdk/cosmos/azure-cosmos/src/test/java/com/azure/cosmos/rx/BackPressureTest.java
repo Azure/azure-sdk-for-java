@@ -21,7 +21,6 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
@@ -31,11 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-// FIXME: beforeClass method times out inconsistently
-@Ignore
 public class BackPressureTest extends TestSuiteBase {
 
     private static final int TIMEOUT = 200000;
@@ -61,7 +59,7 @@ public class BackPressureTest extends TestSuiteBase {
         return collectionDefinition;
     }
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirectHttps")
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public BackPressureTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -71,13 +69,19 @@ public class BackPressureTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(1);
         options.setEnableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.readAllItems(options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
+        AtomicInteger valueCount = new AtomicInteger();
         rxClient.httpRequests.clear();
 
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosItemProperties>>(1);
-        queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        queryObservable.doOnNext(cosmosItemPropertiesFeedResponse -> {
+            if (!cosmosItemPropertiesFeedResponse.getResults().isEmpty()) {
+                valueCount.incrementAndGet();
+            }
+        }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+
         int sleepTimeInMillis = 10000; // 10 seconds
 
         int i = 0;
@@ -102,7 +106,7 @@ public class BackPressureTest extends TestSuiteBase {
 
         subscriber.assertNoErrors();
         subscriber.assertComplete();
-        assertThat(subscriber.valueCount()).isEqualTo(createdDocuments.size());
+        assertThat(valueCount.get()).isEqualTo(createdDocuments.size());
     }
 
     @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
@@ -110,13 +114,20 @@ public class BackPressureTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(1);
         options.setEnableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems("SELECT * from r", options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
 
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosItemProperties>>(1);
-        queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        AtomicInteger valueCount = new AtomicInteger();
+
+        queryObservable.doOnNext(cosmosItemPropertiesFeedResponse -> {
+            if (!cosmosItemPropertiesFeedResponse.getResults().isEmpty()) {
+                valueCount.incrementAndGet();
+            }
+        }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+
         int sleepTimeInMillis = 10000;
 
         int i = 0;
@@ -141,11 +152,11 @@ public class BackPressureTest extends TestSuiteBase {
         subscriber.assertNoErrors();
         subscriber.assertComplete();
 
-        assertThat(subscriber.valueCount()).isEqualTo(createdDocuments.size());
+        assertThat(valueCount.get()).isEqualTo(createdDocuments.size());
     }
 
     @BeforeClass(groups = { "long" }, timeOut = 2 * SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_BackPressureTest() throws Exception {
 
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         client = new ClientUnderTestBuilder(clientBuilder()).buildAsyncClient();
@@ -180,12 +191,8 @@ public class BackPressureTest extends TestSuiteBase {
         // ensure collection is cached
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
-        createdCollection.queryItems("SELECT * from r", options).blockFirst();
+        createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class).blockFirst();
     }
-
-    // TODO: DANOBLE: Investigate DIRECT TCP performance issue
-    // NOTE: This method requires multiple SHUTDOWN_TIMEOUT intervals
-    // SEE: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
 
     @AfterClass(groups = { "long" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {

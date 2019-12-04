@@ -109,7 +109,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         }
 
         collection.createItem(doc2).block();
-        collection.createItem(doc3).block();    
+        collection.createItem(doc3).block();
     }
 
     @Test(groups = { "long" }, timeOut = TIMEOUT * 1000)
@@ -209,7 +209,7 @@ public class UniqueIndexTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_UniqueIndexTest() {
         // set up the client
         client = new CosmosClientBuilder()
                 .setEndpoint(TestConfigurations.HOST)

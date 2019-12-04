@@ -10,7 +10,6 @@ import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import reactor.core.publisher.Flux;
@@ -21,7 +20,6 @@ public class BasicDemo {
 
     private static final String DATABASE_NAME = "test_db";
     private static final String CONTAINER_NAME = "test_container";
-
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase database;
     private CosmosAsyncContainer container;
@@ -31,12 +29,12 @@ public class BasicDemo {
         demo.start();
     }
 
-    private void start(){
+    private void start() {
         // Get client
-        client = new CosmosClientBuilder()
-                .setEndpoint(AccountSettings.HOST)
-                .setKey(AccountSettings.MASTER_KEY)
-                .buildAsyncClient();
+        client = CosmosAsyncClient.cosmosClientBuilder()
+                     .setEndpoint(AccountSettings.HOST)
+                     .setKey(AccountSettings.MASTER_KEY)
+                     .buildAsyncClient();
 
         //CREATE a database and a container
         createDbAndContainerBlocking();
@@ -89,7 +87,7 @@ public class BasicDemo {
         }catch (RuntimeException e){
             log("Couldn't create items due to above exceptions");
         }
-        if(cosmosItem != null) {
+        if (cosmosItem != null) {
             replaceObject.setName("new name test3");
 
             //REPLACE the item and wait for completion
@@ -107,14 +105,13 @@ public class BasicDemo {
                 .block();
     }
 
-    int count = 0;
-    private void queryItems(){
+    private void queryItems() {
         log("+ Querying the collection ");
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         options.setMaxDegreeOfParallelism(2);
-        Flux<FeedResponse<CosmosItemProperties>> queryFlux = container.queryItems(query, options);
+        Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class);
 
         queryFlux.publishOn(Schedulers.elastic()).subscribe(cosmosItemFeedResponse -> {},
                             throwable -> {},
@@ -122,14 +119,14 @@ public class BasicDemo {
 
         queryFlux.publishOn(Schedulers.elastic())
                 .toIterable()
-                .forEach(cosmosItemFeedResponse ->
+                .forEach(cosmosItemFeedResponse -> 
                          {
                              log(cosmosItemFeedResponse.getResults());
                          });
 
     }
 
-    private void queryWithContinuationToken(){
+    private void queryWithContinuationToken() {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
         FeedOptions options = new FeedOptions();
@@ -137,14 +134,14 @@ public class BasicDemo {
         options.populateQueryMetrics(true);
         options.maxItemCount(1);
         String continuation = null;
-        do{
+        do {
             options.requestContinuation(continuation);
-            Flux<FeedResponse<CosmosItemProperties>> queryFlux = container.queryItems(query, options);
-            FeedResponse<CosmosItemProperties> page = queryFlux.blockFirst();
+            Flux<FeedResponse<TestObject>> queryFlux = container.queryItems(query, options, TestObject.class);
+            FeedResponse<TestObject> page = queryFlux.blockFirst();
             assert page != null;
             log(page.getResults());
             continuation = page.getContinuationToken();
-        }while(continuation!= null);
+        } while (continuation != null);
 
     }
 
@@ -152,7 +149,7 @@ public class BasicDemo {
         System.out.println(object);
     }
 
-    private void log(String msg, Throwable throwable){
+    private void log(String msg, Throwable throwable) {
         if (throwable instanceof CosmosClientException) {
             log(msg + ": " + ((CosmosClientException) throwable).getStatusCode());
         }

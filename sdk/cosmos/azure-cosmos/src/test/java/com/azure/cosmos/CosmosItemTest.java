@@ -34,7 +34,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = clientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
@@ -88,14 +88,14 @@ public class CosmosItemTest extends TestSuiteBase {
                                                        .read(new CosmosItemRequestOptions()
                                                                      .setPartitionKey(new PartitionKey(properties.get("mypk"))));
         validateItemResponse(properties, readResponse1);
-        
+
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void replaceItem() throws Exception{
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse itemResponse = container.createItem(properties);
-        
+
         validateItemResponse(properties, itemResponse);
         String newPropValue = UUID.randomUUID().toString();
         BridgeInternal.setProperty(properties, "newProp", newPropValue);
@@ -115,10 +115,10 @@ public class CosmosItemTest extends TestSuiteBase {
 
         CosmosItemResponse deleteResponse = itemResponse.getItem().delete(options);
         assertThat(deleteResponse.getItem()).isNull();
-        
+
     }
 
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readAllItems() throws Exception{
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -127,7 +127,7 @@ public class CosmosItemTest extends TestSuiteBase {
         FeedOptions feedOptions = new FeedOptions();
         feedOptions.setEnableCrossPartitionQuery(true);
         Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
-                container.readAllItems(feedOptions);
+                container.readAllItems(feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.hasNext()).isTrue();
     }
 
@@ -141,16 +141,16 @@ public class CosmosItemTest extends TestSuiteBase {
         FeedOptions feedOptions = new FeedOptions().setEnableCrossPartitionQuery(true);
 
         Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator1 =
-                container.queryItems(query, feedOptions);
+                container.queryItems(query, feedOptions, CosmosItemProperties.class);
         // Very basic validation
         assertThat(feedResponseIterator1.hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator3 =
-                container.queryItems(querySpec, feedOptions);
+                container.queryItems(querySpec, feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.hasNext()).isTrue();
     }
-    
+
 
     private CosmosItemProperties getDocumentDefinition(String documentId) {
         final String uuid = UUID.randomUUID().toString();

@@ -29,8 +29,10 @@ public class DocumentQueryExecutionContextFactory {
 
     private final static int PageSizeFactorForTop = 5;
 
-    private static Mono<DocumentCollection> resolveCollection(IDocumentQueryClient client, SqlQuerySpec query,
-            ResourceType resourceTypeEnum, String resourceLink) {
+    private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(IDocumentQueryClient client,
+                                                                                 SqlQuerySpec query,
+                                                                                 ResourceType resourceTypeEnum,
+                                                                                 String resourceLink) {
 
         RxCollectionCache collectionCache = client.getCollectionCache();
 
@@ -54,7 +56,7 @@ public class DocumentQueryExecutionContextFactory {
             UUID correlatedActivityId) {
 
         // return proxy
-        Flux<DocumentCollection> collectionObs = Flux.empty();
+        Flux<Utils.ValueHolder<DocumentCollection>> collectionObs = Flux.just(new Utils.ValueHolder<>(null));
 
         if (resourceTypeEnum.isCollectionChild()) {
             collectionObs = resolveCollection(client, query, resourceTypeEnum, resourceLink).flux();
@@ -65,9 +67,10 @@ public class DocumentQueryExecutionContextFactory {
         // PipelinedDocumentQueryExecutionContext by providing the partition query execution info that's needed(which we get from the exception returned from GATEWAY).
 
         Flux<ProxyDocumentQueryExecutionContext<T>> proxyQueryExecutionContext =
-                collectionObs.flatMap(collection -> {
-                    if (feedOptions != null && feedOptions.partitionKey() != null && feedOptions.partitionKey().equals(PartitionKey.NONE)) {
-                        feedOptions.partitionKey(BridgeInternal.getPartitionKey(BridgeInternal.getNonePartitionKey(collection.getPartitionKey())));
+                collectionObs.flatMap(collectionValueHolder -> {
+
+                    if (collectionValueHolder.v != null && feedOptions != null && feedOptions.partitionKey() != null && feedOptions.partitionKey().equals(PartitionKey.NONE)) {
+                        feedOptions.partitionKey(BridgeInternal.getPartitionKey(BridgeInternal.getNonePartitionKey(collectionValueHolder.v.getPartitionKey())));
                     }
                     return ProxyDocumentQueryExecutionContext.createAsync(
                             client,
@@ -76,19 +79,10 @@ public class DocumentQueryExecutionContextFactory {
                             query,
                             feedOptions,
                             resourceLink,
-                            collection,
+                            collectionValueHolder.v,
                             isContinuationExpected,
                             correlatedActivityId);
-                    }).switchIfEmpty(ProxyDocumentQueryExecutionContext.createAsync(
-                            client,
-                            resourceTypeEnum,
-                            resourceType,
-                            query,
-                            feedOptions,
-                            resourceLink,
-                            null,
-                            isContinuationExpected,
-                            correlatedActivityId));
+                    });
 
         return proxyQueryExecutionContext;
     }

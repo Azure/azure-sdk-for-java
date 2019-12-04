@@ -117,7 +117,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public Integer readProvisionedThroughput() throws CosmosClientException {
-        return database.throughputResponseToBlock(this.containerWrapper.readProvisionedThroughput());
+        return CosmosDatabase.throughputResponseToBlock(this.containerWrapper.readProvisionedThroughput());
     }
 
     /**
@@ -128,8 +128,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) throws CosmosClientException {
-        return database.throughputResponseToBlock(this.containerWrapper
-                                                            .replaceProvisionedThroughput(requestUnitsPerSecond));
+        return CosmosDatabase.throughputResponseToBlock(this.containerWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
     }
 
 
@@ -210,8 +209,8 @@ public class CosmosContainer {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosItemProperties>> readAllItems(FeedOptions options) {
-        return getFeedIterator(this.containerWrapper.readAllItems(options));
+    public <T> Iterator<FeedResponse<T>> readAllItems(FeedOptions options, Class<T> klass) {
+        return getFeedIterator(this.containerWrapper.readAllItems(options, klass));
     }
 
     /**
@@ -221,8 +220,8 @@ public class CosmosContainer {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosItemProperties>> queryItems(String query, FeedOptions options) {
-        return getFeedIterator(this.containerWrapper.queryItems(query, options));
+    public <T> Iterator<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
+        return getFeedIterator(this.containerWrapper.queryItems(query, options, klass));
     }
 
     /**
@@ -232,8 +231,8 @@ public class CosmosContainer {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosItemProperties>> queryItems(SqlQuerySpec querySpec, FeedOptions options) {
-        return getFeedIterator(this.containerWrapper.queryItems(querySpec, options));
+    public <T> Iterator<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
+        return getFeedIterator(this.containerWrapper.queryItems(querySpec, options, klass));
     }
 
     /**
@@ -284,8 +283,7 @@ public class CosmosContainer {
         return new CosmosItemResponse(response, null, this);
     }
 
-    private Iterator<FeedResponse<CosmosItemProperties>> getFeedIterator(
-                                                            Flux<FeedResponse<CosmosItemProperties>> itemFlux) {
+    private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {
         return itemFlux.toIterable(1).iterator();
     }
 
