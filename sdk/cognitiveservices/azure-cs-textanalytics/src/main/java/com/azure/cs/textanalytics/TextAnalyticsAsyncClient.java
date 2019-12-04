@@ -29,6 +29,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -101,7 +102,6 @@ public final class TextAnalyticsAsyncClient {
         for (int i = 0; i < inputs.size(); i++) {
             languageInputs.add(new DetectLanguageInput(Integer.toString(i), inputs.get(i), countryHint));
         }
-
         return detectBatchLanguages(languageInputs, null);
     }
 
@@ -114,8 +114,8 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguages(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options) {
-       return detectBatchLanguagesWithResponse(inputs, options)
-           .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        return detectBatchLanguagesWithResponse(inputs, options)
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -145,30 +145,27 @@ public final class TextAnalyticsAsyncClient {
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
     }
 
-    private DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(LanguageResult value) {
+    private DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(LanguageResult languageResult) {
         return new
-            DocumentResultCollection<>(getDocumentLanguages(value), value.getModelVersion(), value.getStatistics());
+            DocumentResultCollection<>(getDocumentLanguages(languageResult),
+            languageResult.getModelVersion(), languageResult.getStatistics());
     }
 
-    private List<DetectLanguageResult> getDocumentLanguages(LanguageResult value) {
-        List<DetectLanguageResult> detectedLanguageList = new ArrayList<>();
-        List<DocumentLanguage> documentLanguageList = value.getDocuments();
-        for (DocumentLanguage documentLanguage : documentLanguageList) {
-            detectedLanguageList.add(new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(),
-                getDocumentError(value, documentLanguage),
-                documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages()));
-        }
-        return detectedLanguageList;
+    private List<DetectLanguageResult> getDocumentLanguages(LanguageResult languageResult) {
+        return languageResult.getDocuments().stream().map(documentLanguage ->
+            convertToDetectLanguageResult(languageResult, documentLanguage)).collect(Collectors.toList());
     }
 
-    private DocumentError getDocumentError(LanguageResult value, DocumentLanguage documentLanguage) {
-        value.getErrors().stream().map(val -> {
-            if (val.getId() == documentLanguage.getId()) {
-                return val.getError();
-            }
-            return null;
-        });
-        return null;
+    private DetectLanguageResult convertToDetectLanguageResult(final LanguageResult languageResult,
+                                                               final DocumentLanguage documentLanguage) {
+        return new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(),
+            getDocumentError(languageResult, documentLanguage),
+            documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages());
+    }
+
+    private DocumentError getDocumentError(LanguageResult languageResult, DocumentLanguage documentLanguage) {
+        return languageResult.getErrors().stream()
+            .filter(val -> val.getId().equals(documentLanguage.getId())).findAny().orElse(null);
     }
 
     // (2) entities
