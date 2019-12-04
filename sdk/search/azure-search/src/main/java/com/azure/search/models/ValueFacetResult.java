@@ -33,7 +33,7 @@ public class ValueFacetResult {
      *
      * @return count
      */
-    public Long count() {
+    public Long getCount() {
         return count;
     }
 
@@ -42,7 +42,7 @@ public class ValueFacetResult {
      *
      * @return value
      */
-    public Object value() {
+    public Object getValue() {
         return value;
     }
 }

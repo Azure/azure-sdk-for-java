@@ -18,7 +18,7 @@ public class SuggestPagedResponse extends PagedResponseBase<String, SuggestResul
      *
      * @return Double
      */
-    public Double coverage() {
+    public Double getCoverage() {
         return coverage;
     }
 

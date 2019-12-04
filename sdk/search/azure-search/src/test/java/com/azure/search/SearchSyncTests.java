@@ -71,9 +71,9 @@ public class SearchSyncTests extends SearchTestBase {
         List<Map<String, Object>> actualResults = new ArrayList<>();
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
-            Assert.assertNull(result.count());
-            Assert.assertNull(result.coverage());
-            Assert.assertNull(result.facets());
+            Assert.assertNull(result.getCount());
+            Assert.assertNull(result.getCoverage());
+            Assert.assertNull(result.getFacets());
             Assert.assertNotNull(result.getItems());
 
             result.getItems().forEach(item -> {
@@ -170,9 +170,9 @@ public class SearchSyncTests extends SearchTestBase {
         List<Hotel> actualResults = new ArrayList<>();
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
-            Assert.assertNull(result.count());
-            Assert.assertNull(result.coverage());
-            Assert.assertNull(result.facets());
+            Assert.assertNull(result.getCount());
+            Assert.assertNull(result.getCoverage());
+            Assert.assertNull(result.getFacets());
             Assert.assertNotNull(result.getItems());
 
             result.getItems().forEach(item -> {
@@ -380,10 +380,10 @@ public class SearchSyncTests extends SearchTestBase {
 
         for (SearchPagedResponse result : pagesIterable) {
             assertContainHotelIds(hotels, result.getItems());
-            Assert.assertNotNull(result.facets());
-            List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(result.facets(), "Rooms/BaseRate", 4);
+            Assert.assertNotNull(result.getFacets());
+            List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(result.getFacets(), "Rooms/BaseRate", 4);
             List<RangeFacetResult> lastRenovationDateFacets = getRangeFacetsForField(
-                result.facets(), "LastRenovationDate", 2);
+                result.getFacets(), "LastRenovationDate", 2);
             assertRangeFacets(baseRateFacets, lastRenovationDateFacets);
         }
     }
@@ -403,7 +403,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         for (SearchPagedResponse result : pagesIterable) {
             assertContainHotelIds(hotels, result.getItems());
-            Map<String, List<FacetResult>> facets = result.facets();
+            Map<String, List<FacetResult>> facets = result.getFacets();
             Assert.assertNotNull(facets);
 
             assertValueFacetsEqual(
@@ -544,7 +544,7 @@ public class SearchSyncTests extends SearchTestBase {
         Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
         Iterator<SearchPagedResponse> iterator = pagesIterable.iterator();
 
-        Assert.assertEquals(hotels.size(), iterator.next().count().intValue());
+        Assert.assertEquals(hotels.size(), iterator.next().getCount().intValue());
         Assert.assertFalse(iterator.hasNext());
     }
 
@@ -620,7 +620,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         Iterator<SearchPagedResponse> resultsIterator = results.iterableByPage().iterator();
 
-        Assert.assertEquals(100.0, resultsIterator.next().coverage(), 0);
+        Assert.assertEquals(100.0, resultsIterator.next().getCoverage(), 0);
     }
 
     @Override

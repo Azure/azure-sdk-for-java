@@ -47,7 +47,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
      *
      * @return Double
      */
-    public Double coverage() {
+    public Double getCoverage() {
         return coverage;
     }
 
@@ -56,7 +56,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
      *
      * @return {@link Map}{@code <}{@link String}{@code ,}{@link List}{@code <}{@link FacetResult}{@code >}{@code >}
      */
-    public Map<String, List<FacetResult>> facets() {
+    public Map<String, List<FacetResult>> getFacets() {
         return facets;
     }
 
@@ -65,7 +65,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
      *
      * @return long
      */
-    public Long count() {
+    public Long getCount() {
         return count;
     }
 

@@ -98,27 +98,27 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     }
 
     void assertRangeFacets(List<RangeFacetResult> baseRateFacets, List<RangeFacetResult> lastRenovationDateFacets) {
-        Assert.assertNull(baseRateFacets.get(0).from());
-        Assert.assertEquals(5.0, baseRateFacets.get(0).to());
-        Assert.assertEquals(5.0, baseRateFacets.get(1).from());
-        Assert.assertEquals(8.0, baseRateFacets.get(1).to());
-        Assert.assertEquals(8.0, baseRateFacets.get(2).from());
-        Assert.assertEquals(10.0, baseRateFacets.get(2).to());
-        Assert.assertEquals(10.0, baseRateFacets.get(3).from());
-        Assert.assertNull(baseRateFacets.get(3).to());
+        Assert.assertNull(baseRateFacets.get(0).getFrom());
+        Assert.assertEquals(5.0, baseRateFacets.get(0).getTo());
+        Assert.assertEquals(5.0, baseRateFacets.get(1).getFrom());
+        Assert.assertEquals(8.0, baseRateFacets.get(1).getTo());
+        Assert.assertEquals(8.0, baseRateFacets.get(2).getFrom());
+        Assert.assertEquals(10.0, baseRateFacets.get(2).getTo());
+        Assert.assertEquals(10.0, baseRateFacets.get(3).getFrom());
+        Assert.assertNull(baseRateFacets.get(3).getTo());
 
-        Assert.assertEquals(1, baseRateFacets.get(0).count().intValue());
-        Assert.assertEquals(1, baseRateFacets.get(1).count().intValue());
-        Assert.assertEquals(1, baseRateFacets.get(2).count().intValue());
-        Assert.assertEquals(0, baseRateFacets.get(3).count().intValue());
+        Assert.assertEquals(1, baseRateFacets.get(0).getCount().intValue());
+        Assert.assertEquals(1, baseRateFacets.get(1).getCount().intValue());
+        Assert.assertEquals(1, baseRateFacets.get(2).getCount().intValue());
+        Assert.assertEquals(0, baseRateFacets.get(3).getCount().intValue());
 
-        Assert.assertNull(lastRenovationDateFacets.get(0).from());
-        Assert.assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(0).to());
-        Assert.assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(1).from());
-        Assert.assertNull(lastRenovationDateFacets.get(1).to());
+        Assert.assertNull(lastRenovationDateFacets.get(0).getFrom());
+        Assert.assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(0).getTo());
+        Assert.assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(1).getFrom());
+        Assert.assertNull(lastRenovationDateFacets.get(1).getTo());
 
-        Assert.assertEquals(5, lastRenovationDateFacets.get(0).count().intValue());
-        Assert.assertEquals(2, lastRenovationDateFacets.get(1).count().intValue());
+        Assert.assertEquals(5, lastRenovationDateFacets.get(0).getCount().intValue());
+        Assert.assertEquals(2, lastRenovationDateFacets.get(1).getCount().intValue());
     }
 
     List<RangeFacetResult> getRangeFacetsForField(
@@ -155,8 +155,8 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     void assertValueFacetsEqual(List<ValueFacetResult> actualFacets, ArrayList<ValueFacetResult> expectedFacets) {
         Assert.assertEquals(expectedFacets.size(), actualFacets.size());
         for (int i = 0; i < actualFacets.size(); i++) {
-            Assert.assertEquals(expectedFacets.get(i).count(), actualFacets.get(i).count());
-            Assert.assertEquals(expectedFacets.get(i).value(), actualFacets.get(i).value());
+            Assert.assertEquals(expectedFacets.get(i).getCount(), actualFacets.get(i).getCount());
+            Assert.assertEquals(expectedFacets.get(i).getValue(), actualFacets.get(i).getValue());
         }
     }
 

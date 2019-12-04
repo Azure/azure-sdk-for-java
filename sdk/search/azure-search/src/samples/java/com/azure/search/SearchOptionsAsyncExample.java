@@ -60,7 +60,7 @@ public class SearchOptionsAsyncExample {
         Map<String, List<FacetResult>> facetResults = results
             .byPage()
             .take(1)
-            .map(page -> page.facets()).blockLast();
+            .map(page -> page.getFacets()).blockLast();
 
         facetResults.forEach((k, v) -> {
             v.forEach(result -> {
@@ -82,7 +82,7 @@ public class SearchOptionsAsyncExample {
 
         Stream<Map<String, List<FacetResult>>> facetsMapStream = results
             .byPage()
-            .map(page -> page.facets())
+            .map(page -> page.getFacets())
             .toStream();
 
         facetsMapStream.forEach(result -> {
@@ -106,7 +106,7 @@ public class SearchOptionsAsyncExample {
         System.out.println("Coverage = " + results
             .byPage()
             .take(1)
-            .map(page -> page.coverage()).blockLast());
+            .map(page -> page.getCoverage()).blockLast());
     }
 
     private static void searchResultsCoverage(SearchIndexAsyncClient searchClient) {
@@ -118,7 +118,7 @@ public class SearchOptionsAsyncExample {
 
         System.out.println("Coverage = " + results
             .byPage()
-            .map(page -> page.coverage()).blockLast());
+            .map(page -> page.getCoverage()).blockLast());
     }
 
     private static void searchResultsCountFromPage(SearchIndexAsyncClient searchClient) {
@@ -131,7 +131,7 @@ public class SearchOptionsAsyncExample {
 
         System.out.println("Count = " + results.byPage()
             .take(1)
-            .map(page -> page.count()).blockLast());
+            .map(page -> page.getCount()).blockLast());
     }
 
     private static void searchResultsCountFromStream(SearchIndexAsyncClient searchClient) {
@@ -142,7 +142,7 @@ public class SearchOptionsAsyncExample {
             new SearchOptions().setIncludeTotalResultCount(true),
             new RequestOptions());
 
-        Stream<Long> countStream = results.byPage().map(page -> page.count()).toStream();
+        Stream<Long> countStream = results.byPage().map(page -> page.getCount()).toStream();
         countStream.forEach(System.out::println);
 
     }

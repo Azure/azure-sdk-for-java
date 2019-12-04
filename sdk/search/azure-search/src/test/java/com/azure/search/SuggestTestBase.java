@@ -104,7 +104,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     protected void verifyMinimumCoverage(SuggestPagedResponse suggestResultPagedResponse) {
 
         Assert.assertNotNull(suggestResultPagedResponse);
-        Assert.assertEquals(new Double(100), suggestResultPagedResponse.coverage());
+        Assert.assertEquals(new Double(100), suggestResultPagedResponse.getCoverage());
     }
 
     protected void verifyTopDocumentSuggest(SuggestPagedResponse suggestResultPagedResponse) {

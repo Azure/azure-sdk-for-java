@@ -257,7 +257,7 @@ public class SearchAsyncTests extends SearchTestBase {
         StepVerifier.create(results.byPage())
             .assertNext(res -> {
                 assertContainHotelIds(hotels, res.getItems());
-                Map<String, List<FacetResult>> facets = res.facets();
+                Map<String, List<FacetResult>> facets = res.getFacets();
                 Assert.assertNotNull(facets);
                 List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(facets, "Rooms/BaseRate", 4);
                 List<RangeFacetResult> lastRenovationDateFacets = getRangeFacetsForField(
@@ -280,7 +280,7 @@ public class SearchAsyncTests extends SearchTestBase {
         StepVerifier.create(results.byPage())
             .assertNext(res -> {
                 assertContainHotelIds(hotels, res.getItems());
-                Map<String, List<FacetResult>> facets = res.facets();
+                Map<String, List<FacetResult>> facets = res.getFacets();
                 Assert.assertNotNull(facets);
 
                 assertValueFacetsEqual(
@@ -373,9 +373,9 @@ public class SearchAsyncTests extends SearchTestBase {
         List<Map<String, Object>> actualResults = new ArrayList<>();
         StepVerifier.create(results.byPage())
             .assertNext(res -> {
-                Assert.assertNull(res.count());
-                Assert.assertNull(res.coverage());
-                Assert.assertNull(res.facets());
+                Assert.assertNull(res.getCount());
+                Assert.assertNull(res.getCoverage());
+                Assert.assertNull(res.getFacets());
                 Assert.assertNotNull(res.getItems());
 
                 res.getItems().forEach(item -> {
@@ -402,9 +402,9 @@ public class SearchAsyncTests extends SearchTestBase {
         List<Hotel> actualResults = new ArrayList<>();
         StepVerifier.create(results.byPage())
             .assertNext(res -> {
-                Assert.assertNull(res.count());
-                Assert.assertNull(res.coverage());
-                Assert.assertNull(res.facets());
+                Assert.assertNull(res.getCount());
+                Assert.assertNull(res.getCoverage());
+                Assert.assertNull(res.getFacets());
                 Assert.assertNotNull(res.getItems());
 
                 res.getItems().forEach(item -> {
@@ -537,7 +537,7 @@ public class SearchAsyncTests extends SearchTestBase {
         Flux<SearchPagedResponse> results = client
             .search("*", new SearchOptions().setIncludeTotalResultCount(true), generateRequestOptions()).byPage();
         StepVerifier.create(results)
-            .assertNext(res -> Assert.assertEquals(hotels.size(), res.count().intValue()))
+            .assertNext(res -> Assert.assertEquals(hotels.size(), res.getCount().intValue()))
             .verifyComplete();
     }
 
@@ -612,7 +612,7 @@ public class SearchAsyncTests extends SearchTestBase {
         Assert.assertNotNull(results);
 
         StepVerifier.create(results)
-            .assertNext(res -> Assert.assertEquals(100.0, res.coverage(), 0))
+            .assertNext(res -> Assert.assertEquals(100.0, res.getCoverage(), 0))
             .verifyComplete();
     }
 

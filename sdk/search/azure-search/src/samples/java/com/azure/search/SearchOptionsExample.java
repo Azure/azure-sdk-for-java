@@ -54,7 +54,7 @@ public class SearchOptionsExample {
             new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"), new RequestOptions(), Context.NONE);
 
         results.iterableByPage().forEach(page -> {
-            page.facets().forEach((k, v) -> {
+            page.getFacets().forEach((k, v) -> {
                 v.forEach(result -> {
                     System.out.println(k + " :");
                     System.out.println("    count: " + result.getCount());
@@ -74,7 +74,7 @@ public class SearchOptionsExample {
 
         Stream<SearchPagedResponse> searchPagedResponseStream = results.streamByPage();
         searchPagedResponseStream.forEach(page -> {
-            page.facets().forEach((k, v) -> {
+            page.getFacets().forEach((k, v) -> {
                 v.forEach(result -> {
                     System.out.println(k + " :");
                     System.out.println("    count: " + result.getCount());
@@ -93,7 +93,7 @@ public class SearchOptionsExample {
             new SearchOptions().setMinimumCoverage(73.5), new RequestOptions(), Context.NONE);
 
         results.streamByPage().forEach(searchPagedResponse -> {
-            System.out.println("Coverage = " + searchPagedResponse.coverage());
+            System.out.println("Coverage = " + searchPagedResponse.getCoverage());
         });
     }
 
@@ -104,7 +104,7 @@ public class SearchOptionsExample {
             new SearchOptions().setMinimumCoverage(73.5), new RequestOptions(), Context.NONE);
 
         results.iterableByPage().forEach(page -> {
-            System.out.println("Coverage = " + page.coverage());
+            System.out.println("Coverage = " + page.getCoverage());
         });
     }
 
@@ -117,7 +117,7 @@ public class SearchOptionsExample {
 
         Iterable<SearchPagedResponse> searchPagedResponses = results.iterableByPage();
         searchPagedResponses.forEach(page -> {
-            System.out.println("Count = " + page.count());
+            System.out.println("Count = " + page.getCount());
         });
     }
 
@@ -130,7 +130,7 @@ public class SearchOptionsExample {
 
         Stream<SearchPagedResponse> searchPagedResponseStream = results.streamByPage();
         searchPagedResponseStream.forEach(page -> {
-            System.out.println("Count = " + page.count());
+            System.out.println("Count = " + page.getCount());
         });
     }
 

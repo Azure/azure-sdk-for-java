@@ -24,7 +24,7 @@ public class RangeFacetResult {
      *
      * @return count
      */
-    public Long count() {
+    public Long getCount() {
         return count;
     }
 
@@ -33,7 +33,7 @@ public class RangeFacetResult {
      *
      * @return from
      */
-    public Object from() {
+    public Object getFrom() {
         return from;
     }
 
@@ -42,7 +42,7 @@ public class RangeFacetResult {
      *
      * @return to
      */
-    public Object to() {
+    public Object getTo() {
         return to;
     }
 }
