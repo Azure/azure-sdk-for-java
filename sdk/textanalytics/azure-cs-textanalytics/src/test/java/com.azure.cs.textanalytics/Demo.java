@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cs.textanalytics;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -19,6 +20,8 @@ import com.azure.cs.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.cs.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.cs.textanalytics.implementation.models.LanguageResult;
 import com.azure.cs.textanalytics.models.DetectLanguageInput;
+import com.azure.cs.textanalytics.models.DetectedLanguage;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -40,19 +43,24 @@ public class Demo {
         subscriptionKey = Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY);
         System.out.println("Subscription Key = " + subscriptionKey);
 
-        HttpHeaders headers = new HttpHeaders()
-            .put("Ocp-Apim-Subscription-Key", subscriptionKey);
+        HttpHeaders headers = new HttpHeaders();
+//            .put("Ocp-Apim-Subscription-Key", subscriptionKey);
+
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
+
+        policies.add(
+            new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+
         // customized pipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
-
 
         TextAnalyticsClientImpl ta = new TextAnalyticsClientImplBuilder()
             .endpoint(endpoint)
