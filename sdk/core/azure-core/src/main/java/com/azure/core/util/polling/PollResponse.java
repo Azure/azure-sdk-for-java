@@ -73,7 +73,7 @@ public final class PollResponse<T> {
      * Creates a new {@link PollResponse} with status, value, retryAfter and properties.
      *
      * <p><strong>Code Sample Creating PollResponse Object</strong></p>
-     * {@codesnippet  com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties}
+     * {@codesnippet com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties}
      *
      * @param status Mandatory operation status as defined in {@link OperationStatus}.
      * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also
