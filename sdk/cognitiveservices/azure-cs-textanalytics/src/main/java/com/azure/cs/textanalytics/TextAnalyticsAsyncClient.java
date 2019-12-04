@@ -9,23 +9,29 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.cs.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.cs.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.cs.textanalytics.implementation.models.LanguageBatchInput;
+import com.azure.cs.textanalytics.implementation.models.LanguageResult;
 import com.azure.cs.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.DetectLanguageResult;
+import com.azure.cs.textanalytics.models.DocumentError;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.LinkedEntityResult;
-import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.NamedEntityResult;
-import com.azure.cs.textanalytics.models.TextDocumentInput;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.cs.textanalytics.models.TextDocumentInput;
 import com.azure.cs.textanalytics.models.TextSentimentResult;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -34,11 +40,11 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class TextAnalyticsAsyncClient {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsAsyncClient.class);
 
-    private final TextAnalyticsClientImpl client;
+    private final TextAnalyticsClientImpl service;
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    TextAnalyticsAsyncClient(TextAnalyticsClientImpl client, TextAnalyticsServiceVersion serviceVersion) {
-        this.client = client;
+    TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion) {
+        this.service = service;
         this.serviceVersion = serviceVersion;
     }
 
@@ -54,44 +60,64 @@ public final class TextAnalyticsAsyncClient {
     // (1) language
     // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectLanguageResult> detectLanguage(String text) { return detectLanguage(text, null);}
+    public Mono<DetectLanguageResult> detectLanguage(String text) {
+        return detectLanguage(text, null);
+    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectLanguageResult> detectLanguage(String text, String countryHint) {
         return detectLanguageWithResponse(text, countryHint)
-            .flatMap(response ->  Mono.justOrEmpty(response.getValue()));
+            .flatMap(FluxUtil::toMono);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint) {
+        try {
+            return withContext(context -> detectLanguageWithResponse(text, countryHint, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
         languageInputs.add(new DetectLanguageInput(Integer.toString(0), text, countryHint));
-        // TODO: correct it
-//        return detectLanguagesWithResponse(languageInputs, null).flatMap(
-//            response -> {
-//                final Iterator<DetectedLanguageResult> resultIterator = response.getValue().iterator();
-//                if (resultIterator.hasNext()) {
-//                    return Mono.justOrEmpty(resultIterator.next());
-//                }
-//                return monoError(logger, new RuntimeException(""));
-//            });
-        return null;
+        // TODO: should this be a random number generator?
+        return detectBatchLanguagesWithResponse(languageInputs, null, context).flatMap(response -> {
+            if (response.getValue().iterator().hasNext()) {
+                return Mono.justOrEmpty(new SimpleResponse<>(response, response.getValue().iterator().next()));
+            }
+            return monoError(logger, new RuntimeException("Unable to retrieve language for the provided text."));
+        });
     }
 
     // Hackathon user
-   @ServiceMethod(returns = ReturnType.SINGLE)
-   public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs)  {
-       return null;
-   }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs) {
+        return detectLanguages(inputs, null);
+    }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs,
                                                                                 String countryHint) {
+        try {
+            return withContext(context -> detectLanguagesWithResponse(inputs, countryHint, context))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> inputs,
+                                                                                               String countryHint, Context context) {
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
+        // TODO update/validate inputs and id assigning
         for (int i = 0; i < inputs.size(); i++) {
             languageInputs.add(new DetectLanguageInput(Integer.toString(i), inputs.get(i), countryHint));
         }
-
-        return detectBatchLanguages(languageInputs, null);
+        return detectBatchLanguagesWithResponse(languageInputs, null, context);
     }
 
     // Advanced user
@@ -103,12 +129,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguages(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(context -> detectBatchLanguagesWithResponse(inputs, options, context)
-                .flatMap(response -> Mono.justOrEmpty(response.getValue())));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return detectBatchLanguagesWithResponse(inputs, options).flatMap(FluxUtil::toMono);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -124,15 +145,43 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        // TODO: validate inputs
+        // TODO: validate inputs?
         final LanguageBatchInput languageBatchInput = new LanguageBatchInput().setDocuments(inputs);
-//         return client.languagesWithRestResponseAsync(languageBatchInput, options.getModelVersion(),
-//             options.showStatistics(), context)
-//             .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", languageBatchInput))
-//             .doOnSuccess(response -> logger.info("A batch of detected language output - {}", languageBatchInput))
-//             .doOnError(error -> logger.warning("Failed to detected languages - {}", languageBatchInput))
-//             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
-        return null;
+        // TODO: confirm if options null is fine?
+        return service.languagesWithRestResponseAsync(
+            languageBatchInput, options == null ? null : options.getModelVersion(),
+            options == null ? null : options.showStatistics(), context)
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", languageBatchInput))
+            .doOnSuccess(response -> logger.info("A batch of detected language output - {}", languageBatchInput))
+            .doOnError(error -> logger.warning("Failed to detected languages - {}", languageBatchInput))
+            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
+    }
+
+    private DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(
+        final LanguageResult languageResult) {
+        return new DocumentResultCollection<>(getDocumentLanguages(languageResult), languageResult.getModelVersion(),
+            languageResult.getStatistics());
+    }
+
+    private List<DetectLanguageResult> getDocumentLanguages(final LanguageResult languageResult) {
+        Stream<DetectLanguageResult> validDocumentList = languageResult.getDocuments().stream()
+            .map(this::convertToDetectLanguageResult);
+        Stream<DetectLanguageResult> errorDocumentList = languageResult.getErrors().stream()
+            .map(this::convertToErrorDetectLanguageResult);
+
+        return Stream.concat(validDocumentList, errorDocumentList).collect(Collectors.toList());
+    }
+
+    private DetectLanguageResult convertToErrorDetectLanguageResult(final DocumentError errorDocument) {
+        return new DetectLanguageResult(errorDocument.getId(), null,
+            errorDocument.getError(),
+            null, null);
+    }
+
+    private DetectLanguageResult convertToDetectLanguageResult(final DocumentLanguage documentLanguage) {
+        // TODO confirm the primary language support from service
+        return new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(), null,
+            documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages());
     }
 
     // (2) entities
@@ -193,7 +242,7 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizeBatchEntitiesWithResponse(
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
-        return client.entitiesRecognitionGeneralWithRestResponseAsync(
+        return service.entitiesRecognitionGeneralWithRestResponseAsync(
             new MultiLanguageBatchInput().setDocuments(document), options.getModelVersion(),
             options.showStatistics(), context).map(response -> new SimpleResponse<>(response, null));
     }
@@ -259,7 +308,7 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizeBatchPiiEntitiesWithResponse(
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate multiLanguageBatchInput
-        return client.entitiesRecognitionPiiWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(document),
+        return service.entitiesRecognitionPiiWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(document),
             options.getModelVersion(), options.showStatistics(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -325,7 +374,7 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<LinkedEntityResult>>> recognizeBatchLinkedEntitiesWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate multiLanguageBatchInput
-        return client.entitiesLinkingWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(inputs),
+        return service.entitiesLinkingWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(inputs),
             options.getModelVersion(), options.showStatistics(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -404,7 +453,7 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
-        return client.keyPhrasesWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(document),
+        return service.keyPhrasesWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(document),
             options.getModelVersion(), options.showStatistics(), context).map(response ->
             new SimpleResponse<>(response, null));
     }
@@ -450,19 +499,19 @@ public final class TextAnalyticsAsyncClient {
 //    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<TextSentimentResult>> analyzeSentiment(List<String> inputs)  {
+    public Mono<DocumentResultCollection<TextSentimentResult>> analyzeSentiment(List<String> inputs) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<TextSentimentResult>> analyzeSentiment(List<String> inputs, String language)  {
+    public Mono<DocumentResultCollection<TextSentimentResult>> analyzeSentiment(List<String> inputs, String language) {
         return null;
     }
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<TextSentimentResult>> analyzeBatchSentiment(List<TextDocumentInput> inputs) {
-       return null;
+        return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -486,20 +535,8 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<TextSentimentResult>>> analyzeBatchSentimentWithResponse(
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate multiLanguageBatchInput
-        return client.sentimentWithRestResponseAsync(
+        return service.sentimentWithRestResponseAsync(
             new MultiLanguageBatchInput().setDocuments(document), options.getModelVersion(), options.showStatistics(),
             context).map(response -> new SimpleResponse<>(response, null));
     }
-
-
-//     private DocumentResultCollection toDocumentResultCollection(Object object) {
-//         // TODO: add support to
-// //        if (object instanceof ) {
-// //
-// //        }
-// //       return new DocumentResultCollection();
-//         return null;
-//     }
-
-
 }

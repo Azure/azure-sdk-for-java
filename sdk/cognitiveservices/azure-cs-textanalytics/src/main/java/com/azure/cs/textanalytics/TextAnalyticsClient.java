@@ -31,40 +31,49 @@ public final class TextAnalyticsClient {
     // (1) language
     // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectLanguageResult detectLanguage(String text) { return null; }
+    public DetectLanguageResult detectLanguage(String text) {
+        return detectLanguage(text, null);
+    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectLanguageResult detectLanguage(String text, String countryHint) {
-        return null;
+        return detectLanguageWithResponse(text, countryHint, Context.NONE).getValue();
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DetectLanguageResult> detectLanguageWithResponse(
         String text, String countryHint, Context context) {
-        return null;
+        return client.detectLanguageWithResponse(text, countryHint, context).block();
     }
 
     // hackathon user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectLanguages(List<String> inputs) {
-        return null;
+        return detectLanguages(inputs, null);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectLanguages(List<String> inputs, String countryHint) {
-        return null;
+        return detectLanguagesWithResponse(inputs, countryHint, Context.NONE).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DocumentResultCollection<DetectLanguageResult>> detectLanguagesWithResponse(List<String> inputs,
+                                                                                                String countryHint,
+                                                                                                Context context) {
+        return client.detectLanguagesWithResponse(inputs, countryHint, context).block();
     }
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectBatchLanguages(List<DetectLanguageInput> inputs) {
-        return null;
+        return detectBatchLanguages(inputs, null);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectBatchLanguages(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options) {
-        return null;
+        return detectBatchLanguagesWithResponse(inputs, options, Context.NONE).getValue();
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -95,6 +104,7 @@ public final class TextAnalyticsClient {
     public DocumentResultCollection<NamedEntityResult> recognizeEntities(List<String> inputs) {
         return null;
     }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<NamedEntityResult> recognizeEntities(List<String> inputs, String language) {
         return null;
@@ -140,6 +150,7 @@ public final class TextAnalyticsClient {
     public DocumentResultCollection<NamedEntityResult> recognizePiiEntities(List<String> inputs) {
         return null;
     }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<NamedEntityResult> recognizePiiEntities(List<String> inputs, String language) {
         return null;
@@ -185,6 +196,7 @@ public final class TextAnalyticsClient {
     public DocumentResultCollection<LinkedEntityResult> recognizeLinkedEntities(List<String> inputs) {
         return null;
     }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<LinkedEntityResult> recognizeLinkedEntities(List<String> inputs, String language) {
         return null;
@@ -230,6 +242,7 @@ public final class TextAnalyticsClient {
     public DocumentResultCollection<KeyPhraseResult> extractKeyPhrases(List<String> inputs) {
         return null;
     }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<KeyPhraseResult> extractKeyPhrases(List<String> inputs, String language) {
         return null;
@@ -276,6 +289,7 @@ public final class TextAnalyticsClient {
     public DocumentResultCollection<TextSentimentResult> analyzeSentiment(List<String> inputs) {
         return null;
     }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<TextSentimentResult> analyzeSentiment(List<String> inputs, String language) {
         return null;

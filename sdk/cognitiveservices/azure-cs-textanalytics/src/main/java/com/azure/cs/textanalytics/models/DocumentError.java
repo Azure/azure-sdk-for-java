@@ -23,7 +23,7 @@ public final class DocumentError {
      */
     @JsonProperty(value = "error", required = true)
     private Object error;
-
+    // TODO: revisit the Object Error model in https://github.com/Azure/azure-sdk-for-java/issues/6559
     /**
      * Get the id property: Document Id.
      *

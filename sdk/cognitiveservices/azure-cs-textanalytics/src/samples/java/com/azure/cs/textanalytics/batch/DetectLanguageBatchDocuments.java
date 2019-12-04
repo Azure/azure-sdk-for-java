@@ -21,6 +21,8 @@ public class DetectLanguageBatchDocuments {
         // TODO: user AAD token to do the authentication
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+            .subscriptionKey("subscriptionKey")
+            .endpoint("https://service.cognitiveservices.azure.com/")
             .buildClient();
 
         // The texts that need be analysed.
@@ -29,12 +31,12 @@ public class DetectLanguageBatchDocuments {
             new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
         );
 
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
         final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = client.detectBatchLanguages(inputs, requestOptions);
-        System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
+        System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
+        System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionCount(),
@@ -43,14 +45,16 @@ public class DetectLanguageBatchDocuments {
 
         // Detecting languages for a document from a batch of documents
         detectedBatchResult.stream().forEach(result -> {
+
             final DetectedLanguage detectedPrimaryLanguage = result.getPrimaryLanguage();
-            System.out.printf("Detected primary Language: %s, ISO 6391 Name: %s, Score: %s",
+            System.out.printf("Detected primary Language for Document: %s, %s, ISO 6391 Name: %s, Score: %s%n",
+                result.getId(),
                 detectedPrimaryLanguage.getName(),
                 detectedPrimaryLanguage.getIso6391Name(),
                 detectedPrimaryLanguage.getScore());
 
             result.getDetectedLanguages().forEach(detectedLanguage ->
-                System.out.printf("Detected primary Language: %s, ISO 6391 Name: %s, Score: %s",
+                System.out.printf("Other detected Languages: %s, ISO 6391 Name: %s, Score: %s%n",
                     detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(),
                     detectedLanguage.getScore()));
