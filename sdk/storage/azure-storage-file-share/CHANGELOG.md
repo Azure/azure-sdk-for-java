@@ -1,5 +1,10 @@
 # Release History
 
+## Version XX.X.X-preview.6 (XXXX-XX-XX)
+
+- Changed return type for forceCloseHandle from void to CloseHandlesInfo
+- Changed return type for forceCloseAllHandles from int to CloseHandlesInfo 
+
 ## Version 12.0.0-preview.5 (2019-10-31)
 
 - Renamed FileReference to StorageFileItem

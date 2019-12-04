@@ -1,4 +1,8 @@
 # Release History
+
+## Version XX.X.X-preview.X (XXXX-XX-XX)
+- Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
+
 ## Version 12.0.0 (2019-10-31)
 - Removed QueueMessage from public API
 - Removed BaseQueueClientBuilder

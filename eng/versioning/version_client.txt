@@ -1,6 +1,7 @@
 # Format;
 # groupId:artifactId;dependency-version;current-version
 
+com.azure:azure-sdk-all;1.0.0;1.0.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-core;1.1.0;1.1.0
@@ -13,7 +14,7 @@ com.azure:azure-data-appconfiguration;1.0.0-beta.7;1.0.0-beta.7
 com.azure:azure-identity;1.0.1;1.0.1
 com.azure:azure-security-keyvault-certificates;4.0.0-beta.6;4.0.0-beta.6
 com.azure:azure-security-keyvault-keys;4.1.0-beta.1;4.1.0-beta.1
-com.azure:azure-security-keyvault-secrets;4.1.0-beta.1;4.1.0-beta.1
+com.azure:azure-security-keyvault-secrets;4.0.1;4.0.1
 com.azure:azure-messaging-eventhubs;5.0.0-beta.6;5.0.0-beta.6
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.0.0-beta.4;1.0.0-beta.4
 com.azure:azure-sdk-template;1.0.4-beta.2;1.0.4-beta.2

@@ -14,7 +14,7 @@ public final class CertificateContact {
      * Email addresss.
      */
     @JsonProperty(value = "email")
-    private String emailAddress;
+    private String email;
 
     /**
      * Name.
@@ -29,44 +29,44 @@ public final class CertificateContact {
     private String phone;
 
     /**
-     * Creates a new contact instance.
+     * Creates a new certificate contact.
      *
      * @param name The name of the contact
-     * @param emailAddress The email address of the contact
+     * @param email The email address of the contact
      * @param phone The phone number of the contact.
      */
-    public CertificateContact(String name, String emailAddress, String phone) {
+    public CertificateContact(String name, String email, String phone) {
         this.name = name;
-        this.emailAddress = emailAddress;
+        this.email = email;
         this.phone = phone;
     }
 
     /**
-     * Creates a new contact instance.
+     * Creates a new certificate contact.
      *
      * @param name The name of the contact
-     * @param emailAddress The email address of the contact
+     * @param email The email address of the contact
      */
-    public CertificateContact(String name, String emailAddress) {
+    public CertificateContact(String name, String email) {
         this.name = name;
-        this.emailAddress = emailAddress;
+        this.email = email;
     }
 
     CertificateContact() { }
 
     /**
-     * Get the emailAddress.
+     * Get the email address.
      *
-     * @return the emailAddress
+     * @return the email address
      */
-    public String getEmailAddress() {
-        return this.emailAddress;
+    public String getEmail() {
+        return this.email;
     }
 
     /**
-     * Get the name value.
+     * Get the name.
      *
-     * @return the name value
+     * @return the name
      */
     public String getName() {
         return this.name;
