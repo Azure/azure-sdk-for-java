@@ -29,7 +29,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -82,21 +81,22 @@ public final class TextAnalyticsAsyncClient {
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
         languageInputs.add(new DetectLanguageInput(Integer.toString(0), text, countryHint));
         // TODO: correct it
-        Mono<Response<DocumentResultCollection<DetectLanguageResult>>> test = detectBatchLanguagesWithResponse(languageInputs, null);
-        // return detectBatchLanguagesWithResponse(languageInputs, null).flatMap(
-        //    response -> {
-        //        if (resultIterator.hasNext()) {
-        //            return Mono.justOrEmpty(new SimpleResponse<DetectLanguageResult>(response.getValue()));
-        //        }
-        //        return monoError(logger, new RuntimeException(""));
-        //    });
-        return null;
+        return detectBatchLanguagesWithResponse(languageInputs, null, context).flatMap(response -> {
+            if (response.getValue().iterator().hasNext()) {
+                return Mono.justOrEmpty(new SimpleResponse<>(response, response.getValue().iterator().next()));
+            }
+            return monoError(logger, new RuntimeException("Unable to retrieve languages."));
+        });
     }
 
     // Hackathon user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs) {
-        return null;
+        List<DetectLanguageInput> languageInputs = new ArrayList<>();
+        for (int i = 0; i <= inputs.size(); i++) {
+            languageInputs.add(new DetectLanguageInput(Integer.toString(i), inputs.get(i), null));
+        }
+        return detectBatchLanguages(languageInputs, null);
     }
 
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs,
@@ -141,8 +141,8 @@ public final class TextAnalyticsAsyncClient {
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate inputs
         final LanguageBatchInput languageBatchInput = new LanguageBatchInput().setDocuments(inputs);
-        return client.languagesWithRestResponseAsync(languageBatchInput, options.getModelVersion(),
-            options.showStatistics(), context)
+        return client.languagesWithRestResponseAsync(languageBatchInput, options == null ? null : options.getModelVersion(),
+            options == null ? null : options.showStatistics(), context)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", languageBatchInput))
             .doOnSuccess(response -> logger.info("A batch of detected language output - {}", languageBatchInput))
             .doOnError(error -> logger.warning("Failed to detected languages - {}", languageBatchInput))
@@ -154,7 +154,7 @@ public final class TextAnalyticsAsyncClient {
             DocumentResultCollection<>(getDocumentLanguages(value), value.getModelVersion(), value.getStatistics());
     }
 
-    public List<DetectLanguageResult> getDocumentLanguages(LanguageResult value) {
+    private List<DetectLanguageResult> getDocumentLanguages(LanguageResult value) {
         List<DetectLanguageResult> detectedLanguageList = new ArrayList<>();
         List<DocumentLanguage> documentLanguageList = value.getDocuments();
         for (DocumentLanguage documentLanguage : documentLanguageList) {
@@ -162,10 +162,6 @@ public final class TextAnalyticsAsyncClient {
                 getDocumentError(value, documentLanguage),
                 documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages()));
         }
-        // documentLanguageList.stream().map(documentLanguage ->
-        //     detectedLanguageList.add(new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(),
-        //         getDocumentError(value, documentLanguage),
-        //         documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages())));
         return detectedLanguageList;
     }
 
