@@ -5,7 +5,6 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.Response;
@@ -193,30 +192,7 @@ public class SearchIndexClient {
      * facet, and coverage information.
      */
     public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText) {
-        return this.search(searchText,
-            null,
-            null);
-    }
-
-    /**
-     * Searches for documents in the Azure Cognitive Search index
-     *
-     * @param searchText search text
-     * @param searchOptions search options
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return A {@link PagedIterable} that iterates over {@link SearchResult} objects
-     * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
-     * facet, and coverage information.
-     */
-    public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText,
-                                                                       SearchOptions searchOptions,
-                                                                       RequestOptions requestOptions) {
-        return this.searchWithResponse(
-            searchText,
-            searchOptions,
-            requestOptions,
-            Context.NONE);
+        return new PagedIterableBase<>(asyncClient.search(searchText, null, null));
     }
 
     /**
@@ -231,17 +207,11 @@ public class SearchIndexClient {
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
      * facet, and coverage information.
      */
-    public PagedIterableBase<SearchResult, SearchPagedResponse> searchWithResponse(String searchText,
+    public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText,
                                                                        SearchOptions searchOptions,
                                                                        RequestOptions requestOptions,
                                                                        Context context) {
-        PagedFluxBase<SearchResult, SearchPagedResponse> result = asyncClient.searchWithResponse(
-            searchText,
-            searchOptions,
-            requestOptions,
-            context);
-
-        return new PagedIterableBase<>(result);
+        return new PagedIterableBase<>(asyncClient.search(searchText, searchOptions, requestOptions, context));
     }
 
     /**
@@ -304,33 +274,8 @@ public class SearchIndexClient {
      * HTTP response and coverage information.
      */
     public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
-        return this.suggest(searchText,
-            suggesterName,
-            null,
-            null);
-    }
-
-    /**
-     * Suggests documents in the Azure Cognitive Search index that match the given partial query text.
-     *
-     * @param searchText search text
-     * @param suggesterName suggester name
-     * @param suggestOptions suggest options
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
-     * @return A {@link PagedIterableBase} that iterates over {@link SuggestResult} objects
-     * and provides access to the {@link SuggestPagedResponse} object for each page containing
-     * HTTP response and coverage information.
-     */
-    public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
-                                                                          String suggesterName,
-                                                                          SuggestOptions suggestOptions,
-                                                                          RequestOptions requestOptions) {
-        return this.suggestWithResponse(searchText,
-            suggesterName,
-            suggestOptions,
-            requestOptions,
-            Context.NONE);
+        return new PagedIterableBase<>(asyncClient.suggest(searchText,
+            suggesterName, null, null));
     }
 
     /**
@@ -346,18 +291,13 @@ public class SearchIndexClient {
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
      * HTTP response and coverage information.
      */
-    public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestWithResponse(String searchText,
+    public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
                                                                           String suggesterName,
                                                                           SuggestOptions suggestOptions,
                                                                           RequestOptions requestOptions,
                                                                           Context context) {
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> result = asyncClient.suggestWithResponse(
-            searchText,
-            suggesterName,
-            suggestOptions,
-            requestOptions,
-            context);
-        return new PagedIterableBase<>(result);
+        return new PagedIterableBase<>(asyncClient.suggest(searchText,
+            suggesterName, suggestOptions, requestOptions, context));
     }
 
     /**

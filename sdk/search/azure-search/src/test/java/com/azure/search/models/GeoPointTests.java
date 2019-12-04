@@ -4,6 +4,7 @@
 package com.azure.search.models;
 
 import com.azure.core.http.rest.PagedIterableBase;
+import com.azure.core.util.Context;
 import com.azure.search.SearchPagedResponse;
 
 import com.azure.search.SearchIndexClient;
@@ -51,7 +52,8 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
         uploadDocuments();
         SearchOptions searchOptions = new SearchOptions().setFilter("HotelId eq '1'");
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("Location", searchOptions, new RequestOptions());
+        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("Location",
+            searchOptions, new RequestOptions(), Context.NONE);
         Assert.assertNotNull(results);
 
         GeoPoint geoPointObj = (GeoPoint) getSearchResults(results).get(0).get("Location");

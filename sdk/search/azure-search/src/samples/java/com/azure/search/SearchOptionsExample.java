@@ -5,6 +5,7 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
@@ -50,8 +51,7 @@ public class SearchOptionsExample {
         // Each page in the response of the search query holds the facets value
         // Get Facets property from the first page in the response
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
-            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"),
-            new RequestOptions());
+            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"), new RequestOptions(), Context.NONE);
 
         results.iterableByPage().forEach(page -> {
             page.facets().forEach((k, v) -> {
@@ -70,8 +70,7 @@ public class SearchOptionsExample {
         // Each page in the response of the search query holds the facets value
         // Accessing Facets property with stream
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
-            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"),
-            new RequestOptions());
+            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"), new RequestOptions(), Context.NONE);
 
         Stream<SearchPagedResponse> searchPagedResponseStream = results.streamByPage();
         searchPagedResponseStream.forEach(page -> {
@@ -91,8 +90,7 @@ public class SearchOptionsExample {
         // Each page in the response of the search query holds the coverage value
         // Get Coverage property from the first page in the response
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
-            new SearchOptions().setMinimumCoverage(73.5),
-            new RequestOptions());
+            new SearchOptions().setMinimumCoverage(73.5), new RequestOptions(), Context.NONE);
 
         results.streamByPage().forEach(searchPagedResponse -> {
             System.out.println("Coverage = " + searchPagedResponse.coverage());
@@ -103,8 +101,7 @@ public class SearchOptionsExample {
         // Each page in the response of the search query holds the coverage value
         // Accessing Coverage property when iterating by page
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
-            new SearchOptions().setMinimumCoverage(73.5),
-            new RequestOptions());
+            new SearchOptions().setMinimumCoverage(73.5), new RequestOptions(), Context.NONE);
 
         results.iterableByPage().forEach(page -> {
             System.out.println("Coverage = " + page.coverage());
@@ -116,8 +113,7 @@ public class SearchOptionsExample {
         // Get total search results count
         // Get count property from the first page in the response
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalResultCount(true),
-            new RequestOptions());
+            new SearchOptions().setIncludeTotalResultCount(true), new RequestOptions(), Context.NONE);
 
         Iterable<SearchPagedResponse> searchPagedResponses = results.iterableByPage();
         searchPagedResponses.forEach(page -> {
@@ -130,8 +126,7 @@ public class SearchOptionsExample {
         // Get total search results count by accessing the SearchPagedResponse
         // Access Count property when iterating by page
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalResultCount(true),
-            new RequestOptions());
+            new SearchOptions().setIncludeTotalResultCount(true), new RequestOptions(), Context.NONE);
 
         Stream<SearchPagedResponse> searchPagedResponseStream = results.streamByPage();
         searchPagedResponseStream.forEach(page -> {

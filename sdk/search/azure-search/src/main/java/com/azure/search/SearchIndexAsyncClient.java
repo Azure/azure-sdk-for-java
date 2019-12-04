@@ -309,25 +309,23 @@ public class SearchIndexAsyncClient {
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
      * facet, and coverage information.
      */
-    public PagedFluxBase<SearchResult, SearchPagedResponse> search(
-        String searchText,
-        SearchOptions searchOptions,
-        RequestOptions requestOptions) {
-        SearchRequest searchRequest = createSearchRequest(searchText, searchOptions);
+    public PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText,
+                                                                   SearchOptions searchOptions,
+                                                                   RequestOptions requestOptions) {
+        SearchRequest searchRequest = this.createSearchRequest(searchText, searchOptions);
         return new PagedFluxBase<>(
-            () -> withContext(context -> searchFirstPage(searchRequest, requestOptions, context)),
-            skip -> withContext(context -> searchNextPage(searchRequest, requestOptions, skip, context)));
+            () -> withContext(context -> this.searchFirstPage(searchRequest, requestOptions, context)),
+            skip -> withContext(context -> this.searchNextPage(searchRequest, requestOptions, skip, context)));
     }
 
-    PagedFluxBase<SearchResult, SearchPagedResponse> searchWithResponse(
-        String searchText,
-        SearchOptions searchOptions,
-        RequestOptions requestOptions,
-        Context context) {
-        SearchRequest searchRequest = createSearchRequest(searchText, searchOptions);
+    PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText,
+                                                            SearchOptions searchOptions,
+                                                            RequestOptions requestOptions,
+                                                            Context context) {
+        SearchRequest searchRequest = this.createSearchRequest(searchText, searchOptions);
         return new PagedFluxBase<>(
-            () -> searchFirstPage(searchRequest, requestOptions, context),
-            skip -> searchNextPage(searchRequest, requestOptions, skip, context));
+            () -> this.searchFirstPage(searchRequest, requestOptions, context),
+            skip -> this.searchNextPage(searchRequest, requestOptions, skip, context));
     }
 
     /**
@@ -402,7 +400,7 @@ public class SearchIndexAsyncClient {
      * HTTP response and coverage information.
      */
     public PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
-        return suggest(searchText, suggesterName, null, null);
+        return this.suggest(searchText, suggesterName, null, null);
     }
 
     /**
@@ -417,30 +415,26 @@ public class SearchIndexAsyncClient {
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
      * HTTP response and coverage information.
      */
-    public PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(
-        String searchText,
-        String suggesterName,
-        SuggestOptions suggestOptions,
-        RequestOptions requestOptions) {
-        SuggestRequest suggestRequest = createSuggestRequest(searchText,
-            suggesterName,
-            SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
+    public PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
+                                                                      String suggesterName,
+                                                                      SuggestOptions suggestOptions,
+                                                                      RequestOptions requestOptions) {
+        SuggestRequest suggestRequest = this.createSuggestRequest(searchText,
+            suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
         return new PagedFluxBase<>(
-            () -> withContext(context -> suggestFirst(requestOptions, suggestRequest, context)),
+            () -> withContext(context -> this.suggestFirst(requestOptions, suggestRequest, context)),
             nextLink -> Mono.empty());
     }
 
-    PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestWithResponse(
-        String searchText,
-        String suggesterName,
-        SuggestOptions suggestOptions,
-        RequestOptions requestOptions,
-        Context context) {
-        SuggestRequest suggestRequest = createSuggestRequest(searchText,
-            suggesterName,
-            SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
+    PagedFluxBase<SuggestResult, SuggestPagedResponse> suggest(String searchText,
+                                                               String suggesterName,
+                                                               SuggestOptions suggestOptions,
+                                                               RequestOptions requestOptions,
+                                                               Context context) {
+        SuggestRequest suggestRequest = this.createSuggestRequest(searchText,
+            suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
         return new PagedFluxBase<>(
-            () -> suggestFirst(requestOptions, suggestRequest, context),
+            () -> this.suggestFirst(requestOptions, suggestRequest, context),
             nextLink -> Mono.empty());
     }
 
@@ -548,10 +542,9 @@ public class SearchIndexAsyncClient {
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
      */
-    private Mono<SearchPagedResponse> searchFirstPage(
-        SearchRequest searchRequest,
-        RequestOptions requestOptions,
-        Context context) {
+    private Mono<SearchPagedResponse> searchFirstPage(SearchRequest searchRequest,
+                                                      RequestOptions requestOptions,
+                                                      Context context) {
         return restClient.documents()
             .searchPostWithRestResponseAsync(searchRequest, requestOptions, context)
             .map(SearchPagedResponse::new);
@@ -567,11 +560,10 @@ public class SearchIndexAsyncClient {
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
      */
-    private Mono<SearchPagedResponse> searchNextPage(
-        SearchRequest searchRequest,
-        RequestOptions requestOptions,
-        String skip,
-        Context context) {
+    private Mono<SearchPagedResponse> searchNextPage(SearchRequest searchRequest,
+                                                     RequestOptions requestOptions,
+                                                     String skip,
+                                                     Context context) {
         if (skip == null || skip.isEmpty()) {
             return Mono.empty();
         }
@@ -583,10 +575,9 @@ public class SearchIndexAsyncClient {
             .map(SearchPagedResponse::new);
     }
 
-    private Mono<SuggestPagedResponse> suggestFirst(
-        RequestOptions requestOptions,
-        SuggestRequest suggestRequest,
-        Context context) {
+    private Mono<SuggestPagedResponse> suggestFirst(RequestOptions requestOptions,
+                                                    SuggestRequest suggestRequest,
+                                                    Context context) {
         return restClient.documents()
             .suggestPostWithRestResponseAsync(suggestRequest, requestOptions, context)
             .map(SuggestPagedResponse::new);

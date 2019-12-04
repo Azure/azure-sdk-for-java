@@ -70,7 +70,8 @@ public class RunningSearchSolutionExample {
         SuggestOptions suggestOptions = new SuggestOptions()
             .setUseFuzzyMatching(true);
 
-        PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("vew", SUGGESTER_NAME, suggestOptions, new RequestOptions());
+        PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("vew",
+            SUGGESTER_NAME, suggestOptions, new RequestOptions(), Context.NONE);
         Iterator<SuggestPagedResponse> iterator = suggestResult.iterableByPage().iterator();
 
         System.out.println("Suggest with fuzzy matching:");
@@ -105,7 +106,8 @@ public class RunningSearchSolutionExample {
         SearchOptions searchOptions = new SearchOptions()
             .setIncludeTotalResultCount(true)
             .setSearchFields("HotelName");
-        PagedIterableBase<SearchResult, SearchPagedResponse> searchResults = client.search("Resort", searchOptions, new RequestOptions());
+        PagedIterableBase<SearchResult, SearchPagedResponse> searchResults = client.search("Resort",
+            searchOptions, new RequestOptions(), Context.NONE);
 
         System.out.println("Search query results:");
         searchResults.forEach(result -> {

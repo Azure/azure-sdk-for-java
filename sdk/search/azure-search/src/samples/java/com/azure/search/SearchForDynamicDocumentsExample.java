@@ -4,6 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchResult;
@@ -43,7 +44,8 @@ public class SearchForDynamicDocumentsExample {
             .buildClient();
 
         // Perform a text-based search
-        for (SearchResult result : client.search("luxury hotel", new SearchOptions(), new RequestOptions())) {
+        for (SearchResult result : client.search("luxury hotel",
+            new SearchOptions(), new RequestOptions(), Context.NONE)) {
 
             // Each result is a dynamic Map
             Document doc = result.getDocument();

@@ -137,7 +137,8 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
         searchIndexClient.uploadDocuments(documents);
         waitForIndexing();
 
-        Iterator iterator = searchIndexClient.search("someone@somewhere.something", new SearchOptions(), generateRequestOptions())
+        Iterator iterator = searchIndexClient.search("someone@somewhere.something",
+            new SearchOptions(), generateRequestOptions(), Context.NONE)
             .iterator();
         SearchResult searchResult = (SearchResult) iterator.next();
 

@@ -1,46 +1,46 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdka72753052c9c.search-dogfood.windows-int.net/indexes('testindex')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk6b5602039e10.search-dogfood.windows-int.net/indexes('testindex')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "f86d9ad7-f662-4ab8-8bd0-31a689486ba7",
+      "request-id" : "892a64f6-aaf0-4c98-a87d-0ca8416e137a",
       "StatusCode" : "200",
-      "Date" : "Mon, 25 Nov 2019 23:23:38 GMT",
+      "Date" : "Tue, 03 Dec 2019 18:38:26 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "292",
+      "elapsed-time" : "146",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "374",
-      "Body" : "{\"@odata.context\":\"https://azs-sdka72753052c9c.search-dogfood.windows-int.net/indexes('testindex')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"456\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"789\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk6b5602039e10.search-dogfood.windows-int.net/indexes('testindex')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"456\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"789\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdka72753052c9c.search-dogfood.windows-int.net/indexes('testindex')/docs/search.post.search?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk6b5602039e10.search-dogfood.windows-int.net/indexes('testindex')/docs/search.post.search?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "99cdf41e-175f-4cd4-a64a-c4103d737ce3",
+      "request-id" : "72bc5231-a32b-4121-bd0b-22bac26bdda2",
       "StatusCode" : "200",
-      "Date" : "Mon, 25 Nov 2019 23:23:40 GMT",
+      "Date" : "Tue, 03 Dec 2019 18:38:28 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "52",
+      "elapsed-time" : "53",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "298",
-      "Body" : "{\"@odata.context\":\"https://azs-sdka72753052c9c.search-dogfood.windows-int.net/indexes('testindex')/$metadata#docs(*)\",\"value\":[{\"@search.score\":1.0,\"Key\":\"123\",\"IntValue\":0,\"Bucket\":{\"BucketName\":\"A\",\"Count\":3}},{\"@search.score\":1.0,\"Key\":\"456\",\"IntValue\":7,\"Bucket\":{\"BucketName\":\"B\",\"Count\":5}}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk6b5602039e10.search-dogfood.windows-int.net/indexes('testindex')/$metadata#docs(*)\",\"value\":[{\"@search.score\":1.0,\"Key\":\"123\",\"IntValue\":0,\"Bucket\":{\"BucketName\":\"A\",\"Count\":3}},{\"@search.score\":1.0,\"Key\":\"456\",\"IntValue\":7,\"Bucket\":{\"BucketName\":\"B\",\"Count\":5}}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

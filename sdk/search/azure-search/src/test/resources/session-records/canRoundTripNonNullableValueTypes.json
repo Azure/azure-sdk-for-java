@@ -1,46 +1,46 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk27e57824f3fb.search-dogfood.windows-int.net/indexes('non-nullable-index')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk92241558bc64.search-dogfood.windows-int.net/indexes('non-nullable-index')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "1a7861fe-80bf-487b-a081-5c0b26acdf91",
+      "request-id" : "c125fb21-5696-4385-8fdd-317dac4f8897",
       "StatusCode" : "200",
-      "Date" : "Mon, 25 Nov 2019 23:22:52 GMT",
+      "Date" : "Tue, 03 Dec 2019 18:37:38 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "106",
+      "elapsed-time" : "108",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "318",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk27e57824f3fb.search-dogfood.windows-int.net/indexes('non-nullable-index')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"456\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk92241558bc64.search-dogfood.windows-int.net/indexes('non-nullable-index')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"456\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk27e57824f3fb.search-dogfood.windows-int.net/indexes('non-nullable-index')/docs/search.post.search?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk92241558bc64.search-dogfood.windows-int.net/indexes('non-nullable-index')/docs/search.post.search?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c6e3666e-7bad-4352-8453-acc8568433c5",
+      "request-id" : "505f81ed-c6ed-4c90-827e-3efcd60262c7",
       "StatusCode" : "200",
-      "Date" : "Mon, 25 Nov 2019 23:22:55 GMT",
+      "Date" : "Tue, 03 Dec 2019 18:37:39 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "23",
+      "elapsed-time" : "20",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "560",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk27e57824f3fb.search-dogfood.windows-int.net/indexes('non-nullable-index')/$metadata#docs(*)\",\"value\":[{\"@search.score\":1.0,\"Key\":\"123\",\"Rating\":5,\"Count\":3,\"IsEnabled\":true,\"Ratio\":3.14,\"StartDate\":\"2010-06-01T00:00:00Z\",\"EndDate\":\"2010-06-15T00:00:00Z\",\"TopLevelBucket\":{\"BucketName\":\"A\",\"Count\":12},\"Buckets\":[{\"BucketName\":\"B\",\"Count\":20},{\"BucketName\":\"C\",\"Count\":7}]},{\"@search.score\":1.0,\"Key\":\"456\",\"Rating\":0,\"Count\":0,\"IsEnabled\":false,\"Ratio\":0.0,\"StartDate\":null,\"EndDate\":null,\"TopLevelBucket\":null,\"Buckets\":[]}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk92241558bc64.search-dogfood.windows-int.net/indexes('non-nullable-index')/$metadata#docs(*)\",\"value\":[{\"@search.score\":1.0,\"Key\":\"123\",\"Rating\":5,\"Count\":3,\"IsEnabled\":true,\"Ratio\":3.14,\"StartDate\":\"2010-06-01T00:00:00Z\",\"EndDate\":\"2010-06-15T00:00:00Z\",\"TopLevelBucket\":{\"BucketName\":\"A\",\"Count\":12},\"Buckets\":[{\"BucketName\":\"B\",\"Count\":20},{\"BucketName\":\"C\",\"Count\":7}]},{\"@search.score\":1.0,\"Key\":\"456\",\"Rating\":0,\"Count\":0,\"IsEnabled\":false,\"Ratio\":0.0,\"StartDate\":null,\"EndDate\":null,\"TopLevelBucket\":null,\"Buckets\":[]}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

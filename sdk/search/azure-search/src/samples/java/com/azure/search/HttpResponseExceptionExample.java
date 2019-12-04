@@ -7,6 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 
@@ -47,7 +48,8 @@ public class HttpResponseExceptionExample {
             SearchOptions searchOptions = new SearchOptions()
                 .setFilter("Non_Existent_Field eq 'Luxury'");
 
-            Iterable<SearchResult> results = client.search("hotel", searchOptions, null);
+            Iterable<SearchResult> results = client.search("hotel",
+                searchOptions, null, Context.NONE);
 
             for (SearchResult result : results) {
                 // normal results processing
