@@ -130,8 +130,9 @@ public class RxDocumentServiceResponse {
                 JsonNode jToken = jTokenArray.get(i);
                 // Aggregate on single partition collection may return the aggregated value only
                 // In that case it needs to encapsulated in a special document
-                String resourceJson = jToken.isNumber() || jToken.isBoolean()
-                        ? String.format("{\"%s\": %s}", Constants.Properties.AGGREGATE, jToken.asText())
+
+                String resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
+                        ? String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString())
                                 : toJson(jToken);
                         T resource = null;
                         try {

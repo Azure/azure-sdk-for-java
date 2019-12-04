@@ -244,8 +244,8 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                                 "ORDER BY " + orderByItemStringBuilder.toString();
 
                         List<CosmosItemProperties> expectedOrderedList = top(sort(filter(this.documents, hasFilter), compositeIndex, invert), hasTop, topCount) ;
-
-                        Flux<FeedResponse<CosmosItemProperties>> queryObservable = documentCollection.queryItems(query, feedOptions);
+                        
+                        Flux<FeedResponse<CosmosItemProperties>> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
 
                         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator
                                 .Builder<CosmosItemProperties>()
@@ -264,7 +264,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         BridgeInternal.remove(documentWithEmptyField, NUMBER_FIELD);
         documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
         String query = "SELECT [root." + NUMBER_FIELD + ",root." + STRING_FIELD + "] FROM root ORDER BY root." + NUMBER_FIELD + " ASC ,root." + STRING_FIELD + " DESC";
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = documentCollection.queryItems(query, feedOptions);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(UnsupportedOperationException.class)

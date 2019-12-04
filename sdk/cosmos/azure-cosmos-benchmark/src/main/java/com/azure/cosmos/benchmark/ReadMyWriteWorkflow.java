@@ -234,7 +234,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         options.setMaxDegreeOfParallelism(-1);
         options.setEnableCrossPartitionQuery(true);
 
-        return client.queryDocuments(getCollectionLink(), query, options)
+        return client.<Document>queryDocuments(getCollectionLink(), query, options)
                 .flatMap(p -> Flux.fromIterable(p.getResults()));
     }
 
@@ -252,7 +252,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(String.format("Select top 100 * from c where c.%s = '%s'",
                                                                    QUERY_FIELD_NAME,
                                                                    d.getString(QUERY_FIELD_NAME)));
-        return client.queryDocuments(getCollectionLink(), sqlQuerySpec, options)
+        return client.<Document>queryDocuments(getCollectionLink(), sqlQuerySpec, options)
                 .flatMap(p -> Flux.fromIterable(p.getResults()));
     }
 

@@ -60,21 +60,25 @@ public class TopQueryTests extends TestSuiteBase {
         int[] expectedPageLengths = new int[] { 9, 9, 2 };
 
         for (int i = 0; i < 2; i++) {
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable1 = createdCollection.queryItems("SELECT TOP 0 value AVG(c.field) from c", options);
+            Flux<FeedResponse<CosmosItemProperties>> queryObservable1 = createdCollection.queryItems("SELECT TOP 0 value AVG(c.field) from c",
+                options,
+                CosmosItemProperties.class);
 
             FeedResponseListValidator<CosmosItemProperties> validator1 = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                     .totalSize(0).build();
 
             validateQuerySuccess(queryObservable1, validator1, TIMEOUT);
 
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable2 = createdCollection.queryItems("SELECT TOP 1 value AVG(c.field) from c", options);
+            Flux<FeedResponse<CosmosItemProperties>> queryObservable2 = createdCollection.queryItems("SELECT TOP 1 value AVG(c.field) from c",
+                options,
+                CosmosItemProperties.class);
 
             FeedResponseListValidator<CosmosItemProperties> validator2 = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                     .totalSize(1).build();
 
             validateQuerySuccess(queryObservable2, validator2, TIMEOUT);
 
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable3 = createdCollection.queryItems("SELECT TOP 20 * from c", options);
+            Flux<FeedResponse<CosmosItemProperties>> queryObservable3 = createdCollection.queryItems("SELECT TOP 20 * from c", options, CosmosItemProperties.class);
 
             FeedResponseListValidator<CosmosItemProperties> validator3 = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                     .totalSize(expectedTotalSize).numberOfPages(expectedNumberOfPages).pageLengths(expectedPageLengths)
@@ -147,7 +151,7 @@ public class TopQueryTests extends TestSuiteBase {
             options.setEnableCrossPartitionQuery(true);
             options.setMaxDegreeOfParallelism(2);
             options.requestContinuation(requestContinuation);
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
+            Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();

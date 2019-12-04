@@ -79,7 +79,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
         for (QueryConfig queryConfig : queryConfigs) {
 
-            Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(queryConfig.query, options);
+            Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(queryConfig.query, options, CosmosItemProperties.class);
 
             FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .withAggregateValue(queryConfig.expected)
