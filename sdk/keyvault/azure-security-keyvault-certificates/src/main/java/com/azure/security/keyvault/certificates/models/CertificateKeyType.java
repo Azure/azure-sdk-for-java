@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.certificates.models.webkey;
+package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -14,29 +14,24 @@ import java.util.Collection;
 public final class CertificateKeyType extends ExpandableStringEnum<CertificateKeyType> {
 
     /**
-     * Static value Encrypt for CertificateKeyType.
+     * Static value EC for CertificateKeyType.
      */
     public static final CertificateKeyType EC = fromString("EC");
 
     /**
-     * Static value Decrypt for CertificateKeyType.
+     * Static value EC-HSM for CertificateKeyType.
      */
     public static final CertificateKeyType EC_HSM = fromString("EC-HSM");
 
     /**
-     * Static value Sign for CertificateKeyType.
+     * Static value RSA for CertificateKeyType.
      */
     public static final CertificateKeyType RSA = fromString("RSA");
 
     /**
-     * Static value Verify for CertificateKeyType.
+     * Static value RSA-HSM for CertificateKeyType.
      */
     public static final CertificateKeyType RSA_HSM = fromString("RSA-HSM");
-
-    /**
-     * Static value Wrap Key for CertificateKeyType.
-     */
-    public static final CertificateKeyType OCT = fromString("oct");
 
     /**
      * Creates or finds a CertificateKeyType from its string representation.
