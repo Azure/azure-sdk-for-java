@@ -1,9 +1,15 @@
 # Release History
 
-## Version XX.X.X-preview.6 (XXXX-XX-XX)
+## Version 12.0.0 (2019-12-04)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0/sdk/storage/azure-storage-file-share/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0/sdk/storage/azure-storage-file-share/src/samples/java/com/azure/storage/file/share)
 
-- Changed return type for forceCloseHandle from void to CloseHandlesInfo
-- Changed return type for forceCloseAllHandles from int to CloseHandlesInfo 
+- GA release.
+- Changed return type for forceCloseHandle from void to CloseHandlesInfo.
+- Changed return type for forceCloseAllHandles from int to CloseHandlesInfo.
+- Upgraded to version 1.1.0 of Azure Core. 
 
 ## Version 12.0.0-preview.5 (2019-10-31)
 

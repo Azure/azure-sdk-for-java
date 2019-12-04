@@ -382,9 +382,10 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         when:
-        primaryDirectoryClient.forceCloseHandle("1")
+        def handlesClosedInfo = primaryDirectoryClient.forceCloseHandle("1")
 
         then:
+        handlesClosedInfo.getClosedHandles() == 0
         notThrown(ShareStorageException)
     }
 
@@ -404,11 +405,11 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         when:
-        def numberOfHandlesClosed = primaryDirectoryClient.forceCloseAllHandles(false, null, null)
+        def handlesClosedInfo  = primaryDirectoryClient.forceCloseAllHandles(false, null, null)
 
         then:
         notThrown(ShareStorageException)
-        numberOfHandlesClosed == 0
+        handlesClosedInfo.getClosedHandles() == 0
     }
 
     def "Create sub directory"() {
