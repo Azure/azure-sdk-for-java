@@ -202,9 +202,9 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
 
         // Partiton Key value same as what is specified in the stored procedure body
         RequestOptions options = new RequestOptions();
-        options.setPartitionKey(PartitionKey.None);
+        options.setPartitionKey(PartitionKey.NONE);
         CosmosStoredProcedureRequestOptions cosmosStoredProcedureRequestOptions = new CosmosStoredProcedureRequestOptions();
-        cosmosStoredProcedureRequestOptions.setPartitionKey(PartitionKey.None);
+        cosmosStoredProcedureRequestOptions.setPartitionKey(PartitionKey.NONE);
         int result = Integer.parseInt(createdSproc.execute(null, cosmosStoredProcedureRequestOptions).block().getResponseAsString());
         assertThat(result).isEqualTo(1);
 

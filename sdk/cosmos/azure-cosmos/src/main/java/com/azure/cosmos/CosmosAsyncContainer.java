@@ -207,8 +207,7 @@ public class CosmosAsyncContainer {
      * upserted item. In case of failure the {@link Mono} will error.
      *
      * @param item the item represented as a POJO or Item object to upsert.
-     * @return an {@link Mono} containing the single resource response with the
-     * upserted document or an error.
+     * @return an {@link Mono} containing the single resource response with the upserted document or an error.
      */
     public Mono<CosmosAsyncItemResponse> upsertItem(Object item) {
         return upsertItem(item, null);
@@ -223,8 +222,7 @@ public class CosmosAsyncContainer {
      *
      * @param item the item represented as a POJO or Item object to upsert.
      * @param options the request options.
-     * @return an {@link Mono} containing the single resource response with the
-     * upserted document or an error.
+     * @return an {@link Mono} containing the single resource response with the upserted document or an error.
      */
     public Mono<CosmosAsyncItemResponse> upsertItem(Object item, CosmosItemRequestOptions options) {
         if (options == null) {
@@ -248,8 +246,9 @@ public class CosmosAsyncContainer {
      * contain one or several feed response of the read cosmos items. In case of
      * failure the {@link Flux} will error.
      *
-     * @return an {@link Flux} containing one or several feed response pages of the
-     * read cosmos items or an error.
+     * @param <T> the type parameter
+     * @param klass the class type
+     * @return an {@link Flux} containing one or several feed response pages of the read cosmos items or an error.
      */
     public <T> Flux<FeedResponse<T>> readAllItems(Class<T> klass) {
         return readAllItems(new FeedOptions(), klass);
@@ -262,14 +261,18 @@ public class CosmosAsyncContainer {
      * contain one or several feed response of the read cosmos items. In case of
      * failure the {@link Flux} will error.
      *
+     * @param <T> the type parameter
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the
-     * read cosmos items or an error.
+     * @param klass the class type
+     * @return an {@link Flux} containing one or several feed response pages of the read cosmos items or an error.
      */
     public <T> Flux<FeedResponse<T>> readAllItems(FeedOptions options, Class<T> klass) {
         return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
-            response -> BridgeInternal.createFeedResponse(CosmosItemProperties.getFromV2Results(response.getResults()),
-                response.getResponseHeaders()));
+            response -> BridgeInternal
+                            .createFeedResponse(CosmosItemProperties
+                                                    .getTypedResultsFromV2Results(response.getResults(),
+                                                                                  klass),
+                                                response.getResponseHeaders()));
     }
 
     /**
@@ -279,9 +282,10 @@ public class CosmosAsyncContainer {
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link Flux} will error.
      *
+     * @param <T> the type parameter
      * @param query the query.
-     * @return an {@link Flux} containing one or several feed response pages of the
-     * obtained items or an error.
+     * @param klass the class type
+     * @return an {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     public <T> Flux<FeedResponse<T>> queryItems(String query, Class<T> klass) {
         return queryItems(new SqlQuerySpec(query), null);
@@ -294,10 +298,11 @@ public class CosmosAsyncContainer {
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link Flux} will error.
      *
+     * @param <T> the type parameter
      * @param query the query.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the
-     * obtained items or an error.
+     * @param klass the class type
+     * @return an {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     public <T> Flux<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
         return queryItems(new SqlQuerySpec(query), options, klass);
@@ -310,9 +315,10 @@ public class CosmosAsyncContainer {
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link Flux} will error.
      *
+     * @param <T> the type parameter
      * @param querySpec the SQL query specification.
-     * @return an {@link Flux} containing one or several feed response pages of the
-     * obtained items or an error.
+     * @param klass the class type
+     * @return an {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     public <T> Flux<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, Class<T> klass) {
         return queryItems(querySpec, klass);
@@ -325,17 +331,19 @@ public class CosmosAsyncContainer {
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link Flux} will error.
      *
+     * @param <T> the type parameter
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the
-     * obtained items or an error.
+     * @param klass the class type
+     * @return an {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     public <T> Flux<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
         return getDatabase().getDocClientWrapper().queryDocuments(getLink(),
-            querySpec, options)
+                                                                  querySpec, options)
                    .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
-                       (CosmosItemProperties.getTypedResultsFromV2Results((List<Document>) (Object) response.getResults(),
-                           klass)), response.getResponseHeaders(),
+                       (CosmosItemProperties
+                            .getTypedResultsFromV2Results((List<Document>) (Object) response.getResults(),
+                                                          klass)), response.getResponseHeaders(),
                        response.queryMetrics()));
     }
 

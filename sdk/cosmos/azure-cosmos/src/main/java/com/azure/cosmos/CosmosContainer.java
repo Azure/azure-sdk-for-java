@@ -117,7 +117,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public Integer readProvisionedThroughput() throws CosmosClientException {
-        return CosmosDatabase.throughputResponseToBlock(this.containerWrapper.readProvisionedThroughput());
+        return database.throughputResponseToBlock(this.containerWrapper.readProvisionedThroughput());
     }
 
     /**
@@ -128,7 +128,8 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) throws CosmosClientException {
-        return CosmosDatabase.throughputResponseToBlock(this.containerWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
+        return database.throughputResponseToBlock(this.containerWrapper
+                                                      .replaceProvisionedThroughput(requestUnitsPerSecond));
     }
 
 
@@ -206,7 +207,9 @@ public class CosmosContainer {
     /**
      * Read all items iterator.
      *
+     * @param <T> the type parameter
      * @param options the options
+     * @param klass the klass
      * @return the iterator
      */
     public <T> Iterator<FeedResponse<T>> readAllItems(FeedOptions options, Class<T> klass) {
@@ -216,8 +219,10 @@ public class CosmosContainer {
     /**
      * Query items iterator.
      *
+     * @param <T> the type parameter
      * @param query the query
      * @param options the options
+     * @param klass the class type
      * @return the iterator
      */
     public <T> Iterator<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
@@ -227,8 +232,10 @@ public class CosmosContainer {
     /**
      * Query items iterator.
      *
+     * @param <T> the type parameter
      * @param querySpec the query spec
      * @param options the options
+     * @param klass the class type
      * @return the iterator
      */
     public <T> Iterator<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {

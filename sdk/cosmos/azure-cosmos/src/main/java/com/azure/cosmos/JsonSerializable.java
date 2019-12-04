@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
@@ -28,8 +29,8 @@ import java.util.Map;
  * Represents a base resource that can be serialized to JSON in the Azure Cosmos DB database service.
  */
 public class JsonSerializable {
-    private final ClientLogger logger = new ClientLogger(JsonSerializable.class);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+    private final ClientLogger logger = new ClientLogger(JsonSerializable.class);
     transient ObjectNode propertyBag = null;
     private ObjectMapper om;
 
@@ -546,21 +547,20 @@ public class JsonSerializable {
     public <T> T toObject(Class<T> c) {
         // TODO: We have to remove this if we do not want to support CosmosItemProperties anymore, and change all the
         //  tests accordingly
-        if(CosmosItemProperties.class.isAssignableFrom(c)){
+        if (CosmosItemProperties.class.isAssignableFrom(c)) {
             return (T) new CosmosItemProperties(this.toJson());
         }
-        
+
         if (JsonSerializable.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
                 || Number.class.isAssignableFrom(c) || Boolean.class.isAssignableFrom(c)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("c can only be a POJO class or JSONObject"));
             return c.cast(this.get(Constants.Properties.VALUE));
         }
-        if (List.class.isAssignableFrom(c)){
+        if (List.class.isAssignableFrom(c)) {
             Object o = this.get(Constants.Properties.VALUE);
             try {
                 return this.getMapper().readValue(o.toString(), c);
             } catch (IOException e) {
-                throw new IllegalStateException("Failed to convert to collection.", e);
+                throw logger.logExceptionAsError(new IllegalStateException("Failed to convert to collection.", e));
             }
         }
         if (ObjectNode.class.isAssignableFrom(c)) {
