@@ -19,9 +19,11 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
         }
     }
 
-    CosmosStoredProcedureResponse(StoredProcedureResponse response, CosmosContainer cosmosContainer) {
+    CosmosStoredProcedureResponse(StoredProcedureResponse response, CosmosContainer cosmosContainer,
+                                  String storedProcedureId) {
         super(response);
         this.storedProcedureResponse = response;
+        this.storedProcedure = new CosmosStoredProcedure(storedProcedureId, cosmosContainer);
     }
 
     /**
@@ -34,7 +36,7 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
 
     /**
      * Gets the stored procedure object
-     * @return the stored procedure object or null
+     * @return the stored procedure object or null in case of delete request
      */
     public CosmosStoredProcedure storedProcedure() {
         return this.storedProcedure;
