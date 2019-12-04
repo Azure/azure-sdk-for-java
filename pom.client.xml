@@ -946,19 +946,19 @@
                       <goals>
                           <goal>exec</goal>
                       </goals>
+                      <configuration>
+                        <executable>python</executable>
+                        <workingDirectory>${project.basedir}</workingDirectory>
+                        <arguments>
+                          <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
+                          <argument>--rf</argument>
+                          <argument>${project.basedir}/README.md</argument>
+                          <argument>--v</argument>
+                          <argument>${project.version}</argument>
+                        </arguments>
+                      </configuration>
                   </execution>
               </executions>
-              <configuration>
-                <executable>python</executable>
-                <workingDirectory>${project.basedir}</workingDirectory>
-                <arguments>
-                      <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
-                      <argument>--rf</argument>
-                      <argument>${project.basedir}/README.md</argument>
-                      <argument>--v</argument>
-                      <argument>${project.version}</argument>
-                </arguments>
-              </configuration>
           </plugin>
           <!-- Add the overview argument to the javadoc args -->
           <plugin>
@@ -970,6 +970,75 @@
             </configuration>
           </plugin>
          </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>readme-codesnippet</id>
+      <activation>
+        <property>
+          <name>readme-codesnippet</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>code-snippet-for-readme</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>npx</executable>
+                  <arguments>
+                    <argument>embedme</argument>
+                    <argument>sdk/**/**/README.md</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>verify-readme</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>verify-readme-codesnippet</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>npx</executable>
+                  <arguments>
+                    <argument>embedme</argument>
+                    <argument>--verify</argument>
+                    <argument>sdk/**/**/README.md</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
       </build>
     </profile>
   </profiles>
