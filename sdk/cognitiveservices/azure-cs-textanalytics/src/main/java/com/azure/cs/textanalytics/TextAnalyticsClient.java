@@ -31,7 +31,9 @@ public final class TextAnalyticsClient {
     // (1) language
     // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectLanguageResult detectLanguage(String text) { return detectLanguage(text, null); }
+    public DetectLanguageResult detectLanguage(String text) {
+        return detectLanguage(text, null);
+    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectLanguageResult detectLanguage(String text, String countryHint) {
@@ -52,7 +54,14 @@ public final class TextAnalyticsClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectLanguages(List<String> inputs, String countryHint) {
-        return client.detectLanguages(inputs, countryHint).block();
+        return detectLanguagesWithResponse(inputs, countryHint, Context.NONE).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DocumentResultCollection<DetectLanguageResult>> detectLanguagesWithResponse(List<String> inputs,
+                                                                                                String countryHint,
+                                                                                                Context context) {
+        return client.detectLanguagesWithResponse(inputs, countryHint, context).block();
     }
 
     // advantage user
@@ -95,6 +104,7 @@ public final class TextAnalyticsClient {
     public DocumentResultCollection<NamedEntityResult> recognizeEntities(List<String> inputs) {
         return null;
     }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<NamedEntityResult> recognizeEntities(List<String> inputs, String language) {
         return null;
@@ -140,6 +150,7 @@ public final class TextAnalyticsClient {
     public DocumentResultCollection<NamedEntityResult> recognizePiiEntities(List<String> inputs) {
         return null;
     }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<NamedEntityResult> recognizePiiEntities(List<String> inputs, String language) {
         return null;
@@ -185,6 +196,7 @@ public final class TextAnalyticsClient {
     public DocumentResultCollection<LinkedEntityResult> recognizeLinkedEntities(List<String> inputs) {
         return null;
     }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<LinkedEntityResult> recognizeLinkedEntities(List<String> inputs, String language) {
         return null;
@@ -230,6 +242,7 @@ public final class TextAnalyticsClient {
     public DocumentResultCollection<KeyPhraseResult> extractKeyPhrases(List<String> inputs) {
         return null;
     }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<KeyPhraseResult> extractKeyPhrases(List<String> inputs, String language) {
         return null;
@@ -276,6 +289,7 @@ public final class TextAnalyticsClient {
     public DocumentResultCollection<TextSentimentResult> analyzeSentiment(List<String> inputs) {
         return null;
     }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<TextSentimentResult> analyzeSentiment(List<String> inputs, String language) {
         return null;
