@@ -107,7 +107,7 @@ final class PartitionBasedLoadBalancer {
         Mono.zip(partitionOwnershipMono, partitionsMono)
             .flatMap(this::loadBalance)
             // if there was an error, log warning and TODO: call user provided error handler
-            .doOnError(ex -> logger.warning("Load balancing for event processor failed - {}", ex.getMessage()))
+            .doOnError(ex -> logger.warning(Messages.LOAD_BALANCING_FAILED, ex.getMessage()))
             .subscribe();
     }
 
@@ -340,7 +340,7 @@ final class PartitionBasedLoadBalancer {
             .doOnNext(partitionOwnership -> logger.info("Successfully claimed ownership of partition {}",
                 partitionOwnership.getPartitionId()))
             .doOnError(ex -> logger
-                .warning("Failed to claim ownership of partition {} - {}", ownershipRequest.getPartitionId(),
+                .warning(Messages.FAILED_TO_CLAIM_OWNERSHIP, ownershipRequest.getPartitionId(),
                     ex.getMessage(), ex))
             .collectList()
             .zipWith(checkpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName, consumerGroupName)

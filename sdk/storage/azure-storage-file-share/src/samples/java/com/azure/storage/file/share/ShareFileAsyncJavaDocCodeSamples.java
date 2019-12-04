@@ -586,8 +586,8 @@ public class ShareFileAsyncJavaDocCodeSamples {
     public void forceCloseAllHandles() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.forceCloseAllHandles
-        shareFileAsyncClient.forceCloseAllHandles().subscribe(numberOfHandlesClosed ->
-            System.out.printf("Closed %d open handles on the file%n", numberOfHandlesClosed));
+        shareFileAsyncClient.forceCloseAllHandles().subscribe(handlesClosedInfo ->
+            System.out.printf("Closed %d open handles on the file%n", handlesClosedInfo.getClosedHandles()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.forceCloseAllHandles
     }
 
