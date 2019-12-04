@@ -139,6 +139,7 @@ class ShareAsyncAPITests extends APISpec {
 
     def "Create snapshot metadata error"() {
         when:
+        primaryShareAsyncClient.create().block()
         def createSnapshotErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(Collections.singletonMap("", "value")))
         then:
         createSnapshotErrorVerifier.verifyErrorSatisfies {
@@ -453,14 +454,13 @@ class ShareAsyncAPITests extends APISpec {
             }.verifyComplete()
     }
 
-    @Ignore
     def "Create and get permission"() {
         given:
         primaryShareAsyncClient.create().block()
         def filePermissionKey = primaryShareAsyncClient.createPermission(filePermission).block()
 
         expect:
-        StepVerifier.create(primaryShareAsyncClient.setPermissionWithResponse(filePermissionKey))
+        StepVerifier.create(primaryShareAsyncClient.getPermissionWithResponse(filePermissionKey))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 200)
             }.verifyComplete()

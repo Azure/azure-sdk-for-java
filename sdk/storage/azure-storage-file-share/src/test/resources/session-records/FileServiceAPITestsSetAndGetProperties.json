@@ -1,87 +1,87 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
+    "Uri" : "https://gaprastg71.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "dddde785-57de-46c4-a4cd-4a4b33239f77"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ce990cfc-5c32-4f32-b65f-7cb3a4ad95db"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "83e48b20-a01a-0116-6888-83b7bd000000",
+      "x-ms-request-id" : "9ba99dda-201a-0011-38fa-aa088f000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Tue, 15 Oct 2019 18:43:09 GMT",
-      "x-ms-client-request-id" : "dddde785-57de-46c4-a4cd-4a4b33239f77",
+      "Date" : "Wed, 04 Dec 2019 23:30:29 GMT",
+      "x-ms-client-request-id" : "ce990cfc-5c32-4f32-b65f-7cb3a4ad95db",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
+    "Uri" : "https://gaprastg71.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "8f1ce1f9-f678-4aae-b5f5-f5837b94a2fc"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "814fee11-88c3-4d4a-9580-40618f49bb54"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "83e48b21-a01a-0116-6988-83b7bd000000",
+      "x-ms-request-id" : "9ba99ddb-201a-0011-39fa-aa088f000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Tue, 15 Oct 2019 18:43:09 GMT",
-      "x-ms-client-request-id" : "8f1ce1f9-f678-4aae-b5f5-f5837b94a2fc",
+      "Date" : "Wed, 04 Dec 2019 23:30:29 GMT",
+      "x-ms-client-request-id" : "814fee11-88c3-4d4a-9580-40618f49bb54",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
+    "Uri" : "https://gaprastg71.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "7d7586dc-624a-41cc-9873-764ecd162c1d",
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "52e51b49-ff04-4d60-8c66-7ac2bfe282d1",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "83e48b22-a01a-0116-6a88-83b7bd000000",
-      "Date" : "Tue, 15 Oct 2019 18:43:12 GMT",
-      "x-ms-client-request-id" : "7d7586dc-624a-41cc-9873-764ecd162c1d"
+      "x-ms-request-id" : "9ba99ddc-201a-0011-3afa-aa088f000000",
+      "Date" : "Wed, 04 Dec 2019 23:30:30 GMT",
+      "x-ms-client-request-id" : "52e51b49-ff04-4d60-8c66-7ac2bfe282d1"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
+    "Uri" : "https://gaprastg71.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "43f51e5d-8bd5-4d01-a8d1-33abad095b12"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "48bfee7d-f3d7-49db-88dc-2b7c62612606"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "83e48b2d-a01a-0116-6d88-83b7bd000000",
+      "x-ms-request-id" : "9ba99de2-201a-0011-3cfa-aa088f000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Tue, 15 Oct 2019 18:43:12 GMT",
-      "x-ms-client-request-id" : "43f51e5d-8bd5-4d01-a8d1-33abad095b12",
+      "Date" : "Wed, 04 Dec 2019 23:30:30 GMT",
+      "x-ms-client-request-id" : "48bfee7d-f3d7-49db-88dc-2b7c62612606",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceapitestssetandgetproperties4042168ae2cfc" ]
+  "variables" : [ "fileserviceapitestssetandgetproperties66170b8bf7026" ]
 }

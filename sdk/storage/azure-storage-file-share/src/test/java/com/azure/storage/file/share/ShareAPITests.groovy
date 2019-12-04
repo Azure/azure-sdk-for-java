@@ -150,6 +150,7 @@ class ShareAPITests extends APISpec {
 
     def "Create snapshot metadata error"() {
         when:
+        primaryShareClient.create()
         primaryShareClient.createSnapshotWithResponse(Collections.singletonMap("", "value"), null, null)
 
         then:
