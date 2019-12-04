@@ -8,8 +8,6 @@ import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import org.junit.Assert;
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 import java.text.ParseException;
 import java.time.OffsetDateTime;
@@ -20,6 +18,8 @@ import java.util.List;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public class LookupSyncTests extends LookupTestBase {
     private SearchIndexClient client;
@@ -111,7 +111,7 @@ public class LookupSyncTests extends LookupTestBase {
                 put("Rating", null);
                 put("Location", null);
                 put("Address", null);
-                put("Rooms", Arrays.asList(
+                put("Rooms", Collections.singletonList(
                     new Document() {
                         {
                             put("BaseRate", null);
@@ -295,7 +295,7 @@ public class LookupSyncTests extends LookupTestBase {
         Document expectedDoc = new Document() {
             {
                 put("HotelId", "1");
-                put("Rooms", Arrays.asList(
+                put("Rooms", Collections.singletonList(
                     new Document() {
                         {
                             put("BaseRate", null);
@@ -317,7 +317,7 @@ public class LookupSyncTests extends LookupTestBase {
     }
 
     @Override
-    public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() throws ParseException {
+    public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
         client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
 

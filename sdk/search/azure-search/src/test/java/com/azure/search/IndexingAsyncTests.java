@@ -22,7 +22,6 @@ import org.junit.Assert;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -82,7 +81,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void canIndexWithPascalCaseFields() throws Exception {
+    public void canIndexWithPascalCaseFields() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
 
@@ -286,7 +285,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void dynamicDocumentDateTimesRoundTripAsUtc() throws IOException {
+    public void dynamicDocumentDateTimesRoundTripAsUtc() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
 
@@ -353,7 +352,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void staticallyTypedDateTimesRoundTripAsUtc() throws Exception {
+    public void staticallyTypedDateTimesRoundTripAsUtc() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
 
@@ -640,7 +639,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Arrays.asList("vcr/dvd")),
+                    .tags(Collections.singletonList("vcr/dvd")),
                 new HotelRoom()
                     .description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
@@ -662,7 +661,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .RATING(3)
             .LOCATION(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
             .ADDRESS(new HotelAddress())
-            .ROOMS(Arrays.asList(
+            .ROOMS(Collections.singletonList(
                 new HotelRoom()
                     .description(null)
                     .type("Budget Room")
@@ -689,7 +688,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 .stateProvince("NY")
                 .country("USA")
                 .postalCode("10022")
-            ).ROOMS(Arrays.asList(
+            ).ROOMS(Collections.singletonList(
                 // Regardless of NullValueHandling, this should look like the merged doc with unspecified fields as null
                 // because we don't support partial updates for complex collections.
                 new HotelRoom()

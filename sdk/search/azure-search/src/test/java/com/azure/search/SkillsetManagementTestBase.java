@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.search.models.ConditionalSkill;
 import com.azure.search.models.DefaultCognitiveServices;
 import com.azure.search.models.EntityCategory;
 import com.azure.search.models.EntityRecognitionSkill;
@@ -28,7 +29,6 @@ import com.azure.search.models.TextExtractionAlgorithm;
 import com.azure.search.models.TextSplitMode;
 import com.azure.search.models.VisualFeature;
 import com.azure.search.models.WebApiSkill;
-import com.azure.search.models.ConditionalSkill;
 import org.junit.Test;
 
 import java.util.ArrayList;

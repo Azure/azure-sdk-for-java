@@ -14,6 +14,7 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.search.SearchTestBase.HOTELS_INDEX_NAME;
@@ -64,9 +65,9 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         PagedFlux<AutocompleteItem> results = client.autocomplete("luxu", "sg", params, generateRequestOptions());
         Assert.assertNotNull(results);
 
-        StepVerifier.create(results.byPage()).assertNext(pageResult -> {
-            Assert.assertEquals(0, pageResult.getItems().size());
-        }).verifyComplete();
+        StepVerifier.create(results.byPage()).assertNext(pageResult ->
+            Assert.assertEquals(0, pageResult.getItems().size())
+        ).verifyComplete();
     }
 
     @Override
@@ -76,9 +77,9 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
 
         PagedFlux<AutocompleteItem> results = client.autocomplete("pi", "sg", params, generateRequestOptions());
         Assert.assertNotNull(results);
-        StepVerifier.create(results.byPage()).assertNext(pageResult -> {
-            Assert.assertEquals(0, pageResult.getItems().size());
-        }).verifyComplete();
+        StepVerifier.create(results.byPage()).assertNext(pageResult ->
+            Assert.assertEquals(0, pageResult.getItems().size())
+        ).verifyComplete();
     }
 
     @Override
@@ -143,7 +144,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteCanUseHitHighlighting() throws Exception {
+    public void testAutocompleteCanUseHitHighlighting() {
         List<String> expectedText = Arrays.asList("pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("<b>pool</b>", "<b>popular</b>");
 
@@ -160,7 +161,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteWithMultipleSelectedFields() throws Exception {
+    public void testAutocompleteWithMultipleSelectedFields() {
         List<String> expectedText = Arrays.asList("model", "modern");
         List<String> expectedQueryPlusText = Arrays.asList("model", "modern");
         AutocompleteOptions params = new AutocompleteOptions()
@@ -174,9 +175,9 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteWithSelectedFields() throws Exception {
-        List<String> expectedText = Arrays.asList("modern");
-        List<String> expectedQueryPlusText = Arrays.asList("modern");
+    public void testAutocompleteWithSelectedFields() {
+        List<String> expectedText = Collections.singletonList("modern");
+        List<String> expectedQueryPlusText = Collections.singletonList("modern");
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
@@ -190,7 +191,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteTopTrimsResults() throws Exception {
+    public void testAutocompleteTopTrimsResults() {
         List<String> expectedText = Arrays.asList("point", "police");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police");
 
@@ -205,9 +206,9 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteWithFilter() throws Exception {
-        List<String> expectedText = Arrays.asList("polite");
-        List<String> expectedQueryPlusText = Arrays.asList("polite");
+    public void testAutocompleteWithFilter() {
+        List<String> expectedText = Collections.singletonList("polite");
+        List<String> expectedQueryPlusText = Collections.singletonList("polite");
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
@@ -220,7 +221,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteOneTermWithContextWithFuzzy() throws Exception {
+    public void testAutocompleteOneTermWithContextWithFuzzy() {
         List<String> expectedText = Arrays.asList("very polite", "very police");
         List<String> expectedQueryPlusText = Arrays.asList("very polite", "very police");
 
@@ -235,7 +236,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteOneTermWithFuzzy() throws Exception {
+    public void testAutocompleteOneTermWithFuzzy() {
         List<String> expectedText = Arrays.asList("model", "modern", "morel", "motel");
         List<String> expectedQueryPlusText = Arrays.asList("model", "modern", "morel", "motel");
 
@@ -250,7 +251,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteTwoTermsWithFuzzy() throws Exception {
+    public void testAutocompleteTwoTermsWithFuzzy() {
         List<String> expectedText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
         List<String> expectedQueryPlusText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
 
@@ -265,7 +266,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteWithFilterAndFuzzy() throws Exception {
+    public void testAutocompleteWithFilterAndFuzzy() {
         List<String> expectedText = Arrays.asList("modern", "motel");
         List<String> expectedQueryPlusText = Arrays.asList("modern", "motel");
 
@@ -282,9 +283,9 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
 
     /**
      * Validate the text and query plus text results
-     * @param results
-     * @param expectedText
-     * @param expectedQueryPlusText
+     * @param results results
+     * @param expectedText expected text
+     * @param expectedQueryPlusText expected query plus text
      */
     private void validateResults(PagedFlux<AutocompleteItem> results, List<String> expectedText, List<String> expectedQueryPlusText) {
         StepVerifier.create(results.byPage()).assertNext(pageResult -> {

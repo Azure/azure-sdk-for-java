@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -174,7 +175,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteWithMultipleSelectedFields() throws Exception {
+    public void testAutocompleteWithMultipleSelectedFields() {
         List<String> expectedText = Arrays.asList("model", "modern");
         List<String> expectedQueryPlusText = Arrays.asList("model", "modern");
 
@@ -190,9 +191,9 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteWithSelectedFields() throws Exception {
-        List<String> expectedText = Arrays.asList("modern");
-        List<String> expectedQueryPlusText = Arrays.asList("modern");
+    public void testAutocompleteWithSelectedFields() {
+        List<String> expectedText = Collections.singletonList("modern");
+        List<String> expectedQueryPlusText = Collections.singletonList("modern");
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
@@ -207,7 +208,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteTopTrimsResults() throws Exception {
+    public void testAutocompleteTopTrimsResults() {
         List<String> expectedText = Arrays.asList("point", "police");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police");
 
@@ -223,9 +224,9 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteWithFilter() throws Exception {
-        List<String> expectedText = Arrays.asList("polite");
-        List<String> expectedQueryPlusText = Arrays.asList("polite");
+    public void testAutocompleteWithFilter() {
+        List<String> expectedText = Collections.singletonList("polite");
+        List<String> expectedQueryPlusText = Collections.singletonList("polite");
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
@@ -239,7 +240,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteOneTermWithContextWithFuzzy() throws Exception {
+    public void testAutocompleteOneTermWithContextWithFuzzy() {
         List<String> expectedText = Arrays.asList("very polite", "very police");
         List<String> expectedQueryPlusText = Arrays.asList("very polite", "very police");
 
@@ -255,7 +256,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteOneTermWithFuzzy() throws Exception {
+    public void testAutocompleteOneTermWithFuzzy() {
         List<String> expectedText = Arrays.asList("model", "modern", "morel", "motel");
         List<String> expectedQueryPlusText = Arrays.asList("model", "modern", "morel", "motel");
 
@@ -271,7 +272,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteTwoTermsWithFuzzy() throws Exception {
+    public void testAutocompleteTwoTermsWithFuzzy() {
         List<String> expectedText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
         List<String> expectedQueryPlusText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
 
@@ -287,7 +288,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void testAutocompleteWithFilterAndFuzzy() throws Exception {
+    public void testAutocompleteWithFilterAndFuzzy() {
         List<String> expectedText = Arrays.asList("modern", "motel");
         List<String> expectedQueryPlusText = Arrays.asList("modern", "motel");
 
@@ -306,9 +307,9 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     /**
      * Compare the autocomplete results with the expected strings
      *
-     * @param results
-     * @param expectedText
-     * @param expectedQueryPlusText
+     * @param results results
+     * @param expectedText expected text
+     * @param expectedQueryPlusText expected query plus text
      */
     private void validateResults(PagedIterable<AutocompleteItem> results, List<String> expectedText, List<String> expectedQueryPlusText) {
         int index = 0;

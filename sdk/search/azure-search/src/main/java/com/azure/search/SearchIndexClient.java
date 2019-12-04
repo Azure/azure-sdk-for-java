@@ -18,7 +18,6 @@ import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
-
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -72,7 +71,6 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the document index result.
      */
-    @SuppressWarnings("unchecked")
     public Response<DocumentIndexResult> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.uploadDocumentsWithResponse(documents, context).block();
     }
@@ -94,7 +92,6 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the document index result.
      */
-    @SuppressWarnings("unchecked")
     public Response<DocumentIndexResult> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.mergeDocumentsWithResponse(documents, context).block();
     }
@@ -118,7 +115,6 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document index result
      */
-    @SuppressWarnings("unchecked")
     public Response<DocumentIndexResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.mergeOrUploadDocumentsWithResponse(documents, context).block();
     }
@@ -140,7 +136,6 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document index result.
      */
-    @SuppressWarnings("unchecked")
     public Response<DocumentIndexResult> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
         return asyncClient.deleteDocumentsWithResponse(documents, context).block();
     }

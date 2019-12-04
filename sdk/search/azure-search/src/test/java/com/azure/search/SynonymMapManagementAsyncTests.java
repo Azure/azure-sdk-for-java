@@ -3,7 +3,6 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
-
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
@@ -61,16 +60,16 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
         StepVerifier
             .create(client.createSynonymMap(expectedSynonymMap))
-            .assertNext(actualSynonymMap -> {
-                assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
-            })
+            .assertNext(actualSynonymMap ->
+                assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap)
+            )
             .verifyComplete();
 
         StepVerifier
             .create(client.createSynonymMapWithResponse(expectedSynonymMap.setName("test-synonym2"), generateRequestOptions()))
-            .assertNext(actualSynonymMap -> {
-                assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap.getValue());
-            })
+            .assertNext(actualSynonymMap ->
+                assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap.getValue())
+            )
             .verifyComplete();
     }
 
@@ -221,32 +220,32 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
         StepVerifier
             .create(client.deleteSynonymMapWithResponse(synonymMap.getName(), new AccessCondition(), generateRequestOptions()))
-            .assertNext(synonymMapResponse -> {
-                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), synonymMapResponse.getStatusCode());
-            })
+            .assertNext(synonymMapResponse ->
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), synonymMapResponse.getStatusCode())
+            )
             .verifyComplete();
 
         StepVerifier
             .create(client.createSynonymMapWithResponse(synonymMap, generateRequestOptions()))
-            .assertNext(synonymMapResponse -> {
-                Assert.assertEquals(HttpResponseStatus.CREATED.code(), synonymMapResponse.getStatusCode());
-            })
+            .assertNext(synonymMapResponse ->
+                Assert.assertEquals(HttpResponseStatus.CREATED.code(), synonymMapResponse.getStatusCode())
+            )
             .verifyComplete();
 
         StepVerifier
             .create(client.deleteSynonymMapWithResponse(synonymMap.getName(),
                 new AccessCondition(), generateRequestOptions()))
-            .assertNext(synonymMapResponse -> {
-                Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), synonymMapResponse.getStatusCode());
-            })
+            .assertNext(synonymMapResponse ->
+                Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), synonymMapResponse.getStatusCode())
+            )
             .verifyComplete();
 
         StepVerifier
             .create(client.deleteSynonymMapWithResponse(synonymMap.getName(),
                 new AccessCondition(), generateRequestOptions()))
-            .assertNext(synonymMapResponse -> {
-                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), synonymMapResponse.getStatusCode());
-            })
+            .assertNext(synonymMapResponse ->
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), synonymMapResponse.getStatusCode())
+            )
             .verifyComplete();
     }
 
@@ -258,9 +257,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
         StepVerifier
             .create(client.synonymMapExists(synonymMap.getName()))
-            .assertNext(response -> {
-                Assert.assertFalse(response);
-            })
+            .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
 
@@ -296,13 +293,13 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
         StepVerifier
             .create(selectedFieldListResponse.collectList())
-            .assertNext(result -> {
+            .assertNext(result ->
                 result.forEach(res -> {
                     Assert.assertNotNull(res.getName());
                     Assert.assertNull(res.getSynonyms());
                     Assert.assertNull(res.getETag());
-                });
-            })
+                })
+            )
             .verifyComplete();
 
         StepVerifier
@@ -323,7 +320,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
         StepVerifier
             .create(client.synonymMapExists(synonymMap.getName()))
-            .assertNext(res -> Assert.assertTrue(res))
+            .assertNext(Assert::assertTrue)
             .verifyComplete();
 
         StepVerifier
@@ -338,7 +335,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
         StepVerifier
             .create(client.synonymMapExists(synonymMapName))
-            .assertNext(res -> Assert.assertFalse(res))
+            .assertNext(Assert::assertFalse)
             .verifyComplete();
 
         StepVerifier

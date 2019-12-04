@@ -5,6 +5,7 @@ package com.azure.search;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
 import org.junit.Test;
+
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
@@ -97,12 +98,12 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
-    protected Index mutateCorsOptionsInIndex(Index index) {
+    Index mutateCorsOptionsInIndex(Index index) {
         index.setCorsOptions(index.getCorsOptions().setAllowedOrigins("*"));
         return index;
     }
 
-    protected Field getFieldByName(Index index, String name) {
+    Field getFieldByName(Index index, String name) {
         return index.getFields()
             .stream()
             .filter(f -> f.getName().equals(name))

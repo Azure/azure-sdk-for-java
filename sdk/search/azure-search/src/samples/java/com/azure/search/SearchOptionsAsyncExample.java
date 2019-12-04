@@ -60,15 +60,13 @@ public class SearchOptionsAsyncExample {
         Map<String, List<FacetResult>> facetResults = results
             .byPage()
             .take(1)
-            .map(page -> page.getFacets()).blockLast();
+            .map(SearchPagedResponse::getFacets).blockLast();
 
         facetResults.forEach((k, v) -> {
             v.forEach(result -> {
                 System.out.println(k + " :");
                 System.out.println("    count: " + result.getCount());
-                result.getDocument().forEach((f, d) -> {
-                    System.out.println("    " + f + " : " + d);
-                });
+                result.getDocument().forEach((f, d) -> System.out.println("    " + f + " : " + d));
             });
         });
     }
@@ -82,18 +80,18 @@ public class SearchOptionsAsyncExample {
 
         Stream<Map<String, List<FacetResult>>> facetsMapStream = results
             .byPage()
-            .map(page -> page.getFacets())
+            .map(SearchPagedResponse::getFacets)
             .toStream();
 
-        facetsMapStream.forEach(result -> {
+        facetsMapStream.forEach(result ->
             result.forEach((k, v) -> v.forEach(facetResult -> {
                 System.out.println(k + " :");
                 System.out.println("    count: " + facetResult.getCount());
-                facetResult.getDocument().forEach((f, d) -> {
-                    System.out.println("    " + f + " : " + d);
-                });
-            }));
-        });
+                facetResult.getDocument().forEach((f, d) ->
+                    System.out.println("    " + f + " : " + d)
+                );
+            }))
+        );
     }
 
     private static void searchResultsCoverageFromPage(SearchIndexAsyncClient searchClient) {
@@ -106,7 +104,7 @@ public class SearchOptionsAsyncExample {
         System.out.println("Coverage = " + results
             .byPage()
             .take(1)
-            .map(page -> page.getCoverage()).blockLast());
+            .map(SearchPagedResponse::getCoverage).blockLast());
     }
 
     private static void searchResultsCoverage(SearchIndexAsyncClient searchClient) {
@@ -118,7 +116,7 @@ public class SearchOptionsAsyncExample {
 
         System.out.println("Coverage = " + results
             .byPage()
-            .map(page -> page.getCoverage()).blockLast());
+            .map(SearchPagedResponse::getCoverage).blockLast());
     }
 
     private static void searchResultsCountFromPage(SearchIndexAsyncClient searchClient) {
@@ -131,7 +129,7 @@ public class SearchOptionsAsyncExample {
 
         System.out.println("Count = " + results.byPage()
             .take(1)
-            .map(page -> page.getCount()).blockLast());
+            .map(SearchPagedResponse::getCount).blockLast());
     }
 
     private static void searchResultsCountFromStream(SearchIndexAsyncClient searchClient) {
@@ -142,7 +140,7 @@ public class SearchOptionsAsyncExample {
             new SearchOptions().setIncludeTotalResultCount(true),
             new RequestOptions());
 
-        Stream<Long> countStream = results.byPage().map(page -> page.getCount()).toStream();
+        Stream<Long> countStream = results.byPage().map(SearchPagedResponse::getCount).toStream();
         countStream.forEach(System.out::println);
 
     }
@@ -154,9 +152,9 @@ public class SearchOptionsAsyncExample {
 
         streamResponse.collect(Collectors.toList()).forEach(searchPagedResponse -> {
             List<SearchResult> results = searchPagedResponse.getItems();
-            results.forEach(result -> {
-                result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)));
-            });
+            results.forEach(result ->
+                result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
+            );
         });
     }
 
@@ -165,9 +163,9 @@ public class SearchOptionsAsyncExample {
         List<SearchResult> searchResults = searchClient.search("*")
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
-            .doOnNext(result -> {
-                result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)));
-            })
+            .doOnNext(result ->
+                result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
+            )
             .doOnComplete(() -> System.out.println("Completed processing"))
             .collectList().block();
     }

@@ -3,9 +3,9 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SynonymMap;
@@ -34,7 +34,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     private Supplier<SynonymMap> newSynonymMapFunc = this::createTestSynonymMap;
 
     private Function<SynonymMap, SynonymMap> mutateSynonymMapFunc =
-        (SynonymMap sm) -> mutateSynonymsInSynonymMap(sm);
+        this::mutateSynonymsInSynonymMap;
 
     private BiConsumer<String, AccessOptions> deleteSynonymMapFunc =
         (String name, AccessOptions ac) ->

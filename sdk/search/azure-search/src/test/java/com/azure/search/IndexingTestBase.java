@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class IndexingTestBase extends SearchIndexClientTestBase {
@@ -46,7 +47,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFields();
 
-    protected Hotel prepareStaticallyTypedHotel(String hotelId) throws ParseException {
+    Hotel prepareStaticallyTypedHotel(String hotelId) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         return new Hotel()
             .hotelId(hotelId)
@@ -73,7 +74,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
             );
     }
 
-    protected Document prepareDynamicallyTypedHotel(String hotelId) {
+    Document prepareDynamicallyTypedHotel(String hotelId) {
 
         Document room1 = new Document();
         room1.put("Description", "Budget Room, 1 Queen Bed");
@@ -127,13 +128,13 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         return hotel;
     }
 
-    protected void assertSuccessfulIndexResult(IndexingResult result, String key, int statusCode) {
+    void assertSuccessfulIndexResult(IndexingResult result, String key, int statusCode) {
         Assert.assertEquals(result.getKey(), key);
         Assert.assertEquals(result.getStatusCode(), statusCode);
         Assert.assertTrue(result.isSucceeded());
     }
 
-    protected void assertFailedIndexResult(IndexingResult result, String key, int statusCode, String errorMessage) {
+    void assertFailedIndexResult(IndexingResult result, String key, int statusCode, String errorMessage) {
         Assert.assertEquals(result.getKey(), key);
         Assert.assertEquals(result.getStatusCode(), statusCode);
         Assert.assertEquals(result.getErrorMessage(), errorMessage);
@@ -170,14 +171,14 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void canIndexAndAccessResponse();
 
-    protected void assertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {
+    void assertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {
         Assert.assertEquals(key, result.getKey());
         Assert.assertTrue(result.isSucceeded());
         Assert.assertNull(result.getErrorMessage());
         Assert.assertEquals(expectedStatusCode, result.getStatusCode());
     }
 
-    protected List<Hotel> getBoundaryValues() throws ParseException {
+    List<Hotel> getBoundaryValues() throws ParseException {
         return Arrays.asList(
             // Minimum values
             new Hotel()
@@ -187,9 +188,9 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
                 .location(GeoPoint.create(-90, -180))   // South pole, date line from the west
                 .parkingIncluded(false)
                 .rating(Integer.MIN_VALUE)
-                .tags(Arrays.asList())
+                .tags(Collections.emptyList())
                 .address(new HotelAddress())
-                .rooms(Arrays.asList(
+                .rooms(Collections.singletonList(
                     new HotelRoom()
                         .baseRate(Double.MIN_VALUE)
                 )),
@@ -201,10 +202,10 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
                 .location(GeoPoint.create(90, 180))     // North pole, date line from the east
                 .parkingIncluded(true)
                 .rating(Integer.MAX_VALUE)
-                .tags(Arrays.asList("test"))    // No meaningful string max; see above.
+                .tags(Collections.singletonList("test"))    // No meaningful string max; see above.
                 .address(new HotelAddress()
                     .city("Maximum"))
-                .rooms(Arrays.asList(
+                .rooms(Collections.singletonList(
                     new HotelRoom()
                         .baseRate(Double.MAX_VALUE)
                 )),
@@ -216,10 +217,10 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
                 .location(GeoPoint.create(0, 0))     // Equator, meridian
                 .parkingIncluded(null)
                 .rating(null)
-                .tags(Arrays.asList())
+                .tags(Collections.emptyList())
                 .address(new HotelAddress()
                     .city("Maximum"))
-                .rooms(Arrays.asList(
+                .rooms(Collections.singletonList(
                     new HotelRoom()
                         .baseRate(Double.NEGATIVE_INFINITY)
                 )),
@@ -227,16 +228,16 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
             new Hotel()
                 .hotelId("4")
                 .location(null)
-                .tags(Arrays.asList())
-                .rooms(Arrays.asList(
+                .tags(Collections.emptyList())
+                .rooms(Collections.singletonList(
                     new HotelRoom()
                         .baseRate(Double.POSITIVE_INFINITY)
                 )),
             // Other boundary values #3
             new Hotel()
                 .hotelId("5")
-                .tags(Arrays.asList())
-                .rooms(Arrays.asList(
+                .tags(Collections.emptyList())
+                .rooms(Collections.singletonList(
                     new HotelRoom()
                         .baseRate(Double.NaN)
                 )),
@@ -244,7 +245,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
             new Hotel()
                 .hotelId("6")
                 .category(null)
-                .tags(Arrays.asList())
-                .rooms(Arrays.asList()));
+                .tags(Collections.emptyList())
+                .rooms(Collections.emptyList()));
     }
 }

@@ -73,6 +73,7 @@ import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -104,13 +105,13 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setAnalyzer(customAnalyzerName)
                     .setSearchable(true)
             ))
-            .setAnalyzers(Arrays.asList(
+            .setAnalyzers(Collections.singletonList(
                 new CustomAnalyzer()
                     .setTokenizer(TokenizerName.STANDARD_V2.toString())
-                    .setCharFilters(Arrays.asList(customCharFilterName))
+                    .setCharFilters(Collections.singletonList(customCharFilterName))
                     .setName(customAnalyzerName)
             ))
-            .setCharFilters(Arrays.asList(
+            .setCharFilters(Collections.singletonList(
                 new PatternReplaceCharFilter()
                     .setPattern("@")
                     .setReplacement("_")
@@ -139,9 +140,9 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
             searchIndexClient.search("someone@somewhere.something", new SearchOptions(), generateRequestOptions());
 
         StepVerifier.create(results.collectList())
-            .assertNext(firstPage -> {
-                Assert.assertEquals("1", firstPage.get(0).getDocument().get("id"));
-            })
+            .assertNext(firstPage ->
+                Assert.assertEquals("1", firstPage.get(0).getDocument().get("id"))
+            )
             .verifyComplete();
     }
 
@@ -183,9 +184,9 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
 
         StepVerifier
             .create(searchServiceClient.createIndex(index))
-            .assertNext(res -> {
-                assertIndexesEqual(index, res);
-            })
+            .assertNext(res ->
+                assertIndexesEqual(index, res)
+            )
             .verifyComplete();
 
         // Add language analyzers to searchAnalyzer and indexAnalyzer properties and expect failure
@@ -196,7 +197,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                 .setSearchAnalyzer(AnalyzerName.EN_LUCENE.toString());
         } catch (Exception ex) {
             Assert.assertEquals(IllegalArgumentException.class, ex.getClass());
-            Assert.assertTrue(ex.getMessage().equals("Only non-language analyzer can be used as search analyzer."));
+            Assert.assertEquals("Only non-language analyzer can be used as search analyzer.", ex.getMessage());
         }
         try {
             new Field()
@@ -205,7 +206,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                 .setIndexAnalyzer(AnalyzerName.AR_MICROSOFT.toString());
         } catch (Exception ex) {
             Assert.assertEquals(IllegalArgumentException.class, ex.getClass());
-            Assert.assertTrue(ex.getMessage().equals("Only non-language analyzer can be used as index analyzer."));
+            Assert.assertEquals("Only non-language analyzer can be used as index analyzer.", ex.getMessage());
         }
     }
 
@@ -227,8 +228,8 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         request = new AnalyzeRequest()
             .setText("One's <two/>")
             .setTokenizer(TokenizerName.WHITESPACE)
-            .setTokenFilters(Arrays.asList(TokenFilterName.APOSTROPHE))
-            .setCharFilters(Arrays.asList(CharFilterName.HTML_STRIP));
+            .setTokenFilters(Collections.singletonList(TokenFilterName.APOSTROPHE))
+            .setCharFilters(Collections.singletonList(CharFilterName.HTML_STRIP));
         StepVerifier
             .create(searchServiceClient.analyzeText(index.getName(), request))
             .assertNext(onlyTokenInfo -> {
@@ -255,17 +256,15 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
             .map(an -> new AnalyzeRequest()
                 .setText("One two")
                 .setAnalyzer(an))
-            .forEach(r -> {
-                searchServiceClient.analyzeText(index.getName(), r);
-            });
+            .forEach(r ->
+                searchServiceClient.analyzeText(index.getName(), r)
+            );
 
         Arrays.stream(TokenizerName.values())
             .map(tn -> new AnalyzeRequest()
                 .setText("One two")
                 .setTokenizer(tn))
-            .forEach(r -> {
-                searchServiceClient.analyzeText(index.getName(), r);
-            });
+            .forEach(r -> searchServiceClient.analyzeText(index.getName(), r));
 
         AnalyzeRequest request = new AnalyzeRequest()
             .setText("One two")
@@ -278,7 +277,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
     @Override
     public void addingCustomAnalyzerThrowsHttpExceptionByDefault() {
         Index index = createTestIndex()
-            .setAnalyzers(Arrays.asList(
+            .setAnalyzers(Collections.singletonList(
                 new StopAnalyzer().setName("a1")
             ));
         searchServiceClient.createIndex(index).block();
@@ -300,7 +299,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
     @Override
     public void canAddCustomAnalyzerWithIndexDowntime() {
         Index index = createTestIndex()
-            .setAnalyzers(Arrays.asList(
+            .setAnalyzers(Collections.singletonList(
                 new StopAnalyzer().setName("a1")
             ));
         searchServiceClient.createIndex(index).block();
@@ -324,8 +323,8 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
             .setAnalyzers(Arrays.asList(
                 new CustomAnalyzer()
                     .setTokenizer(customTokenizerName)
-                    .setTokenFilters(Arrays.asList(customTokenFilterName))
-                    .setCharFilters(Arrays.asList(customCharFilterName))
+                    .setTokenFilters(Collections.singletonList(customTokenFilterName))
+                    .setCharFilters(Collections.singletonList(customCharFilterName))
                     .setName(generateName()),
                 new CustomAnalyzer()
                     .setTokenizer(TokenizerName.EDGE_NGRAM.toString())
@@ -334,14 +333,14 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setLowerCaseTerms(false)
                     .setPattern("abc")
                     .setFlags(RegexFlags.DOTALL)
-                    .setStopwords(Arrays.asList("the"))
+                    .setStopwords(Collections.singletonList("the"))
                     .setName(generateName()),
                 new StandardAnalyzer()
                     .setMaxTokenLength(100)
-                    .setStopwords(Arrays.asList("the"))
+                    .setStopwords(Collections.singletonList("the"))
                     .setName(generateName()),
                 new StopAnalyzer()
-                    .setStopwords(Arrays.asList("the"))
+                    .setStopwords(Collections.singletonList("the"))
                     .setName(generateName()),
                 new StopAnalyzer()
                     .setName(generateName())
@@ -354,12 +353,12 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                 new EdgeNGramTokenizer()
                     .setMinGram(2)
                     .setMaxGram(4)
-                    .setTokenChars(Arrays.asList(TokenCharacterKind.LETTER))
+                    .setTokenChars(Collections.singletonList(TokenCharacterKind.LETTER))
                     .setName(generateName()),
                 new NGramTokenizer()
                     .setMinGram(2)
                     .setMaxGram(4)
-                    .setTokenChars(Arrays.asList(TokenCharacterKind.LETTER))
+                    .setTokenChars(Collections.singletonList(TokenCharacterKind.LETTER))
                     .setName(generateName()),
                 new ClassicTokenizer()
                     .setMaxTokenLength(100)
@@ -400,7 +399,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                 new CjkBigramTokenFilter()
                     .setName(customTokenFilterName),  // One custom token filter for CustomAnalyzer above.
                 new CjkBigramTokenFilter()
-                    .setIgnoreScripts(Arrays.asList(CjkBigramTokenFilterScripts.HAN))
+                    .setIgnoreScripts(Collections.singletonList(CjkBigramTokenFilterScripts.HAN))
                     .setOutputUnigrams(true)
                     .setName(generateName()),
                 new CjkBigramTokenFilter()
@@ -416,10 +415,10 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setUseQueryMode(true)
                     .setName(generateName()),
                 new CommonGramTokenFilter()
-                    .setCommonWords(Arrays.asList("at"))
+                    .setCommonWords(Collections.singletonList("at"))
                     .setName(generateName()),
                 new DictionaryDecompounderTokenFilter()
-                    .setWordList(Arrays.asList("Schadenfreude"))
+                    .setWordList(Collections.singletonList("Schadenfreude"))
                     .setMinWordSize(10)
                     .setMinSubwordSize(5)
                     .setMaxSubwordSize(13)
@@ -431,12 +430,12 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setSide(EdgeNGramTokenFilterSide.BACK)
                     .setName(generateName()),
                 new ElisionTokenFilter()
-                    .setArticles(Arrays.asList("a"))
+                    .setArticles(Collections.singletonList("a"))
                     .setName(generateName()),
                 new ElisionTokenFilter()
                     .setName(generateName()),
                 new KeepTokenFilter()
-                    .setKeepWords(Arrays.asList("aloha"))
+                    .setKeepWords(Collections.singletonList("aloha"))
                     .setName(generateName()),
                 new KeepTokenFilter()
                     .setKeepWords(Arrays.asList("e", "komo", "mai"))
@@ -445,7 +444,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setKeywords(Arrays.asList("key", "words"))
                     .setName(generateName()),
                 new KeywordMarkerTokenFilter()
-                    .setKeywords(Arrays.asList("essential"))
+                    .setKeywords(Collections.singletonList("essential"))
                     .setName(generateName()),
                 new LengthTokenFilter()
                     .setMin(5)
@@ -460,7 +459,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setMaxGram(3)
                     .setName(generateName()),
                 new PatternCaptureTokenFilter()
-                    .setPatterns(Arrays.asList(".*"))
+                    .setPatterns(Collections.singletonList(".*"))
                     .setPreserveOriginal(false)
                     .setName(generateName()),
                 new PatternReplaceTokenFilter()
@@ -483,7 +482,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setLanguage(SnowballTokenFilterLanguage.ENGLISH)
                     .setName(generateName()),
                 new StemmerOverrideTokenFilter()
-                    .setRules(Arrays.asList("ran => run"))
+                    .setRules(Collections.singletonList("ran => run"))
                     .setName(generateName()),
                 new StemmerTokenFilter()
                     .setLanguage(StemmerTokenFilterLanguage.FRENCH)
@@ -499,7 +498,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setRemoveTrailingStopWords(false)
                     .setName(generateName()),
                 new SynonymTokenFilter()
-                    .setSynonyms(Arrays.asList("great, good"))
+                    .setSynonyms(Collections.singletonList("great, good"))
                     .setIgnoreCase(true)
                     .setExpand(false)
                     .setName(generateName()),
@@ -521,12 +520,12 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setPreserveOriginal(true)
                     .setSplitOnNumerics(false)
                     .setStemEnglishPossessive(false)
-                    .setProtectedWords(Arrays.asList("protected"))
+                    .setProtectedWords(Collections.singletonList("protected"))
                     .setName(generateName())
             ))
             .setCharFilters(Arrays.asList(
                 new MappingCharFilter()
-                    .setMappings(Arrays.asList("a => b")) // One custom char filter for CustomeAnalyer above.
+                    .setMappings(Collections.singletonList("a => b")) // One custom char filter for CustomeAnalyer above.
                     .setName(customCharFilterName),
                 new MappingCharFilter()
                     .setMappings(Arrays.asList("s => $", "S => $"))
@@ -574,7 +573,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
             ))
             .setTokenFilters(Arrays.asList(
                 new DictionaryDecompounderTokenFilter()
-                    .setWordList(Arrays.asList("Bahnhof"))
+                    .setWordList(Collections.singletonList("Bahnhof"))
                     .setName(generateSimpleName(i++)),
                 new EdgeNGramTokenFilterV2()
                     .setName(generateSimpleName(i++)),
@@ -585,7 +584,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                 new NGramTokenFilterV2()
                     .setName(generateSimpleName(i++)),
                 new PatternCaptureTokenFilter()
-                    .setPatterns(Arrays.asList("[a-z]*"))
+                    .setPatterns(Collections.singletonList("[a-z]*"))
                     .setName(generateSimpleName(i++)),
                 new PhoneticTokenFilter()
                     .setName(generateSimpleName(i++)),
@@ -594,7 +593,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                 new StopwordsTokenFilter()
                     .setName(generateSimpleName(i++)),
                 new SynonymTokenFilter()
-                    .setSynonyms(Arrays.asList("mutt, canine => dog"))
+                    .setSynonyms(Collections.singletonList("mutt, canine => dog"))
                     .setName(generateSimpleName(i++)),
                 new TruncateTokenFilter()
                     .setName(generateSimpleName(i++)),
@@ -658,7 +657,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
             ))
             .setTokenFilters(Arrays.asList(
                 new DictionaryDecompounderTokenFilter()
-                    .setWordList(Arrays.asList("Bahnhof"))
+                    .setWordList(Collections.singletonList("Bahnhof"))
                     .setMinWordSize(5)
                     .setMinSubwordSize(2)
                     .setMaxSubwordSize(15)
@@ -679,7 +678,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setMaxGram(2)
                     .setName(generateSimpleName(i++)),
                 new PatternCaptureTokenFilter()
-                    .setPatterns(Arrays.asList("[a-z]*"))
+                    .setPatterns(Collections.singletonList("[a-z]*"))
                     .setPreserveOriginal(true)
                     .setName(generateSimpleName(i++)),
                 new PhoneticTokenFilter()
@@ -699,7 +698,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setName(generateSimpleName(i++)),
                 new SynonymTokenFilter()
                     .setExpand(true)
-                    .setSynonyms(Arrays.asList("mutt, canine => dog"))
+                    .setSynonyms(Collections.singletonList("mutt, canine => dog"))
                     .setName(generateSimpleName(i++)),
                 new TruncateTokenFilter()
                     .setLength(300)
@@ -738,18 +737,17 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
             new CustomAnalyzer()
                 .setTokenizer(TokenizerName.LOWERCASE.toString())
                 .setTokenFilters(Stream.of(TokenFilterName.values())
-                    .map(tf -> tf.toString())
+                    .map(TokenFilterName::toString)
                     .collect(Collectors.toList()))
                 .setCharFilters(Stream.of(CharFilterName.values())
-                    .map(cf -> cf.toString())
+                    .map(CharFilterName::toString)
                     .collect(Collectors.toList()))
                 .setName("abc");
 
         Index index = createTestIndex();
         List<Analyzer> analyzers = new ArrayList<>();
         analyzers.add(analyzerWithAllTokenFilterAndCharFilters);
-        analyzers.addAll(Arrays.asList(TokenizerName.values())
-            .stream()
+        analyzers.addAll(Arrays.stream(TokenizerName.values())
             .map(tn -> new CustomAnalyzer()
                 .setTokenizer(tn.toString())
                 .setName(generateName()))
@@ -765,8 +763,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
     @Override
     public void canUseAllRegexFlags() {
         Index index = createTestIndex()
-            .setAnalyzers(Arrays.asList(RegexFlags.values())
-                .stream()
+            .setAnalyzers(Arrays.stream(RegexFlags.values())
                 .map(rf -> new PatternAnalyzer()
                     .setLowerCaseTerms(true)
                     .setPattern(".*")

@@ -319,7 +319,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void dynamicDocumentDateTimesRoundTripAsUtc() throws Exception {
+    public void dynamicDocumentDateTimesRoundTripAsUtc() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
 
@@ -357,7 +357,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void staticallyTypedDateTimesRoundTripAsUtc() throws Exception {
+    public void staticallyTypedDateTimesRoundTripAsUtc() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
 
@@ -554,7 +554,7 @@ public class IndexingSyncTests extends IndexingTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Arrays.asList("vcr/dvd")),
+                    .tags(Collections.singletonList("vcr/dvd")),
                 new HotelRoom()
                     .description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")

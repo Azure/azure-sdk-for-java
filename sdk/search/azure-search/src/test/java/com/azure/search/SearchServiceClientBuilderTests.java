@@ -8,7 +8,6 @@ import org.junit.Test;
 public class SearchServiceClientBuilderTests {
     private final ApiKeyCredentials apiKeyCredentials = new ApiKeyCredentials("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
-    private final String indexName = "myindex";
     private final String apiVersion = "2019-05-06";
 
     @Test

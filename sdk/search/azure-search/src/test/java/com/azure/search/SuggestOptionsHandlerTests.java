@@ -6,6 +6,7 @@ package com.azure.search;
 import com.azure.search.models.SuggestOptions;
 import org.junit.Assert;
 import org.junit.Test;
+
 import java.util.Collections;
 import java.util.List;
 

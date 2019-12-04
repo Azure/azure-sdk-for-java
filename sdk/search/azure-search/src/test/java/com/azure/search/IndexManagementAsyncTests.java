@@ -12,12 +12,12 @@ import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
-import com.azure.search.models.RequestOptions;
-import com.azure.search.models.ScoringProfile;
-import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
+import com.azure.search.models.MagnitudeScoringParameters;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
+import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.Suggester;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.test.AccessConditionAsyncTests;
@@ -77,9 +77,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         StepVerifier
             .create(client.createIndex(index))
-            .assertNext(createdIndex -> {
-                assertIndexesEqual(index, createdIndex);
-            })
+            .assertNext(createdIndex -> assertIndexesEqual(index, createdIndex))
             .verifyComplete();
 
         StepVerifier
@@ -147,16 +145,12 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.getIndex(index.getName()))
-            .assertNext(res -> {
-                assertIndexesEqual(index, res);
-            })
+            .assertNext(res -> assertIndexesEqual(index, res))
             .verifyComplete();
 
         StepVerifier
             .create(client.getIndexWithResponse(index.getName(), generateRequestOptions()))
-            .assertNext(res -> {
-                assertIndexesEqual(index, res.getValue());
-            })
+            .assertNext(res -> assertIndexesEqual(index, res.getValue()))
             .verifyComplete();
     }
 
@@ -178,7 +172,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.indexExists(index.getName()))
-            .assertNext(res -> Assert.assertTrue(res))
+            .assertNext(Assert::assertTrue)
             .verifyComplete();
 
         StepVerifier
@@ -191,7 +185,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     public void existsReturnsFalseForNonExistingIndex() {
         StepVerifier
             .create(client.indexExists("invalidindex"))
-            .assertNext(res -> Assert.assertFalse(res))
+            .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
 
@@ -230,31 +224,31 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             ));
         StepVerifier
             .create(client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions()))
-            .assertNext(indexResponse -> {
-                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), indexResponse.getStatusCode());
-            })
+            .assertNext(indexResponse ->
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), indexResponse.getStatusCode())
+            )
             .verifyComplete();
 
         StepVerifier
             .create(client.createIndexWithResponse(index, generateRequestOptions()))
-            .assertNext(indexResponse -> {
-                Assert.assertEquals(HttpResponseStatus.CREATED.code(), indexResponse.getStatusCode());
-            })
+            .assertNext(indexResponse ->
+                Assert.assertEquals(HttpResponseStatus.CREATED.code(), indexResponse.getStatusCode())
+            )
             .verifyComplete();
 
         // Delete the same index twice
         StepVerifier
             .create(client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions()))
-            .assertNext(indexResponse -> {
-                Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), indexResponse.getStatusCode());
-            })
+            .assertNext(indexResponse ->
+                Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), indexResponse.getStatusCode())
+            )
             .verifyComplete();
 
         StepVerifier
             .create(client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions()))
-            .assertNext(indexResponse -> {
-                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), indexResponse.getStatusCode());
-            })
+            .assertNext(indexResponse ->
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), indexResponse.getStatusCode())
+            )
             .verifyComplete();
     }
 
@@ -266,9 +260,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.indexExists(index.getName()))
-            .assertNext(response -> {
-                Assert.assertFalse(response);
-            })
+            .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
 
@@ -304,7 +296,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(selectedFieldListResponse.collectList())
-            .assertNext(result -> {
+            .assertNext(result ->
                 result.forEach(res -> {
                     Assert.assertNotNull(res.getName());
                     Assert.assertNull(res.getFields());
@@ -316,8 +308,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
                     Assert.assertNull(res.getTokenizers());
                     Assert.assertNull(res.getTokenFilters());
                     Assert.assertNull(res.getCharFilters());
-                });
-            })
+                })
+            )
             .verifyComplete();
 
         StepVerifier
@@ -383,9 +375,9 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         StepVerifier
             .create(client.createOrUpdateIndexWithResponse(existingIndex,
                 true, new AccessCondition(), generateRequestOptions()))
-            .assertNext(res  -> {
-                assertIndexesEqual(existingIndex, res.getValue());
-            })
+            .assertNext(res  ->
+                assertIndexesEqual(existingIndex, res.getValue())
+            )
             .verifyComplete();
     }
 

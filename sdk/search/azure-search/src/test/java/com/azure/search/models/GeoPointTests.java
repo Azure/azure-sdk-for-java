@@ -5,11 +5,10 @@ package com.azure.search.models;
 
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Context;
-import com.azure.search.SearchPagedResponse;
-
 import com.azure.search.SearchIndexClient;
-import com.azure.search.implementation.SerializationUtil;
 import com.azure.search.SearchIndexClientTestBase;
+import com.azure.search.SearchPagedResponse;
+import com.azure.search.implementation.SerializationUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;

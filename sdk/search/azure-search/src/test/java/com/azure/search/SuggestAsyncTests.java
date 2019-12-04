@@ -114,7 +114,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void canSuggestWithDateTimeInStaticModel() throws Exception {
+    public void canSuggestWithDateTimeInStaticModel() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
         Author tolkien = new Author();

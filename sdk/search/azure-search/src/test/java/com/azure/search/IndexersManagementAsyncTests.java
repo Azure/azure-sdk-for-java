@@ -88,7 +88,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         return client.deleteIndexerWithResponse(indexerName, accessCondition, requestOptions).flatMap(FluxUtil::toMono);
     }
 
-    protected void createDatasourceAndIndex(String dataSourceName, String indexName) {
+    private void createDatasourceAndIndex(String dataSourceName, String indexName) {
         // Create DataSource
         DataSource dataSource = createTestSqlDataSourceObject(dataSourceName);
         createDatasource(dataSource);
@@ -98,7 +98,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createIndex(index);
     }
 
-    List<Indexer> prepareIndexersForCreateAndListIndexers() {
+    private List<Indexer> prepareIndexersForCreateAndListIndexers() {
         // Create DataSource and Index
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
@@ -113,7 +113,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         return Arrays.asList(indexer1, indexer2);
     }
 
-    protected Indexer createTestDataSourceAndIndexer() {
+    private Indexer createTestDataSourceAndIndexer() {
         // Create DataSource and Index
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
@@ -433,9 +433,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         client.deleteIndexer(indexer.getName()).block();
         StepVerifier
             .create(client.indexerExists(indexer.getName()))
-            .assertNext(response -> {
-                Assert.assertFalse(response);
-            })
+            .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
 

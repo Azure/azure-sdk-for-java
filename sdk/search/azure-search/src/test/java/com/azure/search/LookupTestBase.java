@@ -4,8 +4,8 @@ package com.azure.search;
 
 import com.azure.search.models.GeoPoint;
 import com.azure.search.test.environment.models.Hotel;
-import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.HotelAddress;
+import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import org.junit.Test;
 
@@ -22,9 +22,8 @@ import static java.lang.Double.POSITIVE_INFINITY;
 public abstract class LookupTestBase extends SearchIndexClientTestBase {
 
     static final String INDEX_NAME = "hotels";
-
-    protected static final String DATA_TYPES_INDEX_NAME = "data-types-tests-index";
-    protected static final String MODEL_WITH_DATA_TYPES_INDEX_JSON = "DataTypesTestsIndexData.json";
+    static final String DATA_TYPES_INDEX_NAME = "data-types-tests-index";
+    static final String MODEL_WITH_DATA_TYPES_INDEX_JSON = "DataTypesTestsIndexData.json";
 
     Hotel prepareExpectedHotel() throws ParseException {
         return new Hotel().hotelId("1")
@@ -91,7 +90,7 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
                     .tags(Collections.singletonList("coffee maker"))));
     }
 
-    ModelWithPrimitiveCollections preparePrimitivesModel() throws ParseException {
+    ModelWithPrimitiveCollections preparePrimitivesModel() {
         return new ModelWithPrimitiveCollections()
             .key("1")
             .bools(new Boolean[]{true, false})

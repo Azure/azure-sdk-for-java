@@ -71,15 +71,15 @@ public class IndexerAsyncTest extends SearchServiceTestBase {
         client.createOrUpdateIndexer(indexer);
 
         StepVerifier.create(client.getIndexerStatus(indexer.getName()))
-            .assertNext(indexerExecutionInfo -> {
-                Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
-            })
+            .assertNext(indexerExecutionInfo ->
+                Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus())
+            )
             .verifyComplete();
 
         StepVerifier.create(client.runIndexerWithResponse(indexer.getName(),  null, null))
-            .assertNext(response -> {
-                Assert.assertEquals(HttpStatus.SC_ACCEPTED, response.getStatusCode());
-            })
+            .assertNext(response ->
+                Assert.assertEquals(HttpStatus.SC_ACCEPTED, response.getStatusCode())
+            )
             .verifyComplete();
 
         StepVerifier.create(client.getIndexerStatus(indexer.getName()))
@@ -104,9 +104,9 @@ public class IndexerAsyncTest extends SearchServiceTestBase {
     }
 
     private void assertStartAndEndTimeValid(IndexerExecutionResult result) {
-        Assert.assertTrue(result.getStartTime() != null);
+        Assert.assertNotNull(result.getStartTime());
         Assert.assertNotEquals(OffsetDateTime.now(), result.getStartTime());
-        Assert.assertTrue(result.getEndTime() != null);
+        Assert.assertNotNull(result.getEndTime());
         Assert.assertNotEquals(OffsetDateTime.now(), result.getEndTime());
     }
 
@@ -116,7 +116,5 @@ public class IndexerAsyncTest extends SearchServiceTestBase {
             .setTargetIndexName("indexforindexers")
             .setSchedule(new IndexingSchedule().setInterval(Duration.ofDays(1)));
     }
-
-
 }
 

@@ -28,10 +28,10 @@ public class DataSourceExample {
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
-    public static final String TABLE_STORAGE_CONNECTION_STRING = "<Your Table Storage connection string>";
-    public static final String COSMOS_DB_CONNECTION_STRING = "<Your Cosmos DB connection string>";
-    public static final String BLOB_STORAGE_CONNECTION_STRING = "<Your Blob Storage connection string>";
-    public static final String SQL_CONNECTION_STRING = "<Your SQL connection string>";
+    private static final String TABLE_STORAGE_CONNECTION_STRING = "<Your Table Storage connection string>";
+    private static final String COSMOS_DB_CONNECTION_STRING = "<Your Cosmos DB connection string>";
+    private static final String BLOB_STORAGE_CONNECTION_STRING = "<Your Blob Storage connection string>";
+    private static final String SQL_CONNECTION_STRING = "<Your SQL connection string>";
 
     public static void main(String[] args) {
         SearchServiceClient client = new SearchServiceClientBuilder()
@@ -43,7 +43,7 @@ public class DataSourceExample {
          * Store the names of the created data sources so that we can delete them later
          * without affecting other resources.
          * */
-        Collection<String> names = new HashSet<String>();
+        Collection<String> names = new HashSet<>();
 
         names.add(createSqlDataSource(client));
         names.add(createCosmosDBDataSource(client));
@@ -101,9 +101,8 @@ public class DataSourceExample {
             client.createOrUpdateDataSource(dataSource);
         } catch (Exception ex) {
             System.err.println(ex.toString());
-        } finally {
-            return dataSource.getName();
         }
+        return dataSource.getName();
     }
 
     private static String createTableStorageDataSource(SearchServiceClient client) {

@@ -53,17 +53,17 @@ public class SearchOptionsExample {
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
             new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"), new RequestOptions(), Context.NONE);
 
-        results.iterableByPage().forEach(page -> {
+        results.iterableByPage().forEach(page ->
             page.getFacets().forEach((k, v) -> {
                 v.forEach(result -> {
                     System.out.println(k + " :");
                     System.out.println("    count: " + result.getCount());
-                    result.getDocument().forEach((f, d) -> {
-                        System.out.println("    " + f + " : " + d);
-                    });
+                    result.getDocument().forEach((f, d) ->
+                        System.out.println("    " + f + " : " + d)
+                    );
                 });
-            });
-        });
+            })
+        );
     }
 
     private static void searchResultsFacetsFromStream(SearchIndexClient searchClient) {
@@ -73,17 +73,17 @@ public class SearchOptionsExample {
             new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"), new RequestOptions(), Context.NONE);
 
         Stream<SearchPagedResponse> searchPagedResponseStream = results.streamByPage();
-        searchPagedResponseStream.forEach(page -> {
+        searchPagedResponseStream.forEach(page ->
             page.getFacets().forEach((k, v) -> {
                 v.forEach(result -> {
                     System.out.println(k + " :");
                     System.out.println("    count: " + result.getCount());
-                    result.getDocument().forEach((f, d) -> {
-                        System.out.println("    " + f + " : " + d);
-                    });
+                    result.getDocument().forEach((f, d) ->
+                        System.out.println("    " + f + " : " + d)
+                    );
                 });
-            });
-        });
+            })
+        );
     }
 
     private static void searchResultsCoverageFromStream(SearchIndexClient searchClient) {
@@ -92,9 +92,9 @@ public class SearchOptionsExample {
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
             new SearchOptions().setMinimumCoverage(73.5), new RequestOptions(), Context.NONE);
 
-        results.streamByPage().forEach(searchPagedResponse -> {
-            System.out.println("Coverage = " + searchPagedResponse.getCoverage());
-        });
+        results.streamByPage().forEach(searchPagedResponse ->
+            System.out.println("Coverage = " + searchPagedResponse.getCoverage())
+        );
     }
 
     private static void searchResultsCoverage(SearchIndexClient searchClient) {
@@ -103,9 +103,9 @@ public class SearchOptionsExample {
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
             new SearchOptions().setMinimumCoverage(73.5), new RequestOptions(), Context.NONE);
 
-        results.iterableByPage().forEach(page -> {
-            System.out.println("Coverage = " + page.getCoverage());
-        });
+        results.iterableByPage().forEach(page ->
+            System.out.println("Coverage = " + page.getCoverage())
+        );
     }
 
     private static void searchResultsCountFromPage(SearchIndexClient searchClient) {
@@ -116,9 +116,9 @@ public class SearchOptionsExample {
             new SearchOptions().setIncludeTotalResultCount(true), new RequestOptions(), Context.NONE);
 
         Iterable<SearchPagedResponse> searchPagedResponses = results.iterableByPage();
-        searchPagedResponses.forEach(page -> {
-            System.out.println("Count = " + page.getCount());
-        });
+        searchPagedResponses.forEach(page ->
+            System.out.println("Count = " + page.getCount())
+        );
     }
 
     private static void searchResultsCountFromStream(SearchIndexClient searchClient) {
@@ -129,24 +129,25 @@ public class SearchOptionsExample {
             new SearchOptions().setIncludeTotalResultCount(true), new RequestOptions(), Context.NONE);
 
         Stream<SearchPagedResponse> searchPagedResponseStream = results.streamByPage();
-        searchPagedResponseStream.forEach(page -> {
-            System.out.println("Count = " + page.getCount());
-        });
+        searchPagedResponseStream.forEach(page ->
+            System.out.println("Count = " + page.getCount())
+        );
+
     }
 
     private static void searchResultAsStream(SearchIndexClient searchClient) {
         // Converting search results to stream
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*");
         Stream<SearchResult> resultStream = results.stream();
-        resultStream.forEach(result -> {
-            result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)));
-        });
+        resultStream.forEach(result ->
+            result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
+        );
     }
 
     private static void searchResultsAsPagedIterable(SearchIndexClient searchClient) {
         PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*");
-        results.forEach(result -> {
-            result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)));
-        });
+        results.forEach(result ->
+            result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
+        );
     }
 }

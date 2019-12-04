@@ -41,8 +41,8 @@ public class IndexAndServiceStatisticsExample {
      * From the Azure portal, get your Azure Cognitive Search service name and API key and
      * populate ADMIN_KEY and SEARCH_SERVICE_NAME.
      */
-    public static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
-    public static final String SEARCH_SERVICE_NAME = "<Your Search Service Name>";
+    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
+    private static final String SEARCH_SERVICE_NAME = "<Your Search Service Name>";
 
     public static void main(String[] args) {
         SearchServiceClient client = createClient();
@@ -110,10 +110,9 @@ public class IndexAndServiceStatisticsExample {
         System.out.println("document Count:" + documentCount);
         System.out.println("storage Size:" + storageSize);
 
-        /** Output:
-         * document Count:0
-         * storage Size:0
-         */
+        // Output:
+        // document Count:0
+        // storage Size:0
     }
 
     /**
@@ -412,9 +411,9 @@ public class IndexAndServiceStatisticsExample {
             .setCorsOptions(new CorsOptions()
                 .setAllowedOrigins("http://tempuri.org", "http://localhost:80")
                 .setMaxAgeInSeconds(60L))
-            .setSuggesters(Arrays.asList(new Suggester()
+            .setSuggesters(Collections.singletonList(new Suggester()
                 .setName("FancySuggester")
-                .setSourceFields(Arrays.asList("HotelName"))));
+                .setSourceFields(Collections.singletonList("HotelName"))));
     }
 
     /**

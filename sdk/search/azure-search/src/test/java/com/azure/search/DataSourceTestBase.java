@@ -83,7 +83,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     @Test
     public abstract void canUpdateConnectionData();
 
-    protected DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
+    DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
         return DataSources.azureBlobStorage(
             BLOB_DATASOURCE_TEST_NAME,
             "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;",
@@ -94,7 +94,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
         );
     }
 
-    protected DataSource createTestTableStorageDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
+    DataSource createTestTableStorageDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
         return DataSources.azureTableStorage(
             "azs-java-test-tablestorage",
             "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;",
@@ -105,7 +105,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
         );
     }
 
-    protected DataSource createTestCosmosDbDataSource(
+    DataSource createTestCosmosDbDataSource(
         DataDeletionDetectionPolicy deletionDetectionPolicy,
         boolean useChangeDetection) {
 

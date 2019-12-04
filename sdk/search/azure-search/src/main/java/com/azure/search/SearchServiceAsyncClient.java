@@ -32,6 +32,7 @@ import com.azure.search.models.SynonymMap;
 import com.azure.search.models.TokenInfo;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
+
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -1396,5 +1397,4 @@ public class SearchServiceAsyncClient {
             entry.getKey() + "," + entry.getValue()
         ).collect(Collectors.joining(","));
     }
-
 }

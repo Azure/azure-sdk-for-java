@@ -63,15 +63,14 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
     @Test
     public abstract void canUseAllAnalysisComponentOptions();
 
-    protected void addAnalyzerToIndex(Index index, Analyzer analyzer) {
-        List<Analyzer> analyzers = new ArrayList<>();
-        analyzers.addAll(index.getAnalyzers());
+    void addAnalyzerToIndex(Index index, Analyzer analyzer) {
+        List<Analyzer> analyzers = new ArrayList<>(index.getAnalyzers());
         analyzers.add(analyzer);
 
         index.setAnalyzers(analyzers);
     }
 
-    protected void assertAnalysisComponentsEqual(Index expected, Index actual) {
+    void assertAnalysisComponentsEqual(Index expected, Index actual) {
         // Compare analysis components directly so that test failures show better comparisons.
         // Analyzers
         List<Analyzer> expectedAnalyzers = expected.getAnalyzers();
@@ -101,19 +100,19 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
         }
     }
 
-    protected void assertAnalyzersEqual(Analyzer expected, Analyzer actual) {
+    private void assertAnalyzersEqual(Analyzer expected, Analyzer actual) {
         expected.setName("none");
         actual.setName("none");
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
-    protected void assertTokenizersEqual(Tokenizer expected, Tokenizer actual) {
+    private void assertTokenizersEqual(Tokenizer expected, Tokenizer actual) {
         expected.setName("none");
         actual.setName("none");
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
-    protected String generateName() {
+    String generateName() {
         return SdkContext.randomResourceName(NAME_PREFIX, 24);
     }
 
@@ -121,14 +120,12 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
      * Custom analysis components (analyzer/tokenzier/tokenFilter/charFilter) count in index must be between 0 and 50.
      * Split an Index into indexes, each of which has a total analysis components count within the limit.
      */
-    protected List<Index> splitIndex(Index index) {
-        List<Index> indexes = new ArrayList<>();
+    List<Index> splitIndex(Index index) {
 
         Collection<List<Analyzer>> analyzersLists = splitAnalysisComponents(index.getAnalyzers());
-        indexes.addAll(analyzersLists
+        List<Index> indexes = analyzersLists
             .stream()
-            .map(a -> createTestIndex().setAnalyzers(a))
-            .collect(Collectors.toList()));
+            .map(a -> createTestIndex().setAnalyzers(a)).collect(Collectors.toList());
 
         Collection<List<Tokenizer>> tokenizersLists = splitAnalysisComponents(index.getTokenizers());
         indexes.addAll(tokenizersLists
@@ -155,7 +152,7 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
      * Custom analysis components (analyzer/tokenzier/tokenFilter/charFilter) count in index must be between 0 and 50.
      * Split a list of analysis components into lists within the limit.
      */
-    protected <T> Collection<List<T>> splitAnalysisComponents(List<T> list) {
+    private <T> Collection<List<T>> splitAnalysisComponents(List<T> list) {
         final int analysisComponentLimit = 50;
         Collection<List<T>> lists = new HashSet<>();
 
@@ -173,26 +170,25 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
         return lists;
     }
 
-    protected void assertTokenInfoEqual(String expectedToken,
-                                        Integer expectedStartOffset,
-                                        Integer expectedEndOffset,
-                                        Integer expectedPosition,
-                                        TokenInfo actual) {
+    void assertTokenInfoEqual(String expectedToken,
+                              Integer expectedStartOffset,
+                              Integer expectedEndOffset,
+                              Integer expectedPosition,
+                              TokenInfo actual) {
         Assert.assertEquals(expectedToken, actual.getToken());
         Assert.assertEquals(expectedStartOffset, actual.getStartOffset());
         Assert.assertEquals(expectedEndOffset, actual.getEndOffset());
         Assert.assertEquals(expectedPosition, actual.getPosition());
     }
 
-    protected String generateSimpleName(int n) {
+    String generateSimpleName(int n) {
         return String.format("a%d", n);
     }
 
-    protected List<AnalyzerName> getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer() {
+    List<AnalyzerName> getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer() {
         // Only non-language analyzer names can be set on the searchAnalyzer and indexAnalyzer properties.
         // ASSUMPTION: Only language analyzers end in .lucene or .microsoft.
-        return Arrays.asList(AnalyzerName.values())
-            .stream()
+        return Arrays.stream(AnalyzerName.values())
             .filter(an -> !an.toString().endsWith(".lucene") && !an.toString().endsWith(".microsoft"))
             .collect(Collectors.toList());
     }

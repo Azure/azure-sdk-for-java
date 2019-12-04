@@ -380,15 +380,15 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(listResponse.collectList())
-            .assertNext(result -> {
+            .assertNext(result ->
                 result.forEach(res -> {
                     Assert.assertNotNull(res.getName());
                     Assert.assertNull(res.getCognitiveServices());
                     Assert.assertNull(res.getDescription());
                     Assert.assertNull(res.getSkills());
                     Assert.assertNull(res.getETag());
-                });
-            })
+                })
+            )
             .verifyComplete();
 
         StepVerifier
@@ -407,25 +407,25 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(), generateRequestOptions()))
-            .assertNext(deleteResponse -> {
-                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
-            })
+            .assertNext(deleteResponse ->
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode())
+            )
             .verifyComplete();
 
         client.createSkillset(skillset).block();
 
         StepVerifier
             .create(client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(), generateRequestOptions()))
-            .assertNext(deleteResponse -> {
-                Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
-            })
+            .assertNext(deleteResponse ->
+                Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode())
+            )
             .verifyComplete();
 
         StepVerifier
             .create(client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(), generateRequestOptions()))
-            .assertNext(deleteResponse -> {
-                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
-            })
+            .assertNext(deleteResponse ->
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode())
+            )
             .verifyComplete();
     }
 
@@ -437,9 +437,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.skillsetExists(expected.getName()))
-            .assertNext(response -> {
-                Assert.assertFalse(response);
-            })
+            .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
 
@@ -480,7 +478,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     public void existsReturnsFalseForNonExistingSkillset() {
         StepVerifier
             .create(client.skillsetExists("nonexistent"))
-            .assertNext(res -> Assert.assertFalse(res))
+            .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
 
@@ -492,7 +490,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.skillsetExists(skillset.getName()))
-            .assertNext(res -> Assert.assertTrue(res))
+            .assertNext(Assert::assertTrue)
             .verifyComplete();
 
         StepVerifier

@@ -63,7 +63,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createIndex(index);
     }
 
-    List<Indexer> prepareIndexersForCreateAndListIndexers() {
+    private List<Indexer> prepareIndexersForCreateAndListIndexers() {
         // Create DataSource and Index
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
@@ -78,7 +78,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         return Arrays.asList(indexer1, indexer2);
     }
 
-    protected Indexer createTestDataSourceAndIndexer() {
+    private Indexer createTestDataSourceAndIndexer() {
         // Create DataSource and Index
         createDatasourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
@@ -96,7 +96,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
      * @param updatedIndexer the indexer to be updated
      * @param dataSourceName the data source name for this indexer
      */
-    void createUpdateAndValidateIndexer(Indexer updatedIndexer, String dataSourceName) {
+    private void createUpdateAndValidateIndexer(Indexer updatedIndexer, String dataSourceName) {
         updatedIndexer.setDataSourceName(dataSourceName);
 
         // Create an index

@@ -124,14 +124,14 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     List<RangeFacetResult> getRangeFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
-        return facetCollection.stream().map(facetResult -> new RangeFacetResult(facetResult))
+        return facetCollection.stream().map(RangeFacetResult::new)
             .collect(Collectors.toList());
     }
 
     List<ValueFacetResult> getValueFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
-        return facetCollection.stream().map(facetResult -> new ValueFacetResult(facetResult))
+        return facetCollection.stream().map(ValueFacetResult::new)
             .collect(Collectors.toList());
     }
 

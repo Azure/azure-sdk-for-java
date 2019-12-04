@@ -28,7 +28,7 @@ import java.util.Map;
 public class SearchIndexClientTestBase extends SearchServiceTestBase {
 
     private static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
-    protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     protected <T> void uploadDocuments(SearchIndexClient client, List<T> uploadDoc) {
         client.uploadDocuments(uploadDoc);
@@ -41,7 +41,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         waitForIndexing();
     }
 
-    protected <T> void uploadDocument(SearchIndexClient client, T uploadDoc) {
+    <T> void uploadDocument(SearchIndexClient client, T uploadDoc) {
         List<T> docs = new ArrayList<>();
         docs.add(uploadDoc);
 
@@ -49,7 +49,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         waitForIndexing();
     }
 
-    protected <T> void uploadDocument(SearchIndexAsyncClient client, T uploadDoc) {
+    <T> void uploadDocument(SearchIndexAsyncClient client, T uploadDoc) {
         List<T> docs = new ArrayList<>();
         docs.add(uploadDoc);
 
@@ -58,7 +58,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         waitForIndexing();
     }
 
-    protected List<Map<String, Object>> uploadDocumentsJson(
+    List<Map<String, Object>> uploadDocumentsJson(
         SearchIndexAsyncClient client, String dataJson) throws IOException {
         List<Map<String, Object>> documents =
             readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() {
@@ -68,7 +68,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         return documents;
     }
 
-    protected List<Map<String, Object>> uploadDocumentsJson(
+    List<Map<String, Object>> uploadDocumentsJson(
         SearchIndexClient client, String dataJson) throws IOException {
         List<Map<String, Object>> documents =
             readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() {
@@ -90,7 +90,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         return objectMapper.readValue(reader, listTypeReference);
     }
 
-    protected SearchIndexClientBuilder getClientBuilder(String indexName) {
+    SearchIndexClientBuilder getClientBuilder(String indexName) {
         if (!interceptorManager.isPlaybackMode()) {
             return new SearchIndexClientBuilder()
                 .endpoint(endpoint)

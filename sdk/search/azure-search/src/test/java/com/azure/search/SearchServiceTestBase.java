@@ -28,7 +28,6 @@ import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ResourceCounter;
-import com.azure.search.models.ScoringFunction;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.ScoringProfile;
@@ -40,13 +39,11 @@ import com.azure.search.models.Suggester;
 import com.azure.search.models.TagScoringFunction;
 import com.azure.search.models.TagScoringParameters;
 import com.azure.search.models.TextWeights;
-import com.azure.search.test.environment.models.ModelComparer;
 import com.azure.search.test.environment.setup.AzureSearchResources;
 import com.azure.search.test.environment.setup.SearchIndexService;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import org.apache.commons.lang3.NotImplementedException;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -61,8 +58,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
+
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public abstract class SearchServiceTestBase extends TestBase {
 
@@ -88,8 +87,8 @@ public abstract class SearchServiceTestBase extends TestBase {
     private String searchServiceName;
     private String searchDnsSuffix;
     protected String endpoint;
-    protected ApiKeyCredentials apiKeyCredentials;
-    protected SearchIndexService searchServiceHotelsIndex;
+    ApiKeyCredentials apiKeyCredentials;
+    SearchIndexService searchServiceHotelsIndex;
 
     private static String testEnvironment;
     private static AzureSearchResources azureSearchResources;
@@ -152,8 +151,8 @@ public abstract class SearchServiceTestBase extends TestBase {
         }
     }
 
-    protected Index createTestIndex() {
-        Map<String, Double> weights = new HashMap<String, Double>();
+    Index createTestIndex() {
+        Map<String, Double> weights = new HashMap<>();
         weights.put("Description", 1.5);
         weights.put("Category", 2.0);
         return new Index()
@@ -443,9 +442,9 @@ public abstract class SearchServiceTestBase extends TestBase {
             .setCorsOptions(new CorsOptions()
                 .setAllowedOrigins("http://tempuri.org", "http://localhost:80")
                 .setMaxAgeInSeconds(60L))
-            .setSuggesters(Arrays.asList(new Suggester()
+            .setSuggesters(Collections.singletonList(new Suggester()
                 .setName("FancySuggester")
-                .setSourceFields(Arrays.asList("HotelName"))));
+                .setSourceFields(Collections.singletonList("HotelName"))));
     }
 
     DataSource createTestSqlDataSourceObject(
@@ -470,7 +469,7 @@ public abstract class SearchServiceTestBase extends TestBase {
      * create a new blob data source object
      * @return the created data source
      */
-    protected DataSource createBlobDataSource() {
+    DataSource createBlobDataSource() {
         String storageConnString = "";
         String blobContainerDatasourceName = "";
         if (!interceptorManager.isPlaybackMode()) {
@@ -550,135 +549,8 @@ public abstract class SearchServiceTestBase extends TestBase {
         }
     }
 
-    protected void assertFieldsEqual(Field expected, Field actual) {
-        Assert.assertEquals(expected.getName(), actual.getName());
-
-        // ONLY verify the properties we set explicitly.
-        if (expected.isKey() != null) {
-            Assert.assertEquals(expected.isKey(), actual.isKey());
-        }
-        if (expected.isSearchable() != null) {
-            Assert.assertEquals(expected.isSearchable(), actual.isSearchable());
-        }
-        if (expected.isFilterable() != null) {
-            Assert.assertEquals(expected.isFilterable(), actual.isFilterable());
-        }
-        if (expected.isSortable() != null) {
-            Assert.assertEquals(expected.isSortable(), actual.isSortable());
-        }
-        if (expected.isFacetable() != null) {
-            Assert.assertEquals(expected.isFacetable(), actual.isFacetable());
-        }
-        if (expected.isRetrievable() != null) {
-            Assert.assertEquals(expected.isRetrievable(), actual.isRetrievable());
-        }
-    }
-
     protected void assertIndexesEqual(Index expected, Index actual) {
-        Double delta = 0.0;
-
-        // Fields
-        List<Field> expectedFields = expected.getFields();
-        List<Field> actualFields = actual.getFields();
-        if (expectedFields != null && actualFields != null) {
-            Assert.assertEquals(expectedFields.size(), actualFields.size());
-            for (int i = 0; i < expectedFields.size(); i++) {
-                Field expectedField = expectedFields.get(i);
-                Field actualField = actualFields.get(i);
-
-                assertFieldsEqual(expectedField, actualField);
-
-                // (Secondary) fields
-                List<Field> expectedSecondaryFields = expectedField.getFields();
-                List<Field> actualSecondaryFields = actualField.getFields();
-                if (expectedSecondaryFields != null && actualSecondaryFields != null) {
-                    Assert.assertEquals(expectedSecondaryFields.size(), actualSecondaryFields.size());
-                    for (int j = 0; j < expectedSecondaryFields.size(); j++) {
-                        // Per setup in createTestIndex(), Field property has depth up to 2.
-                        // Assert that 3rd level Field property doesn't exist to guard against future improper usage.
-                        Assert.assertNull(expectedSecondaryFields.get(j).getFields());
-                        assertFieldsEqual(expectedSecondaryFields.get(j), actualSecondaryFields.get(j));
-                    }
-                }
-            }
-        }
-
-        List<ScoringProfile> expectedScoringProfiles = expected.getScoringProfiles();
-        List<ScoringProfile> actualScoringProfiles = actual.getScoringProfiles();
-
-        if (expectedScoringProfiles != null && actualScoringProfiles != null) {
-            // Scoring profiles
-            Assert.assertEquals(expectedScoringProfiles.size(), actualScoringProfiles.size());
-            for (int i = 0; i < expectedScoringProfiles.size(); i++) {
-                ScoringProfile expectedScoringProfile = expectedScoringProfiles.get(i);
-                ScoringProfile actualScoringProfile = actualScoringProfiles.get(i);
-
-                Assert.assertEquals(expectedScoringProfile.getName(), actualScoringProfile.getName());
-                Assert.assertTrue(Objects.equals(expectedScoringProfile.getFunctionAggregation(), actualScoringProfile.getFunctionAggregation()));
-
-                // Scoring functions
-                Assert.assertEquals(expectedScoringProfile.getFunctions().size(), actualScoringProfile.getFunctions().size());
-                for (int j = 0; j < expectedScoringProfile.getFunctions().size(); j++) {
-                    ScoringFunction expectedFunction = expectedScoringProfile.getFunctions().get(j);
-                    ScoringFunction actualFunction = expectedScoringProfile.getFunctions().get(j);
-                    Assert.assertEquals(expectedFunction.getFieldName(), actualFunction.getFieldName());
-                    Assert.assertEquals(expectedFunction.getBoost(), actualFunction.getBoost(), delta);
-                    Assert.assertEquals(expectedFunction.getInterpolation(), actualFunction.getInterpolation());
-
-                    if (expectedFunction instanceof MagnitudeScoringFunction) {
-                        MagnitudeScoringFunction expectedMsf = (MagnitudeScoringFunction) expectedFunction;
-                        MagnitudeScoringFunction actualMsf = (MagnitudeScoringFunction) actualFunction;
-                        MagnitudeScoringParameters expectedParams = expectedMsf.getParameters();
-                        MagnitudeScoringParameters actualParams = actualMsf.getParameters();
-                        Assert.assertEquals(expectedParams.getBoostingRangeStart(), actualParams.getBoostingRangeStart(), delta);
-                        Assert.assertEquals(expectedParams.getBoostingRangeEnd(), actualParams.getBoostingRangeEnd(), delta);
-                    } else if (expectedFunction instanceof DistanceScoringFunction) {
-                        DistanceScoringFunction expectedDsf = (DistanceScoringFunction) expectedFunction;
-                        DistanceScoringFunction actualDsf = (DistanceScoringFunction) actualFunction;
-                        DistanceScoringParameters expectedParams = expectedDsf.getParameters();
-                        DistanceScoringParameters actualParams = actualDsf.getParameters();
-                        Assert.assertEquals(expectedParams.getBoostingDistance(), actualParams.getBoostingDistance(), delta);
-                        Assert.assertEquals(expectedParams.getReferencePointParameter(), actualParams.getReferencePointParameter());
-                    } else if (expectedFunction instanceof FreshnessScoringFunction) {
-                        Assert.assertEquals(((FreshnessScoringFunction) expectedFunction).getParameters().getBoostingDuration(),
-                            ((FreshnessScoringFunction) actualFunction).getParameters().getBoostingDuration());
-                    } else if (expectedFunction instanceof TagScoringFunction) {
-                        Assert.assertEquals(((TagScoringFunction) expectedFunction).getParameters().getTagsParameter(),
-                            ((TagScoringFunction) actualFunction).getParameters().getTagsParameter());
-                    } else {
-                        throw new NotImplementedException("The comparison of scoring function type "
-                            + expectedFunction.getClass() + " is not implemented yet.");
-                    }
-                }
-                if (expectedScoringProfile.getTextWeights() != null && actualScoringProfile.getTextWeights().getWeights() != null) {
-                    Assert.assertEquals(expectedScoringProfile.getTextWeights().getWeights().size(), actualScoringProfile.getTextWeights().getWeights().size());
-                }
-            }
-        }
-
-        // Default scoring profile
-        Assert.assertEquals(expected.getDefaultScoringProfile(), actual.getDefaultScoringProfile());
-
-        // Cors options
-        CorsOptions expectedCorsOptions = expected.getCorsOptions();
-        CorsOptions actualCorsOptions = actual.getCorsOptions();
-        if (expectedCorsOptions != null && actualCorsOptions != null) {
-            Assert.assertTrue(ModelComparer.collectionEquals(expectedCorsOptions.getAllowedOrigins(), actualCorsOptions.getAllowedOrigins()));
-            Assert.assertEquals(expectedCorsOptions.getMaxAgeInSeconds(), actualCorsOptions.getMaxAgeInSeconds());
-        }
-
-        // Suggesters
-        List<Suggester> expectedSuggesters = expected.getSuggesters();
-        List<Suggester> actualSuggesters = actual.getSuggesters();
-        if (expectedSuggesters != null && actualSuggesters != null) {
-            Assert.assertEquals(expectedSuggesters.size(), actualSuggesters.size());
-            for (int i = 0; i < expectedSuggesters.size(); i++) {
-                Suggester expectedSuggester = expectedSuggesters.get(i);
-                Suggester actualSuggester = actualSuggesters.get(i);
-                Assert.assertEquals(expectedSuggester.getName(), actualSuggester.getName());
-                Assert.assertTrue(ModelComparer.collectionEquals(expectedSuggester.getSourceFields(), actualSuggester.getSourceFields()));
-            }
-        }
+        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
     protected void waitForIndexing() {
@@ -699,13 +571,12 @@ public abstract class SearchServiceTestBase extends TestBase {
      * @param <T> type
      * @return an object of the request type
      */
-    protected <T> T convertToType(Object document, Class<T> cls) {
+    <T> T convertToType(Object document, Class<T> cls) {
         return jsonApi.convertObjectToType(document, cls);
     }
 
-    protected void addFieldToIndex(Index index, Field field) {
-        List<Field> fields = new ArrayList<>();
-        fields.addAll(index.getFields());
+    void addFieldToIndex(Index index, Field field) {
+        List<Field> fields = new ArrayList<>(index.getFields());
         fields.add(field);
 
         index.setFields(fields);
@@ -737,7 +608,7 @@ public abstract class SearchServiceTestBase extends TestBase {
         }
     }
 
-    protected ServiceStatistics getExpectedServiceStatistics() {
+    ServiceStatistics getExpectedServiceStatistics() {
         ServiceCounters serviceCounters = new ServiceCounters()
             .setDocumentCounter(new ResourceCounter().setUsage(0).setQuota(null))
             .setIndexCounter(new ResourceCounter().setUsage(0).setQuota(3L))
@@ -755,6 +626,5 @@ public abstract class SearchServiceTestBase extends TestBase {
         return new ServiceStatistics()
             .setCounters(serviceCounters)
             .setLimits(serviceLimits);
-
     }
 }

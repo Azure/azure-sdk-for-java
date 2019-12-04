@@ -18,7 +18,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static java.lang.Double.*;
+import static java.lang.Double.NEGATIVE_INFINITY;
+import static java.lang.Double.NaN;
+import static java.lang.Double.POSITIVE_INFINITY;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
@@ -119,7 +121,7 @@ public class LookupAsyncTests extends LookupTestBase {
                 put("Rating", null);
                 put("Location", null);
                 put("Address", null);
-                put("Rooms", Arrays.asList(
+                put("Rooms", Collections.singletonList(
                     new Document() {
                         {
                             put("BaseRate", null);
@@ -307,7 +309,7 @@ public class LookupAsyncTests extends LookupTestBase {
         Document expectedDoc = new Document() {
             {
                 put("HotelId", "1");
-                put("Rooms", Arrays.asList(
+                put("Rooms", Collections.singletonList(
                     new Document() {
                         {
                             put("BaseRate", null);
@@ -331,7 +333,7 @@ public class LookupAsyncTests extends LookupTestBase {
     }
 
     @Override
-    public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() throws ParseException {
+    public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
         client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildAsyncClient();
         String docKey = "1";

@@ -62,10 +62,7 @@ public class IndexerSyncTest extends SearchServiceTestBase {
     }
 
     @Test
-    /**
-     * This test uses a mock response, will run only in PLAYBACK mode
-     * using canRunIndexerAndGetIndexerStatus.json
-     */
+    // This test uses a mock response, will run only in PLAYBACK mode using canRunIndexerAndGetIndexerStatus.json
     public void canRunIndexerAndGetIndexerStatus() {
 
         // create an indexer
@@ -101,9 +98,9 @@ public class IndexerSyncTest extends SearchServiceTestBase {
     }
 
     private void assertStartAndEndTimeValid(IndexerExecutionResult result) {
-        Assert.assertTrue(result.getStartTime() != null);
+        Assert.assertNotNull(result.getStartTime());
         Assert.assertNotEquals(OffsetDateTime.now(), result.getStartTime());
-        Assert.assertTrue(result.getEndTime() != null);
+        Assert.assertNotNull(result.getEndTime());
         Assert.assertNotEquals(OffsetDateTime.now(), result.getEndTime());
     }
 
@@ -113,6 +110,4 @@ public class IndexerSyncTest extends SearchServiceTestBase {
             .setTargetIndexName("indexforindexers")
             .setSchedule(new IndexingSchedule().setInterval(Duration.ofDays(1)));
     }
-
-
 }

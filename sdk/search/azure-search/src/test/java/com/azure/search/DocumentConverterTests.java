@@ -51,7 +51,7 @@ public class DocumentConverterTests {
     private Document cleanupODataAnnotation(Document document) {
         // Skip OData @search annotations. These are deserialized separately.
         List<String> keys = document.keySet().stream().filter(key -> key.startsWith("@search")).collect(Collectors.toList());
-        keys.forEach(key -> document.remove(key));
+        keys.forEach(document::remove);
         return document;
     }
 
