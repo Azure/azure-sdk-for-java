@@ -25,7 +25,7 @@ public class Context {
     private final ClientLogger logger = new ClientLogger(Context.class);
 
     /**Key used to override headers in HttpRequest. The Value for this key should be {@link HttpHeaders}.*/
-    public static String AZURE_REQUEST_HTTP_HEADERS_KEY = "azure-request-override-http-headers-key";
+    public static final String AZURE_REQUEST_HTTP_HEADERS_KEY = "azure-request-override-http-headers-key";
 
     // All fields must be immutable.
     //

@@ -14,8 +14,12 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * The pipeline policy that puts a UUID in the request header. The default {@link HttpHeader} name can be overwritten.
- * Azure uses the request id as the unique identifier for the request.
+ * The pipeline policy that puts a UUID in the request header. Azure uses the request id as
+ * the unique identifier for the request.
+ *
+ * <p>The default {@link HttpHeader} name can be overwritten as shown below
+ * <p><strong>Code sample</strong></p>
+ * {@codesnippet com.azure.core.http.policy.RequestIdPolicy.constructor.overrideRequestIdHeaderName}
  */
 public class RequestIdPolicy implements HttpPipelinePolicy {
 
