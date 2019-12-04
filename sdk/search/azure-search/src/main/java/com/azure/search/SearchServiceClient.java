@@ -606,8 +606,8 @@ public class SearchServiceClient {
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @return analyze result.
      */
-    public PagedIterable<TokenInfo> analyzeIndex(String indexName, AnalyzeRequest analyzeRequest) {
-        return new PagedIterable<>(asyncClient.analyzeIndex(indexName, analyzeRequest));
+    public PagedIterable<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
+        return new PagedIterable<>(asyncClient.analyzeText(indexName, analyzeRequest));
     }
 
     /**
@@ -620,11 +620,11 @@ public class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return analyze result.
      */
-    public PagedIterable<TokenInfo> analyzeIndex(String indexName,
-                                                 AnalyzeRequest analyzeRequest,
-                                                 RequestOptions requestOptions,
-                                                 Context context) {
-        return new PagedIterable<>(asyncClient.analyzeIndex(indexName, analyzeRequest, requestOptions, context));
+    public PagedIterable<TokenInfo> analyzeText(String indexName,
+                                                AnalyzeRequest analyzeRequest,
+                                                RequestOptions requestOptions,
+                                                Context context) {
+        return new PagedIterable<>(asyncClient.analyzeText(indexName, analyzeRequest, requestOptions, context));
     }
 
     /**

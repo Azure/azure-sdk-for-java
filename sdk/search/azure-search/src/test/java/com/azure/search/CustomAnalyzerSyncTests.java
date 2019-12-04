@@ -212,7 +212,7 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
         AnalyzeRequest request = new AnalyzeRequest()
             .setText("One two")
             .setAnalyzer(AnalyzerName.WHITESPACE);
-        PagedIterable<TokenInfo> results = searchServiceClient.analyzeIndex(index.getName(), request);
+        PagedIterable<TokenInfo> results = searchServiceClient.analyzeText(index.getName(), request);
         Iterator<TokenInfo> iterator = results.stream().iterator();
         assertTokenInfoEqual("One", 0, 3, 0, iterator.next());
         assertTokenInfoEqual("two", 4, 7, 1, iterator.next());
@@ -223,13 +223,13 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
             .setTokenizer(TokenizerName.WHITESPACE)
             .setTokenFilters(Arrays.asList(TokenFilterName.APOSTROPHE))
             .setCharFilters(Arrays.asList(CharFilterName.HTML_STRIP));
-        results = searchServiceClient.analyzeIndex(index.getName(), request);
+        results = searchServiceClient.analyzeText(index.getName(), request);
         // End offset is based on the original token, not the one emitted by the filters.
         iterator = results.stream().iterator();
         assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
         Assert.assertFalse(iterator.hasNext());
 
-        results = searchServiceClient.analyzeIndex(index.getName(), request, generateRequestOptions(), Context.NONE);
+        results = searchServiceClient.analyzeText(index.getName(), request, generateRequestOptions(), Context.NONE);
         // End offset is based on the original token, not the one emitted by the filters.
         iterator = results.stream().iterator();
         assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
@@ -246,7 +246,7 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
                 .setText("One two")
                 .setAnalyzer(an))
             .forEach(r -> {
-                searchServiceClient.analyzeIndex(index.getName(), r);
+                searchServiceClient.analyzeText(index.getName(), r);
             });
 
         Arrays.stream(TokenizerName.values())
@@ -254,7 +254,7 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
                 .setText("One two")
                 .setTokenizer(tn))
             .forEach(r -> {
-                searchServiceClient.analyzeIndex(index.getName(), r);
+                searchServiceClient.analyzeText(index.getName(), r);
             });
 
         AnalyzeRequest request = new AnalyzeRequest()
@@ -262,7 +262,7 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
             .setTokenizer(TokenizerName.WHITESPACE)
             .setTokenFilters(Arrays.asList(TokenFilterName.values()))
             .setCharFilters(Arrays.asList(CharFilterName.values()));
-        searchServiceClient.analyzeIndex(index.getName(), request);
+        searchServiceClient.analyzeText(index.getName(), request);
     }
 
     @Override

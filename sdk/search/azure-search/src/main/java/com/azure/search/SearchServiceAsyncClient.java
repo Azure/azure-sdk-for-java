@@ -857,8 +857,8 @@ public class SearchServiceAsyncClient {
      * @param analyzeRequest the text and analyzer or analysis components to test
      * @return analyze result.
      */
-    public PagedFlux<TokenInfo> analyzeIndex(String indexName, AnalyzeRequest analyzeRequest) {
-        return this.analyzeIndex(indexName, analyzeRequest, null);
+    public PagedFlux<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
+        return this.analyzeText(indexName, analyzeRequest, null);
     }
 
     /**
@@ -870,27 +870,27 @@ public class SearchServiceAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return a response containing analyze result.
      */
-    public PagedFlux<TokenInfo> analyzeIndex(String indexName,
-                                             AnalyzeRequest analyzeRequest, RequestOptions requestOptions) {
+    public PagedFlux<TokenInfo> analyzeText(String indexName,
+                                            AnalyzeRequest analyzeRequest, RequestOptions requestOptions) {
         return new PagedFlux<>(
-            () -> withContext(context -> this.analyzeIndexWithResponse(indexName,
+            () -> withContext(context -> this.analyzeTextWithResponse(indexName,
                 analyzeRequest, requestOptions, context)),
             nextLink -> Mono.empty());
     }
 
-    PagedFlux<TokenInfo> analyzeIndex(String indexName,
-                                      AnalyzeRequest analyzeRequest,
-                                      RequestOptions requestOptions,
-                                      Context context) {
+    PagedFlux<TokenInfo> analyzeText(String indexName,
+                                     AnalyzeRequest analyzeRequest,
+                                     RequestOptions requestOptions,
+                                     Context context) {
         return new PagedFlux<>(
-            () -> this.analyzeIndexWithResponse(indexName, analyzeRequest, requestOptions, context),
+            () -> this.analyzeTextWithResponse(indexName, analyzeRequest, requestOptions, context),
             nextLink -> Mono.empty());
     }
 
-    private Mono<PagedResponse<TokenInfo>> analyzeIndexWithResponse(String indexName,
-                                                                    AnalyzeRequest analyzeRequest,
-                                                                    RequestOptions requestOptions,
-                                                                    Context context) {
+    private Mono<PagedResponse<TokenInfo>> analyzeTextWithResponse(String indexName,
+                                                                   AnalyzeRequest analyzeRequest,
+                                                                   RequestOptions requestOptions,
+                                                                   Context context) {
         return restClient.indexes()
             .analyzeWithRestResponseAsync(indexName, analyzeRequest, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
