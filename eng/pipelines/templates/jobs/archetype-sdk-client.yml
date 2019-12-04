@@ -59,12 +59,12 @@ jobs:
 
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
-            python3 --version 
+            python3 --version
             python3 eng/versioning/set_versions.py --update-type all --build-type client --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
             python3 eng/versioning/set_versions.py --update-type all --build-type data --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
           condition: eq(variables['SetDevVersion'],'true')
           displayName: Append dev package version suffix for ${{artifact.name}}
-      
+
       - script: |
           python3 --version
           python3 eng/versioning/update_versions.py --update-type all --build-type client
@@ -157,7 +157,7 @@ jobs:
         displayName: 'Install all client libraries (for SpotBugs analysis)'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Dverify-readme'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Dverify-readme -Dspotbugs.skip=true -Drevapi.skip=true'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
