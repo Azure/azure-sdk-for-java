@@ -160,7 +160,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         indexingPolicy.spatialIndexes(spatialIndexes);
 
         collection.indexingPolicy(indexingPolicy);
-        
+
         Mono<CosmosContainerResponse> createObservable = database
                 .createContainer(collection, new CosmosContainerRequestOptions());
 
@@ -177,7 +177,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosContainer collection = createObservable.block().container();
 
@@ -202,7 +202,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void deleteCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        
+
         Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosContainer collection = createObservable.block().container();
 
@@ -222,13 +222,13 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosContainerProperties collectionSettings = collection.read().block().properties();
         // sanity check
         assertThat(collectionSettings.indexingPolicy().indexingMode()).isEqualTo(IndexingMode.CONSISTENT);
-        
+
         // replace indexing mode
         IndexingPolicy indexingMode = new IndexingPolicy();
         indexingMode.indexingMode(IndexingMode.LAZY);
         collectionSettings.indexingPolicy(indexingMode);
         Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
-        
+
         // validate
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
                         .indexingMode(IndexingMode.LAZY).build();
