@@ -68,7 +68,7 @@ public class IndexerAsyncTest extends SearchServiceTestBase {
             createTestIndexer("indexer")
                 .setDataSourceName(SQL_DATASOURCE_NAME)
                 .setIsDisabled(false);
-        client.createOrUpdateIndexer(indexer);
+        client.createIndexer(indexer).block();
 
         StepVerifier.create(client.getIndexerStatus(indexer.getName()))
             .assertNext(indexerExecutionInfo ->

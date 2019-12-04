@@ -39,7 +39,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         AccessOptions,
         Mono<Indexer>> createOrUpdateIndexerAsyncFunc =
             (Indexer indexer, AccessOptions ac) ->
-                createIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
+                createOrUpdateIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Indexer> newIndexerFunc =
         () -> createBaseTestIndexerObject("name", TARGET_INDEX_NAME)
@@ -57,16 +57,16 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     }
 
     private Index createIndex(Index index) {
-        return client.createOrUpdateIndex(index).block();
+        return client.createIndex(index).block();
     }
 
     private Skillset createSkillset(Skillset skillset) {
-        return client.createOrUpdateSkillset(skillset).block();
+        return client.createSkillset(skillset).block();
     }
 
-    private Mono<Indexer> createIndexer(Indexer indexer,
-                                        AccessCondition accessCondition,
-                                        RequestOptions requestOptions) {
+    private Mono<Indexer> createOrUpdateIndexer(Indexer indexer,
+                                                AccessCondition accessCondition,
+                                                RequestOptions requestOptions) {
         return client.createOrUpdateIndexerWithResponse(
             indexer,
             accessCondition,
@@ -75,7 +75,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     }
 
     private Mono<Indexer> createIndexer(Indexer indexer) {
-        return client.createOrUpdateIndexer(indexer);
+        return client.createIndexer(indexer);
     }
 
     private Indexer getIndexer(String indexerName) {
@@ -147,7 +147,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createIndexer(initial).block();
 
         // update the indexer in the service
-        Indexer indexerResponse = createIndexer(updatedIndexer).block();
+        Indexer indexerResponse = client.createOrUpdateIndexer(updatedIndexer).block();
 
         // verify the returned updated indexer is as expected
         assert indexerResponse != null;
@@ -213,7 +213,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
                         .setMaxFailedItems(10)
                         .setMaxFailedItemsPerBatch(10));
 
-        Indexer actualIndexer = client.createOrUpdateIndexer(expectedIndexer).block();
+        Indexer actualIndexer = createIndexer(expectedIndexer).block();
         assert actualIndexer != null;
 
         IndexingParameters ip = new IndexingParameters();
@@ -264,7 +264,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         indexer.setDataSourceName("thisdatasourcedoesnotexist");
 
         assertException(
-            () -> client.createOrUpdateIndexer(indexer).block(),
+            () -> client.createIndexer(indexer).block(),
             HttpResponseException.class,
             "This indexer refers to a data source 'thisdatasourcedoesnotexist' that doesn't exist");
     }

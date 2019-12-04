@@ -321,6 +321,36 @@ public class SearchServiceAsyncClient {
     }
 
     /**
+     * Creates a new Azure Cognitive Search indexer.
+     *
+     * @param indexer definition of the indexer to create.
+     * @return the created Indexer.
+     */
+    public Mono<Indexer> createIndexer(Indexer indexer) {
+        return this.createIndexerWithResponse(indexer, null)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search indexer.
+     *
+     * @param indexer definition of the indexer to create
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @return a response containing the created Indexer.
+     */
+    public Mono<Response<Indexer>> createIndexerWithResponse(Indexer indexer, RequestOptions requestOptions) {
+        return withContext(context -> this.createIndexerWithResponse(indexer, requestOptions, context));
+    }
+
+    Mono<Response<Indexer>> createIndexerWithResponse(Indexer indexer, RequestOptions requestOptions, Context context) {
+        return restClient
+            .indexers()
+            .createWithRestResponseAsync(indexer, requestOptions, context)
+            .map(Function.identity());
+    }
+
+    /**
      * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
      * @param indexer The definition of the indexer to create or update.

@@ -20,7 +20,6 @@ import com.azure.search.models.ServiceStatistics;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.TokenInfo;
-import org.apache.commons.lang3.NotImplementedException;
 
 @ServiceClient(builder = SearchServiceClientBuilder.class)
 public class SearchServiceClient {
@@ -116,7 +115,7 @@ public class SearchServiceClient {
      * @param dataSourceName the name of the data source to retrieve
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging.
-     * @param context Context
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the DataSource.
      */
     public Response<DataSource> getDataSourceWithResponse(String dataSourceName,
@@ -203,19 +202,28 @@ public class SearchServiceClient {
     }
 
     /**
+     * Creates a new Azure Cognitive Search indexer.
+     *
+     * @param indexer definition of the indexer to create.
      * @return the created Indexer.
-     * @throws NotImplementedException not implemented
      */
-    public Indexer createIndexer() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Indexer createIndexer(Indexer indexer) {
+        return this.asyncClient.createIndexer(indexer).block();
     }
 
     /**
+     * Creates a new Azure Cognitive Search indexer.
+     *
+     * @param indexer definition of the indexer to create
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Indexer.
-     * @throws NotImplementedException not implemented
      */
-    public Response<Indexer> createIndexerWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Response<Indexer> createIndexerWithResponse(Indexer indexer,
+                                                       RequestOptions requestOptions,
+                                                       Context context) {
+        return this.asyncClient.createIndexerWithResponse(indexer, requestOptions, context).block();
     }
 
     /**
@@ -236,7 +244,7 @@ public class SearchServiceClient {
      * doesn't match specified values
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @param context Context
+     * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return A response object containing the Indexer.
      */
     public Response<Indexer> createOrUpdateIndexerWithResponse(Indexer indexer,

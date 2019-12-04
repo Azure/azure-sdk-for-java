@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdke880645117a6.search-dogfood.windows-int.net/indexers('invalidindex')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk0d040041d63f.search.windows.net/indexers('invalidindex')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "2e5608e6-762e-419e-8038-c1032d4873fc",
+      "request-id" : "0bf17810-895a-43e9-8a85-f6e5f623bbb3",
       "StatusCode" : "404",
-      "Date" : "Mon, 02 Dec 2019 22:28:12 GMT",
+      "Date" : "Wed, 04 Dec 2019 21:27:13 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "29",
+      "elapsed-time" : "39",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "104",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'invalidindex' was not found in service 'azs-sdke880645117a6'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'invalidindex' was not found in service 'azs-sdk0d040041d63f'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

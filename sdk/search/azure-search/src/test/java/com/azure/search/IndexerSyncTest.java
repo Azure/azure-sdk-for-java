@@ -70,7 +70,7 @@ public class IndexerSyncTest extends SearchServiceTestBase {
             createTestIndexer("indexer")
                 .setDataSourceName(SQL_DATASOURCE_NAME)
                 .setIsDisabled(false);
-        client.createOrUpdateIndexer(indexer);
+        client.createIndexer(indexer);
 
         IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
         Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());

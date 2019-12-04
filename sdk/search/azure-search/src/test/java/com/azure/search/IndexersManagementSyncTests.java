@@ -39,7 +39,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         AccessOptions,
         Indexer> createOrUpdateIndexerFunc =
             (Indexer indexer, AccessOptions ac) ->
-                createIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
+                createOrUpdateIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Indexer> newIndexerFunc =
         () -> createBaseTestIndexerObject("name", TARGET_INDEX_NAME)
@@ -112,7 +112,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createIndexer(initial);
 
         // update the indexer in the service
-        Indexer indexerResponse = createIndexer(updatedIndexer);
+        Indexer indexerResponse = client.createOrUpdateIndexer(updatedIndexer);
 
         // verify the returned updated indexer is as expected
         setSameStartTime(updatedIndexer, indexerResponse);
@@ -148,24 +148,24 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     }
 
     private Index createIndex(Index index) {
-        return client.createOrUpdateIndex(index);
+        return client.createIndex(index);
     }
 
     private Indexer createIndexer(Indexer indexer) {
-        return client.createOrUpdateIndexer(indexer);
+        return client.createIndexer(indexer);
     }
 
     private Skillset createSkillset(Skillset skillset) {
-        return client.createOrUpdateSkillset(skillset);
+        return client.createSkillset(skillset);
     }
 
     private Indexer getIndexer(String indexerName) {
         return client.getIndexer(indexerName);
     }
 
-    private Indexer createIndexer(Indexer indexer,
-                                  AccessCondition accessCondition,
-                                  RequestOptions requestOptions) {
+    private Indexer createOrUpdateIndexer(Indexer indexer,
+                                          AccessCondition accessCondition,
+                                          RequestOptions requestOptions) {
         return client.createOrUpdateIndexerWithResponse(
             indexer, accessCondition, requestOptions, Context.NONE)
             .getValue();
@@ -189,7 +189,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
                         .setMaxFailedItems(10)
                         .setMaxFailedItemsPerBatch(10));
 
-        Indexer actualIndexer = client.createOrUpdateIndexer(expectedIndexer);
+        Indexer actualIndexer = client.createIndexer(expectedIndexer);
 
         IndexingParameters ip = new IndexingParameters();
         Map<String, Object> config = new HashMap<>();
@@ -210,15 +210,15 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         // Create an index
         Index index = createTestIndexForLiveDatasource(TARGET_INDEX_NAME);
-        client.createOrUpdateIndex(index);
+        client.createIndex(index);
 
         // Create two indexers
         Indexer indexer1 = createBaseTestIndexerObject("indexer1", TARGET_INDEX_NAME)
             .setDataSourceName(dataSource.getName());
         Indexer indexer2 = createBaseTestIndexerObject("indexer2", TARGET_INDEX_NAME)
             .setDataSourceName(dataSource.getName());
-        client.createOrUpdateIndexer(indexer1);
-        client.createOrUpdateIndexer(indexer2);
+        client.createIndexer(indexer1);
+        client.createIndexer(indexer2);
 
         List<Indexer> indexers = client.listIndexers().stream().collect(Collectors.toList());
         Assert.assertEquals(2, indexers.size());
@@ -248,7 +248,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         indexer.setDataSourceName("thisdatasourcedoesnotexist");
 
         assertException(
-            () -> client.createOrUpdateIndexer(indexer),
+            () -> client.createIndexer(indexer),
             HttpResponseException.class,
             "This indexer refers to a data source 'thisdatasourcedoesnotexist' that doesn't exist");
     }

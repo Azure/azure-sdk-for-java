@@ -1,112 +1,112 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdkb4855142e8e3.search-dogfood.windows-int.net/datasources('azs-java-test-sql')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk260040529ae5.search.windows.net/datasources('azs-java-test-sql')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "a52651ba-62d5-4537-8940-f448a54673e8",
+      "request-id" : "477a5c0a-2578-4c57-acd2-c6d894ac78f1",
       "StatusCode" : "201",
-      "Date" : "Mon, 02 Dec 2019 22:30:56 GMT",
+      "Date" : "Wed, 04 Dec 2019 21:29:29 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D777774CBE2429\"",
-      "elapsed-time" : "62",
+      "ETag" : "W/\"0x8D779010C1A9680\"",
+      "elapsed-time" : "67",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "395",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkb4855142e8e3.search-dogfood.windows-int.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D777774CBE2429\\\"\",\"name\":\"azs-java-test-sql\",\"description\":\"Some data source\",\"type\":\"azuresql\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"GeoNamesRI\",\"query\":null},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
+      "Content-Length" : "383",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk260040529ae5.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D779010C1A9680\\\"\",\"name\":\"azs-java-test-sql\",\"description\":\"Some data source\",\"type\":\"azuresql\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"GeoNamesRI\",\"query\":null},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdkb4855142e8e3.search-dogfood.windows-int.net/datasources('azs-java-test-sql')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk260040529ae5.search.windows.net/datasources('azs-java-test-sql')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
-    "Method" : "PUT",
-    "Uri" : "https://azs-sdkb4855142e8e3.search-dogfood.windows-int.net/indexes('indexforindexers')?allowIndexDowntime=false&api-version=2019-05-06",
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk260040529ae5.search.windows.net/indexes?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "648dacc3-16c1-4127-bd79-a8a6c62f9f8c",
+      "request-id" : "fb01a2e1-eb09-4859-8b21-a47513232f72",
       "StatusCode" : "201",
-      "Date" : "Mon, 02 Dec 2019 22:30:56 GMT",
+      "Date" : "Wed, 04 Dec 2019 21:29:31 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D777774D35B748\"",
-      "elapsed-time" : "728",
+      "ETag" : "W/\"0x8D779010CB0619B\"",
+      "elapsed-time" : "900",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "982",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkb4855142e8e3.search-dogfood.windows-int.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D777774D35B748\\\"\",\"name\":\"indexforindexers\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"county_name\",\"type\":\"Edm.String\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"state\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"feature_id\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[]}",
+      "Content-Length" : "970",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk260040529ae5.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D779010CB0619B\\\"\",\"name\":\"indexforindexers\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"county_name\",\"type\":\"Edm.String\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"state\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"feature_id\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdkb4855142e8e3.search-dogfood.windows-int.net/indexes('indexforindexers')?allowIndexDowntime=false&api-version=2019-05-06"
+      "Location" : "https://azs-sdk260040529ae5.search.windows.net/indexes('indexforindexers')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
-    "Method" : "PUT",
-    "Uri" : "https://azs-sdkb4855142e8e3.search-dogfood.windows-int.net/indexers('indexer')?api-version=2019-05-06",
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk260040529ae5.search.windows.net/indexers?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "1d739929-ff33-4664-9df0-51acfabcd8fe",
+      "request-id" : "6bd4b34f-9a91-464c-bf1b-ff711926f7a1",
       "StatusCode" : "201",
-      "Date" : "Mon, 02 Dec 2019 22:30:57 GMT",
+      "Date" : "Wed, 04 Dec 2019 21:29:31 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D777774D526D1A\"",
-      "elapsed-time" : "137",
+      "ETag" : "W/\"0x8D779010CEC3CD6\"",
+      "elapsed-time" : "344",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "417",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkb4855142e8e3.search-dogfood.windows-int.net/$metadata#indexers/$entity\",\"@odata.etag\":\"\\\"0x8D777774D526D1A\\\"\",\"name\":\"indexer\",\"description\":null,\"dataSourceName\":\"azs-java-test-sql\",\"skillsetName\":null,\"targetIndexName\":\"indexforindexers\",\"disabled\":null,\"schedule\":{\"interval\":\"P1D\",\"startTime\":\"0001-01-01T00:00:00Z\"},\"parameters\":null,\"fieldMappings\":[],\"outputFieldMappings\":[]}",
+      "Content-Length" : "405",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk260040529ae5.search.windows.net/$metadata#indexers/$entity\",\"@odata.etag\":\"\\\"0x8D779010CEC3CD6\\\"\",\"name\":\"indexer\",\"description\":null,\"dataSourceName\":\"azs-java-test-sql\",\"skillsetName\":null,\"targetIndexName\":\"indexforindexers\",\"disabled\":null,\"schedule\":{\"interval\":\"P1D\",\"startTime\":\"0001-01-01T00:00:00Z\"},\"parameters\":null,\"fieldMappings\":[],\"outputFieldMappings\":[]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdkb4855142e8e3.search-dogfood.windows-int.net/indexers('indexer')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk260040529ae5.search.windows.net/indexers('indexer')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdkb4855142e8e3.search-dogfood.windows-int.net/indexers('indexer')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk260040529ae5.search.windows.net/indexers('indexer')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "46",
+      "elapsed-time" : "58",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "0768cc47-aa9e-41d5-b469-06afb9e33255",
+      "request-id" : "48b0d21d-f280-45d7-a2ac-76163d0c4bd9",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Dec 2019 22:30:57 GMT"
+      "Date" : "Wed, 04 Dec 2019 21:29:31 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdkb4855142e8e3.search-dogfood.windows-int.net/indexers('indexer')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk260040529ae5.search.windows.net/indexers('indexer')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d74775c2-3b4c-4323-b196-77f0f7f27740",
+      "request-id" : "f78a1554-fe27-412c-81fe-6a14de76ed75",
       "StatusCode" : "404",
-      "Date" : "Mon, 02 Dec 2019 22:30:57 GMT",
+      "Date" : "Wed, 04 Dec 2019 21:29:31 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "8",
+      "elapsed-time" : "11",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "99",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'indexer' was not found in service 'azs-sdkb4855142e8e3'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'indexer' was not found in service 'azs-sdk260040529ae5'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
