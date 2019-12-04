@@ -17,6 +17,7 @@ public final class SyncToken {
 
 
     SyncToken() {
+
     }
 
     /**
