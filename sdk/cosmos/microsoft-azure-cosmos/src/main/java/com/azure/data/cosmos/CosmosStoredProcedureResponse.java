@@ -23,7 +23,7 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
                                   String storedProcedureId) {
         super(response);
         this.storedProcedureResponse = response;
-        storedProcedure = new CosmosStoredProcedure(storedProcedureId, cosmosContainer);
+        this.storedProcedure = new CosmosStoredProcedure(storedProcedureId, cosmosContainer);
     }
 
     /**
