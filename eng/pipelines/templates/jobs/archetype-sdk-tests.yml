@@ -7,6 +7,7 @@ parameters:
       OSVmImage: 'windows-2019'
       DisplayName: 'Run Live tests'
   PreRunSteps: []
+  PostRunSteps: []
   TestName: LiveTest
   TimeoutInMinutes: 60
   TestStepMavenInputs:
@@ -41,6 +42,8 @@ jobs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
+
+      - ${{ parameters.PostRunSteps }}
 
       - task: PublishTestResults@2
         condition: succeededOrFailed()

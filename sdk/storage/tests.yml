@@ -20,7 +20,7 @@ jobs:
             az group create --name $resourceGroupName --location $env:PROVISIONER_RG_LOCATION --tags DeleteAfter=$resourceGroupExpiration
             az group wait --created --resource-group $resourceGroupName
             # TODO: use more correct tests-resources.json location
-            $rawDeployOutput = az group deployment create --resource-group $resourceGroupName --template-file .\tests-resources.json --parameters unique_id=$uniqueIdentifier tenant_id="$env:PROVISIONER_AAD_TENANT" test_app_id="$env:TEST_APP_ID"
+            $rawDeployOutput = az group deployment create --resource-group $resourceGroupName --template-file sdk/storage/tests-resources.json --parameters unique_id=$uniqueIdentifier tenant_id="$env:PROVISIONER_AAD_TENANT" test_app_id="$env:TEST_APP_ID"
 
             $deploymentOutput = $rawDeployOutput | ConvertFrom-JSON -AsHashtable
             $deploymentOutput.properties.outputs.GetEnumerator() | foreach { Write-Host "##vso[task.setvariable variable=$($_.Name.ToUpper());issecret=true]$($_.value.value)" }
@@ -32,7 +32,18 @@ jobs:
             PROVISIONER_RG_LOCATION: westus2
             TEST_APP_ID: $(provisioner-test-app-id)
           displayName: Provision Test-Specific Azure Resources
-
+      PostRunSteps:
+        - pwsh: |
+            az login --service-principal -u $env:PROVISIONER_AAD_ID -p $env:PROVISIONER_AAD_SECRET --tenant $env:PROVISIONER_AAD_TENANT
+            az account set --subscription $env:PROVISIONER_SUBSCRIPTION
+            az group delete --resource-group $(ResourceGroupName) -y --no-wait
+          env:
+            PROVISIONER_AAD_ID: $(provisioner-aad-id)
+            PROVISIONER_AAD_SECRET: $(provisioner-aad-secret)
+            PROVISIONER_AAD_TENANT: $(provisioner-aad-tenant)
+            PROVISIONER_SUBSCRIPTION: $(provisioner-subscription)
+          displayName: Delete Test-Specific Azure Resources
+          condition: succeededOrFailed()
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
