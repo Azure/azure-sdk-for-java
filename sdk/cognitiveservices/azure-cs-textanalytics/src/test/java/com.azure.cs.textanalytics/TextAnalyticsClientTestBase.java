@@ -50,9 +50,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        final String endpoint = interceptorManager.isPlaybackMode()
-            ? "http://localhost:8080"
-            : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
+        final String endpoint = getEndPoint();
 
         TokenCredential credential = null;
 
@@ -106,6 +104,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void detectLanguageRunner(BiConsumer<List<DetectLanguageInput>, TextAnalyticsRequestOptions> testRunner) {
 
+    }
+
+
+    String getEndPoint() {
+        return interceptorManager.isPlaybackMode()
+            ? "http://localhost:8080"
+            : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
     }
 
 
