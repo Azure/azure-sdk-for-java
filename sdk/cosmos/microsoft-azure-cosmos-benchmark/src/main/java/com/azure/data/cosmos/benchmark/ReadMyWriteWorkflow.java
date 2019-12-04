@@ -98,7 +98,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
 
             // will either do
             // a write
-            // a point read for a in memory cached document4
+            // a point read for a in memory cached document
             // or single partition query for a in memory cached document
             // or cross partition query for a in memory cached document
 
@@ -132,14 +132,9 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         }
 
         concurrencyControlSemaphore.acquire();
-        logger.debug("concurrencyControlSemaphore: {}", concurrencyControlSemaphore);
 
-        try {
-            obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
-        } catch (Throwable error) {
-            concurrencyControlSemaphore.release();
-            logger.error("subscription failed due to ", error);
-        }
+        logger.debug("concurrencyControlSemaphore: {}", concurrencyControlSemaphore);
+        obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
     }
 
     private void populateCache() {
