@@ -58,6 +58,15 @@ public class CosmosAsyncClient implements AutoCloseable {
                                        .build();
     }
 
+    /**
+     * Instantiate the cosmos client builder to build cosmos client
+     *
+     * @return {@link CosmosClientBuilder}
+     */
+    public static CosmosClientBuilder cosmosClientBuilder() {
+        return new CosmosClientBuilder();
+    }
+    
     AsyncDocumentClient getContextClient() {
         return this.asyncDocumentClient;
     }

@@ -24,6 +24,15 @@ public class CosmosClient implements AutoCloseable {
     }
 
     /**
+     * Instantiate the cosmos client builder to build cosmos client
+     *
+     * @return {@link CosmosClientBuilder}
+     */
+    public static CosmosClientBuilder cosmosClientBuilder() {
+        return new CosmosClientBuilder();
+    }
+
+    /**
      * Create a Database if it does not already exist on the service
      *
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties
