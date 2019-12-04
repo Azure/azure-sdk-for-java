@@ -31,7 +31,7 @@ public final class TextAnalyticsClient {
     // (1) language
     // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectLanguageResult detectLanguage(String text) { return client.detectLanguage(text, null).block(); }
+    public DetectLanguageResult detectLanguage(String text) { return detectLanguage(text, null); }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectLanguageResult detectLanguage(String text, String countryHint) {
@@ -47,18 +47,18 @@ public final class TextAnalyticsClient {
     // hackathon user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectLanguages(List<String> inputs) {
-        return null;
+        return detectLanguages(inputs, null);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectLanguages(List<String> inputs, String countryHint) {
-        return null;
+        return client.detectLanguages(inputs, countryHint).block();
     }
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectBatchLanguages(List<DetectLanguageInput> inputs) {
-        return null;
+        return detectBatchLanguages(inputs, null);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)

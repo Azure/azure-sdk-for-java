@@ -80,7 +80,7 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
         languageInputs.add(new DetectLanguageInput(Integer.toString(0), text, countryHint));
-        // TODO: correct it
+        // TODO: should this be a random number generator?
         return detectBatchLanguagesWithResponse(languageInputs, null, context).flatMap(response -> {
             if (response.getValue().iterator().hasNext()) {
                 return Mono.justOrEmpty(new SimpleResponse<>(response, response.getValue().iterator().next()));
@@ -92,11 +92,7 @@ public final class TextAnalyticsAsyncClient {
     // Hackathon user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs) {
-        List<DetectLanguageInput> languageInputs = new ArrayList<>();
-        for (int i = 0; i <= inputs.size(); i++) {
-            languageInputs.add(new DetectLanguageInput(Integer.toString(i), inputs.get(i), null));
-        }
-        return detectBatchLanguages(languageInputs, null);
+        return detectLanguages(inputs, null);
     }
 
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs,
@@ -118,12 +114,8 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguages(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(context -> detectBatchLanguagesWithResponse(inputs, options, context)
-                .flatMap(response -> Mono.justOrEmpty(response.getValue())));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+       return detectBatchLanguagesWithResponse(inputs, options)
+           .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -141,8 +133,12 @@ public final class TextAnalyticsAsyncClient {
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate inputs
         final LanguageBatchInput languageBatchInput = new LanguageBatchInput().setDocuments(inputs);
-        return client.languagesWithRestResponseAsync(languageBatchInput, options == null ? null : options.getModelVersion(),
-            options == null ? null : options.showStatistics(), context)
+        // TODO: confirm if options null is fine?
+        return client.languagesWithRestResponseAsync(
+            languageBatchInput,
+            options == null ? null : options.getModelVersion(),
+            options == null ? null : options.showStatistics(),
+            context)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", languageBatchInput))
             .doOnSuccess(response -> logger.info("A batch of detected language output - {}", languageBatchInput))
             .doOnError(error -> logger.warning("Failed to detected languages - {}", languageBatchInput))
@@ -530,16 +526,4 @@ public final class TextAnalyticsAsyncClient {
             new MultiLanguageBatchInput().setDocuments(document), options.getModelVersion(), options.showStatistics(),
             context).map(response -> new SimpleResponse<>(response, null));
     }
-
-
-//     private DocumentResultCollection toDocumentResultCollection(Object object) {
-//         // TODO: add support to
-// //        if (object instanceof ) {
-// //
-// //        }
-// //       return new DocumentResultCollection();
-//         return null;
-//     }
-
-
 }
