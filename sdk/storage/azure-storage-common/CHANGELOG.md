@@ -1,4 +1,7 @@
 # Release History
+## Version 12.1.0 (2019-12-04)
+- Upgraded to version 1.1.0 of Azure Core.
+
 ## Version 12.0.0 (2019-10-31)
 - Removed BaseClientBuilder
 - Renamed RequestRetryOptions maxTries, tryTimeout, secondaryHost, retryDelayInMs, maxRetryDelayInMs to getMaxTries, getTryTimeout, getSecondaryHosy, getRetryDelayInMs, getMaxRetryDelayInMs
