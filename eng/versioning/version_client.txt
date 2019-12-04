@@ -28,3 +28,4 @@ com.azure:azure-storage-queue;12.1.0;12.1.0
 com.azure:azure-storage-queue-cryptography;12.0.0-beta.6;12.0.0-beta.6
 com.azure:azure-core-tracing-opencensus;1.0.0-beta.5;1.0.0-beta.5
 com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-cognitiveservices-textanalytics;1.0.0-beta.1;1.0.0-beta.1
