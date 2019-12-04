@@ -59,7 +59,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -72,7 +72,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
