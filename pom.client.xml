@@ -353,7 +353,7 @@
             <file>${session.executionRootDirectory}/eng/revapi.json</file>
           </analysisConfigurationFiles>
           <checkDependencies>false</checkDependencies>
-          <failBuildOnProblemsFound>false</failBuildOnProblemsFound> <!-- TODO: enable this -->
+          <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
         <dependencies>
           <dependency>
@@ -685,7 +685,7 @@
             <file>${session.executionRootDirectory}/eng/revapi.json</file>
           </analysisConfigurationFiles>
           <checkDependencies>false</checkDependencies>
-          <failBuildOnProblemsFound>false</failBuildOnProblemsFound> <!-- TODO: enable this -->
+          <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
         <reportSets>
           <reportSet>
