@@ -69,6 +69,8 @@ The APIs documented in this section provide access to operations on search data,
 * [Creating a synonym map for an index](/sdk/search/azure-search/src/samples/java/com/azure/search/SynonymMapsCreateExample.java)
 * [Creating skillsets](/sdk/search/azure-search/src/samples/java/com/azure/search/CreateSkillsetExample.java)
 * [Creating and managing indexers](/sdk/search/azure-search/src/samples/java/com/azure/search/IndexerManagementExample.java)
+* [Async Search](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchOptionsAsyncExample.java)
+* [Sync Search](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchOptionsExample.java)
 
 ## Troubleshooting
 
