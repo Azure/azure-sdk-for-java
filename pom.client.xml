@@ -352,6 +352,7 @@
           <analysisConfigurationFiles>
             <file>${session.executionRootDirectory}/eng/revapi.json</file>
           </analysisConfigurationFiles>
+          <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
           <checkDependencies>false</checkDependencies>
           <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
@@ -684,6 +685,7 @@
           <analysisConfigurationFiles>
             <file>${session.executionRootDirectory}/eng/revapi.json</file>
           </analysisConfigurationFiles>
+          <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
           <checkDependencies>false</checkDependencies>
           <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
