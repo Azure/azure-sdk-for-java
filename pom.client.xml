@@ -350,13 +350,20 @@
         <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <analysisConfigurationFiles>
-            <file>${session.executionRootDirectory}/eng/revapi.json</file>
+            <configurationFile>
+              <resource>revapi/revapi.json</resource>
+            </configurationFile>
           </analysisConfigurationFiles>
           <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
           <checkDependencies>true</checkDependencies>
           <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
         <dependencies>
+          <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>sdk-build-tools</artifactId>
+            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+          </dependency>
           <dependency>
             <groupId>org.revapi</groupId>
             <artifactId>revapi-java</artifactId>
@@ -546,7 +553,6 @@
         </plugin>
       </plugins>
     </pluginManagement>
-
   </build>
 
   <dependencies>
@@ -676,14 +682,15 @@
           </reportSet>
         </reportSets>
       </plugin>
-
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
         <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <analysisConfigurationFiles>
-            <file>${session.executionRootDirectory}/eng/revapi.json</file>
+            <configurationFile>
+              <resource>revapi/revapi.json</resource>
+            </configurationFile>
           </analysisConfigurationFiles>
           <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
           <checkDependencies>true</checkDependencies>
@@ -705,6 +712,7 @@
       </plugin>
     </plugins>
   </reporting>
+
   <profiles>
 
     <!-- Skip module-info.java on Java 8 -->
