@@ -1,10 +1,12 @@
 [
     {
-        "extension": "revapi.filter",
+        "extension": "revapi.java",
         "configuration": {
-            "elements": {
-                "include" : ["class com\\.azure\\..*"],
-                "exclude" : ["class com\\.azure\\..*\\.implementation(\\..*)?"]
+            "filter": {
+                "packages": {
+                    "regex": true,
+                    "exclude" : ["com\\.azure\\..+\\.implementation(\\..+)?"]
+                }
             }
         }
     },
