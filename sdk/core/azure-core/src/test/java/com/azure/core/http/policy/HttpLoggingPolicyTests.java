@@ -12,6 +12,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -31,8 +32,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
-import java.time.Duration;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,6 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
  */
 public class HttpLoggingPolicyTests {
     private static final String REDACTED = "REDACTED";
+    private static final Context context = new Context("caller-method", "HttpLoggingPolicyTests");
 
     private String originalLogLevel;
     private PrintStream originalErr;
@@ -55,6 +55,13 @@ public class HttpLoggingPolicyTests {
         // Set the log level to information for the test.
         originalLogLevel = System.getProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
         System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, "2");
+
+        /*
+         * Indicate to SLF4J to enable trace level logging for a logger named
+         * com.azure.core.util.logging.ClientLoggerTests. Trace is the maximum level of logging supported by the
+         * ClientLogger.
+         */
+        System.setProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.HttpLoggingPolicyTests", "trace");
 
         // Override System.err as that is where SLF4J will log by default.
         originalErr = System.err;
@@ -70,6 +77,8 @@ public class HttpLoggingPolicyTests {
         } else {
             System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
         }
+
+        System.clearProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.HttpLoggingPolicyTests");
 
         // Reset System.err to the original PrintStream.
         System.setErr(originalErr);
@@ -89,8 +98,8 @@ public class HttpLoggingPolicyTests {
             .httpClient(new NoOpHttpClient())
             .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl)))
-            .verifyComplete();
+            StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl), context))
+                .verifyComplete();
 
         String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         Assertions.assertTrue(logString.contains(expectedQueryString));
@@ -139,10 +148,12 @@ public class HttpLoggingPolicyTests {
                 .then(Mono.empty()))
             .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl, requestHeaders, stream)))
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl, requestHeaders, stream),
+            context))
             .verifyComplete();
 
         String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        System.out.println(logString);
         Assertions.assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
     }
 
@@ -152,7 +163,7 @@ public class HttpLoggingPolicyTests {
     @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("validateLoggingDoesNotConsumeSupplier")
     public void validateLoggingDoesNotConsumeResponse(Flux<ByteBuffer> stream, byte[] data, int contentLength) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "https::/test.com");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com");
         HttpHeaders responseHeaders = new HttpHeaders()
             .put("Content-Type", ContentType.APPLICATION_JSON)
             .put("Content-Length", Integer.toString(contentLength));
@@ -162,19 +173,19 @@ public class HttpLoggingPolicyTests {
             .httpClient(ignored -> Mono.just(new MockHttpResponse(ignored, responseHeaders, stream)))
             .build();
 
-        StepVerifier.create(pipeline.send(request))
+        StepVerifier.create(pipeline.send(request, context))
             .assertNext(response -> StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
                 .assertNext(bytes -> assertArrayEquals(data, bytes))
                 .verifyComplete())
-            .expectComplete()
-            .verify(Duration.ofSeconds(10));
+            .verifyComplete();
 
         String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        System.out.println(logString);
         Assertions.assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
     }
 
     private static Stream<Arguments> validateLoggingDoesNotConsumeSupplier() {
-        byte[] data = SecureRandom.getSeed(16);
+        byte[] data = "this is a test".getBytes(StandardCharsets.UTF_8);
         byte[] repeatingData = new byte[data.length * 3];
         for (int i = 0; i < 3; i++) {
             System.arraycopy(data, 0, repeatingData, i * data.length, data.length);
