@@ -25,7 +25,7 @@ Add a dependency on Azure Storage File Datalake
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.0.0-preview.6</version>
+    <version>12.0.0-preview.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -44,7 +44,7 @@ Netty and include the OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.0.0-preview.6</version>
+    <version>12.0.0-preview.7</version>
     <exclusions>
         <exclusion>
             <groupId>com.azure</groupId>
@@ -60,7 +60,7 @@ Netty and include the OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
