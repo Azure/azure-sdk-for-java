@@ -49,7 +49,7 @@ import java.util.Objects;
  * @see PagedIterable
  */
 @ServiceClient(builder = CertificateClientBuilder.class, serviceInterfaces = CertificateService.class)
-public class CertificateClient {
+public final class CertificateClient {
     private final CertificateAsyncClient client;
 
     /**

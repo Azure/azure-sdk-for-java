@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Represents a certificate with all of its properties including {@link CertificatePolicy}.
  */
-public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
+public final class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
 
     /**
      * The Certificate policy.

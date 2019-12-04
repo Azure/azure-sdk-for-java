@@ -68,7 +68,7 @@ import reactor.core.publisher.Mono;
  * @see PagedFlux
  */
 @ServiceClient(builder = CertificateClientBuilder.class, isAsync = true, serviceInterfaces = CertificateService.class)
-public class CertificateAsyncClient {
+public final class CertificateAsyncClient {
     static final String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
