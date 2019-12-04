@@ -222,7 +222,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
 
-        cosmosContainer.queryItems("SELECT * FROM root", options)
+        cosmosContainer.queryItems("SELECT * FROM root", options, CosmosItemProperties.class)
                        .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                         .flatMap(doc -> {
@@ -551,7 +551,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         options.partitionKey(new PartitionKey(docId));
         CosmosAsyncContainer cosmosContainer = client.getDatabase(databaseId).read().block().getDatabase().getContainer(collectionId).read().block().getContainer();
         List<CosmosItemProperties> res = cosmosContainer
-                .queryItems(String.format("SELECT * FROM root r where r.id = '%s'", docId), options)
+                .queryItems(String.format("SELECT * FROM root r where r.id = '%s'", docId), options, CosmosItemProperties.class)
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .collectList().block();
 

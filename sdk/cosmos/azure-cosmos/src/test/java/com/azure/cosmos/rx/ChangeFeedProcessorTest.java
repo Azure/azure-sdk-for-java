@@ -263,7 +263,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     FeedOptions feedOptions = new FeedOptions();
                     feedOptions.setEnableCrossPartitionQuery(true);
 
-                    createdLeaseCollection.queryItems(querySpec, feedOptions)
+                    createdLeaseCollection.queryItems(querySpec, feedOptions, CosmosItemProperties.class)
                         .delayElements(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT / 2))
                         .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
                         .flatMap(doc -> {
