@@ -936,29 +936,29 @@
       <build>
         <plugins>
           <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>exec-maven-plugin</artifactId>
-              <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-              <executions>
-                  <execution>
-                      <id>generate-overview-from-readme</id>
-                      <phase>prepare-package</phase>
-                      <goals>
-                          <goal>exec</goal>
-                      </goals>
-                      <configuration>
-                        <executable>python</executable>
-                        <workingDirectory>${project.basedir}</workingDirectory>
-                        <arguments>
-                          <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
-                          <argument>--rf</argument>
-                          <argument>${project.basedir}/README.md</argument>
-                          <argument>--v</argument>
-                          <argument>${project.version}</argument>
-                        </arguments>
-                      </configuration>
-                  </execution>
-              </executions>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>generate-overview-from-readme</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <executable>python</executable>
+              <workingDirectory>${project.basedir}</workingDirectory>
+              <arguments>
+                <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
+                <argument>--rf</argument>
+                <argument>${project.basedir}/README.md</argument>
+                <argument>--v</argument>
+                <argument>${project.version}</argument>
+              </arguments>
+            </configuration>
           </plugin>
           <!-- Add the overview argument to the javadoc args -->
           <plugin>

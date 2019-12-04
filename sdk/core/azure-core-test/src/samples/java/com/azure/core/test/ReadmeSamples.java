@@ -34,7 +34,7 @@ public class ReadmeSamples {
          * Use JUnit or TestNG annotation here for your testcase
          */
         public void fooTest() {
-            // Do some network service calls.
+            // Do some network calls.
         }
     }
 
