@@ -26,7 +26,7 @@ class StorageTestBase extends Specification {
 
     protected InterceptorManager interceptorManager
     protected boolean recordLiveMode
-    protected TestResourceNamer resourceNamer
+    private TestResourceNamer resourceNamer
     protected String testName
 
     def setup() {
@@ -117,7 +117,7 @@ class StorageTestBase extends Specification {
     /*
      * Limited to an int because ByteBuffer sizes can only be an int, long is not supported.
      */
-    protected ByteBuffer getRandomData(int size) {
+    public ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size))
     }
 
@@ -144,7 +144,7 @@ class StorageTestBase extends Specification {
         return file
     }
 
-    protected static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> stream) {
+    public static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> stream) {
         return FluxUtil.collectBytesInByteBufferStream(stream).flatMap({ Mono.just(ByteBuffer.wrap(it)) })
     }
 

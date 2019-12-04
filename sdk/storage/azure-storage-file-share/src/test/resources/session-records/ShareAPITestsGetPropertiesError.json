@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestsgetpropertieserror57373aaec130f37d4?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/getpropertieserrorshareapitestsgetpropertieserrorc8a368775?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "da12b8af-7596-4669-9836-cdc2a7b9acc8"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9d25c306-6873-40b2-9956-4ccca315f47f"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "83e48c18-a01a-0116-2688-83b7bd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:83e48c18-a01a-0116-2688-83b7bd000000\nTime:2019-10-15T18:43:21.0850104Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 18:43:20 GMT",
-      "x-ms-client-request-id" : "da12b8af-7596-4669-9836-cdc2a7b9acc8",
+      "x-ms-request-id" : "0ec734e8-501a-0025-1239-aaa8c5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:0ec734e8-501a-0025-1239-aaa8c5000000\nTime:2019-12-04T00:25:03.4956747Z</Message></Error>",
+      "Date" : "Wed, 04 Dec 2019 00:25:02 GMT",
+      "x-ms-client-request-id" : "9d25c306-6873-40b2-9956-4ccca315f47f",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestsgetpropertieserror57373aaec130f37d4" ]
+  "variables" : [ "getpropertieserrorshareapitestsgetpropertieserrorc8a368775" ]
 }

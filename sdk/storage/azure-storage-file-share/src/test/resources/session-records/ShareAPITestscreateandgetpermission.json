@@ -1,0 +1,66 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createandgetpermission42900b7847bf092ba44bb?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "1a0980be-1ec9-4660-95c5-288a47046d43"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D778506A2A2E60",
+      "Last-Modified" : "Wed, 04 Dec 2019 00:25:07 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "0ec7353d-501a-0025-4c39-aaa8c5000000",
+      "Date" : "Wed, 04 Dec 2019 00:25:06 GMT",
+      "x-ms-client-request-id" : "1a0980be-1ec9-4660-95c5-288a47046d43"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createandgetpermission42900b7847bf092ba44bb?restype=share&comp=filepermission",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f4c8a791-9104-4aed-bd6c-edcc3eece71f",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "x-ms-file-permission-key" : "1226745640258142193*13168958551941065216",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "0ec7353f-501a-0025-4d39-aaa8c5000000",
+      "Date" : "Wed, 04 Dec 2019 00:25:06 GMT",
+      "x-ms-client-request-id" : "f4c8a791-9104-4aed-bd6c-edcc3eece71f"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createandgetpermission42900b7847bf092ba44bb?restype=share&comp=filepermission",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6496e478-2eeb-40d7-b3b1-b0439a50038b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "225",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "0ec73540-501a-0025-4e39-aaa8c5000000",
+      "Body" : "{\"permission\":\"O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL\"}",
+      "Date" : "Wed, 04 Dec 2019 00:25:06 GMT",
+      "x-ms-client-request-id" : "6496e478-2eeb-40d7-b3b1-b0439a50038b"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createandgetpermission42900b7847bf092ba44bb" ]
+}

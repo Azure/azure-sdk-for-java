@@ -306,7 +306,7 @@ class APISpec extends StorageTestBase {
     }
 
     String getBlockID() {
-        return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
+        return Base64.encoder.encodeToString(getRandomUUID().getBytes(StandardCharsets.UTF_8))
     }
 
     /**

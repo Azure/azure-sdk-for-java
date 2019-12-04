@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestssetmetadataerror343674d51bafcfa?restype=share&comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setmetadataerrorshareasyncapitestssetmetadataerror80f896065?restype=share&comp=metadata",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "5bfbb53c-f9ca-494c-8f2f-ce27989fa5cd"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "34ee2b3a-b28c-4fd9-960e-ce76e18098aa"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "83e48cf8-a01a-0116-5588-83b7bd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:83e48cf8-a01a-0116-5588-83b7bd000000\nTime:2019-10-15T18:43:29.3037956Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 18:43:28 GMT",
-      "x-ms-client-request-id" : "5bfbb53c-f9ca-494c-8f2f-ce27989fa5cd",
+      "x-ms-request-id" : "0ec73572-501a-0025-6939-aaa8c5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:0ec73572-501a-0025-6939-aaa8c5000000\nTime:2019-12-04T00:25:09.4534228Z</Message></Error>",
+      "Date" : "Wed, 04 Dec 2019 00:25:08 GMT",
+      "x-ms-client-request-id" : "34ee2b3a-b28c-4fd9-960e-ce76e18098aa",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestssetmetadataerror343674d51bafcfa" ]
+  "variables" : [ "setmetadataerrorshareasyncapitestssetmetadataerror80f896065" ]
 }

@@ -1,0 +1,83 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/listqueuesqueueserviceasyncapitestslistqueues1bd775021a70",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "80392dbd-d68d-4518-9c63-eee56a5500b0"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "62cdc6e5-0003-0072-1232-aa4148000000",
+      "Date" : "Tue, 03 Dec 2019 23:35:28 GMT",
+      "x-ms-client-request-id" : "80392dbd-d68d-4518-9c63-eee56a5500b0"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/listqueuesqueueserviceasyncapitestslistqueues1bd775021a71",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f745f424-0f19-4954-812e-a6b4d2da30a2"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d056feda-9003-0115-0a32-aab4ba000000",
+      "Date" : "Tue, 03 Dec 2019 23:35:28 GMT",
+      "x-ms-client-request-id" : "f745f424-0f19-4954-812e-a6b4d2da30a2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/listqueuesqueueserviceasyncapitestslistqueues1bd775021a72",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e0569103-d860-425b-ba08-7fa29f3e08bb"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "62cdc6fb-0003-0072-2632-aa4148000000",
+      "Date" : "Tue, 03 Dec 2019 23:35:28 GMT",
+      "x-ms-client-request-id" : "e0569103-d860-425b-ba08-7fa29f3e08bb"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=listqueues&include=metadata&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f44c1ec7-58d0-4e86-af70-b4bdc57ddb68"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "d056fee4-9003-0115-1232-aab4ba000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>listqueues</Prefix><Queues><Queue><Name>listqueuesqueueserviceasyncapitestslistqueues1bd775021a70</Name><Metadata><metadata0>value0</metadata0></Metadata></Queue><Queue><Name>listqueuesqueueserviceasyncapitestslistqueues1bd775021a71</Name><Metadata><metadata1>value1</metadata1></Metadata></Queue><Queue><Name>listqueuesqueueserviceasyncapitestslistqueues1bd775021a72</Name><Metadata><metadata2>value2</metadata2></Metadata></Queue></Queues><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 03 Dec 2019 23:35:28 GMT",
+      "x-ms-client-request-id" : "f44c1ec7-58d0-4e86-af70-b4bdc57ddb68",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "listqueuesqueueserviceasyncapitestslistqueues1bd775021a7" ]
+}

@@ -10,8 +10,8 @@ import com.azure.storage.queue.models.QueueItem
 import com.azure.storage.queue.models.QueueMetrics
 import com.azure.storage.queue.models.QueueRetentionPolicy
 import com.azure.storage.queue.models.QueueServiceProperties
-import com.azure.storage.queue.models.QueuesSegmentOptions
 import com.azure.storage.queue.models.QueueStorageException
+import com.azure.storage.queue.models.QueuesSegmentOptions
 import spock.lang.Unroll
 
 class QueueServiceAPITests extends APISpec {
@@ -30,8 +30,8 @@ class QueueServiceAPITests extends APISpec {
 
     def "Create queue"() {
         when:
-        def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(generateRandomName(60),  null, null, null)
-        def enqueueMessageResponse = queueClientResponse.getValue().sendMessageWithResponse("Testing service client creating a queue", null, null, null,null)
+        def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(generateRandomName(60), null, null, null)
+        def enqueueMessageResponse = queueClientResponse.getValue().sendMessageWithResponse("Testing service client creating a queue", null, null, null, null)
 
         then:
         QueueTestHelper.assertResponseStatusCode(queueClientResponse, 201)
@@ -68,7 +68,7 @@ class QueueServiceAPITests extends APISpec {
     @Unroll
     def "Create queue maxOverload"() {
         when:
-        def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(generateRandomName(60), metadata,null, null)
+        def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(generateRandomName(60), metadata, null, null)
         def enqueueMessageResponse = queueClientResponse.getValue().sendMessageWithResponse("Testing service client creating a queue", null, null, null, null)
 
         then:
@@ -132,7 +132,7 @@ class QueueServiceAPITests extends APISpec {
         }
 
         when:
-        def queueListIter = primaryQueueServiceClient.listQueues(options, null, null)
+        def queueListIter = primaryQueueServiceClient.listQueues(options.setPrefix(testName), null, null)
         then:
         queueListIter.each {
             QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
@@ -141,10 +141,10 @@ class QueueServiceAPITests extends APISpec {
         testQueues.size() == 0
 
         where:
-        options                                                                                         | _
-        new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues")                          | _
-        new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues").setMaxResultsPerPage(2)  | _
-        new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues").setIncludeMetadata(true) | _
+        options                                             | _
+        new QueuesSegmentOptions()                          | _
+        new QueuesSegmentOptions().setMaxResultsPerPage(2)  | _
+        new QueuesSegmentOptions().setIncludeMetadata(true) | _
     }
 
     def "List empty queues"() {

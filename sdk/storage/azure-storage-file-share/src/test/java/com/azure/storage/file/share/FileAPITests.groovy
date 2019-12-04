@@ -580,7 +580,7 @@ class FileAPITests extends APISpec {
 
     def "List ranges"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = generateResourceName("file", 60)
         primaryFileClient.create(1024)
         def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -597,7 +597,7 @@ class FileAPITests extends APISpec {
 
     def "List ranges with range"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = generateResourceName("file", 60)
         primaryFileClient.create(1024)
         def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)

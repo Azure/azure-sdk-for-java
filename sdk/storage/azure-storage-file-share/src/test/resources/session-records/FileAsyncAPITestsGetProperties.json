@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsgetproperties2231374f9b2bb4f72?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/getpropertiesfileasyncapitestsgetproperties11029190d557?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "e24c8781-55ac-4ee4-83f6-f2c4edc83ef5"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "990f0b16-18eb-4b98-ac87-0df40bf7a39f"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D766F47A1C41C9",
-      "Last-Modified" : "Mon, 11 Nov 2019 22:14:10 GMT",
+      "ETag" : "0x8D778505DEC348F",
+      "Last-Modified" : "Wed, 04 Dec 2019 00:24:46 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "5332c5b7-801a-00e0-7cdd-98d6fe000000",
-      "Date" : "Mon, 11 Nov 2019 22:14:09 GMT",
-      "x-ms-client-request-id" : "e24c8781-55ac-4ee4-83f6-f2c4edc83ef5"
+      "x-ms-request-id" : "0ec73393-501a-0025-3639-aaa8c5000000",
+      "Date" : "Wed, 04 Dec 2019 00:24:45 GMT",
+      "x-ms-client-request-id" : "990f0b16-18eb-4b98-ac87-0df40bf7a39f"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsgetproperties2231374f9b2bb4f72/fileasyncapitestsgetproperties112455f9693c440cc",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/getpropertiesfileasyncapitestsgetproperties11029190d557/getpropertiesfileasyncapitestsgetproperties110432076603",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "3fa60874-85f8-4852-a711-483e194ddcf3"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "de44610f-4e24-4537-80ab-a82d6ba7bf3f"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-11-11T22:14:10.3352545Z",
-      "Last-Modified" : "Mon, 11 Nov 2019 22:14:10 GMT",
+      "x-ms-file-creation-time" : "2019-12-04T00:24:46.5123909Z",
+      "Last-Modified" : "Wed, 04 Dec 2019 00:24:46 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Mon, 11 Nov 2019 22:14:09 GMT",
-      "ETag" : "0x8D766F47A228CE1",
+      "Date" : "Wed, 04 Dec 2019 00:24:46 GMT",
+      "ETag" : "0x8D778505DF2CA45",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2019-11-11T22:14:10.3352545Z",
+      "x-ms-file-change-time" : "2019-12-04T00:24:46.5123909Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "5332c5b9-801a-00e0-7ddd-98d6fe000000",
-      "x-ms-client-request-id" : "3fa60874-85f8-4852-a711-483e194ddcf3",
-      "x-ms-file-last-write-time" : "2019-11-11T22:14:10.3352545Z"
+      "x-ms-request-id" : "0ec73399-501a-0025-3939-aaa8c5000000",
+      "x-ms-client-request-id" : "de44610f-4e24-4537-80ab-a82d6ba7bf3f",
+      "x-ms-file-last-write-time" : "2019-12-04T00:24:46.5123909Z"
     },
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsgetproperties2231374f9b2bb4f72/fileasyncapitestsgetproperties112455f9693c440cc",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/getpropertiesfileasyncapitestsgetproperties11029190d557/getpropertiesfileasyncapitestsgetproperties110432076603",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "3bccd3f4-d3d1-4571-b21d-6a633ea8b528"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "427f6d4f-7ab4-4abd-9610-8330f53fe980"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -63,25 +63,25 @@
       "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-11-11T22:14:10.3352545Z",
+      "x-ms-file-creation-time" : "2019-12-04T00:24:46.5123909Z",
       "x-ms-lease-state" : "available",
-      "Last-Modified" : "Mon, 11 Nov 2019 22:14:10 GMT",
+      "Last-Modified" : "Wed, 04 Dec 2019 00:24:46 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 11 Nov 2019 22:14:09 GMT",
+      "Date" : "Wed, 04 Dec 2019 00:24:46 GMT",
       "x-ms-server-encrypted" : "true",
       "x-ms-type" : "File",
-      "ETag" : "0x8D766F47A228CE1",
+      "ETag" : "0x8D778505DF2CA45",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2019-11-11T22:14:10.3352545Z",
+      "x-ms-file-change-time" : "2019-12-04T00:24:46.5123909Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "1024",
-      "x-ms-request-id" : "5332c5ba-801a-00e0-7edd-98d6fe000000",
-      "x-ms-client-request-id" : "3bccd3f4-d3d1-4571-b21d-6a633ea8b528",
-      "x-ms-file-last-write-time" : "2019-11-11T22:14:10.3352545Z",
+      "x-ms-request-id" : "0ec7339a-501a-0025-3a39-aaa8c5000000",
+      "x-ms-client-request-id" : "427f6d4f-7ab4-4abd-9610-8330f53fe980",
+      "x-ms-file-last-write-time" : "2019-12-04T00:24:46.5123909Z",
       "Content-Type" : "application/octet-stream"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileasyncapitestsgetproperties2231374f9b2bb4f72", "fileasyncapitestsgetproperties112455f9693c440cc" ]
+  "variables" : [ "getpropertiesfileasyncapitestsgetproperties11029190d557", "getpropertiesfileasyncapitestsgetproperties110432076603" ]
 }

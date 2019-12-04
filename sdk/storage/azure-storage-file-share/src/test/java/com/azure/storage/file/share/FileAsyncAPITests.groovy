@@ -626,7 +626,7 @@ class FileAsyncAPITests extends APISpec {
     def "List ranges"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = generateResourceName("file", 60)
         def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
 
@@ -644,7 +644,7 @@ class FileAsyncAPITests extends APISpec {
     def "List ranges with range"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = generateResourceName("file", 60)
         def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
 

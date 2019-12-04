@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceasyncapitestsdeletesharedoesnotexist48278f4fc?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deletesharedoesnotexist59816c6f834eb8e434f56?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "74478370-90d5-49f1-8106-61739bea3f03"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "baa2b3cc-6f0a-42c2-9bde-aa42ee238667"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "83e48b4d-a01a-0116-0b88-83b7bd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:83e48b4d-a01a-0116-0b88-83b7bd000000\nTime:2019-10-15T18:43:14.5708395Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 18:43:13 GMT",
-      "x-ms-client-request-id" : "74478370-90d5-49f1-8106-61739bea3f03",
+      "x-ms-request-id" : "0ec73472-501a-0025-4a39-aaa8c5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:0ec73472-501a-0025-4a39-aaa8c5000000\nTime:2019-12-04T00:24:59.2105367Z</Message></Error>",
+      "Date" : "Wed, 04 Dec 2019 00:24:58 GMT",
+      "x-ms-client-request-id" : "baa2b3cc-6f0a-42c2-9bde-aa42ee238667",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceasyncapitestsdeletesharedoesnotexist15383534f", "fileserviceasyncapitestsdeletesharedoesnotexist48278f4fc" ]
+  "variables" : [ "deletesharedoesnotexist15720832b04ecc5ef4054", "deletesharedoesnotexist59816c6f834eb8e434f56" ]
 }

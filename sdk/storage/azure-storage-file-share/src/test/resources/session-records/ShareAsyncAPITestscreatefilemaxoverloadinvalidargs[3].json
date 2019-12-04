@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs23027706c13a9540?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "059b283c-6698-4ba2-8f40-3c20bb44d3f7"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D778506CE4CB00",
+      "Last-Modified" : "Wed, 04 Dec 2019 00:25:11 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "0ec735a4-501a-0025-0b39-aaa8c5000000",
+      "Date" : "Wed, 04 Dec 2019 00:25:11 GMT",
+      "x-ms-client-request-id" : "059b283c-6698-4ba2-8f40-3c20bb44d3f7"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs23027706c13a9540/fileName",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "21dbc320-d2d8-404d-a3b5-8ccccba9f55f"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "Content-Length" : "278",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "0ec735a6-501a-0025-0c39-aaa8c5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:0ec735a6-501a-0025-0c39-aaa8c5000000\nTime:2019-12-04T00:25:11.6185146Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Wed, 04 Dec 2019 00:25:11 GMT",
+      "x-ms-client-request-id" : "21dbc320-d2d8-404d-a3b5-8ccccba9f55f",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createfilemaxoverloadinvalidargs23027706c13a9540" ]
+}

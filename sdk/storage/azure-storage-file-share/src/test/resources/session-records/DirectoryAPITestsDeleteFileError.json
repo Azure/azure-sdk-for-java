@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsdeletefileerror98746260688c87d2?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deletefileerrordirectoryapitestsdeletefileerror1954700395?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "7f04562c-e898-4a7d-bd4a-c164120a0544"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3ac92dc8-534c-4e83-adc6-a87af2dccb6c"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7519F64F9B14B",
-      "Last-Modified" : "Tue, 15 Oct 2019 18:42:13 GMT",
+      "ETag" : "0x8D77850481D4A58",
+      "Last-Modified" : "Wed, 04 Dec 2019 00:24:09 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "beee100f-701a-001b-4d88-831ee4000000",
-      "Date" : "Tue, 15 Oct 2019 18:42:13 GMT",
-      "x-ms-client-request-id" : "7f04562c-e898-4a7d-bd4a-c164120a0544"
+      "x-ms-request-id" : "660bae5f-401a-0075-5539-aab7cd000000",
+      "Date" : "Wed, 04 Dec 2019 00:24:09 GMT",
+      "x-ms-client-request-id" : "3ac92dc8-534c-4e83-adc6-a87af2dccb6c"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsdeletefileerror98746260688c87d2/directoryapitestsdeletefileerror92809b8c825031ab?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deletefileerrordirectoryapitestsdeletefileerror1954700395/deletefileerrordirectoryapitestsdeletefileerror1956468589?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "e0598832-596e-44b5-b26d-ddd08519b801"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4bf856c8-d79f-4b34-b560-9fc721f99add"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-10-15T18:42:13.2491883Z",
-      "Last-Modified" : "Tue, 15 Oct 2019 18:42:13 GMT",
+      "x-ms-file-creation-time" : "2019-12-04T00:24:09.9250025Z",
+      "Last-Modified" : "Wed, 04 Dec 2019 00:24:09 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 15 Oct 2019 18:42:13 GMT",
-      "ETag" : "0x8D7519F6501F66B",
+      "Date" : "Wed, 04 Dec 2019 00:24:09 GMT",
+      "ETag" : "0x8D778504823FF69",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-10-15T18:42:13.2491883Z",
+      "x-ms-file-change-time" : "2019-12-04T00:24:09.9250025Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "beee1011-701a-001b-4e88-831ee4000000",
-      "x-ms-client-request-id" : "e0598832-596e-44b5-b26d-ddd08519b801",
-      "x-ms-file-last-write-time" : "2019-10-15T18:42:13.2491883Z"
+      "x-ms-request-id" : "660bae61-401a-0075-5639-aab7cd000000",
+      "x-ms-client-request-id" : "4bf856c8-d79f-4b34-b560-9fc721f99add",
+      "x-ms-file-last-write-time" : "2019-12-04T00:24:09.9250025Z"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsdeletefileerror98746260688c87d2/directoryapitestsdeletefileerror92809b8c825031ab%2ftestfile",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deletefileerrordirectoryapitestsdeletefileerror1954700395/deletefileerrordirectoryapitestsdeletefileerror1956468589%2ftestfile",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "ebb9e6ef-3465-4c23-8fb6-c8b31e3f44c3"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "c339461e-0dfc-4441-b170-4ff4a73f188d"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -64,13 +64,13 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "beee1012-701a-001b-4f88-831ee4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:beee1012-701a-001b-4f88-831ee4000000\nTime:2019-10-15T18:42:13.3030928Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 18:42:13 GMT",
-      "x-ms-client-request-id" : "ebb9e6ef-3465-4c23-8fb6-c8b31e3f44c3",
+      "x-ms-request-id" : "660bae62-401a-0075-5739-aab7cd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:660bae62-401a-0075-5739-aab7cd000000\nTime:2019-12-04T00:24:09.9701304Z</Message></Error>",
+      "Date" : "Wed, 04 Dec 2019 00:24:09 GMT",
+      "x-ms-client-request-id" : "c339461e-0dfc-4441-b170-4ff4a73f188d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryapitestsdeletefileerror98746260688c87d2", "directoryapitestsdeletefileerror92809b8c825031ab" ]
+  "variables" : [ "deletefileerrordirectoryapitestsdeletefileerror1954700395", "deletefileerrordirectoryapitestsdeletefileerror1956468589" ]
 }

@@ -5,9 +5,9 @@ package com.azure.storage.file.share
 
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
-import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
 import spock.lang.Unroll
@@ -32,7 +32,7 @@ class DirectoryAPITests extends APISpec {
         shareClient.create()
         primaryDirectoryClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildDirectoryClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
+        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes> of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get directory URL"() {
@@ -339,7 +339,7 @@ class DirectoryAPITests extends APISpec {
         }
 
         when:
-        def fileRefIter = primaryDirectoryClient.listFilesAndDirectories(prefix, maxResults, null, null).iterator()
+        def fileRefIter = primaryDirectoryClient.listFilesAndDirectories(testName + additionalPrefix, maxResults, null, null).iterator()
 
         then:
         for (int i = 0; i < numOfResults; i++) {
@@ -348,10 +348,10 @@ class DirectoryAPITests extends APISpec {
         !fileRefIter.hasNext()
 
         where:
-        prefix                                         | maxResults | numOfResults
-        null                                           | null       | 3
-        "directoryapitestslistfilesanddirectoriesargs" | 1          | 3
-        "noOp"                                         | 3          | 0
+        additionalPrefix | maxResults | numOfResults
+        ""               | null       | 3
+        ""               | 1          | 3
+        "noOp"           | 3          | 0
     }
 
     @Unroll

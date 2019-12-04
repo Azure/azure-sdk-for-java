@@ -294,7 +294,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(fileSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(generateResourceName(testName, 60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -326,7 +326,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60))
+        def outFile = new File(generateResourceName(testName, 60))
         if (outFile.exists()) {
             assert outFile.delete()
         }

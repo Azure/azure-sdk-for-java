@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/createqueuemaxoverload06512684829628abe4a61",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "037903a2-b27f-4afd-9e43-fa326db3fa05"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "62cdc516-0003-0072-5d32-aa4148000000",
+      "Date" : "Tue, 03 Dec 2019 23:35:27 GMT",
+      "x-ms-client-request-id" : "037903a2-b27f-4afd-9e43-fa326db3fa05"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/createqueuemaxoverload06512684829628abe4a61/messages",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "69a39f9b-6250-4f43-8db0-68fc4071cc1d",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d056fe50-9003-0115-1a32-aab4ba000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>39f9e1f1-b02d-4614-916a-a76e981d84af</MessageId><InsertionTime>Tue, 03 Dec 2019 23:35:28 GMT</InsertionTime><ExpirationTime>Tue, 10 Dec 2019 23:35:28 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAABMohWDKq1QE=</PopReceipt><TimeNextVisible>Tue, 03 Dec 2019 23:35:28 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Tue, 03 Dec 2019 23:35:27 GMT",
+      "x-ms-client-request-id" : "69a39f9b-6250-4f43-8db0-68fc4071cc1d",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createqueuemaxoverload06512684829628abe4a61" ]
+}

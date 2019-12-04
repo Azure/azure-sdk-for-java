@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfileinvalidargs61125072c50a56825463ab?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3e9ca72a-1eb2-4a27-a44a-24921e6e0773"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D778506947104A",
+      "Last-Modified" : "Wed, 04 Dec 2019 00:25:05 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "0ec73516-501a-0025-3339-aaa8c5000000",
+      "Date" : "Wed, 04 Dec 2019 00:25:04 GMT",
+      "x-ms-client-request-id" : "3e9ca72a-1eb2-4a27-a44a-24921e6e0773"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfileinvalidargs61125072c50a56825463ab/fileName",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "0980eabe-f4d0-40d7-bcf3-c2523660efa6"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeInput",
+      "retry-after" : "0",
+      "Content-Length" : "236",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "0ec73518-501a-0025-3439-aaa8c5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:0ec73518-501a-0025-3439-aaa8c5000000\nTime:2019-12-04T00:25:05.5486522Z</Message></Error>",
+      "Date" : "Wed, 04 Dec 2019 00:25:05 GMT",
+      "x-ms-client-request-id" : "0980eabe-f4d0-40d7-bcf3-c2523660efa6",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createfileinvalidargs61125072c50a56825463ab" ]
+}

@@ -138,7 +138,7 @@ class QueueServiceAsyncAPITests extends APISpec {
             primaryQueueServiceAsyncClient.createQueueWithResponse(queue.getName(), queue.getMetadata()).block()
         }
         when:
-        def queueListVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(options))
+        def queueListVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(options.setPrefix(testName)))
         then:
         queueListVerifier.assertNext {
             assert QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
@@ -148,10 +148,10 @@ class QueueServiceAsyncAPITests extends APISpec {
             assert QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
         }.verifyComplete()
         where:
-        options                                                                                              | _
-        new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues")                          | _
-        new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues").setMaxResultsPerPage(2)  | _
-        new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues").setIncludeMetadata(true) | _
+        options                                             | _
+        new QueuesSegmentOptions()                          | _
+        new QueuesSegmentOptions().setMaxResultsPerPage(2)  | _
+        new QueuesSegmentOptions().setIncludeMetadata(true) | _
     }
 
     def "List empty queues"() {

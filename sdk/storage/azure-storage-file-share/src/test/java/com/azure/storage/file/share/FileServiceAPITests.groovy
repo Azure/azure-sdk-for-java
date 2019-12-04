@@ -4,11 +4,11 @@
 package com.azure.storage.file.share
 
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareItem
+import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ShareProperties
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
@@ -119,7 +119,7 @@ class FileServiceAPITests extends APISpec {
         }
 
         when:
-        def shares = primaryFileServiceClient.listShares(options, null, null).iterator()
+        def shares = primaryFileServiceClient.listShares(options.setPrefix(testName), null, null).iterator()
 
         then:
         for (int i = 0; i < limits; i++) {
@@ -128,11 +128,11 @@ class FileServiceAPITests extends APISpec {
         !shares.hasNext()
 
         where:
-        options                                                                                                | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter")                           | 3      | false           | true
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeMetadata(true)  | 3      | true            | true
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setMaxResultsPerPage(2)   | 3      | false           | true
+        options                                           | limits | includeMetadata | includeSnapshot
+        new ListSharesOptions()                           | 3      | false           | true
+        new ListSharesOptions().setIncludeMetadata(true)  | 3      | true            | true
+        new ListSharesOptions().setIncludeMetadata(false) | 3      | false           | true
+        new ListSharesOptions().setMaxResultsPerPage(2)   | 3      | false           | true
     }
 
     @Unroll
@@ -152,7 +152,7 @@ class FileServiceAPITests extends APISpec {
         }
 
         when:
-        def shares = primaryFileServiceClient.listShares(options, null, null).iterator()
+        def shares = primaryFileServiceClient.listShares(options.setPrefix(testName), null, null).iterator()
 
         then:
         for (int i = 0; i < limits; i++) {
@@ -161,10 +161,10 @@ class FileServiceAPITests extends APISpec {
         !shares.hasNext()
 
         where:
-        options                                                                                                                        | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs")                                                     | 3      | false           | false
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs") .setIncludeMetadata(true)                           | 3      | true            | false
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs") .setIncludeMetadata(true).setIncludeSnapshots(true) | 4      | true            | true
+        options                                                                    | limits | includeMetadata | includeSnapshot
+        new ListSharesOptions()                                                    | 3      | false           | false
+        new ListSharesOptions().setIncludeMetadata(true)                           | 3      | true            | false
+        new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true) | 4      | true            | true
     }
 
     def "Set and get properties"() {

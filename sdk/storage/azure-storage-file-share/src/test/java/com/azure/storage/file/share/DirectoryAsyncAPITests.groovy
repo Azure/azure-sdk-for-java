@@ -3,12 +3,12 @@
 
 package com.azure.storage.file.share
 
-import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
+import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareStorageException
-import com.azure.storage.file.share.models.NtfsFileAttributes
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
@@ -32,7 +32,7 @@ class DirectoryAsyncAPITests extends APISpec {
         shareClient.create()
         primaryDirectoryAsyncClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildDirectoryAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
+        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes> of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get directory URL"() {
@@ -321,7 +321,7 @@ class DirectoryAsyncAPITests extends APISpec {
         }
 
         when:
-        def listFileAndDirVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listFilesAndDirectories(prefix,
+        def listFileAndDirVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listFilesAndDirectories(testName + additionalPrefix,
             maxResults))
 
         then:
@@ -333,10 +333,10 @@ class DirectoryAsyncAPITests extends APISpec {
         }
         nameList.isEmpty()
         where:
-        prefix                                                   | maxResults | numOfResults
-        "directoryasyncapitestslistfilesanddirectoriesargs"      | null       | 3
-        "directoryasyncapitestslistfilesanddirectoriesargs"      | 1          | 3
-        "directoryasyncapitestslistfilesanddirectoriesargsnoops" | 1          | 0
+        additionalPrefix | maxResults | numOfResults
+        ""               | null       | 3
+        ""               | 1          | 3
+        "noops"          | 1          | 0
     }
 
     @Unroll
@@ -375,7 +375,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.forceCloseHandle("invalidHandleId"))
-            .verifyErrorSatisfies({ it instanceof  ShareStorageException })
+            .verifyErrorSatisfies({ it instanceof ShareStorageException })
     }
 
     def "Force close all handles min"() {

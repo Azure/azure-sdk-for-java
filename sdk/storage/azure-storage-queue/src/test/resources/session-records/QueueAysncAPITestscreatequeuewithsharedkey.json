@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/createqueuewithsharedkey472503aea8ae9809544d",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b7556986-21d0-454f-a4a5-2c05fb1e3d1d"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "62cd7875-0003-0072-6c32-aa4148000000",
+      "Date" : "Tue, 03 Dec 2019 23:34:38 GMT",
+      "x-ms-client-request-id" : "b7556986-21d0-454f-a4a5-2c05fb1e3d1d"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createqueuewithsharedkey472503aea8ae9809544d" ]
+}

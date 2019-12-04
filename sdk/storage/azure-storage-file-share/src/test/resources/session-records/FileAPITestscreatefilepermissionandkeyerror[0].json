@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilepermissionandkeyerror991687694b4cf339a?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7be70aad-a8ed-4c1d-a106-a384eee4d205"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D778504EA76164",
+      "Last-Modified" : "Wed, 04 Dec 2019 00:24:20 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "660baf74-401a-0075-1b39-aab7cd000000",
+      "Date" : "Wed, 04 Dec 2019 00:24:20 GMT",
+      "x-ms-client-request-id" : "7be70aad-a8ed-4c1d-a106-a384eee4d205"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "createfilepermissionandkeyerror991687694b4cf339a", "createfilepermissionandkeyerror06937d71c42d316dc" ]
+}
