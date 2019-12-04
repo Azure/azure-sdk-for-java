@@ -23,8 +23,7 @@ class APISpec extends Specification {
     // Field common used for all APIs.
     static ClientLogger logger = new ClientLogger(APISpec.class)
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
-    def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
-    def testFolder = getClass().getClassLoader().getResource("testfiles")
+    URL testFolder = getClass().getClassLoader().getResource("testfiles")
     InterceptorManager interceptorManager
     TestResourceNamer testResourceName
 

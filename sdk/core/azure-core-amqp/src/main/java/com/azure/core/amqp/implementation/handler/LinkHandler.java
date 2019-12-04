@@ -3,10 +3,10 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.amqp.exception.ErrorContext;
-import com.azure.core.amqp.exception.ExceptionUtil;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.ClientConstants;
+import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -72,7 +72,7 @@ abstract class LinkHandler extends Handler {
         close();
     }
 
-    public ErrorContext getErrorContext(Link link) {
+    public AmqpErrorContext getErrorContext(Link link) {
         final String referenceId;
         if (link.getRemoteProperties() != null && link.getRemoteProperties().containsKey(TRACKING_ID_PROPERTY)) {
             referenceId = link.getRemoteProperties().get(TRACKING_ID_PROPERTY).toString();

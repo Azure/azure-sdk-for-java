@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
@@ -572,7 +573,7 @@ public class ShareFileJavaDocCodeSamples {
         ShareFileClient fileClient = createClientWithCredential();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.forceCloseHandleWithResponse#String
         fileClient.listHandles().forEach(handleItem -> {
-            Response<Void> closeResponse = fileClient
+            Response<CloseHandlesInfo> closeResponse = fileClient
                 .forceCloseHandleWithResponse(handleItem.getHandleId(), Duration.ofSeconds(30), Context.NONE);
             System.out.printf("Closing handle %s on resource %s completed with status code %d%n",
                 handleItem.getHandleId(), handleItem.getPath(), closeResponse.getStatusCode());
@@ -586,8 +587,8 @@ public class ShareFileJavaDocCodeSamples {
     public void forceCloseAllHandles() {
         ShareFileClient fileClient = createClientWithCredential();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.forceCloseAllHandles#Duration-Context
-        int closedHandleCount = fileClient.forceCloseAllHandles(Duration.ofSeconds(30), Context.NONE);
-        System.out.printf("Closed %d open handles on the file%n", closedHandleCount);
+        CloseHandlesInfo closeHandlesInfo = fileClient.forceCloseAllHandles(Duration.ofSeconds(30), Context.NONE);
+        System.out.printf("Closed %d open handles on the file%n", closeHandlesInfo.getClosedHandles());
         // END: com.azure.storage.file.share.ShareFileClient.forceCloseAllHandles#Duration-Context
     }
 

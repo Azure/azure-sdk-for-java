@@ -71,7 +71,7 @@ class FileAsyncAPITests extends APISpec {
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, null, null, null, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
-            }
+            }.verifyComplete()
     }
 
     def "Create file error"() {
@@ -179,7 +179,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
 
         when:
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength, 1))
+        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength, 1L))
         def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(1, dataLength), true))
 
         then:
@@ -259,7 +259,8 @@ class FileAsyncAPITests extends APISpec {
         then:
         clearRangeVerifier.assertNext {
             FileTestHelper.assertResponseStatusCode(it, 201)
-        }
+        }.verifyComplete()
+
         downloadResponseVerifier.assertNext {
             FluxUtil.collectBytesInByteBufferStream(it.getValue())
                 .flatMap({ data ->
@@ -267,7 +268,7 @@ class FileAsyncAPITests extends APISpec {
                         assert b == 0
                     }
                 })
-        }
+        }.verifyComplete()
     }
 
     def "Upload and clear range with args"() {
@@ -284,7 +285,8 @@ class FileAsyncAPITests extends APISpec {
         then:
         clearRangeVerifier.assertNext {
             FileTestHelper.assertResponseStatusCode(it, 201)
-        }
+        }.verifyComplete()
+
         downloadResponseVerifier.assertNext {
             FluxUtil.collectBytesInByteBufferStream(it.getValue())
                 .flatMap({ data ->
@@ -292,7 +294,7 @@ class FileAsyncAPITests extends APISpec {
                         assert b == 0
                     }
                 })
-        }
+        }.verifyComplete()
 
         cleanup:
         fullInfoData.clear()
@@ -348,7 +350,7 @@ class FileAsyncAPITests extends APISpec {
         uploadFromFileErrorVerifier.verifyErrorSatisfies({ it instanceof NoSuchFileException })
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "Upload and download file exists"() {
@@ -370,7 +372,7 @@ class FileAsyncAPITests extends APISpec {
         downloadToFileErrorVerifier.verifyErrorSatisfies({ it instanceof FileAlreadyExistsException })
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "Upload and download to file does not exist"() {
@@ -397,7 +399,7 @@ class FileAsyncAPITests extends APISpec {
         scanner.close()
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "Upload range from URL"() {
@@ -433,7 +435,7 @@ class FileAsyncAPITests extends APISpec {
                 for (int i = 0; i < length; i++) {
                     result.charAt(destinationOffset + i) == data.charAt(sourceOffset + i)
                 }
-            })
+            }).verifyComplete()
     }
 
     def "Start copy"() {
@@ -515,15 +517,15 @@ class FileAsyncAPITests extends APISpec {
             assert it.getValue().getSmbProperties().getFileChangeTime()
             assert it.getValue().getSmbProperties().getParentId()
             assert it.getValue().getSmbProperties().getFileId()
-        }
+        }.verifyComplete()
     }
 
     def "Get properties error"() {
         when:
-        def getProperitesErrorVerifier = StepVerifier.create(primaryFileAsyncClient.getProperties())
+        def getPropertiesErrorVerifier = StepVerifier.create(primaryFileAsyncClient.getProperties())
 
         then:
-        getProperitesErrorVerifier.verifyErrorSatisfies {
+        getPropertiesErrorVerifier.verifyErrorSatisfies {
             assert it instanceof HttpResponseException
         }
     }
@@ -625,7 +627,7 @@ class FileAsyncAPITests extends APISpec {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
 
         expect:
@@ -636,14 +638,14 @@ class FileAsyncAPITests extends APISpec {
             }.verifyComplete()
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "List ranges with range"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
 
         expect:
@@ -654,7 +656,7 @@ class FileAsyncAPITests extends APISpec {
             }.verifyComplete()
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "List handles"() {
@@ -681,7 +683,9 @@ class FileAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.forceCloseHandle("1"))
-            .verifyComplete()
+            .assertNext {
+                assert it.getClosedHandles() == 0
+            }.verifyComplete()
     }
 
     def "Force close handle invalid handle ID"() {
@@ -699,7 +703,7 @@ class FileAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.forceCloseAllHandles())
-            .assertNext({ it == 0 })
+            .assertNext({ it.getClosedHandles() == 0 })
             .verifyComplete()
     }
 

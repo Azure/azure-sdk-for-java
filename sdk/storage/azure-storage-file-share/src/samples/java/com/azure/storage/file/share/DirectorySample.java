@@ -42,13 +42,13 @@ public class DirectorySample {
         // Create a child directory.
         String childDirectoryName = generateRandomName();
         try {
-            directoryClient.createSubDirectory(childDirectoryName);
+            directoryClient.createSubdirectory(childDirectoryName);
         } catch (ShareStorageException e) {
             System.out.println("Failed to create sub directory. Reasons: " + e.getMessage());
         }
 
         // Create a 1KB file under the child directory.
-        ShareDirectoryClient childDirClient = directoryClient.getSubDirectoryClient(childDirectoryName);
+        ShareDirectoryClient childDirClient = directoryClient.getSubdirectoryClient(childDirectoryName);
         String fileName = generateRandomName();
         try {
             childDirClient.createFile(fileName, 1024);
@@ -89,7 +89,7 @@ public class DirectorySample {
 
         // Delete the child folder
         try {
-            directoryClient.deleteSubDirectory(childDirectoryName);
+            directoryClient.deleteSubdirectory(childDirectoryName);
         } catch (ShareStorageException e) {
             System.out.println("Failed to delete the child directory. Reasons: " + e.getMessage());
         }

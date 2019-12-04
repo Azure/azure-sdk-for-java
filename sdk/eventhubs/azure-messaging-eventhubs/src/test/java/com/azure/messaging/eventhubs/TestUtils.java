@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.MessageConstant;
+import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -22,10 +22,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -53,7 +53,7 @@ public final class TestUtils {
         APPLICATION_PROPERTIES.put("a-number", 10L);
     }
 
-    static Symbol getSymbol(MessageConstant messageConstant) {
+    static Symbol getSymbol(AmqpMessageConstant messageConstant) {
         return Symbol.getSymbol(messageConstant.getValue());
     }
 
@@ -129,8 +129,8 @@ public final class TestUtils {
 
     static EventData getEvent(String body, String messageTrackingValue, int position) {
         final EventData eventData = new EventData(body.getBytes(UTF_8));
-        eventData.addProperty(MESSAGE_TRACKING_ID, messageTrackingValue);
-        eventData.addProperty(MESSAGE_POSITION_ID, position);
+        eventData.getProperties().put(MESSAGE_TRACKING_ID, messageTrackingValue);
+        eventData.getProperties().put(MESSAGE_POSITION_ID, position);
         return eventData;
     }
 
@@ -138,7 +138,7 @@ public final class TestUtils {
      * Checks the {@link #MESSAGE_TRACKING_ID} to see if it matches the {@code expectedValue}.
      */
     public static boolean isMatchingEvent(PartitionEvent partitionEvent, String expectedValue) {
-        return isMatchingEvent(partitionEvent.getEventData(), expectedValue);
+        return isMatchingEvent(partitionEvent.getData(), expectedValue);
     }
 
     /**

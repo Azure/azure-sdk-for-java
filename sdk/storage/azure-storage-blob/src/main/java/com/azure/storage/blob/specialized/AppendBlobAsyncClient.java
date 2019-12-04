@@ -131,6 +131,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *

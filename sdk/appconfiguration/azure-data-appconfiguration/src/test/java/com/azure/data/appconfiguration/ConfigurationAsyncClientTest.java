@@ -16,7 +16,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import org.junit.jupiter.api.Disabled;
@@ -67,7 +66,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client.listConfigurationSettings(new SettingSelector().setKeys(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
-                    Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.clearReadOnlyWithResponse(configurationSetting) : Mono.empty();
+                    Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.setReadOnlyWithResponse(configurationSetting, false) : Mono.empty();
                     return unlock.then(client.deleteConfigurationSettingWithResponse(configurationSetting, false));
                 })
                 .blockLast();
@@ -339,7 +338,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // read-only setting
-            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel()))
+            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), true))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -361,7 +360,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // read-only setting
-            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel()))
+            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), true))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -370,7 +369,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
 
             // clear read-only of setting and delete
-            StepVerifier.create(client.clearReadOnly(expected.getKey(), expected.getLabel()))
+            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), false))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -392,7 +391,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // read-only setting
-            StepVerifier.create(client.setReadOnlyWithResponse(expected))
+            StepVerifier.create(client.setReadOnlyWithResponse(expected, true))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -413,7 +412,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // read-only setting
-            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel()))
+            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), true))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -422,7 +421,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
 
             // clear read-only setting and delete
-            StepVerifier.create(client.clearReadOnlyWithResponse(expected))
+            StepVerifier.create(client.setReadOnlyWithResponse(expected, false))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -686,51 +685,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             return selected;
         });
-    }
-
-    /**
-     * Verifies that the range header for revision selections returns the expected values.
-     */
-    @Test
-    public void listRevisionsWithRange() {
-        final String key = getKey();
-        final ConfigurationSetting original = new ConfigurationSetting().setKey(key).setValue("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
-
-        StepVerifier.create(client.addConfigurationSettingWithResponse(original))
-            .assertNext(response -> assertConfigurationEquals(original, response))
-            .verifyComplete();
-
-        StepVerifier.create(client.setConfigurationSettingWithResponse(updated, false))
-            .assertNext(response -> assertConfigurationEquals(updated, response))
-            .verifyComplete();
-
-        StepVerifier.create(client.setConfigurationSettingWithResponse(updated2, false))
-            .assertNext(response -> assertConfigurationEquals(updated2, response))
-            .verifyComplete();
-
-        StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(key).setRange(new Range(1, 2))))
-            .assertNext(response -> assertConfigurationEquals(updated, response))
-            .assertNext(response -> assertConfigurationEquals(original, response))
-            .verifyComplete();
-    }
-
-    /**
-     * Verifies that an exception will be thrown from the service if it cannot satisfy the range request.
-     */
-    @Test
-    @Disabled
-    public void listRevisionsInvalidRange() {
-        final String key = getKey();
-        final ConfigurationSetting original = new ConfigurationSetting().setKey(key).setValue("myValue");
-
-        StepVerifier.create(client.addConfigurationSettingWithResponse(original))
-            .assertNext(response -> assertConfigurationEquals(original, response))
-            .verifyComplete();
-
-        StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(key).setRange(new Range(0, 10))))
-            .verifyErrorSatisfies(exception -> assertRestException(exception, 416)); // REQUESTED_RANGE_NOT_SATISFIABLE
     }
 
     /**

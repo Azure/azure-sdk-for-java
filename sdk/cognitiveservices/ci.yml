@@ -21,6 +21,8 @@ trigger:
   paths:
     include:
       - sdk/cognitiveservices/
+    exclude:
+      - sdk/cognitiveservices/mgmt-
 
 pr:
   branches:
@@ -32,6 +34,8 @@ pr:
   paths:
     include:
       - sdk/cognitiveservices/
+    exclude:
+      - sdk/cognitiveservices/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

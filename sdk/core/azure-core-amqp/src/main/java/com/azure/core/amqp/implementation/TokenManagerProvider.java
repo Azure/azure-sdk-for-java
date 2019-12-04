@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import reactor.core.publisher.Mono;
 
 /**
@@ -18,7 +18,7 @@ public interface TokenManagerProvider {
      *
      * @return A {@link TokenManager} that manages authorization to the Azure messaging resource.
      */
-    TokenManager getTokenManager(Mono<CBSNode> cbsNodeMono, String resource);
+    TokenManager getTokenManager(Mono<ClaimsBasedSecurityNode> cbsNodeMono, String resource);
 
     /**
      * Gets the qualified resource scope passed to CBS node for access to the {@code resource}.

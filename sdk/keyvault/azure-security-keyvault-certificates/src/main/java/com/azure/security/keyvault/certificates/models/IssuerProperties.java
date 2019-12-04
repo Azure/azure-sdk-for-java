@@ -37,7 +37,7 @@ public class IssuerProperties {
      * @param name Name of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
      * @param provider The issuer provider.
      */
-    public IssuerProperties(String name, String provider) {
+    IssuerProperties(String name, String provider) {
         this.name = name;
         this.provider = provider;
     }

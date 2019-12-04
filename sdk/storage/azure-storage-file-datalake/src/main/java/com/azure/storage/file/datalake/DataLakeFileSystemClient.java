@@ -9,11 +9,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
+import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -21,7 +23,9 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Client to a file system. It may only be instantiated through a {@link DataLakeFileSystemClientBuilder} or via the
@@ -78,9 +82,8 @@ public class DataLakeFileSystemClient {
      * system.
      */
     public DataLakeFileClient getFileClient(String fileName) {
-        if (CoreUtils.isNullOrEmpty(fileName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'fileName' can not be set to null"));
-        }
+        Objects.requireNonNull(fileName, "'fileName' can not be set to null");
+
         return new DataLakeFileClient(dataLakeFileSystemAsyncClient.getFileAsyncClient(fileName),
             blobContainerClient.getBlobClient(fileName).getBlockBlobClient());
     }
@@ -100,6 +103,8 @@ public class DataLakeFileSystemClient {
      * this file system.
      */
     public DataLakeDirectoryClient getDirectoryClient(String directoryName) {
+        Objects.requireNonNull(directoryName, "'directoryName' can not be set to null");
+
         return new DataLakeDirectoryClient(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
             blobContainerClient.getBlobClient(directoryName).getBlockBlobClient());
     }
@@ -481,6 +486,95 @@ public class DataLakeFileSystemClient {
     public Response<Void> deleteDirectoryWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         return getDirectoryClient(directoryName).deleteWithResponse(recursive, requestConditions, timeout, context);
+    }
+
+    /**
+     * Returns the file system's permissions. The permissions indicate whether file system's paths may be accessed
+     * publicly. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getAccessPolicy}
+     *
+     * @return The file system access policy.
+     */
+    public FileSystemAccessPolicies getAccessPolicy() {
+        return getAccessPolicyWithResponse(null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Returns the file system's permissions. The permissions indicate whether file system's paths may be accessed
+     * publicly. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getAccessPolicyWithResponse#String-Duration-Context}
+     *
+     * @param leaseId The lease ID the active lease on the file system must match.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The file system access policy.
+     */
+    public Response<FileSystemAccessPolicies> getAccessPolicyWithResponse(String leaseId, Duration timeout,
+        Context context) {
+        Response<BlobContainerAccessPolicies> response = blobContainerClient.getAccessPolicyWithResponse(leaseId,
+            timeout, context);
+        return new SimpleResponse<>(response, Transforms.toFileSystemAccessPolicies(response.getValue()));
+    }
+
+    /**
+     * Sets the file system's permissions. The permissions indicate whether paths in a file system may be accessed
+     * publicly. Note that, for each signed identifier, we will truncate the start and expiry times to the nearest
+     * second to ensure the time formatting is compatible with the service. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicy#PublicAccessType-List}
+     *
+     * @param accessType Specifies how the data in this file system is available to the public. See the
+     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param identifiers A list of {@link DataLakeSignedIdentifier} objects that specify the permissions for the file
+     * system.
+     * Please see
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information. Passing null will clear all access policies.
+     */
+    public void setAccessPolicy(PublicAccessType accessType, List<DataLakeSignedIdentifier> identifiers) {
+        setAccessPolicyWithResponse(accessType, identifiers, null, null, Context.NONE);
+    }
+
+    /**
+     * Sets the file system's permissions. The permissions indicate whether paths in a file system may be accessed
+     * publicly. Note that, for each signed identifier, we will truncate the start and expiry times to the nearest
+     * second to ensure the time formatting is compatible with the service. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions-Duration-Context}
+     *
+     * @param accessType Specifies how the data in this file system is available to the public. See the
+     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param identifiers A list of {@link DataLakeSignedIdentifier} objects that specify the permissions for the file
+     * system.
+     * Please see
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information. Passing null will clear all access policies.
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers
+     */
+    public Response<Void> setAccessPolicyWithResponse(PublicAccessType accessType,
+        List<DataLakeSignedIdentifier> identifiers, DataLakeRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        return blobContainerClient
+            .setAccessPolicyWithResponse(Transforms.toBlobPublicAccessType(accessType),
+                Transforms.toBlobIdentifierList(identifiers), Transforms.toBlobRequestConditions(requestConditions),
+                timeout, context);
     }
 
     BlobContainerClient getBlobContainerClient() {

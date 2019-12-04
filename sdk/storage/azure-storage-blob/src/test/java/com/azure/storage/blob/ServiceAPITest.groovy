@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobCorsRule
 import com.azure.storage.blob.models.BlobMetrics
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
+import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.StaticWebsite
 
@@ -382,17 +383,6 @@ class ServiceAPITest extends APISpec {
         primaryBlobServiceClient.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
-    def "Get account info error"() {
-        when:
-        BlobServiceClient serviceURL = getServiceClient((StorageSharedKeyCredential) null, primaryBlobServiceClient.getAccountUrl())
-
-        serviceURL.getAccountInfo()
-
-        then:
-        thrown(IllegalArgumentException)
-    }
-
-
     // This test validates a fix for a bug that caused NPE to be thrown when the account did not exist.
     def "Invalid account name"() {
         setup:
@@ -406,5 +396,33 @@ class ServiceAPITest extends APISpec {
         then:
         def e = thrown(RuntimeException)
         e.getCause() instanceof UnknownHostException
+    }
+
+    def "Builder cpk validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(primaryBlobServiceClient.getAccountUrl()).setScheme("http").toUrl()
+        def builder = new BlobServiceClientBuilder()
+            .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomByteArray(256))))
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Builder bearer token validation"() {
+        setup:
+        String endpoint = BlobUrlParts.parse(primaryBlobServiceClient.getAccountUrl()).setScheme("http").toUrl()
+        def builder = new BlobServiceClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }

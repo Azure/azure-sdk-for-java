@@ -6,7 +6,7 @@ Files stored in Azure File Share service shares are accessible via the SMB proto
 The File Share service offers the following four resources: the storage account, shares, directories, and files.
 Shares provide a way to organize sets of files and also can be mounted as an SMB file share that is hosted in the cloud.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][storage_docs] |
+[Source code][source_code] | [API reference documentation][reference_docs] | [REST API documentation][rest_api_documentation] | [Product documentation][storage_docs] |
 [Samples][samples]
 
 ## Getting started
@@ -68,6 +68,9 @@ Netty and include OkHTTP client in your pom.xml.
 When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#file-services), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
 
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ```java
 HttpClient client = new NettyAsyncHttpClientBuilder()
@@ -302,7 +305,7 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory).
 
 ```Java
 String subDirName = "testsubdir";
-directoryClient.createSubDirectory(subDirName);
+directoryClient.createSubdirectory(subDirName);
 ```
 
 ### Create a File
@@ -355,7 +358,7 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
 String subDirName = "testsubdir";
-directoryClient.deleteSubDirectory(subDirName);
+directoryClient.deleteSubdirectory(subDirName);
 ```
 
 ### Delete a file
@@ -521,9 +524,10 @@ If you would like to become an active contributor to this project please follow 
 
 <!-- LINKS -->
 [source_code]: src/
-[api_documentation]: https://docs.microsoft.com/rest/api/storageservices/file-service-rest-api
+[reference_docs]: https://azure.github.io/azure-sdk-for-java/
+[rest_api_documentation]: https://docs.microsoft.com/rest/api/storageservices/file-service-rest-api
 [storage_docs]: https://docs.microsoft.com/azure/storage/files/storage-files-introduction
-[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/free/
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
@@ -534,5 +538,6 @@ If you would like to become an active contributor to this project please follow 
 [csharp_identifiers]: https://docs.microsoft.com/dotnet/csharp/language-reference/
 [storage_file_rest]: https://docs.microsoft.com/rest/api/storageservices/file-service-error-codes
 [samples]: src/samples
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2FREADME.png)

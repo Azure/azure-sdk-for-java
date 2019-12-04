@@ -3,17 +3,11 @@
 
 package com.azure.storage.file.datalake
 
-import com.azure.core.http.HttpPipelineCallContext
-import com.azure.core.http.HttpPipelineNextPolicy
-import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
-import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.test.TestMode
 import com.azure.storage.blob.BlobUrlParts
-import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.StorageSharedKeyCredential
-import reactor.core.publisher.Mono
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
 import spock.lang.Unroll
 
 class AzuriteURLTest extends APISpec {
@@ -24,40 +18,12 @@ class AzuriteURLTest extends APISpec {
      */
     StorageSharedKeyCredential azuriteCredential = new StorageSharedKeyCredential("devstoreaccount1", "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==")
 
-    /*
-     * Azurite returns headers in lowercase and the recording framework expects certain casing.
-     */
-    private static class FixHeadersForRecordingPolicy implements HttpPipelinePolicy {
-        @Override
-        Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            return next.process()
-                .map({
-                    def headers = it.getHeaders()
-                    def headerValue = headers.stream()
-                        .filter({ it.getName().equalsIgnoreCase("Content-Type") })
-                        .map({ it.getValue() })
-                        .findFirst()
-
-                    if (headerValue.isPresent()) {
-                        headers.put("Content-Type", headerValue.get())
-                    }
-
-                    return it
-                })
-        }
-    }
-
     private DataLakeServiceClient getAzuriteServiceClient() {
         def builder = new DataLakeServiceClientBuilder()
             .endpoint(azuriteEndpoint)
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(azuriteCredential)
-
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new FixHeadersForRecordingPolicy())
-        }
 
         return builder.buildClient()
     }
@@ -209,31 +175,11 @@ class AzuriteURLTest extends APISpec {
 
         when:
         def pathLeaseClient = new DataLakeLeaseClientBuilder()
-            .pathClient(pathClient)
+            .fileClient(pathClient)
             .buildClient()
 
         then:
         pathLeaseClient.getAccountName() == "devstoreaccount1"
         pathLeaseClient.getResourceUrl() == "http://127.0.0.1:10000/devstoreaccount1/fileSystem/file"
-    }
-
-    def "Connect to Azurite"() {
-        setup:
-        def serviceClient = getAzuriteServiceClient()
-
-        when:
-        serviceClient.getProperties()
-
-        then:
-        notThrown(BlobStorageException)
-    }
-
-    def "Create file system"() {
-        setup:
-        def client = getAzuriteServiceClient()
-            .getFileSystemClient(generateFileSystemName())
-
-        expect:
-        client.createWithResponse(null, null, null, null).getStatusCode() == 201
     }
 }

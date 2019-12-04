@@ -190,6 +190,17 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobClient#commitBlockList(List, boolean)}
+     */
+    public void commitBlockListWithOverwrite() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean
+        boolean overwrite = false; // Default behavior
+        System.out.printf("Committing block list completed. Last modified: %s%n",
+            client.commitBlockList(Collections.singletonList(base64BlockId), overwrite).getLastModified());
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean
+    }
+
+    /**
      * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(List, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions, Duration, Context)}
      */
     public void commitBlockList2() {

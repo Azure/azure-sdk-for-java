@@ -1,6 +1,9 @@
 package com.azure.storage.file.datalake
 
+import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
+import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 
@@ -13,9 +16,9 @@ class DirectoryAPITest extends APISpec {
     String directoryName
 
     PathPermissions permissions = new PathPermissions()
-        .owner(new RolePermissions().read(true).write(true).execute(true))
-        .group(new RolePermissions().read(true).execute(true))
-        .other(new RolePermissions().read(true))
+        .setOwner(new RolePermissions().setReadPermission(true).setWritePermission(true).setExecutePermission(true))
+        .setGroup(new RolePermissions().setReadPermission(true).setExecutePermission(true))
+        .setOther(new RolePermissions().setReadPermission(true))
 
     List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
 
@@ -1179,7 +1182,7 @@ class DirectoryAPITest extends APISpec {
 
     def "Create sub dir min"() {
         when:
-        def subdir = dc.getSubDirectoryClient(generatePathName())
+        def subdir = dc.getSubdirectoryClient(generatePathName())
         subdir.create()
 
         then:
@@ -1188,7 +1191,7 @@ class DirectoryAPITest extends APISpec {
 
     def "Create sub dir defaults"() {
         when:
-        def createResponse = dc.createSubDirectoryWithResponse(generatePathName(), null, null, null, null, null, null, null)
+        def createResponse = dc.createSubdirectoryWithResponse(generatePathName(), null, null, null, null, null, null, null)
 
         then:
         createResponse.getStatusCode() == 201
@@ -1197,7 +1200,7 @@ class DirectoryAPITest extends APISpec {
 
     def "Create sub dir error"() {
         when:
-        dc.createSubDirectoryWithResponse(generatePathName(), null, null, null, null,
+        dc.createSubdirectoryWithResponse(generatePathName(), null, null, null, null,
             new DataLakeRequestConditions().setIfMatch("garbage"), null,
             Context.NONE)
 
@@ -1216,7 +1219,7 @@ class DirectoryAPITest extends APISpec {
             .setContentType(contentType)
 
         when:
-        def client = dc.createSubDirectoryWithResponse(generatePathName(), null, null, headers, null, null, null, null).getValue()
+        def client = dc.createSubdirectoryWithResponse(generatePathName(), null, null, headers, null, null, null, null).getValue()
         def response = client.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -1243,7 +1246,7 @@ class DirectoryAPITest extends APISpec {
         }
 
         when:
-        def client = dc.createSubDirectoryWithResponse(generatePathName(), null, null, null, metadata, null, null, null).getValue()
+        def client = dc.createSubdirectoryWithResponse(generatePathName(), null, null, null, metadata, null, null, null).getValue()
         def response = client.getProperties()
 
         then:
@@ -1263,7 +1266,7 @@ class DirectoryAPITest extends APISpec {
     def "Create sub dir AC"() {
         setup:
         def pathName = generatePathName()
-        def client = dc.getSubDirectoryClient(pathName)
+        def client = dc.getSubdirectoryClient(pathName)
         client.create()
         match = setupPathMatchCondition(client, match)
         leaseID = setupPathLeaseCondition(client, leaseID)
@@ -1276,7 +1279,7 @@ class DirectoryAPITest extends APISpec {
 
 
         expect:
-        dc.createSubDirectoryWithResponse(pathName, null, null, null, null, drc, null, null).getStatusCode() == 201
+        dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1292,7 +1295,7 @@ class DirectoryAPITest extends APISpec {
     def "Create sub dir AC fail"() {
         setup:
         def pathName = generatePathName()
-        def client = dc.getSubDirectoryClient(pathName)
+        def client = dc.getSubdirectoryClient(pathName)
         client.create()
         noneMatch = setupPathMatchCondition(client, noneMatch)
         setupPathLeaseCondition(client, leaseID)
@@ -1304,7 +1307,7 @@ class DirectoryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.createSubDirectoryWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
+        dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
 
         then:
         thrown(Exception)
@@ -1324,28 +1327,28 @@ class DirectoryAPITest extends APISpec {
         def umask = "0057"
 
         expect:
-        dc.createSubDirectoryWithResponse(generatePathName(), permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
+        dc.createSubdirectoryWithResponse(generatePathName(), permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
     def "Delete sub dir min"() {
         expect:
         def pathName = generatePathName()
-        dc.createSubDirectory(pathName)
-        dc.deleteSubDirectoryWithResponse(pathName, false, null, null, null).getStatusCode() == 200
+        dc.createSubdirectory(pathName)
+        dc.deleteSubdirectoryWithResponse(pathName, false, null, null, null).getStatusCode() == 200
     }
 
     def "Delete sub dir recursive"() {
         expect:
         def pathName = generatePathName()
-        dc.createSubDirectory(pathName)
-        dc.deleteSubDirectoryWithResponse(pathName, true, null, null, null).getStatusCode() == 200
+        dc.createSubdirectory(pathName)
+        dc.deleteSubdirectoryWithResponse(pathName, true, null, null, null).getStatusCode() == 200
     }
 
     def "Delete sub dir dir does not exist anymore"() {
         when:
         def pathName = generatePathName()
-        def client = dc.createSubDirectory(pathName)
-        dc.deleteSubDirectoryWithResponse(pathName, false, null, null, null)
+        def client = dc.createSubdirectory(pathName)
+        dc.deleteSubdirectoryWithResponse(pathName, false, null, null, null)
         client.getPropertiesWithResponse(null, null, null)
 
         then:
@@ -1359,7 +1362,7 @@ class DirectoryAPITest extends APISpec {
     def "Delete sub dir AC"() {
         setup:
         def pathName = generatePathName()
-        def client = dc.createSubDirectory(pathName)
+        def client = dc.createSubdirectory(pathName)
         match = setupPathMatchCondition(client, match)
         leaseID = setupPathLeaseCondition(client, leaseID)
         def drc = new DataLakeRequestConditions()
@@ -1370,7 +1373,7 @@ class DirectoryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        dc.deleteSubDirectoryWithResponse(pathName, false, drc, null, null).getStatusCode() == 200
+        dc.deleteSubdirectoryWithResponse(pathName, false, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1386,7 +1389,7 @@ class DirectoryAPITest extends APISpec {
     def "Delete sub dir AC fail"() {
         setup:
         def pathName = generatePathName()
-        def client = dc.createSubDirectory(pathName)
+        def client = dc.createSubdirectory(pathName)
         noneMatch = setupPathMatchCondition(client, noneMatch)
         setupPathLeaseCondition(client, leaseID)
         def drc = new DataLakeRequestConditions()
@@ -1397,7 +1400,7 @@ class DirectoryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        dc.deleteSubDirectoryWithResponse(pathName, false, drc, null, null).getStatusCode()
+        dc.deleteSubdirectoryWithResponse(pathName, false, drc, null, null).getStatusCode()
 
         then:
         thrown(StorageErrorException)
@@ -1411,5 +1414,124 @@ class DirectoryAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    @Unroll
+    def "Get Directory Name and Build Client"() {
+        when:
+        DataLakeDirectoryClient client = fsc.getDirectoryClient(originalDirectoryName)
 
+        then:
+        // Note : Here I use Path because there is a test that tests the use of a /
+        client.getDirectoryPath() == finalDirectoryName
+
+        where:
+        originalDirectoryName  || finalDirectoryName
+        "dir"                  || "dir"
+        "path/to]a dir"        || "path/to]a dir"
+        "path%2Fto%5Da%20dir"  || "path/to]a dir"
+        "斑點"                  || "斑點"
+        "%E6%96%91%E9%BB%9E"   || "斑點"
+    }
+
+    @Unroll
+    def "Create Delete sub directory url encoding"() {
+        setup:
+        def dirName = generatePathName()
+        DataLakeDirectoryClient client = fsc.getDirectoryClient(dirName)
+
+        when:
+        Response<DataLakeDirectoryClient> resp = client.createSubdirectoryWithResponse(originalDirectoryName, null, null, null, null, null, null, null)
+
+        then:
+        resp.getStatusCode() == 201
+        resp.getValue().getDirectoryPath() == dirName + "/" + finalDirectoryName
+
+        expect:
+        client.deleteSubdirectoryWithResponse(originalDirectoryName, false, null, null, null).getStatusCode() == 200
+
+        where:
+        originalDirectoryName  || finalDirectoryName
+        "dir"                  || "dir"
+        "path/to]a dir"        || "path/to]a dir"
+        "path%2Fto%5Da%20dir"  || "path/to]a dir"
+        "斑點"                  || "斑點"
+        "%E6%96%91%E9%BB%9E"   || "斑點"
+    }
+
+    @Unroll
+    def "Create Delete file url encoding"() {
+        setup:
+        def fileName = generatePathName()
+        DataLakeDirectoryClient client = fsc.getDirectoryClient(fileName)
+
+        when:
+        Response<DataLakeFileClient> resp = client.createFileWithResponse(originalFileName, null, null, null, null, null, null, null)
+
+        then:
+        resp.getStatusCode() == 201
+        resp.getValue().getFilePath() == fileName + "/" + finalFileName
+
+        expect:
+        client.deleteSubdirectoryWithResponse(originalFileName, false, null, null, null).getStatusCode() == 200
+
+        where:
+        originalFileName       || finalFileName
+        "file"                 || "file"
+        "path/to]a file"       || "path/to]a file"
+        "path%2Fto%5Da%20file" || "path/to]a file"
+        "斑點"                  || "斑點"
+        "%E6%96%91%E9%BB%9E"   || "斑點"
+    }
+
+    @Unroll
+    def "Create file with path structure"() {
+        when:
+        DataLakeFileClient fileClient = fsc.getFileClient(pathName as String)
+        fileClient.create()
+        // Check that service created underlying directory
+        DataLakeDirectoryClient dirClient = fsc.getDirectoryClient("dir")
+
+        then:
+        dirClient.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+
+        when:
+        // Delete file
+        fileClient.deleteWithResponse(null, null, null).getStatusCode() == 200
+
+        then:
+        // Directory should still exist
+        dirClient.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+
+        where:
+        pathName     || _
+        "dir/file"   || _
+        "dir%2Ffile" || _
+    }
+
+    def "Builder bearer token validation"() {
+        // Technically no additional checks need to be added to datalake builder since the corresponding blob builder fails
+        setup:
+        String endpoint = BlobUrlParts.parse(dc.getDirectoryUrl()).setScheme("http").toUrl()
+        def builder = new DataLakePathClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildDirectoryClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Get Access Control OAuth"() {
+        setup:
+        def client = getOAuthServiceClient()
+        def fsClient = client.getFileSystemClient(dc.getFileSystemName())
+        def dirClient = fsClient.getDirectoryClient(dc.getDirectoryPath())
+
+        when:
+        dirClient.getAccessControl()
+
+        then:
+        notThrown(StorageErrorException)
+    }
 }

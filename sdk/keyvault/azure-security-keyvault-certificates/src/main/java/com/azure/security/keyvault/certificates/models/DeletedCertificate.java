@@ -37,7 +37,7 @@ public final class DeletedCertificate extends KeyVaultCertificate {
     /**
      * The time when the certificate was deleted, in UTC.
      */
-    private OffsetDateTime deletedDate;
+    private OffsetDateTime deletedOn;
 
     /**
      * Get the recoveryId identifier.
@@ -62,8 +62,8 @@ public final class DeletedCertificate extends KeyVaultCertificate {
      *
      * @return the deletedDate UTC time.
      */
-    public OffsetDateTime getDeletedDate() {
-        return this.deletedDate;
+    public OffsetDateTime getDeletedOn() {
+        return this.deletedOn;
     }
 
 
@@ -82,6 +82,6 @@ public final class DeletedCertificate extends KeyVaultCertificate {
      */
     @JsonProperty("deletedDate")
     private void deletedDate(Long deletedDate) {
-        this.deletedDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
+        this.deletedOn = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
     }
 }

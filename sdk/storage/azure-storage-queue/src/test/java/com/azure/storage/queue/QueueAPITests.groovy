@@ -5,7 +5,9 @@ package com.azure.storage.queue
 
 
 import com.azure.core.util.Context
+import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.queue.implementation.util.BuilderHelper
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueMessageItem
@@ -250,11 +252,10 @@ class QueueAPITests extends APISpec {
         def expectMsg = "test message"
         when:
         def enqueueMsgResponse = queueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
-        def peekMsgIter = queueClient.peekMessage().iterator()
+        def peekedMessage = queueClient.peekMessage()
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
-        expectMsg == peekMsgIter.next().getMessageText()
-        !peekMsgIter.hasNext()
+        expectMsg == peekedMessage.getMessageText()
     }
 
     def "Enqueue empty message"() {
@@ -263,11 +264,10 @@ class QueueAPITests extends APISpec {
         def expectMsg = ""
         when:
         def enqueueMsgResponse = queueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
-        def peekMsgIter = queueClient.peekMessage().iterator()
+        def peekedMessage = queueClient.peekMessage()
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
-        peekMsgIter.next().getMessageText() == null
-        !peekMsgIter.hasNext()
+        peekedMessage.getMessageText() == null
     }
 
     def "Enqueue time to live"() {
@@ -321,9 +321,9 @@ class QueueAPITests extends APISpec {
         def expectMsg = "test message"
         queueClient.sendMessage(expectMsg)
         when:
-        def peekMsgIter = queueClient.peekMessage()
+        def peekedMessage = queueClient.peekMessage()
         then:
-        expectMsg == peekMsgIter.getMessageText()
+        expectMsg == peekedMessage.getMessageText()
     }
 
     def "Peek multiple messages"() {
@@ -467,5 +467,20 @@ class QueueAPITests extends APISpec {
     def "Get Queue Name"() {
         expect:
         queueName == queueClient.getQueueName()
+    }
+
+    def "Builder bearer token validation"() {
+        setup:
+        URL url = new URL(queueClient.getQueueUrl())
+        String endpoint = new URL("http", url.getHost(), url.getPort(), url.getFile()).toString()
+        def builder = new QueueClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }
