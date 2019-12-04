@@ -11,20 +11,26 @@ import static com.azure.core.util.Context.AZURE_REQUEST_HTTP_HEADERS_KEY;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * The pipeline policy that override or add  {@link HttpHeader} in {@link HttpRequest} by reading values from
- * {@link Context} with key  'azure-request-override-http-headers-key'.
+ * {@link Context} with key  'azure-request-override-http-headers-key'. The value for this key should be of type
+ * {@link HttpHeaders} for it to be added in {@link HttpRequest}.
  */
 public class OverrideHeaderPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if (!Objects.isNull(context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY))) {
-            HttpHeaders customHttpHeaders = (HttpHeaders) context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).get();
+
+        Optional<Object> customHttpHeadersObject = context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY);
+        if (!Objects.isNull(customHttpHeadersObject) && customHttpHeadersObject.get() instanceof HttpHeaders) {
+            HttpHeaders customHttpHeaders = (HttpHeaders) customHttpHeadersObject.get();
             // loop through customHttpHeaders and add header in HttpRequest
             for (HttpHeader httpHeader : customHttpHeaders) {
-                context.getHttpRequest().getHeaders().put(httpHeader.getName(), httpHeader.getValue());
+                if (!Objects.isNull(httpHeader.getName()) && !Objects.isNull(httpHeader.getValue())) {
+                    context.getHttpRequest().getHeaders().put(httpHeader.getName(), httpHeader.getValue());
+                }
             }
         }
         return next.process();
