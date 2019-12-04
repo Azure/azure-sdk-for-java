@@ -1,6 +1,6 @@
 # Change Log azure-storage-file-datalake
 
-## Version 12.0.0-preview.7 (2019-12-04)
+## Version 12.0.0-beta.7 (2019-12-04)
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md) 
 and 
