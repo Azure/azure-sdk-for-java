@@ -36,6 +36,30 @@ public final class ShareProperties {
     private int quota;
 
     /*
+     * The provisionedIops property.
+     */
+    @JsonProperty(value = "ProvisionedIops")
+    private Integer provisionedIops;
+
+    /*
+     * The provisionedIngressMBps property.
+     */
+    @JsonProperty(value = "ProvisionedIngressMBps")
+    private Integer provisionedIngressMBps;
+
+    /*
+     * The provisionedEgressMBps property.
+     */
+    @JsonProperty(value = "ProvisionedEgressMBps")
+    private Integer provisionedEgressMBps;
+
+    /*
+     * The nextAllowedQuotaDowngradeTime property.
+     */
+    @JsonProperty(value = "NextAllowedQuotaDowngradeTime")
+    private DateTimeRfc1123 nextAllowedQuotaDowngradeTime;
+
+    /*
      * The metadata property.
      */
     @JsonProperty(value = "Metadata")
@@ -105,6 +129,100 @@ public final class ShareProperties {
      */
     public ShareProperties setQuota(int quota) {
         this.quota = quota;
+        return this;
+    }
+
+    /**
+     * Get the provisionedIops property: The provisionedIops property.
+     *
+     * @return the provisionedIops value.
+     */
+    public Integer getProvisionedIops() {
+        return this.provisionedIops;
+    }
+
+    /**
+     * Set the provisionedIops property: The provisionedIops property.
+     *
+     * @param provisionedIops the provisionedIops value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setProvisionedIops(Integer provisionedIops) {
+        this.provisionedIops = provisionedIops;
+        return this;
+    }
+
+    /**
+     * Get the provisionedIngressMBps property: The provisionedIngressMBps
+     * property.
+     *
+     * @return the provisionedIngressMBps value.
+     */
+    public Integer getProvisionedIngressMBps() {
+        return this.provisionedIngressMBps;
+    }
+
+    /**
+     * Set the provisionedIngressMBps property: The provisionedIngressMBps
+     * property.
+     *
+     * @param provisionedIngressMBps the provisionedIngressMBps value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setProvisionedIngressMBps(Integer provisionedIngressMBps) {
+        this.provisionedIngressMBps = provisionedIngressMBps;
+        return this;
+    }
+
+    /**
+     * Get the provisionedEgressMBps property: The provisionedEgressMBps
+     * property.
+     *
+     * @return the provisionedEgressMBps value.
+     */
+    public Integer getProvisionedEgressMBps() {
+        return this.provisionedEgressMBps;
+    }
+
+    /**
+     * Set the provisionedEgressMBps property: The provisionedEgressMBps
+     * property.
+     *
+     * @param provisionedEgressMBps the provisionedEgressMBps value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setProvisionedEgressMBps(Integer provisionedEgressMBps) {
+        this.provisionedEgressMBps = provisionedEgressMBps;
+        return this;
+    }
+
+    /**
+     * Get the nextAllowedQuotaDowngradeTime property: The
+     * nextAllowedQuotaDowngradeTime property.
+     *
+     * @return the nextAllowedQuotaDowngradeTime value.
+     */
+    public OffsetDateTime getNextAllowedQuotaDowngradeTime() {
+        if (this.nextAllowedQuotaDowngradeTime == null) {
+            return null;
+        }
+        return this.nextAllowedQuotaDowngradeTime.getDateTime();
+    }
+
+    /**
+     * Set the nextAllowedQuotaDowngradeTime property: The
+     * nextAllowedQuotaDowngradeTime property.
+     *
+     * @param nextAllowedQuotaDowngradeTime the nextAllowedQuotaDowngradeTime
+     * value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setNextAllowedQuotaDowngradeTime(OffsetDateTime nextAllowedQuotaDowngradeTime) {
+        if (nextAllowedQuotaDowngradeTime == null) {
+            this.nextAllowedQuotaDowngradeTime = null;
+        } else {
+            this.nextAllowedQuotaDowngradeTime = new DateTimeRfc1123(nextAllowedQuotaDowngradeTime);
+        }
         return this;
     }
 

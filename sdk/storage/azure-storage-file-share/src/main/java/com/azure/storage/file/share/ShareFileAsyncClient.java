@@ -221,9 +221,10 @@ public class ShareFileAsyncClient {
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
 
+        // Second null is lease access conditions
         return azureFileStorageClient.files()
             .createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, metadata, filePermission, filePermissionKey, httpHeaders, context)
+                fileLastWriteTime, null, metadata, filePermission, filePermissionKey, httpHeaders, null, context)
             .map(this::createFileInfoResponse);
     }
 
@@ -257,7 +258,8 @@ public class ShareFileAsyncClient {
                 try {
                     return withContext(context -> azureFileStorageClient.files()
                             .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null,
-                                    metadata,
+                                    metadata, null /* file permission */, null /* file permission key */,
+                                    null /* copy file smb info */, null, /* lease access conditions */
                                     context))
                             .map(response -> {
                                 final FileStartCopyHeaders headers = response.getDeserializedHeaders();
@@ -742,9 +744,10 @@ public class ShareFileAsyncClient {
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
 
+        // Second null is lease access conditions
         return azureFileStorageClient.files()
             .setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, newFileSize, filePermission, filePermissionKey, httpHeaders, context)
+                fileLastWriteTime, null, newFileSize, filePermission, filePermissionKey, httpHeaders, null, context)
             .map(this::setPropertiesResponse);
     }
 
@@ -811,7 +814,8 @@ public class ShareFileAsyncClient {
     Mono<Response<ShareFileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
         try {
             return azureFileStorageClient.files()
-                .setMetadataWithRestResponseAsync(shareName, filePath, null, metadata, context)
+                .setMetadataWithRestResponseAsync(shareName, filePath, null, metadata,
+                    null /* lease access conditions */, context)
                 .map(this::setMetadataResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -880,7 +884,7 @@ public class ShareFileAsyncClient {
         ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + length - 1);
         return azureFileStorageClient.files()
             .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
-                length, data, null, null, context)
+                length, data, null, null, null /* lease access conditions */, context)
             .map(this::uploadResponse);
     }
 
@@ -950,7 +954,7 @@ public class ShareFileAsyncClient {
 
         return azureFileStorageClient.files()
             .uploadRangeFromURLWithRestResponseAsync(shareName, filePath, destinationRange.toString(), sourceUrl, 0,
-                null, sourceRange.toString(), null, null, context)
+                null, sourceRange.toString(), null, null, null /* lease access conditions */, context)
             .map(this::uploadRangeFromUrlResponse);
     }
 
@@ -1009,7 +1013,7 @@ public class ShareFileAsyncClient {
         ShareFileRange range = new ShareFileRange(offset, offset + length - 1);
         return azureFileStorageClient.files()
             .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR,
-                0L, null, null, null, context)
+                0L, null, null, null, null /* lease access conditions */, context)
             .map(this::uploadResponse);
     }
 

@@ -50,6 +50,12 @@ public final class DirectoryForceCloseHandlesHeaders {
     private Integer numberOfHandlesClosed;
 
     /*
+     * Contains count of number of handles that failed to closed.
+     */
+    @JsonProperty(value = "x-ms-number-of-handles-failed")
+    private Integer numberOfHandlesFailedToClosed;
+
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -171,6 +177,29 @@ public final class DirectoryForceCloseHandlesHeaders {
      */
     public DirectoryForceCloseHandlesHeaders setNumberOfHandlesClosed(Integer numberOfHandlesClosed) {
         this.numberOfHandlesClosed = numberOfHandlesClosed;
+        return this;
+    }
+
+    /**
+     * Get the numberOfHandlesFailedToClosed property: Contains count of number
+     * of handles that failed to closed.
+     *
+     * @return the numberOfHandlesFailedToClosed value.
+     */
+    public Integer getNumberOfHandlesFailedToClosed() {
+        return this.numberOfHandlesFailedToClosed;
+    }
+
+    /**
+     * Set the numberOfHandlesFailedToClosed property: Contains count of number
+     * of handles that failed to closed.
+     *
+     * @param numberOfHandlesFailedToClosed the numberOfHandlesFailedToClosed
+     * value to set.
+     * @return the DirectoryForceCloseHandlesHeaders object itself.
+     */
+    public DirectoryForceCloseHandlesHeaders setNumberOfHandlesFailedToClosed(Integer numberOfHandlesFailedToClosed) {
+        this.numberOfHandlesFailedToClosed = numberOfHandlesFailedToClosed;
         return this;
     }
 

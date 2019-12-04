@@ -105,20 +105,6 @@ public final class AzureFileStorageImpl {
     }
 
     /**
-     * The DirectorysImpl object to access its operations.
-     */
-    private DirectorysImpl directorys;
-
-    /**
-     * Gets the DirectorysImpl object to access its operations.
-     *
-     * @return the DirectorysImpl object.
-     */
-    public DirectorysImpl directorys() {
-        return this.directorys;
-    }
-
-    /**
      * The FilesImpl object to access its operations.
      */
     private FilesImpl files;
@@ -130,6 +116,20 @@ public final class AzureFileStorageImpl {
      */
     public FilesImpl files() {
         return this.files;
+    }
+
+    /**
+     * The DirectorysImpl object to access its operations.
+     */
+    private DirectorysImpl directorys;
+
+    /**
+     * Gets the DirectorysImpl object to access its operations.
+     *
+     * @return the DirectorysImpl object.
+     */
+    public DirectorysImpl directorys() {
+        return this.directorys;
     }
 
     /**
@@ -148,7 +148,7 @@ public final class AzureFileStorageImpl {
         this.httpPipeline = httpPipeline;
         this.services = new ServicesImpl(this);
         this.shares = new SharesImpl(this);
-        this.directorys = new DirectorysImpl(this);
         this.files = new FilesImpl(this);
+        this.directorys = new DirectorysImpl(this);
     }
 }
