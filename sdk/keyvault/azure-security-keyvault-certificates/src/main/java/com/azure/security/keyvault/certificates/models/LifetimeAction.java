@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Represents a LifeTimeAction in {@link CertificatePolicy}
  */
-public final class LifeTimeAction {
+public final class LifetimeAction {
 
     /**
      * The type of the action. Possible values include: 'EmailContacts',
@@ -31,62 +31,62 @@ public final class LifeTimeAction {
      */
     private Integer daysBeforeExpiry;
 
-    LifeTimeAction() { }
+    LifetimeAction() { }
 
     /**
      * Creates a new LifetimeAction instance, with the provided {@link CertificatePolicyAction}.
-     * @param certificatePolicyAction The action type of this LifetimeAction.
+     * @param action The action type of this LifetimeAction.
      */
-    public LifeTimeAction(CertificatePolicyAction certificatePolicyAction) {
-        this.certificatePolicyAction = certificatePolicyAction;
+    public LifetimeAction(CertificatePolicyAction action) {
+        this.certificatePolicyAction = action;
     }
 
     /**
-     * Get the lifetimePercentage value.
+     * Get the lifetime percentage.
      *
-     * @return the lifetimePercentage value
+     * @return the lifetime percentage
      */
     public Integer getLifetimePercentage() {
         return this.lifetimePercentage;
     }
 
     /**
-     * Set the lifetimePercentage value.
+     * Set the lifetime percentage.
      *
-     * @param lifetimePercentage The lifetimePercentage value to set
-     * @return the LifeTimeAction object itself.
+     * @param lifetimePercentage The lifetime percentage to set
+     * @return the LifetimeAction object itself.
      */
-    public LifeTimeAction setLifetimePercentage(Integer lifetimePercentage) {
+    public LifetimeAction setLifetimePercentage(Integer lifetimePercentage) {
         this.lifetimePercentage = lifetimePercentage;
         return this;
     }
 
     /**
-     * Get the daysBeforeExpiry value.
+     * Get the days before expiry.
      *
-     * @return the daysBeforeExpiry value
+     * @return the days before expiry
      */
     public Integer getDaysBeforeExpiry() {
         return this.daysBeforeExpiry;
     }
 
     /**
-     * Set the daysBeforeExpiry value.
+     * Set the days before expiry.
      *
-     * @param daysBeforeExpiry The daysBeforeExpiry value to set
-     * @return the LifeTimeAction object itself.
+     * @param daysBeforeExpiry The days before expiry to set
+     * @return the LifetimeAction object itself.
      */
-    public LifeTimeAction setDaysBeforeExpiry(Integer daysBeforeExpiry) {
+    public LifetimeAction setDaysBeforeExpiry(Integer daysBeforeExpiry) {
         this.daysBeforeExpiry = daysBeforeExpiry;
         return this;
     }
 
     /**
-     * Get the lifetimeActionType value.
+     * Get the lifetime action.
      *
-     * @return the lifetimeActionType value
+     * @return the lifetime action
      */
-    public CertificatePolicyAction getActionType() {
+    public CertificatePolicyAction getAction() {
         return this.certificatePolicyAction;
     }
 
