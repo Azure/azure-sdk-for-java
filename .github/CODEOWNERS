@@ -12,7 +12,7 @@
 /sdk/appconfiguration/       @mssfang @alzimmermsft @conniey @sima-zhu
 /sdk/batch/                  @xingwu1 @bgklein @matthchr
 /sdk/core/                   @alzimmermsft @jianghaolu @srnagar @hemanttanwar
-/sdk/cosmos/                 @moderakh @kushagraThapar @David-Noble-at-work
+/sdk/cosmos/                 @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli
 /sdk/eventhubs/              @conniey @srnagar @mssfang
 /sdk/identity/               @jianghaolu @g2vinay @hemanttanwar
 /sdk/keyvault/               @g2vinay @samvaity
