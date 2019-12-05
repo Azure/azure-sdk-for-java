@@ -28,8 +28,8 @@ public class TestContextManager {
             this.doNotRecord = true;
             this.skipInPlayback = doNotRecordAnnotation.skipInPlayback();
         } else {
-           this.doNotRecord = false;
-           this.skipInPlayback = false;
+            this.doNotRecord = false;
+            this.skipInPlayback = false;
         }
     }
 
@@ -44,7 +44,8 @@ public class TestContextManager {
     }
 
     /**
-     * Returns whether the test should have its network calls recorded during a {@link TestMode#RECORD record} test run.
+     * Returns whether the test should have its network calls recorded during a {@link TestMode#RECORD record} test
+     * run.
      *
      * @return Flag indicating whether to record test network calls.
      */
