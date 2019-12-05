@@ -154,7 +154,7 @@ jobs:
           goals: 'install'
 
       - task: Maven@3
-        displayName: 'Install Module'
+        displayName: 'Install Module (for SpotBugs analysis)'
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Dverify-readme'
