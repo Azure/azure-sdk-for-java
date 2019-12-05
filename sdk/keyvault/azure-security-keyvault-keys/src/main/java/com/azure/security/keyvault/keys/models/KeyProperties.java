@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.commons.codec.binary.Base64;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,6 +14,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -297,22 +297,22 @@ public class KeyProperties {
 
     @SuppressWarnings("unchecked")
     JsonWebKey createKeyMaterialFromJson(Map<String, Object> key) {
-        final Base64 base64 = new Base64(-1, null, true);
+        Base64.Decoder decoder = Base64.getDecoder();
         JsonWebKey outputKey = new JsonWebKey()
-                .setY(base64.decode((String) key.get("y")))
-                .setX(base64.decode((String) key.get("x")))
+                .setY(decoder.decode((String) key.get("y")))
+                .setX(decoder.decode((String) key.get("x")))
                 .setCurveName(KeyCurveName.fromString((String) key.get("crv")))
                 .setKeyOps(getKeyOperations((List<String>) key.get("key_ops")))
-                .setT(base64.decode((String) key.get("key_hsm")))
-                .setK(base64.decode((String) key.get("k")))
-                .setQ(base64.decode((String) key.get("q")))
-                .setP(base64.decode((String) key.get("p")))
-                .setQi(base64.decode((String) key.get("qi")))
-                .setDq(base64.decode((String) key.get("dq")))
-                .setDp(base64.decode((String) key.get("dp")))
-                .setD(base64.decode((String) key.get("d")))
-                .setE(base64.decode((String) key.get("e")))
-                .setN(base64.decode((String) key.get("n")))
+                .setT(decoder.decode((String) key.get("key_hsm")))
+                .setK(decoder.decode((String) key.get("k")))
+                .setQ(Base64.getDecoder().decode((String) key.get("q")))
+                .setP(decoder.decode((String) key.get("p")))
+                .setQi(decoder.decode((String) key.get("qi")))
+                .setDq(decoder.decode((String) key.get("dq")))
+                .setDp(decoder.decode((String) key.get("dp")))
+                .setD(decoder.decode((String) key.get("d")))
+                .setE(decoder.decode((String) key.get("e")))
+                .setN(decoder.decode((String) key.get("n")))
                 .setKeyType(KeyType.fromString((String) key.get("kty")))
                 .setId((String) key.get("kid"));
         unpackId((String) key.get("kid"));
