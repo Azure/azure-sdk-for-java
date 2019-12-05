@@ -440,4 +440,15 @@ public final class ConfigurationClient {
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
         return new PagedIterable<>(client.listRevisions(selector, context));
     }
+
+    /**
+     * A Spotbugs test.
+     */
+    public void aTest() {
+        String[] alphabetAsArray = {"a", "b", "c", "d", "e", "f", "g", "h"};
+        String alphabetAsString = "";
+        for (String s : alphabetAsArray) {
+            alphabetAsString += s;
+        }
+    }
 }
