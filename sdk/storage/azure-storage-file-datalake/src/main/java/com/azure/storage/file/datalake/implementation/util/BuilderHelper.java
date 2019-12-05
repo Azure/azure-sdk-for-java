@@ -39,7 +39,9 @@ import java.util.List;
  */
 public final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-file-datalake";
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
+    // {x-version-update-start;com.azure:azure-storage-file-datalake;current}
+    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.7";
+    // {x-version-update-end}
 
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.

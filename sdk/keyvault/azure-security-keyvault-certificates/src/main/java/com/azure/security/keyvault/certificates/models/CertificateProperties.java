@@ -87,9 +87,9 @@ public class CertificateProperties {
     CertificateProperties() { }
 
     /**
-     * Get the id value.
+     * Get the certificate identifier.
      *
-     * @return the id value
+     * @return the certificate identifier
      */
     public String getId() {
         return this.id;

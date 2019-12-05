@@ -14,7 +14,7 @@ import java.util.List;
 class X509CertificateProperties {
 
     X509CertificateProperties(CertificatePolicy certificatePolicy) {
-        this.subject = certificatePolicy.getSubjectName();
+        this.subject = certificatePolicy.getSubject();
         this.ekus = certificatePolicy.getEnhancedKeyUsage();
         this.keyUsage = certificatePolicy.getKeyUsage();
         this.subjectAlternativeNamesRequest = new SubjectAlternativeNamesRequest(certificatePolicy.getSubjectAlternativeNames());
