@@ -2,20 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
-import com.azure.core.util.Configuration;
 import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
-
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Locale;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
+
+import java.io.UncheckedIOException;
+import java.lang.reflect.Method;
+import java.util.Locale;
 
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
@@ -23,12 +23,14 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 public abstract class TestBase implements BeforeEachCallback {
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
-    private static TestMode testMode;
+    static TestMode testMode;
 
     private final ClientLogger logger = new ClientLogger(TestBase.class);
 
     protected InterceptorManager interceptorManager;
     protected TestResourceNamer testResourceNamer;
+    protected TestContextManager testContextManager;
+
     private ExtensionContext extensionContext;
 
     /**
@@ -53,16 +55,21 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        final String testName = testInfo.getTestMethod().get().getName();
+        final Method testMethod = testInfo.getTestMethod().get();
+        this.testContextManager = new TestContextManager(testMethod);
+        testContextManager.verifyTestCanRunInTestMode(testMode);
+
+        final String testName = testMethod.getName();
         logger.info("Test Mode: {}, Name: {}", testMode, testName);
 
         try {
-            interceptorManager = new InterceptorManager(testName, testMode);
-        } catch (IOException e) {
+            interceptorManager = new InterceptorManager(testName, testMode, testContextManager.doNotRecordTest());
+        } catch (UncheckedIOException e) {
             logger.error("Could not create interceptor for {}", testName, e);
             Assertions.fail();
         }
-        testResourceNamer = new TestResourceNamer(testName, testMode, interceptorManager.getRecordedData());
+        testResourceNamer = new TestResourceNamer(testName, testMode, testContextManager.doNotRecordTest(),
+            interceptorManager.getRecordedData());
 
         beforeTest();
     }
@@ -73,8 +80,10 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
-        afterTest();
-        interceptorManager.close();
+        if (testContextManager.wasTestRan()) {
+            afterTest();
+            interceptorManager.close();
+        }
     }
 
     /**
@@ -132,5 +141,23 @@ public abstract class TestBase implements BeforeEachCallback {
 
         logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
         return TestMode.PLAYBACK;
+    }
+
+    /**
+     * Sleeps the test for the given amount of milliseconds if {@link TestMode} isn't {@link TestMode#PLAYBACK}.
+     *
+     * @param millis Number of milliseconds to sleep the test.
+     * @throws IllegalStateException If the sleep is interrupted.
+     */
+    protected void sleepIfRunningAgainstService(long millis) {
+        if (testMode == TestMode.PLAYBACK) {
+            return;
+        }
+
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException ex) {
+            throw logger.logExceptionAsWarning(new IllegalStateException(ex));
+        }
     }
 }
