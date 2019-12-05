@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
  */
 public class HttpLoggingPolicyTests {
     private static final String REDACTED = "REDACTED";
-    private static final Context context = new Context("caller-method", "HttpLoggingPolicyTests");
+    private static final Context CONTEXT = new Context("caller-method", "HttpLoggingPolicyTests");
 
     private String originalLogLevel;
     private PrintStream originalErr;
@@ -98,8 +98,8 @@ public class HttpLoggingPolicyTests {
             .httpClient(new NoOpHttpClient())
             .build();
 
-            StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl), context))
-                .verifyComplete();
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl), CONTEXT))
+            .verifyComplete();
 
         String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         Assertions.assertTrue(logString.contains(expectedQueryString));
@@ -149,7 +149,7 @@ public class HttpLoggingPolicyTests {
             .build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl, requestHeaders, stream),
-            context))
+            CONTEXT))
             .verifyComplete();
 
         String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
@@ -173,7 +173,7 @@ public class HttpLoggingPolicyTests {
             .httpClient(ignored -> Mono.just(new MockHttpResponse(ignored, responseHeaders, stream)))
             .build();
 
-        StepVerifier.create(pipeline.send(request, context))
+        StepVerifier.create(pipeline.send(request, CONTEXT))
             .assertNext(response -> StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
                 .assertNext(bytes -> assertArrayEquals(data, bytes))
                 .verifyComplete())
