@@ -65,6 +65,7 @@ public class Main {
                 throw new RuntimeException(cfg.getOperationType() + " is not supported");
             }
 
+            LOGGER.info("Starting {}", cfg.getOperationType());
             benchmark.run();
             benchmark.shutdown();
 
