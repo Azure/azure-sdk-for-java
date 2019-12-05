@@ -186,6 +186,23 @@ class ShareAsyncAPITests extends APISpec {
             }
     }
 
+    def "Get properties premium"() {
+        given:
+        def premiumShare = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(), testMetadata, null).block().getValue()
+        when:
+        def getPropertiesVerifier = StepVerifier.create(premiumShare.getPropertiesWithResponse())
+        then:
+        getPropertiesVerifier.assertNext {
+            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert testMetadata == it.getValue().getMetadata()
+            assert it.getValue().getQuota()
+            assert it.getValue().getProvisionedIops()
+            assert it.getValue().getProvisionedIngressMBps()
+            assert it.getValue().getProvisionedEgressMBps()
+            assert it.getValue().getNextAllowedQuotaDowngradeTime()
+        }.verifyComplete()
+    }
+
     def "Set quota"() {
         given:
         primaryShareAsyncClient.createWithResponse(null, 1).block()
