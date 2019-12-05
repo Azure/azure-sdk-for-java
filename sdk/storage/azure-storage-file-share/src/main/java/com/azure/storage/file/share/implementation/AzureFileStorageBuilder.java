@@ -77,7 +77,7 @@ public final class AzureFileStorageBuilder {
         if (this.version != null) {
             client.setVersion(this.version);
         } else {
-            client.setVersion("2019-02-02");
+            client.setVersion("2019-07-07");
         }
         if (this.url != null) {
             client.setUrl(this.url);

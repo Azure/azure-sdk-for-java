@@ -489,7 +489,7 @@ directive:
 - from: swagger-document
   where: $.parameters.ApiVersionParameter
   transform: >
-    $.enum = [ "2019-02-02" ];
+    $.enum = [ "2019-07-07" ];
 ```
 
 ### Convert FileCreationTime and FileLastWriteTime to String to Support 'now'
