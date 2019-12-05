@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-sdk-all</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-sdk-all;current} -->
 
   <name>Microsoft Azure SDK for Java - All Modules</name>
   <description>Aggregated POM for Microsoft Azure SDK for Java</description>

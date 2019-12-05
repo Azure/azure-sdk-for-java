@@ -67,6 +67,10 @@ public class SqlVirtualMachinesInner implements InnerSupportsGet<SqlVirtualMachi
      * used by Retrofit to perform actually REST calls.
      */
     interface SqlVirtualMachinesService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.SqlVirtualMachines listBySqlVmGroup" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/sqlVirtualMachines")
+        Observable<Response<ResponseBody>> listBySqlVmGroup(@Path("resourceGroupName") String resourceGroupName, @Path("sqlVirtualMachineGroupName") String sqlVirtualMachineGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.SqlVirtualMachines list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -103,6 +107,10 @@ public class SqlVirtualMachinesInner implements InnerSupportsGet<SqlVirtualMachi
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.SqlVirtualMachines listBySqlVmGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listBySqlVmGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.SqlVirtualMachines listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -111,6 +119,129 @@ public class SqlVirtualMachinesInner implements InnerSupportsGet<SqlVirtualMachi
         @GET
         Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+    }
+
+    /**
+     * Gets the list of sql virtual machines in a SQL virtual machine group.
+     *
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SqlVirtualMachineInner&gt; object if successful.
+     */
+    public PagedList<SqlVirtualMachineInner> listBySqlVmGroup(final String resourceGroupName, final String sqlVirtualMachineGroupName) {
+        ServiceResponse<Page<SqlVirtualMachineInner>> response = listBySqlVmGroupSinglePageAsync(resourceGroupName, sqlVirtualMachineGroupName).toBlocking().single();
+        return new PagedList<SqlVirtualMachineInner>(response.body()) {
+            @Override
+            public Page<SqlVirtualMachineInner> nextPage(String nextPageLink) {
+                return listBySqlVmGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets the list of sql virtual machines in a SQL virtual machine group.
+     *
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SqlVirtualMachineInner>> listBySqlVmGroupAsync(final String resourceGroupName, final String sqlVirtualMachineGroupName, final ListOperationCallback<SqlVirtualMachineInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listBySqlVmGroupSinglePageAsync(resourceGroupName, sqlVirtualMachineGroupName),
+            new Func1<String, Observable<ServiceResponse<Page<SqlVirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SqlVirtualMachineInner>>> call(String nextPageLink) {
+                    return listBySqlVmGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets the list of sql virtual machines in a SQL virtual machine group.
+     *
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SqlVirtualMachineInner&gt; object
+     */
+    public Observable<Page<SqlVirtualMachineInner>> listBySqlVmGroupAsync(final String resourceGroupName, final String sqlVirtualMachineGroupName) {
+        return listBySqlVmGroupWithServiceResponseAsync(resourceGroupName, sqlVirtualMachineGroupName)
+            .map(new Func1<ServiceResponse<Page<SqlVirtualMachineInner>>, Page<SqlVirtualMachineInner>>() {
+                @Override
+                public Page<SqlVirtualMachineInner> call(ServiceResponse<Page<SqlVirtualMachineInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets the list of sql virtual machines in a SQL virtual machine group.
+     *
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SqlVirtualMachineInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SqlVirtualMachineInner>>> listBySqlVmGroupWithServiceResponseAsync(final String resourceGroupName, final String sqlVirtualMachineGroupName) {
+        return listBySqlVmGroupSinglePageAsync(resourceGroupName, sqlVirtualMachineGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<SqlVirtualMachineInner>>, Observable<ServiceResponse<Page<SqlVirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SqlVirtualMachineInner>>> call(ServiceResponse<Page<SqlVirtualMachineInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listBySqlVmGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets the list of sql virtual machines in a SQL virtual machine group.
+     *
+    ServiceResponse<PageImpl<SqlVirtualMachineInner>> * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+    ServiceResponse<PageImpl<SqlVirtualMachineInner>> * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SqlVirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SqlVirtualMachineInner>>> listBySqlVmGroupSinglePageAsync(final String resourceGroupName, final String sqlVirtualMachineGroupName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (sqlVirtualMachineGroupName == null) {
+            throw new IllegalArgumentException("Parameter sqlVirtualMachineGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listBySqlVmGroup(resourceGroupName, sqlVirtualMachineGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SqlVirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SqlVirtualMachineInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SqlVirtualMachineInner>> result = listBySqlVmGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SqlVirtualMachineInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SqlVirtualMachineInner>> listBySqlVmGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlVirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SqlVirtualMachineInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
     }
 
     /**
@@ -1148,6 +1279,117 @@ public class SqlVirtualMachinesInner implements InnerSupportsGet<SqlVirtualMachi
     }
 
     private ServiceResponse<PageImpl<SqlVirtualMachineInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlVirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SqlVirtualMachineInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the list of sql virtual machines in a SQL virtual machine group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SqlVirtualMachineInner&gt; object if successful.
+     */
+    public PagedList<SqlVirtualMachineInner> listBySqlVmGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<SqlVirtualMachineInner>> response = listBySqlVmGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<SqlVirtualMachineInner>(response.body()) {
+            @Override
+            public Page<SqlVirtualMachineInner> nextPage(String nextPageLink) {
+                return listBySqlVmGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets the list of sql virtual machines in a SQL virtual machine group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SqlVirtualMachineInner>> listBySqlVmGroupNextAsync(final String nextPageLink, final ServiceFuture<List<SqlVirtualMachineInner>> serviceFuture, final ListOperationCallback<SqlVirtualMachineInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listBySqlVmGroupNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SqlVirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SqlVirtualMachineInner>>> call(String nextPageLink) {
+                    return listBySqlVmGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets the list of sql virtual machines in a SQL virtual machine group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SqlVirtualMachineInner&gt; object
+     */
+    public Observable<Page<SqlVirtualMachineInner>> listBySqlVmGroupNextAsync(final String nextPageLink) {
+        return listBySqlVmGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SqlVirtualMachineInner>>, Page<SqlVirtualMachineInner>>() {
+                @Override
+                public Page<SqlVirtualMachineInner> call(ServiceResponse<Page<SqlVirtualMachineInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets the list of sql virtual machines in a SQL virtual machine group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SqlVirtualMachineInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SqlVirtualMachineInner>>> listBySqlVmGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listBySqlVmGroupNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SqlVirtualMachineInner>>, Observable<ServiceResponse<Page<SqlVirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SqlVirtualMachineInner>>> call(ServiceResponse<Page<SqlVirtualMachineInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listBySqlVmGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets the list of sql virtual machines in a SQL virtual machine group.
+     *
+    ServiceResponse<PageImpl<SqlVirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SqlVirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SqlVirtualMachineInner>>> listBySqlVmGroupNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listBySqlVmGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SqlVirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SqlVirtualMachineInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SqlVirtualMachineInner>> result = listBySqlVmGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SqlVirtualMachineInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SqlVirtualMachineInner>> listBySqlVmGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SqlVirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SqlVirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)

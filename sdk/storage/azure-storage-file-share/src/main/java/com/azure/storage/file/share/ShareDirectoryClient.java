@@ -10,6 +10,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
@@ -430,9 +431,10 @@ public class ShareDirectoryClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
      * @param handleId Handle ID to be closed.
+     * @return Information about the closed handles.
      */
-    public void forceCloseHandle(String handleId) {
-        forceCloseHandleWithResponse(handleId, null, Context.NONE);
+    public CloseHandlesInfo forceCloseHandle(String handleId) {
+        return forceCloseHandleWithResponse(handleId, null, Context.NONE).getValue();
     }
 
     /**
@@ -452,11 +454,12 @@ public class ShareDirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response that only contains headers and response status code.
+     * @return A response that contains information about the closed handles, headers and response status code.
      */
-    public Response<Void> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient
-            .forceCloseHandleWithResponse(handleId, context), timeout);
+    public Response<CloseHandlesInfo> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
+        Mono<Response<CloseHandlesInfo>> response = shareDirectoryAsyncClient
+            .forceCloseHandleWithResponse(handleId, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -476,12 +479,12 @@ public class ShareDirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The number of handles closed.
+     * @return Information about the closed handles
      */
-    public int forceCloseAllHandles(boolean recursive, Duration timeout, Context context) {
+    public CloseHandlesInfo forceCloseAllHandles(boolean recursive, Duration timeout, Context context) {
         return new PagedIterable<>(shareDirectoryAsyncClient.forceCloseAllHandlesWithTimeout(recursive, timeout,
-            context))
-            .stream().reduce(0, Integer::sum);
+            context)).stream().reduce(new CloseHandlesInfo(0),
+                (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles()));
     }
 
     /**

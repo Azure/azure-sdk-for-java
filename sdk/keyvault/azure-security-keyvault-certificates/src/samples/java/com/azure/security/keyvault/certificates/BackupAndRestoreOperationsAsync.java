@@ -6,7 +6,7 @@ package com.azure.security.keyvault.certificates;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,8 +43,8 @@ public class BackupAndRestoreOperationsAsync {
         // Let's create a self signed certificate valid for 1 year. if the certificate
         // already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
-            .setReuseKey(true)
+            .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
+            .setKeyReusable(true)
             .setKeyCurveName(CertificateKeyCurveName.P_256);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
@@ -71,10 +71,12 @@ public class BackupAndRestoreOperationsAsync {
         Thread.sleep(7000);
 
         // The certificate is no longer in use, so you delete it.
-        certificateAsyncClient.deleteCertificate("certificateName")
-            .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
-
+        certificateAsyncClient.beginDeleteCertificate("certificateName")
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
+                System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
         //To ensure certificate is deleted on server side.
         Thread.sleep(30000);
 

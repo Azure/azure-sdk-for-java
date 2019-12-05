@@ -18,7 +18,7 @@ class IssuerParameters {
     IssuerParameters(CertificatePolicy certificatePolicy) {
         this.name = certificatePolicy.getIssuerName();
         this.certificateType = certificatePolicy.getCertificateType();
-        this.certificateTransparency = certificatePolicy.isCertificateTransparency();
+        this.certificateTransparency = certificatePolicy.isCertificateTransparent();
     }
     /**
      * Name of the referenced issuer object or reserved names; for example,
