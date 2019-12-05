@@ -128,21 +128,6 @@ jobs:
           publishJUnitResults: false
           goals: 'install site:site site:stage'
 
-      # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module in the
-      # previous step. This is only generated in non-PR builds (i.e. nightly runs, etc)
-      - task: Maven@3
-        displayName: 'Run SpotBugs'
-        condition: ne(variables['Build.Reason'], 'PullRequest')
-        inputs:
-          mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
-          options: '--batch-mode -DskipTests -Dgpg.skip'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
-
       - script: |
           git clone https://github.com/JonathanGiles/DependencyChecker.git
           mkdir input && cp dependencies.json input/
