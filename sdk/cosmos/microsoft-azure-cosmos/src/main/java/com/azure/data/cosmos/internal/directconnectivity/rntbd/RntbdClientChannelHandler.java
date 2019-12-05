@@ -29,8 +29,8 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
     private final Config config;
 
     RntbdClientChannelHandler(final Config config, final ChannelHealthChecker healthChecker) {
-        checkNotNull(healthChecker, "healthChecker");
-        checkNotNull(config, "config");
+        checkNotNull(healthChecker, "expected non-null healthChecker");
+        checkNotNull(config, "expected non-null config");
         this.healthChecker = healthChecker;
         this.config = config;
     }
