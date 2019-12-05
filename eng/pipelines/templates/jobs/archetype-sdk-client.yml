@@ -61,12 +61,14 @@ jobs:
         - script: |
             python3 --version 
             python3 eng/versioning/set_versions.py --update-type all --build-type client --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
+            python3 eng/versioning/set_versions.py --update-type all --build-type data --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
           condition: eq(variables['SetDevVersion'],'true')
           displayName: Append dev package version suffix for ${{artifact.name}}
       
       - script: |
           python3 --version
           python3 eng/versioning/update_versions.py --update-type all --build-type client
+          python3 eng/versioning/update_versions.py --update-type all --build-type data
         condition: eq(variables['SetDevVersion'],'true')
         displayName: Apply version settings to repository
 
@@ -238,6 +240,7 @@ jobs:
         artifact: reports
 
   - job: 'Test'
+    condition: ne(variables['Skip.Test'], 'true')
 
     variables:
       - template: ../variables/globals.yml
