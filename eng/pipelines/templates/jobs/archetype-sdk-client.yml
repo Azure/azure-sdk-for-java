@@ -240,6 +240,7 @@ jobs:
         artifact: reports
 
   - job: 'Test'
+    condition: ne(variables['Skip.Test'], 'true')
 
     variables:
       - template: ../variables/globals.yml
