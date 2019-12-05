@@ -89,9 +89,9 @@ jobs:
           goals: 'install'
 
       - task: Maven@3
-        displayName: 'Install all client libraries (for SpotBugs analysis)'
+        displayName: 'Install Module'
         inputs:
-          mavenPomFile: pom.client.xml
+          mavenPomFile: $(pomFile)
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
@@ -104,7 +104,7 @@ jobs:
       - task: Maven@3
         displayName: 'Run SpotBugs and CheckStyle'
         inputs:
-          mavenPomFile: pom.client.xml
+          mavenPomFile: $(pomFile)
           options: '-DskipTests -Dgpg.skip'
           mavenOptions: ''
           javaHomeOption: 'JDKVersion'
@@ -119,7 +119,7 @@ jobs:
         displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
         condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
-          mavenPomFile: pom.client.xml
+          mavenPomFile: $(pomFile)
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
