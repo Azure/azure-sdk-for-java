@@ -32,7 +32,7 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
      */
     public RequestIdPolicy(String requestIdHeaderName) {
         this.requestIdHeaderName = Objects.requireNonNull(requestIdHeaderName,
-            "messageIdHeaderName can not be null.");
+            "requestIdHeaderName can not be null.");
     }
 
     /**

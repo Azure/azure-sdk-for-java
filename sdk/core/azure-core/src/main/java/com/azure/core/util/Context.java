@@ -5,7 +5,6 @@ package com.azure.core.util;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.http.HttpHeaders;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,9 +22,6 @@ import java.util.Optional;
 @Immutable
 public class Context {
     private final ClientLogger logger = new ClientLogger(Context.class);
-
-    /**Key used to override headers in HttpRequest. The Value for this key should be {@link HttpHeaders}.*/
-    public static final String AZURE_REQUEST_HTTP_HEADERS_KEY = "azure-http-headers-key";
 
     // All fields must be immutable.
     //
