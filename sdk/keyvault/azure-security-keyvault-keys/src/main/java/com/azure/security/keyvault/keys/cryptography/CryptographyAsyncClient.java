@@ -620,7 +620,7 @@ public class CryptographyAsyncClient {
 
     private boolean ensureValidKeyAvailable() {
         boolean keyAvailableLocally = true;
-        if (this.key == null) {
+        if (this.key == null && keyCollection != null) {
             try {
                 if (keyCollection.equals(SECRETS_COLLECTION)) {
                     this.key = getSecretKey().block();

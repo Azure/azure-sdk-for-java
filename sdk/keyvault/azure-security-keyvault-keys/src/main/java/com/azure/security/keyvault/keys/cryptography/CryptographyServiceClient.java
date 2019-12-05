@@ -106,7 +106,7 @@ class CryptographyServiceClient {
         a.add(KeyOperation.WRAP_KEY.toString());
         a.add(KeyOperation.UNWRAP_KEY.toString());
 
-        ((ObjectNode) rootNode).put("k", Base64.getDecoder().decode(secretKey.getValue()));
+        ((ObjectNode) rootNode).put("k", Base64.getUrlDecoder().decode(secretKey.getValue()));
         ((ObjectNode) rootNode).put("kid", this.keyId);
         ((ObjectNode) rootNode).put("kty", KeyType.OCT.toString());
         ((ObjectNode) rootNode).put("key_ops", a);
@@ -234,6 +234,4 @@ class CryptographyServiceClient {
             }
         }
     }
-
-
 }

@@ -112,8 +112,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     public String getEndpoint() {
         final String endpoint = interceptorManager.isPlaybackMode()
                 ? "http://localhost:8080"
-                : "https://cameravault.vault.azure.net/";
-            //    : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
         Objects.requireNonNull(endpoint);
         return endpoint;
     }
