@@ -34,6 +34,7 @@ import com.azure.search.models.SearchResult;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestRequest;
 import com.azure.search.models.SuggestResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
@@ -314,8 +315,10 @@ public class SearchIndexAsyncClient {
                                                                    RequestOptions requestOptions) {
         SearchRequest searchRequest = this.createSearchRequest(searchText, searchOptions);
         return new PagedFluxBase<>(
+
             () -> withContext(context -> this.searchFirstPage(searchRequest, requestOptions, context)),
-            skip -> withContext(context -> this.searchNextPage(searchRequest, requestOptions, skip, context)));
+            nextPageParameters -> withContext(context ->
+                this.searchNextPage(searchRequest, requestOptions, nextPageParameters, context)));
     }
 
     PagedFluxBase<SearchResult, SearchPagedResponse> search(String searchText,
@@ -325,7 +328,7 @@ public class SearchIndexAsyncClient {
         SearchRequest searchRequest = this.createSearchRequest(searchText, searchOptions);
         return new PagedFluxBase<>(
             () -> this.searchFirstPage(searchRequest, requestOptions, context),
-            skip -> this.searchNextPage(searchRequest, requestOptions, skip, context));
+            nextPageParameters -> this.searchNextPage(searchRequest, requestOptions, nextPageParameters, context));
     }
 
     /**
@@ -554,24 +557,44 @@ public class SearchIndexAsyncClient {
      * Retrieve the next page of a document search
      *
      * @param searchRequest the search request
-     * @param skip number of documents to skip. Due to a limitation in PageFlux, this value is stored as String and
-     * converted to its Integer value before making the next request
+     * @param nextPageParameters json string holding the parameters required to get the next page:
+     *  skip is the number of documents to skip, top is the number of documents per page.
+     * Due to a limitation in PageFlux, this value is stored as String and converted to its Integer value
+     * before making the next request
      * @param context the context to associate with this operation.
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
      */
-    private Mono<SearchPagedResponse> searchNextPage(SearchRequest searchRequest,
-                                                     RequestOptions requestOptions,
-                                                     String skip,
-                                                     Context context) {
-        if (skip == null || skip.isEmpty()) {
+    private Mono<SearchPagedResponse> searchNextPage(
+        SearchRequest searchRequest,
+        RequestOptions requestOptions,
+        String nextPageParameters,
+        Context context) {
+
+        if (StringUtils.isBlank(nextPageParameters)) {
             return Mono.empty();
         }
 
-        Integer skipValue = Integer.valueOf(skip);
+        // Extract the value of top and skip from @search.nextPageParameters in SearchPagedResponse
+        ObjectMapper objectMapper = new ObjectMapper();
+        SearchRequest nextPageRequest = null;
+        try {
+            nextPageRequest = objectMapper.readValue(nextPageParameters, SearchRequest.class);
+        } catch (JsonProcessingException e) {
+            logger.error("Failed to parse nextPageParameters with error: %s", e.getMessage());
+            return Mono.empty();
+        }
+        if (nextPageRequest == null || nextPageRequest.getSkip() == null) {
+            return Mono.empty();
+        }
+
+        searchRequest.setSkip(nextPageRequest.getSkip());
+        if (nextPageRequest.getTop() != null) {
+            searchRequest.setTop(nextPageRequest.getTop());
+        }
 
         return restClient.documents()
-            .searchPostWithRestResponseAsync(searchRequest.setSkip(skipValue), requestOptions, context)
+            .searchPostWithRestResponseAsync(searchRequest, requestOptions, context)
             .map(SearchPagedResponse::new);
     }
 

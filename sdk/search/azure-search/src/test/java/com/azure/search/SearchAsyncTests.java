@@ -79,7 +79,7 @@ public class SearchAsyncTests extends SearchTestBase {
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
         // upload large documents batch
-        hotels = createHotelsList(2000);
+        hotels = createHotelsList(3000);
         uploadDocuments(client, hotels);
 
         SearchOptions searchOptions = new SearchOptions().setTop(2000).setSelect("HotelId")

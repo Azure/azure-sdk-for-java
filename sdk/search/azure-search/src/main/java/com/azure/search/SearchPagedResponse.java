@@ -8,7 +8,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.search.models.DocumentSearchResult;
 import com.azure.search.models.FacetResult;
+import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchResult;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -30,16 +35,24 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),
             documentSearchResponse.getValue().getResults(),
-            documentSearchResponse.getValue().getNextLink() == null
-                || documentSearchResponse.getValue().getNextLink().isEmpty()
+            StringUtils.isBlank(documentSearchResponse.getValue().getNextLink())
                 || documentSearchResponse.getValue().getNextPageParameters() == null
                 || documentSearchResponse.getValue().getNextPageParameters().getSkip() == null
-                ? null : String.valueOf(documentSearchResponse.getValue().getNextPageParameters().getSkip()),
+                ? null : serialize(documentSearchResponse.getValue().getNextPageParameters()),
             deserializeHeaders(documentSearchResponse.getHeaders()));
 
         this.facets = documentSearchResponse.getValue().getFacets();
         this.count = documentSearchResponse.getValue().getCount();
         this.coverage = documentSearchResponse.getValue().getCoverage();
+    }
+
+    private static String serialize(SearchRequest nextPageParameters) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(nextPageParameters);
+        } catch (JsonProcessingException e) {
+            return null;
+        }
     }
 
     /**
