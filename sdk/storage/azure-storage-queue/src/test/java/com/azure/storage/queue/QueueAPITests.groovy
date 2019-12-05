@@ -4,7 +4,6 @@
 package com.azure.storage.queue
 
 import com.azure.core.util.Context
-import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
@@ -27,7 +26,7 @@ class QueueAPITests extends APISpec {
 
     def setup() {
         queueName = generateRandomName(60)
-        primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
+        primaryQueueServiceClient = queueServiceBuilderHelper().buildClient()
         queueClient = primaryQueueServiceClient.getQueueClient(queueName)
     }
 
@@ -472,7 +471,7 @@ class QueueAPITests extends APISpec {
         URL url = new URL(queueClient.getQueueUrl())
         String endpoint = new URL("http", url.getHost(), url.getPort(), url.getFile()).toString()
         def builder = new QueueClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(getDefaultAzureCredential())
             .endpoint(endpoint)
 
         when:

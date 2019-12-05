@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-import com.azure.identity.DefaultAzureCredentialBuilder
+
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
@@ -11,13 +11,10 @@ import com.azure.storage.blob.models.BlobCorsRule
 import com.azure.storage.blob.models.BlobMetrics
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.StaticWebsite
-
-import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.blob.models.BlobStorageException
-
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
 
@@ -416,7 +413,7 @@ class ServiceAPITest extends APISpec {
         setup:
         String endpoint = BlobUrlParts.parse(primaryBlobServiceClient.getAccountUrl()).setScheme("http").toUrl()
         def builder = new BlobServiceClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(getDefaultAzureCredential())
             .endpoint(endpoint)
 
         when:

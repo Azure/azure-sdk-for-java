@@ -11,9 +11,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.test.TestMode
 import com.azure.core.util.CoreUtils
-import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRetentionPolicy
@@ -146,8 +144,6 @@ class APISpec extends StorageTestBase {
 
             containerClient.delete()
         }
-
-        interceptorManager.close()
     }
 
     BlobServiceClient setClient(StorageSharedKeyCredential credential) {
@@ -164,12 +160,12 @@ class APISpec extends StorageTestBase {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD) {
+        if (isRecordMode()) {
             if (recordLiveMode) {
-                builder.addPolicy(interceptorManager.getRecordPolicy())
+                builder.addPolicy(getRecordPolicy())
             }
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
+            return builder.credential(getEnvironmentCredential()).buildClient()
         } else {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
             return builder.credential(primaryCredential).buildClient()
@@ -213,8 +209,8 @@ class APISpec extends StorageTestBase {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         if (credential != null) {
@@ -230,8 +226,8 @@ class APISpec extends StorageTestBase {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         builder.sasToken(sasToken).buildClient()
@@ -244,8 +240,8 @@ class APISpec extends StorageTestBase {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         builder.credential(credential).buildAsyncClient()
@@ -263,8 +259,8 @@ class APISpec extends StorageTestBase {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         return builder.sasToken(sasToken).buildClient()
@@ -280,8 +276,8 @@ class APISpec extends StorageTestBase {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         return builder.credential(credential).buildClient()
@@ -294,8 +290,8 @@ class APISpec extends StorageTestBase {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         return builder.credential(credential).buildClient()
@@ -311,8 +307,8 @@ class APISpec extends StorageTestBase {
             builder.sasToken(sasToken)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         return builder.buildClient()

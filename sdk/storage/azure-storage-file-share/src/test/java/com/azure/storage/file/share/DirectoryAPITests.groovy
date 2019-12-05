@@ -28,9 +28,9 @@ class DirectoryAPITests extends APISpec {
     def setup() {
         shareName = generateRandomName()
         directoryPath = generateRandomName()
-        shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
+        shareClient = shareBuilderHelper( shareName).buildClient()
         shareClient.create()
-        primaryDirectoryClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildDirectoryClient()
+        primaryDirectoryClient = directoryBuilderHelper(shareName, directoryPath).buildDirectoryClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes> of(NtfsFileAttributes.NORMAL))
     }
@@ -55,7 +55,7 @@ class DirectoryAPITests extends APISpec {
         when:
         ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot()
         expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
-        ShareDirectoryClient newDirClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
+        ShareDirectoryClient newDirClient = shareBuilderHelper(shareName).snapshot(shareSnapshotInfo.getSnapshot())
             .buildClient().getDirectoryClient(directoryPath)
         def directoryURL = newDirClient.getDirectoryUrl()
 
@@ -89,7 +89,7 @@ class DirectoryAPITests extends APISpec {
         def testShareName = generateRandomName()
 
         when:
-        directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildDirectoryClient().create()
+        directoryBuilderHelper(testShareName, directoryPath).buildDirectoryClient().create()
 
         then:
         def e = thrown(ShareStorageException)
@@ -587,7 +587,7 @@ class DirectoryAPITests extends APISpec {
             1, 1), ZoneOffset.UTC).toString()
 
         when:
-        def shareSnapshotClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).snapshot(snapshot).buildDirectoryClient()
+        def shareSnapshotClient = directoryBuilderHelper(shareName, directoryPath).snapshot(snapshot).buildDirectoryClient()
 
         then:
         snapshot == shareSnapshotClient.getShareSnapshotId()

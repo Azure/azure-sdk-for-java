@@ -9,7 +9,7 @@ import spock.lang.Requires
 class BlobOutputStreamTest extends APISpec {
     private static int FOUR_MB = 4 * Constants.MB
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "BlockBlob output stream"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
@@ -25,7 +25,7 @@ class BlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "BlockBlob output stream default no overwrite"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
@@ -44,7 +44,7 @@ class BlobOutputStreamTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "BlockBlob output stream default no overwrite interrupted"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
@@ -66,7 +66,7 @@ class BlobOutputStreamTest extends APISpec {
         ((BlobStorageException) e.getCause()).getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "BlockBlob output stream overwrite"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
@@ -83,7 +83,7 @@ class BlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "PageBlob output stream"() {
         setup:
         def data = getRandomByteArray(16 * Constants.MB - 512)
@@ -101,7 +101,7 @@ class BlobOutputStreamTest extends APISpec {
     }
 
     // Test is failing, need to investigate.
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "AppendBlob output stream"() {
         setup:
         def data = getRandomByteArray(4 * FOUR_MB)

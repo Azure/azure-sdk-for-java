@@ -3,10 +3,7 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.core.http.policy.HttpLogOptions
-import com.azure.core.test.InterceptorManager
-import com.azure.core.test.TestMode
+
 import com.azure.core.util.Configuration
 import com.azure.storage.common.StorageTestBase
 import com.azure.storage.file.share.models.ListSharesOptions
@@ -26,7 +23,7 @@ class APISpec extends StorageTestBase {
      * Setup the File service clients commonly used for the API tests.
      */
     def setup() {
-        connectionString = (testMode == TestMode.PLAYBACK)
+        connectionString = isPlaybackMode()
             ? "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
             : Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
     }
@@ -35,12 +32,6 @@ class APISpec extends StorageTestBase {
      * Clean up the test shares, directories and files for the account.
      */
     def cleanup() {
-        interceptorManager.close()
-
-        if (testMode == TestMode.PLAYBACK) {
-            return
-        }
-
         ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
             .connectionString(connectionString)
             .buildClient()
@@ -50,70 +41,51 @@ class APISpec extends StorageTestBase {
         }
     }
 
-    def fileServiceBuilderHelper(final InterceptorManager interceptorManager) {
-        if (testMode == TestMode.RECORD) {
-            return new ShareServiceClientBuilder()
-                .connectionString(connectionString)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(getHttpClient())
-        } else {
-            return new ShareServiceClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(interceptorManager.getPlaybackClient())
+    def fileServiceBuilderHelper() {
+        def builder = new ShareServiceClientBuilder()
+            .connectionString(connectionString)
+            .httpClient(getHttpClient())
+
+        if (isRecordMode()) {
+            builder.addPolicy(getRecordPolicy())
         }
+
+        return builder
     }
 
-    def shareBuilderHelper(final InterceptorManager interceptorManager, final String shareName) {
-        if (testMode == TestMode.RECORD) {
-            return new ShareClientBuilder()
-                .connectionString(connectionString)
-                .shareName(shareName)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(getHttpClient())
-        } else {
-            return new ShareClientBuilder()
-                .connectionString(connectionString)
-                .shareName(shareName)
-                .httpClient(interceptorManager.getPlaybackClient())
+    def shareBuilderHelper(final String shareName) {
+        def builder = new ShareClientBuilder()
+            .connectionString(connectionString)
+            .shareName(shareName)
+            .httpClient(getHttpClient())
+
+        if (isRecordMode()) {
+            builder.addPolicy(getRecordPolicy())
         }
+
+        return builder
     }
 
-    def directoryBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String directoryPath) {
-        if (testMode == TestMode.RECORD) {
-            return new ShareFileClientBuilder()
-                .connectionString(connectionString)
-                .shareName(shareName)
-                .resourcePath(directoryPath)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(getHttpClient())
-        } else {
-            return new ShareFileClientBuilder()
-                .connectionString(connectionString)
-                .shareName(shareName)
-                .resourcePath(directoryPath)
-                .httpClient(interceptorManager.getPlaybackClient())
-        }
+    def directoryBuilderHelper(final String shareName, final String directoryPath) {
+        return pathBuilderHelper(shareName, directoryPath)
     }
 
-    def fileBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String filePath) {
-        if (testMode == TestMode.RECORD) {
-            return new ShareFileClientBuilder()
-                .connectionString(connectionString)
-                .shareName(shareName)
-                .resourcePath(filePath)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(getHttpClient())
-        } else {
-            return new ShareFileClientBuilder()
-                .connectionString(connectionString)
-                .shareName(shareName)
-                .resourcePath(filePath)
-                .httpClient(interceptorManager.getPlaybackClient())
+    def fileBuilderHelper(final String shareName, final String filePath) {
+        return pathBuilderHelper(shareName, filePath)
+    }
+
+    private def pathBuilderHelper(final String shareName, final String resourcePath) {
+        def builder = new ShareFileClientBuilder()
+            .connectionString(connectionString)
+            .shareName(shareName)
+            .resourcePath(resourcePath)
+            .httpClient(getHttpClient())
+
+        if (isRecordMode()) {
+            builder.addPolicy(getRecordPolicy())
         }
+
+        return builder
     }
 
     String generateRandomName() {

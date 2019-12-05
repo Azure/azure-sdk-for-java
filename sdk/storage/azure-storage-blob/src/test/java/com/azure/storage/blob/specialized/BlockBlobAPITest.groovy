@@ -12,7 +12,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
-import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
@@ -640,7 +639,7 @@ class BlockBlobAPITest extends APISpec {
        for getBlockID that will change every time test is run
      */
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     @Unroll
     def "Upload from file"() {
         setup:
@@ -678,7 +677,7 @@ class BlockBlobAPITest extends APISpec {
         101 * 1024 * 1024                              | 4 * 1024 * 1024 || 0  // Size is too small to trigger stage block uploading
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Upload from file with metadata"() {
         given:
         def metadata = Collections.singletonMap("metadata", "value")
@@ -697,7 +696,7 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Upload from file default no overwrite"() {
         when:
         def file = getRandomFile(50)
@@ -717,7 +716,7 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Upload from file no overwrite interrupted"() {
         setup:
         def file = getRandomFile(257 * 1024 * 1024)
@@ -750,7 +749,7 @@ class BlockBlobAPITest extends APISpec {
         smallFile.delete()
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Upload from file overwrite"() {
         when:
         def file = getRandomFile(50)
@@ -973,7 +972,7 @@ class BlockBlobAPITest extends APISpec {
         notThrown(Throwable)
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Async buffered upload empty"() {
         expect:
         StepVerifier.create(blobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null, true))
@@ -986,7 +985,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Async buffered upload empty buffers"() {
         expect:
         StepVerifier.create(blobAsyncClient.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), null, true))
@@ -1007,7 +1006,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Async buffered upload"() {
         when:
         def data = getRandomData(dataSize)
@@ -1075,7 +1074,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Buffered upload with reporter"() {
         when:
         def uploadReporter = new Reporter(blockSize)
@@ -1101,7 +1100,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Buffered upload chunked source"() {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
@@ -1132,7 +1131,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Buffered upload handle pathing"() {
         setup:
         def dataList = [] as List<ByteBuffer>
@@ -1157,7 +1156,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Buffered upload handle pathing hot flux"() {
         setup:
         def dataList = [] as List<ByteBuffer>
@@ -1204,7 +1203,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Buffered upload headers"() {
         when:
         def data = getRandomByteArray(dataSize)
@@ -1238,7 +1237,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Buffered upload metadata"() {
         setup:
         def metadata = [:] as Map<String, String>
@@ -1269,7 +1268,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Buffered upload AC"() {
         setup:
         blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
@@ -1301,7 +1300,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Buffered upload AC fail"() {
         setup:
         blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
@@ -1335,7 +1334,7 @@ class BlockBlobAPITest extends APISpec {
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
     @Unroll
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "UploadBufferPool lock three or more buffers"() {
         setup:
         blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
@@ -1392,7 +1391,7 @@ class BlockBlobAPITest extends APISpec {
     notThrown(IllegalArgumentException)
 }*/
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Buffered upload network error"() {
         setup:
         /*
@@ -1435,14 +1434,14 @@ class BlockBlobAPITest extends APISpec {
             })
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Buffered upload default no overwrite"() {
         expect:
         StepVerifier.create(blobAsyncClient.upload(defaultFlux, null))
             .verifyError(IllegalArgumentException)
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Buffered upload no overwrite interrupted"() {
         setup:
         def data = Flux.just(getRandomData(257 * 1024 * 1024))
@@ -1474,7 +1473,7 @@ class BlockBlobAPITest extends APISpec {
         smallFile.delete()
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Buffered upload overwrite"() {
         when:
         def file = getRandomFile(50)
@@ -1538,7 +1537,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         String endpoint = BlobUrlParts.parse(blockBlobClient.getBlobUrl()).setScheme("http").toUrl()
         def builder = new SpecializedBlobClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(getDefaultAzureCredential())
             .endpoint(endpoint)
 
         when:

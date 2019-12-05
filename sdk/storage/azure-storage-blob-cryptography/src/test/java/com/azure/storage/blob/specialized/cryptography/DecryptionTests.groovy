@@ -36,7 +36,7 @@ class DecryptionTests extends APISpec {
     }
 
     @Unroll
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Decryption"() {
         setup:
         def flow = new EncryptedFlux(testCase, fakeKey, this)

@@ -25,7 +25,7 @@ class ShareAsyncAPITests extends APISpec {
 
     def setup() {
         shareName = generateRandomName()
-        primaryFileServiceAsyncClient = fileServiceBuilderHelper(interceptorManager).buildAsyncClient()
+        primaryFileServiceAsyncClient = fileServiceBuilderHelper().buildAsyncClient()
         primaryShareAsyncClient = primaryFileServiceAsyncClient.getShareAsyncClient(shareName)
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
@@ -495,7 +495,7 @@ class ShareAsyncAPITests extends APISpec {
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
             1, 1), ZoneOffset.UTC).toString()
         when:
-        def shareSnapshotClient = shareBuilderHelper(interceptorManager, shareName).snapshot(snapshot).buildAsyncClient()
+        def shareSnapshotClient = shareBuilderHelper(shareName).snapshot(snapshot).buildAsyncClient()
         then:
         snapshot == shareSnapshotClient.getSnapshotId()
     }

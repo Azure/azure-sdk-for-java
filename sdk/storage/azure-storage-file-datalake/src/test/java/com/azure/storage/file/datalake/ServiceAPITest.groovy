@@ -4,7 +4,6 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.http.rest.Response
-import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.file.datalake.models.FileSystemItem
@@ -171,7 +170,7 @@ class ServiceAPITest extends APISpec {
         setup:
         String endpoint = BlobUrlParts.parse(primaryDataLakeServiceClient.getAccountUrl()).setScheme("http").toUrl()
         def builder = new DataLakeServiceClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(getDefaultAzureCredential())
             .endpoint(endpoint)
 
         when:

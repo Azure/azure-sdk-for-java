@@ -8,8 +8,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.test.TestMode
-import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageMockHttpResponse
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.StorageTestBase
@@ -128,8 +126,6 @@ class APISpec extends StorageTestBase {
 
             fileSystemClient.delete()
         }
-
-        interceptorManager.close()
     }
 
     DataLakeServiceClient setClient(StorageSharedKeyCredential credential) {
@@ -146,12 +142,12 @@ class APISpec extends StorageTestBase {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD) {
+        if (isRecordMode()) {
             if (recordLiveMode) {
-                builder.addPolicy(interceptorManager.getRecordPolicy())
+                builder.addPolicy(getRecordPolicy())
             }
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
+            return builder.credential(getEnvironmentCredential()).buildClient()
         } else {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
             return builder.credential(primaryCredential).buildClient()
@@ -195,8 +191,8 @@ class APISpec extends StorageTestBase {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         if (credential != null) {
@@ -249,8 +245,8 @@ class APISpec extends StorageTestBase {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         return builder.credential(credential).buildFileClient()
@@ -263,8 +259,8 @@ class APISpec extends StorageTestBase {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         return builder.credential(credential).buildFileClient()
@@ -277,8 +273,8 @@ class APISpec extends StorageTestBase {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         return builder.sasToken(sasToken).buildFileClient()
@@ -290,8 +286,8 @@ class APISpec extends StorageTestBase {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         builder.sasToken(sasToken).buildClient()

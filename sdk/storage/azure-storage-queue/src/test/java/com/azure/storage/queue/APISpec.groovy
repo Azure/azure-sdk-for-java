@@ -4,8 +4,6 @@
 package com.azure.storage.queue
 
 
-import com.azure.core.test.InterceptorManager
-import com.azure.core.test.TestMode
 import com.azure.core.util.Configuration
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageTestBase
@@ -24,7 +22,7 @@ class APISpec extends StorageTestBase {
      * Setup the QueueServiceClient and QueueClient common used for the API tests.
      */
     def setup() {
-        connectionString = (testMode == TestMode.PLAYBACK)
+        connectionString = isPlaybackMode()
             ? "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
             : Configuration.getGlobalConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
     }
@@ -33,12 +31,6 @@ class APISpec extends StorageTestBase {
      * Clean up the test queues and messages for the account.
      */
     def cleanup() {
-        interceptorManager.close()
-
-        if (testMode == TestMode.PLAYBACK) {
-            return
-        }
-
         QueueServiceClient cleanupQueueServiceClient = new QueueServiceClientBuilder()
             .connectionString(connectionString)
             .buildClient()
@@ -48,33 +40,29 @@ class APISpec extends StorageTestBase {
         }
     }
 
-    def queueServiceBuilderHelper(final InterceptorManager interceptorManager) {
-        if (testMode == TestMode.RECORD) {
-            return new QueueServiceClientBuilder()
-                .connectionString(connectionString)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(getHttpClient())
-        } else {
-            return new QueueServiceClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(interceptorManager.getPlaybackClient())
+    def queueServiceBuilderHelper() {
+        def builder = new QueueServiceClientBuilder()
+            .connectionString(connectionString)
+            .httpClient(getHttpClient())
+
+        if (isRecordMode()) {
+            builder.addPolicy(getRecordPolicy())
         }
+
+        return builder
     }
 
-    def queueBuilderHelper(final InterceptorManager interceptorManager) {
-        def queueName = generateResourceName("queue", 16)
-        if (testMode == TestMode.RECORD) {
-            return new QueueClientBuilder()
-                .connectionString(connectionString)
-                .queueName(queueName)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(getHttpClient())
-        } else {
-            return new QueueClientBuilder()
-                .connectionString(connectionString)
-                .queueName(queueName)
-                .httpClient(interceptorManager.getPlaybackClient())
+    def queueBuilderHelper() {
+        def builder = new QueueClientBuilder()
+            .connectionString(connectionString)
+            .queueName(generateResourceName("queue", 16))
+            .httpClient(getHttpClient())
+
+        if (isRecordMode()) {
+            builder.addPolicy(getRecordPolicy())
         }
+
+        return builder
     }
 
     String generateRandomName(int length) {

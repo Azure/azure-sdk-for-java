@@ -4,7 +4,6 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
-import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
@@ -1378,7 +1377,7 @@ class ContainerAPITest extends APISpec {
         setup:
         String endpoint = BlobUrlParts.parse(cc.getBlobContainerUrl()).setScheme("http").toUrl()
         def builder = new BlobContainerClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(getDefaultAzureCredential())
             .endpoint(endpoint)
 
         when:

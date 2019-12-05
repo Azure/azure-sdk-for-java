@@ -35,7 +35,7 @@ class ProgressReporterTest extends APISpec {
         0 * mockReceiver.reportProgress({ it > 30 })
     }
 
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Report progress sequential network test"() {
         setup:
         ProgressReceiver mockReceiver = Mock(ProgressReceiver)

@@ -89,12 +89,12 @@ class LeaseAPITest extends APISpec {
             .getStatusCode() == 201
 
         where:
-        modified        | unmodified      | match                | noneMatch
-        null            | null            | null                 | null
-        APISpec.oldDate | null            | null                 | null
-        null            | APISpec.newDate | null                 | null
-        null            | null            | APISpec.receivedEtag | null
-        null            | null            | null                 | APISpec.garbageEtag
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -115,11 +115,11 @@ class LeaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified        | unmodified      | match               | noneMatch
-        APISpec.newDate | null            | null                | null
-        null            | APISpec.oldDate | null                | null
-        null            | null            | APISpec.garbageEtag | null
-        null            | null            | null                | APISpec.receivedEtag
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
     }
 
     def "Acquire file lease error"() {
@@ -136,10 +136,10 @@ class LeaseAPITest extends APISpec {
     def "Renew file lease"() {
         setup:
         def fc = createPathClient()
-        def leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        def leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
 
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRecord(16000)
+        sleepIfLive(16000)
         def renewLeaseResponse = createLeaseClient(fc, leaseID).renewLeaseWithResponse(null, null, null)
 
         expect:
@@ -151,7 +151,7 @@ class LeaseAPITest extends APISpec {
     def "Renew file lease min"() {
         setup:
         def fc = createPathClient()
-        def leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        def leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
 
         expect:
         createLeaseClient(fc, leaseID)
@@ -164,7 +164,7 @@ class LeaseAPITest extends APISpec {
         setup:
         def fc = createPathClient()
         match = setupPathMatchCondition(fc, match)
-        def leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        def leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
         def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
@@ -177,12 +177,12 @@ class LeaseAPITest extends APISpec {
             .getStatusCode() == 200
 
         where:
-        modified        | unmodified      | match                | noneMatch
-        null            | null            | null                 | null
-        APISpec.oldDate | null            | null                 | null
-        null            | APISpec.newDate | null                 | null
-        null            | null            | APISpec.receivedEtag | null
-        null            | null            | null                 | APISpec.garbageEtag
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -190,7 +190,7 @@ class LeaseAPITest extends APISpec {
         setup:
         def fc = createPathClient()
         noneMatch = setupPathMatchCondition(fc, noneMatch)
-        def leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        def leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
         def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
@@ -204,11 +204,11 @@ class LeaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified        | unmodified      | match               | noneMatch
-        APISpec.newDate | null            | null                | null
-        null            | APISpec.oldDate | null                | null
-        null            | null            | APISpec.garbageEtag | null
-        null            | null            | null                | APISpec.receivedEtag
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
     }
 
     def "Renew file lease error"() {
@@ -225,7 +225,7 @@ class LeaseAPITest extends APISpec {
     def "Release file lease"() {
         setup:
         def fc = createPathClient()
-        def leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        def leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
         def headers = createLeaseClient(fc, leaseID).releaseLeaseWithResponse(null, null, null).getHeaders()
 
         expect:
@@ -236,7 +236,7 @@ class LeaseAPITest extends APISpec {
     def "Release file lease min"() {
         setup:
         def fc = createPathClient()
-        def leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        def leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
 
         expect:
         createLeaseClient(fc, leaseID).releaseLeaseWithResponse(null, null, null).getStatusCode() == 200
@@ -247,7 +247,7 @@ class LeaseAPITest extends APISpec {
         setup:
         def fc = createPathClient()
         match = setupPathMatchCondition(fc, match)
-        def leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        def leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
         def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
@@ -258,12 +258,12 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc, leaseID).releaseLeaseWithResponse(mac, null, null).getStatusCode() == 200
 
         where:
-        modified        | unmodified      | match                | noneMatch
-        null            | null            | null                 | null
-        APISpec.oldDate | null            | null                 | null
-        null            | APISpec.newDate | null                 | null
-        null            | null            | APISpec.receivedEtag | null
-        null            | null            | null                 | APISpec.garbageEtag
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -271,7 +271,7 @@ class LeaseAPITest extends APISpec {
         setup:
         def fc = createPathClient()
         noneMatch = setupPathMatchCondition(fc, noneMatch)
-        def leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        def leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
         def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
@@ -285,11 +285,11 @@ class LeaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified        | unmodified      | match               | noneMatch
-        APISpec.newDate | null            | null                | null
-        null            | APISpec.oldDate | null                | null
-        null            | null            | APISpec.garbageEtag | null
-        null            | null            | null                | APISpec.receivedEtag
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
     }
 
     def "Release file lease error"() {
@@ -329,7 +329,7 @@ class LeaseAPITest extends APISpec {
     def "Break file lease min"() {
         setup:
         def fc = createPathClient()
-        setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        setupPathLeaseCondition(fc, receivedLeaseID)
 
         expect:
         createLeaseClient(fc).breakLeaseWithResponse(null, null, null, null).getStatusCode() == 202
@@ -340,7 +340,7 @@ class LeaseAPITest extends APISpec {
         setup:
         def fc = createPathClient()
         match = setupPathMatchCondition(fc, match)
-        setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        setupPathLeaseCondition(fc, receivedLeaseID)
         def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
@@ -351,12 +351,12 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc).breakLeaseWithResponse(null, mac, null, null).getStatusCode() == 202
 
         where:
-        modified        | unmodified      | match                | noneMatch
-        null            | null            | null                 | null
-        APISpec.oldDate | null            | null                 | null
-        null            | APISpec.newDate | null                 | null
-        null            | null            | APISpec.receivedEtag | null
-        null            | null            | null                 | APISpec.garbageEtag
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -364,7 +364,7 @@ class LeaseAPITest extends APISpec {
         setup:
         def fc = createPathClient()
         noneMatch = setupPathMatchCondition(fc, noneMatch)
-        setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        setupPathLeaseCondition(fc, receivedLeaseID)
         def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
@@ -378,11 +378,11 @@ class LeaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified        | unmodified      | match               | noneMatch
-        APISpec.newDate | null            | null                | null
-        null            | APISpec.oldDate | null                | null
-        null            | null            | APISpec.garbageEtag | null
-        null            | null            | null                | APISpec.receivedEtag
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
     }
 
     def "Break file lease error"() {
@@ -412,7 +412,7 @@ class LeaseAPITest extends APISpec {
     def "Change file lease min"() {
         setup:
         def fc = createPathClient()
-        def leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        def leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
 
         expect:
         createLeaseClient(fc, leaseID).changeLeaseWithResponse(getRandomUUID(), null, null, null).getStatusCode() == 200
@@ -423,7 +423,7 @@ class LeaseAPITest extends APISpec {
         setup:
         def fc = createPathClient()
         match = setupPathMatchCondition(fc, match)
-        String leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        String leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
         def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
@@ -434,12 +434,12 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null).getStatusCode() == 200
 
         where:
-        modified        | unmodified      | match                | noneMatch
-        null            | null            | null                 | null
-        APISpec.oldDate | null            | null                 | null
-        null            | APISpec.newDate | null                 | null
-        null            | null            | APISpec.receivedEtag | null
-        null            | null            | null                 | APISpec.garbageEtag
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -447,7 +447,7 @@ class LeaseAPITest extends APISpec {
         setup:
         def fc = createPathClient()
         noneMatch = setupPathMatchCondition(fc, noneMatch)
-        String leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        String leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
         def mac = new RequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
@@ -461,11 +461,11 @@ class LeaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified        | unmodified      | match               | noneMatch
-        APISpec.newDate | null            | null                | null
-        null            | APISpec.oldDate | null                | null
-        null            | null            | APISpec.garbageEtag | null
-        null            | null            | null                | APISpec.receivedEtag
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
     }
 
     def "Change file lease error"() {
@@ -537,12 +537,12 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc).acquireLeaseWithResponse(-1, mac, null, null).getStatusCode() == 201
 
         where:
-        modified        | unmodified      | match                | noneMatch
-        null            | null            | null                 | null
-        APISpec.oldDate | null            | null                 | null
-        null            | APISpec.newDate | null                 | null
-        null            | null            | APISpec.receivedEtag | null
-        null            | null            | null                 | APISpec.garbageEtag
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -557,9 +557,9 @@ class LeaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified        | unmodified
-        APISpec.newDate | null
-        null            | APISpec.oldDate
+        modified | unmodified
+        newDate  | null
+        null     | oldDate
     }
 
     def "Acquire file system lease error"() {
@@ -575,10 +575,10 @@ class LeaseAPITest extends APISpec {
 
     def "Renew file system lease"() {
         setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
 
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRecord(16000)
+        sleepIfLive(16000)
         def renewLeaseResponse = createLeaseClient(fsc, leaseID).renewLeaseWithResponse(null, null, null)
 
         expect:
@@ -588,7 +588,7 @@ class LeaseAPITest extends APISpec {
 
     def "Renew file system lease min"() {
         setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
 
         expect:
         createLeaseClient(fsc, leaseID).renewLeaseWithResponse(null, null, null).getStatusCode() == 200
@@ -597,23 +597,23 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Renew file system lease AC"() {
         setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
         def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         createLeaseClient(fsc, leaseID).renewLeaseWithResponse(mac, null, null).getStatusCode() == 200
 
         where:
-        modified        | unmodified
-        null            | null
-        APISpec.oldDate | null
-        null            | APISpec.newDate
+        modified | unmodified
+        null     | null
+        oldDate  | null
+        null     | newDate
     }
 
     @Unroll
     def "Renew file system lease AC fail"() {
         setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
         def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
@@ -623,9 +623,9 @@ class LeaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified        | unmodified
-        APISpec.newDate | null
-        null            | APISpec.oldDate
+        modified | unmodified
+        newDate  | null
+        null     | oldDate
     }
 
     @Unroll
@@ -634,15 +634,15 @@ class LeaseAPITest extends APISpec {
         def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
-        createLeaseClient(fsc, APISpec.receivedEtag).renewLeaseWithResponse(mac, null, null)
+        createLeaseClient(fsc, receivedEtag).renewLeaseWithResponse(mac, null, null)
 
         then:
         thrown(BlobStorageException)
 
         where:
-        match                | noneMatch
-        APISpec.receivedEtag | null
-        null                 | APISpec.garbageEtag
+        match        | noneMatch
+        receivedEtag | null
+        null         | garbageEtag
     }
 
     def "Renew file system lease error"() {
@@ -658,7 +658,7 @@ class LeaseAPITest extends APISpec {
 
     def "Release file system lease"() {
         setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
 
         def releaseLeaseResponse = createLeaseClient(fsc, leaseID).releaseLeaseWithResponse(null, null, null)
 
@@ -669,7 +669,7 @@ class LeaseAPITest extends APISpec {
 
     def "Release file system lease min"() {
         setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
 
         expect:
         createLeaseClient(fsc, leaseID).releaseLeaseWithResponse(null, null, null).getStatusCode() == 200
@@ -678,23 +678,23 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Release file system lease AC"() {
         setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
         def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         createLeaseClient(fsc, leaseID).releaseLeaseWithResponse(mac, null, null).getStatusCode() == 200
 
         where:
-        modified        | unmodified
-        null            | null
-        APISpec.oldDate | null
-        null            | APISpec.newDate
+        modified | unmodified
+        null     | null
+        oldDate  | null
+        null     | newDate
     }
 
     @Unroll
     def "Release file system lease AC fail"() {
         setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
         def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
@@ -704,9 +704,9 @@ class LeaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified        | unmodified
-        APISpec.newDate | null
-        null            | APISpec.oldDate
+        modified | unmodified
+        newDate  | null
+        null     | oldDate
     }
 
     @Unroll
@@ -715,15 +715,15 @@ class LeaseAPITest extends APISpec {
         def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
-        createLeaseClient(fsc, APISpec.receivedLeaseID).releaseLeaseWithResponse(mac, null, null)
+        createLeaseClient(fsc, receivedLeaseID).releaseLeaseWithResponse(mac, null, null)
 
         then:
         thrown(BlobStorageException)
 
         where:
-        match                | noneMatch
-        APISpec.receivedEtag | null
-        null                 | APISpec.garbageEtag
+        match        | noneMatch
+        receivedEtag | null
+        null         | garbageEtag
     }
 
     def "Release file system lease error"() {
@@ -752,7 +752,7 @@ class LeaseAPITest extends APISpec {
         validateBasicHeaders(breakLeaseResponse.getHeaders())
         if (breakPeriod != null) {
             // If running in live mode wait for the lease to break so we can delete the file system after the test completes
-            sleepIfRecord(breakPeriod * 1000)
+            sleepIfLive(breakPeriod * 1000)
         }
 
         where:
@@ -765,7 +765,7 @@ class LeaseAPITest extends APISpec {
 
     def "Break file system lease min"() {
         setup:
-        setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        setupFileSystemLeaseCondition(fsc, receivedLeaseID)
 
         expect:
         createLeaseClient(fsc).breakLeaseWithResponse(null, null, null, null).getStatusCode() == 202
@@ -774,23 +774,23 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Break file system lease AC"() {
         setup:
-        setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        setupFileSystemLeaseCondition(fsc, receivedLeaseID)
         def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         createLeaseClient(fsc).breakLeaseWithResponse(null, mac, null, null).getStatusCode() == 202
 
         where:
-        modified        | unmodified
-        null            | null
-        APISpec.oldDate | null
-        null            | APISpec.newDate
+        modified | unmodified
+        null     | null
+        oldDate  | null
+        null     | newDate
     }
 
     @Unroll
     def "Break file system lease AC fail"() {
         setup:
-        setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        setupFileSystemLeaseCondition(fsc, receivedLeaseID)
         def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
@@ -800,9 +800,9 @@ class LeaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified        | unmodified
-        APISpec.newDate | null
-        null            | APISpec.oldDate
+        modified | unmodified
+        newDate  | null
+        null     | oldDate
     }
 
     @Unroll
@@ -817,9 +817,9 @@ class LeaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        match                | noneMatch
-        APISpec.receivedEtag | null
-        null                 | APISpec.garbageEtag
+        match        | noneMatch
+        receivedEtag | null
+        null         | garbageEtag
     }
 
     def "Break file system lease error"() {
@@ -835,7 +835,7 @@ class LeaseAPITest extends APISpec {
 
     def "Change file system lease"() {
         setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
         def leaseClient = createLeaseClient(fsc, leaseID)
         def changeLeaseResponse = leaseClient.changeLeaseWithResponse(getRandomUUID(), null, null, null)
         leaseID = changeLeaseResponse.getValue()
@@ -847,7 +847,7 @@ class LeaseAPITest extends APISpec {
 
     def "Change file system lease min"() {
         setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
 
         expect:
         createLeaseClient(fsc, leaseID).changeLeaseWithResponse(getRandomUUID(), null, null, null).getStatusCode() == 200
@@ -856,23 +856,23 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Change file system lease AC"() {
         setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
         def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         createLeaseClient(fsc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null).getStatusCode() == 200
 
         where:
-        modified        | unmodified
-        null            | null
-        APISpec.oldDate | null
-        null            | APISpec.newDate
+        modified | unmodified
+        null     | null
+        oldDate  | null
+        null     | newDate
     }
 
     @Unroll
     def "Change file system lease AC fail"() {
         setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseID = setupFileSystemLeaseCondition(fsc, receivedLeaseID)
         def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
@@ -882,9 +882,9 @@ class LeaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified        | unmodified
-        APISpec.newDate | null
-        null            | APISpec.oldDate
+        modified | unmodified
+        newDate  | null
+        null     | oldDate
     }
 
     @Unroll
@@ -893,15 +893,15 @@ class LeaseAPITest extends APISpec {
         def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
-        createLeaseClient(fsc, APISpec.receivedLeaseID).changeLeaseWithResponse(APISpec.garbageLeaseID, mac, null, null)
+        createLeaseClient(fsc, receivedLeaseID).changeLeaseWithResponse(garbageLeaseID, mac, null, null)
 
         then:
         thrown(BlobStorageException)
 
         where:
-        match                | noneMatch
-        APISpec.receivedEtag | null
-        null                 | APISpec.garbageEtag
+        match        | noneMatch
+        receivedEtag | null
+        null         | garbageEtag
     }
 
     def "Change file system lease error"() {

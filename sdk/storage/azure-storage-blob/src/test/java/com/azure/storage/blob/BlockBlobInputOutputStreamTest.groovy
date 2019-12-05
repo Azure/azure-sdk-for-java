@@ -13,7 +13,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @Requires({ isLiveMode() })
+    @Requires({ testsRunningAgainstService() })
     def "Upload download"() {
         when:
         int length = 6 * Constants.MB

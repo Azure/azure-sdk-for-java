@@ -1,20 +1,25 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.util.Context
-import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.Utility
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
-import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions
+import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
+import com.azure.storage.file.datalake.models.LeaseStateType
+import com.azure.storage.file.datalake.models.LeaseStatusType
+import com.azure.storage.file.datalake.models.ListPathsOptions
+import com.azure.storage.file.datalake.models.PathHttpHeaders
+import com.azure.storage.file.datalake.models.PathItem
+import com.azure.storage.file.datalake.models.PublicAccessType
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
-import java.time.temporal.Temporal
-import java.time.temporal.TemporalUnit
 
 class FileSystemAPITest extends APISpec {
 
@@ -1138,7 +1143,7 @@ class FileSystemAPITest extends APISpec {
         setup:
         String endpoint = BlobUrlParts.parse(fsc.getFileSystemUrl()).setScheme("http").toUrl()
         def builder = new DataLakeFileSystemClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(getDefaultAzureCredential())
             .endpoint(endpoint)
 
         when:

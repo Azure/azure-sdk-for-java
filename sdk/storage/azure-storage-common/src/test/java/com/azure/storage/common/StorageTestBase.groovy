@@ -1,14 +1,18 @@
 package com.azure.storage.common
 
+import com.azure.core.credential.TokenCredential
 import com.azure.core.http.HttpClient
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
+import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.identity.EnvironmentCredentialBuilder
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -42,6 +46,10 @@ class StorageTestBase extends Specification {
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
     }
 
+    def cleanup() {
+        interceptorManager.close()
+    }
+
     private static TestMode setupTestMode() {
         String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
 
@@ -56,8 +64,24 @@ class StorageTestBase extends Specification {
         return TestMode.PLAYBACK
     }
 
-    protected static boolean isLiveMode() {
+    protected static boolean isRecordMode() {
+        return testMode == TestMode.RECORD
+    }
+
+    protected static boolean isPlaybackMode() {
+        return testMode == TestMode.PLAYBACK
+    }
+
+    protected static boolean testsRunningAgainstService() {
         return testMode != TestMode.PLAYBACK
+    }
+
+    protected static TokenCredential getEnvironmentCredential() {
+        return new EnvironmentCredentialBuilder().build()
+    }
+
+    protected static TokenCredential getDefaultAzureCredential() {
+        return new DefaultAzureCredentialBuilder().build()
     }
 
     protected StorageSharedKeyCredential getCredential(String accountType) {
@@ -96,6 +120,10 @@ class StorageTestBase extends Specification {
 
             return builder.build()
         }
+    }
+
+    protected HttpPipelinePolicy getRecordPolicy() {
+        return interceptorManager.getRecordPolicy()
     }
 
     protected String generateResourceName(String prefix, int maxLength) {

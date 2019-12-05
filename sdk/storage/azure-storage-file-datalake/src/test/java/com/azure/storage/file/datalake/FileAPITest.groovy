@@ -2,13 +2,21 @@ package com.azure.storage.file.datalake
 
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
-import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
-import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.models.AccessTier
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions
+import com.azure.storage.file.datalake.models.DownloadRetryOptions
+import com.azure.storage.file.datalake.models.FileRange
+import com.azure.storage.file.datalake.models.LeaseStateType
+import com.azure.storage.file.datalake.models.LeaseStatusType
+import com.azure.storage.file.datalake.models.PathAccessControl
+import com.azure.storage.file.datalake.models.PathAccessControlEntry
+import com.azure.storage.file.datalake.models.PathHttpHeaders
+import com.azure.storage.file.datalake.models.PathPermissions
+import com.azure.storage.file.datalake.models.RolePermissions
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -1410,7 +1418,7 @@ class FileAPITest extends APISpec {
         setup:
         String endpoint = BlobUrlParts.parse(fc.getFileUrl()).setScheme("http").toUrl()
         def builder = new DataLakePathClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(getDefaultAzureCredential())
             .endpoint(endpoint)
 
         when:

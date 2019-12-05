@@ -6,7 +6,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.test.TestMode
 import com.azure.core.util.Configuration
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
@@ -87,10 +86,6 @@ class APISpec extends StorageTestBase {
         connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
     }
 
-    def cleanup() {
-        interceptorManager.close()
-    }
-
     EncryptedBlobClientBuilder getEncryptedClientBuilder(AsyncKeyEncryptionKey key,
         AsyncKeyEncryptionKeyResolver keyResolver, StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
@@ -105,8 +100,8 @@ class APISpec extends StorageTestBase {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         if (credential != null) {
@@ -127,8 +122,8 @@ class APISpec extends StorageTestBase {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (isRecordMode() && recordLiveMode) {
+            builder.addPolicy(getRecordPolicy())
         }
 
         if (credential != null) {

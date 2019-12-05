@@ -25,7 +25,7 @@ class ShareAPITests extends APISpec {
 
     def setup() {
         shareName = generateRandomName()
-        primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
+        primaryFileServiceClient = fileServiceBuilderHelper().buildClient()
         primaryShareClient = primaryFileServiceClient.getShareClient(shareName)
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
@@ -51,7 +51,7 @@ class ShareAPITests extends APISpec {
         when:
         ShareSnapshotInfo shareSnapshotInfo = primaryShareClient.createSnapshot()
         expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
-        ShareClient newShareClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
+        ShareClient newShareClient = shareBuilderHelper(shareName).snapshot(shareSnapshotInfo.getSnapshot())
                 .buildClient()
         def shareURL = newShareClient.getShareUrl()
 
@@ -477,7 +477,7 @@ class ShareAPITests extends APISpec {
             1, 1), ZoneOffset.UTC).toString()
 
         when:
-        def shareSnapshotClient = shareBuilderHelper(interceptorManager, shareName).snapshot(snapshot).buildClient()
+        def shareSnapshotClient = shareBuilderHelper(shareName).snapshot(snapshot).buildClient()
 
         then:
         snapshot == shareSnapshotClient.getSnapshotId()
