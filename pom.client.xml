@@ -1116,6 +1116,20 @@
         </plugins>
       </build>
     </profile>
+
+
+    <profile>
+      <id>partition-artifacts</id>
+      <activation>
+        <property>
+          <name>partition-artifacts</name>
+        </property>
+      </activation>
+      <properties>
+        <packageOutputDirectory>${artifact.staging.directory}/${project.artifactId}</packageOutputDirectory>
+      </properties>
+    </profile>
+
   </profiles>
 
   <modules>
