@@ -10,15 +10,16 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.http.HttpRequest;
-import static com.azure.core.util.Context.AZURE_REQUEST_HTTP_HEADERS_KEY;
 import reactor.core.publisher.Mono;
+
+import static com.azure.core.util.Context.AZURE_REQUEST_HTTP_HEADERS_KEY;
 
 import java.util.Objects;
 import java.util.Optional;
 
 /**
  * The pipeline policy that override or add  {@link HttpHeaders} in {@link HttpRequest} by reading values from
- * {@link Context} with key 'azure-request-override-http-headers-key'. The value for this key should be of type
+ * {@link Context} with key 'azure-http-headers-key'. The value for this key should be of type
  * {@link HttpHeaders} for it to be added in {@link HttpRequest}.
  */
 public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
