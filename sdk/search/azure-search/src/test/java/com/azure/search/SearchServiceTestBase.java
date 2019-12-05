@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.serializer.jsonwrapper.JsonWrapper;
 import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
@@ -139,19 +140,41 @@ public abstract class SearchServiceTestBase extends TestBase {
     }
 
     protected SearchServiceClientBuilder getSearchServiceClientBuilder() {
+        return getSearchServiceClientBuilderWithHttpPipelinePolicies(Collections.EMPTY_LIST);
+    }
+
+    /**
+     * Provides a way to inject custom HTTP pipeline policies before the client is instantiated
+     *
+     * @param policies the additional HTTP pipeline policies
+     * @return {@link SearchServiceClientBuilder}
+     */
+    protected SearchServiceClientBuilder getSearchServiceClientBuilderWithHttpPipelinePolicies(
+            List<HttpPipelinePolicy> policies) {
+        SearchServiceClientBuilder builder = new SearchServiceClientBuilder()
+            .endpoint(endpoint);
+
         if (!interceptorManager.isPlaybackMode()) {
-            return new SearchServiceClientBuilder()
-                .endpoint(endpoint)
-                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+            addPolicies(builder, policies);
+            builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                 .credential(apiKeyCredentials)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
                 .addPolicy(new HttpLoggingPolicy(
                     new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
+            return builder;
         } else {
-            return new SearchServiceClientBuilder()
-                .endpoint(endpoint)
-                .httpClient(interceptorManager.getPlaybackClient());
+            builder.httpClient(interceptorManager.getPlaybackClient());
+            addPolicies(builder, policies);
+        }
+        return builder;
+    }
+
+    private void addPolicies(SearchServiceClientBuilder builder, List<HttpPipelinePolicy> policies) {
+        if (policies != null && policies.size() > 0) {
+            for (HttpPipelinePolicy policy : policies) {
+                builder.addPolicy(policy);
+            }
         }
     }
 

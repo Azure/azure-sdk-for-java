@@ -2,22 +2,30 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.search.models.IndexingSchedule;
+import com.azure.search.models.Index;
+import com.azure.search.models.Indexer;
+import com.azure.search.models.InputFieldMappingEntry;
+import com.azure.search.models.OutputFieldMappingEntry;
+import com.azure.search.models.Skill;
+import com.azure.search.models.IndexingParameters;
+import com.azure.search.models.OcrSkill;
+import com.azure.search.models.Skillset;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.FieldMapping;
-import com.azure.search.models.Index;
-import com.azure.search.models.Indexer;
-import com.azure.search.models.IndexingParameters;
-import com.azure.search.models.IndexingSchedule;
-import com.azure.search.models.InputFieldMappingEntry;
-import com.azure.search.models.OcrSkill;
-import com.azure.search.models.OutputFieldMappingEntry;
-import com.azure.search.models.Skill;
-import com.azure.search.models.Skillset;
+import com.azure.search.models.IndexerExecutionResult;
+import com.azure.search.models.IndexerExecutionInfo;
+import com.azure.search.models.IndexerLimits;
+import com.azure.search.models.IndexerExecutionStatus;
+import com.azure.search.test.CustomQueryPipelinePolicy;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,6 +36,8 @@ import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAU
 
 public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     static final String TARGET_INDEX_NAME = "indexforindexers";
+    static final HttpPipelinePolicy MOCK_STATUS_PIPELINE_POLICY = new CustomQueryPipelinePolicy("mock_status",
+        "inProgress");
 
     @Test
     public abstract void createIndexerReturnsCorrectDefinition();
@@ -127,6 +137,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract  void canRunIndexerWithResponse();
+
+    @Test
+    public abstract void canRunIndexerAndGetIndexerStatus();
 
     /**
      * Create a new valid skillset object
@@ -340,4 +353,69 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
         Assert.assertNull(indexer.getTargetIndexName());
     }
 
+    void assertStartAndEndTimeValid(IndexerExecutionResult result) {
+        Assert.assertNotNull(result.getStartTime());
+        Assert.assertNotEquals(OffsetDateTime.now(), result.getStartTime());
+        Assert.assertNotNull(result.getEndTime());
+        Assert.assertNotEquals(OffsetDateTime.now(), result.getEndTime());
+    }
+
+    void assertValidIndexerExecutionInfo(IndexerExecutionInfo indexerExecutionInfo) {
+        Assert.assertEquals(IndexerExecutionStatus.IN_PROGRESS, indexerExecutionInfo.getLastResult().getStatus());
+        Assert.assertEquals(3, indexerExecutionInfo.getExecutionHistory().size());
+
+        IndexerLimits limits = indexerExecutionInfo.getLimits();
+        Assert.assertNotNull(limits);
+        Assert.assertEquals(100000, limits.getMaxDocumentContentCharactersToExtract(), 0);
+        Assert.assertEquals(1000, limits.getMaxDocumentExtractionSize(), 0);
+
+        IndexerExecutionResult newestResult = indexerExecutionInfo.getExecutionHistory().get(0);
+        IndexerExecutionResult middleResult = indexerExecutionInfo.getExecutionHistory().get(1);
+        IndexerExecutionResult oldestResult = indexerExecutionInfo.getExecutionHistory().get(2);
+
+        Assert.assertEquals(IndexerExecutionStatus.TRANSIENT_FAILURE, newestResult.getStatus());
+        Assert.assertEquals("The indexer could not connect to the data source",
+            newestResult.getErrorMessage());
+        assertStartAndEndTimeValid(newestResult);
+
+        Assert.assertEquals(IndexerExecutionStatus.RESET, middleResult.getStatus());
+        assertStartAndEndTimeValid(middleResult);
+
+        Assert.assertEquals(IndexerExecutionStatus.SUCCESS, oldestResult.getStatus());
+        Assert.assertEquals(124876, oldestResult.getItemCount());
+        Assert.assertEquals(2, oldestResult.getFailedItemCount());
+        Assert.assertEquals("100", oldestResult.getInitialTrackingState());
+        Assert.assertEquals("200", oldestResult.getFinalTrackingState());
+        assertStartAndEndTimeValid(oldestResult);
+
+        Assert.assertEquals(2, oldestResult.getErrors().size());
+        Assert.assertEquals("1", oldestResult.getErrors().get(0).getKey());
+        Assert.assertEquals("Key field contains unsafe characters",
+            oldestResult.getErrors().get(0).getErrorMessage());
+        Assert.assertEquals("DocumentExtraction.AzureBlob.MyDataSource",
+            oldestResult.getErrors().get(0).getName());
+        Assert.assertEquals("The file could not be parsed.", oldestResult.getErrors().get(0).getDetails());
+        Assert.assertEquals("https://go.microsoft.com/fwlink/?linkid=2049388",
+            oldestResult.getErrors().get(0).getDocumentationLink());
+
+        Assert.assertEquals("121713", oldestResult.getErrors().get(1).getKey());
+        Assert.assertEquals("Item is too large", oldestResult.getErrors().get(1).getErrorMessage());
+        Assert.assertEquals("DocumentExtraction.AzureBlob.DataReader",
+            oldestResult.getErrors().get(1).getName());
+        Assert.assertEquals("Blob size cannot exceed 256 MB.", oldestResult.getErrors().get(1).getDetails());
+        Assert.assertEquals("https://go.microsoft.com/fwlink/?linkid=2049388",
+            oldestResult.getErrors().get(1).getDocumentationLink());
+
+
+        Assert.assertEquals(1, oldestResult.getWarnings().size());
+        Assert.assertEquals("2", oldestResult.getWarnings().get(0).getKey());
+        Assert.assertEquals("Document was truncated to 50000 characters.",
+            oldestResult.getWarnings().get(0).getMessage());
+        Assert.assertEquals("Enrichment.LanguageDetectionSkill.#4",
+            oldestResult.getWarnings().get(0).getName());
+        Assert.assertEquals("Try to split the input into smaller chunks using Split skill.",
+            oldestResult.getWarnings().get(0).getDetails());
+        Assert.assertEquals("https://go.microsoft.com/fwlink/?linkid=2099692",
+            oldestResult.getWarnings().get(0).getDocumentationLink());
+    }
 }

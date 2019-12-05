@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -271,6 +272,34 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         assert response != null;
         Assert.assertEquals(HttpStatus.SC_ACCEPTED, response.getStatusCode());
         Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
+    }
+
+    @Override
+    public void canRunIndexerAndGetIndexerStatus() {
+        // When an indexer is created, the execution info may not be available immediately. Hence, a
+        // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
+        // returning a well-known mock response
+        client = getSearchServiceClientBuilderWithHttpPipelinePolicies(
+            Collections.singletonList(MOCK_STATUS_PIPELINE_POLICY))
+            .buildAsyncClient();
+
+        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+
+        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
+            .setDataSourceName(SQL_DATASOURCE_NAME);
+
+        client.createIndexer(indexer).block();
+
+        IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName()).block();
+        Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
+
+        client.runIndexerWithResponse(indexer.getName(), new RequestOptions())
+            .subscribe(indexerRunResponse ->
+                Assert.assertEquals(HttpResponseStatus.ACCEPTED.code(), indexerRunResponse.getStatusCode()));
+
+        indexerExecutionInfo = client.getIndexerStatus(indexer.getName()).block();
+
+        assertValidIndexerExecutionInfo(indexerExecutionInfo);
     }
 
     @Override

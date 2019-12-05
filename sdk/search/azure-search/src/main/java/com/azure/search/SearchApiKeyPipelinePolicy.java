@@ -16,7 +16,7 @@ public class SearchApiKeyPipelinePolicy implements HttpPipelinePolicy {
     private final ApiKeyCredentials apiKey;
 
     /**
-     * Constrcutor
+     * Constructor
      *
      * @param apiKey Azure Cognitive Search service api admin or query key
      * @throws IllegalArgumentException when the api key is an empty string
