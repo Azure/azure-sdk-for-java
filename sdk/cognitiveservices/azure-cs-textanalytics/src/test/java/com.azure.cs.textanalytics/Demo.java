@@ -32,7 +32,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+// TODO: delete this test before merge to master
 public class Demo {
     private final ClientLogger logger = new ClientLogger(Demo.class);
 

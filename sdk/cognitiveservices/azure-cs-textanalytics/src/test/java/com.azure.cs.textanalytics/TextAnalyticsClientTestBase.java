@@ -29,6 +29,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -104,6 +105,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void detectLanguageRunner(BiConsumer<List<DetectLanguageInput>, TextAnalyticsRequestOptions> testRunner) {
 
+        final List<DetectLanguageInput> detectLanguageInputs = Arrays.asList(
+            new DetectLanguageInput("1", "This is written in English","US"),
+            new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
+        );
+
+        testRunner.accept(detectLanguageInputs, getTextAnalyticsRequestOptions());
     }
 
 
@@ -113,5 +120,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
     }
 
+    TextAnalyticsRequestOptions getTextAnalyticsRequestOptions() {
+        return new TextAnalyticsRequestOptions().setShowStatistics(true);
+    }
 
 }
