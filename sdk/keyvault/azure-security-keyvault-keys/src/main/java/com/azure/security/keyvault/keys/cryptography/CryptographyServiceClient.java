@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
@@ -15,13 +16,22 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Objects;
 
 class CryptographyServiceClient {
@@ -55,6 +65,54 @@ class CryptographyServiceClient {
             .doOnRequest(ignored -> logger.info("Retrieving key - {}", name))
             .doOnSuccess(response -> logger.info("Retrieved key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
+    }
+
+    Mono<Response<JsonWebKey>> getSecretKey(Context context) {
+        return service.getSecret(vaultUrl, keyName, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+           .doOnRequest(ignored -> logger.info("Retrieving key - {}", keyName))
+           .doOnSuccess(response -> logger.info("Retrieved key - {}", response.getValue().getName()))
+           .doOnError(error -> logger.warning("Failed to get key - {}", keyName, error))
+           .flatMap((stringResponse -> {
+               KeyVaultKey key = null;
+               try {
+                   return Mono.just(new SimpleResponse<>(stringResponse.getRequest(),
+                       stringResponse.getStatusCode(),
+                       stringResponse.getHeaders(), transformSecretKey(stringResponse.getValue())));
+               } catch (JsonProcessingException e) {
+                   return Mono.error(e);
+               }
+           }));
+    }
+
+    Mono<Response<SecretKey>> setSecretKey(SecretKey secret, Context context) {
+        Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
+        SecretRequestParameters parameters = new SecretRequestParameters()
+                                                 .setValue(secret.getValue())
+                                                 .setTags(secret.getProperties().getTags())
+                                                 .setContentType(secret.getProperties().getContentType())
+                                                 .setSecretAttributes(new SecretRequestAttributes(secret.getProperties()));
+
+        return service.setSecret(vaultUrl, secret.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+            CONTENT_TYPE_HEADER_VALUE, context)
+                   .doOnRequest(ignored -> logger.info("Setting secret - {}", secret.getName()))
+                   .doOnSuccess(response -> logger.info("Set secret - {}", response.getValue().getName()))
+                   .doOnError(error -> logger.warning("Failed to set secret - {}", secret.getName(), error));
+    }
+
+    JsonWebKey transformSecretKey(SecretKey secretKey) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.createObjectNode();
+        ArrayNode a = mapper.createArrayNode();
+        a.add(KeyOperation.WRAP_KEY.toString());
+        a.add(KeyOperation.UNWRAP_KEY.toString());
+
+        ((ObjectNode) rootNode).put("k", Base64.getDecoder().decode(secretKey.getValue()));
+        ((ObjectNode) rootNode).put("kid", this.keyId);
+        ((ObjectNode) rootNode).put("kty", KeyType.OCT.toString());
+        ((ObjectNode) rootNode).put("key_ops", a);
+
+        String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
+        return mapper.readValue(jsonString, JsonWebKey.class);
     }
 
     Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
