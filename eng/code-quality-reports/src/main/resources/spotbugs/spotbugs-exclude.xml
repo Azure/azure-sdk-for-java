@@ -532,6 +532,10 @@
         <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
         <Method name="clone"/>
       </And>
+      <And>
+          <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
+          <Method name="decode"/>
+      </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
