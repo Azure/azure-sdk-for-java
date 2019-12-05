@@ -256,17 +256,17 @@ public final class RntbdTransportClient extends TransportClient {
             return this.shutdownTimeout;
         }
 
-        @Override
-        public String toString() {
-            return RntbdObjectMapper.toJson(this);
+        public UserAgentContainer userAgent() {
+            return this.userAgent;
         }
 
         // endregion
 
         // region Methods
 
-        public UserAgentContainer userAgent() {
-            return this.userAgent;
+        @Override
+        public String toString() {
+            return RntbdObjectMapper.toJson(this);
         }
 
         // endregion
