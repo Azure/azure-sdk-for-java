@@ -159,64 +159,64 @@
         }
     ],
     "outputs": {
-        "PRIMARY_STORAGE_ACCOUNT_NAME": {
+        "job-primary-storage-account-name": {
             "type": "string",
             "value": "[variables('primaryAccountName')]"
         },
-        "PRIMARY_STORAGE_ACCOUNT_KEY": {
+        "job-primary-storage-account-key": {
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
-        "SECONDARY_STORAGE_ACCOUNT_NAME": {
+        "job-secondary-storage-account-name": {
             "type": "string",
             "value": "[variables('secondaryAccountName')]"
         },
-        "SECONDARY_STORAGE_ACCOUNT_KEY": {
+        "job-secondary-storage-account-key": {
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
-        "BLOB_STORAGE_ACCOUNT_NAME": {
+        "job-blob-storage-account-name": {
             "type": "string",
             "value": "[variables('secondaryAccountName')]"
         },
-        "BLOB_STORAGE_ACCOUNT_KEY": {
+        "job-blob-storage-account-key": {
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
-        "PREMIUM_STORAGE_ACCOUNT_NAME": {
+        "job-premium-storage-account-name": {
             "type": "string",
             "value": "[variables('premiumAccountName')]"
         },
-        "PREMIUM_STORAGE_ACCOUNT_KEY": {
+        "job-premium-storage-account-key": {
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
-        "AZURE_STORAGE_FILE_ENDPOINT": {
+        "job-azure-storage-file-endpoint": {
             "type": "string",
             "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.file]"
         },
-        "AZURE_STORAGE_QUEUE_ENDPOINT": {
+        "job-azure-storage-queue-endpoint": {
             "type": "string",
             "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.queue]"
         },
-        "STORAGE_DATA_LAKE_ACCOUNT_NAME": {
+        "job-storage-data-lake-account-name": {
             "type": "string",
             "value": "[variables('dataLakeAccountName')]"
         },
-        "STORAGE_DATA_LAKE_ACCOUNT_KEY": {
+        "job-storage-data-lake-account-key": {
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
 
-        "AZURE_STORAGE_BLOB_CONNECTION_STRING": {
+        "job-azure-storage-blob-connection-string": {
             "type": "string",
             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpoint_suffix'))]"
         },
-        "AZURE_STORAGE_FILE_CONNECTION_STRING": {
+        "job-azure-storage-file-connection-string": {
             "type": "string",
             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpoint_suffix'))]"
         },
-        "AZURE_STORAGE_QUEUE_CONNECTION_STRING": {
+        "job-azure-storage-queue-connection-string": {
             "type": "string",
             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpoint_suffix'))]"
         }
