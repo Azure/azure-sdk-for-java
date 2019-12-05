@@ -14,6 +14,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
+import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
@@ -206,8 +207,40 @@ public class ShareFileClient {
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
     public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
-                                                         Duration pollInterval) {
-        return shareFileAsyncClient.beginCopy(sourceUrl, metadata, pollInterval)
+        Duration pollInterval) {
+        return this.beginCopy(sourceUrl, null, null, null, null, null, metadata, pollInterval);
+    }
+
+    /**
+     * Copies a blob or file to a destination file within the storage account.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
+     *
+     * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file.
+     * @param filePermissionCopyMode Mode of file permission acquisition.
+     * @param ignoreReadOnly Whether or not to copy despite target being read only. (default is false)
+     * @param setArchiveAttribute Whether or not the archive attribute is to be set on the target. (default is true)
+     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
+     * naming rules.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
+     * @return A {@link SyncPoller} to poll the progress of copy operation.
+     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
+     */
+    public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, FileSmbProperties smbProperties,
+        String filePermission, PermissionCopyModeType filePermissionCopyMode, Boolean ignoreReadOnly,
+        Boolean setArchiveAttribute, Map<String, String> metadata, Duration pollInterval) {
+        return shareFileAsyncClient.beginCopy(sourceUrl, smbProperties, filePermission, filePermissionCopyMode,
+            ignoreReadOnly, setArchiveAttribute, metadata, pollInterval)
                 .getSyncPoller();
     }
 

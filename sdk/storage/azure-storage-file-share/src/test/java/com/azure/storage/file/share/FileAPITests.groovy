@@ -10,6 +10,7 @@ import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
@@ -417,6 +418,59 @@ class FileAPITests extends APISpec {
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL,
                 null,
                 null)
+
+        def pollResponse = poller.poll()
+
+        then:
+        assert pollResponse.getValue().getCopyId() != null
+    }
+
+    def "Start copy with args fpk"() {
+        given:
+        primaryFileClient.create(1024)
+        def sourceURL = primaryFileClient.getFileUrl()
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        // We recreate file properties for each test since we need to store the times for the test with getUTCNow()
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .setFilePermissionKey(filePermissionKey)
+
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, smbProperties, null,
+            PermissionCopyModeType.OVERRIDE, null, null, null, null)
+
+        def pollResponse = poller.poll()
+
+        then:
+        assert pollResponse.getValue().getCopyId() != null
+    }
+
+    def "Start copy with args fp"() {
+        given:
+        primaryFileClient.create(1024)
+        def sourceURL = primaryFileClient.getFileUrl()
+
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, smbProperties, filePermission,
+            PermissionCopyModeType.OVERRIDE, null, null, null, null)
+
+        def pollResponse = poller.poll()
+
+        then:
+        assert pollResponse.getValue().getCopyId() != null
+    }
+
+    def "Start copy with args source and booleans"() {
+        given:
+        primaryFileClient.create(1024)
+        def sourceURL = primaryFileClient.getFileUrl()
+
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, null, null,
+            PermissionCopyModeType.SOURCE, true, false, null, null)
 
         def pollResponse = poller.poll()
 

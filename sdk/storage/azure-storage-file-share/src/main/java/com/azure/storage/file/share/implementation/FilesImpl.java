@@ -41,9 +41,9 @@ import com.azure.storage.file.share.implementation.models.FilesStartCopyResponse
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.share.implementation.models.LeaseAccessConditions;
-import com.azure.storage.file.share.implementation.models.PermissionCopyModeType;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
 import java.nio.ByteBuffer;

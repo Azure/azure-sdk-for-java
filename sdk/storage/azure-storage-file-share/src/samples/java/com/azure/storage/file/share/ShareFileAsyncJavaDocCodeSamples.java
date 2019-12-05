@@ -4,6 +4,7 @@ package com.azure.storage.file.share;
 
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileProperties;
@@ -143,6 +144,35 @@ public class ShareFileAsyncJavaDocCodeSamples {
         }, error -> System.err.println("Error: " + error),
             () -> System.out.println("Complete copying the file."));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-map-duration
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#beginCopy(String, FileSmbProperties, String, PermissionCopyModeType, Boolean, Boolean, Map, Duration)}
+     */
+    public void beginCopy2() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+        boolean ignoreReadOnly = false; // Default value
+        boolean setArchiveAttribute = true; // Default value
+
+        PollerFlux<ShareFileCopyInfo, Void> poller = shareFileAsyncClient.beginCopy(
+            "https://{accountName}.file.core.windows.net?{SASToken}",
+            smbProperties, filePermission, PermissionCopyModeType.SOURCE, ignoreReadOnly, setArchiveAttribute,
+            Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2));
+
+        poller.subscribe(response -> {
+                final ShareFileCopyInfo value = response.getValue();
+                System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
+            }, error -> System.err.println("Error: " + error),
+            () -> System.out.println("Complete copying the file."));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration
     }
 
     /**
