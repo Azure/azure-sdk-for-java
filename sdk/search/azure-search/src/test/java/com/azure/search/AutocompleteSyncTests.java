@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,14 +34,15 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
 
     @Test
     public void canAutocompleteThrowsWhenGivenBadSuggesterName() {
-        AutocompleteOptions params = new AutocompleteOptions();
-        params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
+        AutocompleteOptions params = new AutocompleteOptions()
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
-        PagedIterable<AutocompleteItem> results = client.autocomplete("very po",
-            "Invalid suggester", params, generateRequestOptions(), Context.NONE);
-        assertException(
+        PagedIterable<AutocompleteItem> results = client.autocomplete(
+            "very po", "Invalid suggester", params, generateRequestOptions(), Context.NONE);
+
+        assertHttpResponseException(
             () -> results.iterableByPage().iterator().next(),
-            HttpResponseException.class,
+            HttpResponseStatus.BAD_REQUEST,
             "The specified suggester name 'Invalid suggester' does not exist in this index definition.\\r\\nParameter name: name");
     }
 
@@ -134,9 +135,9 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     @Test
     public void canAutocompleteThrowsWhenRequestIsMalformed() {
         PagedIterable<AutocompleteItem> results = client.autocomplete("very po", "");
-        assertException(
+        assertHttpResponseException(
             () -> results.iterableByPage().iterator().next(),
-            HttpResponseException.class,
+            HttpResponseStatus.BAD_REQUEST,
             "Cannot find fields enabled for suggestions. Please provide a value for 'suggesterName' in the query.\\r\\nParameter name: suggestions"
         );
     }

@@ -3,7 +3,6 @@
 
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.Index;
 import com.azure.search.models.QueryType;
@@ -13,6 +12,7 @@ import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.ValueFacetResult;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -217,9 +217,9 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     public void searchThrowsWhenRequestIsMalformed() {
         SearchOptions invalidSearchOptions = new SearchOptions().setFilter("This is not a valid filter.");
 
-        assertException(
+        assertHttpResponseException(
             () -> search("*", invalidSearchOptions, new RequestOptions()),
-            HttpResponseException.class,
+            HttpResponseStatus.BAD_REQUEST,
             "Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'");
     }
 
@@ -227,9 +227,9 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     public void searchThrowsWhenSpecialCharInRegexIsUnescaped() {
         SearchOptions invalidSearchOptions = new SearchOptions().setQueryType(QueryType.FULL);
 
-        assertException(
+        assertHttpResponseException(
             () -> search("/.*/.*/", invalidSearchOptions, new RequestOptions()),
-            HttpResponseException.class,
+            HttpResponseStatus.BAD_REQUEST,
             "Failed to parse query string at line 1, column 8.");
     }
 

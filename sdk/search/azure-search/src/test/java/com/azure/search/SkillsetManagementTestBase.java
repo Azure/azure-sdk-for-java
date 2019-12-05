@@ -43,6 +43,7 @@ import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAU
 public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
 
     static final String CONTEXT_VALUE = "/document";
+    static final String OCR_SKILLSET_NAME = "ocr-skillset";
 
     @Test
     public abstract void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhrase();
@@ -150,19 +151,19 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
     public abstract void createOrUpdateSkillsetIfNotExistsSucceedsOnNoResource();
 
     @Test
-    public abstract void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource();
 
     @Test
-    public abstract void createOrUpdateSkillsetIfExistsFailsOnNoResource() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void createOrUpdateSkillsetIfExistsFailsOnNoResource();
 
     @Test
-    public abstract void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged();
 
     @Test
-    public abstract void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged();
 
     @Test
-    public abstract void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource();
 
     @Test
     public abstract void deleteSkillsetIfExistsWorksOnlyWhenResourceExists();

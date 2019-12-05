@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
@@ -10,6 +9,7 @@ import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -181,9 +181,9 @@ public class SuggestSyncTests extends SuggestTestBase {
         PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResultIterator = client.suggest("Hotel",
             "Suggester does not exist", new SuggestOptions(), generateRequestOptions(), Context.NONE);
 
-        assertException(
+        assertHttpResponseException(
             () -> suggestResultIterator.iterableByPage().iterator().next(),
-            HttpResponseException.class,
+            HttpResponseStatus.BAD_REQUEST,
             "The specified suggester name 'Suggester does not exist' does not exist in this index definition.");
     }
 
@@ -197,9 +197,9 @@ public class SuggestSyncTests extends SuggestTestBase {
         PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResultIterator = client.suggest("hotel",
             "sg", suggestOptions, generateRequestOptions(), Context.NONE);
 
-        assertException(
+        assertHttpResponseException(
             () -> suggestResultIterator.iterableByPage().iterator().next(),
-            HttpResponseException.class,
+            HttpResponseStatus.BAD_REQUEST,
             "Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'");
     }
 

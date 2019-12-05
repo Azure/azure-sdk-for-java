@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.search.models.DataType;
 import com.azure.search.models.DocumentIndexResult;
@@ -217,17 +216,13 @@ public class IndexingAsyncTests extends IndexingTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
 
-        List<Document> docs = new ArrayList<>();
-        docs.add(new Document());
-        Mono<DocumentIndexResult> indexResult = client.uploadDocuments(docs);
+        List<Document> docs = Collections.singletonList(new Document());
 
-        StepVerifier
-            .create(indexResult)
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).getResponse().getStatusCode());
-                Assert.assertTrue(error.getMessage().contains("The request is invalid. Details: actions : 0: Document key cannot be missing or empty."));
-            });
+        assertHttpResponseExceptionAsync(
+            client.uploadDocuments(docs),
+            HttpResponseStatus.BAD_REQUEST,
+            "The request is invalid. Details: actions : 0: Document key cannot be missing or empty."
+        );
     }
 
     @Override
@@ -263,7 +258,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void canRoundtripBoundaryValues() throws Exception {
+    public void canRoundtripBoundaryValues() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
 
@@ -331,7 +326,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws Exception {
+    public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
 

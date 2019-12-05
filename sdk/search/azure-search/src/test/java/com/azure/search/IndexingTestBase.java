@@ -30,13 +30,13 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     public abstract void indexDoesNotThrowWhenAllActionsSucceed();
 
     @Test
-    public abstract void canIndexWithPascalCaseFields() throws Exception;
+    public abstract void canIndexWithPascalCaseFields();
 
     @Test
-    public abstract void canIndexStaticallyTypedDocuments() throws Exception;
+    public abstract void canIndexStaticallyTypedDocuments() throws ParseException;
 
     @Test
-    public abstract void canIndexDynamicDocuments() throws Exception;
+    public abstract void canIndexDynamicDocuments();
 
     @Test
     public abstract void canDeleteBatchByKeys();
@@ -148,16 +148,16 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     public abstract void canUseIndexWithReservedName();
 
     @Test
-    public abstract void canRoundtripBoundaryValues() throws Exception;
+    public abstract void canRoundtripBoundaryValues() throws ParseException;
 
     @Test
-    public abstract void dynamicDocumentDateTimesRoundTripAsUtc() throws Exception;
+    public abstract void dynamicDocumentDateTimesRoundTripAsUtc();
 
     @Test
-    public abstract void staticallyTypedDateTimesRoundTripAsUtc() throws Exception;
+    public abstract void staticallyTypedDateTimesRoundTripAsUtc();
 
     @Test
-    public abstract void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws Exception;
+    public abstract void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws ParseException;
 
     @Test
     public abstract void canMergeStaticallyTypedDocuments() throws ParseException;

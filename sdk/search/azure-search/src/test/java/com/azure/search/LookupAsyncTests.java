@@ -70,7 +70,7 @@ public class LookupAsyncTests extends LookupTestBase {
     }
 
     @Override
-    public void canRoundtripStaticallyTypedPrimitiveCollections() throws ParseException {
+    public void canRoundtripStaticallyTypedPrimitiveCollections() {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
         client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildAsyncClient();
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -37,8 +36,6 @@ import java.util.stream.Collectors;
 public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     private SearchServiceClient client;
 
-    protected static final String OCR_SKILLSET_NAME = "ocr-skillset";
-
     // commonly used lambda definitions
     private BiFunction<Skillset,
         AccessOptions,
@@ -53,17 +50,11 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     private BiConsumer<String, AccessOptions> deleteSkillsetFunc =
         (String name, AccessOptions ac) ->
-            deleteSkillset(name, ac.getAccessCondition(), ac.getRequestOptions());
-
-    private void deleteSkillset(String skillsetName,
-                                AccessCondition accessCondition,
-                                RequestOptions requestOptions) {
-        client.deleteSkillsetWithResponse(skillsetName, accessCondition,  requestOptions, Context.NONE);
-    }
+            client.deleteSkillsetWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
 
     private Skillset createSkillset(Skillset skillset,
-                                    AccessCondition accessCondition,
-                                    RequestOptions requestOptions) {
+        AccessCondition accessCondition,
+        RequestOptions requestOptions) {
         return client.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions, Context.NONE)
             .getValue();
     }
@@ -283,16 +274,11 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     @Override
     public void getSkillsetThrowsOnNotFound() {
-        try {
-            String skillsetName = "thisdoesnotexist";
-            client.getSkillset(skillsetName);
-
-            Assert.fail("Expected an exception to be thrown");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
-                ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
+        assertHttpResponseException(
+            () -> client.getSkillset("thisdoesnotexist"),
+            HttpResponseStatus.NOT_FOUND,
+            "No skillset with the name 'thisdoesnotexist' was found in service"
+        );
     }
 
     @Override
@@ -454,9 +440,9 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
     public void createSkillsetThrowsExceptionWithNonShaperSkillWithNestedInputs() {
         Skillset skillset = createSkillsetWithNonSharperSkillWithNestedInputs();
 
-        assertException(
+        assertHttpResponseException(
             () -> client.createSkillset(skillset),
-            HttpResponseException.class,
+            HttpResponseStatus.BAD_REQUEST,
             "Skill '#1' is not allowed to have recursively defined inputs");
     }
 

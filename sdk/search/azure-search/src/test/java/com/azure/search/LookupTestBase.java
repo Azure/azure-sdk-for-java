@@ -116,7 +116,7 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
     public abstract void canGetStaticallyTypedDocumentWithPascalCaseFields();
 
     @Test
-    public abstract void canRoundtripStaticallyTypedPrimitiveCollections() throws ParseException;
+    public abstract void canRoundtripStaticallyTypedPrimitiveCollections();
 
     @Test
     public abstract void getStaticallyTypedDocumentSetsUnselectedFieldsToNull() throws ParseException;
@@ -137,5 +137,5 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
     public abstract void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelected();
 
     @Test
-    public abstract void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() throws ParseException;
+    public abstract void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly();
 }

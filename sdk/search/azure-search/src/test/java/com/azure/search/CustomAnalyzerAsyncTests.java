@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeRequest;
@@ -284,17 +283,12 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
 
         addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
 
-        StepVerifier
-            .create(searchServiceClient.createOrUpdateIndex(index))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(),
-                    ((HttpResponseException) error).getResponse().getStatusCode());
-                Assert.assertTrue(error.getMessage()
-                    .contains("Index update not allowed because it would cause downtime."));
-            });
+        assertHttpResponseExceptionAsync(
+            searchServiceClient.createOrUpdateIndex(index),
+            HttpResponseStatus.BAD_REQUEST,
+            "Index update not allowed because it would cause downtime."
+        );
     }
-
 
     @Override
     public void canAddCustomAnalyzerWithIndexDowntime() {

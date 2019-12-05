@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -44,11 +45,14 @@ import com.azure.search.test.environment.setup.SearchIndexService;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
+import org.reactivestreams.Publisher;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -591,20 +595,39 @@ public abstract class SearchServiceTestBase extends TestBase {
             .setClientRequestId(UUID.randomUUID());
     }
 
-    void assertException(
-        Runnable exceptionThrower, Class<? extends Exception> expectedExceptionType, String expectedMessage) {
+    void assertHttpResponseException(
+        Runnable exceptionThrower, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
         try {
             exceptionThrower.run();
             Assert.fail();
 
         } catch (Throwable ex) {
-            // Check that this is not the "Assert.fail()" above:
-            Assert.assertNotEquals(AssertionError.class, ex.getClass());
+            verifyHttpResponseError(ex, expectedResponseStatus, expectedMessage);
+        }
+    }
 
-            Assert.assertEquals(expectedExceptionType, ex.getClass());
-            if (expectedMessage != null) {
-                Assert.assertTrue(ex.getMessage().contains(expectedMessage));
-            }
+    void assertHttpResponseExceptionAsync(
+        Publisher<?> exceptionThrower, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
+
+        StepVerifier
+            .create(exceptionThrower)
+            .verifyErrorSatisfies(error -> verifyHttpResponseError(
+                error, expectedResponseStatus, expectedMessage));
+    }
+
+    private void verifyHttpResponseError(
+        Throwable ex, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
+
+        Assert.assertEquals(HttpResponseException.class, ex.getClass());
+
+        if (expectedResponseStatus != null) {
+            Assert.assertEquals(
+                expectedResponseStatus.code(),
+                ((HttpResponseException) ex).getResponse().getStatusCode());
+        }
+
+        if (expectedMessage != null) {
+            Assert.assertTrue(ex.getMessage().contains(expectedMessage));
         }
     }
 

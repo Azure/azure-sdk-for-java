@@ -32,22 +32,22 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
     public abstract void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResource();
 
     @Test
-    public abstract void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource();
 
     @Test
-    public abstract void createOrUpdateSynonymMapIfExistsFailsOnNoResource() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void createOrUpdateSynonymMapIfExistsFailsOnNoResource();
 
     @Test
-    public abstract void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged();
 
     @Test
-    public abstract void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged();
 
     @Test
-    public abstract void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource();
 
     @Test
-    public abstract void deleteSynonymMapIfExistsWorksOnlyWhenResourceExists() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void deleteSynonymMapIfExistsWorksOnlyWhenResourceExists();
 
     @Test
     public abstract void deleteSynonymMapIsIdempotent();

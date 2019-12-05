@@ -3,7 +3,6 @@
 
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -47,7 +46,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
     private BiConsumer<String, AccessOptions> deleteDataSourceFunc =
         (String name, AccessOptions ac) ->
-            deleteDataSource(name, ac.getAccessCondition(), ac.getRequestOptions());
+            client.deleteDataSourceWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
 
     @Override
     protected void beforeTest() {
@@ -60,10 +59,6 @@ public class DataSourceSyncTests extends DataSourceTestBase {
                                                 RequestOptions requestOptions) {
         return client.createOrUpdateDataSourceWithResponse(datasource, accessCondition, requestOptions, Context.NONE)
             .getValue();
-    }
-
-    private void deleteDataSource(String name, AccessCondition accessCondition, RequestOptions requestOptions) {
-        client.deleteDataSourceWithResponse(name, accessCondition, requestOptions, Context.NONE);
     }
 
     @Override
@@ -126,14 +121,11 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         dataSource.setType(DataSourceType.fromString("thistypedoesnotexist"));
 
-        try {
-            client.createOrUpdateDataSource(dataSource);
-        } catch (Exception error) {
-            Assert.assertEquals(HttpResponseException.class, error.getClass());
-            Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error)
-                .getResponse().getStatusCode());
-            Assert.assertTrue(error.getMessage().contains("Data source type '' is not supported"));
-        }
+        assertHttpResponseException(
+            () -> client.createOrUpdateDataSource(dataSource),
+            HttpResponseStatus.BAD_REQUEST,
+            "Data source type '' is not supported"
+        );
     }
 
     @Override
@@ -319,14 +311,11 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     @Override
     public void getDataSourceThrowsOnNotFound() {
         client = getSearchServiceClientBuilder().buildClient();
-
-        try {
-            client.getDataSource("thisdatasourcedoesnotexist");
-            Assert.fail("Expected HttpResponseException to be thrown");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-        }
+        assertHttpResponseException(
+            () -> client.getDataSource("thisdatasourcedoesnotexist"),
+            HttpResponseStatus.NOT_FOUND,
+            "No data source with the name 'thisdatasourcedoesnotexist' was found in service"
+        );
     }
 
     @Override
@@ -338,7 +327,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         // Create an initial datasource
         DataSource initial = createTestBlobDataSource(null);
         Assert.assertEquals(initial.getCredentials().getConnectionString(),
-            "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;");
+            FAKE_STORAGE_CONNECTION_STRING);
 
         // tweak the connection string and verify it was changed
         String newConnString =

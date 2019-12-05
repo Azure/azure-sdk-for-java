@@ -23,56 +23,56 @@ public abstract class AutocompleteTestBase extends SearchIndexClientTestBase {
     protected abstract void initializeClient() throws IOException;
 
     @Test
-    public abstract void canAutocompleteThrowsWhenGivenBadSuggesterName() throws Exception;
+    public abstract void canAutocompleteThrowsWhenGivenBadSuggesterName();
 
     @Test
-    public abstract void canAutocompleteDefaultsToOneTermMode() throws Exception;
+    public abstract void canAutocompleteDefaultsToOneTermMode();
 
     @Test
-    public abstract void canAutocompleteExcludesFieldsNotInSuggester() throws Exception;
+    public abstract void canAutocompleteExcludesFieldsNotInSuggester();
 
     @Test
-    public abstract void canAutocompleteFuzzyIsOffByDefault() throws Exception;
+    public abstract void canAutocompleteFuzzyIsOffByDefault();
 
     @Test
-    public abstract void canAutocompleteOneTerm() throws Exception;
+    public abstract void canAutocompleteOneTerm();
 
     @Test
-    public abstract void canAutocompleteOneTermWithContext() throws Exception;
+    public abstract void canAutocompleteOneTermWithContext();
 
     @Test
-    public abstract void canAutocompleteStaticallyTypedDocuments() throws Exception;
+    public abstract void canAutocompleteStaticallyTypedDocuments();
 
     @Test
-    public abstract void canAutocompleteThrowsWhenRequestIsMalformed() throws Exception;
+    public abstract void canAutocompleteThrowsWhenRequestIsMalformed();
 
     @Test
-    public abstract void canAutocompleteTwoTerms() throws Exception;
+    public abstract void canAutocompleteTwoTerms();
 
     @Test
-    public abstract void testAutocompleteCanUseHitHighlighting() throws Exception;
+    public abstract void testAutocompleteCanUseHitHighlighting();
 
     @Test
-    public abstract void testAutocompleteWithMultipleSelectedFields() throws Exception;
+    public abstract void testAutocompleteWithMultipleSelectedFields();
 
     @Test
-    public abstract void testAutocompleteWithSelectedFields() throws Exception;
+    public abstract void testAutocompleteWithSelectedFields();
 
     @Test
-    public abstract void testAutocompleteTopTrimsResults() throws Exception;
+    public abstract void testAutocompleteTopTrimsResults();
 
     @Test
-    public abstract void testAutocompleteWithFilter() throws Exception;
+    public abstract void testAutocompleteWithFilter();
 
     @Test
-    public abstract void testAutocompleteOneTermWithContextWithFuzzy() throws Exception;
+    public abstract void testAutocompleteOneTermWithContextWithFuzzy();
 
     @Test
-    public abstract void testAutocompleteOneTermWithFuzzy() throws Exception;
+    public abstract void testAutocompleteOneTermWithFuzzy();
 
     @Test
-    public abstract void testAutocompleteTwoTermsWithFuzzy() throws Exception;
+    public abstract void testAutocompleteTwoTermsWithFuzzy();
 
     @Test
-    public abstract void testAutocompleteWithFilterAndFuzzy() throws Exception;
+    public abstract void testAutocompleteWithFilterAndFuzzy();
 }

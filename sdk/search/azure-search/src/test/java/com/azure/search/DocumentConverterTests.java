@@ -39,8 +39,7 @@ public class DocumentConverterTests {
         Document doc = new Document();
         try {
             doc = adapter.deserialize(json, Document.class, SerializerEncoding.JSON);
-            // Skip OData @search annotations. These are deserialized separately.
-            doc = cleanupODataAnnotation(doc);
+            cleanupODataAnnotation(doc);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,11 +47,10 @@ public class DocumentConverterTests {
         return doc;
     }
 
-    private Document cleanupODataAnnotation(Document document) {
+    private void cleanupODataAnnotation(Document document) {
         // Skip OData @search annotations. These are deserialized separately.
         List<String> keys = document.keySet().stream().filter(key -> key.startsWith("@search")).collect(Collectors.toList());
         keys.forEach(document::remove);
-        return document;
     }
 
     @Test

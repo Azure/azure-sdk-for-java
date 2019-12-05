@@ -2,14 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.implementation.serializer.jsonwrapper.JsonWrapper;
 import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Hotel;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -21,9 +19,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     private JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
@@ -87,21 +82,8 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(0, suggestResultPagedResponse.getValue().size());
     }
 
-    void verifySuggestThrowsWhenGivenBadSuggesterName(Throwable error) {
-        assertEquals(HttpResponseException.class, error.getClass());
-        assertEquals(HttpResponseStatus.BAD_REQUEST.code(),
-            ((HttpResponseException) error).getResponse().getStatusCode());
-        assertTrue(error.getMessage().contains("The specified suggester name 'Suggester does not exist' does not exist in this index definition."));
-    }
-
-    void verifySuggestThrowsWhenRequestIsMalformed(Throwable error) {
-        assertEquals(HttpResponseException.class, error.getClass());
-        assertEquals(HttpResponseStatus.BAD_REQUEST.code(),
-            ((HttpResponseException) error).getResponse().getStatusCode());
-        assertTrue(error.getMessage().contains("Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'"));
-    }
-
     void verifyMinimumCoverage(SuggestPagedResponse suggestResultPagedResponse) {
+
         Assert.assertNotNull(suggestResultPagedResponse);
         Assert.assertEquals(Double.valueOf(100.0), suggestResultPagedResponse.getCoverage());
     }
@@ -145,34 +127,34 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     }
 
     @Test
-    public abstract void canSuggestDynamicDocuments() throws Exception;
+    public abstract void canSuggestDynamicDocuments() throws IOException;
 
     @Test
-    public abstract void searchFieldsExcludesFieldsFromSuggest() throws Exception;
+    public abstract void searchFieldsExcludesFieldsFromSuggest() throws IOException;
 
     @Test
-    public abstract void canUseSuggestHitHighlighting() throws Exception;
+    public abstract void canUseSuggestHitHighlighting() throws IOException;
 
     @Test
-    public abstract void canGetFuzzySuggestions() throws Exception;
+    public abstract void canGetFuzzySuggestions() throws IOException;
 
     @Test
     public abstract void canSuggestStaticallyTypedDocuments() throws IOException;
 
     @Test
-    public abstract void canSuggestWithDateTimeInStaticModel() throws Exception;
+    public abstract void canSuggestWithDateTimeInStaticModel();
 
     @Test
     public abstract void fuzzyIsOffByDefault() throws IOException;
 
     @Test
-    public abstract void suggestThrowsWhenGivenBadSuggesterName() throws Exception;
+    public abstract void suggestThrowsWhenGivenBadSuggesterName();
 
     @Test
-    public abstract void suggestThrowsWhenRequestIsMalformed() throws Exception;
+    public abstract void suggestThrowsWhenRequestIsMalformed() throws IOException;
 
     @Test
-    public abstract void testCanSuggestWithMinimumCoverage() throws Exception;
+    public abstract void testCanSuggestWithMinimumCoverage() throws IOException;
 
     @Test
     public abstract void testTopTrimsResults() throws IOException;

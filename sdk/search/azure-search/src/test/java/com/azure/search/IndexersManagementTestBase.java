@@ -71,13 +71,9 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void canCreateIndexerWithBatchSizeMaxFailedItems();
 
-    // This test currently does not pass on our Dogfood account, as the
-    // Storage resource provider is not returning an answer.
     @Test
     public abstract void canUpdateIndexerBlobParams();
 
-    // This test currently does not pass on our Dogfood account, as the
-    // Storage resource provider is not returning an answer.
     @Test
     public abstract void canCreateIndexerWithBlobParams();
 
@@ -109,19 +105,19 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public abstract void deleteIndexerIfExistsWorksOnlyWhenResourceExists();
 
     @Test
-    public abstract void deleteIndexerIfNotChangedWorksOnlyOnCurrentResource() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void deleteIndexerIfNotChangedWorksOnlyOnCurrentResource();
 
     @Test
-    public abstract void updateIndexerIfExistsFailsOnNoResource() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void updateIndexerIfExistsFailsOnNoResource();
 
     @Test
-    public abstract void updateIndexerIfExistsSucceedsOnExistingResource() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void updateIndexerIfExistsSucceedsOnExistingResource();
 
     @Test
-    public abstract void updateIndexerIfNotChangedFailsWhenResourceChanged() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void updateIndexerIfNotChangedFailsWhenResourceChanged();
 
     @Test
-    public abstract void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged() throws NoSuchFieldException, IllegalAccessException;
+    public abstract void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged();
 
     @Test
     public abstract void existsReturnsTrueForExistingIndexer();

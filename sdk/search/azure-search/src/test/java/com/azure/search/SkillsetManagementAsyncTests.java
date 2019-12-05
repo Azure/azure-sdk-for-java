@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
@@ -34,8 +33,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.azure.search.SkillsetManagementSyncTests.OCR_SKILLSET_NAME;
-
 public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     private SearchServiceAsyncClient client;
 
@@ -56,14 +53,14 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             deleteSkillset(name, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Mono<Void> deleteSkillset(String skillsetName,
-                                      AccessCondition accessCondition,
-                                      RequestOptions requestOptions) {
+        AccessCondition accessCondition,
+        RequestOptions requestOptions) {
         return client.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     private Mono<Skillset> createSkillset(Skillset skillset,
-                                          AccessCondition accessCondition,
-                                          RequestOptions requestOptions) {
+        AccessCondition accessCondition,
+        RequestOptions requestOptions) {
         return client.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions)
             .map(Response::getValue);
     }
@@ -339,13 +336,11 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     @Override
     public void getSkillsetThrowsOnNotFound() {
         String skillsetName = "thisdoesnotexist";
-        StepVerifier
-            .create(client.getSkillset(skillsetName))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
-                    ((HttpResponseException) error).getResponse().getStatusCode());
-            });
+        assertHttpResponseExceptionAsync(
+            client.getSkillset(skillsetName),
+            HttpResponseStatus.NOT_FOUND,
+            "No skillset with the name 'thisdoesnotexist' was found in service"
+        );
     }
 
     @Override
@@ -586,12 +581,11 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     public void createSkillsetThrowsExceptionWithNonShaperSkillWithNestedInputs() {
         Skillset skillset = createSkillsetWithNonSharperSkillWithNestedInputs();
 
-        StepVerifier
-            .create(client.createSkillset(skillset))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertTrue(error.getMessage().contains("Skill '#1' is not allowed to have recursively defined inputs"));
-            });
+        assertHttpResponseExceptionAsync(
+            client.createSkillset(skillset),
+            HttpResponseStatus.BAD_REQUEST,
+            "Skill '#1' is not allowed to have recursively defined inputs"
+        );
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
 
@@ -169,27 +170,27 @@ public class SuggestAsyncTests extends SuggestTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("Hotel", "Suggester does not exist", new SuggestOptions(), generateRequestOptions());
-
-        StepVerifier
-            .create(suggestResult.byPage())
-            .verifyErrorSatisfies(this::verifySuggestThrowsWhenGivenBadSuggesterName);
+        assertHttpResponseExceptionAsync(
+            client.suggest(
+                "Hotel", "Suggester does not exist", new SuggestOptions(), generateRequestOptions()),
+            HttpResponseStatus.BAD_REQUEST,
+            "The specified suggester name 'Suggester does not exist' does not exist in this index definition."
+        );
     }
 
     @Override
-    public void suggestThrowsWhenRequestIsMalformed() throws IOException {
+    public void suggestThrowsWhenRequestIsMalformed() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
-        uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy("This is not a valid orderby.");
 
-        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestOptions, generateRequestOptions());
-
-        StepVerifier
-            .create(suggestResult.byPage())
-            .verifyErrorSatisfies(this::verifySuggestThrowsWhenRequestIsMalformed);
+        assertHttpResponseExceptionAsync(
+            client.suggest("hotel", "sg", suggestOptions, generateRequestOptions()),
+            HttpResponseStatus.BAD_REQUEST,
+            "Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'"
+        );
     }
 
     @Override

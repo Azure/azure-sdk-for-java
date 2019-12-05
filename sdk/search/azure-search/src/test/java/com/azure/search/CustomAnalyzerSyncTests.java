@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
@@ -107,13 +106,13 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
                     .setAnalyzer(customAnalyzerName)
                     .setSearchable(true)
             ))
-            .setAnalyzers(Arrays.asList(
+            .setAnalyzers(Collections.singletonList(
                 new CustomAnalyzer()
                     .setTokenizer(TokenizerName.STANDARD_V2.toString())
-                    .setCharFilters(Arrays.asList(customCharFilterName))
+                    .setCharFilters(Collections.singletonList(customCharFilterName))
                     .setName(customAnalyzerName)
             ))
-            .setCharFilters(Arrays.asList(
+            .setCharFilters(Collections.singletonList(
                 new PatternReplaceCharFilter()
                     .setPattern("@")
                     .setReplacement("_")
@@ -265,30 +264,22 @@ public class CustomAnalyzerSyncTests extends CustomAnalyzerTestsBase {
     @Override
     public void addingCustomAnalyzerThrowsHttpExceptionByDefault() {
         Index index = createTestIndex()
-            .setAnalyzers(Collections.singletonList(
-                new StopAnalyzer().setName("a1")
-            ));
+            .setAnalyzers(Collections.singletonList(new StopAnalyzer().setName("a1")));
         searchServiceClient.createIndex(index);
 
         addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
 
-        try {
-            searchServiceClient.createOrUpdateIndex(index);
-            Assert.fail("createOrUpdate did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(),
-                ((HttpResponseException) ex).getResponse().getStatusCode());
-            Assert.assertTrue(ex.getMessage().contains("Index update not allowed because it would cause downtime."));
-        }
+        assertHttpResponseException(
+            () -> searchServiceClient.createOrUpdateIndex(index),
+            HttpResponseStatus.BAD_REQUEST,
+            "Index update not allowed because it would cause downtime."
+        );
     }
 
     @Override
     public void canAddCustomAnalyzerWithIndexDowntime() {
         Index index = createTestIndex()
-            .setAnalyzers(Collections.singletonList(
-                new StopAnalyzer().setName("a1")
-            ));
+            .setAnalyzers(Collections.singletonList(new StopAnalyzer().setName("a1")));
         searchServiceClient.createIndex(index);
 
         addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));

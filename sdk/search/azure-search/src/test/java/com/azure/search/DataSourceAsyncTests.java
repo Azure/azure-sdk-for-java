@@ -3,7 +3,6 @@
 
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
@@ -259,17 +258,14 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
     @Override
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
-        DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
-        dataSource.setType(DataSourceType.fromString("thistypedoesnotexist"));
+        DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME)
+            .setType(DataSourceType.fromString("thistypedoesnotexist"));
 
-        StepVerifier
-            .create(client.createOrUpdateDataSource(dataSource))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error)
-                    .getResponse().getStatusCode());
-                Assert.assertTrue(error.getMessage().contains("Data source type '' is not supported"));
-            });
+        assertHttpResponseExceptionAsync(
+            client.createOrUpdateDataSource(dataSource),
+            HttpResponseStatus.BAD_REQUEST,
+            "Data source type '' is not supported"
+        );
     }
 
     @Override
@@ -345,18 +341,11 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     @Override
     public void getDataSourceThrowsOnNotFound() {
         client = getSearchServiceClientBuilder().buildAsyncClient();
-
-        Mono<DataSource> futureDataSource = client.getDataSource("thisdatasourcedoesnotexist");
-        StepVerifier
-            .create(futureDataSource)
-            .verifyErrorSatisfies(
-                error -> {
-                    Assert.assertEquals(HttpResponseException.class, error.getClass());
-                    Assert.assertEquals(
-                        HttpResponseStatus.NOT_FOUND.code(),
-                        ((HttpResponseException) error).getResponse().getStatusCode());
-                }
-            );
+        assertHttpResponseExceptionAsync(
+            client.getDataSource("thisdatasourcedoesnotexist"),
+            HttpResponseStatus.NOT_FOUND,
+            "No data source with the name 'thisdatasourcedoesnotexist' was found in service"
+        );
     }
 
     @Override
@@ -367,8 +356,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         // Create an initial datasource
         DataSource initial = createTestBlobDataSource(null);
-        Assert.assertEquals(initial.getCredentials().getConnectionString(),
-            "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;");
+        Assert.assertEquals(initial.getCredentials().getConnectionString(), FAKE_STORAGE_CONNECTION_STRING);
 
         // tweak the connection string and verify it was changed
         String newConnString =

@@ -44,7 +44,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         AccessOptions,
         Index> createOrUpdateIndexFunc =
             (Index index, AccessOptions ac) ->
-                createIndex(index, false, ac.getAccessCondition(), ac.getRequestOptions());
+                createIndex(index, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Index> newIndexFunc = this::createTestIndex;
 
@@ -52,19 +52,14 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     private BiConsumer<String, AccessOptions> deleteIndexFunc =
         (String name, AccessOptions ac) ->
-            deleteIndex(name, ac.getAccessCondition(), ac.getRequestOptions());
+            client.deleteIndexWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
 
-    private void deleteIndex(String indexName,
-                             AccessCondition accessCondition,
-                             RequestOptions requestOptions) {
-        client.deleteIndexWithResponse(indexName, accessCondition, requestOptions, Context.NONE);
-    }
-
-    private Index createIndex(Index index, boolean allowDowntime,
-                              AccessCondition accessCondition,
-                              RequestOptions requestOptions) {
-        return client.createOrUpdateIndexWithResponse(index,
-            allowDowntime,
+    private Index createIndex(Index index,
+        AccessCondition accessCondition,
+        RequestOptions requestOptions) {
+        return client.createOrUpdateIndexWithResponse(
+            index,
+            false,
             accessCondition,
             requestOptions,
             Context.NONE).getValue();
@@ -146,14 +141,11 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void getIndexThrowsOnNotFound() {
-        try {
-            client.getIndex("thisindexdoesnotexist");
-            Assert.fail("getIndex did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-            Assert.assertTrue(ex.getMessage().contains("No index with the name 'thisindexdoesnotexist' was found in the service"));
-        }
+        assertHttpResponseException(
+            () -> client.getIndex("thisindexdoesnotexist"),
+            HttpResponseStatus.NOT_FOUND,
+            "No index with the name 'thisindexdoesnotexist' was found in the service"
+        );
     }
 
     @Override
@@ -410,17 +402,13 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             .setSourceFields(Collections.singletonList(existingFieldName))
         ));
 
-        try {
-            client.createOrUpdateIndex(existingIndex);
-            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) ex)
-                .getResponse().getStatusCode());
-            String expectedMessage = String.format("Fields that were already present in an index (%s) cannot be "
-                + "referenced by a new suggester. Only new fields added in the same index update operation are allowed.", existingFieldName);
-            Assert.assertTrue(ex.getMessage().contains(expectedMessage));
-        }
+        assertHttpResponseException(
+            () -> client.createOrUpdateIndex(existingIndex),
+            HttpResponseStatus.BAD_REQUEST,
+            String.format("Fields that were already present in an index (%s) cannot be "
+                + "referenced by a new suggester. Only new fields added in the same index update operation are allowed.",
+                existingFieldName)
+        );
     }
 
     @Override

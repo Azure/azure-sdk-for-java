@@ -2,10 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
@@ -14,7 +11,6 @@ import com.azure.search.models.Field;
 import com.azure.search.models.Index;
 import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.MagnitudeScoringParameters;
-import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.ScoringProfile;
@@ -39,32 +35,15 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     private SearchServiceAsyncClient client;
 
     // commonly used lambda definitions
-    private BiFunction<Index,
-        AccessOptions,
-        Mono<Index>> createOrUpdateIndexAsyncFunc =
-            (Index index, AccessOptions ac) ->
-                this.createIndex(index, false, ac.getAccessCondition(), ac.getRequestOptions());
+    private BiFunction<Index, AccessOptions, Mono<Index>> createOrUpdateIndexAsyncFunc =
+        (Index index, AccessOptions ac) -> client.createOrUpdateIndex(index);
 
     private Supplier<Index> newIndexFunc = this::createTestIndex;
 
     private Function<Index, Index> mutateIndexFunc = this::mutateCorsOptionsInIndex;
 
     private BiFunction<String, AccessOptions, Mono<Void>> deleteIndexAsyncFunc =
-        (String name, AccessOptions ac) ->
-            this.deleteIndex(name, ac.getAccessCondition(), ac.getRequestOptions());
-
-    private Mono<Void> deleteIndex(String indexName,
-                                   AccessCondition accessCondition,
-                                   RequestOptions requestOptions) {
-        return client.deleteIndexWithResponse(indexName, accessCondition, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    private Mono<Index> createIndex(Index index, boolean allowDowntime,
-                                    AccessCondition accessCondition,
-                                    RequestOptions requestOptions) {
-        return client.createOrUpdateIndexWithResponse(index, allowDowntime, accessCondition, requestOptions)
-            .map(Response::getValue);
-    }
+        (String name, AccessOptions ac) -> client.deleteIndex(name);
 
     @Override
     protected void beforeTest() {
@@ -82,9 +61,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.createIndexWithResponse(index.setName("hotel2"), generateRequestOptions()))
-            .assertNext(createdIndex -> {
-                assertIndexesEqual(index, createdIndex.getValue());
-            })
+            .assertNext(createdIndex -> assertIndexesEqual(index, createdIndex.getValue()))
             .verifyComplete();
     }
 
@@ -126,16 +103,11 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
                     .setKey(false)
             ));
 
-        String expectedMessage = String.format("The request is invalid. Details: index : Found 0 key fields in index '%s'. "
-            + "Each index must have exactly one key field.", HOTEL_INDEX_NAME);
-
-        StepVerifier
-            .create(client.createIndex(index))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).getResponse().getStatusCode());
-                Assert.assertTrue(error.getMessage().contains(expectedMessage));
-            });
+        assertHttpResponseExceptionAsync(
+            client.createIndex(index),
+            HttpResponseStatus.BAD_REQUEST,
+            String.format("The request is invalid. Details: index : Found 0 key fields in index '%s'. "
+                + "Each index must have exactly one key field.", HOTEL_INDEX_NAME));
     }
 
     @Override
@@ -156,13 +128,11 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void getIndexThrowsOnNotFound() {
-        StepVerifier
-            .create(client.getIndex("thisindexdoesnotexist"))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), ((HttpResponseException) error).getResponse().getStatusCode());
-                Assert.assertTrue(error.getMessage().contains("No index with the name 'thisindexdoesnotexist' was found in the service"));
-            });
+        assertHttpResponseExceptionAsync(
+            client.getIndex("thisindexdoesnotexist"),
+            HttpResponseStatus.NOT_FOUND,
+            "No index with the name 'thisindexdoesnotexist' was found in the service"
+        );
     }
 
     @Override
@@ -433,8 +403,8 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         hotelNameField.setRetrievable(false);
 
         StepVerifier
-            .create(client.createOrUpdateIndexWithResponse(existingIndex,
-                true, new AccessCondition(), generateRequestOptions()))
+            .create(client
+                .createOrUpdateIndexWithResponse(existingIndex, true, new AccessCondition(), generateRequestOptions()))
             .assertNext(res -> assertIndexesEqual(existingIndex, res.getValue()))
             .verifyComplete();
     }
@@ -480,16 +450,11 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .setSourceFields(Collections.singletonList(existingFieldName))
         ));
 
-        StepVerifier
-            .create(client.createOrUpdateIndex(existingIndex))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error)
-                    .getResponse().getStatusCode());
-                String expectedMessage = String.format("Fields that were already present in an index (%s) cannot be "
-                    + "referenced by a new suggester. Only new fields added in the same index update operation are allowed.", existingFieldName);
-                Assert.assertTrue(error.getMessage().contains(expectedMessage));
-            });
+        assertHttpResponseExceptionAsync(
+            client.createOrUpdateIndex(existingIndex),
+            HttpResponseStatus.BAD_REQUEST,
+            String.format("Fields that were already present in an index (%s) cannot be referenced by a new suggester."
+                + " Only new fields added in the same index update operation are allowed.", existingFieldName));
     }
 
     @Override

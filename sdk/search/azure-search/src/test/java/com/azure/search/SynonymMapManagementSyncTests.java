@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -28,25 +27,21 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     private BiFunction<SynonymMap,
         AccessOptions,
         SynonymMap> createOrUpdateSynonymMapFunc =
-            (SynonymMap sm, AccessOptions ac) ->
-                createOrUpdateSynonymMap(sm, ac.getAccessCondition(), ac.getRequestOptions());
+            (SynonymMap synonymMap, AccessOptions accessOptions) ->
+                createOrUpdateSynonymMap(
+                    synonymMap, accessOptions.getAccessCondition(), accessOptions.getRequestOptions());
 
     private Supplier<SynonymMap> newSynonymMapFunc = this::createTestSynonymMap;
 
-    private Function<SynonymMap, SynonymMap> mutateSynonymMapFunc =
-        this::mutateSynonymsInSynonymMap;
+    private Function<SynonymMap, SynonymMap> mutateSynonymMapFunc = this::mutateSynonymsInSynonymMap;
 
     private BiConsumer<String, AccessOptions> deleteSynonymMapFunc =
         (String name, AccessOptions ac) ->
-            deleteSynonymMap(name, ac.getAccessCondition(), ac.getRequestOptions());
+            client.deleteSynonymMapWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
 
     private SynonymMap createOrUpdateSynonymMap(
         SynonymMap sm, AccessCondition ac, RequestOptions ro) {
         return client.createOrUpdateSynonymMapWithResponse(sm, ac, ro, Context.NONE).getValue();
-    }
-
-    private void deleteSynonymMap(String name, AccessCondition ac, RequestOptions ro) {
-        client.deleteSynonymMapWithResponse(name, ac, ro, Context.NONE);
     }
 
     @Override
@@ -68,19 +63,15 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
 
     @Override
     public void createSynonymMapFailsWithUsefulMessageOnUserError() {
-        SynonymMap expectedSynonymMap = createTestSynonymMap();
-        // Set invalid Synonym
-        expectedSynonymMap.setSynonyms("a => b => c");
+        // Create SynonymMap with invalid synonym
+        SynonymMap expectedSynonymMap = createTestSynonymMap()
+            .setSynonyms("a => b => c");
 
-        try {
-            client.createSynonymMap(expectedSynonymMap);
-            Assert.fail("createSynonymMap did not throw an expected Exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-            Assert.assertTrue(ex.getMessage().contains("Syntax error in line 1: 'a => b => c'. "
-                + "Only one explicit mapping (=>) can be specified in a synonym rule."));
-        }
+        assertHttpResponseException(
+            () -> client.createSynonymMap(expectedSynonymMap),
+            HttpResponseStatus.BAD_REQUEST,
+            "Syntax error in line 1: 'a => b => c'. Only one explicit mapping (=>) can be specified in a synonym rule."
+        );
     }
 
     @Override
@@ -100,10 +91,17 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
     @Override
     public void getSynonymMapThrowsOnNotFound() {
         final String synonymMapName = "thisSynonymMapDoesNotExist";
+        final String exceptionMessage = String.format("No synonym map with the name '%s' was found", synonymMapName);
 
-        validateSynonymMapNotFoundThrowsException(synonymMapName, () -> client.getSynonymMap(synonymMapName));
-        validateSynonymMapNotFoundThrowsException(synonymMapName, () -> client.getSynonymMapWithResponse(synonymMapName,
-            generateRequestOptions(), Context.NONE));
+        assertHttpResponseException(
+            () -> client.getSynonymMap(synonymMapName),
+            HttpResponseStatus.NOT_FOUND,
+            exceptionMessage);
+
+        assertHttpResponseException(
+            () -> client.getSynonymMapWithResponse(synonymMapName, generateRequestOptions(), Context.NONE),
+            HttpResponseStatus.NOT_FOUND,
+            exceptionMessage);
     }
 
     @Override
@@ -295,18 +293,5 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
             createOrUpdateSynonymMapFunc,
             newSynonymMapFunc,
             "test-synonym");
-    }
-
-    private void validateSynonymMapNotFoundThrowsException(String synonymMapName, Runnable getSynonymMapAction) {
-        final String exceptionMessage = String.format("No synonym map with the name '%s' was found", synonymMapName);
-        try {
-            getSynonymMapAction.run();
-            Assert.fail("the action did not throw an exception");
-        } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(),
-                ((HttpResponseException) ex).getResponse().getStatusCode());
-            Assert.assertTrue(ex.getMessage().contains(exceptionMessage));
-        }
     }
 }

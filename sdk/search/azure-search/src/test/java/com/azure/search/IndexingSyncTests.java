@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.DataType;
@@ -265,9 +264,9 @@ public class IndexingSyncTests extends IndexingTestBase {
         List<Document> docs = new ArrayList<>();
         docs.add(new Document());
 
-        assertException(
+        assertHttpResponseException(
             () -> client.uploadDocuments(docs),
-            HttpResponseException.class,
+            HttpResponseStatus.BAD_REQUEST,
             "The request is invalid. Details: actions : 0: Document key cannot be missing or empty."
         );
     }
@@ -302,7 +301,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void canRoundtripBoundaryValues() throws Exception {
+    public void canRoundtripBoundaryValues() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
@@ -499,7 +498,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws Exception {
+    public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 

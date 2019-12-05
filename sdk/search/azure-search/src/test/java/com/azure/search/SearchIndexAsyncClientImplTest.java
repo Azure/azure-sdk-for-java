@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.search.models.GeoPoint;
@@ -16,6 +15,7 @@ import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,12 +24,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
-    private static final CharSequence ERROR_MESSAGE_INVALID_FIELDS_REQUEST =
-        "Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' on type 'search.document'.";
     private static final String INDEX_NAME = "hotels";
     private SearchIndexAsyncClient asyncClient;
 
@@ -134,22 +131,15 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         hotelDoc.put("HotelId", "2");
         hotelDoc.put("Description", "Surprisingly expensive");
 
-        ArrayList<String> selectedFields = new ArrayList<>();
-        selectedFields.add("HotelId");
-        selectedFields.add("ThisFieldDoesNotExist");
+        List<String> selectedFields = Arrays.asList("HotelId", "ThisFieldDoesNotExist");
 
         uploadDocument(asyncClient, hotelDoc);
-
-        Mono<Document> futureDoc = asyncClient.getDocument("2", selectedFields, null);
-
-        StepVerifier
-            .create(futureDoc)
-            .verifyErrorSatisfies(error -> {
-                assertEquals(HttpResponseException.class, error.getClass());
-                assertEquals(HttpResponseStatus.BAD_REQUEST.code(),
-                    ((HttpResponseException) error).getResponse().getStatusCode());
-                assertTrue(error.getMessage().contains(ERROR_MESSAGE_INVALID_FIELDS_REQUEST));
-            });
+        assertHttpResponseExceptionAsync(
+            asyncClient.getDocument("2", selectedFields, null),
+            HttpResponseStatus.BAD_REQUEST,
+            "Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' "
+                + "on type 'search.document'."
+        );
     }
 
     @Test
@@ -163,8 +153,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
             docs.add(doc);
         }
 
-        asyncClient.uploadDocuments(docs).block();
-        waitForIndexing();
+        uploadDocuments(asyncClient, docs);
 
         AtomicBoolean failed = new AtomicBoolean(false);
 
