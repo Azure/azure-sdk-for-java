@@ -1,4 +1,13 @@
 # Change Log azure-storage-blob-batch
+## Version 12.1.0 (2019-12-04)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-batch_12.1.0/sdk/storage/azure-storage-blob-batch/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-batch_12.1.0/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/batch)
+
+- Upgraded to version 1.1.0 of Azure Core.
+- Upgraded to version 12.1.0 of Azure Storage Blob.
+
 ## Version 12.0.0 (2019-10-31)
 
 - Added BlobBatchStorageException

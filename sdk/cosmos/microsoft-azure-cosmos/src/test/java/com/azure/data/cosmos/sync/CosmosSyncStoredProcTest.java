@@ -11,6 +11,7 @@ import com.azure.data.cosmos.CosmosStoredProcedureProperties;
 import com.azure.data.cosmos.CosmosStoredProcedureRequestOptions;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.rx.TestSuiteBase;
@@ -148,8 +149,6 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
 
     }
 
-    // TODO: Fix underlying async execute response issue before enabling this test
-/*
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void executeStoredProcedure() throws Exception {
         CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties()
@@ -159,11 +158,11 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         CosmosSyncStoredProcedureResponse response = container.getScripts().createStoredProcedure(sproc);
         CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
         options.partitionKey(PartitionKey.None);
-        container.getScripts()
-                .getStoredProcedure(sproc.id())
-                .execute(null, options);
+        CosmosSyncStoredProcedureResponse executeResponse = container.getScripts()
+                                                        .getStoredProcedure(sproc.id())
+                                                        .execute(null, options);
+        assertThat(executeResponse.activityId()).isNotEmpty();
     }
-*/
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     private void readAllSprocs() throws Exception {

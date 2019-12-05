@@ -1,4 +1,14 @@
 # Release History
+
+## Version 12.1.0 (2019-12-04)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.0.0/sdk/storage/azure-storage-queue/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.0.0/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue)
+
+- Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
+- Upgraded to version 1.1.0 of Azure Core.
+
 ## Version 12.0.0 (2019-10-31)
 - Removed QueueMessage from public API
 - Removed BaseQueueClientBuilder
@@ -13,6 +23,7 @@
 - Renamed PeekedMessage to PeekedMessageItem and UpdatedMessage to UpdatedMessageResult
 - Added support for emulator endpoints
 - Renamed QueueSasPermission getters to use has prefix
+
 ## Version 12.0.0-preview.4 (2019-10-8)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 

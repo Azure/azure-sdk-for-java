@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Represents the error in {@link CertificateOperation}.
  */
-public class CertificateOperationError {
+public final class CertificateOperationError {
     /**
      * The error code.
      */
