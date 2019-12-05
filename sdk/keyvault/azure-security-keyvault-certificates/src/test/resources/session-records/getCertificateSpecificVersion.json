@@ -1,0 +1,786 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/create?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "Date" : "Tue, 03 Dec 2019 13:06:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "841",
+      "x-ms-request-id" : "24065540-a5e1-4f37-aa8c-d5d88ab9e707",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVDCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEpD7uw1TM1INQKJG4C3DUH99bYAlwgn4/AqQ/BUuiQdbm2ywukIZVzxu0Fcxr/9AtCCJQaq0xPdMbnDuwWe8Gw/7AVMJXcGhKYQse/pACPyladxM13BaNXMcsb9J98vMjoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDZwAwZAIwOZJN1/qVqBqGhFCA8eqbC2HnST9lbvgnKt+YfV/f1h05dobt17ItIIuNAvSjaZonAjBLm0/XwXgaZXB+O14GgZCpviIIjj7VibmrKG60ECexIdo39RmOkQ+bGBxIpC9Wirg=\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"fbd388ad71144fa6ac7ca3ec5cbc3307\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "https://cameravault.vault.azure.net/certificates/testCertificate9/pending?api-version=7.0&request_id=fbd388ad71144fa6ac7ca3ec5cbc3307"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/pending?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "841",
+      "x-ms-request-id" : "097dc2d3-a986-4af5-b444-5c3ef4467275",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVDCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEpD7uw1TM1INQKJG4C3DUH99bYAlwgn4/AqQ/BUuiQdbm2ywukIZVzxu0Fcxr/9AtCCJQaq0xPdMbnDuwWe8Gw/7AVMJXcGhKYQse/pACPyladxM13BaNXMcsb9J98vMjoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDZwAwZAIwOZJN1/qVqBqGhFCA8eqbC2HnST9lbvgnKt+YfV/f1h05dobt17ItIIuNAvSjaZonAjBLm0/XwXgaZXB+O14GgZCpviIIjj7VibmrKG60ECexIdo39RmOkQ+bGBxIpC9Wirg=\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"fbd388ad71144fa6ac7ca3ec5cbc3307\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/pending?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "841",
+      "x-ms-request-id" : "63c5d996-3f8d-4e7d-882a-395ca0fb2d6e",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVDCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEpD7uw1TM1INQKJG4C3DUH99bYAlwgn4/AqQ/BUuiQdbm2ywukIZVzxu0Fcxr/9AtCCJQaq0xPdMbnDuwWe8Gw/7AVMJXcGhKYQse/pACPyladxM13BaNXMcsb9J98vMjoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDZwAwZAIwOZJN1/qVqBqGhFCA8eqbC2HnST9lbvgnKt+YfV/f1h05dobt17ItIIuNAvSjaZonAjBLm0/XwXgaZXB+O14GgZCpviIIjj7VibmrKG60ECexIdo39RmOkQ+bGBxIpC9Wirg=\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"fbd388ad71144fa6ac7ca3ec5cbc3307\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/pending?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:21 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "841",
+      "x-ms-request-id" : "3dbb02f9-4f0e-4e15-9dce-b9979abc0cfd",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVDCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEpD7uw1TM1INQKJG4C3DUH99bYAlwgn4/AqQ/BUuiQdbm2ywukIZVzxu0Fcxr/9AtCCJQaq0xPdMbnDuwWe8Gw/7AVMJXcGhKYQse/pACPyladxM13BaNXMcsb9J98vMjoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDZwAwZAIwOZJN1/qVqBqGhFCA8eqbC2HnST9lbvgnKt+YfV/f1h05dobt17ItIIuNAvSjaZonAjBLm0/XwXgaZXB+O14GgZCpviIIjj7VibmrKG60ECexIdo39RmOkQ+bGBxIpC9Wirg=\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"fbd388ad71144fa6ac7ca3ec5cbc3307\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/pending?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:22 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "841",
+      "x-ms-request-id" : "05ae4f78-d5a5-4cf9-9417-2b742a8963fc",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVDCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEpD7uw1TM1INQKJG4C3DUH99bYAlwgn4/AqQ/BUuiQdbm2ywukIZVzxu0Fcxr/9AtCCJQaq0xPdMbnDuwWe8Gw/7AVMJXcGhKYQse/pACPyladxM13BaNXMcsb9J98vMjoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDZwAwZAIwOZJN1/qVqBqGhFCA8eqbC2HnST9lbvgnKt+YfV/f1h05dobt17ItIIuNAvSjaZonAjBLm0/XwXgaZXB+O14GgZCpviIIjj7VibmrKG60ECexIdo39RmOkQ+bGBxIpC9Wirg=\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"fbd388ad71144fa6ac7ca3ec5cbc3307\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/pending?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "841",
+      "x-ms-request-id" : "608b1915-476f-4c00-b332-8a5a09ac4cf7",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVDCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEpD7uw1TM1INQKJG4C3DUH99bYAlwgn4/AqQ/BUuiQdbm2ywukIZVzxu0Fcxr/9AtCCJQaq0xPdMbnDuwWe8Gw/7AVMJXcGhKYQse/pACPyladxM13BaNXMcsb9J98vMjoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDZwAwZAIwOZJN1/qVqBqGhFCA8eqbC2HnST9lbvgnKt+YfV/f1h05dobt17ItIIuNAvSjaZonAjBLm0/XwXgaZXB+O14GgZCpviIIjj7VibmrKG60ECexIdo39RmOkQ+bGBxIpC9Wirg=\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"fbd388ad71144fa6ac7ca3ec5cbc3307\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/pending?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:24 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "841",
+      "x-ms-request-id" : "4bbc5cc5-fef0-4908-9317-b45d72802137",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVDCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEpD7uw1TM1INQKJG4C3DUH99bYAlwgn4/AqQ/BUuiQdbm2ywukIZVzxu0Fcxr/9AtCCJQaq0xPdMbnDuwWe8Gw/7AVMJXcGhKYQse/pACPyladxM13BaNXMcsb9J98vMjoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDZwAwZAIwOZJN1/qVqBqGhFCA8eqbC2HnST9lbvgnKt+YfV/f1h05dobt17ItIIuNAvSjaZonAjBLm0/XwXgaZXB+O14GgZCpviIIjj7VibmrKG60ECexIdo39RmOkQ+bGBxIpC9Wirg=\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"fbd388ad71144fa6ac7ca3ec5cbc3307\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/pending?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:27 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "841",
+      "x-ms-request-id" : "c82b5921-a043-4271-a96c-7b731875710e",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVDCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEpD7uw1TM1INQKJG4C3DUH99bYAlwgn4/AqQ/BUuiQdbm2ywukIZVzxu0Fcxr/9AtCCJQaq0xPdMbnDuwWe8Gw/7AVMJXcGhKYQse/pACPyladxM13BaNXMcsb9J98vMjoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDZwAwZAIwOZJN1/qVqBqGhFCA8eqbC2HnST9lbvgnKt+YfV/f1h05dobt17ItIIuNAvSjaZonAjBLm0/XwXgaZXB+O14GgZCpviIIjj7VibmrKG60ECexIdo39RmOkQ+bGBxIpC9Wirg=\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"fbd388ad71144fa6ac7ca3ec5cbc3307\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/pending?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:28 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "841",
+      "x-ms-request-id" : "d396e5c9-74b7-495f-af46-9d501edfd38f",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVDCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEpD7uw1TM1INQKJG4C3DUH99bYAlwgn4/AqQ/BUuiQdbm2ywukIZVzxu0Fcxr/9AtCCJQaq0xPdMbnDuwWe8Gw/7AVMJXcGhKYQse/pACPyladxM13BaNXMcsb9J98vMjoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDZwAwZAIwOZJN1/qVqBqGhFCA8eqbC2HnST9lbvgnKt+YfV/f1h05dobt17ItIIuNAvSjaZonAjBLm0/XwXgaZXB+O14GgZCpviIIjj7VibmrKG60ECexIdo39RmOkQ+bGBxIpC9Wirg=\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"fbd388ad71144fa6ac7ca3ec5cbc3307\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/pending?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:29 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "841",
+      "x-ms-request-id" : "ecbb9b36-984d-42a9-8dac-9cd220f69d0f",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVDCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEpD7uw1TM1INQKJG4C3DUH99bYAlwgn4/AqQ/BUuiQdbm2ywukIZVzxu0Fcxr/9AtCCJQaq0xPdMbnDuwWe8Gw/7AVMJXcGhKYQse/pACPyladxM13BaNXMcsb9J98vMjoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDZwAwZAIwOZJN1/qVqBqGhFCA8eqbC2HnST9lbvgnKt+YfV/f1h05dobt17ItIIuNAvSjaZonAjBLm0/XwXgaZXB+O14GgZCpviIIjj7VibmrKG60ECexIdo39RmOkQ+bGBxIpC9Wirg=\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"fbd388ad71144fa6ac7ca3ec5cbc3307\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/pending?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:30 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "753",
+      "x-ms-request-id" : "7623e7df-2f86-47cb-abec-ac041d744a90",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIIBVDCB3AIBADASMRAwDgYDVQQDEwdkZWZhdWx0MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEpD7uw1TM1INQKJG4C3DUH99bYAlwgn4/AqQ/BUuiQdbm2ywukIZVzxu0Fcxr/9AtCCJQaq0xPdMbnDuwWe8Gw/7AVMJXcGhKYQse/pACPyladxM13BaNXMcsb9J98vMjoEswSQYJKoZIhvcNAQkOMTwwOjAOBgNVHQ8BAf8EBAMCAgwwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdEwQCMAAwCgYIKoZIzj0EAwMDZwAwZAIwOZJN1/qVqBqGhFCA8eqbC2HnST9lbvgnKt+YfV/f1h05dobt17ItIIuNAvSjaZonAjBLm0/XwXgaZXB+O14GgZCpviIIjj7VibmrKG60ECexIdo39RmOkQ+bGBxIpC9Wirg=\",\"cancellation_requested\":false,\"status\":\"completed\",\"target\":\"https://cameravault.vault.azure.net/certificates/testCertificate9\",\"request_id\":\"fbd388ad71144fa6ac7ca3ec5cbc3307\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:31 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "1879",
+      "x-ms-request-id" : "3edfc8c5-7d45-4b72-9fc2-42a34a80d91e",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/3394af1d0710459dafb10086ebc09a0b\",\"kid\":\"https://cameravault.vault.azure.net/keys/testCertificate9/3394af1d0710459dafb10086ebc09a0b\",\"sid\":\"https://cameravault.vault.azure.net/secrets/testCertificate9/3394af1d0710459dafb10086ebc09a0b\",\"x5t\":\"j-2vuAWVzIYG3xLfSth4sMwLmC4\",\"cer\":\"MIIB2jCCAWGgAwIBAgIQZlcJSffbTw+q7OvrO0FbnjAKBggqhkjOPQQDAzASMRAwDgYDVQQDEwdkZWZhdWx0MB4XDTE5MTIwMzEyNTYzMFoXDTIxMTIwMzEzMDYzMFowEjEQMA4GA1UEAxMHZGVmYXVsdDB2MBAGByqGSM49AgEGBSuBBAAiA2IABKQ+7sNUzNSDUCiRuAtw1B/fW2AJcIJ+PwKkPwVLokHW5tssLpCGVc8btBXMa//QLQgiUGqtMT3TG5w7sFnvBsP+wFTCV3BoSmELHv6QAj8pWncTNdwWjVzHLG/SffLzI6N8MHowDgYDVR0PAQH/BAQDAgIMMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFLW4ioCgDblYbL6o9x3iKlk9tkyJMB0GA1UdDgQWBBS1uIqAoA25WGy+qPcd4ipZPbZMiTAKBggqhkjOPQQDAwNnADBkAjAi+LdSolS7qsE16o0bzjvNGh8UZv2EM0adUTXnQMAjDQv9A0GxZjFm4zs5wjkfXJYCMEV1dfjcdntZc94enpsTtWgiIwTu85x9oAOGZZzHuzcK+uGdZDBijf08YNgohGnirw==\",\"attributes\":{\"enabled\":true,\"nbf\":1575377790,\"exp\":1638536790,\"created\":1575378390,\"updated\":1575378390,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"policy\":{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"EC\",\"key_size\":384,\"reuse_key\":true,\"crv\":\"P-384\"},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=default\",\"sans\":{},\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"keyAgreement\",\"keyCertSign\"],\"validity_months\":24,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"days_before_expiry\":40},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\",\"cert_transparency\":false},\"attributes\":{\"enabled\":true,\"created\":1575378377,\"updated\":1575378377}},\"pending\":{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9/3394af1d0710459dafb10086ebc09a0b?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:31 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "1139",
+      "x-ms-request-id" : "73e29af4-22b0-4525-bf1b-20ddffc5f0a0",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/3394af1d0710459dafb10086ebc09a0b\",\"kid\":\"https://cameravault.vault.azure.net/keys/testCertificate9/3394af1d0710459dafb10086ebc09a0b\",\"sid\":\"https://cameravault.vault.azure.net/secrets/testCertificate9/3394af1d0710459dafb10086ebc09a0b\",\"x5t\":\"j-2vuAWVzIYG3xLfSth4sMwLmC4\",\"cer\":\"MIIB2jCCAWGgAwIBAgIQZlcJSffbTw+q7OvrO0FbnjAKBggqhkjOPQQDAzASMRAwDgYDVQQDEwdkZWZhdWx0MB4XDTE5MTIwMzEyNTYzMFoXDTIxMTIwMzEzMDYzMFowEjEQMA4GA1UEAxMHZGVmYXVsdDB2MBAGByqGSM49AgEGBSuBBAAiA2IABKQ+7sNUzNSDUCiRuAtw1B/fW2AJcIJ+PwKkPwVLokHW5tssLpCGVc8btBXMa//QLQgiUGqtMT3TG5w7sFnvBsP+wFTCV3BoSmELHv6QAj8pWncTNdwWjVzHLG/SffLzI6N8MHowDgYDVR0PAQH/BAQDAgIMMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFLW4ioCgDblYbL6o9x3iKlk9tkyJMB0GA1UdDgQWBBS1uIqAoA25WGy+qPcd4ipZPbZMiTAKBggqhkjOPQQDAwNnADBkAjAi+LdSolS7qsE16o0bzjvNGh8UZv2EM0adUTXnQMAjDQv9A0GxZjFm4zs5wjkfXJYCMEV1dfjcdntZc94enpsTtWgiIwTu85x9oAOGZZzHuzcK+uGdZDBijf08YNgohGnirw==\",\"attributes\":{\"enabled\":true,\"nbf\":1575377790,\"exp\":1638536790,\"created\":1575378390,\"updated\":1575378390,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:31 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "2024",
+      "x-ms-request-id" : "0eeff6dd-f967-4d8b-a95f-7a0af0c24314",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"recoveryId\":\"https://cameravault.vault.azure.net/deletedcertificates/testCertificate9\",\"deletedDate\":1575378392,\"scheduledPurgeDate\":1583154392,\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/3394af1d0710459dafb10086ebc09a0b\",\"kid\":\"https://cameravault.vault.azure.net/keys/testCertificate9/3394af1d0710459dafb10086ebc09a0b\",\"sid\":\"https://cameravault.vault.azure.net/secrets/testCertificate9/3394af1d0710459dafb10086ebc09a0b\",\"x5t\":\"j-2vuAWVzIYG3xLfSth4sMwLmC4\",\"cer\":\"MIIB2jCCAWGgAwIBAgIQZlcJSffbTw+q7OvrO0FbnjAKBggqhkjOPQQDAzASMRAwDgYDVQQDEwdkZWZhdWx0MB4XDTE5MTIwMzEyNTYzMFoXDTIxMTIwMzEzMDYzMFowEjEQMA4GA1UEAxMHZGVmYXVsdDB2MBAGByqGSM49AgEGBSuBBAAiA2IABKQ+7sNUzNSDUCiRuAtw1B/fW2AJcIJ+PwKkPwVLokHW5tssLpCGVc8btBXMa//QLQgiUGqtMT3TG5w7sFnvBsP+wFTCV3BoSmELHv6QAj8pWncTNdwWjVzHLG/SffLzI6N8MHowDgYDVR0PAQH/BAQDAgIMMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFLW4ioCgDblYbL6o9x3iKlk9tkyJMB0GA1UdDgQWBBS1uIqAoA25WGy+qPcd4ipZPbZMiTAKBggqhkjOPQQDAwNnADBkAjAi+LdSolS7qsE16o0bzjvNGh8UZv2EM0adUTXnQMAjDQv9A0GxZjFm4zs5wjkfXJYCMEV1dfjcdntZc94enpsTtWgiIwTu85x9oAOGZZzHuzcK+uGdZDBijf08YNgohGnirw==\",\"attributes\":{\"enabled\":true,\"nbf\":1575377790,\"exp\":1638536790,\"created\":1575378390,\"updated\":1575378390,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"policy\":{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"EC\",\"key_size\":384,\"reuse_key\":true,\"crv\":\"P-384\"},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=default\",\"sans\":{},\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"keyAgreement\",\"keyCertSign\"],\"validity_months\":24,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"days_before_expiry\":40},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\",\"cert_transparency\":false},\"attributes\":{\"enabled\":true,\"created\":1575378377,\"updated\":1575378377}},\"pending\":{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:06:32 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "100",
+      "x-ms-request-id" : "f64d47f6-a5e4-4e02-8114-7f240f8f030c",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: testCertificate9\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:06:33 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "100",
+      "x-ms-request-id" : "46d82725-e82f-4e7c-b8f9-8931687d04ba",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: testCertificate9\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:06:35 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "100",
+      "x-ms-request-id" : "d5e8e60d-5b6f-4db2-894e-299c93c5de70",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: testCertificate9\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:06:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "100",
+      "x-ms-request-id" : "bf67afdd-44e3-46d1-9438-b284108ea8b4",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: testCertificate9\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:06:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "100",
+      "x-ms-request-id" : "e066fda5-38bb-4d34-a1aa-c8d2cd44418c",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: testCertificate9\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:06:39 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "100",
+      "x-ms-request-id" : "cc62bc0e-35a8-4102-9c71-60290487aa0c",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: testCertificate9\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:06:40 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "100",
+      "x-ms-request-id" : "d03ff6aa-fcb4-45ad-86e1-4d0a4e2d2343",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: testCertificate9\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:06:41 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "100",
+      "x-ms-request-id" : "2d10bf8c-80c1-4b3a-aa40-7deaf5ce992f",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: testCertificate9\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:06:43 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "100",
+      "x-ms-request-id" : "8df15aff-1b01-49d8-bb2b-947aec4ac2cc",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: testCertificate9\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:06:44 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "100",
+      "x-ms-request-id" : "d07959a9-c8e4-4114-8580-a58cebf1de83",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: testCertificate9\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:06:45 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "100",
+      "x-ms-request-id" : "1b7a5b51-13e0-48f1-b439-a85bdfcee581",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: testCertificate9\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:06:46 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "2024",
+      "x-ms-request-id" : "30a70415-4618-4dc3-8e65-2b4f3056c258",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"recoveryId\":\"https://cameravault.vault.azure.net/deletedcertificates/testCertificate9\",\"deletedDate\":1575378392,\"scheduledPurgeDate\":1583154392,\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/3394af1d0710459dafb10086ebc09a0b\",\"kid\":\"https://cameravault.vault.azure.net/keys/testCertificate9/3394af1d0710459dafb10086ebc09a0b\",\"sid\":\"https://cameravault.vault.azure.net/secrets/testCertificate9/3394af1d0710459dafb10086ebc09a0b\",\"x5t\":\"j-2vuAWVzIYG3xLfSth4sMwLmC4\",\"cer\":\"MIIB2jCCAWGgAwIBAgIQZlcJSffbTw+q7OvrO0FbnjAKBggqhkjOPQQDAzASMRAwDgYDVQQDEwdkZWZhdWx0MB4XDTE5MTIwMzEyNTYzMFoXDTIxMTIwMzEzMDYzMFowEjEQMA4GA1UEAxMHZGVmYXVsdDB2MBAGByqGSM49AgEGBSuBBAAiA2IABKQ+7sNUzNSDUCiRuAtw1B/fW2AJcIJ+PwKkPwVLokHW5tssLpCGVc8btBXMa//QLQgiUGqtMT3TG5w7sFnvBsP+wFTCV3BoSmELHv6QAj8pWncTNdwWjVzHLG/SffLzI6N8MHowDgYDVR0PAQH/BAQDAgIMMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFLW4ioCgDblYbL6o9x3iKlk9tkyJMB0GA1UdDgQWBBS1uIqAoA25WGy+qPcd4ipZPbZMiTAKBggqhkjOPQQDAwNnADBkAjAi+LdSolS7qsE16o0bzjvNGh8UZv2EM0adUTXnQMAjDQv9A0GxZjFm4zs5wjkfXJYCMEV1dfjcdntZc94enpsTtWgiIwTu85x9oAOGZZzHuzcK+uGdZDBijf08YNgohGnirw==\",\"attributes\":{\"enabled\":true,\"nbf\":1575377790,\"exp\":1638536790,\"created\":1575378390,\"updated\":1575378390,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"policy\":{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"EC\",\"key_size\":384,\"reuse_key\":true,\"crv\":\"P-384\"},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=default\",\"sans\":{},\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"keyAgreement\",\"keyCertSign\"],\"validity_months\":24,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"days_before_expiry\":40},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\",\"cert_transparency\":false},\"attributes\":{\"enabled\":true,\"created\":1575378377,\"updated\":1575378377}},\"pending\":{\"id\":\"https://cameravault.vault.azure.net/certificates/testCertificate9/pending\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Tue, 03 Dec 2019 13:06:47 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "c719bde5-caf9-4859-9176-a4baf8ed207d",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/testCertificate9?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:06:47 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "100",
+      "x-ms-request-id" : "6fbd8b9e-30b5-401c-a78b-947ea85d5bb0",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: testCertificate9\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

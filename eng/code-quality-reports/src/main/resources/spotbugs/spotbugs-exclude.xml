@@ -500,7 +500,7 @@
       <Class name="com.azure.security.keyvault.certificates.models.IssuerProperties"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateIssuer"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
-      <Class name="com.azure.security.keyvault.certificates.models.LifeTimeAction"/>
+      <Class name="com.azure.security.keyvault.certificates.models.LifetimeAction"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateOperation"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
