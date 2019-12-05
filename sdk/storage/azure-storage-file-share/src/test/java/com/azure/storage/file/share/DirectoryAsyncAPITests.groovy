@@ -368,6 +368,7 @@ class DirectoryAsyncAPITests extends APISpec {
         StepVerifier.create(primaryDirectoryAsyncClient.forceCloseHandle("1"))
             .assertNext {
                 assert it.getClosedHandles() == 0
+                assert it.getFailedHandles() == 0
             }.verifyComplete()
     }
 
@@ -386,8 +387,10 @@ class DirectoryAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.forceCloseAllHandles(false))
-            .assertNext({ it.getClosedHandles() == 0 })
-            .verifyComplete()
+            .assertNext {
+                assert it.getClosedHandles() == 0
+                assert it.getFailedHandles() == 0
+            }.verifyComplete()
     }
 
     def "Create sub directory"() {

@@ -1238,7 +1238,8 @@ public class ShareFileAsyncClient {
             .forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, snapshot,
                 context)
             .map(response -> new SimpleResponse<>(response,
-                new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed())));
+                new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed(),
+                    response.getDeserializedHeaders().getNumberOfHandlesFailedToClosed())));
     }
 
     /**
@@ -1258,8 +1259,9 @@ public class ShareFileAsyncClient {
     public Mono<CloseHandlesInfo> forceCloseAllHandles() {
         try {
             return withContext(context -> forceCloseAllHandlesWithOptionalTimeout(null, context)
-                .reduce(new CloseHandlesInfo(0),
-                    (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles())));
+                .reduce(new CloseHandlesInfo(0, 0),
+                    (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
+                        accu.getFailedHandles() + next.getFailedHandles())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1274,7 +1276,8 @@ public class ShareFileAsyncClient {
                     response.getStatusCode(),
                     response.getHeaders(),
                     Collections.singletonList(
-                        new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed())),
+                        new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed(),
+                            response.getDeserializedHeaders().getNumberOfHandlesFailedToClosed())),
                     response.getDeserializedHeaders().getMarker(),
                     response.getDeserializedHeaders()));
 

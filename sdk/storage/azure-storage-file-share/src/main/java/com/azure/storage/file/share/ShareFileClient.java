@@ -903,8 +903,9 @@ public class ShareFileClient {
      */
     public CloseHandlesInfo forceCloseAllHandles(Duration timeout, Context context) {
         return new PagedIterable<>(shareFileAsyncClient.forceCloseAllHandlesWithOptionalTimeout(timeout, context))
-            .stream().reduce(new CloseHandlesInfo(0),
-                (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles()));
+            .stream().reduce(new CloseHandlesInfo(0, 0),
+                (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
+                    accu.getFailedHandles() + next.getFailedHandles()));
     }
 
     /**

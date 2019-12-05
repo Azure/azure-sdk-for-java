@@ -430,6 +430,7 @@ public class ShareDirectoryJavaDocCodeSamples {
         CloseHandlesInfo closeHandlesInfo = shareDirectoryClient.forceCloseAllHandles(true, Duration.ofSeconds(30),
             Context.NONE);
         System.out.printf("Closed %d open handles on the directory%n", closeHandlesInfo.getClosedHandles());
+        System.out.printf("Failed to close %d open handles on the directory%n", closeHandlesInfo.getFailedHandles());
         // END: com.azure.storage.file.share.ShareDirectoryClient.forceCloseAllHandles#boolean-Duration-Context
     }
 
