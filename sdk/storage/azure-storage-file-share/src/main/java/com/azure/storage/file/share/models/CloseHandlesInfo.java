@@ -20,10 +20,11 @@ public class CloseHandlesInfo {
      * Creates an instance of information about close handles.
      *
      * @param closedHandles The numbers of handles closed.
+     * Note : Failed handles was added as a parameter, default value for failed handles is 0
      */
     public CloseHandlesInfo(Integer closedHandles) {
         this.closedHandles = closedHandles;
-        this.failedHandles = 0; // What should default be??
+        this.failedHandles = 0;
     }
 
     /**
