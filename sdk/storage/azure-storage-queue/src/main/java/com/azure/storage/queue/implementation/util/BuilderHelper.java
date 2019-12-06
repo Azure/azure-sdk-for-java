@@ -19,6 +19,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
@@ -28,7 +29,6 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
-import com.azure.storage.queue.sas.QueueServiceSasQueryParameters;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -103,11 +103,12 @@ public final class BuilderHelper {
                 parts.setEndpoint(String.format("%s://%s", url.getProtocol(), url.getAuthority()));
             }
 
+            // TODO (gapra) : What happens if a user has custom queries?
             // Attempt to get the SAS token from the URL passed
-            String sasToken = new QueueServiceSasQueryParameters(
+            String sasToken = new CommonSasQueryParameters(
                 StorageImplUtils.parseQueryStringSplitValues(url.getQuery()), false).encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
-                parts.setQueueName(sasToken);
+                parts.setSasToken(sasToken);
             }
 
             return parts;
