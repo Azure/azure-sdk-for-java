@@ -31,7 +31,6 @@ import java.net.SocketAddress;
 import java.net.URI;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -41,6 +40,7 @@ import static com.azure.data.cosmos.internal.HttpConstants.HttpHeaders;
 import static com.azure.data.cosmos.internal.directconnectivity.RntbdTransportClient.Options;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 @JsonSerialize(using = RntbdServiceEndpoint.JsonSerializer.class)
 public final class RntbdServiceEndpoint implements RntbdEndpoint {
@@ -48,7 +48,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     // region Fields
 
     private static final String TAG_NAME = RntbdServiceEndpoint.class.getSimpleName();
-    private static final long QUIET_PERIOD = 2L * 1_000_000_000L;
+    private static final long QUIET_PERIOD = 2_000_000_000L; // 2 seconds
 
     private static final AtomicLong instanceCount = new AtomicLong();
     private static final Logger logger = LoggerFactory.getLogger(RntbdServiceEndpoint.class);
@@ -79,7 +79,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .group(group)
             .option(ChannelOption.ALLOCATOR, config.allocator())
             .option(ChannelOption.AUTO_READ, true)
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectionTimeout())
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectionTimeoutInMillis())
             .option(ChannelOption.RCVBUF_ALLOCATOR, receiveBufferAllocator)
             .option(ChannelOption.SO_KEEPALIVE, true)
             .remoteAddress(physicalAddress.getHost(), physicalAddress.getPort());
@@ -312,12 +312,12 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         public Provider(final RntbdTransportClient transportClient, final Options options, final SslContext sslContext) {
 
-            checkNotNull(transportClient, "provider");
-            checkNotNull(options, "options");
-            checkNotNull(sslContext, "sslContext");
+            checkNotNull(transportClient, "expected non-null provider");
+            checkNotNull(options, "expected non-null options");
+            checkNotNull(sslContext, "expected non-null sslContext");
 
-            final DefaultThreadFactory threadFactory = new DefaultThreadFactory("CosmosEventLoop", true);
-            final int threadCount = Runtime.getRuntime().availableProcessors();
+            final DefaultThreadFactory threadFactory = new DefaultThreadFactory("cosmos-rntbd-nio", true);
+            final int threadCount = 2 * Runtime.getRuntime().availableProcessors();
             final LogLevel wireLogLevel;
 
             if (logger.isTraceEnabled()) {
@@ -330,7 +330,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
             this.transportClient = transportClient;
             this.config = new Config(options, sslContext, wireLogLevel);
-            this.requestTimer = new RntbdRequestTimer(config.requestTimeout());
+            this.requestTimer = new RntbdRequestTimer(config.requestTimeoutInNanos());
             this.eventLoopGroup = new NioEventLoopGroup(threadCount, threadFactory);
 
             this.endpoints = new ConcurrentHashMap<>();
@@ -349,13 +349,15 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                     endpoint.close();
                 }
 
-                this.eventLoopGroup.shutdownGracefully(QUIET_PERIOD, this.config.shutdownTimeout(), TimeUnit.NANOSECONDS).addListener(future -> {
-                    if (future.isSuccess()) {
-                        logger.debug("\n  [{}]\n  closed endpoints", this);
-                        return;
-                    }
-                    logger.error("\n  [{}]\n  failed to close endpoints due to ", this, future.cause());
-                });
+                this.eventLoopGroup.shutdownGracefully(QUIET_PERIOD, this.config.shutdownTimeoutInNanos(), NANOSECONDS)
+                    .addListener(future -> {
+                        if (future.isSuccess()) {
+                            logger.debug("\n  [{}]\n  closed endpoints", this);
+                            return;
+                        }
+                        logger.error("\n  [{}]\n  failed to close endpoints due to ", this, future.cause());
+                    });
+
                 return;
             }
 
@@ -390,14 +392,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         private void evict(RntbdEndpoint endpoint) {
-
-            // TODO: DANOBLE: Utilize this method of tearing down unhealthy endpoints
-            //  Specifically, ensure that this method is called when a Read/WriteTimeoutException occurs or a health
-            //  check request fails. This perhaps likely requires a change to RntbdClientChannelPool.
-            //  Links:
-            //  https://msdata.visualstudio.com/CosmosDB/_workitems/edit/331552
-            //  https://msdata.visualstudio.com/CosmosDB/_workitems/edit/331593
-
             if (this.endpoints.remove(endpoint.remoteAddress().toString()) != null) {
                 this.evictions.incrementAndGet();
             }
