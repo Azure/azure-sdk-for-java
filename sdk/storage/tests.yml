@@ -4,6 +4,11 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: storage
+
+      # NB: The PreRunSteps and PostRunSteps are here to prove the concept in the
+      # defined scenario. A script will do this work and we will invoke the script
+      # from the archetype template, so the only changes required will be in
+      # the EnvVars.
       PreRunSteps:
         - pwsh: |
             # $uniqueIdentifier generates a pseudorandom value that represents a unique name that can be used with all resources
@@ -19,8 +24,7 @@ jobs:
 
             az group create --name $resourceGroupName --location $env:PROVISIONER_RG_LOCATION --tags DeleteAfter=$resourceGroupExpiration
             az group wait --created --resource-group $resourceGroupName
-            # TODO: use more correct tests-resources.json location
-            $rawDeployOutput = az group deployment create --resource-group $resourceGroupName --template-file sdk/storage/test-resources.json --parameters uniqueId=$uniqueIdentifier
+            $rawDeployOutput = az group deployment create --resource-group $resourceGroupName --template-file sdk/storage/test-resources.json --parameters baseName=$uniqueIdentifier
 
             $deploymentOutput = $rawDeployOutput | ConvertFrom-JSON -AsHashtable
             $deploymentOutput.properties.outputs.GetEnumerator() | foreach { Write-Host "##vso[task.setvariable variable=$($_.Name);issecret=true]$($_.value.value)" }
@@ -43,12 +47,18 @@ jobs:
             PROVISIONER_SUBSCRIPTION: $(provisioner-subscription)
           displayName: Delete Test-Specific Azure Resources
           condition: succeededOrFailed()
+
+
+      # This is the only change you should make to your tests.yml files
       EnvVars:
+        # Static resources and configuration values remain unchanged
         AZURE_TEST_MODE: RECORD
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
 
+        # Use the $(job-...) variables that are defined in the job scope
+        # instead of using the old static resource variables (e.g. $(java-...))
         PRIMARY_STORAGE_ACCOUNT_NAME: $(job-primary-storage-account-name)
         PRIMARY_STORAGE_ACCOUNT_KEY: $(job-primary-storage-account-key)
         SECONDARY_STORAGE_ACCOUNT_NAME: $(job-secondary-storage-account-name)
