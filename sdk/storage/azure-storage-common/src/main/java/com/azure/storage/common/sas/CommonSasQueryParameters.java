@@ -127,4 +127,112 @@ public class CommonSasQueryParameters extends BaseSasQueryParameters {
 
         return sb.toString();
     }
+
+    /**
+     * @return The signed identifier. Please see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information.
+     */
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    /**
+     * @return The storage resource.
+     */
+    public String getResource() {
+        return resource;
+    }
+
+    /**
+     * @return The Cache-Control header value when a client accesses the resource with this sas token.
+     */
+    public String getCacheControl() {
+        return cacheControl;
+    }
+
+    /**
+     * @return The Content-Disposition header value when a client accesses the resource with this sas token.
+     */
+    public String getContentDisposition() {
+        return contentDisposition;
+    }
+
+    /**
+     * @return The Content-Encoding header value when a client accesses the resource with this sas token.
+     */
+    public String getContentEncoding() {
+        return contentEncoding;
+    }
+
+    /**
+     * @return The Content-Language header value when a client accesses the resource with this sas token.
+     */
+    public String getContentLanguage() {
+        return contentLanguage;
+    }
+
+    /**
+     * @return The Content-Type header value when a client accesses the resource with this sas token.
+     */
+    public String getContentType() {
+        return contentType;
+    }
+
+    /**
+     * @return the object ID of the key.
+     */
+    public String getKeyObjectId() {
+        return keyObjectId;
+    }
+
+    /**
+     * @return the tenant ID of the key.
+     */
+    public String getKeyTenantId() {
+        return keyTenantId;
+    }
+
+    /**
+     * @return the datetime when the key becomes active.
+     */
+    public OffsetDateTime getKeyStart() {
+        return keyStart;
+    }
+
+    /**
+     * @return the datetime when the key expires.
+     */
+    public OffsetDateTime getKeyExpiry() {
+        return keyExpiry;
+    }
+
+    /**
+     * @return the services that are permitted by the key.
+     */
+    public String getKeyService() {
+        return keyService;
+    }
+
+    /**
+     * @return the service version that created the key.
+     */
+    public String getKeyVersion() {
+        return keyVersion;
+    }
+
+    /**
+     * @return The storage services being accessed (only for Account SAS). Please refer to {@link AccountSasService} for
+     * more details.
+     */
+    public String getServices() {
+        return services;
+    }
+
+    /**
+     * @return The storage resource types being accessed (only for Account SAS). Please refer to {@link
+     * AccountSasResourceType} for more details.
+     */
+    public String getResourceTypes() {
+        return resourceTypes;
+    }
 }
