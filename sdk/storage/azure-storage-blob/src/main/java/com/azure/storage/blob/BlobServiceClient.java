@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import reactor.core.publisher.Mono;
@@ -376,6 +377,7 @@ public final class BlobServiceClient {
 
     /**
      * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
      *
      * <p><strong>Generating an account SAS</strong></p>

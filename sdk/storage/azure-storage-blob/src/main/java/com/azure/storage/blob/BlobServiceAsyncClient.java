@@ -28,6 +28,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
@@ -557,6 +558,7 @@ public final class BlobServiceAsyncClient {
 
     /**
      * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
