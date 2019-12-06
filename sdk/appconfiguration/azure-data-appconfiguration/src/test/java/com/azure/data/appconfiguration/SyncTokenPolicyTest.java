@@ -3,77 +3,121 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
-import com.azure.core.util.Configuration;
-import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import org.junit.jupiter.api.BeforeEach;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.http.NoOpHttpClient;
+import com.azure.data.appconfiguration.implementation.SyncToken;
+import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.net.URL;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SyncTokenPolicyTest extends TestBase {
-    private static ConfigurationClient client;
-    private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
-    static String connectionString;
-    static TokenCredential tokenCredential;
 
-    @BeforeEach
-    public void setup() throws InvalidKeyException, NoSuchAlgorithmException {
-        if (interceptorManager.isPlaybackMode()) {
-            connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
-
-            String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
-            // In playback mode use connection string because CI environment doesn't set up to support AAD
-            client = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .endpoint(endpoint)
-                .httpClient(interceptorManager.getPlaybackClient())
-                .buildClient();
-        } else {
-            connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
-
-            String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
-            client = new ConfigurationClientBuilder()
-                .credential(tokenCredential)
-                .endpoint(endpoint)
-                .addPolicy(interceptorManager.getRecordPolicy()) // Record
-                .buildClient();
-        }
-    }
-
+    private static final String SYNC_TOKEN = "Sync-Token";
+    private static final String id = "jtqGc1I4";
+    private static final String newId = "newID";
+    private static final String value = "MDoyOA==";
+    private static final String updatedValue = "UpdatedValue";
+    private static final long sn = 28;
+    private static final long updatedSN = 30;
 
     @Test
     public void parseSyncToken() {
+        final SyncToken syncToken = new SyncToken().fromSyncTokenString(constructSyncTokenString(id, value, sn));
+        syncTokenEquals(syncToken, id, value, sn);
+    }
+
+    @Test
+    public void singleSyncTokenTest() throws Exception {
+        final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+
+        final String firstSyncToken = constructSyncTokenString(id, value, sn);
+        final HttpPipeline pipeline = customizedPipeline(firstSyncToken, syncTokenPolicy);
+        final HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
+        final String firstRequestHeader = response.getRequest().getHeaders().getValue(SYNC_TOKEN);
+        // At first request, the request header should have empty sync-token value
+        assertEquals("", firstRequestHeader);
+        final String firstResponseHeader = response.getHeaders().getValue(SYNC_TOKEN);
+        assertEquals(firstSyncToken, firstResponseHeader);
+
+        final String secondSyncToken = constructSyncTokenString(id, updatedValue, updatedSN);
+        final HttpPipeline pipeline2 = customizedPipeline(secondSyncToken, syncTokenPolicy);
+        final HttpResponse response2 = pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
+        // verify the new sync token value from the concurrent map
+        final String secondRequestHeader = response2.getRequest().getHeaders().getValue(SYNC_TOKEN);
+        assertEquals(constructSyncTokenStringWithoutSeqNumber(id, value), secondRequestHeader);
+
+        // verify the updated cached sync-token value
+        final HttpResponse response3 = pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
+        final String thirdRequestHeader = response3.getRequest().getHeaders().getValue(SYNC_TOKEN);
+        assertEquals(constructSyncTokenStringWithoutSeqNumber(id, updatedValue), thirdRequestHeader);
 
     }
 
     @Test
-    public void saveSyncToken() {
+    public void multipleSyncTokenTest() throws Exception {
+        final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
 
+        final String syncTokens = constructSyncTokenString(id, value, sn) + "," + constructSyncTokenString(newId, updatedValue, updatedSN);
+        final HttpPipeline pipeline = customizedPipeline(syncTokens, syncTokenPolicy);
+        final HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
+        // At first request, the request header should have empty sync-token value
+        final String firstRequestHeader = response.getRequest().getHeaders().getValue(SYNC_TOKEN);
+        assertEquals("", firstRequestHeader);
+        final String firstResponseHeader = response.getHeaders().getValue(SYNC_TOKEN);
+        assertEquals(syncTokens, firstResponseHeader);
+
+        final String secondSyncToken = constructSyncTokenString(id, updatedValue, updatedSN);
+        final HttpPipeline pipeline2 = customizedPipeline(secondSyncToken, syncTokenPolicy);
+        final HttpResponse response2 = pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
+        // verify the new sync token value from the concurrent map
+        final String secondRequestHeader = response2.getRequest().getHeaders().getValue(SYNC_TOKEN);
+        final String secondRequestHeaderExpected = constructSyncTokenStringWithoutSeqNumber(id, value) + "," + constructSyncTokenStringWithoutSeqNumber(newId, updatedValue);
+        assertEquals(secondRequestHeaderExpected, secondRequestHeader);
+
+        // verify the updated cached sync-token value
+        final HttpResponse response3 = pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
+        final String thirdRequestHeader = response3.getRequest().getHeaders().getValue(SYNC_TOKEN);
+        final String thirdRequestHeaderExpected = constructSyncTokenStringWithoutSeqNumber(id, updatedValue) + "," + constructSyncTokenStringWithoutSeqNumber(newId, updatedValue);
+        assertEquals(thirdRequestHeaderExpected, thirdRequestHeader);
     }
 
-    @Test
-    public void setSyncToken() {
-
+    private boolean syncTokenEquals(SyncToken syncToken, String id, String value, long sn) {
+        assertEquals(id, syncToken.getId());
+        assertEquals(value, syncToken.getValue());
+        assertEquals(sn, syncToken.getSequenceNumber());
+        return true;
     }
 
-    @Test
-    public void saveMultipleSyncToken() {
+    private HttpPipeline customizedPipeline(String syncToken, SyncTokenPolicy syncTokenPolicy) {
 
+        return new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders().put(SYNC_TOKEN, syncToken)));
+                }
+            })
+            .policies(syncTokenPolicy)
+            .build();
     }
 
-    @Test
-    public void setMultipleSyncToken() {
 
+    private String constructSyncTokenString(String id, String value, long sn) {
+        return String.format(id + "=" + value + ";sn=" + sn);
     }
 
-    @Test
-    public void updateCachedSyncToken() {
-
+    private String constructSyncTokenStringWithoutSeqNumber(String id, String value) {
+        return String.format(id + "=" + value);
     }
-
 }

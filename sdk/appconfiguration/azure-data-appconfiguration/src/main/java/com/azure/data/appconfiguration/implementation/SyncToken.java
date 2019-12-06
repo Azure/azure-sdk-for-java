@@ -14,9 +14,9 @@ public final class SyncToken {
 
     private String id, value;
     private long sequenceNumber;
+    private String syncTokenString;
 
-
-    SyncToken() {
+    public SyncToken() {
 
     }
 
@@ -31,12 +31,15 @@ public final class SyncToken {
         this.id = id;
         this.value = value;
         this.sequenceNumber = sequenceNumber;
+        syncTokenString = String.format(id + "=" + value + ";sn=" + sequenceNumber);
     }
 
     public SyncToken fromSyncTokenString(String syncToken) {
         if (CoreUtils.isNullOrEmpty(syncToken)) {
             return null;
         }
+
+        syncTokenString = syncToken;
 
         try {
             final int position = syncToken.indexOf(";sn=");
@@ -71,9 +74,7 @@ public final class SyncToken {
         return sequenceNumber;
     }
 
-
-    @Override
-    public String toString() {
-        return String.format(id + "=" + value);
+    public String getSyncTokenString() {
+        return syncTokenString;
     }
 }
