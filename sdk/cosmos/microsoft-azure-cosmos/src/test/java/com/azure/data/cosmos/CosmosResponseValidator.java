@@ -86,6 +86,19 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
             return this;
         }
 
+        public Builder<T> withDefaultTimeToLive(Integer timeToLive) {
+            validators.add(new CosmosResponseValidator<CosmosContainerResponse>() {
+
+                @Override
+                public void validate(CosmosContainerResponse resourceResponse) {
+                    assertThat(resourceResponse.properties()).isNotNull();
+                    assertThat(resourceResponse.properties().defaultTimeToLive()).isNotNull();
+                    assertThat(resourceResponse.properties().defaultTimeToLive()).isEqualTo(timeToLive);
+                }
+            });
+            return this;
+        }
+
         public Builder<T> withProperty(String propertyName, String value) {
             validators.add(new CosmosResponseValidator<T>() {
                 @Override
