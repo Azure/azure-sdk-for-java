@@ -3,7 +3,7 @@
 
 package com.azure.core.util;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -40,16 +40,18 @@ public class CoreUtilsTests {
 
     @Test
     public void testProperties() {
-        assertNotNull(CoreUtils.getProperties("azure-core.properties").get("version"));
-        assertNotNull(CoreUtils.getProperties("azure-core.properties").get("name"));
-        assertTrue(CoreUtils.getProperties("azure-core.properties").get("version")
+        UserAgentProperties properties =
+            CoreUtils.getUserAgentProperties("azure-core.properties");
+        assertFalse(properties.getName().matches("UnknownName"));
+        assertTrue(CoreUtils.getUserAgentProperties("azure-core.properties").getVersion()
             .matches("\\d.\\d.\\d([-a-zA-Z0-9.])*"));
     }
 
     @Test
     public void testMissingProperties() {
-        assertNotNull(CoreUtils.getProperties("foo.properties"));
-        assertTrue(CoreUtils.getProperties("foo.properties").isEmpty());
-        assertNull(CoreUtils.getProperties("azure-core.properties").get("foo"));
+        assertTrue(CoreUtils.getUserAgentProperties("foo.properties")
+            .getVersion().matches("UnknownVersion"));
+        assertTrue(CoreUtils.getUserAgentProperties("foo.properties")
+            .getName().matches("UnknownName"));
     }
 }
