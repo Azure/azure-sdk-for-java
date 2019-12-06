@@ -1048,9 +1048,9 @@
       <!-- separate profile for windows as the executable on windows is named npx.cmd and npx on other os families -->
       <id>verify-readme-windows</id>
       <activation>
-        <os>
-          <family>windows</family>
-        </os>
+        <property>
+          <name>verify-readme-windows</name>
+        </property>
       </activation>
       <build>
         <plugins>
@@ -1085,9 +1085,9 @@
     <profile>
       <id>verify-readme</id>
       <activation>
-        <os>
-          <family>!windows</family>
-        </os>
+        <property>
+          <name>verify-readme</name>
+        </property>
       </activation>
       <build>
         <plugins>

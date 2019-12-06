@@ -10,13 +10,14 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.google.common.base.Strings;
 import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.CorruptedFrameException;
 
 import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Strings.lenientFormat;
 
 @JsonPropertyOrder({ "id", "name", "type", "present", "required", "value" })
 final class RntbdToken {
@@ -66,16 +67,25 @@ final class RntbdToken {
     @JsonProperty
     public Object getValue() {
 
+        final RntbdTokenType.Codec codec = this.header.type().codec();
+
         if (this.value == null) {
-            return this.header.type().codec().defaultValue();
+            return codec.defaultValue();
         }
 
         if (this.value instanceof ByteBuf) {
             final ByteBuf buffer = (ByteBuf)this.value;
-            this.value = this.header.type().codec().read(buffer);
-            buffer.release();
+            this.value = codec.defaultValue();
+            try {
+                this.value = codec.read(buffer);
+            } catch (final CorruptedFrameException error) {
+                String message = lenientFormat("failed to read %s value: %s", this.getName(), error.getMessage());
+                throw new CorruptedFrameException(message);
+            } finally {
+                buffer.release();
+            }
         } else {
-            this.value = this.header.type().codec().convert(this.value);
+            this.value = codec.convert(this.value);
         }
 
         return this.value;
@@ -137,7 +147,7 @@ final class RntbdToken {
 
     public void decode(final ByteBuf in) {
 
-        checkNotNull(in, "in");
+        checkNotNull(in, "expected non-null in");
 
         if (this.value instanceof ByteBuf) {
             ((ByteBuf)this.value).release();
@@ -152,7 +162,7 @@ final class RntbdToken {
 
         if (!this.isPresent()) {
             if (this.isRequired()) {
-                final String message = Strings.lenientFormat("Missing value for required header: %s", this);
+                final String message = lenientFormat("Missing value for required header: %s", this);
                 throw new IllegalStateException(message);
             }
             return;
