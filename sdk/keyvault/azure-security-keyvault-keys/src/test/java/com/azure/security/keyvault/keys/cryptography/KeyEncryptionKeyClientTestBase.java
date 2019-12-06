@@ -20,7 +20,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -34,6 +33,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 
 public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
+    private static final String SDK_NAME = "client_name";
+    private static final String SDK_VERSION = "client_version";
 
     @Override
     protected String getTestName() {
@@ -79,7 +80,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), CryptographyServiceVersion.getLatest()));
+        policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), CryptographyServiceVersion.getLatest()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         if (credential != null) {
