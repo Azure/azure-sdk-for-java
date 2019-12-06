@@ -39,7 +39,7 @@
         "code": "java.missing.newClass",
         "new": "missing-class com.fasterxml.jackson.databind.ObjectMapper",
         "elementKind": "class",
-        "justification": "This is something we allow in com.azure.core.util.serializer.JacksonAdapter."
+        "justification": "We allow this in com.azure.core.util.serializer.JacksonAdapter."
       },
       {
         "regex": true,
@@ -68,6 +68,14 @@
         "exampleUseChainInOldApi": ".*com\\.azure\\.core\\.http\\.okhttp\\.OkHttpAsyncHttpClientBuilder.*",
         "elementKind": "class",
         "justification": "Dependencies are not checked. okhttp3 is allowed in azure-core-http-okhttp."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class com\\.azure\\.storage\\.common\\..+",
+        "exampleUseChainInOldApi": ".*com\\.azure\\.storage\\..*",
+        "elementKind": "class",
+        "justification": "Dependencies are not checked. azure-storage-common is used in the storage modules."
       }
     ]
   }
