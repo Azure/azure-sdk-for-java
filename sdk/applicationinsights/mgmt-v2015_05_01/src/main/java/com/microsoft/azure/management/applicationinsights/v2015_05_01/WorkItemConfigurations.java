@@ -17,9 +17,20 @@ import rx.Completable;
  */
 public interface WorkItemConfigurations {
     /**
+     * Gets specified work item configuration for an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<WorkItemConfiguration> getItemAsync(String resourceGroupName, String resourceName, String workItemConfigId);
+
+    /**
      * Gets the list work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -27,9 +38,9 @@ public interface WorkItemConfigurations {
     Observable<WorkItemConfiguration> listAsync(String resourceGroupName, String resourceName);
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -38,9 +49,21 @@ public interface WorkItemConfigurations {
     Completable deleteAsync(String resourceGroupName, String resourceName, String workItemConfigId);
 
     /**
+     * Update a work item configuration for an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
+     * @param workItemConfigurationProperties Properties that need to be specified to update a work item configuration for this Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<WorkItemConfiguration> updateItemAsync(String resourceGroupName, String resourceName, String workItemConfigId, WorkItemCreateConfiguration workItemConfigurationProperties);
+
+    /**
      * Create a work item configuration for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigurationProperties Properties that need to be specified to create a work item configuration of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -51,7 +74,7 @@ public interface WorkItemConfigurations {
     /**
      * Gets default work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

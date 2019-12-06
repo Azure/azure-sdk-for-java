@@ -87,7 +87,7 @@ public class ApplicationInsightsComponentFeatureCapabilitiesInner {
     private String apiAccessLevel;
 
     /**
-     * The applciation insights component used tracking type.
+     * The application insights component used tracking type.
      */
     @JsonProperty(value = "TrackingType", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingType;
@@ -219,7 +219,7 @@ public class ApplicationInsightsComponentFeatureCapabilitiesInner {
     }
 
     /**
-     * Get the applciation insights component used tracking type.
+     * Get the application insights component used tracking type.
      *
      * @return the trackingType value
      */

@@ -97,6 +97,9 @@ public interface ApplicationInsightsComponentFavorite extends HasInner<Applicati
         interface WithComponent {
            /**
             * Specifies resourceGroupName, resourceName.
+            * @param resourceGroupName The name of the resource group. The name is case insensitive
+            * @param resourceName The name of the Application Insights component resource
+            * @return the next definition stage
             */
             WithCreate withExistingComponent(String resourceGroupName, String resourceName);
         }
@@ -107,6 +110,8 @@ public interface ApplicationInsightsComponentFavorite extends HasInner<Applicati
         interface WithCategory {
             /**
              * Specifies category.
+             * @param category Favorite category, as defined by the user at creation time
+             * @return the next definition stage
              */
             WithCreate withCategory(String category);
         }
@@ -117,6 +122,8 @@ public interface ApplicationInsightsComponentFavorite extends HasInner<Applicati
         interface WithConfig {
             /**
              * Specifies config.
+             * @param config Configuration of this particular favorite, which are driven by the Azure portal UX. Configuration data is a string containing valid JSON
+             * @return the next definition stage
              */
             WithCreate withConfig(String config);
         }
@@ -127,6 +134,8 @@ public interface ApplicationInsightsComponentFavorite extends HasInner<Applicati
         interface WithFavoriteType {
             /**
              * Specifies favoriteType.
+             * @param favoriteType Enum indicating if this favorite definition is owned by a specific user or is shared between all users with access to the Application Insights component. Possible values include: 'shared', 'user'
+             * @return the next definition stage
              */
             WithCreate withFavoriteType(FavoriteType favoriteType);
         }
@@ -137,6 +146,8 @@ public interface ApplicationInsightsComponentFavorite extends HasInner<Applicati
         interface WithIsGeneratedFromTemplate {
             /**
              * Specifies isGeneratedFromTemplate.
+             * @param isGeneratedFromTemplate Flag denoting wether or not this favorite was generated from a template
+             * @return the next definition stage
              */
             WithCreate withIsGeneratedFromTemplate(Boolean isGeneratedFromTemplate);
         }
@@ -147,6 +158,8 @@ public interface ApplicationInsightsComponentFavorite extends HasInner<Applicati
         interface WithName {
             /**
              * Specifies name.
+             * @param name The user-defined name of the favorite
+             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -157,6 +170,8 @@ public interface ApplicationInsightsComponentFavorite extends HasInner<Applicati
         interface WithSourceType {
             /**
              * Specifies sourceType.
+             * @param sourceType The source of the favorite definition
+             * @return the next definition stage
              */
             WithCreate withSourceType(String sourceType);
         }
@@ -167,6 +182,8 @@ public interface ApplicationInsightsComponentFavorite extends HasInner<Applicati
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags A list of 0 or more tags that are associated with this favorite definition
+             * @return the next definition stage
              */
             WithCreate withTags(List<String> tags);
         }
@@ -177,6 +194,8 @@ public interface ApplicationInsightsComponentFavorite extends HasInner<Applicati
         interface WithVersion {
             /**
              * Specifies version.
+             * @param version This instance's version of the data model. This can change as new features are added that can be marked favorite. Current examples include MetricsExplorer (ME) and Search
+             * @return the next definition stage
              */
             WithCreate withVersion(String version);
         }

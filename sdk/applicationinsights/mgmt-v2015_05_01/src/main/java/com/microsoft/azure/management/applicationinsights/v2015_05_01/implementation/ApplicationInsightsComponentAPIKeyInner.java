@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ApplicationInsightsComponentAPIKeyInner {
     /**
-     * The unique ID of the API key inside an Applciation Insights component.
+     * The unique ID of the API key inside an Application Insights component.
      * It is auto generated when the API key is created.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
@@ -54,7 +54,7 @@ public class ApplicationInsightsComponentAPIKeyInner {
     private List<String> linkedWriteProperties;
 
     /**
-     * Get the unique ID of the API key inside an Applciation Insights component. It is auto generated when the API key is created.
+     * Get the unique ID of the API key inside an Application Insights component. It is auto generated when the API key is created.
      *
      * @return the id value
      */

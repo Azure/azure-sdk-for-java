@@ -25,6 +25,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -74,12 +75,20 @@ public class WorkItemConfigurationsInner {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs/{workItemConfigId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Path("resourceName") String resourceName, @Path("workItemConfigId") String workItemConfigId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.applicationinsights.v2015_05_01.WorkItemConfigurations getItem" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs/{workItemConfigId}")
+        Observable<Response<ResponseBody>> getItem(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Path("resourceName") String resourceName, @Path("workItemConfigId") String workItemConfigId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.applicationinsights.v2015_05_01.WorkItemConfigurations updateItem" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs/{workItemConfigId}")
+        Observable<Response<ResponseBody>> updateItem(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Path("resourceName") String resourceName, @Path("workItemConfigId") String workItemConfigId, @Query("api-version") String apiVersion, @Body WorkItemCreateConfiguration workItemConfigurationProperties, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
      * Gets the list work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws WorkItemConfigurationErrorException thrown if the request is rejected by server
@@ -93,7 +102,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets the list work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -106,7 +115,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets the list work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;WorkItemConfigurationInner&gt; object
@@ -123,7 +132,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets the list work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;WorkItemConfigurationInner&gt; object
@@ -170,7 +179,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Create a work item configuration for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigurationProperties Properties that need to be specified to create a work item configuration of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -185,7 +194,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Create a work item configuration for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigurationProperties Properties that need to be specified to create a work item configuration of a Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -199,7 +208,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Create a work item configuration for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigurationProperties Properties that need to be specified to create a work item configuration of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -217,7 +226,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Create a work item configuration for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigurationProperties Properties that need to be specified to create a work item configuration of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -264,7 +273,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets default work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -278,7 +287,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets default work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -291,7 +300,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets default work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WorkItemConfigurationInner object
@@ -308,7 +317,7 @@ public class WorkItemConfigurationsInner {
     /**
      * Gets default work item configurations that exist for the application.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WorkItemConfigurationInner object
@@ -331,8 +340,7 @@ public class WorkItemConfigurationsInner {
                 @Override
                 public Observable<ServiceResponse<WorkItemConfigurationInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<WorkItemConfigurationInner> result = getDefaultDelegate(response);
-                        ServiceResponse<WorkItemConfigurationInner> clientResponse = new ServiceResponse<WorkItemConfigurationInner>(result.body(), result.response());
+                        ServiceResponse<WorkItemConfigurationInner> clientResponse = getDefaultDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -349,62 +357,61 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Object object if successful.
      */
-    public Object delete(String resourceGroupName, String resourceName, String workItemConfigId) {
-        return deleteWithServiceResponseAsync(resourceGroupName, resourceName, workItemConfigId).toBlocking().single().body();
+    public void delete(String resourceGroupName, String resourceName, String workItemConfigId) {
+        deleteWithServiceResponseAsync(resourceGroupName, resourceName, workItemConfigId).toBlocking().single().body();
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Object> deleteAsync(String resourceGroupName, String resourceName, String workItemConfigId, final ServiceCallback<Object> serviceCallback) {
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String resourceName, String workItemConfigId, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, resourceName, workItemConfigId), serviceCallback);
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> deleteAsync(String resourceGroupName, String resourceName, String workItemConfigId) {
-        return deleteWithServiceResponseAsync(resourceGroupName, resourceName, workItemConfigId).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> deleteAsync(String resourceGroupName, String resourceName, String workItemConfigId) {
+        return deleteWithServiceResponseAsync(resourceGroupName, resourceName, workItemConfigId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> deleteWithServiceResponseAsync(String resourceGroupName, String resourceName, String workItemConfigId) {
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String resourceName, String workItemConfigId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -421,11 +428,11 @@ public class WorkItemConfigurationsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.delete(resourceGroupName, this.client.subscriptionId(), resourceName, workItemConfigId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = deleteDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -434,9 +441,203 @@ public class WorkItemConfigurationsInner {
             });
     }
 
-    private ServiceResponse<Object> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets specified work item configuration for an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the WorkItemConfigurationInner object if successful.
+     */
+    public WorkItemConfigurationInner getItem(String resourceGroupName, String resourceName, String workItemConfigId) {
+        return getItemWithServiceResponseAsync(resourceGroupName, resourceName, workItemConfigId).toBlocking().single().body();
+    }
+
+    /**
+     * Gets specified work item configuration for an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<WorkItemConfigurationInner> getItemAsync(String resourceGroupName, String resourceName, String workItemConfigId, final ServiceCallback<WorkItemConfigurationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getItemWithServiceResponseAsync(resourceGroupName, resourceName, workItemConfigId), serviceCallback);
+    }
+
+    /**
+     * Gets specified work item configuration for an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkItemConfigurationInner object
+     */
+    public Observable<WorkItemConfigurationInner> getItemAsync(String resourceGroupName, String resourceName, String workItemConfigId) {
+        return getItemWithServiceResponseAsync(resourceGroupName, resourceName, workItemConfigId).map(new Func1<ServiceResponse<WorkItemConfigurationInner>, WorkItemConfigurationInner>() {
+            @Override
+            public WorkItemConfigurationInner call(ServiceResponse<WorkItemConfigurationInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets specified work item configuration for an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkItemConfigurationInner object
+     */
+    public Observable<ServiceResponse<WorkItemConfigurationInner>> getItemWithServiceResponseAsync(String resourceGroupName, String resourceName, String workItemConfigId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (workItemConfigId == null) {
+            throw new IllegalArgumentException("Parameter workItemConfigId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getItem(resourceGroupName, this.client.subscriptionId(), resourceName, workItemConfigId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkItemConfigurationInner>>>() {
+                @Override
+                public Observable<ServiceResponse<WorkItemConfigurationInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<WorkItemConfigurationInner> clientResponse = getItemDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<WorkItemConfigurationInner> getItemDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkItemConfigurationInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<WorkItemConfigurationInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Update a work item configuration for an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
+     * @param workItemConfigurationProperties Properties that need to be specified to update a work item configuration for this Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the WorkItemConfigurationInner object if successful.
+     */
+    public WorkItemConfigurationInner updateItem(String resourceGroupName, String resourceName, String workItemConfigId, WorkItemCreateConfiguration workItemConfigurationProperties) {
+        return updateItemWithServiceResponseAsync(resourceGroupName, resourceName, workItemConfigId, workItemConfigurationProperties).toBlocking().single().body();
+    }
+
+    /**
+     * Update a work item configuration for an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
+     * @param workItemConfigurationProperties Properties that need to be specified to update a work item configuration for this Application Insights component.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<WorkItemConfigurationInner> updateItemAsync(String resourceGroupName, String resourceName, String workItemConfigId, WorkItemCreateConfiguration workItemConfigurationProperties, final ServiceCallback<WorkItemConfigurationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateItemWithServiceResponseAsync(resourceGroupName, resourceName, workItemConfigId, workItemConfigurationProperties), serviceCallback);
+    }
+
+    /**
+     * Update a work item configuration for an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
+     * @param workItemConfigurationProperties Properties that need to be specified to update a work item configuration for this Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkItemConfigurationInner object
+     */
+    public Observable<WorkItemConfigurationInner> updateItemAsync(String resourceGroupName, String resourceName, String workItemConfigId, WorkItemCreateConfiguration workItemConfigurationProperties) {
+        return updateItemWithServiceResponseAsync(resourceGroupName, resourceName, workItemConfigId, workItemConfigurationProperties).map(new Func1<ServiceResponse<WorkItemConfigurationInner>, WorkItemConfigurationInner>() {
+            @Override
+            public WorkItemConfigurationInner call(ServiceResponse<WorkItemConfigurationInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update a work item configuration for an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as defined in connector configuration
+     * @param workItemConfigurationProperties Properties that need to be specified to update a work item configuration for this Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkItemConfigurationInner object
+     */
+    public Observable<ServiceResponse<WorkItemConfigurationInner>> updateItemWithServiceResponseAsync(String resourceGroupName, String resourceName, String workItemConfigId, WorkItemCreateConfiguration workItemConfigurationProperties) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (workItemConfigId == null) {
+            throw new IllegalArgumentException("Parameter workItemConfigId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (workItemConfigurationProperties == null) {
+            throw new IllegalArgumentException("Parameter workItemConfigurationProperties is required and cannot be null.");
+        }
+        Validator.validate(workItemConfigurationProperties);
+        return service.updateItem(resourceGroupName, this.client.subscriptionId(), resourceName, workItemConfigId, this.client.apiVersion(), workItemConfigurationProperties, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkItemConfigurationInner>>>() {
+                @Override
+                public Observable<ServiceResponse<WorkItemConfigurationInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<WorkItemConfigurationInner> clientResponse = updateItemDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<WorkItemConfigurationInner> updateItemDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkItemConfigurationInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<WorkItemConfigurationInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
