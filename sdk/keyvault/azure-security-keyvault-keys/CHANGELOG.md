@@ -1,5 +1,10 @@
 # Release History
-## 4.0.0 (2019-10-31)
+## 4.0.1 (2019-12-06)
+
+### Major changes
+- `KeyEncryptionKeyClientBuilder.buildKeyEncryptionKey` and `KeyEncryptionKeyClientBuilder.buildAsyncKeyEncryptionKey`supports consumption of a secret id representing the symmetric key stored in the Key Vault as a secret.
+- Dropped third party dependency on apache commons codec library.
+
 
 ### Breaking changes
 - Key has been renamed to KeyVaultKey to avoid ambiguity with other libraries and to yield better search results.
