@@ -96,9 +96,9 @@ final class SignatureEncoding {
         char[] out = new char[l << 1];
         int i = 0;
 
-        for (int var5 = 0; i < l; ++i) {
-            out[var5++] = toDigits[(240 & data[i]) >>> 4];
-            out[var5++] = toDigits[15 & data[i]];
+        for (int j = 0; i < l; ++i) {
+            out[j++] = toDigits[(240 & data[i]) >>> 4];
+            out[j++] = toDigits[15 & data[i]];
         }
 
         return out;

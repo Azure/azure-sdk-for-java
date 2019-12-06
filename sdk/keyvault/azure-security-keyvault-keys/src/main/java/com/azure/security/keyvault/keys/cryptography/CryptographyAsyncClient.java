@@ -55,7 +55,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.OCT;
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-    public static final String SECRETS_COLLECTION = "secrets";
+    static final String SECRETS_COLLECTION = "secrets";
     JsonWebKey key;
     private final CryptographyService service;
     private CryptographyServiceClient cryptographyServiceClient;
