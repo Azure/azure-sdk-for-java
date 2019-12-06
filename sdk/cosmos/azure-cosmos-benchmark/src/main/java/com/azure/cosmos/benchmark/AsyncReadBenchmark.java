@@ -48,6 +48,7 @@ class AsyncReadBenchmark extends AsyncBenchmark<CosmosAsyncItemResponse> {
 
     AsyncReadBenchmark(Configuration cfg) {
         super(cfg);
+        // TODO: once all benchmarks move to v4 api, we should rely on the container which is read in the parent, and remove this.
         cosmosAsyncContainer = v4Client.getDatabase(cfg.getDatabaseId()).getContainer(cfg.getCollectionId()).read().block().getContainer();
     }
 
