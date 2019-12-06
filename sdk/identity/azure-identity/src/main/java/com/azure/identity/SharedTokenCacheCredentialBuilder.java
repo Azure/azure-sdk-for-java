@@ -30,6 +30,6 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * @return a {@link SharedTokenCacheCredentialBuilder} with the current configurations.
      */
     public SharedTokenCacheCredential build() {
-        return new SharedTokenCacheCredential(username, clientId, identityClientOptions);
+        return new SharedTokenCacheCredential(username, clientId, tenantId, identityClientOptions);
     }
 }
