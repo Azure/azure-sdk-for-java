@@ -70,7 +70,6 @@ public class AddHeadersFromContextPolicyTest {
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
-
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     Assertions.assertEquals(request.getHeaders().getValue("x-ms-client-request-id"), customRequestId);
