@@ -26,30 +26,38 @@
     "extension": "revapi.ignore",
     "configuration": [
       {
-        "regex": false,
         "code": "java.missing.newClass",
         "new": "missing-class org.reactivestreams.Publisher",
         "justification": "This class is part of the reactive streams initiative in Java."
       },
       {
-        "regex": false,
         "code": "java.missing.newClass",
         "new": "missing-class reactor.util.context.Context",
         "justification": "Reactor is allowed in the public API. Since we don't analyze dependencies, these show up as being unresolved."
       },
       {
-        "regex": false,
         "code": "java.missing.newClass",
         "new": "missing-class com.fasterxml.jackson.databind.ObjectMapper",
-        "class": "com.azure.corel.util.serializer.JacksonAdapter",
-        "justification": "This is something we allow in com.azure.corel.util.serializer.JacksonAdapter"
+        "class": "com.azure.core.util.serializer.JacksonAdapter",
+        "justification": "This is something we allow in com.azure.core.util.serializer.JacksonAdapter."
       },
       {
         "regex": true,
         "code": "java\\.missing\\.(oldClass|newClass)",
-        "old": "missing\\-class reactor\\.core(\\..+)?",
         "new": "missing\\-class reactor\\.core(\\..+)?",
         "justification": "Reactor is allowed in the public API. Since we don't analyze dependencies, these show up as being unresolved."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class com\\.azure\\.core(?!\\.implementation)(\\..+)?",
+        "justification": "com.azure.core.* classes are allowed in the public API. Since we don't analyze dependencies, these show up as being unresolved."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class (io|reactor)\\.netty\\..+",
+        "justification": "Dependencies are not checked. io.netty and reactor.netty are allowed in our azure-core-http-netty package."
       }
     ]
   }
