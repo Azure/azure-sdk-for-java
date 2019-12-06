@@ -69,12 +69,12 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         checkNotNull(config, "config: null");
 
-        this.idleConnectionTimeout = config.idleConnectionTimeout();
+        this.idleConnectionTimeout = config.idleConnectionTimeoutInNanos();
 
-        this.readDelayLimit = config.receiveHangDetectionTime();
+        this.readDelayLimit = config.receiveHangDetectionTimeInNanos();
         checkArgument(this.readDelayLimit > readHangGracePeriod, "config.receiveHangDetectionTime: %s", this.readDelayLimit);
 
-        this.writeDelayLimit = config.sendHangDetectionTime();
+        this.writeDelayLimit = config.sendHangDetectionTimeInNanos();
         checkArgument(this.writeDelayLimit > writeHangGracePeriod, "config.sendHangDetectionTime: %s", this.writeDelayLimit);
     }
 
@@ -96,7 +96,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
     public Future<Boolean> isHealthy(final Channel channel) {
 
-        checkNotNull(channel, "channel: null");
+        checkNotNull(channel, "expected non-null channel");
 
         final RntbdRequestManager requestManager = channel.pipeline().get(RntbdRequestManager.class);
         final Promise<Boolean> promise = channel.eventLoop().newPromise();

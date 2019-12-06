@@ -22,7 +22,7 @@ definition, such as text or binary data.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.0.0</version>
+  <version>12.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,7 +41,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-batch</artifactId>
-    <version>12.0.0</version>
+    <version>12.1.0</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -57,7 +57,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -68,6 +68,8 @@ When an HTTP client is included on the classpath, as shown above, it is not nece
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
 
 ```java
+// ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L35-L38
+
 HttpClient client = new NettyAsyncHttpClientBuilder()
     .port(8080)
     .wiretap(true)
@@ -111,12 +113,14 @@ The following sections provide several code snippets covering some of the most c
 
 Create a BlobBatchClient from a [`BlobServiceClient`]().
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L42-L42 -->
 ```java
 BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
 ```
 
 ### Bulk Deleting Blobs
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L46-L48 -->
 ```java
 blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach(response ->
     System.out.printf("Deleting blob with URL %s completed with status code %d%n",
@@ -125,6 +129,7 @@ blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach
 
 ### Bulk Setting AccessTier
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L52-L54 -->
 ```java
 blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
     System.out.printf("Setting blob access tier with URL %s completed with status code %d%n",
@@ -135,16 +140,17 @@ blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
 
 Deleting blobs in a batch that have different pre-requisites.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L58-L77 -->
 ```java
 BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
 // Delete a blob.
 Response<Void> deleteResponse = blobBatch.deleteBlob(blobUrl);
-        
+
 // Delete a specific blob snapshot.
 Response<Void> deleteSnapshotResponse =
     blobBatch.deleteBlob(blobUrlWithSnapshot, DeleteSnapshotsOptionType.ONLY, null);
-        
+
 // Delete a blob that has a lease.
 Response<Void> deleteWithLeaseResponse =
     blobBatch.deleteBlob(blobUrlWithLease, DeleteSnapshotsOptionType.INCLUDE, new BlobRequestConditions()
@@ -160,6 +166,7 @@ System.out.printf("Deleting blob with lease completed with status code %d%n",
 
 Setting `AccessTier` on blobs in batch that have different pre-requisites. 
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L81-L97 -->
 ```java
 BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
@@ -170,8 +177,8 @@ Response<Void> setTierResponse = blobBatch.setBlobAccessTier(blobUrl, AccessTier
 Response<Void> setTierResponse2 = blobBatch.setBlobAccessTier(blobUrl2, AccessTier.ARCHIVE);
 
 // Set AccessTier on a blob that has a lease.
-Response<Void> setTierWithLeaseResponse = blobBatch.setBlobAccessTier(blobUrlWithLease, AccessTier.HOT, 
-    .setLeaseId("leaseId");
+Response<Void> setTierWithLeaseResponse = blobBatch.setBlobAccessTier(blobUrlWithLease, AccessTier.HOT,
+    "leaseId");
 
 blobBatchClient.submitBatch(blobBatch);
 System.out.printf("Set AccessTier on blob completed with status code %d%n", setTierResponse.getStatusCode());

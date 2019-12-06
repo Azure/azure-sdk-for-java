@@ -1148,4 +1148,17 @@ class FileSystemAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    def "List Paths OAuth"() {
+        setup:
+        def client = getOAuthServiceClient()
+        def fsClient = client.getFileSystemClient(fsc.getFileSystemName())
+        fsClient.createFile(generatePathName())
+
+        when:
+        Iterator<PathItem> items = fsClient.listPaths().iterator()
+
+        then:
+        items.hasNext()
+    }
+
 }

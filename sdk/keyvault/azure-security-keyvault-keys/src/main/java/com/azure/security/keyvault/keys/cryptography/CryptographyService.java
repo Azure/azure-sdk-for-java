@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
+import com.azure.core.annotation.Put;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -130,4 +131,29 @@ interface CryptographyService {
                                        @HeaderParam("accept-language") String acceptLanguage,
                                        @HeaderParam("Content-Type") String type,
                                        Context context);
+
+    @Get("secrets/{secret-name}/{secret-version}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Mono<Response<SecretKey>> getSecret(@HostParam("url") String url,
+                                       @PathParam("secret-name") String keyName,
+                                       @PathParam("secret-version") String keyVersion,
+                                       @QueryParam("api-version") String apiVersion,
+                                       @HeaderParam("accept-language") String acceptLanguage,
+                                       @HeaderParam("Content-Type") String type,
+                                       Context context);
+
+    @Put("secrets/{secret-name}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Mono<Response<SecretKey>> setSecret(@HostParam("url") String url,
+                                             @PathParam("secret-name") String secretName,
+                                             @QueryParam("api-version") String apiVersion,
+                                             @HeaderParam("accept-language") String acceptLanguage,
+                                             @BodyParam("body") SecretRequestParameters parameters,
+                                             @HeaderParam("Content-Type") String type,
+                                             Context context);
 }

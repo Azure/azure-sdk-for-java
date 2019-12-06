@@ -15,6 +15,7 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UserAgentProperties;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
@@ -31,10 +32,8 @@ import java.util.regex.Pattern;
  * This class provides helper methods for common builder patterns.
  */
 public final class BuilderHelper {
-    private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-file-share";
-    // {x-version-update-start;com.azure:azure-storage-file-share;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-beta.6";
-    // {x-version-update-end}
+    private static final UserAgentProperties PROPERTIES =
+        CoreUtils.getUserAgentProperties("azure-storage-file-share.properties");
 
     private static final Pattern IP_URL_PATTERN = Pattern
         .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
@@ -95,7 +94,7 @@ public final class BuilderHelper {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
         return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(),
-            DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration);
+            PROPERTIES.getName(), PROPERTIES.getVersion(), configuration);
     }
 
     /**

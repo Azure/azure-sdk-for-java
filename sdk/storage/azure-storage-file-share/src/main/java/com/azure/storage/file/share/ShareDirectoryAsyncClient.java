@@ -22,6 +22,7 @@ import com.azure.storage.file.share.implementation.models.DirectorysGetPropertie
 import com.azure.storage.file.share.implementation.models.DirectorysListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.share.implementation.models.DirectorysSetPropertiesResponse;
+import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
@@ -587,9 +588,9 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
      * @param handleId Handle ID to be closed.
-     * @return An empty response.
+     * @return A response that contains information about the closed handles.
      */
-    public Mono<Void> forceCloseHandle(String handleId) {
+    public Mono<CloseHandlesInfo> forceCloseHandle(String handleId) {
         try {
             return withContext(context -> forceCloseHandleWithResponse(handleId, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -610,9 +611,10 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
      * @param handleId Handle ID to be closed.
-     * @return A response that only contains headers and response status code.
+     * @return A response that contains information about the closed handles along with headers and response status
+     * code.
      */
-    public Mono<Response<Void>> forceCloseHandleWithResponse(String handleId) {
+    public Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId) {
         try {
             return withContext(context -> forceCloseHandleWithResponse(handleId, context));
         } catch (RuntimeException ex) {
@@ -620,10 +622,11 @@ public class ShareDirectoryAsyncClient {
         }
     }
 
-    Mono<Response<Void>> forceCloseHandleWithResponse(String handleId, Context context) {
+    Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId, Context context) {
         return this.azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath,
             handleId, null, null, snapshot, false, context)
-            .map(response -> new SimpleResponse<>(response, null));
+            .map(response -> new SimpleResponse<>(response,
+                new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed())));
     }
 
     /**
@@ -640,26 +643,28 @@ public class ShareDirectoryAsyncClient {
      *
      * @param recursive Flag indicating if the operation should apply to all subdirectories and files contained in the
      * directory.
-     * @return The number of handles closed.
+     * @return A response that contains information about the closed handles.
      */
-    public Mono<Integer> forceCloseAllHandles(boolean recursive) {
+    public Mono<CloseHandlesInfo> forceCloseAllHandles(boolean recursive) {
         try {
             return withContext(context -> forceCloseAllHandlesWithTimeout(recursive, null, context)
-                .reduce(0, Integer::sum));
+                .reduce(new CloseHandlesInfo(0),
+                    (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    PagedFlux<Integer> forceCloseAllHandlesWithTimeout(boolean recursive, Duration timeout, Context context) {
-        Function<String, Mono<PagedResponse<Integer>>> retriever =
+    PagedFlux<CloseHandlesInfo> forceCloseAllHandlesWithTimeout(boolean recursive, Duration timeout, Context context) {
+        Function<String, Mono<PagedResponse<CloseHandlesInfo>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, "*", null, marker, snapshot,
                     recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    Collections.singletonList(response.getDeserializedHeaders().getNumberOfHandlesClosed()),
+                    Collections.singletonList(
+                        new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed())),
                     response.getDeserializedHeaders().getMarker(),
                     response.getDeserializedHeaders()));
 

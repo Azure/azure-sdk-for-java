@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
@@ -13,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-keys</artifactId>
-  <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+  <version>4.0.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
 
   <name>Microsoft Azure client library for KeyVault Keys</name>
   <description>This module contains client library for Microsoft Azure KeyVault Keys.</description>
@@ -43,12 +44,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-    </dependency>
-
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.13</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
