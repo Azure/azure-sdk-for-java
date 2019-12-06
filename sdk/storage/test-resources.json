@@ -2,29 +2,20 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "unique_id": {
-            "defaultValue": "djurekstorage4",
+        "uniqueId": {
             "type": "String"
         },
-        "tenant_id": {
-            "type": "string",
-            "defaultValue": "not-specified"
-        },
-        "test_app_id": {
-            "type": "string",
-            "defaultValue": "not-specified"
-        },
-        "endpoint_suffix": {
+        "endpointSuffix": {
             "type": "string",
             "defaultValue": "core.windows.net"
         }
     },
     "variables": {
         "storageApiVersion": "[providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]]",
-        "primaryAccountName": "[concat('prim', parameters('unique_id'))]",
-        "secondaryAccountName": "[concat('sec', parameters('unique_id'))]",
-        "premiumAccountName": "[concat('prem', parameters('unique_id'))]",
-        "dataLakeAccountName": "[concat('dtlk', parameters('unique_id'))]",
+        "primaryAccountName": "[concat('prim', parameters('uniqueId'))]",
+        "secondaryAccountName": "[concat('sec', parameters('uniqueId'))]",
+        "premiumAccountName": "[concat('prem', parameters('uniqueId'))]",
+        "dataLakeAccountName": "[concat('dtlk', parameters('uniqueId'))]",
         "location": "[resourceGroup().location]"
     },
     "resources": [
@@ -210,15 +201,15 @@
 
         "job-azure-storage-blob-connection-string": {
             "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpoint_suffix'))]"
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
         },
         "job-azure-storage-file-connection-string": {
             "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpoint_suffix'))]"
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
         },
         "job-azure-storage-queue-connection-string": {
             "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpoint_suffix'))]"
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
         }
 
     }
