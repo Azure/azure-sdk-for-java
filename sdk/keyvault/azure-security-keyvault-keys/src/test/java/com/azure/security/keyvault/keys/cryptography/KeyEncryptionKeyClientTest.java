@@ -43,6 +43,8 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
         byte[] encrypted = client.wrapKey("A128KW", cek);
         byte[] ek = { 0x1F, (byte) 0xA6, (byte) 0x8B, 0x0A, (byte) 0x81, 0x12, (byte) 0xB4, 0x47, (byte) 0xAE, (byte) 0xF3, 0x4B, (byte) 0xD8, (byte) 0xFB, 0x5A, 0x7B, (byte) 0x82, (byte) 0x9D, 0x3E, (byte) 0x86, 0x23, 0x71, (byte) 0xD2, (byte) 0xCF, (byte) 0xE5 };
         assertArrayEquals(ek, encrypted);
+        byte[] dek = client.unwrapKey("A128KW", ek);
+        assertArrayEquals(dek, cek);
     }
 
     @Test
@@ -53,5 +55,7 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
         byte[] encrypted = client.wrapKey("A192KW", cek);
         byte[] ek = { (byte) 0x96, 0x77, (byte) 0x8B, 0x25, (byte) 0xAE, 0x6C, (byte) 0xA4, 0x35, (byte) 0xF9, 0x2B, 0x5B, (byte) 0x97, (byte) 0xC0, 0x50, (byte) 0xAE, (byte) 0xD2, 0x46, (byte) 0x8A, (byte) 0xB8, (byte) 0xA1, 0x7A, (byte) 0xD8, 0x4E, 0x5D };
         assertArrayEquals(ek, encrypted);
+        byte[] dek = client.unwrapKey("A192KW", ek);
+        assertArrayEquals(dek, cek);
     }
 }

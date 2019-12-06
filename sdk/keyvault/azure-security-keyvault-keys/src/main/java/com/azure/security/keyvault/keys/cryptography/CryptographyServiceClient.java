@@ -105,6 +105,8 @@ class CryptographyServiceClient {
         ArrayNode a = mapper.createArrayNode();
         a.add(KeyOperation.WRAP_KEY.toString());
         a.add(KeyOperation.UNWRAP_KEY.toString());
+        a.add(KeyOperation.ENCRYPT.toString());
+        a.add(KeyOperation.DECRYPT.toString());
 
         ((ObjectNode) rootNode).put("k", Base64.getUrlDecoder().decode(secretKey.getValue()));
         ((ObjectNode) rootNode).put("kid", this.keyId);
