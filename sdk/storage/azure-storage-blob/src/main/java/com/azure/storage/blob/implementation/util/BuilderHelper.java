@@ -23,7 +23,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
@@ -86,7 +85,7 @@ public final class BuilderHelper {
         }
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
+     //   policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(additionalPolicies);
 
