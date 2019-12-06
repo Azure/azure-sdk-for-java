@@ -4,7 +4,6 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.BridgeInternalBenchmark;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
