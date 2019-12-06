@@ -355,7 +355,7 @@
             </configurationFile>
           </analysisConfigurationFiles>
           <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-          <checkDependencies>true</checkDependencies>
+          <checkDependencies>false</checkDependencies>
           <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
         <dependencies>
@@ -693,7 +693,7 @@
             </configurationFile>
           </analysisConfigurationFiles>
           <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-          <checkDependencies>true</checkDependencies>
+          <checkDependencies>false</checkDependencies>
           <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
         <reportSets>
