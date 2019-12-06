@@ -78,7 +78,6 @@ import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.file.share.FileSmbProperties.parseFileSMBDate;
 
 /**
  * This class provides a client that contains all the operations for interacting with file in Azure Storage File
