@@ -12,7 +12,7 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+    <version>4.0.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
 </dependency>
 ```
 [//]: # ({x-version-update-end})

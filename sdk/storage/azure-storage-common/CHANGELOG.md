@@ -1,6 +1,10 @@
 # Release History
+
 ## Version XX.X.X (XXXX-XX-XX)
 - Added generateSas methods on service clients to improve discoverability and convenience of sas. Deprecated setters of required parameters, generateSasQueryParameters methods on AccountSasSignatureValues to direct users to using the methods added on clients.
+
+## Version 12.1.0 (2019-12-04)
+- Upgraded to version 1.1.0 of Azure Core.
 
 ## Version 12.0.0 (2019-10-31)
 - Removed BaseClientBuilder
