@@ -45,8 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
-
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Blob clients.
  *
@@ -153,14 +151,16 @@ public final class EncryptedBlobClientBuilder {
             return  httpPipeline;
         }
 
+        String userAgentName = BlobCryptographyConfiguration.NAME;
+        String userAgentVersion = BlobCryptographyConfiguration.VERSION;
         Configuration userAgentConfiguration = (configuration == null) ? Configuration.NONE : configuration;
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
-        policies.add(new UserAgentPolicy(logOptions.getApplicationId(), USER_AGENT_PROPERTIES.getName(),
-            USER_AGENT_PROPERTIES.getVersion(), userAgentConfiguration));
+        policies.add(new UserAgentPolicy(logOptions.getApplicationId(), userAgentName, userAgentVersion,
+            userAgentConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 

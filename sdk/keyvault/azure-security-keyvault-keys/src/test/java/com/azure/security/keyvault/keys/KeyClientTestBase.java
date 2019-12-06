@@ -21,6 +21,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -46,8 +47,6 @@ public abstract class KeyClientTestBase extends TestBase {
     private static final String KEY_NAME = "javaKeyTemp";
     private static final KeyType RSA_KEY_TYPE = KeyType.RSA;
     private static final KeyType EC_KEY_TYPE = KeyType.EC;
-    private static final String SDK_NAME = "client_name";
-    private static final String SDK_VERSION = "client_version";
 
     @Override
     protected String getTestName() {
@@ -71,7 +70,7 @@ public abstract class KeyClientTestBase extends TestBase {
         HttpClient httpClient;
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), KeyServiceVersion.getLatest()));
+        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), KeyServiceVersion.getLatest()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         if (credential != null) {

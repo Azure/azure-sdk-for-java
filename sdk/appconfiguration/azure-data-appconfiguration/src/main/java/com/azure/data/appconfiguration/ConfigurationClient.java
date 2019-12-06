@@ -334,7 +334,7 @@ public final class ConfigurationClient {
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-Context}
      *
      * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
      *

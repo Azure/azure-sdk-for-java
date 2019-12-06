@@ -16,10 +16,9 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.UserAgentProperties;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 
 import java.util.ArrayList;
@@ -64,10 +63,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
 public final class CryptographyClientBuilder {
     final List<HttpPipelinePolicy> policies;
-    final UserAgentProperties properties;
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
-    // This is properties file's name.
-    private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
     private TokenCredential credential;
     private HttpPipeline pipeline;
     private JsonWebKey jsonWebKey;
@@ -85,7 +81,6 @@ public final class CryptographyClientBuilder {
         retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
-        properties = CoreUtils.getUserAgentProperties(AZURE_KEY_VAULT_KEYS);
     }
 
     /**
@@ -158,8 +153,8 @@ public final class CryptographyClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), properties.getName(),
-            properties.getVersion(), buildConfiguration));
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
+            buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));
