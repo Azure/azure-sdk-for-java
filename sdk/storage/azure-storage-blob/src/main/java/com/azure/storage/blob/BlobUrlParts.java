@@ -35,7 +35,6 @@ public final class BlobUrlParts {
     private String snapshot;
     private String accountName;
     private boolean isIpUrl;
-    private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
     private CommonSasQueryParameters commonSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
@@ -175,7 +174,8 @@ public final class BlobUrlParts {
      */
     @Deprecated
     public BlobServiceSasQueryParameters getSasQueryParameters() {
-        return blobServiceSasQueryParameters;
+        String encodedSas = commonSasQueryParameters.encode();
+        return new BlobServiceSasQueryParameters(parseQueryString(encodedSas), true);
     }
 
     /**
@@ -187,7 +187,8 @@ public final class BlobUrlParts {
      */
     @Deprecated
     public BlobUrlParts setSasQueryParameters(BlobServiceSasQueryParameters blobServiceSasQueryParameters) {
-        this.blobServiceSasQueryParameters = blobServiceSasQueryParameters;
+        String encodedBlobSas = blobServiceSasQueryParameters.encode();
+        this.commonSasQueryParameters = new CommonSasQueryParameters(parseQueryString(encodedBlobSas), true);
         return this;
     }
 
@@ -339,13 +340,9 @@ public final class BlobUrlParts {
             parts.setSnapshot(snapshotArray[0]);
         }
 
-        BlobServiceSasQueryParameters blobServiceSasQueryParameters
-            = new BlobServiceSasQueryParameters(queryParamsMap, false);
-
         CommonSasQueryParameters commonSasQueryParameters = new CommonSasQueryParameters(queryParamsMap, true);
 
-        return parts.setSasQueryParameters(blobServiceSasQueryParameters)
-            .setSasQueryParameters(commonSasQueryParameters)
+        return parts.setSasQueryParameters(commonSasQueryParameters)
             .setUnparsedParameters(queryParamsMap);
     }
 
