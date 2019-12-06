@@ -1147,6 +1147,6 @@
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
-    <module>sdk/storage/azure-storage-queue-cryptography</module>
+<!--    <module>sdk/storage/azure-storage-queue-cryptography</module>--> <!-- Removed for now as this is an empty module -->
   </modules>
 </project>
