@@ -44,6 +44,7 @@ public final class TextAnalyticsClientBuilder {
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
+    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
 
     private final ClientLogger logger = new ClientLogger(TextAnalyticsClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
@@ -99,9 +100,8 @@ public final class TextAnalyticsClientBuilder {
         if (tokenCredential != null) {
             // User token based policy
             policies.add(
-                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", buildEndpoint)));
+                new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
         } else if (subscriptionKey != null) {
-            //TODO: add additional policy for subscription key if it is required. But might be not
             headers.put(OCP_APIM_SUBSCRIPTION_KEY, subscriptionKey);
         } else {
             // Throw exception that credential and tokenCredential cannot be null
