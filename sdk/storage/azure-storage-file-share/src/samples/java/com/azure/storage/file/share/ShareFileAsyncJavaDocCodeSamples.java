@@ -168,10 +168,9 @@ public class ShareFileAsyncJavaDocCodeSamples {
             Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2));
 
         poller.subscribe(response -> {
-                final ShareFileCopyInfo value = response.getValue();
-                System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
-            }, error -> System.err.println("Error: " + error),
-            () -> System.out.println("Complete copying the file."));
+            final ShareFileCopyInfo value = response.getValue();
+            System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
+        }, error -> System.err.println("Error: " + error), () -> System.out.println("Complete copying the file."));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration
     }
 
