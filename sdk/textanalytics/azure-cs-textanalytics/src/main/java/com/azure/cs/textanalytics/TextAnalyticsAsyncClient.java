@@ -539,4 +539,18 @@ public final class TextAnalyticsAsyncClient {
             new MultiLanguageBatchInput().setDocuments(document), options.getModelVersion(), options.showStatistics(),
             context).map(response -> new SimpleResponse<>(response, null));
     }
+
+
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+////    public List<DocumentLanguage> test(LanguageBatchInput languageBatchInput) {
+////        Mono<SimpleResponse<LanguageResult>> result = service.languagesWithRestResponseAsync(languageBatchInput, Context.NONE)
+////            .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", languageBatchInput))
+////            .doOnSuccess(response -> logger.info("A batch of detected language output - {}", languageBatchInput))
+////            .doOnError(error -> logger.warning("Failed to detected languages - {}", languageBatchInput))
+////            .map(response -> new SimpleResponse<>(response, response.getValue()));
+////        List<DocumentLanguage> documentLanguages = result.block().getValue().getDocuments();
+////
+////        return documentLanguages;
+////    }
+
 }

@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.rest.SimpleResponse;
@@ -38,7 +39,9 @@ public class Demo {
     @Test
     public void test() {
 
-        String endpoint = "https://shawnjavatextanalytics.cognitiveservices.azure.com/";
+//        String endpoint = "https://shawnjavatextanalytics.cognitiveservices.azure.com/";
+        String endpoint = "https://javatextanalyticstestresources.cognitiveservices.azure.com/";
+        String defaultScope = "https://cognitiveservices.azure.com/.default";
 
         subscriptionKey = Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY);
         System.out.println("Subscription Key = " + subscriptionKey);
@@ -55,7 +58,7 @@ public class Demo {
         policies.add(new AddDatePolicy());
 
         policies.add(
-            new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+            new BearerTokenAuthenticationPolicy(tokenCredential, defaultScope));
 
         // customized pipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -67,7 +70,7 @@ public class Demo {
             .pipeline(pipeline)
             .build();
 
-        System.out.println("Endpoint = " + ta.getEndpoint());
+        System.out.println("Endpoint22 = " + ta.getEndpoint());
 
         final List<DetectLanguageInput> inputs = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English","US"),
@@ -89,4 +92,42 @@ public class Demo {
                     detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));
         }
     }
+
+
+//    @Test
+//    public void testBuilder() {
+//
+//        subscriptionKey = Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY);
+//        System.out.println("Subscription Key = " + subscriptionKey);
+//
+//        TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder();
+//
+//
+//
+//        TextAnalyticsAsyncClient client = clientBuilder
+////            .endpoint("https://shawnjavatextanalytics.cognitiveservices.azure.com/")
+//            .endpoint("https://javatextanalyticstestresources.cognitiveservices.azure.com/")
+//            .subscriptionKey(subscriptionKey)
+//            .buildAsyncClient();
+//
+//        final List<DetectLanguageInput> inputs = Arrays.asList(
+//            new DetectLanguageInput("1", "This is written in English","US"),
+//            new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
+//        );
+//        final LanguageBatchInput languageBatchInput = new LanguageBatchInput().setDocuments(inputs);
+//
+//
+//
+//        final List<DocumentLanguage> documentLanguages = client.test(languageBatchInput);
+//        for (DocumentLanguage documentLanguage : documentLanguages) {
+//            System.out.println("document language = " + documentLanguage.getId());
+//
+//            documentLanguage.getDetectedLanguages().forEach(detectedLanguage ->
+//                System.out.printf("detected language, name = %s, iso name = %s, score = %s.",
+//                    detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));
+//        }
+//
+//
+//
+//    }
 }
