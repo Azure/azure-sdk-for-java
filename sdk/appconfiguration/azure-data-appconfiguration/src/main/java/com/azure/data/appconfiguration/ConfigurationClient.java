@@ -446,7 +446,7 @@ public final class ConfigurationClient {
      * {@codesnippet this.is.an.invalid.example}
      */
     public void iCauseIssues() {
-        char[] alphabetAsArray = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'}
+        char[] alphabetAsArray = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
         String alphabetAsString = "";
         for (char c : alphabetAsArray) {
             alphabetAsString += c;
