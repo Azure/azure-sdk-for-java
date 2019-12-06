@@ -56,7 +56,7 @@ public final class TextBatchStatistics {
      * @param documentsCount the documentsCount value to set.
      * @return the DocumentBatchStatistics object itself.
      */
-    TextBatchStatistics setDocumentCount(int documentsCount) {
+    public TextBatchStatistics setDocumentCount(int documentsCount) {
         this.documentCount = documentsCount;
         return this;
     }
@@ -78,7 +78,7 @@ public final class TextBatchStatistics {
      * @param validDocumentCount the validDocumentCount value to set.
      * @return the DocumentBatchStatistics object itself.
      */
-    TextBatchStatistics setValidDocumentCount(int validDocumentCount) {
+    public TextBatchStatistics setValidDocumentCount(int validDocumentCount) {
         this.validDocumentCount = validDocumentCount;
         return this;
     }
@@ -102,7 +102,7 @@ public final class TextBatchStatistics {
      * @param erroneousDocumentCount the erroneousDocumentCount value to set.
      * @return the DocumentBatchStatistics object itself.
      */
-    TextBatchStatistics setErroneousDocumentCount(int erroneousDocumentCount) {
+    public TextBatchStatistics setErroneousDocumentCount(int erroneousDocumentCount) {
         this.erroneousDocumentCount = erroneousDocumentCount;
         return this;
     }
@@ -124,7 +124,7 @@ public final class TextBatchStatistics {
      * @param transactionCount the transactionsCount value to set.
      * @return the DocumentBatchStatistics object itself.
      */
-    TextBatchStatistics setTransactionCount(long transactionCount) {
+    public TextBatchStatistics setTransactionCount(long transactionCount) {
         this.transactionCount = transactionCount;
         return this;
     }

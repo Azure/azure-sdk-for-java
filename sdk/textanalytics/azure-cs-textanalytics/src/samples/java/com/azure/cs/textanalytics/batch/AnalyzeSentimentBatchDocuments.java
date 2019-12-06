@@ -49,7 +49,7 @@ public class AnalyzeSentimentBatchDocuments {
                 documentSentiment.getNeutralScore(),
                 documentSentiment.getNegativeScore(),
                 documentSentiment.getLength(),
-                documentSentiment.getOffSet());
+                documentSentiment.getOffset());
 
             result.getSentenceSentiments().forEach(sentenceSentiment ->
                 System.out.printf("Recognized sentence sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s",
@@ -58,7 +58,7 @@ public class AnalyzeSentimentBatchDocuments {
                     sentenceSentiment.getNeutralScore(),
                     sentenceSentiment.getNegativeScore(),
                     sentenceSentiment.getLength(),
-                    sentenceSentiment.getOffSet()));
+                    sentenceSentiment.getOffset()));
         });
     }
 }
