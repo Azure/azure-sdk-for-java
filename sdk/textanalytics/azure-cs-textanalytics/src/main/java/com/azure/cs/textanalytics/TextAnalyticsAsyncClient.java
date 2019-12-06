@@ -30,6 +30,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -81,6 +82,7 @@ public final class TextAnalyticsAsyncClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
+        Objects.requireNonNull(text, "'text' cannot be null.");
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
         languageInputs.add(new DetectLanguageInput(Integer.toString(0), text, countryHint));
         // TODO: should this be a random number generator?
@@ -145,6 +147,7 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(inputs, "'inputs' cannot be null.");
         // TODO: validate inputs?
         final LanguageBatchInput languageBatchInput = new LanguageBatchInput().setDocuments(inputs);
         // TODO: confirm if options null is fine?
@@ -173,8 +176,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     private DetectLanguageResult convertToErrorDetectLanguageResult(final DocumentError errorDocument) {
-        return new DetectLanguageResult(errorDocument.getId(), null,
-            errorDocument.getError(),
+        return new DetectLanguageResult(errorDocument.getId(), null, errorDocument.getError(),
             null, null);
     }
 

@@ -21,7 +21,7 @@ public class TextSentiment {
     // sentence
     private String length;
 
-    private int offSet;
+    private int offset;
 
     // sentiment string
     private TextSentimentClass textSentimentClass;
@@ -62,12 +62,12 @@ public class TextSentiment {
         return this;
     }
 
-    public int getOffSet() {
-        return offSet;
+    public int getOffset() {
+        return offset;
     }
 
-    TextSentiment setOffSet(int offSet) {
-        this.offSet = offSet;
+    TextSentiment setOffset(int offset) {
+        this.offset = offset;
         return this;
     }
 
