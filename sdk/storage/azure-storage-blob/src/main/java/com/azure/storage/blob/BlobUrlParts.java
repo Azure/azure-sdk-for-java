@@ -183,7 +183,7 @@ public final class BlobUrlParts {
      *
      * @param blobServiceSasQueryParameters The SAS query parameters.
      * @return the updated BlobUrlParts object.
-     * @deprecated Please use {@link #setSasQueryParameters(CommonSasQueryParameters)}
+     * @deprecated Please use {@link #setCommonSasQueryParameters(CommonSasQueryParameters)}
      */
     @Deprecated
     public BlobUrlParts setSasQueryParameters(BlobServiceSasQueryParameters blobServiceSasQueryParameters) {
@@ -209,8 +209,20 @@ public final class BlobUrlParts {
      * @param commonSasQueryParameters The SAS query parameters.
      * @return the updated BlobUrlParts object.
      */
-    public BlobUrlParts setSasQueryParameters(CommonSasQueryParameters commonSasQueryParameters) {
+    public BlobUrlParts setCommonSasQueryParameters(CommonSasQueryParameters commonSasQueryParameters) {
         this.commonSasQueryParameters = commonSasQueryParameters;
+        return this;
+    }
+
+    /**
+     * Sets the {@link CommonSasQueryParameters} representing the SAS query parameters that will be used to
+     * generate the SAS token for this URL.
+     *
+     * @param queryParams The SAS query parameter string.
+     * @return the updated BlobUrlParts object.
+     */
+    public BlobUrlParts parseSasQueryParameters(String queryParams) {
+        this.commonSasQueryParameters = new CommonSasQueryParameters(parseQueryString(queryParams), true);
         return this;
     }
 
@@ -220,7 +232,6 @@ public final class BlobUrlParts {
      * @return the non-SAS token query string values.
      */
     public Map<String, String[]> getUnparsedParameters() {
-        // TODO (gapra) : Investigate if this is ever added back into the URL.
         return unparsedParameters;
     }
 
@@ -342,7 +353,7 @@ public final class BlobUrlParts {
 
         CommonSasQueryParameters commonSasQueryParameters = new CommonSasQueryParameters(queryParamsMap, true);
 
-        return parts.setSasQueryParameters(commonSasQueryParameters)
+        return parts.setCommonSasQueryParameters(commonSasQueryParameters)
             .setUnparsedParameters(queryParamsMap);
     }
 
@@ -413,7 +424,7 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Parses a query string into a one to many hashmap.
+     * Parses a query string into a one to many TreeMap.
      *
      * @param queryParams The string of query params to parse.
      * @return A {@code HashMap<String, String[]>} of the key values.
