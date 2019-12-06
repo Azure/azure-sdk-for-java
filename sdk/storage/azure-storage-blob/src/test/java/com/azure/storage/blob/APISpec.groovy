@@ -141,6 +141,9 @@ class APISpec extends Specification {
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
+        Properties props = System.getProperties()
+        props.setProperty("reactor.bufferSize.x", "16")
+        props.setProperty("reactor.bufferSize.small", "128")
         System.out.println(String.format("---------- SimaTest: %d ---------------", Integer.parseInt(System.getProperty("reactor.bufferSize.x", "32"))))
     }
 
