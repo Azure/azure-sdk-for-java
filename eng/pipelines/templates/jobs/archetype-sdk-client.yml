@@ -157,8 +157,8 @@ jobs:
         displayName: 'Install Module and Run SpotBugs, Checkstyle, and Javadoc'
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: '-DskipTests -Dgpg.skip -Dverify-readme'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme'
+          mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
