@@ -29,8 +29,8 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
     private final Config config;
 
     RntbdClientChannelHandler(final Config config, final ChannelHealthChecker healthChecker) {
-        checkNotNull(healthChecker, "healthChecker");
-        checkNotNull(config, "config");
+        checkNotNull(healthChecker, "expected non-null healthChecker");
+        checkNotNull(config, "expected non-null config");
         this.healthChecker = healthChecker;
         this.config = config;
     }
@@ -96,9 +96,9 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
         checkNotNull(channel);
 
         final RntbdRequestManager requestManager = new RntbdRequestManager(this.healthChecker, this.config.maxRequestsPerChannel());
-        final long readerIdleTime = this.config.receiveHangDetectionTime();
-        final long writerIdleTime = this.config.sendHangDetectionTime();
-        final long allIdleTime = this.config.idleConnectionTimeout();
+        final long readerIdleTime = this.config.receiveHangDetectionTimeInNanos();
+        final long writerIdleTime = this.config.sendHangDetectionTimeInNanos();
+        final long allIdleTime = this.config.idleConnectionTimeoutInNanos();
         final ChannelPipeline pipeline = channel.pipeline();
 
         pipeline.addFirst(

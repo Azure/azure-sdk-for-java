@@ -52,6 +52,12 @@ Licensed under the MIT License.
       <groupId>commons-validator</groupId>
       <artifactId>commons-validator</artifactId>
       <version>1.6</version> <!-- {x-version-update;commons-validator:commons-validator;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>commons-beanutils</groupId>
+          <artifactId>commons-beanutils</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
