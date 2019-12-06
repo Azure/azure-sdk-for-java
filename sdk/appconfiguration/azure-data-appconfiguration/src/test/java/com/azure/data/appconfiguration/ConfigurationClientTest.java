@@ -7,8 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -57,7 +62,20 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 .buildClient());
         }
     }
+    private void test(){
+        ConfigurationClient client = clientSetup(credentials -> new ConfigurationClientBuilder()
+            .connectionString("<Your>")
+            .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+            .addPolicy(new AddHeadersFromContextPolicy())
+            .buildClient());
+        // This is how you can add your headers
+        final HttpHeaders headers = new HttpHeaders();
+        headers.put("my-header1", "my-header1-value");
+        headers.put("my-header2", "my-header2-value");
+        headers.put("my-header3", "my-header3-value");
+        client.addConfigurationSettingWithResponse(  new ConfigurationSetting().setKey("key").setValue("value"), new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
 
+    }
     @Override
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
