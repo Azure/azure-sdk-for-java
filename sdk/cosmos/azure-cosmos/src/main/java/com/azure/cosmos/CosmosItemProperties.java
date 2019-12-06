@@ -65,6 +65,11 @@ public class CosmosItemProperties extends Resource {
                 .collect(Collectors.toList());
     }
 
+    static <T> List<T> getTypedResultsFromV2Results(List<Document> results, Class<T> klass) {
+        return results.stream().map(document -> document.toObject(klass))
+                   .collect(Collectors.toList());
+    }
+    
     public <T> T getObject(Class<?> klass) throws IOException {
         return (T) mapper.readValue(this.toJson(), klass);
     }

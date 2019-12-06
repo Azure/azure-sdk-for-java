@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -526,9 +527,23 @@ public class JsonSerializable {
      * @return the POJO.
      */
     public <T> T toObject(Class<T> c) {
+        // TODO: We have to remove this if we do not want to support CosmosItemProperties anymore, and change all the
+        //  tests accordingly
+        if(CosmosItemProperties.class.isAssignableFrom(c)){
+            return (T) new CosmosItemProperties(this.toJson());
+        }
+        
         if (JsonSerializable.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
                 || Number.class.isAssignableFrom(c) || Boolean.class.isAssignableFrom(c)) {
-            throw new IllegalArgumentException("c can only be a POJO class or JSONObject");
+            return c.cast(this.get(Constants.Properties.VALUE));
+        }
+        if (List.class.isAssignableFrom(c)){
+            Object o = this.get(Constants.Properties.VALUE);
+            try {
+                return this.getMapper().readValue(o.toString(), c);
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to convert to collection.", e);
+            }
         }
         if (ObjectNode.class.isAssignableFrom(c)) {
             // JSONObject

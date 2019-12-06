@@ -111,7 +111,7 @@ public interface ChangeFeedContextClient {
      * @param options        the feed options.
      * @return an {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
-    Flux<FeedResponse<CosmosItemProperties>> queryItems(CosmosAsyncContainer containerLink, SqlQuerySpec querySpec, FeedOptions options);
+    <T> Flux<FeedResponse<T>> queryItems(CosmosAsyncContainer containerLink, SqlQuerySpec querySpec, FeedOptions options, Class<T> klass);
 
     /**
      * @return the Cosmos client's service endpoint.

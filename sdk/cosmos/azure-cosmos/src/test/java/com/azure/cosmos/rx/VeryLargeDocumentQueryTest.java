@@ -56,7 +56,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
-            options);
+            options, CosmosItemProperties.class);
 
         AtomicInteger totalCount = new AtomicInteger();
         StepVerifier.create(feedResponseFlux.subscribeOn(Schedulers.single()))

@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties>{
     private CosmosAsyncItem itemClient;
@@ -25,7 +26,7 @@ public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties
     public CosmosItemProperties getProperties() {
         return super.getProperties();
     }
-
+    
     /**
      * Gets the CosmosAsyncItem
      * @return the cosmos item
