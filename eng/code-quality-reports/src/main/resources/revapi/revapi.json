@@ -38,7 +38,7 @@
       {
         "code": "java.missing.newClass",
         "new": "missing-class com.fasterxml.jackson.databind.ObjectMapper",
-        "class": "com.azure.core.util.serializer.JacksonAdapter",
+        "elementKind": "class",
         "justification": "This is something we allow in com.azure.core.util.serializer.JacksonAdapter."
       },
       {
@@ -57,7 +57,17 @@
         "regex": true,
         "code": "java\\.missing\\.(oldClass|newClass)",
         "new": "missing\\-class (io|reactor)\\.netty\\..+",
-        "justification": "Dependencies are not checked. io.netty and reactor.netty are allowed in our azure-core-http-netty package."
+        "exampleUseChainInOldApi": ".*com\\.azure\\.core\\.http\\.netty\\.NettyAsyncHttpClientBuilder.*",
+        "elementKind": "class",
+        "justification": "Dependencies are not checked. io.netty and reactor.netty are allowed in azure-core-http-netty."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class okhttp3\\..+",
+        "exampleUseChainInOldApi": ".*com\\.azure\\.core\\.http\\.okhttp\\.OkHttpAsyncHttpClientBuilder.*",
+        "elementKind": "class",
+        "justification": "Dependencies are not checked. okhttp3 is allowed in azure-core-http-okhttp."
       }
     ]
   }
