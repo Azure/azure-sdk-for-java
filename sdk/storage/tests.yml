@@ -20,7 +20,7 @@ jobs:
             az group create --name $resourceGroupName --location $env:PROVISIONER_RG_LOCATION --tags DeleteAfter=$resourceGroupExpiration
             az group wait --created --resource-group $resourceGroupName
             # TODO: use more correct tests-resources.json location
-            $rawDeployOutput = az group deployment create --resource-group $resourceGroupName --template-file sdk/storage/test-resources.json --parameters uniqueId=$uniqueIdentifier tenantId="$env:PROVISIONER_AAD_TENANT" testAppId="$env:TEST_APP_ID"
+            $rawDeployOutput = az group deployment create --resource-group $resourceGroupName --template-file sdk/storage/test-resources.json --parameters uniqueId=$uniqueIdentifier
 
             $deploymentOutput = $rawDeployOutput | ConvertFrom-JSON -AsHashtable
             $deploymentOutput.properties.outputs.GetEnumerator() | foreach { Write-Host "##vso[task.setvariable variable=$($_.Name);issecret=true]$($_.value.value)" }
@@ -30,7 +30,6 @@ jobs:
             PROVISIONER_AAD_TENANT: $(provisioner-aad-tenant)
             PROVISIONER_SUBSCRIPTION: $(provisioner-subscription)
             PROVISIONER_RG_LOCATION: westus2
-            TEST_APP_ID: $(provisioner-test-app-id)
           displayName: Provision Test-Specific Azure Resources
       PostRunSteps:
         - pwsh: |
