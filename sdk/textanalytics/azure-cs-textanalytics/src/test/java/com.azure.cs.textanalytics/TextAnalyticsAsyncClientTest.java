@@ -27,13 +27,25 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     }
 
     /**
-     * Verifies that a batch collection is returned on batch input for detectLanguages.
+     * Test Detect batch input langugaes with show statistics.
      */
     @Test
     public void detectLanguagesBatchInputShowStatistics() {
         detectLanguageShowStatisticsRunner((inputs, options) -> {
             StepVerifier.create(client.detectBatchLanguages(inputs, options))
-                .assertNext(response -> validateBatchResult(response, "Language"))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
+                .verifyComplete();
+        });
+    }
+
+    /**
+     * Test Detect batch input langugaes with show statistics.
+     */
+    @Test
+    public void detectLanguagesBatchInputShowStatisticsNew() {
+        detectLanguageShowStatisticsRunner((inputs, options) -> {
+            StepVerifier.create(client.detectBatchLanguages(inputs, options))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
                 .verifyComplete();
         });
     }
@@ -45,7 +57,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     public void detectLanguagesBatchStringList() {
         detectLanguagesCountryHintRunner((inputs, countryHint) -> {
             StepVerifier.create(client.detectLanguages(inputs, countryHint))
-                .assertNext(response -> validateBatchResult(response, "Language"))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
                 .verifyComplete();
         });
     }
@@ -57,7 +69,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     public void detectLanguagesBatchStringInput() {
         detectLanguageStringInputRunner((inputs) -> {
             StepVerifier.create(client.detectLanguages(inputs))
-                .assertNext(response -> validateBatchResult(response, "Language"))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
                 .verifyComplete();
         });
     }
@@ -69,7 +81,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     public void detectLanguagesBatchInput() {
         detectLanguageRunner((inputs) -> {
             StepVerifier.create(client.detectBatchLanguages(inputs))
-                .assertNext(response -> validateBatchResult(response, "Language"))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
                 .verifyComplete();
         });
     }

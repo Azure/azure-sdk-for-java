@@ -176,8 +176,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     private DetectLanguageResult convertToErrorDetectLanguageResult(final DocumentError errorDocument) {
-        return new DetectLanguageResult(errorDocument.getId(), null,
-            errorDocument.getError(),
+        return new DetectLanguageResult(errorDocument.getId(), null, errorDocument.getError(),
             null, null);
     }
 
@@ -186,17 +185,6 @@ public final class TextAnalyticsAsyncClient {
         return new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(), null,
             documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages());
     }
-
-    /*
-     * Ensure that inputs is not null. LanguageInput cannot be null because it is part of the service REST URL.
-     */
-    // private static void validateLanguageInputs(List<DetectLanguageInput> inputs) {
-    //     Objects.requireNonNull(setting);
-    //
-    //     if (setting.getKey() == null) {
-    //         throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
-    //     }
-    // }
 
     // (2) entities
     // new user

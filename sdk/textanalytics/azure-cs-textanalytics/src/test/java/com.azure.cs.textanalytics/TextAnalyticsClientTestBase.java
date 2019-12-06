@@ -21,6 +21,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.cs.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.cs.textanalytics.implementation.models.LanguageResult;
@@ -41,6 +42,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -49,6 +51,7 @@ import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-textanalytics.properties";
@@ -121,7 +124,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     public abstract void detectLanguagesBatchInput();
 
-    void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>, TextAnalyticsRequestOptions> testRunner) {
+    void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
+        TextAnalyticsRequestOptions> testRunner) {
         final List<DetectLanguageInput> detectLanguageInputs = Arrays.asList(
             new DetectLanguageInput("0", "This is written in English", "US"),
             new DetectLanguageInput("1", "Este es un document escrito en Español."),
@@ -130,6 +134,31 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         );
 
         testRunner.accept(detectLanguageInputs, setTextAnalyticsRequestOptions());
+    }
+
+    static DocumentResultCollection<DetectLanguageResult> getExpectedBatchDetectedLanguages() {
+        DetectedLanguage detectedLanguage1 = new DetectedLanguage().setName("English").setIso6391Name("en")
+            .setScore(1.0);
+        DetectedLanguage detectedLanguage2 = new DetectedLanguage().setName("Spanish").setIso6391Name("es")
+            .setScore(1.0);
+        DetectedLanguage detectedLanguage3 = new DetectedLanguage().setName("(Unknown)").setIso6391Name("(Unknown)")
+            .setScore(0.0);
+        List<DetectedLanguage> detectedLanguageList1 = new ArrayList<>(Collections.singletonList(detectedLanguage1));
+        List<DetectedLanguage> detectedLanguageList2 = new ArrayList<>(Collections.singletonList(detectedLanguage2));
+        List<DetectedLanguage> detectedLanguageList3 = new ArrayList<>(Collections.singletonList(detectedLanguage3));
+
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(26).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(39).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics().setCharacterCount(6).setTransactionCount(1);
+
+        DetectLanguageResult detectLanguageResult1 = new DetectLanguageResult("0", textDocumentStatistics1, null, detectedLanguage1, detectedLanguageList1);
+        DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, null, detectedLanguage2, detectedLanguageList2);
+        DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, null, detectedLanguage3, detectedLanguageList3);
+
+        TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(3).setErroneousDocumentCount(0).setTransactionCount(3).setValidDocumentCount(3);
+        List<DetectLanguageResult> detectLanguageResultList = new ArrayList<>(Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3));
+
+        return new DocumentResultCollection<>(detectLanguageResultList, "2019-10-01", textBatchStatistics);
     }
 
     static void detectLanguagesCountryHintRunner(BiConsumer<List<String>, String> testRunner) {
@@ -151,7 +180,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         return new TextAnalyticsRequestOptions().setShowStatistics(true);
     }
 
-    void detectLanguageRunner(Consumer<List<DetectLanguageInput>> testRunner) {
+    static void detectLanguageRunner(Consumer<List<DetectLanguageInput>> testRunner) {
         final List<DetectLanguageInput> detectLanguageInputs = Arrays.asList(
             new DetectLanguageInput("0", "This is written in English", "US"),
             new DetectLanguageInput("1", "Este es un document escrito en Español."),
@@ -168,25 +197,19 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to verify returned LanguageResult (batch result) matches with teh actual DocumentResultCollection
-     * model.
+     * Helper method to verify batch result.
      *
      * @param actualResult DocumentResultCollection<> returned by the API.
      * @param testApi the API to test.
      */
-    <T> void validateBatchResult(DocumentResultCollection<T> actualResult, String testApi) {
-        Iterable<T> iterable = actualResult::iterator;
-        List<T> list = StreamSupport
-            .stream(iterable.spliterator(), false)
-            .collect(Collectors.toList());
-
-        LanguageResult expectedResult = getExpectedBatchResult();
+    <T> void validateBatchResult(DocumentResultCollection<T> actualResult,
+                                 DocumentResultCollection<T> expectedResult, String testApi) {
         // assert batch result
         assertEquals(expectedResult.getModelVersion(), actualResult.getModelVersion());
         if (this.showStatistics) {
             validateBatchStatistics(expectedResult.getStatistics(), actualResult.getStatistics());
         }
-        validateDocuments(expectedResult.getDocuments(), list, testApi);
+        validateDocumentsNew(expectedResult, actualResult, testApi);
 
         // TODO error model
         // DocumentError error = new DocumentError().setId("4").setError("error");
@@ -195,6 +218,48 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         // validateErrorDocuments(expected.getErrors(), detectLanguageResultList);
     }
 
+    /**
+     * Helper method to verify documents returned in a batch request.
+     *
+     * @param expectedResult the expected result collection..
+     * @param actualResult the actual result collection returned by the API.
+     * @param testApi the API to test.
+     */
+    private <T> void validateDocumentsNew(DocumentResultCollection<T> expectedResult,
+                                                 DocumentResultCollection<T> actualResult, String testApi) {
+        switch (testApi) {
+            case "Language":
+                final List<DetectLanguageResult> expectedResultList = expectedResult.stream()
+                    .filter(element -> element instanceof DetectLanguageResult)
+                    .map(element -> (DetectLanguageResult) element)
+                    .collect(Collectors.toList());
+
+                final List<DetectLanguageResult> actualResultList = actualResult.stream()
+                    .filter(element -> element instanceof DetectLanguageResult)
+                    .map(element -> (DetectLanguageResult) element)
+                    .collect(Collectors.toList());
+                assertEquals(expectedResultList.size(), actualResultList.size());
+
+                actualResultList.forEach(actualItem -> {
+                    Optional<DetectLanguageResult> optionalExpectedItem = expectedResultList.stream().filter(
+                        expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId())).findFirst();
+                    assertTrue(optionalExpectedItem.isPresent());
+                    DetectLanguageResult expectedItem = optionalExpectedItem.get();
+                    if (actualItem.getError() == null && this.showStatistics) {
+                        validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage());
+                        validateDocumentStatistics(expectedItem.getStatistics(), actualItem.getStatistics());
+                        validateDetectedLanguages(expectedItem.getDetectedLanguages(), actualItem.getDetectedLanguages());
+                    }
+                });
+        }
+    }
+
+    /**
+     * Helper method to verify TextBatchStatistics.
+     *
+     * @param expectedStatistics
+     * @param actualStatistics
+     */
     private static void validateBatchStatistics(TextBatchStatistics expectedStatistics,
                                                 TextBatchStatistics actualStatistics) {
         assertEquals(expectedStatistics.getDocumentCount(), actualStatistics.getDocumentCount());
@@ -203,39 +268,19 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedStatistics.getTransactionCount(), actualStatistics.getTransactionCount());
     }
 
-    private static LanguageResult getExpectedBatchResult() {
-        List<DetectedLanguage> detectedLanguageDoc1 = new ArrayList<>(Collections.singletonList(
-            new DetectedLanguage().setName("English").setIso6391Name("en").setScore(1.0)));
-        List<DetectedLanguage> detectedLanguageDoc2 = new ArrayList<>(Collections.singletonList(
-            new DetectedLanguage().setName("Spanish").setIso6391Name("es").setScore(1.0)));
-        List<DetectedLanguage> detectedLanguageDoc3 = new ArrayList<>(Collections.singletonList(
-            new DetectedLanguage().setName("(Unknown)").setIso6391Name("(Unknown)").setScore(0.0)));
-
-        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setTransactionCount(1)
-            .setCharacterCount(26);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setTransactionCount(1)
-            .setCharacterCount(39);
-        TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics().setTransactionCount(1)
-            .setCharacterCount(6);
-
-        List<DocumentLanguage> documents = new ArrayList<>();
-        documents.add(new DocumentLanguage().setId("0").setDetectedLanguages(detectedLanguageDoc1)
-            .setStatistics(textDocumentStatistics1));
-        documents.add(new DocumentLanguage().setId("1").setDetectedLanguages(detectedLanguageDoc2)
-            .setStatistics(textDocumentStatistics2));
-        documents.add(new DocumentLanguage().setId("2").setDetectedLanguages(detectedLanguageDoc3)
-            .setStatistics(textDocumentStatistics3));
-
-        TextBatchStatistics batchStatistics = new TextBatchStatistics().setDocumentCount(3)
-            .setErroneousDocumentCount(0).setValidDocumentCount(3).setTransactionCount(3);
-        return new LanguageResult().setDocuments(documents).setModelVersion("2019-10-01").setStatistics(batchStatistics);
-    }
-
-    static void validateErrorDocuments(List<DocumentError> errors, List<DetectLanguageResult> detectLanguageResultList) {
+    /**
+     * Helper method to verify the error-ed documents.
+     *
+     * @param errors
+     * @param detectLanguageResultList
+     */
+    static void validateErrorDocuments(List<DocumentError> errors,
+                                       List<DetectLanguageResult> detectLanguageResultList) {
         for (DocumentError expectedErrorDocument : errors) {
-            DetectLanguageResult actualErrorDocument = detectLanguageResultList.stream().
-                filter(document -> document.getId().equals(expectedErrorDocument.getId())).findFirst().get();
-            assertNotNull(actualErrorDocument);
+            Optional<DetectLanguageResult> optionalErrorDocument = detectLanguageResultList.stream().
+                filter(document -> document.getId().equals(expectedErrorDocument.getId())).findFirst();
+            assertTrue(optionalErrorDocument.isPresent());
+            DetectLanguageResult actualErrorDocument = optionalErrorDocument.get();
             assertEquals(expectedErrorDocument.getId(), actualErrorDocument.getId());
             // TODO: Need to fix the error model
             assertEquals(expectedErrorDocument.getError().toString(), actualErrorDocument.getError().toString());
@@ -244,32 +289,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to verify documents returned in a batch request.
-     *
-     * @param expected List DocumentLanguages contained in the RestResponse body.
-     * @param actual List DetectLanguageResult returned by the API.
-     * @param testApi the API to test.
-     */
-    // TODO: need to make this function generic
-    <T> void validateDocuments(List<DocumentLanguage> expected, List<T> actual, String testApi) {
-        switch (testApi) {
-            case "Language":
-                List<DetectLanguageResult> actualLanguageList = (List<DetectLanguageResult>) actual;
-                for (DocumentLanguage expectedDocumentLanguage : expected) {
-                    DetectLanguageResult actualResult = actualLanguageList.stream().filter(actualDoc ->
-                        expectedDocumentLanguage.getId().equals(actualDoc.getId())).findFirst().get();
-                    assertNotNull(actualResult);
-                    if (actualResult.getError() == null && this.showStatistics) {
-                        validateDocumentStatistics(expectedDocumentLanguage.getStatistics(), actualResult.getStatistics());
-                        validateDetectedLanguages(expectedDocumentLanguage.getDetectedLanguages(),
-                            actualResult.getDetectedLanguages());
-                    }
-                }
-        }
-    }
-
-    /**
-     * Helper method to verify TextDocumentStatistics match with expected.
+     * Helper method to verify TextDocumentStatistics.
      *
      * @param expected the expected value for TextDocumentStatistics.
      * @param actual the value returned by API.
@@ -280,7 +300,19 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate the detected languages returned with the expected language list.
+     * Helper method to validate a single detected language.
+     *
+     * @param expectedLanguage detectedLanguage returned by the service.
+     * @param actualLanguage detectedLanguage returned by the API.
+     */
+    static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
+        assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
+        assertEquals(expectedLanguage.getName(), actualLanguage.getName());
+        assertEquals(expectedLanguage.getScore(), actualLanguage.getScore());
+    }
+
+    /**
+     * Helper method to validate the list of detected languages.
      *
      * @param expectedLanguageList detectedLanguages returned by the service.
      * @param actualLanguageList detectedLanguages returned by the API.
@@ -290,9 +322,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         for (int i = 0; i < expectedLanguageList.size(); i++) {
             DetectedLanguage expectedDetectedLanguage = expectedLanguageList.get(i);
             DetectedLanguage actualDetectedLanguage = actualLanguageList.get(i);
-            assertEquals(expectedDetectedLanguage.getIso6391Name(), actualDetectedLanguage.getIso6391Name());
-            assertEquals(expectedDetectedLanguage.getName(), actualDetectedLanguage.getName());
-            assertEquals(expectedDetectedLanguage.getScore(), actualDetectedLanguage.getScore());
+            validatePrimaryLanguage(expectedDetectedLanguage, actualDetectedLanguage);
         }
     }
 }
