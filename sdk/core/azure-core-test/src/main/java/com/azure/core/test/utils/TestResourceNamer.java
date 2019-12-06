@@ -3,6 +3,7 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.models.RecordedData;
 
@@ -25,7 +26,7 @@ public class TestResourceNamer extends ResourceNamer {
     /**
      * Constructor of TestResourceNamer
      *
-     * @deprecated Use {@link #TestResourceNamer(String, TestMode, boolean, RecordedData)} instead.
+     * @deprecated Use {@link #TestResourceNamer(TestContextManager, RecordedData)} instead.
      * @param name test name as prefix
      * @param testMode The {@link TestMode} which the test is running in.
      * @param recordedData the recorded data with list of network call
@@ -38,14 +39,18 @@ public class TestResourceNamer extends ResourceNamer {
     /**
      * Constructor of TestResourceNamer
      *
-     * @param name test name as prefix
-     * @param testMode The {@link TestMode} which the test is running in.
-     * @param doNotRecord Flag indicating whether values produced by this class should be recorded or played back.
+     * @param testContextManager Contextual information about the test being ran, such as test name, {@link TestMode},
+     * and others.
      * @param recordedData the recorded data with list of network call
      * @throws NullPointerException If {@code testMode} isn't {@link TestMode#LIVE}, {@code doNotRecord} is
      * {@code false}, and {@code recordedData} is {@code null}.
      */
-    public TestResourceNamer(String name, TestMode testMode, boolean doNotRecord, RecordedData recordedData) {
+    public TestResourceNamer(TestContextManager testContextManager, RecordedData recordedData) {
+        this(testContextManager.getTestName(), testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
+            recordedData);
+    }
+
+    private TestResourceNamer(String name, TestMode testMode, boolean doNotRecord, RecordedData recordedData) {
         super(name);
 
         // Only need recordedData if the test is running in playback or record.

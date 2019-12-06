@@ -68,7 +68,7 @@ public class InterceptorManager implements AutoCloseable {
      * @throws UncheckedIOException If {@code testMode} is {@link TestMode#PLAYBACK} and an existing test session record
      * could not be located or the data could not be deserialized into an instance of {@link RecordedData}.
      * @throws NullPointerException If {@code testName} is {@code null}.
-     * @deprecated Use {@link #InterceptorManager(String, TestMode, boolean)} instead.
+     * @deprecated Use {@link #InterceptorManager(TestContextManager)} instead.
      */
     @Deprecated
     public InterceptorManager(String testName, TestMode testMode) {
@@ -89,19 +89,23 @@ public class InterceptorManager implements AutoCloseable {
      *
      * The test session records are persisted in the path: "<i>session-records/{@code testName}.json</i>"
      *
-     * @param testName Name of the test session record.
-     * @param testMode The {@link TestMode} for this interceptor.
-     * @param doNotRecord Flag indicating whether network calls should be record or played back.
+     * @param testContextManager Contextual information about the test being ran, such as test name, {@link TestMode},
+     * and others.
      * @throws UncheckedIOException If {@code testMode} is {@link TestMode#PLAYBACK} and an existing test session record
      * could not be located or the data could not be deserialized into an instance of {@link RecordedData}.
      * @throws NullPointerException If {@code testName} is {@code null}.
      */
-    public InterceptorManager(String testName, TestMode testMode, boolean doNotRecord) {
+    public InterceptorManager(TestContextManager testContextManager) {
+        this(testContextManager.getTestName(), testContextManager.getTestMode(), testContextManager.doNotRecordTest());
+    }
+
+    private InterceptorManager(String testName, TestMode testMode, boolean doNotRecord) {
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
         this.testName = testName;
         this.testMode = testMode;
         this.textReplacementRules = new HashMap<>();
+
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
 

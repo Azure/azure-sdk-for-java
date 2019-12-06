@@ -26,13 +26,13 @@ public class TestContextManagerTests {
         assertFalse(verifier.doNotRecordTest());
 
         verifier.verifyTestCanRunInTestMode(TestMode.PLAYBACK);
-        assertTrue(verifier.wasTestRan());
+        assertTrue(verifier.didTestRun());
 
         verifier.verifyTestCanRunInTestMode(TestMode.LIVE);
-        assertTrue(verifier.wasTestRan());
+        assertTrue(verifier.didTestRun());
 
         verifier.verifyTestCanRunInTestMode(TestMode.RECORD);
-        assertTrue(verifier.wasTestRan());
+        assertTrue(verifier.didTestRun());
     }
 
     /**
@@ -46,13 +46,13 @@ public class TestContextManagerTests {
         assertTrue(verifier.doNotRecordTest());
 
         verifier.verifyTestCanRunInTestMode(TestMode.PLAYBACK);
-        assertTrue(verifier.wasTestRan());
+        assertTrue(verifier.didTestRun());
 
         verifier.verifyTestCanRunInTestMode(TestMode.LIVE);
-        assertTrue(verifier.wasTestRan());
+        assertTrue(verifier.didTestRun());
 
         verifier.verifyTestCanRunInTestMode(TestMode.RECORD);
-        assertTrue(verifier.wasTestRan());
+        assertTrue(verifier.didTestRun());
     }
 
     /**
@@ -74,10 +74,10 @@ public class TestContextManagerTests {
         }
 
         verifier.verifyTestCanRunInTestMode(TestMode.LIVE);
-        assertTrue(verifier.wasTestRan());
+        assertTrue(verifier.didTestRun());
 
         verifier.verifyTestCanRunInTestMode(TestMode.RECORD);
-        assertTrue(verifier.wasTestRan());
+        assertTrue(verifier.didTestRun());
     }
 
     static class TestHelper {

@@ -23,7 +23,7 @@ import java.util.Locale;
 public abstract class TestBase implements BeforeEachCallback {
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
-    static TestMode testMode;
+    private static TestMode testMode;
 
     private final ClientLogger logger = new ClientLogger(TestBase.class);
 
@@ -55,21 +55,16 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        final Method testMethod = testInfo.getTestMethod().get();
-        this.testContextManager = new TestContextManager(testMethod);
-        testContextManager.verifyTestCanRunInTestMode(testMode);
-
-        final String testName = testMethod.getName();
-        logger.info("Test Mode: {}, Name: {}", testMode, testName);
+        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
+        logger.info("Test Mode: {}, Name: {}", testMode, testContextManager.getTestName());
 
         try {
-            interceptorManager = new InterceptorManager(testName, testMode, testContextManager.doNotRecordTest());
+            interceptorManager = new InterceptorManager(testContextManager);
         } catch (UncheckedIOException e) {
-            logger.error("Could not create interceptor for {}", testName, e);
+            logger.error("Could not create interceptor for {}", testContextManager.getTestName(), e);
             Assertions.fail();
         }
-        testResourceNamer = new TestResourceNamer(testName, testMode, testContextManager.doNotRecordTest(),
-            interceptorManager.getRecordedData());
+        testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
 
         beforeTest();
     }
@@ -80,7 +75,7 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
-        if (testContextManager.wasTestRan()) {
+        if (testContextManager.didTestRun()) {
             afterTest();
             interceptorManager.close();
         }

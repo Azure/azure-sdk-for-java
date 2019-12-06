@@ -13,16 +13,21 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * is capable of running.
  */
 public class TestContextManager {
+    private final String testName;
+    private final TestMode testMode;
     private final boolean doNotRecord;
     private final boolean skipInPlayback;
-    private volatile boolean testRan;
+    private final boolean testRan;
 
     /**
      * Constructs a {@link TestContextManager} based on the test method.
      *
      * @param testMethod Test method being ran.
      */
-    public TestContextManager(Method testMethod) {
+    public TestContextManager(Method testMethod, TestMode testMode) {
+        this.testName = testMethod.getName();
+        this.testMode = testMode;
+
         DoNotRecord doNotRecordAnnotation = testMethod.getAnnotation(DoNotRecord.class);
         if (doNotRecordAnnotation != null) {
             this.doNotRecord = true;
@@ -31,16 +36,27 @@ public class TestContextManager {
             this.doNotRecord = false;
             this.skipInPlayback = false;
         }
+
+        this.testRan = !(skipInPlayback && testMode == TestMode.PLAYBACK);
+        assumeTrue(testRan, "Test does not allow playback and was ran in 'TestMode.PLAYBACK'");
     }
 
     /**
-     * Verifies whether the current test is allowed to run.
+     * Returns the name of the test being ran.
      *
-     * @param testMode The {@link TestMode} tests are being ran in.
+     * @return The test name.
      */
-    public void verifyTestCanRunInTestMode(TestMode testMode) {
-        this.testRan = !(skipInPlayback && testMode == TestMode.PLAYBACK);
-        assumeTrue(testRan, "Test ddes not allow playback and was ran in 'TestMode.PLAYBACK'");
+    public String getTestName() {
+        return testName;
+    }
+
+    /**
+     * Returns the mode being used to run tests.
+     *
+     * @return The {@link TestMode} being used to run tests.
+     */
+    public TestMode getTestMode() {
+        return testMode;
     }
 
     /**
@@ -58,7 +74,7 @@ public class TestContextManager {
      *
      * @return Flag indicating whether the current test was ran.
      */
-    public boolean wasTestRan() {
+    public boolean didTestRun() {
         return testRan;
     }
 }
