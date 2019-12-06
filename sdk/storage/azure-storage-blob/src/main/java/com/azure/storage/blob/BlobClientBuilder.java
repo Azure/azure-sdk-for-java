@@ -258,7 +258,7 @@ public final class BlobClientBuilder {
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
 
-            String sasToken = parts.getSasQueryParameters().encode();
+            String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
