@@ -35,9 +35,6 @@ import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.policy.RequestRetryOptions
-import com.azure.storage.common.policy.RequestRetryPolicy
-import com.azure.storage.common.policy.RetryPolicyType
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -290,8 +287,6 @@ class APISpec extends Specification {
         }
 
         if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(new RequestRetryPolicy(new RequestRetryOptions(RetryPolicyType.FIXED, 1,
-                null, null, null, null)))
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
