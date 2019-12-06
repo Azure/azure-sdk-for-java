@@ -43,7 +43,8 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * @param clientId the client ID of the application
      * @param identityClientOptions the options for configuring the identity client
      */
-    SharedTokenCacheCredential(String username, String clientId, String tenantId, IdentityClientOptions identityClientOptions) {
+    SharedTokenCacheCredential(String username, String clientId, String tenantId,
+                               IdentityClientOptions identityClientOptions) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         if (username == null) {
@@ -57,8 +58,8 @@ public class SharedTokenCacheCredential implements TokenCredential {
             this.clientId = clientId;
         }
         if (tenantId == null) {
-            this.tenantId = configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID) ?
-                    configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : "common";
+            this.tenantId = configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
+                    ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : "common";
         } else {
             this.tenantId = tenantId;
         }
