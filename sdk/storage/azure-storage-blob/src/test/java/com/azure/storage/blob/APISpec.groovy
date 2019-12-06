@@ -141,7 +141,7 @@ class APISpec extends Specification {
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
-        System.out.println(String.format("---------- SimaTest: %s ---------------", System.getProperty("reactor.bufferSize.x")))
+        System.out.println(String.format("---------- SimaTest: %d ---------------", Integer.parseInt(System.getProperty("reactor.bufferSize.x", "32"))))
     }
 
     def setup() {
