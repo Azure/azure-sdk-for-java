@@ -17,7 +17,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.UserAgentProperties;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -42,8 +41,10 @@ import java.util.regex.Pattern;
  * This class provides helper methods for common builder patterns.
  */
 public final class BuilderHelper {
-    private static final UserAgentProperties PROPERTIES =
-        CoreUtils.getUserAgentProperties("azure-storage-queue.properties");
+    private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-queue";
+    // {x-version-update-start;com.azure:azure-storage-queue;current}
+    private static final String DEFAULT_USER_AGENT_VERSION = "12.1.0";
+    // {x-version-update-end}
 
     private static final Pattern IP_URL_PATTERN = Pattern
         .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
@@ -201,7 +202,7 @@ public final class BuilderHelper {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
         return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(),
-            PROPERTIES.getName(), PROPERTIES.getVersion(), configuration);
+            DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration);
     }
 
     /*

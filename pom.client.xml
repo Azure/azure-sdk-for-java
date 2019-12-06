@@ -259,6 +259,7 @@
               <failOnError>true</failOnError>
               <failOnWarnings>true</failOnWarnings>
               <doclint>all</doclint>
+              <quiet>true</quiet>
             </configuration>
           </execution>
         </executions>
@@ -465,6 +466,7 @@
             <sourceFileExcludes>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
+            <quiet>true</quiet>
           </configuration>
         </plugin>
 
@@ -713,6 +715,7 @@
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
+              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -728,6 +731,7 @@
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
+              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -868,6 +872,7 @@
             <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <failOnWarnings>false</failOnWarnings>
+              <quiet>true</quiet>
 
               <!-- For codesnippet4javadoc tool to work with JDK9+, it is recommended to add this additional option
               https://github.com/jtulach/codesnippet4javadoc#use-with-jdk9 -->
@@ -967,6 +972,7 @@
             <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
               <overview>${project.basedir}/readme_overview.html</overview>
+              <quiet>true</quiet>
             </configuration>
           </plugin>
          </plugins>
@@ -998,7 +1004,7 @@
                   <executable>npx.cmd</executable>
                   <arguments>
                     <argument>embedme</argument>
-                    <argument>sdk/*/azure-*/README.md</argument>
+                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1034,7 +1040,7 @@
                   <executable>npx</executable>
                   <arguments>
                     <argument>embedme</argument>
-                    <argument>sdk/*/azure-*/README.md</argument>
+                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1070,7 +1076,7 @@
                   <arguments>
                     <argument>embedme</argument>
                     <argument>--verify</argument>
-                    <argument>sdk/*/azure-*/README.md</argument>
+                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1107,7 +1113,7 @@
                   <arguments>
                     <argument>embedme</argument>
                     <argument>--verify</argument>
-                    <argument>sdk/*/azure-*/README.md</argument>
+                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>

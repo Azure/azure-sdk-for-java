@@ -334,7 +334,7 @@ public final class ConfigurationClient {
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-Context}
      *
      * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
@@ -439,19 +439,5 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
         return new PagedIterable<>(client.listRevisions(selector, context));
-    }
-
-    /**
-     * <p I'm an invalid Javadoc
-     * {@codesnippet this.is.an.invalid.example}
-     */
-    public void iCauseIssues() {
-        char[] alphabetAsArray = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
-        String alphabetAsString = "";
-        for (char c : alphabetAsArray) {
-            alphabetAsString += c;
-        }
-
-        throw new IllegalStateException("I enjoy not documenting my throws since they cause havoc. Good luck tracking this down! :)");
     }
 }
