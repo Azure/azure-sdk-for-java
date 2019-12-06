@@ -13,6 +13,8 @@ import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class DetectLanguageBatchDocuments {
@@ -21,8 +23,8 @@ public class DetectLanguageBatchDocuments {
         // TODO: user AAD token to do the authentication
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscriptionKey")
-            .endpoint("https://service.cognitiveservices.azure.com/")
+            .subscriptionKey("6e890aa2d9a444dcb592c7fd3a205d1a")
+            .endpoint("https://sampleservice.cognitiveservices.azure.com/")
             .buildClient();
 
         // The texts that need be analysed.
@@ -32,7 +34,7 @@ public class DetectLanguageBatchDocuments {
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
-        final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = client.detectBatchLanguages(inputs, requestOptions);
+        final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = client.detectBatchLanguages(Collections.emptyList(), requestOptions);
         System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();

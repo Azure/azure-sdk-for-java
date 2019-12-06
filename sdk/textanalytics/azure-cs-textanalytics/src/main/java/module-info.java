@@ -7,6 +7,7 @@ module com.azure.cs.textanalytics {
 
     opens com.azure.cs.textanalytics.implementation to com.fasterxml.jackson.databind;
     opens com.azure.cs.textanalytics.models to com.fasterxml.jackson.databind;
+    opens com.azure.cs.textanalytics.implementation.models to com.fasterxml.jackson.databind;
 
     exports com.azure.cs.textanalytics;
     exports com.azure.cs.textanalytics.models;

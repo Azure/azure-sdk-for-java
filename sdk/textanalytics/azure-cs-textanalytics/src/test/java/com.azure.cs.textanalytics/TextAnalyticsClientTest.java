@@ -28,4 +28,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguage() {
 
     }
+
+    @Override
+    public void detectLanguagesBatchInput() {
+
+    }
 }
