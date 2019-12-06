@@ -440,4 +440,18 @@ public final class ConfigurationClient {
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
         return new PagedIterable<>(client.listRevisions(selector, context));
     }
+
+    /**
+     * <p I'm an invalid Javadoc
+     * {@codesnippet this.is.an.invalid.example}
+     */
+    public void iCauseIssues() {
+        char[] alphabetAsArray = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'}
+        String alphabetAsString = "";
+        for (char c : alphabetAsArray) {
+            alphabetAsString += c;
+        }
+
+        throw new IllegalStateException("I enjoy not documenting my throws since they cause havoc. Good luck tracking this down! :)");
+    }
 }
