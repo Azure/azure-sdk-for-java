@@ -1,5 +1,8 @@
 # Release History
 
+## Version XX.X.X (XXXX-XX-XX)
+- Added support for obtaining premium file properties in ShareServiceClient.listShares and ShareClient.getProperties
+
 ## Version 12.0.0 (2019-12-04)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0/sdk/storage/azure-storage-file-share/README.md)
