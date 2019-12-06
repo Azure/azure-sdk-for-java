@@ -21,10 +21,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.cs.textanalytics.implementation.models.DocumentLanguage;
-import com.azure.cs.textanalytics.implementation.models.LanguageResult;
 import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.DetectLanguageResult;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
@@ -47,7 +44,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -209,7 +205,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         if (this.showStatistics) {
             validateBatchStatistics(expectedResult.getStatistics(), actualResult.getStatistics());
         }
-        validateDocumentsNew(expectedResult, actualResult, testApi);
+        validateDocuments(expectedResult, actualResult, testApi);
 
         // TODO error model
         // DocumentError error = new DocumentError().setId("4").setError("error");
@@ -225,8 +221,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualResult the actual result collection returned by the API.
      * @param testApi the API to test.
      */
-    private <T> void validateDocumentsNew(DocumentResultCollection<T> expectedResult,
-                                                 DocumentResultCollection<T> actualResult, String testApi) {
+    private <T> void validateDocuments(DocumentResultCollection<T> expectedResult,
+                                       DocumentResultCollection<T> actualResult, String testApi) {
         switch (testApi) {
             case "Language":
                 final List<DetectLanguageResult> expectedResultList = expectedResult.stream()
