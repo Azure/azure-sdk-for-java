@@ -7,7 +7,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.BridgeInternalBenchmark;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
@@ -70,7 +69,7 @@ abstract class AsyncBenchmark<T> {
 
         logger = LoggerFactory.getLogger(this.getClass());
 
-        client =  BridgeInternalBenchmark.getOldClient(v4Client);
+        client =  BridgeInternalBenchmark.getInternalDocumentClient(v4Client);
 
         Database database = DocDBUtils.getDatabase(client, cfg.getDatabaseId());
         collection = DocDBUtils.getCollection(client, database.getSelfLink(), cfg.getCollectionId());
