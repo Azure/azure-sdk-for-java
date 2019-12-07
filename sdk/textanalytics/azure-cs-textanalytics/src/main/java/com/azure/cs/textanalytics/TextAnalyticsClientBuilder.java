@@ -88,11 +88,17 @@ public final class TextAnalyticsClientBuilder {
         TextAnalyticsServiceVersion serviceVersion =
             version != null ? version : TextAnalyticsServiceVersion.getLatest();
 
-        // Endpoint
-        String buildEndpoint = endpoint;
-
         // endpoint cannot be null, which is required in request authentication
-        Objects.requireNonNull(buildEndpoint, "'Endpoint' is required and can not be null.");
+        Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
+
+        // Http pipeline is already defined, skip rest of customized pipeline process
+        if (httpPipeline != null) {
+            TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
+                .endpoint(endpoint)
+                .pipeline(httpPipeline)
+                .build();
+            return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion);
+        }
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();

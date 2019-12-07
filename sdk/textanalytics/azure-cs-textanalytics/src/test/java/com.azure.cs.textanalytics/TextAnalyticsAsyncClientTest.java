@@ -3,8 +3,6 @@
 
 package com.azure.cs.textanalytics;
 
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;

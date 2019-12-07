@@ -33,8 +33,6 @@ import com.azure.cs.textanalytics.models.TextDocumentStatistics;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,7 +46,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -79,20 +76,17 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        TokenCredential credential = null;
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
         if (!interceptorManager.isPlaybackMode()) {
             credential = new DefaultAzureCredentialBuilder().build();
         }
 
         HttpClient httpClient;
-        // Closest to API goes first, closest to wire goes last.
         Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
-        TextAnalyticsServiceVersion serviceVersion = TextAnalyticsServiceVersion.getLatest();
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
         policies.add(new UserAgentPolicy(null, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
