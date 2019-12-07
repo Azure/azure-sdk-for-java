@@ -26,18 +26,22 @@
     "extension": "revapi.ignore",
     "configuration": [
       {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.reactivestreams.Publisher",
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class org\\.reactivestreams\\.Publisher",
         "justification": "This class is part of the reactive streams initiative in Java."
       },
       {
-        "code": "java.missing.newClass",
-        "new": "missing-class reactor.util.context.Context",
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class reactor\\.util\\.context\\.Context",
         "justification": "Reactor is allowed in the public API. Since we don't analyze dependencies, these show up as being unresolved."
       },
       {
-        "code": "java.missing.newClass",
-        "new": "missing-class com.fasterxml.jackson.databind.ObjectMapper",
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class com\\.fasterxml\\.jackson\\.databind\\.ObjectMapper",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.core\\.util\\.serializer\\.JacksonAdapter.*",
         "justification": "We allow this in com.azure.core.util.serializer.JacksonAdapter."
       },
       {
