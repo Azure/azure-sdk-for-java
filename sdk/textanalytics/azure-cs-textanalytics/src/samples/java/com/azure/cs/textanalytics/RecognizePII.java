@@ -6,9 +6,10 @@ package com.azure.cs.textanalytics;
 public class RecognizePII {
 
     public static void main(String[] args) {
-        // TODO: user AAD token to do the authentication
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+            .subscriptionKey("subscription-key")
+            .endpoint("https://servicename.cognitiveservices.azure.com/")
             .buildClient();
 
         // The text that need be analysed.

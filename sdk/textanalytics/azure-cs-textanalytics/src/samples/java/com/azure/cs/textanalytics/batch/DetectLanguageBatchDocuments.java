@@ -18,11 +18,10 @@ import java.util.List;
 public class DetectLanguageBatchDocuments {
 
     public static void main(String[] args) {
-        // TODO: user AAD token to do the authentication
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscriptionKey")
-            .endpoint("https://service.cognitiveservices.azure.com/")
+            .subscriptionKey("subscription-key")
+            .endpoint("https://servicename.cognitiveservices.azure.com/")
             .buildClient();
 
         // The texts that need be analysed.
