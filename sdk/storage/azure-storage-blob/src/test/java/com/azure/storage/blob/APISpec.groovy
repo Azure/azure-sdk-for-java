@@ -143,15 +143,13 @@ class APISpec extends Specification {
         premiumCredential = getCredential(PREMIUM_STORAGE)
         Properties props = System.getProperties()
         props.setProperty("reactor.bufferSize.x", "16")
-        props.setProperty("reactor.bufferSize.small", "128")
-        System.out.println(String.format("---------- SimaTest: %d ---------------", Integer.parseInt(System.getProperty("reactor.bufferSize.x", "32"))))
+        props.setProperty("reactor.bufferSize.small", "100")
     }
 
     def setup() {
         String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
         String className = specificationContext.getCurrentSpec().getName()
 
-        System.out.println(String.format("---------- %s: %s ---------------", fullTestName, className))
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
