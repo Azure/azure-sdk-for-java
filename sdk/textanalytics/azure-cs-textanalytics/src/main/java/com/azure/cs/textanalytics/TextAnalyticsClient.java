@@ -28,35 +28,94 @@ public final class TextAnalyticsClient {
         this.client = client;
     }
 
-    // (1) language
-    // new user
+    /**
+     * Returns the detected language and a numeric score between zero and one. Scores close to one indicate 100%
+     * certainty that the identified language is true.
+     *
+     * @param text The text to be analyzed.
+     *
+     * @return the {@link DetectLanguageResult detected language} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectLanguageResult detectLanguage(String text) {
         return detectLanguage(text, null);
     }
 
+    /**
+     * Returns the detected language and a numeric score between zero and one when the hint of country specified.
+     * Scores close to one indicate 100% certainty that the identified language is true.
+     *
+     * @param text The text to be analyzed.
+     * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
+     * specified.
+     *
+     * @return the {@link DetectLanguageResult detected language} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectLanguageResult detectLanguage(String text, String countryHint) {
         return detectLanguageWithResponse(text, countryHint, Context.NONE).getValue();
     }
 
+    /**
+     * Returns a {@link Response} containing the detected language and a numeric score between zero and one.
+     * Scores close to one indicate 100% certainty that the identified language is true.
+     *
+     * @param text The text to be analyzed.
+     * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
+     * specified.
+     *
+     * @return A {@link Response} containing the {@link DetectLanguageResult detected language} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DetectLanguageResult> detectLanguageWithResponse(
         String text, String countryHint, Context context) {
         return client.detectLanguageWithResponse(text, countryHint, context).block();
     }
 
-    // hackathon user
+    /**
+     * Detects Language for a batch of input.
+     *
+     * @param inputs The list of texts to be analyzed.
+     *
+     * @return A {@link DocumentResultCollection batch} containing the list of
+     * {@link DetectLanguageResult detected languages} with their numeric scores.
+     * @throws NullPointerException if {@code inputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectLanguages(List<String> inputs) {
         return detectLanguages(inputs, null);
     }
 
+    /**
+     * Detects Language for a batch of input with the provided country hint.
+     *
+     * @param inputs The list of texts to be analyzed.
+     * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
+     * alpha-2. Defaults to "US" if not specified.
+     *
+     * @return A {@link DocumentResultCollection batch} containing the list of
+     * {@link DetectLanguageResult detected languages} with their numeric scores.
+     * @throws NullPointerException if {@code inputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectLanguages(List<String> inputs, String countryHint) {
         return detectLanguagesWithResponse(inputs, countryHint, Context.NONE).getValue();
     }
 
+    /**
+     * Detects Language for a batch of input with the provided country hint.
+     *
+     * @param inputs The list of texts to be analyzed.
+     * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
+     * alpha-2. Defaults to "US" if not specified.
+     *
+     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
+     * {@link DetectLanguageResult detected languages} with their numeric scores.
+     * @throws NullPointerException if {@code inputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<DetectLanguageResult>> detectLanguagesWithResponse(List<String> inputs,
                                                                                                 String countryHint,
@@ -64,18 +123,46 @@ public final class TextAnalyticsClient {
         return client.detectLanguagesWithResponse(inputs, countryHint, context).block();
     }
 
-    // advantage user
+    /**
+     * Detects Language for a batch of input.
+     *
+     * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     *
+     * @return A {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
+     * @throws NullPointerException if {@code inputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectBatchLanguages(List<DetectLanguageInput> inputs) {
         return detectBatchLanguages(inputs, null);
     }
 
+    /**
+     * Detects Language for a batch of input.
+     *
+     * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     *
+     * @return A {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
+     * @throws NullPointerException if {@code inputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<DetectLanguageResult> detectBatchLanguages(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options) {
         return detectBatchLanguagesWithResponse(inputs, options, Context.NONE).getValue();
     }
 
+    /**
+     * Detects Language for a batch of input.
+     *
+     * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     *
+     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
+     * {@link DetectLanguageResult detected languages}.
+     * @throws NullPointerException if {@code inputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguagesWithResponse(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
