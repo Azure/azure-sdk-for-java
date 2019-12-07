@@ -128,7 +128,28 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     public abstract void detectSingleTextLanguage();
 
     @Test
+    public abstract void detectLanguageEmptyText();
+
+    @Test
+    public abstract void detectLanguageNullText();
+
+    @Test
+    public abstract void detectLanguageFaultyText();
+
+    @Test
     public abstract void detectLanguagesBatchInput();
+
+    @Test
+    public abstract void detectLanguagesBatchInputShowStatistics();
+
+    @Test
+    public abstract void detectLanguagesNullInput();
+
+    @Test
+    public abstract void detectLanguagesBatchStringInput();
+
+    @Test
+    public abstract void detectLanguagesBatchListCountryHint();
 
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {

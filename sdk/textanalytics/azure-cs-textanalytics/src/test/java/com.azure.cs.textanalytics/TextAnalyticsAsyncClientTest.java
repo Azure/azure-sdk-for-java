@@ -113,7 +113,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     //     DetectedLanguage primaryLanguage = new DetectedLanguage().setName("Spanish").setIso6391Name("es").setScore(1.0);
     //     Error error = new Error().setCode("Invalid Hint");
     //     StepVerifier.create(client.detectLanguage("Este es un document escrito en Español.", "es"))
-    //         .assertNext(response -> assertEquals(error.getCode(), ((Error)response.getError()).getCode()))
+    //         .assertNext(response -> assertEquals(error, ((Error)response.getError()).getCode()))
     //         .verifyComplete();
     // }
 
