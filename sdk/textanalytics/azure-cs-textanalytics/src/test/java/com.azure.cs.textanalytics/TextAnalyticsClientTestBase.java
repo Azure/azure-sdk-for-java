@@ -125,7 +125,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void detectLanguage();
+    public abstract void detectSingleTextLanguage();
 
     @Test
     public abstract void detectLanguagesBatchInput();
@@ -333,6 +333,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             DetectedLanguage expectedDetectedLanguage = expectedLanguageList.get(i);
             DetectedLanguage actualDetectedLanguage = actualLanguageList.get(i);
             validatePrimaryLanguage(expectedDetectedLanguage, actualDetectedLanguage);
+        }
+    }
+
+    /**
+     * Helper method to verify that a command throws an IllegalArgumentException.
+     *
+     * @param exceptionThrower Command that should throw the exception
+     */
+    static <T> void assertRunnableThrowsException(Runnable exceptionThrower, Class<T> exception) {
+        try {
+            exceptionThrower.run();
+            fail();
+        } catch (Exception ex) {
+            assertEquals(exception, ex.getClass());
         }
     }
 }
