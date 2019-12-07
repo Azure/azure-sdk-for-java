@@ -48,6 +48,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-textanalytics.properties";
@@ -115,7 +116,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void detectLanguage();
+    public abstract void detectSingleTextLanguage();
 
     @Test
     public abstract void detectLanguagesBatchInput();
@@ -319,6 +320,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             DetectedLanguage expectedDetectedLanguage = expectedLanguageList.get(i);
             DetectedLanguage actualDetectedLanguage = actualLanguageList.get(i);
             validatePrimaryLanguage(expectedDetectedLanguage, actualDetectedLanguage);
+        }
+    }
+
+    /**
+     * Helper method to verify that a command throws an IllegalArgumentException.
+     *
+     * @param exceptionThrower Command that should throw the exception
+     */
+    static <T> void assertRunnableThrowsException(Runnable exceptionThrower, Class<T> exception) {
+        try {
+            exceptionThrower.run();
+            fail();
+        } catch (Exception ex) {
+            assertEquals(exception, ex.getClass());
         }
     }
 }

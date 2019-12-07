@@ -20,7 +20,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/cognitiveservices/azure-cs-textanalytics
+      - sdk/textanalytics/azure-cs-textanalytics
 
 pr:
   branches:
@@ -31,7 +31,7 @@ pr:
       - release/*
   paths:
     include:
-        - sdk/cognitiveservices/azure-cs-textanalytics
+        - sdk/textanalytics/azure-cs-textanalytics
 
 stages:
     - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

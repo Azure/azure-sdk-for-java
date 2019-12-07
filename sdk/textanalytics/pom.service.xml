@@ -18,7 +18,7 @@
     </activation>
     <modules>
       <module>../core/azure-core</module>
-      <module>../core/azure-core-test</module>
+      <!--<module>../core/azure-core-test</module>-->
       <module>../core/azure-core-http-netty</module>
       <module>../identity/azure-identity</module>
       <module>azure-cs-textanalytics</module>

@@ -27,7 +27,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     }
 
     /**
-     * Test Detect batch input langugaes with show statistics.
+     * Verify that we can get statistics on the collection result when given a batch input with options.
      */
     @Test
     public void detectLanguagesBatchInputShowStatistics() {
@@ -39,43 +39,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     }
 
     /**
-     * Test Detect batch input langugaes with show statistics.
-     */
-    @Test
-    public void detectLanguagesBatchInputShowStatisticsNew() {
-        detectLanguageShowStatisticsRunner((inputs, options) -> {
-            StepVerifier.create(client.detectBatchLanguages(inputs, options))
-                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
-                .verifyComplete();
-        });
-    }
-
-    /**
-     * Verifies that a batch collection is returned on batch input for detectLanguages.
-     */
-    @Test
-    public void detectLanguagesBatchStringList() {
-        detectLanguagesCountryHintRunner((inputs, countryHint) -> {
-            StepVerifier.create(client.detectLanguages(inputs, countryHint))
-                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
-                .verifyComplete();
-        });
-    }
-
-    /**
-     * Verifies that a batch collection is returned on batch input for detectLanguages.
-     */
-    @Test
-    public void detectLanguagesBatchStringInput() {
-        detectLanguageStringInputRunner((inputs) -> {
-            StepVerifier.create(client.detectLanguages(inputs))
-                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
-                .verifyComplete();
-        });
-    }
-
-    /**
-     * Verifies that a batch collection is returned on batch input for detectLanguages.
+     * Test Detect batch input languages.
      */
     @Test
     public void detectLanguagesBatchInput() {
@@ -87,22 +51,35 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     }
 
     /**
-     * Verifies that a Null pointer exception is thrown when null text is passed.
+     * Test Detect batch languages for List of String input with country Hint.
      */
     @Test
-    public void detectLanguagesNullInput() {
-        detectLanguageRunner((inputs) -> {
-            StepVerifier.create(client.detectBatchLanguagesWithResponse(null, null))
-                .verifyError(NullPointerException.class);
+    public void detectLanguagesBatchListCountryHint() {
+        detectLanguagesCountryHintRunner((inputs, countryHint) -> {
+            StepVerifier.create(client.detectLanguages(inputs, countryHint))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
+                .verifyComplete();
         });
     }
 
     /**
-     * Verifies that a single DetectLanguageResult is returned for a single text input to detectLanguages.
+     * Test Detect batch languages for List of String input.
+     */
+    @Test
+    public void detectLanguagesBatchStringInput() {
+        detectLanguageStringInputRunner((inputs) -> {
+            StepVerifier.create(client.detectLanguages(inputs))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
+                .verifyComplete();
+        });
+    }
+
+    /**
+     * Verifies that a single DetectLanguageResult is returned for a text input to detectLanguages.
      *
      */
     @Test
-    public void detectLanguage() {
+    public void detectSingleTextLanguage() {
         DetectedLanguage primaryLanguage = new DetectedLanguage().setName("English").setIso6391Name("en").setScore(1.0);
         List<DetectedLanguage> expectedLanguageList = new ArrayList<>(Arrays.asList(primaryLanguage));
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
@@ -111,7 +88,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     }
 
     /**
-     * Verifies that a single error DetectLanguageResult is returned for a single text input with invalid country hint.
+     * Verifies that an error DetectLanguageResult is returned for a text input with invalid country hint.
      *
      * TODO: update error Model. #6559
      */
@@ -139,6 +116,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     // }
 
     /**
+     * Verifies that a Null pointer exception is thrown when null text is passed.
+     */
+    @Test
+    public void detectLanguagesNullInput() {
+        detectLanguageRunner((inputs) -> {
+            StepVerifier.create(client.detectBatchLanguagesWithResponse(null, null))
+                .verifyError(NullPointerException.class);
+        });
+    }
+
+    /**
      * Verifies that the error result is returned when empty text is passed.
      */
     @Test
@@ -157,7 +145,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     }
 
     /**
-     * Verifies that an document returns with an error when error text is passed.
+     * Verifies that detectLanguage returns an "UNKNOWN" result when faulty text is passed.
      */
     @Test
     public void detectLanguageFaultyText() {
@@ -166,4 +154,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
                 assertEquals(response.getPrimaryLanguage().getIso6391Name(), "(Unknown)"))
             .verifyComplete();
     }
+
+    // TODO: add with response tests
 }
