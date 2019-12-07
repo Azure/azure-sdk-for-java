@@ -123,20 +123,8 @@ class ClientSideRequestStatistics {
             if (storeResponse != null) {
                 this.gatewayStatistic.statusCode = storeResponse.getStatus();
                 this.gatewayStatistic.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
-
-                ISessionToken sessionToken = null;
-                String headerValue;
-                if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN)) != null) {
-                    sessionToken = SessionTokenHelper.parse(headerValue);
-                }
-
-                double requestCharge = 0;
-                if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE)) != null) {
-                    requestCharge = Double.parseDouble(headerValue);
-                }
-
-                this.gatewayStatistic.sessionToken = sessionToken;
-                this.gatewayStatistic.requestCharge = requestCharge;
+                this.gatewayStatistic.sessionToken = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                this.gatewayStatistic.requestCharge = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
             } else if(exception != null){
                 this.gatewayStatistic.statusCode = exception.getStatusCode();
                 this.gatewayStatistic.subStatusCode = exception.getSubStatusCode();
@@ -333,15 +321,15 @@ class ClientSideRequestStatistics {
         private OperationType operationType;
         private int statusCode;
         private int subStatusCode;
-        private ISessionToken sessionToken;
-        private double requestCharge;
+        private String sessionToken;
+        private String requestCharge;
 
         public String toString() {
             return "Gateway statistics{ " +
                 "Operation Type : " + this.operationType +
                 "Status Code : " + this.statusCode +
                 "Substatus Code : " + this.statusCode +
-                "Session Token : " + (this.sessionToken != null ? this.sessionToken.convertToString() : null) +
+                "Session Token : " + this.sessionToken +
                 "Request Charge : " + requestCharge +
                 '}';
         }
