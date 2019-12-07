@@ -33,6 +33,8 @@ import com.azure.cs.textanalytics.models.TextDocumentStatistics;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,20 +56,29 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-textanalytics.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
-
-    final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
+    private static final String AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY = "AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY";
+    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
 
     private final ClientLogger logger = new ClientLogger(TextAnalyticsClientTestBase.class);
+
+    final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     private boolean showStatistics = false;
+    private String subscriptionKey;
+
 
     void beforeTestSetup() {
+        if (CoreUtils.isNullOrEmpty(subscriptionKey)) {
+            subscriptionKey = interceptorManager.isPlaybackMode()
+                ? "XYZAAAAAAAAAAAAA"
+                : Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY);
+        }
+
+        Objects.requireNonNull(subscriptionKey, "'Subscription Key' is required and can not be null.");
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        final String endpoint = getEndPoint();
-
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -88,21 +99,19 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, String.format("%s/.default", endpoint)));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPE));
         }
         policies.add(new RetryPolicy());
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-
         if (interceptorManager.isPlaybackMode()) {
             httpClient = interceptorManager.getPlaybackClient();
-            policies.add(interceptorManager.getRecordPolicy());
         } else {
             httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
-            policies.add(interceptorManager.getRecordPolicy());
         }
+        policies.add(interceptorManager.getRecordPolicy());
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -191,6 +200,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         return interceptorManager.isPlaybackMode()
             ? "http://localhost:8080"
             : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
+    }
+
+    String getSubscriptionKey() {
+        return this.subscriptionKey;
     }
 
     /**

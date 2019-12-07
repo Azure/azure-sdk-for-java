@@ -99,8 +99,7 @@ public final class TextAnalyticsClientBuilder {
 
         if (tokenCredential != null) {
             // User token based policy
-            policies.add(
-                new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
         } else if (subscriptionKey != null) {
             headers.put(OCP_APIM_SUBSCRIPTION_KEY, subscriptionKey);
         } else {
@@ -108,7 +107,6 @@ public final class TextAnalyticsClientBuilder {
             logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-
 
         policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
             buildConfiguration));
