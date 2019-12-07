@@ -32,9 +32,6 @@ public final class TextAnalyticsClient {
      * Returns the detected language and a numeric score between zero and one. Scores close to one indicate 100%
      * certainty that the identified language is true.
      *
-     * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.cs.textanalyticsclient.detectLanguage#string}
-     *
      * @param text The text to be analyzed.
      *
      * @return the {@link DetectLanguageResult detected language} of the text.
