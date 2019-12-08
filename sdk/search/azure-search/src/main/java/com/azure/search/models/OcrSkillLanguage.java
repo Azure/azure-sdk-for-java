@@ -6,172 +6,159 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for OcrSkillLanguage.
  */
-public enum OcrSkillLanguage {
+public final class OcrSkillLanguage extends ExpandableStringEnum<OcrSkillLanguage> {
     /**
-     * Enum value zh-Hans.
+     * Static value zh-Hans for OcrSkillLanguage.
      */
-    ZH_HANS("zh-Hans"),
+    public static final OcrSkillLanguage ZH_HANS = fromString("zh-Hans");
 
     /**
-     * Enum value zh-Hant.
+     * Static value zh-Hant for OcrSkillLanguage.
      */
-    ZH_HANT("zh-Hant"),
+    public static final OcrSkillLanguage ZH_HANT = fromString("zh-Hant");
 
     /**
-     * Enum value cs.
+     * Static value cs for OcrSkillLanguage.
      */
-    CS("cs"),
+    public static final OcrSkillLanguage CS = fromString("cs");
 
     /**
-     * Enum value da.
+     * Static value da for OcrSkillLanguage.
      */
-    DA("da"),
+    public static final OcrSkillLanguage DA = fromString("da");
 
     /**
-     * Enum value nl.
+     * Static value nl for OcrSkillLanguage.
      */
-    NL("nl"),
+    public static final OcrSkillLanguage NL = fromString("nl");
 
     /**
-     * Enum value en.
+     * Static value en for OcrSkillLanguage.
      */
-    EN("en"),
+    public static final OcrSkillLanguage EN = fromString("en");
 
     /**
-     * Enum value fi.
+     * Static value fi for OcrSkillLanguage.
      */
-    FI("fi"),
+    public static final OcrSkillLanguage FI = fromString("fi");
 
     /**
-     * Enum value fr.
+     * Static value fr for OcrSkillLanguage.
      */
-    FR("fr"),
+    public static final OcrSkillLanguage FR = fromString("fr");
 
     /**
-     * Enum value de.
+     * Static value de for OcrSkillLanguage.
      */
-    DE("de"),
+    public static final OcrSkillLanguage DE = fromString("de");
 
     /**
-     * Enum value el.
+     * Static value el for OcrSkillLanguage.
      */
-    EL("el"),
+    public static final OcrSkillLanguage EL = fromString("el");
 
     /**
-     * Enum value hu.
+     * Static value hu for OcrSkillLanguage.
      */
-    HU("hu"),
+    public static final OcrSkillLanguage HU = fromString("hu");
 
     /**
-     * Enum value it.
+     * Static value it for OcrSkillLanguage.
      */
-    IT("it"),
+    public static final OcrSkillLanguage IT = fromString("it");
 
     /**
-     * Enum value ja.
+     * Static value ja for OcrSkillLanguage.
      */
-    JA("ja"),
+    public static final OcrSkillLanguage JA = fromString("ja");
 
     /**
-     * Enum value ko.
+     * Static value ko for OcrSkillLanguage.
      */
-    KO("ko"),
+    public static final OcrSkillLanguage KO = fromString("ko");
 
     /**
-     * Enum value nb.
+     * Static value nb for OcrSkillLanguage.
      */
-    NB("nb"),
+    public static final OcrSkillLanguage NB = fromString("nb");
 
     /**
-     * Enum value pl.
+     * Static value pl for OcrSkillLanguage.
      */
-    PL("pl"),
+    public static final OcrSkillLanguage PL = fromString("pl");
 
     /**
-     * Enum value pt.
+     * Static value pt for OcrSkillLanguage.
      */
-    PT("pt"),
+    public static final OcrSkillLanguage PT = fromString("pt");
 
     /**
-     * Enum value ru.
+     * Static value ru for OcrSkillLanguage.
      */
-    RU("ru"),
+    public static final OcrSkillLanguage RU = fromString("ru");
 
     /**
-     * Enum value es.
+     * Static value es for OcrSkillLanguage.
      */
-    ES("es"),
+    public static final OcrSkillLanguage ES = fromString("es");
 
     /**
-     * Enum value sv.
+     * Static value sv for OcrSkillLanguage.
      */
-    SV("sv"),
+    public static final OcrSkillLanguage SV = fromString("sv");
 
     /**
-     * Enum value tr.
+     * Static value tr for OcrSkillLanguage.
      */
-    TR("tr"),
+    public static final OcrSkillLanguage TR = fromString("tr");
 
     /**
-     * Enum value ar.
+     * Static value ar for OcrSkillLanguage.
      */
-    AR("ar"),
+    public static final OcrSkillLanguage AR = fromString("ar");
 
     /**
-     * Enum value ro.
+     * Static value ro for OcrSkillLanguage.
      */
-    RO("ro"),
+    public static final OcrSkillLanguage RO = fromString("ro");
 
     /**
-     * Enum value sr-Cyrl.
+     * Static value sr-Cyrl for OcrSkillLanguage.
      */
-    SR_CYRL("sr-Cyrl"),
+    public static final OcrSkillLanguage SR_CYRL = fromString("sr-Cyrl");
 
     /**
-     * Enum value sr-Latn.
+     * Static value sr-Latn for OcrSkillLanguage.
      */
-    SR_LATN("sr-Latn"),
+    public static final OcrSkillLanguage SR_LATN = fromString("sr-Latn");
 
     /**
-     * Enum value sk.
+     * Static value sk for OcrSkillLanguage.
      */
-    SK("sk");
+    public static final OcrSkillLanguage SK = fromString("sk");
 
     /**
-     * The actual serialized value for a OcrSkillLanguage instance.
-     */
-    private final String value;
-
-    OcrSkillLanguage(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a OcrSkillLanguage instance.
+     * Creates or finds a OcrSkillLanguage from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed OcrSkillLanguage object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding OcrSkillLanguage.
      */
     @JsonCreator
-    public static OcrSkillLanguage fromString(String value) {
-        OcrSkillLanguage[] items = OcrSkillLanguage.values();
-        for (OcrSkillLanguage item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static OcrSkillLanguage fromString(String name) {
+        return fromString(name, OcrSkillLanguage.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known OcrSkillLanguage values.
+     */
+    public static Collection<OcrSkillLanguage> values() {
+        return values(OcrSkillLanguage.class);
     }
 }

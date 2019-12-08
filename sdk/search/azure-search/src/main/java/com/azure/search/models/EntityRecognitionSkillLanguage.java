@@ -6,67 +6,144 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for EntityRecognitionSkillLanguage.
  */
-public enum EntityRecognitionSkillLanguage {
+public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<EntityRecognitionSkillLanguage> {
     /**
-     * Enum value de.
+     * Static value ar for EntityRecognitionSkillLanguage.
      */
-    DE("de"),
+    public static final EntityRecognitionSkillLanguage AR = fromString("ar");
 
     /**
-     * Enum value en.
+     * Static value cs for EntityRecognitionSkillLanguage.
      */
-    EN("en"),
+    public static final EntityRecognitionSkillLanguage CS = fromString("cs");
 
     /**
-     * Enum value es.
+     * Static value zh-Hans for EntityRecognitionSkillLanguage.
      */
-    ES("es"),
+    public static final EntityRecognitionSkillLanguage ZH_HANS = fromString("zh-Hans");
 
     /**
-     * Enum value fr.
+     * Static value zh-Hant for EntityRecognitionSkillLanguage.
      */
-    FR("fr"),
+    public static final EntityRecognitionSkillLanguage ZH_HANT = fromString("zh-Hant");
 
     /**
-     * Enum value it.
+     * Static value da for EntityRecognitionSkillLanguage.
      */
-    IT("it");
+    public static final EntityRecognitionSkillLanguage DA = fromString("da");
 
     /**
-     * The actual serialized value for a EntityRecognitionSkillLanguage instance.
+     * Static value nl for EntityRecognitionSkillLanguage.
      */
-    private final String value;
-
-    EntityRecognitionSkillLanguage(String value) {
-        this.value = value;
-    }
+    public static final EntityRecognitionSkillLanguage NL = fromString("nl");
 
     /**
-     * Parses a serialized value to a EntityRecognitionSkillLanguage instance.
+     * Static value en for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage EN = fromString("en");
+
+    /**
+     * Static value fi for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage FI = fromString("fi");
+
+    /**
+     * Static value fr for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage FR = fromString("fr");
+
+    /**
+     * Static value de for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage DE = fromString("de");
+
+    /**
+     * Static value el for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage EL = fromString("el");
+
+    /**
+     * Static value hu for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage HU = fromString("hu");
+
+    /**
+     * Static value it for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage IT = fromString("it");
+
+    /**
+     * Static value ja for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage JA = fromString("ja");
+
+    /**
+     * Static value ko for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage KO = fromString("ko");
+
+    /**
+     * Static value no for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage NO = fromString("no");
+
+    /**
+     * Static value pl for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage PL = fromString("pl");
+
+    /**
+     * Static value pt-PT for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage PT_PT = fromString("pt-PT");
+
+    /**
+     * Static value pt-BR for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage PT_BR = fromString("pt-BR");
+
+    /**
+     * Static value ru for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage RU = fromString("ru");
+
+    /**
+     * Static value es for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage ES = fromString("es");
+
+    /**
+     * Static value sv for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage SV = fromString("sv");
+
+    /**
+     * Static value tr for EntityRecognitionSkillLanguage.
+     */
+    public static final EntityRecognitionSkillLanguage TR = fromString("tr");
+
+    /**
+     * Creates or finds a EntityRecognitionSkillLanguage from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed EntityRecognitionSkillLanguage object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding EntityRecognitionSkillLanguage.
      */
     @JsonCreator
-    public static EntityRecognitionSkillLanguage fromString(String value) {
-        EntityRecognitionSkillLanguage[] items = EntityRecognitionSkillLanguage.values();
-        for (EntityRecognitionSkillLanguage item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static EntityRecognitionSkillLanguage fromString(String name) {
+        return fromString(name, EntityRecognitionSkillLanguage.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known EntityRecognitionSkillLanguage values.
+     */
+    public static Collection<EntityRecognitionSkillLanguage> values() {
+        return values(EntityRecognitionSkillLanguage.class);
     }
 }

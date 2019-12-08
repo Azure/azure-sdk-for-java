@@ -4,7 +4,7 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.Index;
@@ -20,6 +20,7 @@ import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -162,7 +163,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         client = getSearchServiceClientBuilder().buildAsyncClient();
     }
 
-    @Override
+    @Test
     public void canResetIndexerAndGetIndexerStatus() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
@@ -183,7 +184,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createIndexerReturnsCorrectDefinition() {
         Indexer expectedIndexer =
             createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
@@ -221,7 +222,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canCreateAndListIndexerNames() {
         List<Indexer> indexers = prepareIndexersForCreateAndListIndexers();
 
@@ -240,7 +241,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createIndexerFailsWithUsefulMessageOnUserError() {
         Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
             .setDataSourceName("thisdatasourcedoesnotexist");
@@ -252,7 +253,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         );
     }
 
-    @Override
+    @Test
     public void canRunIndexer() {
         Indexer indexer = createTestDataSourceAndIndexer();
         client.runIndexer(indexer.getName());
@@ -262,7 +263,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 
-    @Override
+    @Test
     public void canRunIndexerWithResponse() {
         Indexer indexer = createTestDataSourceAndIndexer();
         Response<Void> response = client.runIndexerWithResponse(indexer.getName(), generateRequestOptions()).block();
@@ -274,7 +275,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 
-    @Override
+    @Test
     public void canRunIndexerAndGetIndexerStatus() {
         // When an indexer is created, the execution info may not be available immediately. Hence, a
         // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
@@ -302,7 +303,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         assertValidIndexerExecutionInfo(indexerExecutionInfo);
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexerIfNotExistsFailsOnExistingResource() {
         // Prepare data source and index
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
@@ -315,7 +316,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             mutateIndexerFunc);
     }
 
-    @Override
+    @Test
     public void canUpdateIndexer() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource((dataSource)).block();
@@ -325,7 +326,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Override
+    @Test
     public void canUpdateIndexerFieldMapping() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource((dataSource)).block();
@@ -335,7 +336,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Override
+    @Test
     public void canCreateIndexerWithFieldMapping() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource((dataSource)).block();
@@ -346,7 +347,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createAndValidateIndexer(indexer);
     }
 
-    @Override
+    @Test
     public void canUpdateIndexerDisabled() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource((dataSource)).block();
@@ -356,7 +357,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Override
+    @Test
     public void canUpdateIndexerSchedule() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource((dataSource)).block();
@@ -366,7 +367,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Override
+    @Test
     public void canCreateIndexerWithSchedule() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource((dataSource)).block();
@@ -377,7 +378,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createAndValidateIndexer(indexer);
     }
 
-    @Override
+    @Test
     public void canUpdateIndexerBatchSizeMaxFailedItems() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource((dataSource)).block();
@@ -389,7 +390,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Override
+    @Test
     public void canCreateIndexerWithBatchSizeMaxFailedItems() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource((dataSource)).block();
@@ -403,7 +404,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
     // This test currently does not pass on our Dogfood account, as the
     // Storage resource provider is not returning an answer.
-    @Override
+    @Test
     public void canUpdateIndexerBlobParams() {
         // Create the needed Azure blob resources and data source object
         DataSource blobDataSource = createBlobDataSource();
@@ -419,7 +420,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
     // This test currently does not pass on our Dogfood account, as the
     // Storage resource provider is not returning an answer.
-    @Override
+    @Test
     public void canCreateIndexerWithBlobParams() {
         // Create the needed Azure blob resources and data source object
         DataSource blobDataSource = createBlobDataSource();
@@ -434,7 +435,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createAndValidateIndexer(indexer);
     }
 
-    @Override
+    @Test
     public void canCreateAndDeleteIndexer() {
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
         Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
@@ -448,7 +449,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void deleteIndexerIsIdempotent() {
         // Create Datasource
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
@@ -480,7 +481,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
     }
 
-    @Override
+    @Test
     public void canCreateAndGetIndexer() {
         String indexerName = "indexer";
 
@@ -502,7 +503,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         assertIndexersEqual(indexer, indexerResult);
     }
 
-    @Override
+    @Test
     public void getIndexerThrowsOnNotFound() {
         assertHttpResponseExceptionAsync(
             client.getIndexer("thisindexerdoesnotexist"),
@@ -511,7 +512,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         );
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexerIfNotExistsSucceedsOnNoResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -523,7 +524,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             newIndexerFunc);
     }
 
-    @Override
+    @Test
     public void deleteIndexerIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -538,7 +539,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             indexerName);
     }
 
-    @Override
+    @Test
     public void deleteIndexerIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -554,7 +555,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             indexerName);
     }
 
-    @Override
+    @Test
     public void updateIndexerIfExistsFailsOnNoResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsFailsOnNoResourceAsync(
@@ -562,7 +563,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             createOrUpdateIndexerAsyncFunc);
     }
 
-    @Override
+    @Test
     public void updateIndexerIfExistsSucceedsOnExistingResource() {
         // Prepare datasource and index
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
@@ -574,7 +575,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             mutateIndexerFunc);
     }
 
-    @Override
+    @Test
     public void updateIndexerIfNotChangedFailsWhenResourceChanged() {
         // Prepare datasource and index
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
@@ -586,7 +587,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             mutateIndexerFunc);
     }
 
-    @Override
+    @Test
     public void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged() {
         // Prepare datasource and index
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
@@ -598,7 +599,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             mutateIndexerFunc);
     }
 
-    @Override
+    @Test
     public void canUpdateIndexerSkillset() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource).block();
@@ -611,7 +612,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Override
+    @Test
     public void canCreateIndexerWithSkillset() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource).block();
@@ -626,7 +627,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         createAndValidateIndexer(indexer);
     }
 
-    @Override
+    @Test
     public void existsReturnsTrueForExistingIndexer() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
@@ -640,7 +641,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void existsReturnsFalseForNonExistingIndexer() {
 
         StepVerifier.create(client.indexerExists("invalidindex"))

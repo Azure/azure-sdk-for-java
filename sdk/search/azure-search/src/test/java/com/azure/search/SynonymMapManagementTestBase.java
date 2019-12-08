@@ -4,7 +4,7 @@ package com.azure.search;
 
 import com.azure.search.models.SynonymMap;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase {
     @Test

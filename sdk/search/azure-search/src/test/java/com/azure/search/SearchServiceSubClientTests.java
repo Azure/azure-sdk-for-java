@@ -4,7 +4,7 @@ package com.azure.search;
 
 import com.azure.core.http.HttpPipeline;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SearchServiceSubClientTests extends SearchServiceTestBase {
 

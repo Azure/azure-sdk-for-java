@@ -6,117 +6,104 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for SentimentSkillLanguage.
  */
-public enum SentimentSkillLanguage {
+public final class SentimentSkillLanguage extends ExpandableStringEnum<SentimentSkillLanguage> {
     /**
-     * Enum value da.
+     * Static value da for SentimentSkillLanguage.
      */
-    DA("da"),
+    public static final SentimentSkillLanguage DA = fromString("da");
 
     /**
-     * Enum value nl.
+     * Static value nl for SentimentSkillLanguage.
      */
-    NL("nl"),
+    public static final SentimentSkillLanguage NL = fromString("nl");
 
     /**
-     * Enum value en.
+     * Static value en for SentimentSkillLanguage.
      */
-    EN("en"),
+    public static final SentimentSkillLanguage EN = fromString("en");
 
     /**
-     * Enum value fi.
+     * Static value fi for SentimentSkillLanguage.
      */
-    FI("fi"),
+    public static final SentimentSkillLanguage FI = fromString("fi");
 
     /**
-     * Enum value fr.
+     * Static value fr for SentimentSkillLanguage.
      */
-    FR("fr"),
+    public static final SentimentSkillLanguage FR = fromString("fr");
 
     /**
-     * Enum value de.
+     * Static value de for SentimentSkillLanguage.
      */
-    DE("de"),
+    public static final SentimentSkillLanguage DE = fromString("de");
 
     /**
-     * Enum value el.
+     * Static value el for SentimentSkillLanguage.
      */
-    EL("el"),
+    public static final SentimentSkillLanguage EL = fromString("el");
 
     /**
-     * Enum value it.
+     * Static value it for SentimentSkillLanguage.
      */
-    IT("it"),
+    public static final SentimentSkillLanguage IT = fromString("it");
 
     /**
-     * Enum value no.
+     * Static value no for SentimentSkillLanguage.
      */
-    NO("no"),
+    public static final SentimentSkillLanguage NO = fromString("no");
 
     /**
-     * Enum value pl.
+     * Static value pl for SentimentSkillLanguage.
      */
-    PL("pl"),
+    public static final SentimentSkillLanguage PL = fromString("pl");
 
     /**
-     * Enum value pt-PT.
+     * Static value pt-PT for SentimentSkillLanguage.
      */
-    PT_PT("pt-PT"),
+    public static final SentimentSkillLanguage PT_PT = fromString("pt-PT");
 
     /**
-     * Enum value ru.
+     * Static value ru for SentimentSkillLanguage.
      */
-    RU("ru"),
+    public static final SentimentSkillLanguage RU = fromString("ru");
 
     /**
-     * Enum value es.
+     * Static value es for SentimentSkillLanguage.
      */
-    ES("es"),
+    public static final SentimentSkillLanguage ES = fromString("es");
 
     /**
-     * Enum value sv.
+     * Static value sv for SentimentSkillLanguage.
      */
-    SV("sv"),
+    public static final SentimentSkillLanguage SV = fromString("sv");
 
     /**
-     * Enum value tr.
+     * Static value tr for SentimentSkillLanguage.
      */
-    TR("tr");
+    public static final SentimentSkillLanguage TR = fromString("tr");
 
     /**
-     * The actual serialized value for a SentimentSkillLanguage instance.
-     */
-    private final String value;
-
-    SentimentSkillLanguage(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a SentimentSkillLanguage instance.
+     * Creates or finds a SentimentSkillLanguage from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed SentimentSkillLanguage object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding SentimentSkillLanguage.
      */
     @JsonCreator
-    public static SentimentSkillLanguage fromString(String value) {
-        SentimentSkillLanguage[] items = SentimentSkillLanguage.values();
-        for (SentimentSkillLanguage item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static SentimentSkillLanguage fromString(String name) {
+        return fromString(name, SentimentSkillLanguage.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known SentimentSkillLanguage values.
+     */
+    public static Collection<SentimentSkillLanguage> values() {
+        return values(SentimentSkillLanguage.class);
     }
 }

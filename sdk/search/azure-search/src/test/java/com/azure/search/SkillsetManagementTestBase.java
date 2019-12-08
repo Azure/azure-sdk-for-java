@@ -29,7 +29,7 @@ import com.azure.search.models.TextExtractionAlgorithm;
 import com.azure.search.models.TextSplitMode;
 import com.azure.search.models.VisualFeature;
 import com.azure.search.models.WebApiSkill;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;

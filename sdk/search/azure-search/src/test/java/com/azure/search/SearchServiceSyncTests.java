@@ -4,7 +4,7 @@ package com.azure.search;
 
 import com.azure.core.util.Context;
 import com.azure.search.models.ServiceStatistics;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;

@@ -28,6 +28,10 @@ module com.azure.core {
     exports com.azure.core.util.serializer;
     exports com.azure.core.util.tracing;
     exports com.azure.core.cryptography;
+    exports com.azure.core.implementation.serializer;
+    exports com.azure.core.implementation.serializer.jsonwrapper;
+    exports com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper;
+    exports com.azure.core.implementation.serializer.jsonwrapper.api;
 
     // exporting some packages specifically for Jackson
     opens com.azure.core.http to com.fasterxml.jackson.databind;

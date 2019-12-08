@@ -7,9 +7,11 @@
 package com.azure.search.implementation;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.core.implementation.serializer.SerializerAdapter;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /**
  * Initializes a new instance of the SearchIndexRestClient type.
@@ -143,7 +145,7 @@ public final class SearchIndexRestClientImpl {
      * Initializes an instance of SearchIndexRestClient client.
      */
     public SearchIndexRestClientImpl() {
-        this(RestProxy.createDefaultPipeline(), JacksonAdapter.createDefaultSerializerAdapter());
+        new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
     }
 
     /**

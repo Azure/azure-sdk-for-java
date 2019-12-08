@@ -19,6 +19,7 @@ import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.LoudHotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -40,7 +41,7 @@ import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAU
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;
 
-    @Override
+    @Test
     public void countingDocsOfNewIndexGivesZero() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -51,7 +52,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(expected, actual);
     }
 
-    @Override
+    @Test
     public void indexDoesNotThrowWhenAllActionsSucceed() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -71,7 +72,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(expectedHotelCount, client.getDocumentCount());
     }
 
-    @Override
+    @Test
     public void canIndexWithPascalCaseFields() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
@@ -93,7 +94,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(1L, client.getDocumentCount().longValue());
     }
 
-    @Override
+    @Test
     public void canDeleteBatchByKeys() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -118,7 +119,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(0, client.getDocumentCount().intValue());
     }
 
-    @Override
+    @Test
     public void indexDoesNotThrowWhenDeletingDocumentWithExtraFields() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -142,7 +143,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(0, client.getDocumentCount().intValue());
     }
 
-    @Override
+    @Test
     public void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFields() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -212,7 +213,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         assertReflectionEquals(hotel3, actualHotel3, IGNORE_DEFAULTS);
     }
 
-    @Override
+    @Test
     public void canIndexDynamicDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -256,7 +257,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(hotel3, actualHotel3);
     }
 
-    @Override
+    @Test
     public void indexWithInvalidDocumentThrowsException() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -271,7 +272,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         );
     }
 
-    @Override
+    @Test
     public void canUseIndexWithReservedName() {
         String indexName = "prototype";
         Index indexWithReservedName = new Index()
@@ -300,7 +301,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertNotNull(actual);
     }
 
-    @Override
+    @Test
     public void canRoundtripBoundaryValues() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -317,7 +318,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         }
     }
 
-    @Override
+    @Test
     public void dynamicDocumentDateTimesRoundTripAsUtc() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
@@ -355,7 +356,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC), ((OffsetDateTime) actualBook2.get("PublishDate")).withOffsetSameInstant(ZoneOffset.UTC));
     }
 
-    @Override
+    @Test
     public void staticallyTypedDateTimesRoundTripAsUtc() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
@@ -385,7 +386,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), convertToType(actualBook2, Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC));
     }
 
-    @Override
+    @Test
     public void canMergeStaticallyTypedDocuments() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -497,7 +498,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         assertReflectionEquals(originalDoc, convertToType(client.getDocument("1"), Hotel.class), IGNORE_DEFAULTS);
     }
 
-    @Override
+    @Test
     public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -519,7 +520,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
 
-    @Override
+    @Test
     public void canSetExplicitNullsInStaticallyTypedDocument() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -638,7 +639,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         assertReflectionEquals(originalDoc, actualDoc, IGNORE_DEFAULTS);
     }
 
-    @Override
+    @Test
     public void canMergeDynamicDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -764,7 +765,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(originalDoc, actualDoc);
     }
 
-    @Override
+    @Test
     public void canIndexAndAccessResponse() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();

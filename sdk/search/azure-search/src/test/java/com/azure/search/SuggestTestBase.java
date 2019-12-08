@@ -9,7 +9,7 @@ import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.Jacks
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Hotel;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -122,7 +122,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
             ((ArrayList<LinkedHashMap<String, String>>) result.get("Rooms"))
                 .parallelStream()
                 .map(room -> room.get("Type"))
-            .collect(Collectors.toList()));
+                .collect(Collectors.toList()));
 
     }
 

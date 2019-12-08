@@ -5,6 +5,9 @@ package com.azure.search;
 
 import com.azure.search.models.SuggestOptions;
 
+/**
+ * TODO: Add class description
+ */
 public class SuggestOptionsHandler {
 
     /**

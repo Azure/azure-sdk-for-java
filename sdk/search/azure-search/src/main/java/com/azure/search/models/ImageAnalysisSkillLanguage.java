@@ -6,52 +6,39 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for ImageAnalysisSkillLanguage.
  */
-public enum ImageAnalysisSkillLanguage {
+public final class ImageAnalysisSkillLanguage extends ExpandableStringEnum<ImageAnalysisSkillLanguage> {
     /**
-     * Enum value en.
+     * Static value en for ImageAnalysisSkillLanguage.
      */
-    EN("en"),
+    public static final ImageAnalysisSkillLanguage EN = fromString("en");
 
     /**
-     * Enum value zh.
+     * Static value zh for ImageAnalysisSkillLanguage.
      */
-    ZH("zh");
+    public static final ImageAnalysisSkillLanguage ZH = fromString("zh");
 
     /**
-     * The actual serialized value for a ImageAnalysisSkillLanguage instance.
-     */
-    private final String value;
-
-    ImageAnalysisSkillLanguage(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ImageAnalysisSkillLanguage instance.
+     * Creates or finds a ImageAnalysisSkillLanguage from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ImageAnalysisSkillLanguage object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ImageAnalysisSkillLanguage.
      */
     @JsonCreator
-    public static ImageAnalysisSkillLanguage fromString(String value) {
-        ImageAnalysisSkillLanguage[] items = ImageAnalysisSkillLanguage.values();
-        for (ImageAnalysisSkillLanguage item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ImageAnalysisSkillLanguage fromString(String name) {
+        return fromString(name, ImageAnalysisSkillLanguage.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known ImageAnalysisSkillLanguage values.
+     */
+    public static Collection<ImageAnalysisSkillLanguage> values() {
+        return values(ImageAnalysisSkillLanguage.class);
     }
 }

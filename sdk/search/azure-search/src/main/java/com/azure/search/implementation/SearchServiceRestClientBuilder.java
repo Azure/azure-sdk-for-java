@@ -17,8 +17,11 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ServiceStatistics;
@@ -101,7 +104,7 @@ public final class SearchServiceRestClientBuilder {
      */
     public SearchServiceRestClientImpl build() {
         if (pipeline == null) {
-            this.pipeline = RestProxy.createDefaultPipeline();
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
         }
         SearchServiceRestClientImpl client = new SearchServiceRestClientImpl(pipeline);
         if (this.apiVersion != null) {

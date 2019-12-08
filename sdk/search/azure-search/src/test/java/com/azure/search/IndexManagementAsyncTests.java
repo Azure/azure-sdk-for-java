@@ -20,6 +20,7 @@ import com.azure.search.test.AccessConditionAsyncTests;
 import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -51,7 +52,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         client = getSearchServiceClientBuilder().buildAsyncClient();
     }
 
-    @Override
+    @Test
     public void createIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
         StepVerifier
@@ -65,7 +66,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createIndexReturnsCorrectDefaultValues() {
         Index index = createTestIndex()
             .setCorsOptions(new CorsOptions().setAllowedOrigins("*"))
@@ -92,7 +93,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createIndexFailsWithUsefulMessageOnUserError() {
         Index index = new Index()
             .setName(HOTEL_INDEX_NAME)
@@ -110,7 +111,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
                 + "Each index must have exactly one key field.", HOTEL_INDEX_NAME));
     }
 
-    @Override
+    @Test
     public void getIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
         client.createIndex(index).block();
@@ -126,7 +127,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void getIndexThrowsOnNotFound() {
         assertHttpResponseExceptionAsync(
             client.getIndex("thisindexdoesnotexist"),
@@ -135,7 +136,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
         );
     }
 
-    @Override
+    @Test
     public void existsReturnsTrueForExistingIndex() {
         Index index = createTestIndex();
         client.createIndex(index).block();
@@ -151,7 +152,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void existsReturnsFalseForNonExistingIndex() {
         StepVerifier
             .create(client.indexExists("invalidindex"))
@@ -159,7 +160,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -171,7 +172,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             HOTEL_INDEX_NAME);
     }
 
-    @Override
+    @Test
     public void deleteIndexIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -182,7 +183,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             HOTEL_INDEX_NAME);
     }
 
-    @Override
+    @Test
     public void deleteIndexIsIdempotent() {
         Index index = new Index()
             .setName(HOTEL_INDEX_NAME)
@@ -222,7 +223,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canCreateAndDeleteIndex() {
         Index index = createTestIndex();
         client.createIndex(index).block();
@@ -234,7 +235,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canCreateAndListIndexes() {
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
@@ -254,7 +255,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canListIndexesWithSelectedField() {
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
@@ -292,7 +293,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canAddSynonymFieldProperty() {
         String synonymMapName = "names";
         SynonymMap synonymMap = new SynonymMap().setName(synonymMapName).setSynonyms("hotel,motel");
@@ -321,7 +322,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canUpdateSynonymFieldProperty() {
         String synonymMapName = "names";
         SynonymMap synonymMap = new SynonymMap()
@@ -409,7 +410,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canUpdateSuggesterWithNewIndexFields() {
         Index index = createTestIndex();
         client.createIndex(index).block();
@@ -436,7 +437,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields() {
         Index index = createTestIndex();
         client.createIndex(index).block();
@@ -457,7 +458,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
                 + " Only new fields added in the same index update operation are allowed.", existingFieldName));
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExist() {
         Index expected = createTestIndex();
 
@@ -479,7 +480,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -489,7 +490,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             mutateIndexFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -498,7 +499,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             newIndexFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsSucceedsOnExistingResourceAsync(
@@ -507,7 +508,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             mutateIndexFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexIfExistsFailsOnNoResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsFailsOnNoResourceAsync(
@@ -515,7 +516,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             createOrUpdateIndexAsyncFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchangedAsync(
@@ -524,7 +525,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             mutateIndexFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedFailsWhenResourceChangedAsync(
@@ -533,7 +534,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             mutateIndexFunc);
     }
 
-    @Override
+    @Test
     public void canCreateAndGetIndexStats() {
         Index testIndex = createTestIndex();
         Index index = client.createOrUpdateIndex(testIndex).block();

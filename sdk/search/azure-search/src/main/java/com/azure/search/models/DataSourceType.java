@@ -6,62 +6,49 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for DataSourceType.
  */
-public enum DataSourceType {
+public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
     /**
-     * Enum value azuresql.
+     * Static value azuresql for DataSourceType.
      */
-    AZURESQL("azuresql"),
+    public static final DataSourceType AZURE_SQL = fromString("azuresql");
 
     /**
-     * Enum value cosmosdb.
+     * Static value cosmosdb for DataSourceType.
      */
-    COSMOSDB("cosmosdb"),
+    public static final DataSourceType COSMOS_DB = fromString("cosmosdb");
 
     /**
-     * Enum value azureblob.
+     * Static value azureblob for DataSourceType.
      */
-    AZUREBLOB("azureblob"),
+    public static final DataSourceType AZURE_BLOB = fromString("azureblob");
 
     /**
-     * Enum value azuretable.
+     * Static value azuretable for DataSourceType.
      */
-    AZURETABLE("azuretable");
+    public static final DataSourceType AZURE_TABLE = fromString("azuretable");
 
     /**
-     * The actual serialized value for a DataSourceType instance.
-     */
-    private final String value;
-
-    DataSourceType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a DataSourceType instance.
+     * Creates or finds a DataSourceType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed DataSourceType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding DataSourceType.
      */
     @JsonCreator
-    public static DataSourceType fromString(String value) {
-        DataSourceType[] items = DataSourceType.values();
-        for (DataSourceType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static DataSourceType fromString(String name) {
+        return fromString(name, DataSourceType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known DataSourceType values.
+     */
+    public static Collection<DataSourceType> values() {
+        return values(DataSourceType.class);
     }
 }

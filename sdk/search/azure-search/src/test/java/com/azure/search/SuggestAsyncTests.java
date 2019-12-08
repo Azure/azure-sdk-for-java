@@ -9,6 +9,7 @@ import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void searchFieldsExcludesFieldsFromSuggest() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -58,7 +59,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canUseSuggestHitHighlighting() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -78,7 +79,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canGetFuzzySuggestions() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -95,7 +96,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canSuggestStaticallyTypedDocuments() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -114,7 +115,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canSuggestWithDateTimeInStaticModel() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
@@ -142,7 +143,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void fuzzyIsOffByDefault() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -165,7 +166,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void suggestThrowsWhenGivenBadSuggesterName() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -178,7 +179,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         );
     }
 
-    @Override
+    @Test
     public void suggestThrowsWhenRequestIsMalformed() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -193,7 +194,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         );
     }
 
-    @Override
+    @Test
     public void testCanSuggestWithMinimumCoverage() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -214,7 +215,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void testTopTrimsResults() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -235,7 +236,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void testCanFilter() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -256,7 +257,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void testOrderByProgressivelyBreaksTies() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -280,7 +281,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void testCanSuggestWithSelectedFields() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();

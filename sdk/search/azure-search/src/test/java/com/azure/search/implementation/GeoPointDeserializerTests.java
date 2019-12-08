@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,7 +19,7 @@ public class GeoPointDeserializerTests {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    @BeforeClass
+    @BeforeAll
     public static void setupClass() {
         SimpleModule module = new SimpleModule();
         UntypedObjectDeserializer defaultDeserializer = new  UntypedObjectDeserializer(null, null);

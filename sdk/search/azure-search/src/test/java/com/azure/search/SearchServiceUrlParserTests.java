@@ -3,28 +3,33 @@
 package com.azure.search;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class SearchServiceUrlParserTests {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void throwsOnNull() {
-        SearchServiceUrlParser.parseServiceUrlParts(null);
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+            SearchServiceUrlParser.parseServiceUrlParts(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void throwsOnEmpty() {
-        SearchServiceUrlParser.parseServiceUrlParts("");
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+            SearchServiceUrlParser.parseServiceUrlParts(""));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void throwsOnBadUrl() {
-        SearchServiceUrlParser.parseServiceUrlParts("1234!");
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+            SearchServiceUrlParser.parseServiceUrlParts("1234!"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void throwsOnInvalidHost() {
-        SearchServiceUrlParser.parseServiceUrlParts("https://localhost");
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+            SearchServiceUrlParser.parseServiceUrlParts("https://localhost"));
     }
 
     @Test

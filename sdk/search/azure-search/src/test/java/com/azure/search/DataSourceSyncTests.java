@@ -20,6 +20,7 @@ import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -61,7 +62,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
             .getValue();
     }
 
-    @Override
+    @Test
     public void createAndListDataSources() {
         DataSource dataSource1 = createTestBlobDataSource(null);
         DataSource dataSource2 = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
@@ -84,7 +85,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         Assert.assertEquals(dataSource2.getName(), resultList.get(1).getName());
     }
 
-    @Override
+    @Test
     public void canCreateAndDeleteDatasource() {
         DataSource dataSource = createTestBlobDataSource(null);
         client.deleteDataSource(dataSource.getName());
@@ -92,7 +93,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         Assert.assertFalse(client.dataSourceExists(dataSource.getName()));
     }
 
-    @Override
+    @Test
     public void deleteDataSourceIsIdempotent() {
         DataSource dataSource = createTestBlobDataSource(null);
 
@@ -114,7 +115,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
     }
 
-    @Override
+    @Test
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
         client = getSearchServiceClientBuilder().buildClient();
 
@@ -128,7 +129,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         );
     }
 
-    @Override
+    @Test
     public void canUpdateDataSource() {
         DataSource initial = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
 
@@ -148,7 +149,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         assertDataSourcesEqual(updatedExpected, updatedActual);
     }
 
-    @Override
+    @Test
     public void createOrUpdateDataSourceIfNotExistsFailsOnExistingResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -158,7 +159,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
             mutateDataSourceFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateDatasourceIfNotExistsSucceedsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -167,7 +168,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
             newDataSourceFunc);
     }
 
-    @Override
+    @Test
     public void deleteDataSourceIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -178,7 +179,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
             BLOB_DATASOURCE_TEST_NAME);
     }
 
-    @Override
+    @Test
     public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -189,7 +190,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
             BLOB_DATASOURCE_TEST_NAME);
     }
 
-    @Override
+    @Test
     public void updateDataSourceIfExistsFailsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -198,7 +199,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
             createOrUpdateDataSourceFunc);
     }
 
-    @Override
+    @Test
     public void updateDataSourceIfExistsSucceedsOnExistingResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -208,7 +209,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
             mutateDataSourceFunc);
     }
 
-    @Override
+    @Test
     public void updateDataSourceIfNotChangedFailsWhenResourceChanged() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -218,7 +219,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
             mutateDataSourceFunc);
     }
 
-    @Override
+    @Test
     public void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -228,12 +229,12 @@ public class DataSourceSyncTests extends DataSourceTestBase {
             mutateDataSourceFunc);
     }
 
-    @Override
+    @Test
     public void existsReturnsFalseForNonExistingDatasource() {
         Assert.assertFalse(client.dataSourceExists("inExistentDataSourceName"));
     }
 
-    @Override
+    @Test
     public void existsReturnsTrueForExistingDatasource() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
@@ -242,7 +243,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         Assert.assertTrue(client.dataSourceExistsWithResponse(dataSource.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
-    @Override
+    @Test
     public void createDataSourceReturnsCorrectDefinition() {
         SoftDeleteColumnDeletionDetectionPolicy deletionDetectionPolicy =
             new SoftDeleteColumnDeletionDetectionPolicy()
@@ -284,7 +285,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
     }
 
-    @Override
+    @Test
     public void getDataSourceReturnsCorrectDefinition() {
         client = getSearchServiceClientBuilder().buildClient();
 
@@ -308,7 +309,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         client.deleteDataSource(dataSourceName);
     }
 
-    @Override
+    @Test
     public void getDataSourceThrowsOnNotFound() {
         client = getSearchServiceClientBuilder().buildClient();
         assertHttpResponseException(
@@ -318,7 +319,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         );
     }
 
-    @Override
+    @Test
     public void canUpdateConnectionData() {
         // Note: since connection string is not returned when queried from the service, actually saving the
         // datasource, retrieving it and verifying the change, won't work.

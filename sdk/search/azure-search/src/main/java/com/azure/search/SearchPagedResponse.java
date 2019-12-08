@@ -4,8 +4,8 @@
 package com.azure.search;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.search.models.DocumentSearchResult;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.SearchRequest;
@@ -19,6 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+/**
+ * TODO: Add class description
+ */
 public class SearchPagedResponse extends PagedResponseBase<String, SearchResult> {
 
     private final Map<String, List<FacetResult>> facets;

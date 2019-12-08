@@ -12,6 +12,7 @@ import com.azure.search.test.AccessConditionTests;
 import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -50,7 +51,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         client = getSearchServiceClientBuilder().buildClient();
     }
 
-    @Override
+    @Test
     public void createSynonymMapReturnsCorrectDefinition() {
         SynonymMap expectedSynonymMap = createTestSynonymMap();
         SynonymMap actualSynonymMap = client.createSynonymMap(expectedSynonymMap);
@@ -61,7 +62,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
     }
 
-    @Override
+    @Test
     public void createSynonymMapFailsWithUsefulMessageOnUserError() {
         // Create SynonymMap with invalid synonym
         SynonymMap expectedSynonymMap = createTestSynonymMap()
@@ -74,7 +75,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         );
     }
 
-    @Override
+    @Test
     public void getSynonymMapReturnsCorrectDefinition() {
         SynonymMap expected = createTestSynonymMap();
 
@@ -88,7 +89,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         assertSynonymMapsEqual(expected, actual);
     }
 
-    @Override
+    @Test
     public void getSynonymMapThrowsOnNotFound() {
         final String synonymMapName = "thisSynonymMapDoesNotExist";
         final String exceptionMessage = String.format("No synonym map with the name '%s' was found", synonymMapName);
@@ -104,7 +105,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
             exceptionMessage);
     }
 
-    @Override
+    @Test
     public void canUpdateSynonymMap() {
         SynonymMap initial = createTestSynonymMap();
 
@@ -121,7 +122,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         Assert.assertEquals(1, synonymMaps.stream().count());
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExist() {
         SynonymMap expected = createTestSynonymMap();
 
@@ -135,14 +136,14 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         assertSynonymMapsEqual(expected, createOrUpdateResponse.getValue());
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapIfNotExistsFailsOnExistingResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateSynonymMapFunc,
             newSynonymMapFunc, mutateSynonymMapFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -151,7 +152,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
             newSynonymMapFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsSucceedsOnExistingResource(
@@ -160,7 +161,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
             mutateSynonymMapFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapIfExistsFailsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsFailsOnNoResource(
@@ -168,7 +169,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
             createOrUpdateSynonymMapFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchanged(
@@ -177,7 +178,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
             mutateSynonymMapFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedFailsWhenResourceChanged(
@@ -186,7 +187,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
             mutateSynonymMapFunc);
     }
 
-    @Override
+    @Test
     public void deleteSynonymMapIsIdempotent() {
         SynonymMap synonymMap = createTestSynonymMap();
         Response<Void> deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(),
@@ -206,7 +207,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
-    @Override
+    @Test
     public void canCreateAndDeleteSynonymMap() {
         SynonymMap synonymMap = createTestSynonymMap();
         client.createSynonymMap(synonymMap);
@@ -214,7 +215,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         Assert.assertFalse(client.synonymMapExists(synonymMap.getName()));
     }
 
-    @Override
+    @Test
     public void canCreateAndListSynonymMaps() {
         SynonymMap synonymMap1 = createTestSynonymMap();
         SynonymMap synonymMap2 = createTestSynonymMap().setName("test-synonym1");
@@ -230,7 +231,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         Assert.assertEquals(synonymMap2.getName(), result.get(1).getName());
     }
 
-    @Override
+    @Test
     public void canListSynonymMapsWithSelectedField() {
         SynonymMap synonymMap1 = createTestSynonymMap();
         SynonymMap synonymMap2 = createTestSynonymMap().setName("test-synonym1");
@@ -252,7 +253,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         Assert.assertEquals(synonymMap2.getName(), result.get(1).getName());
     }
 
-    @Override
+    @Test
     public void existsReturnsTrueForExistingSynonymMap() {
         SynonymMap synonymMap = createTestSynonymMap();
 
@@ -263,7 +264,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
             .getValue());
     }
 
-    @Override
+    @Test
     public void existsReturnsFalseForNonExistingSynonymMap() {
         String synonymMapName = "thisSynonymMapDoesNotExist";
 
@@ -272,7 +273,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
             .getValue());
     }
 
-    @Override
+    @Test
     public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -284,7 +285,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
             synonymName);
     }
 
-    @Override
+    @Test
     public void deleteSynonymMapIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests act = new AccessConditionTests();
 

@@ -4,13 +4,16 @@
 package com.azure.search;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.search.models.DocumentSuggestResult;
 import com.azure.search.models.SuggestResult;
 
 import java.util.stream.Collectors;
 
+/**
+ * TODO: Add class description
+ */
 public class SuggestPagedResponse extends PagedResponseBase<String, SuggestResult> {
 
     /**

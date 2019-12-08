@@ -22,6 +22,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+/**
+ * TODO: Add class description
+ */
 @ServiceClient(builder = SearchIndexClientBuilder.class)
 public class SearchIndexClient {
 

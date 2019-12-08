@@ -6,357 +6,344 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for TextTranslationSkillLanguage.
  */
-public enum TextTranslationSkillLanguage {
+public final class TextTranslationSkillLanguage extends ExpandableStringEnum<TextTranslationSkillLanguage> {
     /**
-     * Enum value af.
+     * Static value af for TextTranslationSkillLanguage.
      */
-    AF("af"),
+    public static final TextTranslationSkillLanguage AF = fromString("af");
 
     /**
-     * Enum value ar.
+     * Static value ar for TextTranslationSkillLanguage.
      */
-    AR("ar"),
+    public static final TextTranslationSkillLanguage AR = fromString("ar");
 
     /**
-     * Enum value bn.
+     * Static value bn for TextTranslationSkillLanguage.
      */
-    BN("bn"),
+    public static final TextTranslationSkillLanguage BN = fromString("bn");
 
     /**
-     * Enum value bs.
+     * Static value bs for TextTranslationSkillLanguage.
      */
-    BS("bs"),
+    public static final TextTranslationSkillLanguage BS = fromString("bs");
 
     /**
-     * Enum value bg.
+     * Static value bg for TextTranslationSkillLanguage.
      */
-    BG("bg"),
+    public static final TextTranslationSkillLanguage BG = fromString("bg");
 
     /**
-     * Enum value yue.
+     * Static value yue for TextTranslationSkillLanguage.
      */
-    YUE("yue"),
+    public static final TextTranslationSkillLanguage YUE = fromString("yue");
 
     /**
-     * Enum value ca.
+     * Static value ca for TextTranslationSkillLanguage.
      */
-    CA("ca"),
+    public static final TextTranslationSkillLanguage CA = fromString("ca");
 
     /**
-     * Enum value zh-Hans.
+     * Static value zh-Hans for TextTranslationSkillLanguage.
      */
-    ZH_HANS("zh-Hans"),
+    public static final TextTranslationSkillLanguage ZH_HANS = fromString("zh-Hans");
 
     /**
-     * Enum value zh-Hant.
+     * Static value zh-Hant for TextTranslationSkillLanguage.
      */
-    ZH_HANT("zh-Hant"),
+    public static final TextTranslationSkillLanguage ZH_HANT = fromString("zh-Hant");
 
     /**
-     * Enum value hr.
+     * Static value hr for TextTranslationSkillLanguage.
      */
-    HR("hr"),
+    public static final TextTranslationSkillLanguage HR = fromString("hr");
 
     /**
-     * Enum value cs.
+     * Static value cs for TextTranslationSkillLanguage.
      */
-    CS("cs"),
+    public static final TextTranslationSkillLanguage CS = fromString("cs");
 
     /**
-     * Enum value da.
+     * Static value da for TextTranslationSkillLanguage.
      */
-    DA("da"),
+    public static final TextTranslationSkillLanguage DA = fromString("da");
 
     /**
-     * Enum value nl.
+     * Static value nl for TextTranslationSkillLanguage.
      */
-    NL("nl"),
+    public static final TextTranslationSkillLanguage NL = fromString("nl");
 
     /**
-     * Enum value en.
+     * Static value en for TextTranslationSkillLanguage.
      */
-    EN("en"),
+    public static final TextTranslationSkillLanguage EN = fromString("en");
 
     /**
-     * Enum value et.
+     * Static value et for TextTranslationSkillLanguage.
      */
-    ET("et"),
+    public static final TextTranslationSkillLanguage ET = fromString("et");
 
     /**
-     * Enum value fj.
+     * Static value fj for TextTranslationSkillLanguage.
      */
-    FJ("fj"),
+    public static final TextTranslationSkillLanguage FJ = fromString("fj");
 
     /**
-     * Enum value fil.
+     * Static value fil for TextTranslationSkillLanguage.
      */
-    FIL("fil"),
+    public static final TextTranslationSkillLanguage FIL = fromString("fil");
 
     /**
-     * Enum value fi.
+     * Static value fi for TextTranslationSkillLanguage.
      */
-    FI("fi"),
+    public static final TextTranslationSkillLanguage FI = fromString("fi");
 
     /**
-     * Enum value fr.
+     * Static value fr for TextTranslationSkillLanguage.
      */
-    FR("fr"),
+    public static final TextTranslationSkillLanguage FR = fromString("fr");
 
     /**
-     * Enum value de.
+     * Static value de for TextTranslationSkillLanguage.
      */
-    DE("de"),
+    public static final TextTranslationSkillLanguage DE = fromString("de");
 
     /**
-     * Enum value el.
+     * Static value el for TextTranslationSkillLanguage.
      */
-    EL("el"),
+    public static final TextTranslationSkillLanguage EL = fromString("el");
 
     /**
-     * Enum value ht.
+     * Static value ht for TextTranslationSkillLanguage.
      */
-    HT("ht"),
+    public static final TextTranslationSkillLanguage HT = fromString("ht");
 
     /**
-     * Enum value he.
+     * Static value he for TextTranslationSkillLanguage.
      */
-    HE("he"),
+    public static final TextTranslationSkillLanguage HE = fromString("he");
 
     /**
-     * Enum value hi.
+     * Static value hi for TextTranslationSkillLanguage.
      */
-    HI("hi"),
+    public static final TextTranslationSkillLanguage HI = fromString("hi");
 
     /**
-     * Enum value mww.
+     * Static value mww for TextTranslationSkillLanguage.
      */
-    MWW("mww"),
+    public static final TextTranslationSkillLanguage MWW = fromString("mww");
 
     /**
-     * Enum value hu.
+     * Static value hu for TextTranslationSkillLanguage.
      */
-    HU("hu"),
+    public static final TextTranslationSkillLanguage HU = fromString("hu");
 
     /**
-     * Enum value is.
+     * Static value is for TextTranslationSkillLanguage.
      */
-    IS("is"),
+    public static final TextTranslationSkillLanguage IS = fromString("is");
 
     /**
-     * Enum value id.
+     * Static value id for TextTranslationSkillLanguage.
      */
-    ID("id"),
+    public static final TextTranslationSkillLanguage ID = fromString("id");
 
     /**
-     * Enum value it.
+     * Static value it for TextTranslationSkillLanguage.
      */
-    IT("it"),
+    public static final TextTranslationSkillLanguage IT = fromString("it");
 
     /**
-     * Enum value ja.
+     * Static value ja for TextTranslationSkillLanguage.
      */
-    JA("ja"),
+    public static final TextTranslationSkillLanguage JA = fromString("ja");
 
     /**
-     * Enum value sw.
+     * Static value sw for TextTranslationSkillLanguage.
      */
-    SW("sw"),
+    public static final TextTranslationSkillLanguage SW = fromString("sw");
 
     /**
-     * Enum value tlh.
+     * Static value tlh for TextTranslationSkillLanguage.
      */
-    TLH("tlh"),
+    public static final TextTranslationSkillLanguage TLH = fromString("tlh");
 
     /**
-     * Enum value ko.
+     * Static value ko for TextTranslationSkillLanguage.
      */
-    KO("ko"),
+    public static final TextTranslationSkillLanguage KO = fromString("ko");
 
     /**
-     * Enum value lv.
+     * Static value lv for TextTranslationSkillLanguage.
      */
-    LV("lv"),
+    public static final TextTranslationSkillLanguage LV = fromString("lv");
 
     /**
-     * Enum value lt.
+     * Static value lt for TextTranslationSkillLanguage.
      */
-    LT("lt"),
+    public static final TextTranslationSkillLanguage LT = fromString("lt");
 
     /**
-     * Enum value mg.
+     * Static value mg for TextTranslationSkillLanguage.
      */
-    MG("mg"),
+    public static final TextTranslationSkillLanguage MG = fromString("mg");
 
     /**
-     * Enum value ms.
+     * Static value ms for TextTranslationSkillLanguage.
      */
-    MS("ms"),
+    public static final TextTranslationSkillLanguage MS = fromString("ms");
 
     /**
-     * Enum value mt.
+     * Static value mt for TextTranslationSkillLanguage.
      */
-    MT("mt"),
+    public static final TextTranslationSkillLanguage MT = fromString("mt");
 
     /**
-     * Enum value nb.
+     * Static value nb for TextTranslationSkillLanguage.
      */
-    NB("nb"),
+    public static final TextTranslationSkillLanguage NB = fromString("nb");
 
     /**
-     * Enum value fa.
+     * Static value fa for TextTranslationSkillLanguage.
      */
-    FA("fa"),
+    public static final TextTranslationSkillLanguage FA = fromString("fa");
 
     /**
-     * Enum value pl.
+     * Static value pl for TextTranslationSkillLanguage.
      */
-    PL("pl"),
+    public static final TextTranslationSkillLanguage PL = fromString("pl");
 
     /**
-     * Enum value pt.
+     * Static value pt for TextTranslationSkillLanguage.
      */
-    PT("pt"),
+    public static final TextTranslationSkillLanguage PT = fromString("pt");
 
     /**
-     * Enum value otq.
+     * Static value otq for TextTranslationSkillLanguage.
      */
-    OTQ("otq"),
+    public static final TextTranslationSkillLanguage OTQ = fromString("otq");
 
     /**
-     * Enum value ro.
+     * Static value ro for TextTranslationSkillLanguage.
      */
-    RO("ro"),
+    public static final TextTranslationSkillLanguage RO = fromString("ro");
 
     /**
-     * Enum value ru.
+     * Static value ru for TextTranslationSkillLanguage.
      */
-    RU("ru"),
+    public static final TextTranslationSkillLanguage RU = fromString("ru");
 
     /**
-     * Enum value sm.
+     * Static value sm for TextTranslationSkillLanguage.
      */
-    SM("sm"),
+    public static final TextTranslationSkillLanguage SM = fromString("sm");
 
     /**
-     * Enum value sr-Cyrl.
+     * Static value sr-Cyrl for TextTranslationSkillLanguage.
      */
-    SR_CYRL("sr-Cyrl"),
+    public static final TextTranslationSkillLanguage SR_CYRL = fromString("sr-Cyrl");
 
     /**
-     * Enum value sr-Latn.
+     * Static value sr-Latn for TextTranslationSkillLanguage.
      */
-    SR_LATN("sr-Latn"),
+    public static final TextTranslationSkillLanguage SR_LATN = fromString("sr-Latn");
 
     /**
-     * Enum value sk.
+     * Static value sk for TextTranslationSkillLanguage.
      */
-    SK("sk"),
+    public static final TextTranslationSkillLanguage SK = fromString("sk");
 
     /**
-     * Enum value sl.
+     * Static value sl for TextTranslationSkillLanguage.
      */
-    SL("sl"),
+    public static final TextTranslationSkillLanguage SL = fromString("sl");
 
     /**
-     * Enum value es.
+     * Static value es for TextTranslationSkillLanguage.
      */
-    ES("es"),
+    public static final TextTranslationSkillLanguage ES = fromString("es");
 
     /**
-     * Enum value sv.
+     * Static value sv for TextTranslationSkillLanguage.
      */
-    SV("sv"),
+    public static final TextTranslationSkillLanguage SV = fromString("sv");
 
     /**
-     * Enum value ty.
+     * Static value ty for TextTranslationSkillLanguage.
      */
-    TY("ty"),
+    public static final TextTranslationSkillLanguage TY = fromString("ty");
 
     /**
-     * Enum value ta.
+     * Static value ta for TextTranslationSkillLanguage.
      */
-    TA("ta"),
+    public static final TextTranslationSkillLanguage TA = fromString("ta");
 
     /**
-     * Enum value te.
+     * Static value te for TextTranslationSkillLanguage.
      */
-    TE("te"),
+    public static final TextTranslationSkillLanguage TE = fromString("te");
 
     /**
-     * Enum value th.
+     * Static value th for TextTranslationSkillLanguage.
      */
-    TH("th"),
+    public static final TextTranslationSkillLanguage TH = fromString("th");
 
     /**
-     * Enum value to.
+     * Static value to for TextTranslationSkillLanguage.
      */
-    TO("to"),
+    public static final TextTranslationSkillLanguage TO = fromString("to");
 
     /**
-     * Enum value tr.
+     * Static value tr for TextTranslationSkillLanguage.
      */
-    TR("tr"),
+    public static final TextTranslationSkillLanguage TR = fromString("tr");
 
     /**
-     * Enum value uk.
+     * Static value uk for TextTranslationSkillLanguage.
      */
-    UK("uk"),
+    public static final TextTranslationSkillLanguage UK = fromString("uk");
 
     /**
-     * Enum value ur.
+     * Static value ur for TextTranslationSkillLanguage.
      */
-    UR("ur"),
+    public static final TextTranslationSkillLanguage UR = fromString("ur");
 
     /**
-     * Enum value vi.
+     * Static value vi for TextTranslationSkillLanguage.
      */
-    VI("vi"),
+    public static final TextTranslationSkillLanguage VI = fromString("vi");
 
     /**
-     * Enum value cy.
+     * Static value cy for TextTranslationSkillLanguage.
      */
-    CY("cy"),
+    public static final TextTranslationSkillLanguage CY = fromString("cy");
 
     /**
-     * Enum value yua.
+     * Static value yua for TextTranslationSkillLanguage.
      */
-    YUA("yua");
+    public static final TextTranslationSkillLanguage YUA = fromString("yua");
 
     /**
-     * The actual serialized value for a TextTranslationSkillLanguage instance.
-     */
-    private final String value;
-
-    TextTranslationSkillLanguage(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a TextTranslationSkillLanguage instance.
+     * Creates or finds a TextTranslationSkillLanguage from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed TextTranslationSkillLanguage object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding TextTranslationSkillLanguage.
      */
     @JsonCreator
-    public static TextTranslationSkillLanguage fromString(String value) {
-        TextTranslationSkillLanguage[] items = TextTranslationSkillLanguage.values();
-        for (TextTranslationSkillLanguage item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static TextTranslationSkillLanguage fromString(String name) {
+        return fromString(name, TextTranslationSkillLanguage.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known TextTranslationSkillLanguage values.
+     */
+    public static Collection<TextTranslationSkillLanguage> values() {
+        return values(TextTranslationSkillLanguage.class);
     }
 }

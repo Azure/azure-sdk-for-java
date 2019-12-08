@@ -4,7 +4,7 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DefaultCognitiveServices;
 import com.azure.search.models.EntityCategory;
@@ -23,6 +23,7 @@ import com.azure.search.test.AccessConditionAsyncTests;
 import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -71,7 +72,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         client = getSearchServiceClientBuilder().buildAsyncClient();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhrase() {
         Skillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
 
@@ -87,7 +88,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionLanguageDetection() {
         Skillset expectedSkillset = createTestSkillsetLanguageDetection();
 
@@ -97,7 +98,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionMergeText() {
         Skillset expectedSkillset = createTestSkillsetMergeText();
 
@@ -107,7 +108,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionOcrEntity() {
         Skillset expectedSkillset = createTestSkillsetOcrEntity(null, null);
         StepVerifier
@@ -126,7 +127,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionOcrHandwritingSentiment() {
         Skillset expectedSkillset = createTestSkillsetOcrSentiment(OcrSkillLanguage.PT,
             SentimentSkillLanguage.PT_PT, TextExtractionAlgorithm.PRINTED);
@@ -150,7 +151,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionOcrKeyPhrase() {
         Skillset expectedSkillset = createTestSkillsetOcrKeyPhrase(OcrSkillLanguage.EN,
             KeyPhraseExtractionSkillLanguage.EN);
@@ -174,7 +175,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionOcrShaper() {
         Skillset expectedSkillset = createTestSkillsetOcrShaper();
 
@@ -184,7 +185,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionOcrSplitText() {
         Skillset expectedSkillset = createTestSkillsetOcrSplitText(OcrSkillLanguage.EN,
             SplitSkillLanguage.EN, TextSplitMode.PAGES);
@@ -216,7 +217,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionWithCognitiveServicesDefault() {
         Skillset expectedSkillset = createSkillsetWithCognitiveServicesKey();
 
@@ -226,7 +227,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionWithOcrDefaultSettings() {
         Skillset expectedOcrSkillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
@@ -236,7 +237,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void getOcrSkillsetReturnsCorrectDefinition() {
         Skillset expected = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
         client.createSkillset(expected).block();
@@ -252,7 +253,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionWithImageAnalysisDefaultSettings() {
         Skillset expectedImageAnalysisSkillset = createSkillsetWithImageAnalysisDefaultSettings();
 
@@ -262,7 +263,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionWithKeyPhraseExtractionDefaultSettings() {
         Skillset expectedKeyPhraseSkillset = createSkillsetWithKeyPhraseExtractionDefaultSettings();
 
@@ -272,7 +273,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionWithMergeDefaultSettings() {
         Skillset expectedMergeSkillset = createSkillsetWithMergeDefaultSettings();
 
@@ -282,7 +283,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionWithEntityRecognitionDefaultSettings() {
         Skillset expectedEntityRecognitionSkillset = createSkillsetWithEntityRecognitionDefaultSettings();
 
@@ -292,7 +293,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionWithSentimentDefaultSettings() {
         Skillset expectedSentimentSkillset = createSkillsetWithSentimentDefaultSettings();
 
@@ -302,7 +303,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void getOcrSkillsetWithShouldDetectOrientationReturnsCorrectDefinition() {
         Skillset expected = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, true);
         client.createSkillset(expected).block();
@@ -313,7 +314,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionWithSplitDefaultSettings() {
         Skillset expectedSplitSkillset = createSkillsetWithSplitDefaultSettings();
 
@@ -323,7 +324,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createCustomSkillsetReturnsCorrectDefinition() {
         Skillset expected = createSkillsetWithCustomSkills();
 
@@ -333,7 +334,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void getSkillsetThrowsOnNotFound() {
         String skillsetName = "thisdoesnotexist";
         assertHttpResponseExceptionAsync(
@@ -343,7 +344,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         );
     }
 
-    @Override
+    @Test
     public void canCreateAndListSkillsets() {
         Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
         Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
@@ -363,7 +364,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canListSkillsetsWithSelectedField() {
         Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
         Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
@@ -396,7 +397,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void deleteSkillsetIsIdempotent() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
@@ -424,7 +425,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canCreateAndDeleteSkillset() {
         Skillset expected = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
         client.createSkillset(expected).block();
@@ -436,7 +437,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createOrUpdateCreatesWhenSkillsetDoesNotExist() {
         Skillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED, false);
 
@@ -452,7 +453,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createOrUpdateUpdatesWhenSkillsetExists() {
         Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN, false);
         StepVerifier
@@ -469,7 +470,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void existsReturnsFalseForNonExistingSkillset() {
         StepVerifier
             .create(client.skillsetExists("nonexistent"))
@@ -477,7 +478,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void existsReturnsTrueForExistingSkillset() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
@@ -494,7 +495,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createOrUpdateUpdatesSkills() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
@@ -523,7 +524,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createOrUpdateUpdatesCognitiveService() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
@@ -539,7 +540,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionShaperWithNestedInputs() {
         Skillset expected = createSkillsetWithSharperSkillWithNestedInputs();
 
@@ -549,7 +550,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createOrUpdateSkillsetIfNotExistsFailsOnExistingResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -559,7 +560,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             mutateSkillsetFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSkillsetIfNotExistsSucceedsOnNoResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -568,7 +569,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             newSkillsetFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsSucceedsOnExistingResourceAsync(
@@ -577,7 +578,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             mutateSkillsetFunc);
     }
 
-    @Override
+    @Test
     public void createSkillsetThrowsExceptionWithNonShaperSkillWithNestedInputs() {
         Skillset skillset = createSkillsetWithNonSharperSkillWithNestedInputs();
 
@@ -588,7 +589,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         );
     }
 
-    @Override
+    @Test
     public void createSkillsetReturnsCorrectDefinitionConditional() {
         Skillset expected = createTestSkillsetConditional();
 
@@ -598,7 +599,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createOrUpdateSkillsetIfExistsFailsOnNoResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsFailsOnNoResourceAsync(
@@ -606,7 +607,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             createOrUpdateSkillsetAsyncFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchangedAsync(
@@ -615,7 +616,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             mutateSkillsetFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedFailsWhenResourceChangedAsync(
@@ -624,7 +625,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             mutateSkillsetFunc);
     }
 
-    @Override
+    @Test
     public void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -636,7 +637,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             OCR_SKILLSET_NAME);
     }
 
-    @Override
+    @Test
     public void deleteSkillsetIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 

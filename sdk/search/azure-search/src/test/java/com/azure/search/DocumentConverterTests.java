@@ -3,12 +3,12 @@
 
 package com.azure.search;
 
-import com.azure.core.implementation.serializer.SerializerEncoding;
-import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.implementation.SerializationUtil;
 import com.azure.search.models.GeoPoint;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;

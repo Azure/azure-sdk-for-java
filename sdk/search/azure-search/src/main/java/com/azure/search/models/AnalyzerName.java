@@ -6,507 +6,494 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for AnalyzerName.
  */
-public enum AnalyzerName {
+public final class AnalyzerName extends ExpandableStringEnum<AnalyzerName> {
     /**
-     * Enum value ar.microsoft.
+     * Static value ar.microsoft for AnalyzerName.
      */
-    AR_MICROSOFT("ar.microsoft"),
+    public static final AnalyzerName AR_MICROSOFT = fromString("ar.microsoft");
 
     /**
-     * Enum value ar.lucene.
+     * Static value ar.lucene for AnalyzerName.
      */
-    AR_LUCENE("ar.lucene"),
+    public static final AnalyzerName AR_LUCENE = fromString("ar.lucene");
 
     /**
-     * Enum value hy.lucene.
+     * Static value hy.lucene for AnalyzerName.
      */
-    HY_LUCENE("hy.lucene"),
+    public static final AnalyzerName HY_LUCENE = fromString("hy.lucene");
 
     /**
-     * Enum value bn.microsoft.
+     * Static value bn.microsoft for AnalyzerName.
      */
-    BN_MICROSOFT("bn.microsoft"),
+    public static final AnalyzerName BN_MICROSOFT = fromString("bn.microsoft");
 
     /**
-     * Enum value eu.lucene.
+     * Static value eu.lucene for AnalyzerName.
      */
-    EU_LUCENE("eu.lucene"),
+    public static final AnalyzerName EU_LUCENE = fromString("eu.lucene");
 
     /**
-     * Enum value bg.microsoft.
+     * Static value bg.microsoft for AnalyzerName.
      */
-    BG_MICROSOFT("bg.microsoft"),
+    public static final AnalyzerName BG_MICROSOFT = fromString("bg.microsoft");
 
     /**
-     * Enum value bg.lucene.
+     * Static value bg.lucene for AnalyzerName.
      */
-    BG_LUCENE("bg.lucene"),
+    public static final AnalyzerName BG_LUCENE = fromString("bg.lucene");
 
     /**
-     * Enum value ca.microsoft.
+     * Static value ca.microsoft for AnalyzerName.
      */
-    CA_MICROSOFT("ca.microsoft"),
+    public static final AnalyzerName CA_MICROSOFT = fromString("ca.microsoft");
 
     /**
-     * Enum value ca.lucene.
+     * Static value ca.lucene for AnalyzerName.
      */
-    CA_LUCENE("ca.lucene"),
+    public static final AnalyzerName CA_LUCENE = fromString("ca.lucene");
 
     /**
-     * Enum value zh-Hans.microsoft.
+     * Static value zh-Hans.microsoft for AnalyzerName.
      */
-    ZH_HANS_MICROSOFT("zh-Hans.microsoft"),
+    public static final AnalyzerName ZH_HANS_MICROSOFT = fromString("zh-Hans.microsoft");
 
     /**
-     * Enum value zh-Hans.lucene.
+     * Static value zh-Hans.lucene for AnalyzerName.
      */
-    ZH_HANS_LUCENE("zh-Hans.lucene"),
+    public static final AnalyzerName ZH_HANS_LUCENE = fromString("zh-Hans.lucene");
 
     /**
-     * Enum value zh-Hant.microsoft.
+     * Static value zh-Hant.microsoft for AnalyzerName.
      */
-    ZH_HANT_MICROSOFT("zh-Hant.microsoft"),
+    public static final AnalyzerName ZH_HANT_MICROSOFT = fromString("zh-Hant.microsoft");
 
     /**
-     * Enum value zh-Hant.lucene.
+     * Static value zh-Hant.lucene for AnalyzerName.
      */
-    ZH_HANT_LUCENE("zh-Hant.lucene"),
+    public static final AnalyzerName ZH_HANT_LUCENE = fromString("zh-Hant.lucene");
 
     /**
-     * Enum value hr.microsoft.
+     * Static value hr.microsoft for AnalyzerName.
      */
-    HR_MICROSOFT("hr.microsoft"),
+    public static final AnalyzerName HR_MICROSOFT = fromString("hr.microsoft");
 
     /**
-     * Enum value cs.microsoft.
+     * Static value cs.microsoft for AnalyzerName.
      */
-    CS_MICROSOFT("cs.microsoft"),
+    public static final AnalyzerName CS_MICROSOFT = fromString("cs.microsoft");
 
     /**
-     * Enum value cs.lucene.
+     * Static value cs.lucene for AnalyzerName.
      */
-    CS_LUCENE("cs.lucene"),
+    public static final AnalyzerName CS_LUCENE = fromString("cs.lucene");
 
     /**
-     * Enum value da.microsoft.
+     * Static value da.microsoft for AnalyzerName.
      */
-    DA_MICROSOFT("da.microsoft"),
+    public static final AnalyzerName DA_MICROSOFT = fromString("da.microsoft");
 
     /**
-     * Enum value da.lucene.
+     * Static value da.lucene for AnalyzerName.
      */
-    DA_LUCENE("da.lucene"),
+    public static final AnalyzerName DA_LUCENE = fromString("da.lucene");
 
     /**
-     * Enum value nl.microsoft.
+     * Static value nl.microsoft for AnalyzerName.
      */
-    NL_MICROSOFT("nl.microsoft"),
+    public static final AnalyzerName NL_MICROSOFT = fromString("nl.microsoft");
 
     /**
-     * Enum value nl.lucene.
+     * Static value nl.lucene for AnalyzerName.
      */
-    NL_LUCENE("nl.lucene"),
+    public static final AnalyzerName NL_LUCENE = fromString("nl.lucene");
 
     /**
-     * Enum value en.microsoft.
+     * Static value en.microsoft for AnalyzerName.
      */
-    EN_MICROSOFT("en.microsoft"),
+    public static final AnalyzerName EN_MICROSOFT = fromString("en.microsoft");
 
     /**
-     * Enum value en.lucene.
+     * Static value en.lucene for AnalyzerName.
      */
-    EN_LUCENE("en.lucene"),
+    public static final AnalyzerName EN_LUCENE = fromString("en.lucene");
 
     /**
-     * Enum value et.microsoft.
+     * Static value et.microsoft for AnalyzerName.
      */
-    ET_MICROSOFT("et.microsoft"),
+    public static final AnalyzerName ET_MICROSOFT = fromString("et.microsoft");
 
     /**
-     * Enum value fi.microsoft.
+     * Static value fi.microsoft for AnalyzerName.
      */
-    FI_MICROSOFT("fi.microsoft"),
+    public static final AnalyzerName FI_MICROSOFT = fromString("fi.microsoft");
 
     /**
-     * Enum value fi.lucene.
+     * Static value fi.lucene for AnalyzerName.
      */
-    FI_LUCENE("fi.lucene"),
+    public static final AnalyzerName FI_LUCENE = fromString("fi.lucene");
 
     /**
-     * Enum value fr.microsoft.
+     * Static value fr.microsoft for AnalyzerName.
      */
-    FR_MICROSOFT("fr.microsoft"),
+    public static final AnalyzerName FR_MICROSOFT = fromString("fr.microsoft");
 
     /**
-     * Enum value fr.lucene.
+     * Static value fr.lucene for AnalyzerName.
      */
-    FR_LUCENE("fr.lucene"),
+    public static final AnalyzerName FR_LUCENE = fromString("fr.lucene");
 
     /**
-     * Enum value gl.lucene.
+     * Static value gl.lucene for AnalyzerName.
      */
-    GL_LUCENE("gl.lucene"),
+    public static final AnalyzerName GL_LUCENE = fromString("gl.lucene");
 
     /**
-     * Enum value de.microsoft.
+     * Static value de.microsoft for AnalyzerName.
      */
-    DE_MICROSOFT("de.microsoft"),
+    public static final AnalyzerName DE_MICROSOFT = fromString("de.microsoft");
 
     /**
-     * Enum value de.lucene.
+     * Static value de.lucene for AnalyzerName.
      */
-    DE_LUCENE("de.lucene"),
+    public static final AnalyzerName DE_LUCENE = fromString("de.lucene");
 
     /**
-     * Enum value el.microsoft.
+     * Static value el.microsoft for AnalyzerName.
      */
-    EL_MICROSOFT("el.microsoft"),
+    public static final AnalyzerName EL_MICROSOFT = fromString("el.microsoft");
 
     /**
-     * Enum value el.lucene.
+     * Static value el.lucene for AnalyzerName.
      */
-    EL_LUCENE("el.lucene"),
+    public static final AnalyzerName EL_LUCENE = fromString("el.lucene");
 
     /**
-     * Enum value gu.microsoft.
+     * Static value gu.microsoft for AnalyzerName.
      */
-    GU_MICROSOFT("gu.microsoft"),
+    public static final AnalyzerName GU_MICROSOFT = fromString("gu.microsoft");
 
     /**
-     * Enum value he.microsoft.
+     * Static value he.microsoft for AnalyzerName.
      */
-    HE_MICROSOFT("he.microsoft"),
+    public static final AnalyzerName HE_MICROSOFT = fromString("he.microsoft");
 
     /**
-     * Enum value hi.microsoft.
+     * Static value hi.microsoft for AnalyzerName.
      */
-    HI_MICROSOFT("hi.microsoft"),
+    public static final AnalyzerName HI_MICROSOFT = fromString("hi.microsoft");
 
     /**
-     * Enum value hi.lucene.
+     * Static value hi.lucene for AnalyzerName.
      */
-    HI_LUCENE("hi.lucene"),
+    public static final AnalyzerName HI_LUCENE = fromString("hi.lucene");
 
     /**
-     * Enum value hu.microsoft.
+     * Static value hu.microsoft for AnalyzerName.
      */
-    HU_MICROSOFT("hu.microsoft"),
+    public static final AnalyzerName HU_MICROSOFT = fromString("hu.microsoft");
 
     /**
-     * Enum value hu.lucene.
+     * Static value hu.lucene for AnalyzerName.
      */
-    HU_LUCENE("hu.lucene"),
+    public static final AnalyzerName HU_LUCENE = fromString("hu.lucene");
 
     /**
-     * Enum value is.microsoft.
+     * Static value is.microsoft for AnalyzerName.
      */
-    IS_MICROSOFT("is.microsoft"),
+    public static final AnalyzerName IS_MICROSOFT = fromString("is.microsoft");
 
     /**
-     * Enum value id.microsoft.
+     * Static value id.microsoft for AnalyzerName.
      */
-    ID_MICROSOFT("id.microsoft"),
+    public static final AnalyzerName ID_MICROSOFT = fromString("id.microsoft");
 
     /**
-     * Enum value id.lucene.
+     * Static value id.lucene for AnalyzerName.
      */
-    ID_LUCENE("id.lucene"),
+    public static final AnalyzerName ID_LUCENE = fromString("id.lucene");
 
     /**
-     * Enum value ga.lucene.
+     * Static value ga.lucene for AnalyzerName.
      */
-    GA_LUCENE("ga.lucene"),
+    public static final AnalyzerName GA_LUCENE = fromString("ga.lucene");
 
     /**
-     * Enum value it.microsoft.
+     * Static value it.microsoft for AnalyzerName.
      */
-    IT_MICROSOFT("it.microsoft"),
+    public static final AnalyzerName IT_MICROSOFT = fromString("it.microsoft");
 
     /**
-     * Enum value it.lucene.
+     * Static value it.lucene for AnalyzerName.
      */
-    IT_LUCENE("it.lucene"),
+    public static final AnalyzerName IT_LUCENE = fromString("it.lucene");
 
     /**
-     * Enum value ja.microsoft.
+     * Static value ja.microsoft for AnalyzerName.
      */
-    JA_MICROSOFT("ja.microsoft"),
+    public static final AnalyzerName JA_MICROSOFT = fromString("ja.microsoft");
 
     /**
-     * Enum value ja.lucene.
+     * Static value ja.lucene for AnalyzerName.
      */
-    JA_LUCENE("ja.lucene"),
+    public static final AnalyzerName JA_LUCENE = fromString("ja.lucene");
 
     /**
-     * Enum value kn.microsoft.
+     * Static value kn.microsoft for AnalyzerName.
      */
-    KN_MICROSOFT("kn.microsoft"),
+    public static final AnalyzerName KN_MICROSOFT = fromString("kn.microsoft");
 
     /**
-     * Enum value ko.microsoft.
+     * Static value ko.microsoft for AnalyzerName.
      */
-    KO_MICROSOFT("ko.microsoft"),
+    public static final AnalyzerName KO_MICROSOFT = fromString("ko.microsoft");
 
     /**
-     * Enum value ko.lucene.
+     * Static value ko.lucene for AnalyzerName.
      */
-    KO_LUCENE("ko.lucene"),
+    public static final AnalyzerName KO_LUCENE = fromString("ko.lucene");
 
     /**
-     * Enum value lv.microsoft.
+     * Static value lv.microsoft for AnalyzerName.
      */
-    LV_MICROSOFT("lv.microsoft"),
+    public static final AnalyzerName LV_MICROSOFT = fromString("lv.microsoft");
 
     /**
-     * Enum value lv.lucene.
+     * Static value lv.lucene for AnalyzerName.
      */
-    LV_LUCENE("lv.lucene"),
+    public static final AnalyzerName LV_LUCENE = fromString("lv.lucene");
 
     /**
-     * Enum value lt.microsoft.
+     * Static value lt.microsoft for AnalyzerName.
      */
-    LT_MICROSOFT("lt.microsoft"),
+    public static final AnalyzerName LT_MICROSOFT = fromString("lt.microsoft");
 
     /**
-     * Enum value ml.microsoft.
+     * Static value ml.microsoft for AnalyzerName.
      */
-    ML_MICROSOFT("ml.microsoft"),
+    public static final AnalyzerName ML_MICROSOFT = fromString("ml.microsoft");
 
     /**
-     * Enum value ms.microsoft.
+     * Static value ms.microsoft for AnalyzerName.
      */
-    MS_MICROSOFT("ms.microsoft"),
+    public static final AnalyzerName MS_MICROSOFT = fromString("ms.microsoft");
 
     /**
-     * Enum value mr.microsoft.
+     * Static value mr.microsoft for AnalyzerName.
      */
-    MR_MICROSOFT("mr.microsoft"),
+    public static final AnalyzerName MR_MICROSOFT = fromString("mr.microsoft");
 
     /**
-     * Enum value nb.microsoft.
+     * Static value nb.microsoft for AnalyzerName.
      */
-    NB_MICROSOFT("nb.microsoft"),
+    public static final AnalyzerName NB_MICROSOFT = fromString("nb.microsoft");
 
     /**
-     * Enum value no.lucene.
+     * Static value no.lucene for AnalyzerName.
      */
-    NO_LUCENE("no.lucene"),
+    public static final AnalyzerName NO_LUCENE = fromString("no.lucene");
 
     /**
-     * Enum value fa.lucene.
+     * Static value fa.lucene for AnalyzerName.
      */
-    FA_LUCENE("fa.lucene"),
+    public static final AnalyzerName FA_LUCENE = fromString("fa.lucene");
 
     /**
-     * Enum value pl.microsoft.
+     * Static value pl.microsoft for AnalyzerName.
      */
-    PL_MICROSOFT("pl.microsoft"),
+    public static final AnalyzerName PL_MICROSOFT = fromString("pl.microsoft");
 
     /**
-     * Enum value pl.lucene.
+     * Static value pl.lucene for AnalyzerName.
      */
-    PL_LUCENE("pl.lucene"),
+    public static final AnalyzerName PL_LUCENE = fromString("pl.lucene");
 
     /**
-     * Enum value pt-BR.microsoft.
+     * Static value pt-BR.microsoft for AnalyzerName.
      */
-    PT_BR_MICROSOFT("pt-BR.microsoft"),
+    public static final AnalyzerName PT_BR_MICROSOFT = fromString("pt-BR.microsoft");
 
     /**
-     * Enum value pt-BR.lucene.
+     * Static value pt-BR.lucene for AnalyzerName.
      */
-    PT_BR_LUCENE("pt-BR.lucene"),
+    public static final AnalyzerName PT_BR_LUCENE = fromString("pt-BR.lucene");
 
     /**
-     * Enum value pt-PT.microsoft.
+     * Static value pt-PT.microsoft for AnalyzerName.
      */
-    PT_PT_MICROSOFT("pt-PT.microsoft"),
+    public static final AnalyzerName PT_PT_MICROSOFT = fromString("pt-PT.microsoft");
 
     /**
-     * Enum value pt-PT.lucene.
+     * Static value pt-PT.lucene for AnalyzerName.
      */
-    PT_PT_LUCENE("pt-PT.lucene"),
+    public static final AnalyzerName PT_PT_LUCENE = fromString("pt-PT.lucene");
 
     /**
-     * Enum value pa.microsoft.
+     * Static value pa.microsoft for AnalyzerName.
      */
-    PA_MICROSOFT("pa.microsoft"),
+    public static final AnalyzerName PA_MICROSOFT = fromString("pa.microsoft");
 
     /**
-     * Enum value ro.microsoft.
+     * Static value ro.microsoft for AnalyzerName.
      */
-    RO_MICROSOFT("ro.microsoft"),
+    public static final AnalyzerName RO_MICROSOFT = fromString("ro.microsoft");
 
     /**
-     * Enum value ro.lucene.
+     * Static value ro.lucene for AnalyzerName.
      */
-    RO_LUCENE("ro.lucene"),
+    public static final AnalyzerName RO_LUCENE = fromString("ro.lucene");
 
     /**
-     * Enum value ru.microsoft.
+     * Static value ru.microsoft for AnalyzerName.
      */
-    RU_MICROSOFT("ru.microsoft"),
+    public static final AnalyzerName RU_MICROSOFT = fromString("ru.microsoft");
 
     /**
-     * Enum value ru.lucene.
+     * Static value ru.lucene for AnalyzerName.
      */
-    RU_LUCENE("ru.lucene"),
+    public static final AnalyzerName RU_LUCENE = fromString("ru.lucene");
 
     /**
-     * Enum value sr-cyrillic.microsoft.
+     * Static value sr-cyrillic.microsoft for AnalyzerName.
      */
-    SR_CYRILLIC_MICROSOFT("sr-cyrillic.microsoft"),
+    public static final AnalyzerName SR_CYRILLIC_MICROSOFT = fromString("sr-cyrillic.microsoft");
 
     /**
-     * Enum value sr-latin.microsoft.
+     * Static value sr-latin.microsoft for AnalyzerName.
      */
-    SR_LATIN_MICROSOFT("sr-latin.microsoft"),
+    public static final AnalyzerName SR_LATIN_MICROSOFT = fromString("sr-latin.microsoft");
 
     /**
-     * Enum value sk.microsoft.
+     * Static value sk.microsoft for AnalyzerName.
      */
-    SK_MICROSOFT("sk.microsoft"),
+    public static final AnalyzerName SK_MICROSOFT = fromString("sk.microsoft");
 
     /**
-     * Enum value sl.microsoft.
+     * Static value sl.microsoft for AnalyzerName.
      */
-    SL_MICROSOFT("sl.microsoft"),
+    public static final AnalyzerName SL_MICROSOFT = fromString("sl.microsoft");
 
     /**
-     * Enum value es.microsoft.
+     * Static value es.microsoft for AnalyzerName.
      */
-    ES_MICROSOFT("es.microsoft"),
+    public static final AnalyzerName ES_MICROSOFT = fromString("es.microsoft");
 
     /**
-     * Enum value es.lucene.
+     * Static value es.lucene for AnalyzerName.
      */
-    ES_LUCENE("es.lucene"),
+    public static final AnalyzerName ES_LUCENE = fromString("es.lucene");
 
     /**
-     * Enum value sv.microsoft.
+     * Static value sv.microsoft for AnalyzerName.
      */
-    SV_MICROSOFT("sv.microsoft"),
+    public static final AnalyzerName SV_MICROSOFT = fromString("sv.microsoft");
 
     /**
-     * Enum value sv.lucene.
+     * Static value sv.lucene for AnalyzerName.
      */
-    SV_LUCENE("sv.lucene"),
+    public static final AnalyzerName SV_LUCENE = fromString("sv.lucene");
 
     /**
-     * Enum value ta.microsoft.
+     * Static value ta.microsoft for AnalyzerName.
      */
-    TA_MICROSOFT("ta.microsoft"),
+    public static final AnalyzerName TA_MICROSOFT = fromString("ta.microsoft");
 
     /**
-     * Enum value te.microsoft.
+     * Static value te.microsoft for AnalyzerName.
      */
-    TE_MICROSOFT("te.microsoft"),
+    public static final AnalyzerName TE_MICROSOFT = fromString("te.microsoft");
 
     /**
-     * Enum value th.microsoft.
+     * Static value th.microsoft for AnalyzerName.
      */
-    TH_MICROSOFT("th.microsoft"),
+    public static final AnalyzerName TH_MICROSOFT = fromString("th.microsoft");
 
     /**
-     * Enum value th.lucene.
+     * Static value th.lucene for AnalyzerName.
      */
-    TH_LUCENE("th.lucene"),
+    public static final AnalyzerName TH_LUCENE = fromString("th.lucene");
 
     /**
-     * Enum value tr.microsoft.
+     * Static value tr.microsoft for AnalyzerName.
      */
-    TR_MICROSOFT("tr.microsoft"),
+    public static final AnalyzerName TR_MICROSOFT = fromString("tr.microsoft");
 
     /**
-     * Enum value tr.lucene.
+     * Static value tr.lucene for AnalyzerName.
      */
-    TR_LUCENE("tr.lucene"),
+    public static final AnalyzerName TR_LUCENE = fromString("tr.lucene");
 
     /**
-     * Enum value uk.microsoft.
+     * Static value uk.microsoft for AnalyzerName.
      */
-    UK_MICROSOFT("uk.microsoft"),
+    public static final AnalyzerName UK_MICROSOFT = fromString("uk.microsoft");
 
     /**
-     * Enum value ur.microsoft.
+     * Static value ur.microsoft for AnalyzerName.
      */
-    UR_MICROSOFT("ur.microsoft"),
+    public static final AnalyzerName UR_MICROSOFT = fromString("ur.microsoft");
 
     /**
-     * Enum value vi.microsoft.
+     * Static value vi.microsoft for AnalyzerName.
      */
-    VI_MICROSOFT("vi.microsoft"),
+    public static final AnalyzerName VI_MICROSOFT = fromString("vi.microsoft");
 
     /**
-     * Enum value standard.lucene.
+     * Static value standard.lucene for AnalyzerName.
      */
-    STANDARD_LUCENE("standard.lucene"),
+    public static final AnalyzerName STANDARD_LUCENE = fromString("standard.lucene");
 
     /**
-     * Enum value standardasciifolding.lucene.
+     * Static value standardasciifolding.lucene for AnalyzerName.
      */
-    STANDARDASCIIFOLDING_LUCENE("standardasciifolding.lucene"),
+    public static final AnalyzerName STANDARDASCIIFOLDING_LUCENE = fromString("standardasciifolding.lucene");
 
     /**
-     * Enum value keyword.
+     * Static value keyword for AnalyzerName.
      */
-    KEYWORD("keyword"),
+    public static final AnalyzerName KEYWORD = fromString("keyword");
 
     /**
-     * Enum value pattern.
+     * Static value pattern for AnalyzerName.
      */
-    PATTERN("pattern"),
+    public static final AnalyzerName PATTERN = fromString("pattern");
 
     /**
-     * Enum value simple.
+     * Static value simple for AnalyzerName.
      */
-    SIMPLE("simple"),
+    public static final AnalyzerName SIMPLE = fromString("simple");
 
     /**
-     * Enum value stop.
+     * Static value stop for AnalyzerName.
      */
-    STOP("stop"),
+    public static final AnalyzerName STOP = fromString("stop");
 
     /**
-     * Enum value whitespace.
+     * Static value whitespace for AnalyzerName.
      */
-    WHITESPACE("whitespace");
+    public static final AnalyzerName WHITESPACE = fromString("whitespace");
 
     /**
-     * The actual serialized value for a AnalyzerName instance.
-     */
-    private final String value;
-
-    AnalyzerName(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a AnalyzerName instance.
+     * Creates or finds a AnalyzerName from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed AnalyzerName object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding AnalyzerName.
      */
     @JsonCreator
-    public static AnalyzerName fromString(String value) {
-        AnalyzerName[] items = AnalyzerName.values();
-        for (AnalyzerName item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static AnalyzerName fromString(String name) {
+        return fromString(name, AnalyzerName.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known AnalyzerName values.
+     */
+    public static Collection<AnalyzerName> values() {
+        return values(AnalyzerName.class);
     }
 }

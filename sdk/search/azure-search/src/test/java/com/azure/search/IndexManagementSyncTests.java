@@ -25,6 +25,7 @@ import com.azure.search.test.AccessConditionTests;
 import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,7 +72,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         client = getSearchServiceClientBuilder().buildClient();
     }
 
-    @Override
+    @Test
     public void createIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
         Index createdIndex = client.createIndex(index);
@@ -81,7 +82,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         assertIndexesEqual(index, createIndexResponse.getValue());
     }
 
-    @Override
+    @Test
     public void createIndexReturnsCorrectDefaultValues() {
         Index index = createTestIndex()
             .setCorsOptions(new CorsOptions().setAllowedOrigins("*"))
@@ -104,7 +105,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertEquals(ScoringFunctionInterpolation.LINEAR, scoringProfile.getFunctions().get(0).getInterpolation());
     }
 
-    @Override
+    @Test
     public void createIndexFailsWithUsefulMessageOnUserError() {
         String indexName = HOTEL_INDEX_NAME;
         Index index = new Index()
@@ -128,7 +129,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         }
     }
 
-    @Override
+    @Test
     public void getIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
         client.createIndex(index);
@@ -139,7 +140,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         assertIndexesEqual(index, getIndexResponse.getValue());
     }
 
-    @Override
+    @Test
     public void getIndexThrowsOnNotFound() {
         assertHttpResponseException(
             () -> client.getIndex("thisindexdoesnotexist"),
@@ -148,7 +149,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         );
     }
 
-    @Override
+    @Test
     public void existsReturnsTrueForExistingIndex() {
         Index index = createTestIndex();
         client.createIndex(index);
@@ -157,12 +158,12 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertTrue(client.indexExistsWithResponse(index.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
-    @Override
+    @Test
     public void existsReturnsFalseForNonExistingIndex() {
         Assert.assertFalse(client.indexExists("invalidindex"));
     }
 
-    @Override
+    @Test
     public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -173,7 +174,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             HOTEL_INDEX_NAME);
     }
 
-    @Override
+    @Test
     public void deleteIndexIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -184,7 +185,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             HOTEL_INDEX_NAME);
     }
 
-    @Override
+    @Test
     public void deleteIndexIsIdempotent() {
         Index index = new Index()
             .setName(HOTEL_INDEX_NAME)
@@ -208,7 +209,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
-    @Override
+    @Test
     public void canCreateAndDeleteIndex() {
         Index index = createTestIndex();
         client.createIndex(index);
@@ -216,7 +217,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertFalse(client.indexExists(index.getName()));
     }
 
-    @Override
+    @Test
     public void canCreateAndListIndexes() {
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
@@ -232,7 +233,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertEquals(index2.getName(), result.get(1).getName());
     }
 
-    @Override
+    @Test
     public void canListIndexesWithSelectedField() {
         Index index1 = createTestIndex();
         Index index2 = createTestIndex().setName("hotels2");
@@ -262,7 +263,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertEquals(result.get(1).getName(), index2.getName());
     }
 
-    @Override
+    @Test
     public void canAddSynonymFieldProperty() {
         String synonymMapName = "names";
         SynonymMap synonymMap = new SynonymMap().setName(synonymMapName).setSynonyms("hotel,motel");
@@ -288,7 +289,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertEquals(actualSynonym, expectedSynonym);
     }
 
-    @Override
+    @Test
     public void canUpdateSynonymFieldProperty() {
         String synonymMapName = "names";
         SynonymMap synonymMap = new SynonymMap()
@@ -365,7 +366,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         assertIndexesEqual(existingIndex, updatedIndex);
     }
 
-    @Override
+    @Test
     public void canUpdateSuggesterWithNewIndexFields() {
         Index index = createTestIndex();
         client.createIndex(index);
@@ -390,7 +391,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         assertIndexesEqual(existingIndex, updatedIndex);
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields() {
         Index index = createTestIndex();
         client.createIndex(index);
@@ -411,7 +412,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         );
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExist() {
         Index expected = createTestIndex();
 
@@ -427,7 +428,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Assert.assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -437,7 +438,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             mutateIndexFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -447,7 +448,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     }
 
 
-    @Override
+    @Test
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsSucceedsOnExistingResource(
@@ -456,7 +457,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             mutateIndexFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexIfExistsFailsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsFailsOnNoResource(
@@ -464,7 +465,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             createOrUpdateIndexFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchanged(
@@ -473,7 +474,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             mutateIndexFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedFailsWhenResourceChanged(
@@ -482,7 +483,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             mutateIndexFunc);
     }
 
-    @Override
+    @Test
     public void canCreateAndGetIndexStats() {
         Index index = createTestIndex();
         client.createOrUpdateIndex(index);

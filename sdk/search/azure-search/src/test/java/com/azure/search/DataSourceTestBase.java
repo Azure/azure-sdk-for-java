@@ -5,7 +5,7 @@ package com.azure.search;
 
 import com.azure.search.models.DataDeletionDetectionPolicy;
 import com.azure.search.models.DataSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 

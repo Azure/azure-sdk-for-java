@@ -1,39 +1,39 @@
 parameters:
-  ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
-  PreTestSteps: []
-  TestOptions: '$(DefaultOptions) $(ProfileFlag)'
-  TestGoals: test
-  TestMatrix:
-    Linux - Java 8:
-      OSName: 'Linux'
-      OSVmImage: 'ubuntu-16.04'
-      JavaVersion: '1.8'
-      ProfileFlag: ''
-    macOS - Java 8:
-      OSName: 'macOS'
-      OSVmImage: 'macOS-10.13'
-      JavaVersion: '1.8'
-      ProfileFlag: ''
-    Windows - Java 8:
-      OSName: 'Windows'
-      OSVmImage: 'windows-2019'
-      JavaVersion: '1.8'
-      ProfileFlag: ''
-    # Linux - Java LTS:
-    #   OSName: 'Linux'
-    #   OSVmImage: 'ubuntu-16.04'
-    #   JavaVersion: '1.11'
-    #   ProfileFlag: '-Djava-lts'
-    # macOS - Java LTS:
-    #   OSName: 'macOS'
-    #   OSVmImage: 'macOS-10.13'
-    #   JavaVersion: '1.11'
-    #   ProfileFlag: '-Djava-lts'
-    # Windows - Java LTS:
-    #   OSName: 'Windows'
-    #   OSVmImage: 'windows-2019'
-    #   JavaVersion: '1.11'
-    #   ProfileFlag: '-Djava-lts'
+    ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
+    PreTestSteps: []
+    TestOptions: '$(DefaultOptions) $(ProfileFlag) -Dfile.encoding=UTF-8'
+    TestGoals: test
+    TestMatrix:
+        Linux - Java 8:
+            OSName: 'Linux'
+            OSVmImage: 'ubuntu-16.04'
+            JavaVersion: '1.8'
+            ProfileFlag: ''
+        macOS - Java 8:
+            OSName: 'macOS'
+            OSVmImage: 'macOS-10.13'
+            JavaVersion: '1.8'
+            ProfileFlag: ''
+#        Windows - Java 8:
+#            OSName: 'Windows'
+#            OSVmImage: 'windows-2019'
+#            JavaVersion: '1.8'
+#            ProfileFlag: ''
+        Linux - Java LTS:
+            OSName: 'Linux'
+            OSVmImage: 'ubuntu-16.04'
+            JavaVersion: '1.11'
+            ProfileFlag: '-Djava-lts'
+        macOS - Java LTS:
+            OSName: 'macOS'
+            OSVmImage: 'macOS-10.13'
+            JavaVersion: '1.11'
+            ProfileFlag: '-Djava-lts'
+#        Windows - Java LTS:
+#            OSName: 'Windows'
+#            OSVmImage: 'windows-2019'
+#            JavaVersion: '1.11'
+#            ProfileFlag: '-Djava-lts'
 
 jobs:
   - job: 'Build'
@@ -100,13 +100,13 @@ jobs:
           pip install doc-warden
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
-      
+
       - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
         # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
         # builds should be sufficient.
         condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
         enabled: false
-        displayName: 'Component Detection'        
+        displayName: 'Component Detection'
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
@@ -232,7 +232,7 @@ jobs:
           OSName: $(OSName)
 
       - template: ../steps/cache-maven-repository.yml
-      
+
       - task: Maven@3
         displayName: 'Start Jetty'
         condition: ne(variables['SdkType'], 'client')

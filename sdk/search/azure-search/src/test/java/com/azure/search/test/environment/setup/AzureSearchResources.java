@@ -118,7 +118,7 @@ public class AzureSearchResources {
     }
 
     /**
-     * Creates the Resource Group in Azure. This should be run at @BeforeClass
+     * Creates the Resource Group in Azure. This should be run at @BeforeAll
      */
     public void createResourceGroup() {
         if (resourceGroup == null) {
@@ -132,7 +132,7 @@ public class AzureSearchResources {
     }
 
     /**
-     * Deletes the Resource Group in Azure. This should be run at @AfterClass
+     * Deletes the Resource Group in Azure. This should be run at @AfterAll
      */
     public void deleteResourceGroup() {
         if (resourceGroup != null) {

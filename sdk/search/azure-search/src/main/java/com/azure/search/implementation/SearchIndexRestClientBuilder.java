@@ -8,9 +8,12 @@ package com.azure.search.implementation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.serializer.SerializerAdapter;
-import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /**
  * A builder for creating a new instance of the SearchIndexRestClient type.
@@ -120,7 +123,7 @@ public final class SearchIndexRestClientBuilder {
      */
     public SearchIndexRestClientImpl build() {
         if (pipeline == null) {
-            this.pipeline = RestProxy.createDefaultPipeline();
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
         }
         if (serializer == null) {
             this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
