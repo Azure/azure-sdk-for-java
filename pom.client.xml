@@ -1126,7 +1126,7 @@
         </property>
       </activation>
       <properties>
-        <packageOutputDirectory>${artifact.staging.directory}/${project.artifactId}</packageOutputDirectory>
+        <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
       </properties>
     </profile>
 
