@@ -2,24 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.exception.AmqpException;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to sent events to specific event hub by define partition ID in producer option only.
+ * Sample demonstrates how to sent events to specific event hub by defining partition id using {@link
+ * CreateBatchOptions#setPartitionId(String)}.
  */
 public class PublishEventsToSpecificPartition {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
-     * Main method to invoke this demo about how to send a list of events with partition ID configured in producer option
-     * to an Azure Event Hub instance.
+     * Main method to invoke this demo about how to send a batch of events with partition id configured.
      *
      * @param args Unused arguments to the program.
      */
@@ -32,25 +34,16 @@ public class PublishEventsToSpecificPartition {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
         // Instantiate a client that will be used to call the service.
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
+            .buildAsyncProducerClient();
 
-        // To create a consumer, we need to know what partition to connect to. We take the first partition id.
+        // To send our events, we need to know what partition to send it to. For the sake of this example, we take the
+        // first partition id.
         // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
         // time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
         // TimeoutException is thrown.
-        String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
-
-        // When an Event Hub producer is associated with any specific partition, it can publish events only to that partition.
-        // The producer has no ability to ask for the service to route events, including by using a partition key.
-        //
-        // If you attempt to use a partition key with an Event Hub producer that is associated with a partition, an exception
-        // will occur. Otherwise, publishing to a specific partition is exactly the same as other publishing scenarios.
-        EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(firstPartition);
-
-        // Create a producer. Consequently, events sent from this producer will deliver to the specific partition ID Event Hub instance.
-        EventHubAsyncProducer producer = client.createProducer(producerOptions);
+        String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(
@@ -58,28 +51,57 @@ public class PublishEventsToSpecificPartition {
             new EventData("EventData Sample 2".getBytes(UTF_8)),
             new EventData("EventData Sample 3".getBytes(UTF_8)));
 
-        // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
-        // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
-        // the event.
-        producer.send(data).subscribe(
-            (ignored) -> System.out.println("Events sent."),
-            error -> {
-                System.err.println("There was an error sending the event: " + error.toString());
+        // Create a batch to send the events.
+        final CreateBatchOptions options = new CreateBatchOptions()
+            .setPartitionId(firstPartition);
+        final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
+            producer.createBatch(options).block());
 
-                if (error instanceof AmqpException) {
-                    AmqpException amqpException = (AmqpException) error;
-                    System.err.println(String.format("Is send operation retriable? %s. Error condition: %s",
-                        amqpException.isTransient(), amqpException.getErrorCondition()));
-                }
-            }, () -> {
-                // Disposing of our producer and client.
-                try {
-                    producer.close();
-                } catch (IOException e) {
-                    System.err.println("Error encountered while closing producer: " + e.toString());
-                }
+        // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
+        // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
+        // are sent.
+        data.flatMap(event -> {
+            final EventDataBatch batch = currentBatch.get();
+            if (batch.tryAdd(event)) {
+                return Mono.empty();
+            }
 
-                client.close();
-            });
+            // The batch is full, so we create a new batch and send the batch. Mono.when completes when both operations
+            // have completed.
+            return Mono.when(
+                producer.send(batch),
+                producer.createBatch(options).map(newBatch -> {
+                    currentBatch.set(newBatch);
+
+                    // Add that event that we couldn't before.
+                    if (!newBatch.tryAdd(event)) {
+                        throw Exceptions.propagate(new IllegalArgumentException(String.format(
+                            "Event is too large for an empty batch. Max size: %s. Event: %s",
+                            newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
+                    }
+
+                    return newBatch;
+                }));
+        }).then()
+            .doFinally(signal -> {
+                final EventDataBatch batch = currentBatch.getAndSet(null);
+                if (batch != null) {
+                    producer.send(batch).block(OPERATION_TIMEOUT);
+                }
+            })
+            .subscribe(unused -> System.out.println("Complete"),
+                error -> System.out.println("Error sending events: " + error),
+                () -> System.out.println("Completed sending events."));
+
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException ignored) {
+        } finally {
+            // Disposing of our producer.
+            producer.close();
+        }
     }
 }

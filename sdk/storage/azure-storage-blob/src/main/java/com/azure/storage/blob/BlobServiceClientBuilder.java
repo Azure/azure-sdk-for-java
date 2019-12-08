@@ -7,10 +7,9 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
@@ -21,9 +20,7 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
-import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -84,21 +81,21 @@ public final class BlobServiceClientBuilder {
 
     /**
      * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
+     * @throws IllegalArgumentException If no credentials are provided.
      */
     public BlobServiceAsyncClient buildAsyncClient() {
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
+
+        if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)
+            && Objects.isNull(sasTokenCredential)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Blob Service Client cannot be accessed "
+                + "anonymously. Please provide a form of authentication"));
+        }
+
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (storageSharedKeyCredential != null) {
-                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Authorization credentials must be set."));
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
+            httpClient, additionalPolicies, configuration, logger);
 
         return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey);
     }
@@ -115,10 +112,10 @@ public final class BlobServiceClientBuilder {
             BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint));
 
             this.accountName = parts.getAccountName();
-            this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.endpoint = BuilderHelper.getEndpoint(parts);
 
-            String sasToken = parts.getSasQueryParameters().encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            String sasToken = parts.getCommonSasQueryParameters().encode();
+            if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
@@ -238,7 +235,8 @@ public final class BlobServiceClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated BlobServiceClientBuilder object

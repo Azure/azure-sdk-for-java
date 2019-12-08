@@ -68,6 +68,12 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
+                if (feedOptions.partitionKey() != null) {
+                    headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, feedOptions
+                                                                             .partitionKey()
+                                                                             .getInternalPartitionKey()
+                                                                             .toJson());
+                }
                 return this.createDocumentServiceRequest(headers, querySpecForInit, partitionKeyRange, collectionRid);
             };
 

@@ -1,0 +1,25 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-network-management</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0</version>  <!-- Need not change for every release-->
+  <modules>
+    <module>mgmt-v2017_10_01</module>
+    <module>mgmt-v2018_04_01</module>
+    <module>mgmt-v2018_06_01</module>
+    <module>mgmt-v2018_07_01</module>
+    <module>mgmt-v2018_08_01</module>
+    <module>mgmt-v2018_12_01</module>
+    <module>mgmt-v2019_02_01</module>
+    <module>mgmt-v2019_04_01</module>
+    <module>mgmt-v2019_06_01</module>
+    <module>mgmt-v2019_07_01</module>
+    <module>mgmt-v2019_08_01</module>
+    <module>mgmt-v2019_09_01</module>
+  </modules>
+</project>

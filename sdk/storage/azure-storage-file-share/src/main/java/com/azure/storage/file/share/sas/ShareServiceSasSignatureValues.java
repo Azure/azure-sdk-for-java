@@ -3,7 +3,7 @@
 
 package com.azure.storage.file.share.sas;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -177,7 +177,7 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
-     * Sets the permissions allowed by the SAS. File SASs are created when both a
+     * Sets the permissions allowed by the SAS. Share file SASs are created when both a
      * {@link #setShareName(String) share name} and {@link #setFilePath(String) file path} are set on the builder.
      *
      * @param permissions Permissions for the SAS.
@@ -397,7 +397,7 @@ public final class ShareServiceSasSignatureValues {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         final String resource;
-        if (ImplUtils.isNullOrEmpty(filePath)) {
+        if (CoreUtils.isNullOrEmpty(filePath)) {
             resource = SAS_SHARE_CONSTANT;
 
             // Make sure the permission characters are in the correct order
@@ -413,7 +413,7 @@ public final class ShareServiceSasSignatureValues {
             }
         }
 
-        if (ImplUtils.isNullOrEmpty(version)) {
+        if (CoreUtils.isNullOrEmpty(version)) {
             version = ShareServiceVersion.getLatest().getVersion();
         }
 
@@ -439,7 +439,7 @@ public final class ShareServiceSasSignatureValues {
      * @return The canonical resource name.
      */
     private static String getCanonicalName(String account, String shareName, String filePath) {
-        return !ImplUtils.isNullOrEmpty(filePath)
+        return !CoreUtils.isNullOrEmpty(filePath)
             ? String.format("/file/%s/%s/%s", account, shareName, filePath.replace("\\", "/"))
             : String.format("/file/%s/%s", account, shareName);
     }

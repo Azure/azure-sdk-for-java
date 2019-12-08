@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-data-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
+  <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
 
   <name>Microsoft Azure SDK for Java - Data Plane Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.3.0</version> <!-- {x-version-exempt;com.azure:azure-sdk-parent;all of data needs to be updated in order for this to be at the latest} -->
+    <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -70,17 +70,17 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${maven-checkstyle-plugin.version}</version>
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
             <artifactId>sdk-build-tools</artifactId>
-            <version>${sdk-build-tools.version}</version>
+            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
           </dependency>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>${checkstyle.version}</version>
+            <version>8.24</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
           </dependency>
         </dependencies>
         <configuration>
@@ -111,12 +111,12 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${spotbugs.maven.version}</version>
+        <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
             <artifactId>sdk-build-tools</artifactId>
-            <version>${sdk-build-tools.version}</version>
+            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
           </dependency>
         </dependencies>
         <configuration>
@@ -143,7 +143,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>xml-maven-plugin</artifactId>
-        <version>${xml-maven-plugin.version}</version>
+        <version>1.0</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <phase>verify</phase>
@@ -171,7 +171,7 @@
           <dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs</artifactId>
-            <version>${spotbugs.version}</version>
+            <version>4.0.0-beta3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
           </dependency>
         </dependencies>
       </plugin>
@@ -180,6 +180,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <outputDirectory>${packageOutputDirectory}</outputDirectory>
         </configuration>
@@ -189,6 +190,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -206,6 +208,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -221,15 +224,16 @@
 
       <!-- Copy the pom file to output -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>${maven-antrun-plugin.version}</version>
+        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>copy</id>
             <phase>package</phase>
             <configuration>
               <target>
-                <copy file="${pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+                <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
               </target>
             </configuration>
             <goals>
@@ -243,6 +247,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
       </plugin>
     </plugins>
 
@@ -251,6 +256,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
           <configuration>
             <source>8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
@@ -284,10 +290,6 @@
                 <title>Azure Storage</title>
                 <packages>com.microsoft.azure.storage*</packages>
               </group>
-              <group>
-                <title>Azure Cognitive Service Ink Recognizer</title>
-                <packages>com.microsoft.azure.cognitiveservices.inkrecognizer*</packages>
-              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -302,12 +304,12 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>${spotbugs.maven.version}</version>
+          <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
           <dependencies>
             <dependency>
               <groupId>com.azure</groupId>
               <artifactId>sdk-build-tools</artifactId>
-              <version>${sdk-build-tools.version}</version>
+              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
@@ -330,7 +332,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jxr-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>aggregate</id>
@@ -344,7 +346,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${maven-checkstyle-plugin.version}</version>
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <configuration>
           <configLocation>checkstyle/checkstyle.xml</configLocation>
           <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
@@ -378,7 +380,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${spotbugs.maven.version}</version>
+        <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
@@ -398,7 +400,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven-javadoc.version}</version>
+        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
@@ -418,7 +420,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <reports>
@@ -463,7 +465,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>${maven-compiler-plugin.version}</version>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <source>1.8</source>
               <target>1.8</target>
@@ -488,7 +490,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>${maven-compiler-plugin.version}</version>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <source>11</source>
               <target>11</target>
@@ -515,6 +517,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <additionalJOption>--no-module-directories</additionalJOption>
             </configuration>
@@ -563,6 +566,7 @@
           <plugin>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>exec-maven-plugin</artifactId>
+              <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
               <executions>
                   <execution>
                       <id>generate-overview-from-readme</id>
@@ -579,6 +583,8 @@
                       <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
                       <argument>--rf</argument>
                       <argument>${project.basedir}/README.md</argument>
+                      <argument>--v</argument>
+                      <argument>${project.version}</argument>
                 </arguments>    
               </configuration>
           </plugin>
@@ -586,7 +592,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>${maven-javadoc.version}</version>
+            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
               <overview>${project.basedir}/readme_overview.html</overview>
             </configuration>
@@ -599,7 +605,6 @@
   <modules>
     <module>./sdk/batch/microsoft-azure-batch</module>
     <module>./sdk/applicationinsights/microsoft-azure-applicationinsights-query</module>
-    <module>./sdk/cognitiveservices/ms-azure-cs-inkrecognizer/pom.xml</module>
     <module>./sdk/cosmos</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;

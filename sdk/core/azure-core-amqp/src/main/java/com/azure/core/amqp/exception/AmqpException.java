@@ -4,23 +4,23 @@
 package com.azure.core.amqp.exception;
 
 import com.azure.core.exception.AzureException;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 
 import java.util.Locale;
 
 /**
  * General exception for AMQP related failures.
  *
- * @see ErrorCondition
+ * @see AmqpErrorCondition
  * @see <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions">Azure Messaging
  *     Exceptions</a>
  */
 public class AmqpException extends AzureException {
     private static final long serialVersionUID = -3654294093967132325L;
 
-    private final ErrorContext errorContext;
+    private final AmqpErrorContext errorContext;
     private final boolean isTransient;
-    private final ErrorCondition errorCondition;
+    private final AmqpErrorCondition errorCondition;
 
     /**
      * Initializes a new instance of the AmqpException class.
@@ -30,7 +30,7 @@ public class AmqpException extends AzureException {
      * @param message Text containing any supplementary details of the exception.
      * @param errorContext The context that caused this AMQP error.
      */
-    public AmqpException(boolean isTransient, String message, ErrorContext errorContext) {
+    public AmqpException(boolean isTransient, String message, AmqpErrorContext errorContext) {
         this(isTransient, null, message, errorContext);
     }
 
@@ -44,8 +44,8 @@ public class AmqpException extends AzureException {
      *     be logged as an aid to resolving issues.
      * @param errorContext The context that caused this AMQP error.
      */
-    public AmqpException(boolean isTransient, ErrorCondition errorCondition, String message,
-                         ErrorContext errorContext) {
+    public AmqpException(boolean isTransient, AmqpErrorCondition errorCondition, String message,
+                         AmqpErrorContext errorContext) {
         super(message);
         this.errorCondition = errorCondition;
         this.isTransient = isTransient;
@@ -63,8 +63,8 @@ public class AmqpException extends AzureException {
      * @param cause The Throwable which caused the creation of this AmqpException.
      * @param errorContext The context that caused this AMQP error.
      */
-    public AmqpException(boolean isTransient, ErrorCondition errorCondition, String message, Throwable cause,
-                         ErrorContext errorContext) {
+    public AmqpException(boolean isTransient, AmqpErrorCondition errorCondition, String message, Throwable cause,
+                         AmqpErrorContext errorContext) {
         super(message, cause);
         this.errorCondition = errorCondition;
         this.isTransient = isTransient;
@@ -80,8 +80,8 @@ public class AmqpException extends AzureException {
      * @param cause The Throwable which caused the creation of this AmqpException.
      * @param errorContext The context that caused this AMQP error.
      */
-    public AmqpException(boolean isTransient, ErrorCondition errorCondition, Throwable cause,
-                         ErrorContext errorContext) {
+    public AmqpException(boolean isTransient, AmqpErrorCondition errorCondition, Throwable cause,
+                         AmqpErrorContext errorContext) {
         super(cause.getMessage(), cause);
         this.errorCondition = errorCondition;
         this.isTransient = isTransient;
@@ -98,7 +98,7 @@ public class AmqpException extends AzureException {
      * @param cause The Throwable which caused the creation of this AmqpException.
      * @param errorContext The context that caused this AMQP error.
      */
-    public AmqpException(boolean isTransient, String message, Throwable cause, ErrorContext errorContext) {
+    public AmqpException(boolean isTransient, String message, Throwable cause, AmqpErrorContext errorContext) {
         super(message, cause);
         this.errorCondition = null;
         this.isTransient = isTransient;
@@ -113,7 +113,7 @@ public class AmqpException extends AzureException {
             return super.getMessage();
         }
 
-        return !ImplUtils.isNullOrEmpty(baseMessage)
+        return !CoreUtils.isNullOrEmpty(baseMessage)
             ? String.format(Locale.US, "%s, %s[%s]", baseMessage, "errorContext", errorContext.toString())
             : String.format(Locale.US, "%s[%s]", "errorContext", errorContext.toString());
     }
@@ -129,11 +129,11 @@ public class AmqpException extends AzureException {
     }
 
     /**
-     * Gets the ErrorCondition for this exception.
+     * Gets the {@link AmqpErrorCondition} for this exception.
      *
-     * @return The ErrorCondition for this exception, or {@code null} if nothing was set.
+     * @return The {@link AmqpErrorCondition} for this exception, or {@code null} if nothing was set.
      */
-    public ErrorCondition getErrorCondition() {
+    public AmqpErrorCondition getErrorCondition() {
         return this.errorCondition;
     }
 
@@ -142,7 +142,7 @@ public class AmqpException extends AzureException {
      *
      * @return The context for this exception.
      */
-    public ErrorContext getContext() {
+    public AmqpErrorContext getContext() {
         return this.errorContext;
     }
 }

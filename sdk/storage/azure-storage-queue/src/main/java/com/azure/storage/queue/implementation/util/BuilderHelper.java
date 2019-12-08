@@ -3,34 +3,38 @@
 
 package com.azure.storage.queue.implementation.util;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.credentials.SasTokenCredential;
+import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
-import com.azure.storage.queue.sas.QueueServiceSasQueryParameters;
-import com.azure.storage.queue.QueueServiceVersion;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 /**
@@ -39,7 +43,7 @@ import java.util.regex.Pattern;
 public final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-queue";
     // {x-version-update-start;com.azure:azure-storage-queue;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
+    private static final String DEFAULT_USER_AGENT_VERSION = "12.1.0";
     // {x-version-update-end}
 
     private static final Pattern IP_URL_PATTERN = Pattern
@@ -56,15 +60,13 @@ public final class BuilderHelper {
         Objects.requireNonNull(endpoint);
         try {
             URL url = new URL(endpoint);
-            QueueUrlParts parts = new QueueUrlParts();
-
-            parts.setEndpoint(url.getProtocol() + "://" + url.getAuthority());
+            QueueUrlParts parts = new QueueUrlParts().setScheme(url.getProtocol());
 
             if (IP_URL_PATTERN.matcher(url.getHost()).find()) {
                 // URL is using an IP pattern of http://127.0.0.1:10000/accountName/queueName
                 // or http://localhost:10000/accountName/queueName
                 String path = url.getPath();
-                if (!ImplUtils.isNullOrEmpty(path) && path.charAt(0) == '/') {
+                if (!CoreUtils.isNullOrEmpty(path) && path.charAt(0) == '/') {
                     path = path.substring(1);
                 }
 
@@ -74,12 +76,15 @@ public final class BuilderHelper {
                 if (pathPieces.length == 2) {
                     parts.setQueueName(pathPieces[1]);
                 }
+
+                parts.setEndpoint(String.format("%s://%s/%s", url.getProtocol(), url.getAuthority(),
+                    parts.getAccountName()));
             } else {
-                // URL is using a pattern of http://accountName.blob.core.windows.net/queueName
+                // URL is using a pattern of http://accountName.queue.core.windows.net/queueName
                 String host = url.getHost();
 
                 String accountName = null;
-                if (!ImplUtils.isNullOrEmpty(host)) {
+                if (!CoreUtils.isNullOrEmpty(host)) {
                     int accountNameIndex = host.indexOf('.');
                     if (accountNameIndex == -1) {
                         accountName = host;
@@ -91,16 +96,19 @@ public final class BuilderHelper {
                 parts.setAccountName(accountName);
 
                 String[] pathSegments = url.getPath().split("/", 2);
-                if (pathSegments.length == 2 && !ImplUtils.isNullOrEmpty(pathSegments[1])) {
+                if (pathSegments.length == 2 && !CoreUtils.isNullOrEmpty(pathSegments[1])) {
                     parts.setQueueName(pathSegments[1]);
                 }
+
+                parts.setEndpoint(String.format("%s://%s", url.getProtocol(), url.getAuthority()));
             }
 
+            // TODO (gapra) : What happens if a user has custom queries?
             // Attempt to get the SAS token from the URL passed
-            String sasToken = new QueueServiceSasQueryParameters(
+            String sasToken = new CommonSasQueryParameters(
                 StorageImplUtils.parseQueryStringSplitValues(url.getQuery()), false).encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
-                parts.setQueueName(sasToken);
+            if (!CoreUtils.isNullOrEmpty(sasToken)) {
+                parts.setSasToken(sasToken);
             }
 
             return parts;
@@ -113,27 +121,43 @@ public final class BuilderHelper {
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.
      *
-     * @param credentialPolicySupplier Supplier for credentials in the pipeline.
+     * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
+     * @param tokenCredential {@link TokenCredential} if present.
+     * @param sasTokenCredential {@link SasTokenCredential} if present.
+     * @param endpoint The endpoint for the client.
      * @param retryOptions Retry options to set in the retry policy.
      * @param logOptions Logging options to set in the logging policy.
      * @param httpClient HttpClient to use in the builder.
      * @param additionalPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline.
      * @param configuration Configuration store contain environment settings.
-     * @param serviceVersion {@link QueueServiceVersion} of the service to be used when making requests.
+     * @param logger {@link ClientLogger} used to log any exception.
      * @return A new {@link HttpPipeline} from the passed values.
      */
-    public static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
+    public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
+        TokenCredential tokenCredential, SasTokenCredential sasTokenCredential, String endpoint,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
-        List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, QueueServiceVersion serviceVersion) {
+        List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, ClientLogger logger) {
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(getUserAgentPolicy(configuration, serviceVersion));
+        policies.add(getUserAgentPolicy(configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        HttpPipelinePolicy credentialPolicy = credentialPolicySupplier.get();
+        HttpPipelinePolicy credentialPolicy;
+        if (storageSharedKeyCredential != null) {
+            credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
+        } else if (tokenCredential != null) {
+            httpsValidation(tokenCredential, "bearer token", endpoint, logger);
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential,
+                String.format("%s/.default", endpoint));
+        } else if (sasTokenCredential != null) {
+            credentialPolicy =  new SasTokenCredentialPolicy(sasTokenCredential);
+        } else {
+            credentialPolicy =  null;
+        }
+
         if (credentialPolicy != null) {
             policies.add(credentialPolicy);
         }
@@ -173,13 +197,13 @@ public final class BuilderHelper {
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
      * @param configuration Configuration store used to determine whether telemetry information should be included.
-     * @param version {@link QueueServiceVersion} of the service to be used when making requests.
      * @return The default {@link UserAgentPolicy} for the module.
      */
-    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, QueueServiceVersion version) {
+    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
-        return new UserAgentPolicy(DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration, version);
+        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(),
+            DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration);
     }
 
     /*
@@ -194,11 +218,36 @@ public final class BuilderHelper {
             .build();
     }
 
+    /**
+     * Validates that the client is properly configured to use https.
+     *
+     * @param objectToCheck The object to check for.
+     * @param objectName The name of the object.
+     * @param endpoint The endpoint for the client.
+     * @param logger {@link ClientLogger} used to log any exception.
+     */
+    public static void httpsValidation(Object objectToCheck, String objectName, String endpoint, ClientLogger logger) {
+        if (objectToCheck != null && !parseEndpoint(endpoint, logger).getScheme().equals(Constants.HTTPS)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Using a(n) " + objectName + " requires https"));
+        }
+    }
+
     public static class QueueUrlParts {
+        private String scheme;
         private String endpoint;
         private String accountName;
         private String queueName;
         private String sasToken;
+
+        public String getScheme() {
+            return scheme;
+        }
+
+        public QueueUrlParts setScheme(String scheme) {
+            this.scheme = scheme;
+            return this;
+        }
 
         public String getEndpoint() {
             return endpoint;

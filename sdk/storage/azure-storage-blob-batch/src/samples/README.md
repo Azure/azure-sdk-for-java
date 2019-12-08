@@ -4,7 +4,7 @@ This document explains samples and how to use them.
 
 ## Key concepts
 
-Key concepts are explained in detail [here] [SDK_README_KEY_CONCEPTS].
+Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 
 # Samples Azure Storage Blob Batch APIs
 This document describes how to use samples and what is done in each sample.
@@ -31,7 +31,7 @@ status codes returned for [REST API][error_codes] requests. For example, if you 
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`
 
 ## Next steps
-Start using Storage blob batch Java SDK in your solutions. Our SDK details could be found at [SDK README] [BATCH_SDK_README]. 
+Start using Storage blob batch Java SDK in your solutions. Our SDK details could be found at [SDK README][BATCH_SDK_README]. 
 
 ###  Additional Documentation
 For more extensive documentation on Azure Storage blob, see the [API reference documentation][storageblob_rest].
@@ -48,4 +48,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [storageblob_rest]: https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-rest-api
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-blob-batch/samples/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob-batch%2Fsrc%2Fsamples%2FREADME.png)

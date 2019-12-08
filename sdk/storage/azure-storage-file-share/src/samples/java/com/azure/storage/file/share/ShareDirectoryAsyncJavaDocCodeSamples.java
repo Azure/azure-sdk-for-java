@@ -3,7 +3,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.share.models.FileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 
 import java.time.LocalDateTime;
@@ -92,12 +92,12 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createWithResponse(ShareFileSmbProperties, String, Map)}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createWithResponse(FileSmbProperties, String, Map)}
      */
     public void createDirectoryWithResponseAsync() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareFileSmbProperties-String-Map
-        ShareFileSmbProperties smbProperties = new ShareFileSmbProperties();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#FileSmbProperties-String-Map
+        FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
         shareDirectoryAsyncClient.createWithResponse(smbProperties, filePermission, metadata).subscribe(
@@ -105,36 +105,36 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
                 System.out.println("Completed creating the directory with status code:" + response.getStatusCode()),
             error -> System.err.print(error.toString())
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareFileSmbProperties-String-Map
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#FileSmbProperties-String-Map
     }
 
     /**
      * Generates code sample for creating a subdirectory with {@link ShareDirectoryAsyncClient}
      */
-    public void createSubDirectory() {
+    public void createSubdirectory() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubDirectory#string
-        shareDirectoryAsyncClient.createSubDirectory("subdir")
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectory#string
+        shareDirectoryAsyncClient.createSubdirectory("subdir")
             .doOnSuccess(response -> System.out.println("Completed creating the subdirectory."));
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubDirectory#string
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectory#string
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createSubDirectoryWithResponse(String, ShareFileSmbProperties, String, Map)}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createSubdirectoryWithResponse(String, FileSmbProperties, String, Map)}
      */
-    public void createSubDirectoryAsyncMaxOverload() {
+    public void createSubdirectoryAsyncMaxOverload() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubDirectoryWithResponse#String-ShareFileSmbProperties-String-Map
-        ShareFileSmbProperties smbProperties = new ShareFileSmbProperties();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map
+        FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
-        shareDirectoryAsyncClient.createSubDirectoryWithResponse("subdir", smbProperties, filePermission, metadata).subscribe(
+        shareDirectoryAsyncClient.createSubdirectoryWithResponse("subdir", smbProperties, filePermission, metadata).subscribe(
             response ->
                 System.out.println("Successfully creating the subdirectory with status code: "
                     + response.getStatusCode()),
             error -> System.err.println(error.toString())
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubDirectoryWithResponse#String-ShareFileSmbProperties-String-Map
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map
     }
 
     /**
@@ -152,18 +152,18 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createFileWithResponse(String, long, FileHttpHeaders, ShareFileSmbProperties, String, Map)}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createFileWithResponse(String, long, ShareFileHttpHeaders, FileSmbProperties, String, Map)}
      */
     public void createFileWithResponse() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-FileHttpHeaders-ShareFileSmbProperties-String-Map
-        FileHttpHeaders httpHeaders = new FileHttpHeaders()
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
             .setContentEncoding("gzip")
             .setContentLanguage("en")
             .setCacheControl("no-transform")
             .setContentDisposition("attachment");
-        ShareFileSmbProperties smbProperties = new ShareFileSmbProperties()
+        FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
             .setFileLastWriteTime(OffsetDateTime.now())
@@ -176,7 +176,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
                 error -> System.err.println(error.toString()),
                 () -> System.out.println("Completed creating the file.")
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-FileHttpHeaders-ShareFileSmbProperties-String-Map
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map
     }
 
     /**
@@ -238,31 +238,31 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#deleteSubDirectory(String)} ()}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#deleteSubdirectory(String)} ()}
      */
-    public void deleteSubDirectoryAsync() {
+    public void deleteSubdirectoryAsync() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubDirectory#string
-        shareDirectoryAsyncClient.deleteSubDirectory("mysubdirectory").subscribe(
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectory#string
+        shareDirectoryAsyncClient.deleteSubdirectory("mysubdirectory").subscribe(
             response -> { },
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the subdirectory.")
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubDirectory#string
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectory#string
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#deleteSubDirectoryWithResponse(String)} ()}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#deleteSubdirectoryWithResponse(String)} ()}
      */
-    public void deleteSubDirectoryWithResponse() {
+    public void deleteSubdirectoryWithResponse() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubDirectoryWithResponse#string
-        shareDirectoryAsyncClient.deleteSubDirectoryWithResponse("mysubdirectory").subscribe(
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryWithResponse#string
+        shareDirectoryAsyncClient.deleteSubdirectoryWithResponse("mysubdirectory").subscribe(
             response ->  System.out.printf("Delete subdirectory completed with status code %d", response.getStatusCode()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the subdirectory.")
         );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubDirectoryWithResponse#string
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryWithResponse#string
     }
 
     /**
@@ -317,31 +317,31 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#setProperties(ShareFileSmbProperties, String)}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#setProperties(FileSmbProperties, String)}
      */
     public void setPropertiesAsync() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.setProperties#ShareFileSmbProperties-String
-        ShareFileSmbProperties smbProperties = new ShareFileSmbProperties();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.setProperties#FileSmbProperties-String
+        FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         shareDirectoryAsyncClient.setProperties(smbProperties, filePermission).subscribe(properties -> {
             System.out.printf("Directory latest modified date is %s:", properties.getLastModified());
         });
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setProperties#ShareFileSmbProperties-String
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setProperties#FileSmbProperties-String
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#setPropertiesWithResponse(ShareFileSmbProperties, String)}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#setPropertiesWithResponse(FileSmbProperties, String)}
      */
     public void setPropertiesWithResponse() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#ShareFileSmbProperties-String
-        ShareFileSmbProperties smbProperties = new ShareFileSmbProperties();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#FileSmbProperties-String
+        FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         shareDirectoryAsyncClient.setPropertiesWithResponse(smbProperties, filePermission).subscribe(properties -> {
             System.out.printf("Directory latest modified date is %s:", properties.getValue().getLastModified());
         });
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#ShareFileSmbProperties-String
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#FileSmbProperties-String
     }
 
     /**

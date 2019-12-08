@@ -11,10 +11,10 @@ module com.azure.core.amqp {
 
     exports com.azure.core.amqp;
     exports com.azure.core.amqp.exception;
-    exports com.azure.core.amqp.models;
 
+    // FIXME this should not be a long-term solution
     exports com.azure.core.amqp.implementation to
-        com.azure.messaging.eventhubs;                  // FIXME this should not be a long-term solution
+        com.azure.messaging.eventhubs;
     exports com.azure.core.amqp.implementation.handler to
-        com.azure.messaging.eventhubs;                  // FIXME this should not be a long-term solution
+        com.azure.messaging.eventhubs;
 }

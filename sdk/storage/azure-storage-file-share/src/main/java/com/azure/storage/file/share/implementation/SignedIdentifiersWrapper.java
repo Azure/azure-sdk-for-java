@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.share.implementation;
 
-import com.azure.storage.file.share.models.FileSignedIdentifier;
+import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -12,12 +12,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.List;
 
 /**
- * A wrapper around List&lt;FileSignedIdentifier&gt; which provides top-level metadata for serialization.
+ * A wrapper around List&lt;ShareSignedIdentifier&gt; which provides top-level metadata for serialization.
  */
 @JacksonXmlRootElement(localName = "SignedIdentifiers")
 public final class SignedIdentifiersWrapper {
     @JacksonXmlProperty(localName = "SignedIdentifier")
-    private final List<FileSignedIdentifier> signedIdentifiers;
+    private final List<ShareSignedIdentifier> signedIdentifiers;
 
     /**
      * Creates an instance of SignedIdentifiersWrapper.
@@ -25,16 +25,16 @@ public final class SignedIdentifiersWrapper {
      * @param signedIdentifiers the list.
      */
     @JsonCreator
-    public SignedIdentifiersWrapper(@JsonProperty("SignedIdentifier") List<FileSignedIdentifier> signedIdentifiers) {
+    public SignedIdentifiersWrapper(@JsonProperty("SignedIdentifier") List<ShareSignedIdentifier> signedIdentifiers) {
         this.signedIdentifiers = signedIdentifiers;
     }
 
     /**
-     * Get the List&lt;FileSignedIdentifier&gt; contained in this wrapper.
+     * Get the List&lt;ShareSignedIdentifier&gt; contained in this wrapper.
      *
-     * @return the List&lt;FileSignedIdentifier&gt;.
+     * @return the List&lt;ShareSignedIdentifier&gt;.
      */
-    public List<FileSignedIdentifier> items() {
+    public List<ShareSignedIdentifier> items() {
         return signedIdentifiers;
     }
 }

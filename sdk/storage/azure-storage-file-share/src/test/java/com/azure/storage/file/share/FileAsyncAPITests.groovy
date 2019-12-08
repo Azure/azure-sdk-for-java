@@ -5,15 +5,15 @@ package com.azure.storage.file.share
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
-import com.azure.core.implementation.util.FluxUtil
+import com.azure.core.util.FluxUtil
 import com.azure.core.util.polling.PollerFlux
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.share.models.FileCopyInfo
-import com.azure.storage.file.share.models.FileErrorCode
-import com.azure.storage.file.share.models.FileHttpHeaders
-import com.azure.storage.file.share.models.FileRange
-import com.azure.storage.file.share.models.FileStorageException
+import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.ShareErrorCode
+import com.azure.storage.file.share.models.ShareFileCopyInfo
+import com.azure.storage.file.share.models.ShareFileHttpHeaders
+import com.azure.storage.file.share.models.ShareFileRange
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import reactor.core.publisher.Flux
@@ -38,8 +38,8 @@ class FileAsyncAPITests extends APISpec {
     def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
     Long dataLength = defaultData.remaining()
     static Map<String, String> testMetadata
-    static FileHttpHeaders httpHeaders
-    static ShareFileSmbProperties smbProperties
+    static ShareFileHttpHeaders httpHeaders
+    static FileSmbProperties smbProperties
     static String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
@@ -49,9 +49,9 @@ class FileAsyncAPITests extends APISpec {
         shareClient.create()
         primaryFileAsyncClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        httpHeaders = new FileHttpHeaders().setContentLanguage("en")
+        httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en")
             .setContentType("application/octet-stream")
-        smbProperties = new ShareFileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
+        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get file URL"() {
@@ -71,7 +71,7 @@ class FileAsyncAPITests extends APISpec {
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, null, null, null, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
-            }
+            }.verifyComplete()
     }
 
     def "Create file error"() {
@@ -80,7 +80,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.OUT_OF_RANGE_INPUT)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.OUT_OF_RANGE_INPUT)
         }
     }
 
@@ -134,7 +134,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.OUT_OF_RANGE_INPUT)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.OUT_OF_RANGE_INPUT)
         }
     }
 
@@ -179,8 +179,8 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
 
         when:
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength, 1))
-        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new FileRange(1, dataLength), true))
+        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength, 1L))
+        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(1, dataLength), true))
 
         then:
         uploadVerifier.assertNext {
@@ -204,7 +204,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         updateDataErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, FileErrorCode.RESOURCE_NOT_FOUND)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
         }
 
         cleanup:
@@ -237,11 +237,11 @@ class FileAsyncAPITests extends APISpec {
 
     def "Download data error"() {
         when:
-        def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new FileRange(0, 1023), false))
+        def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(0, 1023), false))
 
         then:
         downloadDataErrorVerifier.verifyErrorSatisfies({
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, FileErrorCode.RESOURCE_NOT_FOUND)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
         })
     }
 
@@ -254,12 +254,13 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRangeWithResponse(7, 0))
-        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new FileRange(0, 6), false))
+        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(0, 6), false))
 
         then:
         clearRangeVerifier.assertNext {
             FileTestHelper.assertResponseStatusCode(it, 201)
-        }
+        }.verifyComplete()
+
         downloadResponseVerifier.assertNext {
             FluxUtil.collectBytesInByteBufferStream(it.getValue())
                 .flatMap({ data ->
@@ -267,7 +268,7 @@ class FileAsyncAPITests extends APISpec {
                         assert b == 0
                     }
                 })
-        }
+        }.verifyComplete()
     }
 
     def "Upload and clear range with args"() {
@@ -279,12 +280,13 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRangeWithResponse(7, 1))
-        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new FileRange(1, 7), false))
+        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(1, 7), false))
 
         then:
         clearRangeVerifier.assertNext {
             FileTestHelper.assertResponseStatusCode(it, 201)
-        }
+        }.verifyComplete()
+
         downloadResponseVerifier.assertNext {
             FluxUtil.collectBytesInByteBufferStream(it.getValue())
                 .flatMap({ data ->
@@ -292,7 +294,7 @@ class FileAsyncAPITests extends APISpec {
                         assert b == 0
                     }
                 })
-        }
+        }.verifyComplete()
 
         cleanup:
         fullInfoData.clear()
@@ -310,7 +312,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         clearRangeErrorVerifier.verifyErrorSatisfies {
-            FileTestHelper.assertExceptionStatusCodeAndMessage(it, 416, FileErrorCode.INVALID_RANGE)
+            FileTestHelper.assertExceptionStatusCodeAndMessage(it, 416, ShareErrorCode.INVALID_RANGE)
         }
     }
 
@@ -326,7 +328,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         clearRangeErrorVerifier.verifyErrorSatisfies {
-            FileTestHelper.assertExceptionStatusCodeAndMessage(it, 416, FileErrorCode.INVALID_RANGE)
+            FileTestHelper.assertExceptionStatusCodeAndMessage(it, 416, ShareErrorCode.INVALID_RANGE)
         }
 
         cleanup:
@@ -348,7 +350,7 @@ class FileAsyncAPITests extends APISpec {
         uploadFromFileErrorVerifier.verifyErrorSatisfies({ it instanceof NoSuchFileException })
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "Upload and download file exists"() {
@@ -370,7 +372,7 @@ class FileAsyncAPITests extends APISpec {
         downloadToFileErrorVerifier.verifyErrorSatisfies({ it instanceof FileAlreadyExistsException })
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "Upload and download to file does not exist"() {
@@ -397,7 +399,7 @@ class FileAsyncAPITests extends APISpec {
         scanner.close()
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "Upload range from URL"() {
@@ -433,7 +435,7 @@ class FileAsyncAPITests extends APISpec {
                 for (int i = 0; i < length; i++) {
                     result.charAt(destinationOffset + i) == data.charAt(sourceOffset + i)
                 }
-            })
+            }).verifyComplete()
     }
 
     def "Start copy"() {
@@ -444,7 +446,7 @@ class FileAsyncAPITests extends APISpec {
         def sourceURL = primaryFileAsyncClient.getFileUrl()
 
         when:
-        PollerFlux<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, Duration.ofSeconds(1))
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, Duration.ofSeconds(1))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -459,12 +461,12 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
 
         when:
-        PollerFlux<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy("some url", testMetadata, Duration.ofSeconds(1))
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy("some url", testMetadata, Duration.ofSeconds(1))
         def startCopyErrorVerifier = StepVerifier.create(poller)
 
         then:
         startCopyErrorVerifier.expectErrorSatisfies({
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.INVALID_HEADER_VALUE)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.INVALID_HEADER_VALUE)
         }).verify(Duration.ofSeconds(30))
     }
 
@@ -490,7 +492,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         deleteFileErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, FileErrorCode.RESOURCE_NOT_FOUND)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
         }
     }
 
@@ -515,15 +517,15 @@ class FileAsyncAPITests extends APISpec {
             assert it.getValue().getSmbProperties().getFileChangeTime()
             assert it.getValue().getSmbProperties().getParentId()
             assert it.getValue().getSmbProperties().getFileId()
-        }
+        }.verifyComplete()
     }
 
     def "Get properties error"() {
         when:
-        def getProperitesErrorVerifier = StepVerifier.create(primaryFileAsyncClient.getProperties())
+        def getPropertiesErrorVerifier = StepVerifier.create(primaryFileAsyncClient.getProperties())
 
         then:
-        getProperitesErrorVerifier.verifyErrorSatisfies {
+        getPropertiesErrorVerifier.verifyErrorSatisfies {
             assert it instanceof HttpResponseException
         }
     }
@@ -581,7 +583,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         setHttpHeaderVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.OUT_OF_RANGE_INPUT)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.OUT_OF_RANGE_INPUT)
         }
     }
 
@@ -617,7 +619,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         setMetadataErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.EMPTY_METADATA_KEY)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY)
         }
     }
 
@@ -625,7 +627,7 @@ class FileAsyncAPITests extends APISpec {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
 
         expect:
@@ -636,25 +638,25 @@ class FileAsyncAPITests extends APISpec {
             }.verifyComplete()
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "List ranges with range"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
         def fileName = testResourceName.randomName("file", 60)
-        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, tmpFolder.toString(), fileName)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
 
         expect:
-        StepVerifier.create(primaryFileAsyncClient.listRanges(new FileRange(0, 511L)))
+        StepVerifier.create(primaryFileAsyncClient.listRanges(new ShareFileRange(0, 511L)))
             .assertNext {
                 assert it.getStart() == 0
                 assert it.getEnd() == 511
             }.verifyComplete()
 
         cleanup:
-        FileTestHelper.deleteFolderIfExists(tmpFolder.toString())
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
     def "List handles"() {
@@ -681,7 +683,9 @@ class FileAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.forceCloseHandle("1"))
-            .verifyComplete()
+            .assertNext {
+                assert it.getClosedHandles() == 0
+            }.verifyComplete()
     }
 
     def "Force close handle invalid handle ID"() {
@@ -690,7 +694,7 @@ class FileAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.forceCloseHandle("invalidHandleId"))
-            .verifyErrorSatisfies({ it instanceof  FileStorageException })
+            .verifyErrorSatisfies({ it instanceof  ShareStorageException })
     }
 
     def "Force close all handles min"() {
@@ -699,7 +703,7 @@ class FileAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.forceCloseAllHandles())
-            .assertNext({ it == 0 })
+            .assertNext({ it.getClosedHandles() == 0 })
             .verifyComplete()
     }
 

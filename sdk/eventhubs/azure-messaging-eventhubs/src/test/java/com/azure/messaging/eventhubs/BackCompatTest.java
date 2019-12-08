@@ -5,9 +5,8 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -15,22 +14,21 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
 import static com.azure.messaging.eventhubs.TestUtils.getSymbol;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
@@ -45,29 +43,22 @@ public class BackCompatTest extends IntegrationTestBase {
 
     private MessageSerializer serializer = new EventHubMessageSerializer();
     private EventHubAsyncClient client;
-    private EventHubAsyncProducer producer;
-    private EventHubAsyncConsumer consumer;
+    private EventHubProducerAsyncClient producer;
+    private EventHubConsumerAsyncClient consumer;
+    private SendOptions sendOptions;
 
     public BackCompatTest() {
         super(new ClientLogger(BackCompatTest.class));
     }
 
-    @Rule
-    public TestName testName = new TestName();
-
-    @Override
-    protected String getTestName() {
-        return testName.getMethodName();
-    }
-
     @Override
     protected void beforeTest() {
         client = createBuilder().buildAsyncClient();
-        consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
+        consumer = createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .buildAsyncConsumerClient();
 
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .setPartitionId(PARTITION_ID);
-        producer = client.createProducer(producerOptions);
+        sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
+        producer = client.createProducer();
     }
 
     @Override
@@ -105,19 +96,21 @@ public class BackCompatTest extends IntegrationTestBase {
         final EventData eventData = serializer.deserialize(message, EventData.class);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive().filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
-            .then(() -> producer.send(eventData).block(TIMEOUT))
-            .assertNext(event -> validateAmqpProperties(applicationProperties, event))
-            .verifyComplete();
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.latest())
+            .filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
+            .then(() -> producer.send(eventData, sendOptions).block(TIMEOUT))
+            .assertNext(event -> validateAmqpProperties(applicationProperties, event.getData()))
+            .expectComplete()
+            .verify(Duration.ofSeconds(45));
     }
 
     private void validateAmqpProperties(Map<String, Object> expected, EventData event) {
-        Assert.assertEquals(expected.size(), event.getProperties().size());
-        Assert.assertEquals(PAYLOAD, UTF_8.decode(event.getBody()).toString());
+        Assertions.assertEquals(expected.size(), event.getProperties().size());
+        Assertions.assertEquals(PAYLOAD, event.getBodyAsString());
 
         expected.forEach((key, value) -> {
-            Assert.assertTrue(event.getProperties().containsKey(key));
-            Assert.assertEquals(value, event.getProperties().get(key));
+            Assertions.assertTrue(event.getProperties().containsKey(key));
+            Assertions.assertEquals(value, event.getProperties().get(key));
         });
     }
 }

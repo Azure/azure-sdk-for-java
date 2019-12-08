@@ -11,12 +11,13 @@ Use the secret client library to create and manage secrets.
 ### Adding the package to your project
 
 Maven dependency for Azure Secret Client library. Add it to your project's pom file.
+
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.0.0-preview.5</version>
+    <version>4.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -35,7 +36,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.0.0-preview.5</version>
+    <version>4.0.1</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -68,6 +69,9 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
     .build();
 ```
 
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
 ### Prerequisites
 
 - Java Development Kit (JDK) with version 8 or above
@@ -89,10 +93,13 @@ To create/get client secret credentials you can use the [Azure Portal][azure_cre
 Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to 
 
  * Create a service principal and configure its access to Azure resources:
+
     ```Bash
     az ad sp create-for-rbac -n <your-application-name> --skip-assignment
     ```
+
     Output:
+
     ```json
     {
         "appId": "generated-app-ID",
@@ -102,7 +109,9 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
         "tenant": "tenant-ID"
     }
     ```
+
 * Use the above returned credentials information to set **AZURE_CLIENT_ID**(appId), **AZURE_CLIENT_SECRET**(password) and **AZURE_TENANT_ID**(tenant) environment variables. The following example shows a way to do this in Bash:
+
   ```Bash
     export AZURE_CLIENT_ID="generated-app-ID"
     export AZURE_CLIENT_SECRET="random-password"
@@ -110,13 +119,16 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
   ```
 
 * Grant the above mentioned application authorization to perform secret operations on the keyvault:
+
     ```Bash
     az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --secret-permissions backup delete get list set
     ```
+
     > --secret-permissions:
     > Accepted values: backup, delete, get, list, purge, recover, restore, set
 
 * Use the above mentioned Key Vault name to retreive details of your Vault which also contains your Key Vault URL:
+
     ```Bash
     az keyvault show --name <your-key-vault-name> 
     ```
@@ -133,6 +145,7 @@ SecretClient client = new SecretClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 ```
+
 > NOTE: For using Asynchronous client use SecretAsyncClient instead of SecretClient and call buildAsyncClient()
 
 
@@ -161,6 +174,7 @@ The following sections provide several code snippets covering some of the most c
 
 Create a Secret to be stored in the Azure Key Vault.
 - `setSecret` creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
+
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
@@ -178,6 +192,7 @@ System.out.printf("Secret is created with name %s and value %s \n", secret.getNa
 ### Retrieve a Secret
 
 Retrieve a previously stored Secret by calling `getSecret`.
+
 ```Java
 KeyVaultSecret secret = secretClient.getSecret("secret_name");
 System.out.printf("Secret is returned with name %s and value %s \n", secret.getName(), secret.getValue());
@@ -186,6 +201,7 @@ System.out.printf("Secret is returned with name %s and value %s \n", secret.getN
 ### Update an existing Secret
 
 Update an existing Secret by calling `updateSecretProperties`.
+
 ```Java
 // Get the secret to update.
 KeyVaultSecret secret = secretClient.getSecret("secret_name");
@@ -198,6 +214,7 @@ System.out.printf("Secret's updated expiry time %s \n", updatedSecretProperties.
 ### Delete a Secret
 
 Delete an existing Secret by calling `beginDeleteSecret`.
+
 ```Java
 SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
 
@@ -213,6 +230,7 @@ deletedSecretPoller.waitForCompletion();
 ### List Secrets
 
 List the secrets in the key vault by calling `listPropertiesOfSecrets`.
+
 ```Java
 // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
 for (SecretProperties secretProperties : client.listPropertiesOfSecrets()) {
@@ -252,6 +270,7 @@ secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secret ->
 ### Retrieve a Secret Asynchronously
 
 Retrieve a previously stored Secret by calling `getSecret`.
+
 ```Java
 secretAsyncClient.getSecret("secretName").subscribe(secret ->
   System.out.printf("Secret with name %s , value %s \n", secret.getName(),
@@ -261,6 +280,7 @@ secretAsyncClient.getSecret("secretName").subscribe(secret ->
 ### Update an existing Secret Asynchronously
 
 Update an existing Secret by calling `updateSecretProperties`.
+
 ```Java
 secretAsyncClient.getSecret("secretName").subscribe(secret -> {
      // Update the expiry time of the secret.
@@ -273,6 +293,7 @@ secretAsyncClient.getSecret("secretName").subscribe(secret -> {
 ### Delete a Secret Asynchronously
 
 Delete an existing Secret by calling `beginDeleteSecret`.
+
 ```Java
 secretAsyncClient.beginDeleteSecret("secretName")
     .subscribe(pollResponse -> {
@@ -285,6 +306,7 @@ secretAsyncClient.beginDeleteSecret("secretName")
 ### List Secrets Asynchronously
 
 List the secrets in the key vault by calling `listPropertiesOfSecrets`.
+
 ```Java
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
 secretAsyncClient.listPropertiesOfSecrets()
@@ -297,6 +319,7 @@ secretAsyncClient.listPropertiesOfSecrets()
 ## Troubleshooting
 ### General
 Key Vault clients raise exceptions. For example, if you try to retrieve a secret after it is deleted a `404` error is returned, indicating resource not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
+
 ```java
 try {
     SecretClient.getSecret("deletedSecret")
@@ -323,8 +346,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source_code]:  src
-[api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/identity/client
+[api_documentation]: https://azure.github.io/azure-sdk-for-java
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
@@ -337,5 +360,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_keyvault_cli_full]:https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
 [secrets_samples]: src/samples/java/com/azure/security/keyvault/secrets
 [samples]: src/samples/README.md
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-secrets/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-secrets%2FREADME.png)

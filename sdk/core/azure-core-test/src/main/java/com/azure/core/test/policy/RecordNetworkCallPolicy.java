@@ -9,7 +9,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.test.models.NetworkCallError;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
@@ -40,6 +40,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_BUFFER_LENGTH = 1024;
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String CONTENT_ENCODING = "Content-Encoding";
+    private static final String CONTENT_LENGTH = "Content-Length";
     private static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
     private static final String X_MS_ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
     private static final String X_MS_VERSION = "x-ms-version";
@@ -145,7 +146,16 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
         String contentType = response.getHeaderValue(CONTENT_TYPE);
         if (contentType == null) {
-            return Mono.just(responseData);
+            return response.getBodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
+                if (bytes.length == 0) {
+                    return responseData;
+                }
+
+                String content = new String(bytes, StandardCharsets.UTF_8);
+                responseData.put(CONTENT_LENGTH, Integer.toString(content.length()));
+                responseData.put(BODY, content);
+                return responseData;
+            });
         } else if (contentType.equalsIgnoreCase("application/octet-stream")) {
             return response.getBodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
                 if (bytes.length == 0) {
@@ -189,7 +199,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 }
 
                 responseData.remove(CONTENT_ENCODING);
-                responseData.put("Content-Length", Integer.toString(content.length()));
+                responseData.put(CONTENT_LENGTH, Integer.toString(content.length()));
 
                 responseData.put(BODY, content);
                 return responseData;

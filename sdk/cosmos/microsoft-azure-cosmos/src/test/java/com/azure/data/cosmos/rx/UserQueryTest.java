@@ -41,8 +41,7 @@ public class UserQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    //FIXME test times out inconsistently
-    @Ignore
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryUsersWithFilter() throws Exception {
         

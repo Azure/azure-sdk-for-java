@@ -4,15 +4,15 @@
 package com.azure.storage.file.share
 
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.share.models.FileCorsRule
-import com.azure.storage.file.share.models.FileErrorCode
-import com.azure.storage.file.share.models.FileMetrics
-import com.azure.storage.file.share.models.FileRetentionPolicy
-import com.azure.storage.file.share.models.FileServiceProperties
+import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ListSharesOptions
+import com.azure.storage.file.share.models.ShareCorsRule
+import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareItem
 import com.azure.storage.file.share.models.ShareProperties
-import com.azure.storage.file.share.models.FileStorageException
+import com.azure.storage.file.share.models.ShareRetentionPolicy
+import com.azure.storage.file.share.models.ShareServiceProperties
+import com.azure.storage.file.share.models.ShareStorageException
 import spock.lang.Unroll
 
 class FileServiceAPITests extends APISpec {
@@ -20,17 +20,17 @@ class FileServiceAPITests extends APISpec {
 
     static def testMetadata = Collections.singletonMap("testmetadata", "value")
     static def reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties"
-    static def TOO_MANY_RULES = new ArrayList<FileCorsRule>()
-    static def INVALID_ALLOWED_HEADER = Collections.singletonList(new FileCorsRule().setAllowedHeaders(reallyLongString))
-    static def INVALID_EXPOSED_HEADER = Collections.singletonList(new FileCorsRule().setExposedHeaders(reallyLongString))
-    static def INVALID_ALLOWED_ORIGIN = Collections.singletonList(new FileCorsRule().setAllowedOrigins(reallyLongString))
-    static def INVALID_ALLOWED_METHOD = Collections.singletonList(new FileCorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"))
+    static def TOO_MANY_RULES = new ArrayList<ShareCorsRule>()
+    static def INVALID_ALLOWED_HEADER = Collections.singletonList(new ShareCorsRule().setAllowedHeaders(reallyLongString))
+    static def INVALID_EXPOSED_HEADER = Collections.singletonList(new ShareCorsRule().setExposedHeaders(reallyLongString))
+    static def INVALID_ALLOWED_ORIGIN = Collections.singletonList(new ShareCorsRule().setAllowedOrigins(reallyLongString))
+    static def INVALID_ALLOWED_METHOD = Collections.singletonList(new ShareCorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"))
 
     def setup() {
         shareName = testResourceName.randomName(methodName, 60)
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         for (int i = 0; i < 6; i++) {
-            TOO_MANY_RULES.add(new FileCorsRule())
+            TOO_MANY_RULES.add(new ShareCorsRule())
         }
     }
 
@@ -75,13 +75,13 @@ class FileServiceAPITests extends APISpec {
         primaryFileServiceClient.createShareWithResponse(shareName, metadata, quota, null, null)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
 
         where:
         metadata                                      | quota | statusCode | errMsg
-        Collections.singletonMap("invalid#", "value") | 1     | 400        | FileErrorCode.INVALID_METADATA
-        testMetadata                                  | -1    | 400        | FileErrorCode.INVALID_HEADER_VALUE
+        Collections.singletonMap("invalid#", "value") | 1     | 400        | ShareErrorCode.INVALID_METADATA
+        testMetadata                                  | -1    | 400        | ShareErrorCode.INVALID_HEADER_VALUE
     }
 
     def "Delete share"() {
@@ -100,8 +100,8 @@ class FileServiceAPITests extends APISpec {
         primaryFileServiceClient.deleteShare(testResourceName.randomName(methodName, 60))
 
         then:
-        def e = thrown(FileStorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, FileErrorCode.SHARE_NOT_FOUND)
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
     }
 
     @Unroll
@@ -170,10 +170,10 @@ class FileServiceAPITests extends APISpec {
     def "Set and get properties"() {
         given:
         def originalProperties = primaryFileServiceClient.getProperties()
-        def retentionPolicy = new FileRetentionPolicy().setEnabled(true).setDays(3)
-        def metrics = new FileMetrics().setEnabled(true).setIncludeApis(false)
+        def retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3)
+        def metrics = new ShareMetrics().setEnabled(true).setIncludeApis(false)
             .setRetentionPolicy(retentionPolicy).setVersion("1.0")
-        def updatedProperties = new FileServiceProperties().setHourMetrics(metrics)
+        def updatedProperties = new ShareServiceProperties().setHourMetrics(metrics)
             .setMinuteMetrics(metrics).setCors(new ArrayList<>())
 
         when:
@@ -192,25 +192,25 @@ class FileServiceAPITests extends APISpec {
     @Unroll
     def "Set and get properties with invalid args"() {
         given:
-        def retentionPolicy = new FileRetentionPolicy().setEnabled(true).setDays(3)
-        def metrics = new FileMetrics().setEnabled(true).setIncludeApis(false)
+        def retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3)
+        def metrics = new ShareMetrics().setEnabled(true).setIncludeApis(false)
             .setRetentionPolicy(retentionPolicy).setVersion("1.0")
 
         when:
-        def updatedProperties = new FileServiceProperties().setHourMetrics(metrics)
+        def updatedProperties = new ShareServiceProperties().setHourMetrics(metrics)
             .setMinuteMetrics(metrics).setCors(coreList)
         primaryFileServiceClient.setProperties(updatedProperties)
 
         then:
-        def e = thrown(FileStorageException)
+        def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
 
         where:
         coreList               | statusCode | errMsg
-        TOO_MANY_RULES         | 400        | FileErrorCode.INVALID_XML_DOCUMENT
-        INVALID_ALLOWED_HEADER | 400        | FileErrorCode.INVALID_XML_DOCUMENT
-        INVALID_EXPOSED_HEADER | 400        | FileErrorCode.INVALID_XML_DOCUMENT
-        INVALID_ALLOWED_ORIGIN | 400        | FileErrorCode.INVALID_XML_DOCUMENT
-        INVALID_ALLOWED_METHOD | 400        | FileErrorCode.INVALID_XML_NODE_VALUE
+        TOO_MANY_RULES         | 400        | ShareErrorCode.INVALID_XML_DOCUMENT
+        INVALID_ALLOWED_HEADER | 400        | ShareErrorCode.INVALID_XML_DOCUMENT
+        INVALID_EXPOSED_HEADER | 400        | ShareErrorCode.INVALID_XML_DOCUMENT
+        INVALID_ALLOWED_ORIGIN | 400        | ShareErrorCode.INVALID_XML_DOCUMENT
+        INVALID_ALLOWED_METHOD | 400        | ShareErrorCode.INVALID_XML_NODE_VALUE
     }
 }

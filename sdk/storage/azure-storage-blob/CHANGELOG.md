@@ -1,5 +1,20 @@
 # Change Log azure-storage-blob
 
+## Version 12.1.0 (2019-12-04)
+This package's
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.1.0/sdk/storage/azure-storage-blob/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.1.0/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
+
+- Optimized downloadToFile to avoid an unnecessary getProperties call and to lock on an etag once the operation has started.
+- Fixed a race condition that would sometimes result in a RuntimeException with a message related to unexpected header value of client-request-id.
+- Fixed a bug in the RetryPolicy that would apply the delay of a fixed retry policy to the first try.
+- Fixed a bug that could cause the overwrite flag to not be honored in cases where data was uploaded by another source after a parallel operation has already started.
+- Added overloads to accept an overwrite flag to commitBlockList and getBlobOutputStream. Note that this changes the default behavior of the min overload and these methods will now fail if they are attempting to overwrite data.
+- Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
+- Upgraded to version 1.1.0 of Azure Core.
+
 ## Version 12.0.0 (2019-10-31)
 
 - Removed BaseBlobClientBuilder

@@ -3,14 +3,14 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
-import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.reactor.Reactor;
 
@@ -42,18 +42,18 @@ public class ReactorHandlerProvider {
      * @param transportType Transport type used for the connection.
      * @return A new {@link ConnectionHandler}.
      */
-    public ConnectionHandler createConnectionHandler(String connectionId, String hostname, TransportType transportType,
-                                                     ProxyConfiguration proxyConfiguration) {
+    public ConnectionHandler createConnectionHandler(String connectionId, String hostname,
+            AmqpTransportType transportType, ProxyOptions proxyOptions) {
         switch (transportType) {
             case AMQP:
                 return new ConnectionHandler(connectionId, hostname);
             case AMQP_WEB_SOCKETS:
-                if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()) {
-                    return new WebSocketsProxyConnectionHandler(connectionId, hostname, proxyConfiguration);
+                if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()) {
+                    return new WebSocketsProxyConnectionHandler(connectionId, hostname, proxyOptions);
                 } else if (WebSocketsProxyConnectionHandler.shouldUseProxy(hostname)) {
                     logger.info("System default proxy configured for hostname '{}'. Using proxy.", hostname);
                     return new WebSocketsProxyConnectionHandler(connectionId, hostname,
-                        ProxyConfiguration.SYSTEM_DEFAULTS);
+                        ProxyOptions.SYSTEM_DEFAULTS);
                 } else {
                     return new WebSocketsConnectionHandler(connectionId, hostname);
                 }
@@ -81,25 +81,25 @@ public class ReactorHandlerProvider {
      * Creates a new link handler for sending messages.
      *
      * @param connectionId Identifier of the parent connection that created this session.
-     * @param hostname Host of the parent connection.
+     * @param fullyQualifiedNamespace Fully qualified namespace of the parent connection.
      * @param senderName Name of the send link.
      * @return A new {@link SendLinkHandler}.
      */
-    public SendLinkHandler createSendLinkHandler(String connectionId, String hostname, String senderName,
+    public SendLinkHandler createSendLinkHandler(String connectionId, String fullyQualifiedNamespace, String senderName,
                                                  String entityPath) {
-        return new SendLinkHandler(connectionId, hostname, senderName, entityPath);
+        return new SendLinkHandler(connectionId, fullyQualifiedNamespace, senderName, entityPath);
     }
 
     /**
      * Creates a new link handler for receiving messages.
      *
      * @param connectionId Identifier of the parent connection that created this session.
-     * @param hostname Host of the parent connection.
+     * @param fullyQualifiedNamespace Fully qualified namespace of the parent connection.
      * @param receiverName Name of the send link.
      * @return A new {@link ReceiveLinkHandler}.
      */
-    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname, String receiverName,
-                                                String entityPath) {
-        return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath);
+    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String fullyQualifiedNamespace,
+            String receiverName, String entityPath) {
+        return new ReceiveLinkHandler(connectionId, fullyQualifiedNamespace, receiverName, entityPath);
     }
 }

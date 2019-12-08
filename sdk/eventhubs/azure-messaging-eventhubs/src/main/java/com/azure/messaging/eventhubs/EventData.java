@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,11 +17,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.PUBLISHER_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -41,17 +42,18 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * types) and Data section is not supported.
  * </p>
  *
- * @see EventHubProducer
- * @see EventHubAsyncProducer
+ * @see EventDataBatch
+ * @see EventHubProducerClient
+ * @see EventHubProducerAsyncClient
  */
-public class EventData implements Comparable<EventData> {
+public class EventData {
     /*
      * These are properties owned by the service and set when a message is received.
      */
     static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
     private final Map<String, Object> properties;
-    private final ByteBuffer body;
+    private final byte[] body;
     private final SystemProperties systemProperties;
     private Context context;
 
@@ -67,23 +69,16 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * Creates an event containing the {@code data}.
+     * Creates an event containing the {@code body}.
      *
      * @param body The data to set for this event.
+     * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(byte[] body) {
-        this(body, Context.NONE);
-    }
-
-    /**
-     * Creates an event containing the {@code data}.
-     *
-     * @param body The data to set for this event.
-     * @param context A specified key-value pair of type {@link Context}.
-     * @throws NullPointerException if {@code body} or if {@code context} is {@code null}.
-     */
-    public EventData(byte[] body, Context context) {
-        this(ByteBuffer.wrap(body), context);
+        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
+        this.context = Context.NONE;
+        this.properties = new HashMap<>();
+        this.systemProperties = new SystemProperties();
     }
 
     /**
@@ -93,33 +88,17 @@ public class EventData implements Comparable<EventData> {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(ByteBuffer body) {
-        this(body, Context.NONE);
-    }
-
-    /**
-     * Creates an event containing the {@code body}.
-     *
-     * @param body The data to set for this event.
-     * @param context A specified key-value pair of type {@link Context}.
-     * @throws NullPointerException if {@code body} or if {@code context} is {@code null}.
-     */
-    public EventData(ByteBuffer body, Context context) {
-        Objects.requireNonNull(body, "'body' cannot be null.");
-        Objects.requireNonNull(body, "'context' cannot be null.");
-
-        this.body = body;
-        this.properties = new HashMap<>();
-        this.systemProperties = new SystemProperties();
-        this.context = context;
+        this(Objects.requireNonNull(body, "'body' cannot be null.").array());
     }
 
     /**
      * Creates an event by encoding the {@code body} using UTF-8 charset.
      *
      * @param body The string that will be UTF-8 encoded to create an event.
+     * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(String body) {
-        this(body.getBytes(UTF_8));
+        this(Objects.requireNonNull(body, "'body' cannot be null.").getBytes(UTF_8));
     }
 
     /**
@@ -130,7 +109,7 @@ public class EventData implements Comparable<EventData> {
      * @param context A specified key-value pair of type {@link Context}.
      * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
-    EventData(ByteBuffer body, SystemProperties systemProperties, Context context) {
+    EventData(byte[] body, SystemProperties systemProperties, Context context) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
         this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
@@ -138,56 +117,14 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * Adds a piece of metadata to the event, allowing publishers to offer additional information to event consumers. If
-     * the {@code key} exists in the map, its existing value is overwritten.
+     * Gets the set of free-form event properties which may be used for passing metadata associated with the event with
+     * the event body during Event Hubs operations. A common use-case for {@code properties()} is to associate
+     * serialization hints for the {@link #getBody()} as an aid to consumers who wish to deserialize the binary data.
      *
-     * <p>
-     * A common use case for {@link #getProperties()} is to associate serialization hints for the {@link #getBody()} as
-     * an aid to consumers who wish to deserialize the binary data.
-     * </p>
+     * <p><strong>Adding serialization hint using {@code getProperties()}</strong></p>
+     * <p>In the sample, the type of telemetry is indicated by adding an application property with key "eventType".</p>
      *
-     * <p>
-     * <strong>Adding serialization hint using {@code addProperty(String, Object)}</strong>
-     * </p>
-     *
-     * {@codesnippet com.azure.messaging.eventhubs.eventdata.addProperty#string-object}
-     *
-     * @param key The key for this application property
-     * @param value The value for this application property.
-     * @return The updated EventData object.
-     * @throws NullPointerException if {@code key} or {@code value} is null.
-     */
-    public EventData addProperty(String key, Object value) {
-        Objects.requireNonNull(key, "'key' cannot be null.");
-        Objects.requireNonNull(value, "'value' cannot be null.");
-
-        properties.put(key, value);
-        return this;
-    }
-
-    /**
-     * Adds a new key value pair to the existing context on Event Data.
-     *
-     * @param key The key for this context object
-     * @param value The value for this context object.
-     * @return The updated EventData object.
-     * @throws NullPointerException if {@code key} or {@code value} is null.
-     */
-    public EventData addContext(String key, Object value) {
-        Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
-        Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
-        this.context = context.addData(key, value);
-        return this;
-    }
-
-    /**
-     * The set of free-form event properties which may be used for passing metadata associated with the event with the
-     * event body during Event Hubs operations.
-     *
-     * <p>
-     * A common use case for {@code properties()} is to associate serialization hints for the {@link #getBody()} as an
-     * aid to consumers who wish to deserialize the binary data. See {@link #addProperty(String, Object)} for a sample.
-     * </p>
+     * {@codesnippet com.azure.messaging.eventhubs.eventdata.getProperties}
      *
      * @return Application properties associated with this {@link EventData}.
      */
@@ -196,20 +133,11 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * A specified key-value pair of type {@link Context} to set additional information on the event.
+     * Properties that are populated by Event Hubs service. As these are populated by the Event Hubs service, they are
+     * only present on a <b>received</b> {@link EventData}.
      *
-     * @return the {@link Context} object set on the event
-     */
-    public Context getContext() {
-        return context;
-    }
-
-    /**
-     * Properties that are populated by EventHubService. As these are populated by Service, they are only present on a
-     * <b>received</b> EventData.
-     *
-     * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
-     * the {@link EventData} is not received and is created by the public constructors.
+     * @return An encapsulation of all system properties appended by EventHubs service into {@link EventData}.
+     *     {@code null} if the {@link EventData} is not received from the Event Hubs service.
      */
     public Map<String, Object> getSystemProperties() {
         return systemProperties;
@@ -224,10 +152,10 @@ public class EventData implements Comparable<EventData> {
      * wish to deserialize the binary data.
      * </p>
      *
-     * @return ByteBuffer representing the data.
+     * @return A byte array representing the data.
      */
-    public ByteBuffer getBody() {
-        return body.duplicate();
+    public byte[] getBody() {
+        return Arrays.copyOf(body, body.length);
     }
 
     /**
@@ -236,35 +164,38 @@ public class EventData implements Comparable<EventData> {
      * @return UTF-8 decoded string representation of the event data.
      */
     public String getBodyAsString() {
-        return UTF_8.decode(body).toString();
+        return new String(body, UTF_8);
     }
 
     /**
-     * Gets the offset of the event when it was received from the associated Event Hub partition.
+     * Gets the offset of the event when it was received from the associated Event Hub partition. This is only present
+     * on a <b>received</b> {@link EventData}.
      *
-     * @return The offset within the Event Hub partition of the received event. {@code null} if the EventData was not
-     * received from Event Hub service.
+     * @return The offset within the Event Hub partition of the received event. {@code null} if the {@link EventData}
+     *     was not received from Event Hubs service.
      */
     public Long getOffset() {
         return systemProperties.getOffset();
     }
 
     /**
-     * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to select
-     * a partition to send the message to.
+     * Gets the partition hashing key if it was set when originally publishing the event. If it exists, this value was
+     * used to compute a hash to select a partition to send the message to. This is only present on a <b>received</b>
+     * {@link EventData}.
      *
-     * @return A partition key for this Event Data. {@code null} if the EventData was not received from Event Hub
-     * service or there was no partition key set when the event was sent to the Event Hub.
+     * @return A partition key for this Event Data. {@code null} if the {@link EventData} was not received from Event
+     *     Hubs service or there was no partition key set when the event was sent to the Event Hub.
      */
     public String getPartitionKey() {
         return systemProperties.getPartitionKey();
     }
 
     /**
-     * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition.
+     * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition. This is only present on a
+     * <b>received</b> {@link EventData}.
      *
-     * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the EventData was not
-     * received from Event Hub service.
+     * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the {@link EventData}
+     *     was not received from Event Hubs service.
      */
     public Instant getEnqueuedTime() {
         return systemProperties.getEnqueuedTime();
@@ -272,24 +203,14 @@ public class EventData implements Comparable<EventData> {
 
     /**
      * Gets the sequence number assigned to the event when it was enqueued in the associated Event Hub partition. This
-     * is unique for every message received in the Event Hub partition.
+     * is unique for every message received in the Event Hub partition. This is only present on a <b>received</b>
+     * {@link EventData}.
      *
-     * @return The sequence number for this event. {@code null} if the EventData was not received from Event Hub
-     * service.
+     * @return The sequence number for this event. {@code null} if the {@link EventData} was not received from Event
+     *     Hubs service.
      */
     public Long getSequenceNumber() {
         return systemProperties.getSequenceNumber();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(EventData other) {
-        return Long.compare(
-            this.getSequenceNumber(),
-            other.getSequenceNumber()
-        );
     }
 
     /**
@@ -305,7 +226,7 @@ public class EventData implements Comparable<EventData> {
         }
 
         EventData eventData = (EventData) o;
-        return Objects.equals(body, eventData.body);
+        return Arrays.equals(body, eventData.body);
     }
 
     /**
@@ -313,7 +234,32 @@ public class EventData implements Comparable<EventData> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(body);
+        return Arrays.hashCode(body);
+    }
+
+    /**
+     * A specified key-value pair of type {@link Context} to set additional information on the event.
+     *
+     * @return the {@link Context} object set on the event
+     */
+    Context getContext() {
+        return context;
+    }
+
+    /**
+     * Adds a new key value pair to the existing context on Event Data.
+     *
+     * @param key The key for this context object
+     * @param value The value for this context object.
+     * @throws NullPointerException if {@code key} or {@code value} is null.
+     * @return The updated {@link EventData}.
+     */
+    EventData addContext(String key, Object value) {
+        Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
+        Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
+        this.context = context.addData(key, value);
+
+        return this;
     }
 
     /**

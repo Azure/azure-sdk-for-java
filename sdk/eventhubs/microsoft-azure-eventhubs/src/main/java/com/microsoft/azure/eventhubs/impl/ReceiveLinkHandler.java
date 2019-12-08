@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
@@ -11,19 +12,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import com.microsoft.azure.eventhubs.EventHubException;
 
 public final class ReceiveLinkHandler extends BaseLinkHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReceiveLinkHandler.class);
     private final AmqpReceiver amqpReceiver;
     private final String receiverName;
+    private final ScheduledExecutorService executor;
     private final Object firstResponse;
     private boolean isFirstResponse;
 
-    public ReceiveLinkHandler(final AmqpReceiver receiver, final String receiverName) {
+    public ReceiveLinkHandler(final AmqpReceiver receiver, final String receiverName, final ScheduledExecutorService executor) {
         super(receiver, receiverName);
 
         this.amqpReceiver = receiver;
         this.receiverName = receiverName;
+        this.executor = executor;
         this.firstResponse = new Object();
         this.isFirstResponse = true;
     }
@@ -59,6 +66,26 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
                             this.receiverName, link.getName()));
                 }
             }
+        }
+    }
+
+    @Override
+    public void onLinkFinal(Event event) {
+        if (this.isFirstResponse) {
+            final Link link = event.getLink();
+            if (TRACE_LOGGER.isWarnEnabled()) {
+                TRACE_LOGGER.warn(String.format(Locale.US, "onLinkFinal receiverName[%s], linkName[%s] - link never opened",
+                    this.receiverName, link.getName()));
+            }
+            final ErrorCondition condition = link.getCondition();
+            final Exception finalOpenError = (condition != null) ? ExceptionUtil.toException(condition) :
+                new EventHubException(true, "Link open failed, cause not available");
+            this.executor.schedule(new Runnable() {
+                @Override
+                public void run() {
+                    ReceiveLinkHandler.this.amqpReceiver.onOpenComplete(finalOpenError);
+                }
+            }, AmqpConstants.LINK_ERROR_DELAY_MILLIS, TimeUnit.MILLISECONDS);
         }
     }
 

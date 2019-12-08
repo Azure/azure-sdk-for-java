@@ -130,6 +130,10 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
         this.internalReceiver.setReceiveTimeout(value);
     }
 
+    public boolean getIsOpen() {
+        return !this.getIsClosingOrClosed();
+    }
+
     public long getEpoch() {
         return this.epoch;
     }

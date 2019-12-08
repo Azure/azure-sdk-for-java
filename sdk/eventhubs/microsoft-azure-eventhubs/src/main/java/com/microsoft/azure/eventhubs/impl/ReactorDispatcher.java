@@ -18,6 +18,7 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.Pipe;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * {@link Reactor} is not thread-safe - all calls to {@link Proton} API's should be - on the Reactor Thread.
@@ -34,12 +35,14 @@ public final class ReactorDispatcher {
     private final Pipe ioSignal;
     private final ConcurrentLinkedQueue<BaseHandler> workQueue;
     private final ScheduleHandler workScheduler;
+    private AtomicBoolean dequeueInProgress;
 
     public ReactorDispatcher(final Reactor reactor) throws IOException {
         this.reactor = reactor;
         this.ioSignal = Pipe.open();
         this.workQueue = new ConcurrentLinkedQueue<>();
         this.workScheduler = new ScheduleHandler();
+        this.dequeueInProgress = new AtomicBoolean(false);
 
         initializeSelectable();
     }
@@ -72,7 +75,7 @@ public final class ReactorDispatcher {
     private void throwIfSchedulerError() {
         // throw when the scheduler on which Reactor is running is already closed
         final RejectedExecutionException rejectedException = this.reactor.attachments()
-                .get(RejectedExecutionException.class, RejectedExecutionException.class);
+            .get(RejectedExecutionException.class, RejectedExecutionException.class);
         if (rejectedException != null) {
             throw new RejectedExecutionException(rejectedException.getMessage(), rejectedException);
         }
@@ -85,6 +88,10 @@ public final class ReactorDispatcher {
     }
 
     private void signalWorkQueue() throws IOException {
+        if (this.dequeueInProgress.get()) {
+            return;
+        }
+
         try {
             ByteBuffer oneByteBuffer = ByteBuffer.allocate(1);
             while (this.ioSignal.sink().write(oneByteBuffer) == 0) {
@@ -115,6 +122,8 @@ public final class ReactorDispatcher {
     private final class ScheduleHandler implements Callback {
         @Override
         public void run(Selectable selectable) {
+            ReactorDispatcher.this.dequeueInProgress.set(true);
+
             try {
                 ByteBuffer oneKbByteBuffer = ByteBuffer.allocate(1024);
                 while (ioSignal.source().read(oneKbByteBuffer) > 0) {
@@ -129,6 +138,13 @@ public final class ReactorDispatcher {
             }
 
             BaseHandler topWork;
+            while ((topWork = workQueue.poll()) != null) {
+                topWork.onTimerTask(null);
+            }
+
+            ReactorDispatcher.this.dequeueInProgress.set(false);
+
+            // drain items to make sure there are no pending items
             while ((topWork = workQueue.poll()) != null) {
                 topWork.onTimerTask(null);
             }

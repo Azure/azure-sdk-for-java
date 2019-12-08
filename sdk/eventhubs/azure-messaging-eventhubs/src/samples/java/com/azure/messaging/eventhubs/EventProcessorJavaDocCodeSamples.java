@@ -3,33 +3,35 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.EventProcessorBuilderJavaDocCodeSamples.PartitionProcessorImpl;
-
 /**
- * Code snippets for {@link EventProcessor}.
+ * Code snippets for {@link EventProcessorClient}.
  */
 public final class EventProcessorJavaDocCodeSamples {
 
     /**
-     * Code snippet for showing how to start and stop an {@link EventProcessor}.
+     * Code snippet for showing how to start and stop an {@link EventProcessorClient}.
      */
     public void startStopSample() {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
+        EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
-
-        EventProcessor eventProcessor = new EventProcessorBuilder()
-            .eventHubClient(eventHubAsyncClient)
-            .partitionProcessorFactory((PartitionProcessorImpl::new))
+            .processEvent(eventContext -> {
+                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+            })
+            .processError(errorContext -> {
+                System.out.printf("Error occurred in partition processor for partition {}, {}",
+                    errorContext.getPartitionContext().getPartitionId(),
+                    errorContext.getThrowable());
+            })
             .consumerGroup("consumer-group")
-            .buildEventProcessor();
+            .buildEventProcessorClient();
 
-        // BEGIN: com.azure.messaging.eventhubs.eventprocessor.startstop
-        eventProcessor.start();
-        // do other stuff while the event processor is running
-        eventProcessor.stop();
-        // END: com.azure.messaging.eventhubs.eventprocessor.startstop
+        // BEGIN: com.azure.messaging.eventhubs.eventprocessorclient.startstop
+        eventProcessorClient.start();
+        // Continue to perform other tasks while the processor is running in the background.
+        eventProcessorClient.stop();
+        // END: com.azure.messaging.eventhubs.eventprocessorclient.startstop
     }
 }

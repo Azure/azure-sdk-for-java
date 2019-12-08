@@ -132,18 +132,18 @@ public class ConfigurationSetting {
     }
 
     /**
-     * The etag for this configuration setting.
+     * The ETag for this configuration setting.
      *
-     * @return etag The etag for the setting.
+     * @return etag The ETag for the setting.
      */
     public String getETag() {
         return etag;
     }
 
     /**
-     * Sets the etag for this configuration setting.
+     * Sets the ETag for this configuration setting.
      *
-     * @param etag The etag for the configuration setting.
+     * @param etag The ETag for the configuration setting.
      * @return The updated ConfigurationSetting object.
      */
     public ConfigurationSetting setETag(String etag) {

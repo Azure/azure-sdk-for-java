@@ -10,6 +10,8 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
 
+import java.util.Objects;
+
 /**
  * Builder class responsible for creating instances of {@link NettyAsyncHttpClient}.
  *
@@ -23,6 +25,7 @@ import reactor.netty.tcp.ProxyProvider;
 public class NettyAsyncHttpClientBuilder {
     private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
+    private final HttpClient baseHttpClient;
     private ProxyOptions proxyOptions;
     private ConnectionProvider connectionProvider;
     private boolean enableWiretap;
@@ -34,6 +37,19 @@ public class NettyAsyncHttpClientBuilder {
      * {@link NettyAsyncHttpClient}.
      */
     public NettyAsyncHttpClientBuilder() {
+        this.baseHttpClient = null;
+    }
+
+    /**
+     * Creates a new builder instance, where a builder is capable of generating multiple instances of
+     * {@link NettyAsyncHttpClient} based on the provided reactor netty HttpClient.
+     *
+     * {@codesnippet com.azure.core.http.netty.from-existing-http-client}
+     *
+     * @param nettyHttpClient base reactor netty HttpClient
+     */
+    public NettyAsyncHttpClientBuilder(HttpClient nettyHttpClient) {
+        this.baseHttpClient = Objects.requireNonNull(nettyHttpClient, "'nettyHttpClient' cannot be null.");
     }
 
     /**
@@ -46,9 +62,13 @@ public class NettyAsyncHttpClientBuilder {
     public com.azure.core.http.HttpClient build() {
         HttpClient nettyHttpClient;
         if (this.connectionProvider != null) {
+            if (this.baseHttpClient != null) {
+                throw logger.logExceptionAsError(new IllegalStateException("connectionProvider cannot be set on an "
+                    + "existing reactor netty HttpClient."));
+            }
             nettyHttpClient = HttpClient.create(this.connectionProvider);
         } else {
-            nettyHttpClient = HttpClient.create();
+            nettyHttpClient = this.baseHttpClient == null ? HttpClient.create() : this.baseHttpClient;
         }
         nettyHttpClient = nettyHttpClient
             .port(port)

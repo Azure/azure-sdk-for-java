@@ -7,10 +7,9 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -27,9 +26,7 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
-import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -103,9 +100,8 @@ public final class SpecializedBlobClientBuilder {
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
         validateConstruction();
         String containerName = getContainerName();
-        BlobServiceVersion serviceVersion = getServiceVersion();
 
-        return new AppendBlobAsyncClient(getHttpPipeline(serviceVersion), getUrl(containerName), serviceVersion,
+        return new AppendBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
             accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
@@ -135,9 +131,8 @@ public final class SpecializedBlobClientBuilder {
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
         validateConstruction();
         String containerName = getContainerName();
-        BlobServiceVersion serviceVersion = getServiceVersion();
 
-        return new BlockBlobAsyncClient(getHttpPipeline(serviceVersion), getUrl(containerName), serviceVersion,
+        return new BlockBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
             accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
@@ -166,9 +161,8 @@ public final class SpecializedBlobClientBuilder {
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
         validateConstruction();
         String containerName = getContainerName();
-        BlobServiceVersion serviceVersion = getServiceVersion();
 
-        return new PageBlobAsyncClient(getHttpPipeline(serviceVersion), getUrl(containerName), serviceVersion,
+        return new PageBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
             accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
@@ -178,6 +172,8 @@ public final class SpecializedBlobClientBuilder {
     private void validateConstruction() {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
+
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
     }
 
     /*
@@ -188,21 +184,13 @@ public final class SpecializedBlobClientBuilder {
      * read and debug.
      */
     private String getContainerName() {
-        return ImplUtils.isNullOrEmpty(containerName) ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME : containerName;
+        return CoreUtils.isNullOrEmpty(containerName) ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME : containerName;
     }
 
-    private HttpPipeline getHttpPipeline(BlobServiceVersion serviceVersion) {
-        return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (storageSharedKeyCredential != null) {
-                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                return null;
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+    private HttpPipeline getHttpPipeline() {
+        return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
+            httpClient, additionalPolicies, configuration, logger);
     }
 
     private BlobServiceVersion getServiceVersion() {
@@ -290,13 +278,13 @@ public final class SpecializedBlobClientBuilder {
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.accountName = parts.getAccountName();
-            this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.endpoint = BuilderHelper.getEndpoint(parts);
             this.containerName = parts.getBlobContainerName();
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
 
-            String sasToken = parts.getSasQueryParameters().encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            String sasToken = parts.getCommonSasQueryParameters().encode();
+            if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
@@ -468,7 +456,8 @@ public final class SpecializedBlobClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated SpecializedBlobClientBuilder object

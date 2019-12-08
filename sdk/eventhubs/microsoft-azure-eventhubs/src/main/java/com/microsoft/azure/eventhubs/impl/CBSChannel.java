@@ -17,6 +17,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 
 final class CBSChannel {
+
     final ScheduledExecutorService executor;
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
 
@@ -28,7 +29,7 @@ final class CBSChannel {
         this.executor = executor;
         RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(
-                new RequestResponseOpener(sessionProvider, clientId, "cbs-session", "cbs", ClientConstants.CBS_ADDRESS, connection),
+                new RequestResponseOpener(sessionProvider, clientId, "cbs-session", "cbs", ClientConstants.CBS_ADDRESS, connection, this.executor),
                 closer);
         closer.setInnerChannel(this.innerChannel);
     }

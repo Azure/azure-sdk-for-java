@@ -34,6 +34,8 @@ public final class AmqpConstants {
     public static final int MAX_USER_AGENT_LENGTH = 128;
     public static final int AMQP_BATCH_MESSAGE_FORMAT = 0x80013700; // 2147563264L;
     public static final int MAX_FRAME_SIZE = 65536;
+    public static final int TRANSPORT_IDLE_TIMEOUT_MILLIS = 60000;
+    public static final long LINK_ERROR_DELAY_MILLIS = 5000;
     public static final String AMQP_PROPERTY_MESSAGE_ID = "message-id";
     public static final String AMQP_PROPERTY_USER_ID = "user-id";
     public static final String AMQP_PROPERTY_TO = "to";

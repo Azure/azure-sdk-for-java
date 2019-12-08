@@ -3,9 +3,10 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.TransportType;
-import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
@@ -13,15 +14,14 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
-import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -56,7 +56,7 @@ public class EventHubReactorConnectionTest {
     private ReactorHandlerProvider handlerProvider;
     private ConnectionOptions connectionOptions;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
 
@@ -67,9 +67,9 @@ public class EventHubReactorConnectionTest {
             .thenReturn(reactorConnection);
         when(reactor.process()).thenReturn(true);
 
-        final ProxyConfiguration proxy = ProxyConfiguration.SYSTEM_DEFAULTS;
+        final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-name",
-            tokenCredential, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP, new RetryOptions(),
+            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
             proxy, scheduler);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
@@ -78,23 +78,23 @@ public class EventHubReactorConnectionTest {
         when(reactorProvider.createReactor(connectionHandler.getConnectionId(), connectionHandler.getMaxFrameSize()))
             .thenReturn(reactor);
 
-        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, TransportType.AMQP, proxy))
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, AmqpTransportType.AMQP, proxy))
             .thenReturn(connectionHandler);
     }
 
     @Test
     public void getsManagementChannel() {
         // Arrange
-        final EventHubReactorConnection connection = new EventHubReactorConnection(CONNECTION_ID, connectionOptions,
+        final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID, connectionOptions,
             reactorProvider, handlerProvider, tokenManagerProvider, messageSerializer);
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())
-            .assertNext(node -> Assert.assertTrue(node instanceof ManagementChannel))
+            .assertNext(node -> Assertions.assertTrue(node instanceof ManagementChannel))
             .verifyComplete();
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
     }

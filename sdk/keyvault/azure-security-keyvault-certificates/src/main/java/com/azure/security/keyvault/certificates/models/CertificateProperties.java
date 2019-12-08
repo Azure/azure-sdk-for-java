@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.core.implementation.Base64Url;
+import com.azure.core.util.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,17 +35,17 @@ public class CertificateProperties {
     /**
      * Expiry date in UTC.
      */
-    private OffsetDateTime expires;
+    private OffsetDateTime expiresOn;
 
     /**
      * Creation time in UTC.
      */
-    private OffsetDateTime created;
+    private OffsetDateTime createdOn;
 
     /**
      * Last updated time in UTC.
      */
-    private OffsetDateTime updated;
+    private OffsetDateTime updatedOn;
 
     /**
      * Reflects the deletion recovery level currently in effect for certificates in
@@ -87,9 +87,9 @@ public class CertificateProperties {
     CertificateProperties() { }
 
     /**
-     * Get the id value.
+     * Get the certificate identifier.
      *
-     * @return the id value
+     * @return the certificate identifier
      */
     public String getId() {
         return this.id;
@@ -109,8 +109,8 @@ public class CertificateProperties {
      *
      * @return the expires UTC time.
      */
-    public OffsetDateTime getExpires() {
-        return this.expires;
+    public OffsetDateTime getExpiresOn() {
+        return this.expiresOn;
     }
 
     /**
@@ -118,8 +118,8 @@ public class CertificateProperties {
      *
      * @return the created UTC time.
      */
-    public OffsetDateTime getCreated() {
-        return created;
+    public OffsetDateTime getCreatedOn() {
+        return createdOn;
     }
 
     /**
@@ -127,8 +127,8 @@ public class CertificateProperties {
      *
      * @return the last updated UTC time.
      */
-    public OffsetDateTime getUpdated() {
-        return updated;
+    public OffsetDateTime getUpdatedOn() {
+        return updatedOn;
     }
 
 
@@ -203,7 +203,10 @@ public class CertificateProperties {
      * @return the x509Thumbprint.
      */
     public byte[] getX509Thumbprint() {
-        return this.x509Thumbprint.decodedBytes();
+        if (x509Thumbprint != null) {
+            return this.x509Thumbprint.decodedBytes();
+        }
+        return null;
     }
 
     @JsonProperty("attributes")
@@ -211,9 +214,9 @@ public class CertificateProperties {
     void unpackBaseAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
         this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));
-        this.expires =  epochToOffsetDateTime(attributes.get("exp"));
-        this.created = epochToOffsetDateTime(attributes.get("created"));
-        this.updated = epochToOffsetDateTime(attributes.get("updated"));
+        this.expiresOn =  epochToOffsetDateTime(attributes.get("exp"));
+        this.createdOn = epochToOffsetDateTime(attributes.get("created"));
+        this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
         this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
         unpackId((String) attributes.get("id"));

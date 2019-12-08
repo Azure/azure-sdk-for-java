@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class SendOptionsTest {
 
@@ -17,7 +17,8 @@ public class SendOptionsTest {
         SendOptions options = new SendOptions();
 
         // Act & Assert
-        Assert.assertNull(options.getPartitionKey());
+        Assertions.assertNull(options.getPartitionKey());
+        Assertions.assertNull(options.getPartitionId());
     }
 
     /**
@@ -33,46 +34,22 @@ public class SendOptionsTest {
         options.setPartitionKey(partitionKey);
 
         // Assert
-        Assert.assertEquals(partitionKey, options.getPartitionKey());
+        Assertions.assertEquals(partitionKey, options.getPartitionKey());
     }
 
     /**
-     * Verifies we can create a clone that is independent of the original.
+     * Verifies we can set partitionId on the send options.
      */
     @Test
-    public void cloneIdentical() {
+    public void setPartitionId() {
         // Arrange
-        String partitionKey = "My partition key";
-        SendOptions options = new SendOptions().setPartitionKey(partitionKey);
+        String partitionId = "partition-id-9";
+        SendOptions options = new SendOptions();
 
         // Act
-        SendOptions clone = options.clone();
+        options.setPartitionId(partitionId);
 
         // Assert
-        Assert.assertNotSame(clone, options);
-
-        Assert.assertEquals(partitionKey, options.getPartitionKey());
-        Assert.assertEquals(partitionKey, clone.getPartitionKey());
-    }
-
-
-    /**
-     * Verifies we can modify contents of the clone without affecting the original.
-     */
-    @Test
-    public void cloneModifyContents() {
-        // Arrange
-        String originalPartitionKey = "Some partition key";
-        String partitionKey = "A new partition key";
-
-        SendOptions options = new SendOptions().setPartitionKey(originalPartitionKey);
-        SendOptions clone = options.clone();
-
-        // Act
-        clone.setPartitionKey(partitionKey);
-
-        // Assert
-        Assert.assertEquals(partitionKey, clone.getPartitionKey());
-        Assert.assertEquals(originalPartitionKey, options.getPartitionKey());
+        Assertions.assertEquals(partitionId, options.getPartitionId());
     }
 }

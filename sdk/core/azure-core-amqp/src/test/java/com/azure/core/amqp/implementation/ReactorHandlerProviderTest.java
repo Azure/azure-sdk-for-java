@@ -3,22 +3,19 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
-import com.azure.core.amqp.models.ProxyAuthenticationType;
-import com.azure.core.amqp.models.ProxyConfiguration;
 import org.apache.qpid.proton.reactor.Reactor;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.FromDataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -28,7 +25,9 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.util.Collections;
+import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -36,7 +35,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(value = Theories.class)
 public class ReactorHandlerProviderTest {
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String HOSTNAME = "my-hostname.windows.com";
@@ -55,16 +53,14 @@ public class ReactorHandlerProviderTest {
     private ProxySelector proxySelector;
 
 
-    @DataPoints("configurations")
-    public static ProxyConfiguration[] getProxyConfigurations() {
-        return new ProxyConfiguration[]{
-            ProxyConfiguration.SYSTEM_DEFAULTS,
-            new ProxyConfiguration(ProxyAuthenticationType.BASIC, null, "some username", "some password"),
+    public static Stream<ProxyOptions> getProxyConfigurations() {
+        return Stream.of(ProxyOptions.SYSTEM_DEFAULTS,
+            new ProxyOptions(ProxyAuthenticationType.BASIC, null, "some username", "some password"),
             null
-        };
+        );
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
 
@@ -79,7 +75,7 @@ public class ReactorHandlerProviderTest {
         ProxySelector.setDefault(proxySelector);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
         ProxySelector.setDefault(originalProxySelector);
@@ -88,26 +84,27 @@ public class ReactorHandlerProviderTest {
     @Test
     public void getsConnectionHandlerAMQP() {
         // Act
-        final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, HOSTNAME, TransportType.AMQP, null);
+        final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, HOSTNAME, AmqpTransportType.AMQP, null);
 
         // Assert
-        Assert.assertNotNull(handler);
-        Assert.assertEquals(5671, handler.getProtocolPort());
+        Assertions.assertNotNull(handler);
+        Assertions.assertEquals(5671, handler.getProtocolPort());
     }
 
     /**
      * Verify that if the user has not provided a proxy, and asks for websockets, we pass the correct handler.
      */
-    @Theory
-    public void getsConnectionHandlerWebSockets(@FromDataPoints("configurations") ProxyConfiguration configuration) {
+    @ParameterizedTest
+    @MethodSource("getProxyConfigurations")
+    public void getsConnectionHandlerWebSockets(ProxyOptions configuration) {
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, HOSTNAME,
-            TransportType.AMQP_WEB_SOCKETS, configuration);
+            AmqpTransportType.AMQP_WEB_SOCKETS, configuration);
 
         // Assert
-        Assert.assertNotNull(handler);
-        Assert.assertTrue(handler instanceof WebSocketsConnectionHandler);
-        Assert.assertEquals(443, handler.getProtocolPort());
+        Assertions.assertNotNull(handler);
+        Assertions.assertTrue(handler instanceof WebSocketsConnectionHandler);
+        Assertions.assertEquals(443, handler.getProtocolPort());
     }
 
     /**
@@ -118,18 +115,18 @@ public class ReactorHandlerProviderTest {
         // Arrange
         final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
-        final ProxyConfiguration configuration = new ProxyConfiguration(ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
+        final ProxyOptions configuration = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
         final String hostname = "foo.eventhubs.azure.com";
 
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, hostname,
-            TransportType.AMQP_WEB_SOCKETS, configuration);
+            AmqpTransportType.AMQP_WEB_SOCKETS, configuration);
 
         // Assert
-        Assert.assertNotNull(handler);
-        Assert.assertTrue(handler instanceof WebSocketsProxyConnectionHandler);
-        Assert.assertEquals(address.getHostName(), handler.getHostname());
-        Assert.assertEquals(address.getPort(), handler.getProtocolPort());
+        Assertions.assertNotNull(handler);
+        Assertions.assertTrue(handler instanceof WebSocketsProxyConnectionHandler);
+        Assertions.assertEquals(address.getHostName(), handler.getHostname());
+        Assertions.assertEquals(address.getPort(), handler.getProtocolPort());
 
         verifyZeroInteractions(proxySelector);
     }
@@ -137,8 +134,9 @@ public class ReactorHandlerProviderTest {
     /**
      * Verifies that if no proxy configuration is set, then it will use the system configured proxy.
      */
-    @Theory
-    public void noProxySelected(@FromDataPoints("configurations") ProxyConfiguration configuration) {
+    @ParameterizedTest
+    @MethodSource("getProxyConfigurations")
+    public void noProxySelected(ProxyOptions configuration) {
         // Arrange
         final String hostname = "foo.eventhubs.azure.com";
         when(proxySelector.select(argThat(u -> u.getHost().equals(hostname))))
@@ -146,11 +144,11 @@ public class ReactorHandlerProviderTest {
 
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, hostname,
-            TransportType.AMQP_WEB_SOCKETS, configuration);
+            AmqpTransportType.AMQP_WEB_SOCKETS, configuration);
 
         // Act and Assert
-        Assert.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
-        Assert.assertEquals(PROXY_ADDRESS.getPort(), handler.getProtocolPort());
+        Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
+        Assertions.assertEquals(PROXY_ADDRESS.getPort(), handler.getProtocolPort());
     }
 
     /**
@@ -165,12 +163,12 @@ public class ReactorHandlerProviderTest {
             .thenReturn(Collections.emptyList());
 
         // Act and Assert
-        Assert.assertFalse(WebSocketsProxyConnectionHandler.shouldUseProxy(host));
+        Assertions.assertFalse(WebSocketsProxyConnectionHandler.shouldUseProxy(host));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldUseProxyHostNull() {
-        WebSocketsProxyConnectionHandler.shouldUseProxy(null);
+        assertThrows(NullPointerException.class, () -> WebSocketsProxyConnectionHandler.shouldUseProxy(null));
     }
 
     @Test
@@ -180,6 +178,6 @@ public class ReactorHandlerProviderTest {
         ProxySelector.setDefault(null);
 
         // Act and Assert
-        Assert.assertFalse(WebSocketsProxyConnectionHandler.shouldUseProxy(host));
+        Assertions.assertFalse(WebSocketsProxyConnectionHandler.shouldUseProxy(host));
     }
 }

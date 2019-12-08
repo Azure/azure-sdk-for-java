@@ -8,10 +8,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -23,7 +24,6 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
-import com.azure.storage.file.share.sas.ShareServiceSasQueryParameters;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -122,7 +122,7 @@ public final class ShareServiceClientBuilder {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
         AzureFileStorageImpl azureFileStorage = new AzureFileStorageBuilder()
             .url(endpoint)
@@ -169,10 +169,11 @@ public final class ShareServiceClientBuilder {
             this.endpoint = fullUrl.getProtocol() + "://" + fullUrl.getHost();
             this.accountName = BuilderHelper.getAccountName(fullUrl);
 
+            // TODO (gapra) : What happens if a user has custom queries?
             // Attempt to get the SAS token from the URL passed
-            String sasToken = new ShareServiceSasQueryParameters(
+            String sasToken = new CommonSasQueryParameters(
                 StorageImplUtils.parseQueryStringSplitValues(fullUrl.getQuery()), false).encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
@@ -256,7 +257,8 @@ public final class ShareServiceClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
      * @param pipelinePolicy a pipeline policy
      * @return the updated ShareServiceClientBuilder object

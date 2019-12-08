@@ -1,5 +1,14 @@
 ## Changelog
 
+### 3.3.3
+- ChangeFeedProcessor; added a "catch all" exception handler that keeps the loop which checks and acquires available leases alive until the user stops the change feed processor.
+
+### 3.3.2
+- ChangeFeedProcessor; fixes and extra logging related to the creations of the lease documents.
+- Port consistency policy bug fix (see https://github.com/Azure/azure-cosmosdb-java/pull/196)
+- Port test fixes (see https://github.com/Azure/azure-cosmosdb-java/pull/196)
+- ChangeFeedProcessor: fix a race condition issue where the lease document has been updated while we are trying to write the current state like when check-pointing the continuation token.
+
 ### 3.3.1
 - Added @JsonIgnore on getLogger in JsonSerializable
 
@@ -173,3 +182,6 @@
 
 - First release of `azure-documentdb-rx` SDK.
 - CRUD Document API fully non-blocking using netty. Query async API implemented as a wrapper using blocking SDK `azure-documentdb`.
+
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fchangelog%2FREADME.png)

@@ -1,4 +1,56 @@
 # Release History
+## 4.0.0-beta.6 (2019-12-04)
+For details on the Azure SDK for Java (November 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
+
+
+### Breaking changes
+
+- Moved `CertificateClient.cancelCertificationOperation` to `SyncPoller.cancel` and `CertificateAsyncClient.cancelCertificationOperation` to `PollerFlux.cancel` respectively.
+- deleteCertificate method has been renamed to beginDeleteCertificate and now returns a SyncPoller in `CertificateClient` and PollerFlux in `CertificateAsyncClient` to track this long-running operation.
+- recoverDeletedCertificate method has been renamed to beginRecoverDeletedCertificate and now returns a SyncPoller in `CertificateClient` and PollerFlux in `CertificateAsyncClient` to track this long-running operation.
+- `subject` and `issuerName` constructor parameters have been switched on `CertificatePolicy`.
+- `subjectAlternativeNames` and `issuerName` constructor parameters have been switched on `CertificatePolicy`.
+- The `SubjectAlternativeNames` class has been rewritten to contain `DnsNames`, `Emails`, and `UserPrincipalNames` collection properties.
+- `CertificateIssuer.administrators` has been renamed to `CertificateIssuer.administratorContacts`.
+- `CertificateKeyType.Oct` has been removed.
+- `ImportCertificateOptions.value` has been renamed to `ImportCertificateOptions.certificate`.
+- `LifeTimeAction` has been renamed to `LifetimeAction`.
+- `CertificateKeyCurveName` and `CertificateKeyType` have been moved from package `com.azure.security.keyvault.certificates.models.webkey` to `com.azure.security.keyvault.certificates.models`.
+- On `CertificateProperties`, expires, created, and updated have been renamed to expiresOn, createdOn, and updatedOn respectively.
+- On `DeletedCertificate`, deletedDate has been renamed to DeletedOn.
+- `CertificateImportOptions` has been renamed to `ImportCertificateOptions`.
+- `CertificateMergeOptions` has been renamed to `MergeCertificateOptions`.
+- `CertificatePolicy.DEFAULT` has been removed.
+
+
+### Major changes
+
+- The `SubjectAlternativeNames` class now allows you to set multiple types of subject alternative names using any of the `DnsNames`, `Emails`, and `UserPrincipalNames` collection properties.
+- A new `CertificatePolicy` constructor allows you to both pass in both the `subject` and `subjectAlternativeNames` parameters.
+- `CertificateIssuer.provider` was added.
+- `CertificatePolicy.getDefault()` was added and allows you to get the default policy.
+
+
+## 4.0.0-preview.5 (2019-11-01)
+For details on the Azure SDK for Java (November 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
+
+### Breaking changes
+- `beginCreateCertificate` method now returns a SyncPoller in `CertificateClient` and a PollerFlux in`CertificateAsyncClient`
+- Certificate has been renamed to KeyVaultCertificate to avoid ambiguity with other libraries and to yield better search results.
+- endpoint method on CertificateClientBuilder has been renamed to vaultUrl.
+- listCertificates and listCertificateVersions methods have been renamed to listPropertiesOfCertificates and listPropertiesOfCertificateVersions respectively in `CertificateClient` and `CertificateAsyncClient`.
+- restoreCertificate method has been renamed to restoreCertificateBackup in `CertificateClient` and `CertificatAsyncClient` to better associate it with CertificateClient.backupCertificate.
+- LifetimeActionType class has been renamed to CertificatePolicyAction.
+- Contact class has been renamed to CertificateContact.
+- Issuer class has been renamed to CertificateIssuer.
+- getCertificate method has been renamed to getCertificateVersion in `CertificateClient` and `CertificateAsyncClient`
+- getCertificateWithPolicy method has been renamed to getCertificate and now returns KeyVaultCertificateWithPolicy in `CertificateClient` and `CertificateAsyncClient`
+- getPendingCertificateSigningRequest method has been removed from `CertificateClient` and `CertificateAsyncClient`
+
+### Major changes
+- CertificateClient.vaultUrl has been added with the original value pass to CertificateClient.
+- KeyVaultCertificateWithPolicy has been added and is returned by getCertificate method in `CertificateClient` and `CertificateAsyncClient`
+
 
 ## 4.0.0-preview.4 (2019-10-08)
 For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).

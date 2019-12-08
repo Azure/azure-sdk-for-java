@@ -4,11 +4,11 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.ReactorSession;
-import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -33,6 +33,6 @@ public interface EventHubSession extends AmqpSession {
      * @param options Options to use when creating the consumer.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout, RetryPolicy retry,
-                                         EventPosition eventPosition, EventHubConsumerOptions options);
+    Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
+                                         EventPosition eventPosition, ReceiveOptions options);
 }

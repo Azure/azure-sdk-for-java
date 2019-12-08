@@ -82,13 +82,13 @@ public final class AppendBlobClient extends BlobClientBase {
      * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
      * it will be overwritten.
      *
-     * @param accessConditions A {@link BlobRequestConditions} object that represents the access conditions for the
+     * @param requestConditions A {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public BlobOutputStream getBlobOutputStream(AppendBlobRequestConditions accessConditions) {
-        return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, accessConditions);
+    public BlobOutputStream getBlobOutputStream(AppendBlobRequestConditions requestConditions) {
+        return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, requestConditions);
     }
 
     /**
@@ -126,6 +126,8 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -133,15 +135,15 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
-     * @param accessConditions {@link BlobRequestConditions}
+     * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob.
      */
     public Response<AppendBlobItem> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
-        BlobRequestConditions accessConditions, Duration timeout, Context context) {
+        BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
-            createWithResponse(headers, metadata, accessConditions, context), timeout);
+            createWithResponse(headers, metadata, requestConditions, context), timeout);
     }
 
     /**
@@ -171,7 +173,7 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-byte-AppendBlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-byte-AppendBlobRequestConditions-Duration-Context}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -229,17 +231,17 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param sourceRange {@link BlobRange}
      * @param sourceContentMd5 An MD5 hash of the block content from the source blob. If specified, the service will
      * calculate the MD5 of the received data and fail the request if it does not match the provided MD5.
-     * @param destAccessConditions {@link AppendBlobRequestConditions}
-     * @param sourceAccessConditions {@link BlobRequestConditions}
+     * @param destRequestConditions {@link AppendBlobRequestConditions}
+     * @param sourceRequestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the append blob operation.
      */
     public Response<AppendBlobItem> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
-        byte[] sourceContentMd5, AppendBlobRequestConditions destAccessConditions,
-        BlobRequestConditions sourceAccessConditions, Duration timeout, Context context) {
+        byte[] sourceContentMd5, AppendBlobRequestConditions destRequestConditions,
+        BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(sourceUrl,
-            sourceRange, sourceContentMd5, destAccessConditions, sourceAccessConditions, context);
+            sourceRange, sourceContentMd5, destRequestConditions, sourceRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }
