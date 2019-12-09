@@ -38,7 +38,7 @@ class FileSystemAPITest extends APISpec {
         then:
         fsc.getProperties()
 
-        notThrown(Exception)
+        notThrown(DataLakeStorageException)
     }
 
     @Unroll
@@ -363,7 +363,7 @@ class FileSystemAPITest extends APISpec {
         fsc.createFile(generatePathName())
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
     }
 
     def "Create file defaults"() {
@@ -382,7 +382,7 @@ class FileSystemAPITest extends APISpec {
             Context.NONE)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
     }
 
     @Unroll
@@ -483,7 +483,7 @@ class FileSystemAPITest extends APISpec {
         fsc.createFileWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -569,7 +569,7 @@ class FileSystemAPITest extends APISpec {
         fsc.deleteFileWithResponse(pathName, drc, null, null).getStatusCode()
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -586,7 +586,7 @@ class FileSystemAPITest extends APISpec {
         dir.create()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
     }
 
     def "Create dir defaults"() {
@@ -605,7 +605,7 @@ class FileSystemAPITest extends APISpec {
             Context.NONE)
 
         then:
-        thrown(Exception)
+        thrown(DataLakeStorageException)
     }
 
     @Unroll
@@ -710,7 +710,7 @@ class FileSystemAPITest extends APISpec {
         fsc.createDirectoryWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
 
         then:
-        thrown(Exception)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -803,7 +803,7 @@ class FileSystemAPITest extends APISpec {
         fsc.deleteDirectoryWithResponse(pathName, false, drc, null, null).getStatusCode()
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID

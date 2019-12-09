@@ -11,6 +11,7 @@ import com.azure.storage.common.sas.*
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
+import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.FileRange
 import com.azure.storage.file.datalake.models.PathProperties
 import com.azure.storage.file.datalake.models.UserDelegationKey
@@ -275,7 +276,7 @@ class SASTest extends APISpec {
         client.delete()
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
     }
 
     def "accountSAS network create file system fails"() {
@@ -354,7 +355,7 @@ class SASTest extends APISpec {
         fc.create()
 
         then:
-        notThrown(Exception)
+        notThrown(DataLakeStorageException)
     }
 
     /*

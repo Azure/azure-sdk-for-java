@@ -61,7 +61,7 @@ class DirectoryAPITest extends APISpec {
             Context.NONE)
 
         then:
-        thrown(Exception)
+        thrown(DataLakeStorageException)
     }
 
     @Unroll
@@ -160,7 +160,7 @@ class DirectoryAPITest extends APISpec {
         dc.createWithResponse(null, null, null, null, drc, null, Context.NONE)
 
         then:
-        thrown(Exception)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -243,7 +243,7 @@ class DirectoryAPITest extends APISpec {
         dc.deleteWithResponse(false, drc, null, null).getStatusCode()
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -259,7 +259,7 @@ class DirectoryAPITest extends APISpec {
         def resp = dc.setPermissions(permissions, group, owner)
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
         resp.getETag()
         resp.getLastModified()
     }
@@ -310,7 +310,7 @@ class DirectoryAPITest extends APISpec {
         dc.setPermissionsWithResponse(permissions, group, owner, drc, null, Context.NONE).getStatusCode() == 200
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -329,7 +329,7 @@ class DirectoryAPITest extends APISpec {
         dc.setPermissionsWithResponse(permissions, group, owner, null, null, null)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
     }
 
     def "Set ACL min"() {
@@ -337,7 +337,7 @@ class DirectoryAPITest extends APISpec {
         def resp = dc.setAccessControlList(pathAccessControlEntries, group, owner)
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
         resp.getETag()
         resp.getLastModified()
     }
@@ -388,7 +388,7 @@ class DirectoryAPITest extends APISpec {
         dc.setAccessControlListWithResponse(pathAccessControlEntries, group, owner, drc, null, Context.NONE).getStatusCode() == 200
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -407,7 +407,7 @@ class DirectoryAPITest extends APISpec {
         dc.setAccessControlList(pathAccessControlEntries, group, owner)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
     }
 
     def "Get access control min"() {
@@ -415,7 +415,7 @@ class DirectoryAPITest extends APISpec {
         PathAccessControl pac = dc.getAccessControl()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
         pac.getAccessControlList()
         pac.getPermissions()
         pac.getOwner()
@@ -473,7 +473,7 @@ class DirectoryAPITest extends APISpec {
         dc.getAccessControlWithResponse(false, drc, null, null).getStatusCode() == 200
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -498,7 +498,7 @@ class DirectoryAPITest extends APISpec {
         renamedClient.getProperties()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
 
         when:
         dc.getProperties()
@@ -515,7 +515,7 @@ class DirectoryAPITest extends APISpec {
         dc.renameWithResponse(generatePathName(), null, null, null, null)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
     }
 
     @Unroll
@@ -559,7 +559,7 @@ class DirectoryAPITest extends APISpec {
         dc.renameWithResponse(generatePathName(), drc, null, null, null)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -617,7 +617,7 @@ class DirectoryAPITest extends APISpec {
         dc.renameWithResponse(pathName, null, drc, null, null)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -964,7 +964,7 @@ class DirectoryAPITest extends APISpec {
         dc.getFileClient(generatePathName()).create()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
     }
 
     def "Create file defaults"() {
@@ -982,7 +982,7 @@ class DirectoryAPITest extends APISpec {
             Context.NONE)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
     }
 
     @Unroll
@@ -1083,7 +1083,7 @@ class DirectoryAPITest extends APISpec {
         dc.createFileWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1169,7 +1169,7 @@ class DirectoryAPITest extends APISpec {
         dc.deleteFileWithResponse(pathName, drc, null, null).getStatusCode()
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1186,7 +1186,7 @@ class DirectoryAPITest extends APISpec {
         subdir.create()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
     }
 
     def "Create sub dir defaults"() {
@@ -1205,7 +1205,7 @@ class DirectoryAPITest extends APISpec {
             Context.NONE)
 
         then:
-        thrown(Exception)
+        thrown(DataLakeStorageException)
     }
 
     @Unroll
@@ -1310,7 +1310,7 @@ class DirectoryAPITest extends APISpec {
         dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
 
         then:
-        thrown(Exception)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1403,7 +1403,7 @@ class DirectoryAPITest extends APISpec {
         dc.deleteSubdirectoryWithResponse(pathName, false, drc, null, null).getStatusCode()
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1532,6 +1532,6 @@ class DirectoryAPITest extends APISpec {
         dirClient.getAccessControl()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
     }
 }
