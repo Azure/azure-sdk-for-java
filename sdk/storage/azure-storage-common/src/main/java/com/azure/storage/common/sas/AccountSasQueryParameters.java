@@ -30,7 +30,9 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
      * @param queryParamsMap All query parameters for the request as key-value pairs
      * @param removeSasParameters When {@code true}, the SAS query parameters will be removed from
      * queryParamsMap
+     * @deprecated Please use {@link AccountSasSignatureValues}
      */
+    @Deprecated
     AccountSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSasParameters) {
         super(queryParamsMap, removeSasParameters);
         this.resourceTypes = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_RESOURCES_TYPES,
@@ -54,7 +56,9 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
      * {@code null}.
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
+     * @deprecated Please use {@link AccountSasSignatureValues}
      */
+    @Deprecated
     AccountSasQueryParameters(String version, String services, String resourceTypes, SasProtocol protocol,
                               OffsetDateTime startTime, OffsetDateTime expiryTime, SasIpRange sasIpRange,
                               String permissions, String signature) {
@@ -66,7 +70,9 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
     /**
      * @return The storage services being accessed (only for Account SAS). Please refer to {@link AccountSasService} for
      * more details.
+     * @deprecated Please use {@link AccountSasSignatureValues}
      */
+    @Deprecated
     public String getServices() {
         return services;
     }
@@ -74,7 +80,9 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
     /**
      * @return The storage resource types being accessed (only for Account SAS). Please refer to {@link
      * AccountSasResourceType} for more details.
+     * @deprecated Please use {@link AccountSasSignatureValues}
      */
+    @Deprecated
     public String getResourceTypes() {
         return resourceTypes;
     }

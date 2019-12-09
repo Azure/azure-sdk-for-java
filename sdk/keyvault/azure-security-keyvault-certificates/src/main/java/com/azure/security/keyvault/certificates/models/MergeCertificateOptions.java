@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Represents Merge Certificate Configuration to merge certificates in key vault.
  */
-public class MergeCertificateOptions {
+public final class MergeCertificateOptions {
 
     /**
      * The name of the certificate.

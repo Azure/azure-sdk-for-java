@@ -323,6 +323,44 @@ class SASTest extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    def "accountSAS network account sas token on endpoint"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
+        def fileSystemName = generateFileSystemName()
+        def pathName = generatePathName()
+
+        when:
+        def sc = getServiceClientBuilder(null, primaryDataLakeServiceClient.getAccountUrl() + "?" + sas, null).buildClient()
+        sc.createFileSystem(fileSystemName)
+
+        def fsc = getFileSystemClientBuilder(primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "?" + sas).buildClient()
+        fsc.listPaths()
+
+        def fc = getFileClient(primaryCredential, primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "/" + pathName + "?" + sas)
+
+        fc.create()
+
+        then:
+        notThrown(Exception)
+    }
+
     /*
      This test will ensure that each field gets placed into the proper location within the string to sign and that null
      values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of

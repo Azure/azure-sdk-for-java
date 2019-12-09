@@ -10,6 +10,6 @@ class FileConfiguration {
     //TODO: Eventually remove these hardcoded strings with https://github.com/Azure/azure-sdk-for-java/issues/3141
     static final String NAME = "azure-storage-file-share";
     // {x-version-update-start;com.azure:azure-storage-file-share;current}
-    static final String VERSION = "12.0.0-beta.6";
+    static final String VERSION = "12.1.0-beta.1";
     // {x-version-update-end}
 }

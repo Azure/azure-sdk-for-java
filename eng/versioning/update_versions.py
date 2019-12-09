@@ -1,10 +1,12 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+# Python version 3.4 or higher is required to run this script.
+
 # Use case: Update all the versions in README.md and pom.xml files based on
 # the versions in versions_[client|data|management].txt, external_dependencies.txt
 #
-#    python eng/versioning/update_versions.py --update-type [library|external_dependency|all] -build-type [client|data|management]
+#    python eng/versioning/update_versions.py --update-type [library|external_dependency|all] --build-type [client|data|management]
 # For example: To update the library versions for the client track without touching the README files
 #    python eng/versioning/update_versions.py --ut library --bt client --sr
 #

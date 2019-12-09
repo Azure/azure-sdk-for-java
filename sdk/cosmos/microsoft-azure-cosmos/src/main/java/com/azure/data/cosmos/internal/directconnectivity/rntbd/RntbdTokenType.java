@@ -3,17 +3,16 @@
 
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
-import com.google.common.base.Strings;
 import com.google.common.base.Utf8;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.CorruptedFrameException;
-import io.netty.handler.codec.DecoderException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Strings.lenientFormat;
 
 enum RntbdTokenType {
 
@@ -93,10 +92,17 @@ enum RntbdTokenType {
         void write(Object value, ByteBuf out);
 
         static void checkReadableBytes(final ByteBuf in, final long length, final long maxLength) {
-            if (length != in.readableBytes() || length > maxLength) {
-                String message = Strings.lenientFormat("maxLength: %s, length: %s, readableBytes: %s",
-                    maxLength, length, in.readableBytes());
-                throw new CorruptedFrameException(message);
+
+            if (length > maxLength) {
+                throw new CorruptedFrameException(
+                    lenientFormat("value length (%s) is greater than maxLength (%s)", length, maxLength));
+            }
+
+            final int readableBytes = in.readableBytes();
+
+            if (length != readableBytes) {
+                throw new CorruptedFrameException(
+                    lenientFormat("readableBytes (%s) does not match value length (%s)", readableBytes, length));
             }
         }
     }
@@ -681,6 +687,7 @@ enum RntbdTokenType {
         private RntbdString() {
         }
 
+        @SuppressWarnings("UnstableApiUsage")
         final int computeLength(final Object value, final int maxLength) {
 
             assert this.isValid(value);
@@ -696,16 +703,16 @@ enum RntbdTokenType {
                 final byte[] string = (byte[])value;
 
                 if (!Utf8.isWellFormed(string)) {
-                    final String reason = Strings.lenientFormat("UTF-8 byte string is ill-formed: %s", ByteBufUtil.hexDump(string));
-                    throw new DecoderException(reason);
+                    final String reason = lenientFormat("UTF-8 byte string is ill-formed: %s", ByteBufUtil.hexDump(string));
+                    throw new CorruptedFrameException(reason);
                 }
 
                 length = string.length;
             }
 
             if (length > maxLength) {
-                final String reason = Strings.lenientFormat("UTF-8 byte string exceeds %s bytes: %s bytes", maxLength, length);
-                throw new DecoderException(reason);
+                final String reason = lenientFormat("UTF-8 byte string exceeds %s bytes: %s bytes", maxLength, length);
+                throw new CorruptedFrameException(reason);
             }
 
             return length;

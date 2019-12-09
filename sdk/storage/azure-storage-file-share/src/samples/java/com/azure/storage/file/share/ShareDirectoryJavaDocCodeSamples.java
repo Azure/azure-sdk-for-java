@@ -5,6 +5,7 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
@@ -414,8 +415,8 @@ public class ShareDirectoryJavaDocCodeSamples {
         ShareDirectoryClient shareDirectoryClient = createClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.forceCloseHandleWithResponse#String-Duration-Context
         shareDirectoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE).forEach(handleItem -> {
-            Response<Void> closeResponse = shareDirectoryClient.forceCloseHandleWithResponse(handleItem.getHandleId(),
-                Duration.ofSeconds(30), Context.NONE);
+            Response<CloseHandlesInfo> closeResponse = shareDirectoryClient.forceCloseHandleWithResponse(
+                handleItem.getHandleId(), Duration.ofSeconds(30), Context.NONE);
             System.out.printf("Closing handle %s on resource %s completed with status code %d%n",
                 handleItem.getHandleId(), handleItem.getPath(), closeResponse.getStatusCode());
         });
@@ -428,8 +429,9 @@ public class ShareDirectoryJavaDocCodeSamples {
     public void forceCloseAllHandles() {
         ShareDirectoryClient shareDirectoryClient = createClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.forceCloseAllHandles#boolean-Duration-Context
-        int closedHandleCount = shareDirectoryClient.forceCloseAllHandles(true, Duration.ofSeconds(30), Context.NONE);
-        System.out.printf("Closed %d open handles on the directory%n", closedHandleCount);
+        CloseHandlesInfo closeHandlesInfo = shareDirectoryClient.forceCloseAllHandles(true, Duration.ofSeconds(30),
+            Context.NONE);
+        System.out.printf("Closed %d open handles on the directory%n", closeHandlesInfo.getClosedHandles());
         // END: com.azure.storage.file.share.ShareDirectoryClient.forceCloseAllHandles#boolean-Duration-Context
     }
 

@@ -42,7 +42,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 /**
  * Entry point to Azure CosmosDB resource management.
  */
-public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDBImpl> {
+public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDBManagementClientImpl> {
     private DatabaseAccounts databaseAccounts;
     private Operations operations;
     private Databases databases;
@@ -322,6 +322,6 @@ public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDB
         super(
             restClient,
             subscriptionId,
-            new CosmosDBImpl(restClient).withSubscriptionId(subscriptionId));
+            new CosmosDBManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
     }
 }

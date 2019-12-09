@@ -3,8 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import org.apache.commons.codec.binary.Hex;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
@@ -14,6 +12,9 @@ import java.util.Arrays;
 final class SignatureEncoding {
     // SignatureEncoding is intended to be a static class
     private SignatureEncoding() { }
+
+    private static final char[] HEX_LOWER = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
 
     /*
      * Converts an ASN.1 DER encoded ECDSA signature to a raw signature in the form R|S
@@ -49,7 +50,7 @@ final class SignatureEncoding {
             return Asn1DerSignatureEncoding.decode(asn1DerSignature, algorithm);
         } catch (IllegalArgumentException ex) {
             throw (IllegalArgumentException) new IllegalArgumentException(
-                ex.getMessage() + " " + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
+                ex.getMessage() + " " + Arrays.toString(encodeHex(asn1DerSignature, HEX_LOWER))).initCause(ex);
         }
     }
 
@@ -86,8 +87,21 @@ final class SignatureEncoding {
             return Asn1DerSignatureEncoding.encode(signature, algorithm);
         } catch (IllegalArgumentException ex) {
             throw (IllegalArgumentException) new IllegalArgumentException(
-                ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
+                ex.getMessage() + " " + Arrays.toString(encodeHex(signature, HEX_LOWER))).initCause(ex);
         }
+    }
+
+    private static char[] encodeHex(byte[] data, char[] toDigits) {
+        int l = data.length;
+        char[] out = new char[l << 1];
+        int i = 0;
+
+        for (int j = 0; i < l; ++i) {
+            out[j++] = toDigits[(240 & data[i]) >>> 4];
+            out[j++] = toDigits[15 & data[i]];
+        }
+
+        return out;
     }
 }
 
