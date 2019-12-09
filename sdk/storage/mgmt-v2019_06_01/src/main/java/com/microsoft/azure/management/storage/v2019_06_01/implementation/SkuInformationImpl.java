@@ -9,7 +9,7 @@
 
 package com.microsoft.azure.management.storage.v2019_06_01.implementation;
 
-import com.microsoft.azure.management.storage.v2019_06_01.Sku;
+import com.microsoft.azure.management.storage.v2019_06_01.SkuInformation;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 import java.util.List;
@@ -19,10 +19,10 @@ import com.microsoft.azure.management.storage.v2019_06_01.SkuName;
 import com.microsoft.azure.management.storage.v2019_06_01.Restriction;
 import com.microsoft.azure.management.storage.v2019_06_01.SkuTier;
 
-class SkuImpl extends WrapperImpl<SkuInner> implements Sku {
+class SkuInformationImpl extends WrapperImpl<SkuInformationInner> implements SkuInformation {
     private final StorageManager manager;
 
-    SkuImpl(SkuInner inner,  StorageManager manager) {
+    SkuInformationImpl(SkuInformationInner inner,  StorageManager manager) {
         super(inner);
         this.manager = manager;
     }
