@@ -3,14 +3,14 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosResponseDiagnostics;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 
 public class DocumentServiceRequestContext implements Cloneable{
@@ -28,7 +28,7 @@ public class DocumentServiceRequestContext implements Cloneable{
     public volatile Integer regionIndex;
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
-    public volatile URL locationEndpointToRoute;
+    public volatile URI locationEndpointToRoute;
     public volatile boolean performedBackgroundAddressRefresh;
     public volatile boolean performLocalRefreshOnGoneException;
     public volatile List<String> storeResponses;
@@ -55,7 +55,7 @@ public class DocumentServiceRequestContext implements Cloneable{
      *
      * @param locationEndpoint Location endpoint to which the request should be routed.
      */
-    public void RouteToLocation(URL locationEndpoint) {
+    public void RouteToLocation(URI locationEndpoint) {
         this.locationEndpointToRoute = locationEndpoint;
         this.locationIndexToRoute = null;
         this.usePreferredLocations = null;

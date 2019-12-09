@@ -130,15 +130,11 @@ public class GatewayServiceConfigurationReader {
     }
 
     public Mono<DatabaseAccount> initializeReaderAsync() {
-        try {
-            return GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.serviceEndpoint.toURL(),
+            return GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.serviceEndpoint,
 
                     new ArrayList<>(this.connectionPolicy.getPreferredLocations()), url -> {
-                        try {
-                            return getDatabaseAccountAsync(url.toURI());
-                        } catch (URISyntaxException e) {
-                            throw new IllegalArgumentException("URI " + url);
-                        }
+                            return getDatabaseAccountAsync(url);
+
                     }).doOnSuccess(databaseAccount -> {
                         userReplicationPolicy = BridgeInternal.getReplicationPolicy(databaseAccount);
                         systemReplicationPolicy = BridgeInternal.getSystemReplicationPolicy(databaseAccount);
@@ -146,9 +142,6 @@ public class GatewayServiceConfigurationReader {
                         consistencyLevel = BridgeInternal.getConsistencyPolicy(databaseAccount).getDefaultConsistencyLevel();
                         initialized = true;
                     });
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(this.serviceEndpoint.toString(), e);
-        }
     }
 
     private Mono<DatabaseAccount> toDatabaseAccountObservable(Mono<HttpResponse> httpResponse, HttpRequest httpRequest) {

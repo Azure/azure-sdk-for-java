@@ -27,7 +27,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,35 +48,35 @@ public class GlobalAddressResolverTest {
     private GatewayServiceConfigurationReader serviceConfigReader;
     private RxPartitionKeyRangeCache routingMapProvider;
     private ConnectionPolicy connectionPolicy;
-    private URL urlforRead1;
-    private URL urlforRead2;
-    private URL urlforRead3;
+    private URI urlforRead1;
+    private URI urlforRead2;
+    private URI urlforRead3;
 
-    private URL urlforWrite1;
-    private URL urlforWrite2;
-    private URL urlforWrite3;
+    private URI urlforWrite1;
+    private URI urlforWrite2;
+    private URI urlforWrite3;
 
     @BeforeClass(groups = "unit")
     public void before_GlobalAddressResolverTest() throws Exception {
-        urlforRead1 = new URL("http://testRead1.com/");
-        urlforRead2 = new URL("http://testRead2.com/");
-        urlforRead3 = new URL("http://testRead3.com/");
-        urlforWrite1 = new URL("http://testWrite1.com/");
-        urlforWrite2 = new URL("http://testWrite2.com/");
-        urlforWrite3 = new URL("http://testWrite3.com/");
+        urlforRead1 = new URI("http://testRead1.com/");
+        urlforRead2 = new URI("http://testRead2.com/");
+        urlforRead3 = new URI("http://testRead3.com/");
+        urlforWrite1 = new URI("http://testWrite1.com/");
+        urlforWrite2 = new URI("http://testWrite2.com/");
+        urlforWrite3 = new URI("http://testWrite3.com/");
 
         connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setEnableReadRequestsFallback(true);
         httpClient = Mockito.mock(HttpClient.class);
         endpointManager = Mockito.mock(GlobalEndpointManager.class);
 
-        List<URL> readEndPointList = new ArrayList<>();
+        List<URI> readEndPointList = new ArrayList<>();
         readEndPointList.add(urlforRead1);
         readEndPointList.add(urlforRead2);
         readEndPointList.add(urlforRead3);
         UnmodifiableList readList = new UnmodifiableList(readEndPointList);
 
-        List<URL> writeEndPointList = new ArrayList<>();
+        List<URI> writeEndPointList = new ArrayList<>();
         writeEndPointList.add(urlforWrite1);
         writeEndPointList.add(urlforWrite2);
         writeEndPointList.add(urlforWrite3);
@@ -109,15 +109,15 @@ public class GlobalAddressResolverTest {
                 "dbs/db/colls/coll/docs/doc1",
                 ResourceType.Document);
 
-        Set<URL> urlsBeforeResolve = globalAddressResolver.addressCacheByEndpoint.keySet();
+        Set<URI> urlsBeforeResolve = globalAddressResolver.addressCacheByEndpoint.keySet();
         assertThat(urlsBeforeResolve.size()).isEqualTo(5);
         assertThat(urlsBeforeResolve.contains(urlforRead3)).isFalse();//Last read will be removed from addressCacheByEndpoint after 5 endpoints
         assertThat(urlsBeforeResolve.contains(urlforRead2)).isTrue();
 
-        URL testUrl = new URL("http://Test.com/");
+        URI testUrl = new URI("http://Test.com/");
         Mockito.when(endpointManager.resolveServiceEndpoint(Matchers.any(RxDocumentServiceRequest.class))).thenReturn(testUrl);
         globalAddressResolver.resolveAsync(request, true);
-        Set<URL> urlsAfterResolve = globalAddressResolver.addressCacheByEndpoint.keySet();
+        Set<URI> urlsAfterResolve = globalAddressResolver.addressCacheByEndpoint.keySet();
         assertThat(urlsAfterResolve.size()).isEqualTo(5);
         assertThat(urlsAfterResolve.contains(urlforRead2)).isFalse();//Last read will be removed from addressCacheByEndpoint after 5 endpoints
         assertThat(urlsBeforeResolve.contains(testUrl)).isTrue();//New endpoint will be added in addressCacheByEndpoint
@@ -128,7 +128,7 @@ public class GlobalAddressResolverTest {
         GlobalAddressResolver globalAddressResolver = new GlobalAddressResolver(httpClient, endpointManager, Protocol.HTTPS, authorizationTokenProvider, collectionCache, routingMapProvider,
                 userAgentContainer,
                 serviceConfigReader, connectionPolicy);
-        Map<URL, GlobalAddressResolver.EndpointCache> addressCacheByEndpoint = Mockito.spy(globalAddressResolver.addressCacheByEndpoint);
+        Map<URI, GlobalAddressResolver.EndpointCache> addressCacheByEndpoint = Mockito.spy(globalAddressResolver.addressCacheByEndpoint);
         GlobalAddressResolver.EndpointCache endpointCache = new GlobalAddressResolver.EndpointCache();
         GatewayAddressCache gatewayAddressCache = Mockito.mock(GatewayAddressCache.class);
         AtomicInteger numberOfTaskCompleted = new AtomicInteger(0);

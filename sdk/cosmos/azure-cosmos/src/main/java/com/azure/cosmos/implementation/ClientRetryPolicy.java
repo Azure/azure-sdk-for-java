@@ -12,14 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
+import java.net.URI;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
- * 
+ *
  *  Client policy is combination of endpoint change retry + throttling retry.
  */
 public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
@@ -37,7 +37,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
     private int sessionTokenRetryCount;
     private boolean isReadRequest;
     private boolean canUseMultipleWriteLocations;
-    private URL locationEndpoint;
+    private URI locationEndpoint;
     private RetryContext retryContext;
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
     private AtomicInteger cnt = new AtomicInteger(0);
@@ -77,7 +77,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         if (clientException != null && clientException.getCosmosResponseDiagnostics() != null) {
             this.cosmosResponseDiagnostics = clientException.getCosmosResponseDiagnostics();
         }
-        if (clientException != null && 
+        if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN))
         {
@@ -101,7 +101,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
             return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest);
         }
 
-        if (clientException != null && 
+        if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.NOTFOUND) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
             return Mono.just(this.shouldRetryOnSessionNotAvailable());
@@ -118,7 +118,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
             return ShouldRetryResult.noRetry();
         } else {
             if (this.canUseMultipleWriteLocations) {
-                UnmodifiableList<URL> endpoints = this.isReadRequest ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
+                UnmodifiableList<URI> endpoints = this.isReadRequest ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
 
                 if (this.sessionTokenRetryCount > endpoints.size()) {
                     // When use multiple write locations is true and the request has been tried
