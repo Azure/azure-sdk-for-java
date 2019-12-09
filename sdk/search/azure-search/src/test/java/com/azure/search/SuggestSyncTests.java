@@ -11,6 +11,7 @@ import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     private SearchIndexClient client;
 
+    @Disabled
     @Test
     public void canSuggestDynamicDocuments() throws IOException {
         createHotelIndex();
@@ -103,6 +105,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         Assert.assertFalse(suggestResultIterator.hasNext());
     }
 
+    @Disabled
     @Test
     public void canSuggestStaticallyTypedDocuments() throws IOException {
         createHotelIndex();
@@ -226,6 +229,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     }
 
+    @Disabled
     @Test
     public void testTopTrimsResults() throws IOException {
         createHotelIndex();

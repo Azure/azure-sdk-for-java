@@ -14,7 +14,7 @@ import java.util.List;
  * Contains a batch of document write actions to send to the index.
  */
 @Fluent
-class IndexBatchImpl<T> {
+public class IndexBatchImpl<T> {
     /*
      * The actions in the batch.
      */

@@ -20,6 +20,7 @@ import com.azure.search.test.environment.models.Bucket;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.NonNullableModel;
 import org.junit.Assert;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -390,6 +391,7 @@ public class SearchAsyncTests extends SearchTestBase {
         Assert.assertTrue(compareResults(actualResults, hotels));
     }
 
+    @Disabled
     @Test
     public void canSearchStaticallyTypedDocuments() throws IOException {
         createHotelIndex();
@@ -431,6 +433,7 @@ public class SearchAsyncTests extends SearchTestBase {
         assertReflectionEquals(hotelsList, actualResults, IGNORE_DEFAULTS);
     }
 
+    @Disabled
     @Test
     public void canRoundTripNonNullableValueTypes() throws Exception {
         setupIndexFromJsonFile(NON_NULLABLE_INDEX_JSON);
@@ -460,6 +463,7 @@ public class SearchAsyncTests extends SearchTestBase {
         }).verifyComplete();
     }
 
+    @Disabled
     @Test
     public void canSearchWithDateInStaticModel() throws ParseException, IOException {
         createHotelIndex();

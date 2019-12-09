@@ -19,6 +19,7 @@ import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.LoudHotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
@@ -301,6 +302,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertNotNull(actual);
     }
 
+    @Disabled
     @Test
     public void canRoundtripBoundaryValues() throws ParseException {
         createHotelIndex();
@@ -356,6 +358,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC), ((OffsetDateTime) actualBook2.get("PublishDate")).withOffsetSameInstant(ZoneOffset.UTC));
     }
 
+    @Disabled
     @Test
     public void staticallyTypedDateTimesRoundTripAsUtc() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
@@ -386,6 +389,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Assert.assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), convertToType(actualBook2, Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC));
     }
 
+    @Disabled
     @Test
     public void canMergeStaticallyTypedDocuments() throws ParseException {
         createHotelIndex();
@@ -520,6 +524,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
 
+    @Disabled
     @Test
     public void canSetExplicitNullsInStaticallyTypedDocument() throws ParseException {
         createHotelIndex();
