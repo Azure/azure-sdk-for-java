@@ -218,24 +218,27 @@ public final class SessionContainer implements ISessionContainer {
         }
     }
 
+    private void updateExistingTokensInternal(ConcurrentHashMap<String, ISessionToken>  existingTokens, String partitionKeyRangeId, ISessionToken parsedSessionToken) {
+        existingTokens.merge(partitionKeyRangeId, parsedSessionToken, (existingSessionTokens, newSessionToken) -> {
+            try {
+                if (existingSessionTokens == null) {
+                    return newSessionToken;
+                }
+
+                return existingSessionTokens.merge(newSessionToken);
+            } catch (CosmosClientException e) {
+                throw new IllegalStateException(e);
+            }
+        });
+    }
+
     private void addSessionToken(ResourceId resourceId, String partitionKeyRangeId, ISessionToken parsedSessionToken) {
         ConcurrentHashMap<String, ISessionToken> existingTokensIfAny = this.collectionResourceIdToSessionTokens.get(resourceId.getUniqueDocumentCollectionId());
 
         if (existingTokensIfAny != null) {
             // if an entry for this collection exists, no need to lock the outer ConcurrentHashMap.
-            ConcurrentHashMap<String, ISessionToken>  existingTokens = existingTokensIfAny;
-            existingTokens.merge(partitionKeyRangeId, parsedSessionToken, (existingSessionTokens, newSessionToken) -> {
-                try {
-                    if (existingSessionTokens == null) {
-                        return newSessionToken;
-                    }
 
-                    return existingSessionTokens.merge(newSessionToken);
-                } catch (CosmosClientException e) {
-                    throw new IllegalStateException(e);
-                }
-            });
-
+            updateExistingTokensInternal(existingTokensIfAny, partitionKeyRangeId, parsedSessionToken);
             return;
         }
 
@@ -249,18 +252,7 @@ public final class SessionContainer implements ISessionContainer {
                     return tokens;
                 }
 
-                existingTokens.merge(partitionKeyRangeId, parsedSessionToken, (existingSessionTokens, newSessionToken) -> {
-                    try {
-                        if (existingSessionTokens == null) {
-                            return newSessionToken;
-                        }
-
-                        return existingSessionTokens.merge(newSessionToken);
-                    } catch (CosmosClientException e) {
-                        throw new IllegalStateException(e);
-                    }
-                });
-
+                updateExistingTokensInternal(existingTokens, partitionKeyRangeId, parsedSessionToken);
                 return existingTokens;
             });
     }
