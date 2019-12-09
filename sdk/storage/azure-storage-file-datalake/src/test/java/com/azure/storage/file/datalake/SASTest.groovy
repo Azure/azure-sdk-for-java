@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake
 
+import com.azure.storage.blob.implementation.util.BlobSasImplUtil
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.implementation.StorageImplUtils
@@ -363,21 +364,26 @@ class SASTest extends APISpec {
      */
 
     @Unroll
-    def "serviceSasSignatures string to sign"() {
+    def "sas impl util string to sign"() {
         when:
-        def v = new DataLakeServiceSasSignatureValues()
+        def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
+
         def p = new PathSasPermission()
+        p.setReadPermission(true)
+
+        def v
+        if (identifier != null) {
+            v = new DataLakeServiceSasSignatureValues(identifier)
+        } else {
+            v = new DataLakeServiceSasSignatureValues(e, p)
+        }
         def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
 
-        p.setReadPermission(true)
         v.setPermissions(p)
 
         v.setStartTime(startTime)
-        def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
         v.setExpiryTime(e)
 
-        v.setFileSystemName("fileSystemName")
-            .setPathName("pathName")
         if (ipRange != null) {
             def ipR = new SasIpRange()
             ipR.setIpMin("ip")
@@ -391,9 +397,12 @@ class SASTest extends APISpec {
             .setContentLanguage(language)
             .setContentType(type)
 
-        def token = v.generateSasQueryParameters(primaryCredential)
+        def util = new BlobSasImplUtil(Transforms.toBlobSasValues(v), "fileSystemName", "pathName", null)
+        util.ensureState()
+        def sasToken = util.stringToSign(util.getCanonicalName(primaryCredential.getAccountName()))
+
         then:
-        token.getSignature() == primaryCredential.computeHmac256(expected)
+        sasToken == expected
 
         /*
         We don't test the blob or containerName properties because canonicalized resource is always added as at least
@@ -415,21 +424,22 @@ class SASTest extends APISpec {
     }
 
     @Unroll
-    def "serviceSasSignatures string to sign user delegation key"() {
+    def "sas impl util string to sign user delegation key"() {
         when:
-        def v = new DataLakeServiceSasSignatureValues()
-        def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
+        def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
 
         def p = new PathSasPermission()
+        p.setReadPermission(true)
+
+        def v = new DataLakeServiceSasSignatureValues(e, p)
+        def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
+
         p.setReadPermission(true)
         v.setPermissions(p)
 
         v.setStartTime(startTime)
-        def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
         v.setExpiryTime(e)
 
-        v.setFileSystemName("fileSystemName")
-            .setPathName("pathName")
         if (ipRange != null) {
             def ipR = new SasIpRange()
             ipR.setIpMin("ip")
@@ -449,10 +459,13 @@ class SASTest extends APISpec {
             .setSignedService(keyService)
             .setSignedVersion(keyVersion)
             .setValue(keyValue)
-        def token = v.generateSasQueryParameters(key, primaryCredential.getAccountName())
+
+        def util = new BlobSasImplUtil(Transforms.toBlobSasValues(v), "fileSystemName", "pathName", null)
+        util.ensureState()
+        def sasToken = util.stringToSign(Transforms.toBlobUserDelegationKey(key), util.getCanonicalName(primaryCredential.getAccountName()))
 
         then:
-        token.getSignature() == StorageImplUtils.computeHMac256(key.getValue(), expected)
+        sasToken == expected
 
         /*
         We test string to sign functionality directly related to user delegation sas specific parameters
