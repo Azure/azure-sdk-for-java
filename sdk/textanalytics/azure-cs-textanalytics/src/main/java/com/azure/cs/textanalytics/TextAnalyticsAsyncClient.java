@@ -14,11 +14,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.cs.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.cs.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.cs.textanalytics.implementation.models.LanguageBatchInput;
-import com.azure.cs.textanalytics.implementation.models.LanguageResult;
+import com.azure.cs.textanalytics.implementation.models.LanguageResult;	import com.azure.cs.textanalytics.models.Error;
 import com.azure.cs.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.DetectLanguageResult;
-import com.azure.cs.textanalytics.models.DocumentError;
+import com.azure.cs.textanalytics.implementation.models.DocumentError;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.KeyPhraseResult;
 import com.azure.cs.textanalytics.models.LinkedEntityResult;
@@ -275,8 +275,10 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link DetectLanguageResult} equivalent for the error-ed document.
      */
     private DetectLanguageResult convertToErrorDetectLanguageResult(final DocumentError errorDocument) {
-        return new DetectLanguageResult(errorDocument.getId(), null, errorDocument.getError(),
-            null, null);
+        com.azure.cs.textanalytics.implementation.models.Error serviceError = errorDocument.getError();
+        Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
+            .setTarget(serviceError.getTarget());
+        return new DetectLanguageResult(errorDocument.getId(), error, true);
     }
 
     /**
@@ -287,7 +289,7 @@ public final class TextAnalyticsAsyncClient {
      */
     private DetectLanguageResult convertToDetectLanguageResult(final DocumentLanguage documentLanguage) {
         // TODO confirm the primary language support from service
-        return new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(), null,
+        return new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(),
             documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages());
     }
 

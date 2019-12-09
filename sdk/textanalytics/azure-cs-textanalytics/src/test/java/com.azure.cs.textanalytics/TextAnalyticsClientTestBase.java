@@ -25,7 +25,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.cs.textanalytics.models.DetectLanguageInput;
 import com.azure.cs.textanalytics.models.DetectLanguageResult;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
-import com.azure.cs.textanalytics.models.DocumentError;
+import com.azure.cs.textanalytics.models.Error;
 import com.azure.cs.textanalytics.models.DocumentResultCollection;
 import com.azure.cs.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.cs.textanalytics.models.TextBatchStatistics;
@@ -172,9 +172,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(39).setTransactionCount(1);
         TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics().setCharacterCount(6).setTransactionCount(1);
 
-        DetectLanguageResult detectLanguageResult1 = new DetectLanguageResult("0", textDocumentStatistics1, null, detectedLanguage1, detectedLanguageList1);
-        DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, null, detectedLanguage2, detectedLanguageList2);
-        DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, null, detectedLanguage3, detectedLanguageList3);
+        DetectLanguageResult detectLanguageResult1 = new DetectLanguageResult("0", textDocumentStatistics1, detectedLanguage1, detectedLanguageList1);
+        DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, detectedLanguage2, detectedLanguageList2);
+        DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, detectedLanguage3, detectedLanguageList3);
 
         TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(3).setErroneousDocumentCount(0).setTransactionCount(3).setValidDocumentCount(3);
         List<DetectLanguageResult> detectLanguageResultList = new ArrayList<>(Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3));
@@ -294,23 +294,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to verify the error-ed documents.
+     * Helper method to verify the error document.
      *
-     * @param errors
-     * @param detectLanguageResultList
+     * @param expectedError the Error returned from the service.
+     * @param actualError the Error returned from the API.
      */
-    static void validateErrorDocuments(List<DocumentError> errors,
-                                       List<DetectLanguageResult> detectLanguageResultList) {
-        for (DocumentError expectedErrorDocument : errors) {
-            Optional<DetectLanguageResult> optionalErrorDocument = detectLanguageResultList.stream().
-                filter(document -> document.getId().equals(expectedErrorDocument.getId())).findFirst();
-            assertTrue(optionalErrorDocument.isPresent());
-            DetectLanguageResult actualErrorDocument = optionalErrorDocument.get();
-            assertEquals(expectedErrorDocument.getId(), actualErrorDocument.getId());
-            // TODO: Need to fix the error model
-            assertEquals(expectedErrorDocument.getError().toString(), actualErrorDocument.getError().toString());
-        }
-
+    static void validateErrorDocument(Error expectedError, Error actualError) {
+        assertEquals(expectedError.getCode(), actualError.getCode());
+        assertEquals(expectedError.getMessage(), actualError.getMessage());
+        assertEquals(expectedError.getTarget(), actualError.getTarget());
+        assertEquals(expectedError.getInnererror(), actualError.getInnererror());
     }
 
     /**

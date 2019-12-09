@@ -6,7 +6,6 @@ package com.azure.cs.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.cs.textanalytics.models.TextBatchStatistics;
-import com.azure.cs.textanalytics.models.DocumentError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
