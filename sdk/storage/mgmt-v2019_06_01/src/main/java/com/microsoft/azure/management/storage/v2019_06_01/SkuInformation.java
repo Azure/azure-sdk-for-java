@@ -9,15 +9,15 @@
 package com.microsoft.azure.management.storage.v2019_06_01;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.storage.v2019_06_01.implementation.SkuInner;
+import com.microsoft.azure.management.storage.v2019_06_01.implementation.SkuInformationInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2019_06_01.implementation.StorageManager;
 import java.util.List;
 
 /**
- * Type representing Sku.
+ * Type representing SkuInformation.
  */
-public interface Sku extends HasInner<SkuInner>, HasManager<StorageManager> {
+public interface SkuInformation extends HasInner<SkuInformationInner>, HasManager<StorageManager> {
     /**
      * @return the capabilities value.
      */
