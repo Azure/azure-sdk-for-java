@@ -1,4 +1,5 @@
 # Release History
+
 ## Version XX.X.X (XXXX-XX-XX)
 - Added generateSas methods on service clients to improve discoverability and convenience of sas. Deprecated setters of required parameters, generateSasQueryParameters methods on AccountSasSignatureValues to direct users to using the methods added on clients.
 
