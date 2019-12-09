@@ -39,7 +39,7 @@ public class CosmosUser {
      * @return the cosmos sync user response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserResponse read() throws CosmosClientException {
+    public CosmosUserResponse read() {
         return database.mapUserResponseAndBlock(asyncUser.read());
     }
 
@@ -50,7 +50,7 @@ public class CosmosUser {
      * @return the cosmos sync user response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserResponse replace(CosmosUserProperties userProperties) throws CosmosClientException {
+    public CosmosUserResponse replace(CosmosUserProperties userProperties) {
         return database.mapUserResponseAndBlock(asyncUser.replace(userProperties));
     }
 
@@ -60,7 +60,7 @@ public class CosmosUser {
      * @return the cosmos sync user response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserResponse delete() throws CosmosClientException {
+    public CosmosUserResponse delete() {
         return database.mapUserResponseAndBlock(asyncUser.delete());
     }
 

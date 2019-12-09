@@ -49,7 +49,7 @@ public class CosmosDatabase {
      * @return the {@link CosmosDatabaseResponse}
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosDatabaseResponse read() throws CosmosClientException {
+    public CosmosDatabaseResponse read() {
         return client.mapDatabaseResponseAndBlock((databaseWrapper.read()));
     }
 
@@ -60,7 +60,7 @@ public class CosmosDatabase {
      * @return the {@link CosmosDatabaseResponse}
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosDatabaseResponse read(CosmosDatabaseRequestOptions options) throws CosmosClientException {
+    public CosmosDatabaseResponse read(CosmosDatabaseRequestOptions options) {
         return client.mapDatabaseResponseAndBlock(databaseWrapper.read(options));
     }
 
@@ -70,7 +70,7 @@ public class CosmosDatabase {
      * @return the {@link CosmosDatabaseResponse}
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosDatabaseResponse delete() throws CosmosClientException {
+    public CosmosDatabaseResponse delete() {
         return client.mapDatabaseResponseAndBlock(databaseWrapper.delete());
     }
 
@@ -81,7 +81,7 @@ public class CosmosDatabase {
      * @return the {@link CosmosDatabaseResponse}
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosDatabaseResponse delete(CosmosDatabaseRequestOptions options) throws CosmosClientException {
+    public CosmosDatabaseResponse delete(CosmosDatabaseRequestOptions options) {
         return client.mapDatabaseResponseAndBlock(databaseWrapper.delete(options));
     }
 
@@ -94,8 +94,7 @@ public class CosmosDatabase {
      * @return the {@link CosmosContainerResponse} with the created container.
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse createContainer(CosmosContainerProperties containerProperties)
-                                                                    throws CosmosClientException {
+    public CosmosContainerResponse createContainer(CosmosContainerProperties containerProperties) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties));
     }
 
@@ -107,8 +106,9 @@ public class CosmosDatabase {
      * @return the {@link CosmosContainerResponse} with the created container.
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse createContainer(CosmosContainerProperties containerProperties,
-                                                   int throughput) throws CosmosClientException {
+    public CosmosContainerResponse createContainer(
+        CosmosContainerProperties containerProperties,
+        int throughput) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties, throughput));
     }
 
@@ -120,8 +120,9 @@ public class CosmosDatabase {
      * @return the {@link CosmosContainerResponse} with the created container.
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse createContainer(CosmosContainerProperties containerProperties,
-                                                   CosmosContainerRequestOptions options) throws CosmosClientException {
+    public CosmosContainerResponse createContainer(
+        CosmosContainerProperties containerProperties,
+        CosmosContainerRequestOptions options) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties, options));
     }
 
@@ -134,12 +135,13 @@ public class CosmosDatabase {
      * @return the {@link CosmosContainerResponse} with the created container.
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse createContainer(CosmosContainerProperties containerProperties,
-                                                   int throughput,
-                                                   CosmosContainerRequestOptions options) throws CosmosClientException {
+    public CosmosContainerResponse createContainer(
+        CosmosContainerProperties containerProperties,
+        int throughput,
+        CosmosContainerRequestOptions options) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties,
-            throughput,
-            options));
+                                                                                 throughput,
+                                                                                 options));
     }
 
     /**
@@ -150,7 +152,7 @@ public class CosmosDatabase {
      * @return the cosmos sync container response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse createContainer(String id, String partitionKeyPath) throws CosmosClientException {
+    public CosmosContainerResponse createContainer(String id, String partitionKeyPath) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(id, partitionKeyPath));
     }
 
@@ -163,8 +165,7 @@ public class CosmosDatabase {
      * @return the cosmos sync container response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse createContainer(String id, String partitionKeyPath, int throughput)
-                                                                        throws CosmosClientException {
+    public CosmosContainerResponse createContainer(String id, String partitionKeyPath, int throughput) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(id, partitionKeyPath, throughput));
     }
 
@@ -175,8 +176,7 @@ public class CosmosDatabase {
      * @return the cosmos sync container response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse createContainerIfNotExists(CosmosContainerProperties containerProperties)
-        throws CosmosClientException {
+    public CosmosContainerResponse createContainerIfNotExists(CosmosContainerProperties containerProperties) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(containerProperties));
     }
 
@@ -188,10 +188,11 @@ public class CosmosDatabase {
      * @return the cosmos sync container response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse createContainerIfNotExists(CosmosContainerProperties containerProperties,
-                                                              int throughput) throws CosmosClientException {
+    public CosmosContainerResponse createContainerIfNotExists(
+        CosmosContainerProperties containerProperties,
+        int throughput) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(containerProperties,
-            throughput));
+                                                                                            throughput));
     }
 
     /**
@@ -202,8 +203,9 @@ public class CosmosDatabase {
      * @return the cosmos sync container response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse createContainerIfNotExists(String id,
-                                                              String partitionKeyPath) throws CosmosClientException {
+    public CosmosContainerResponse createContainerIfNotExists(
+        String id,
+        String partitionKeyPath) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(id, partitionKeyPath));
     }
 
@@ -216,11 +218,12 @@ public class CosmosDatabase {
      * @return the cosmos sync container response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse createContainerIfNotExists(String id, String partitionKeyPath,
-                                                              int throughput) throws CosmosClientException {
+    public CosmosContainerResponse createContainerIfNotExists(
+        String id, String partitionKeyPath,
+        int throughput) {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainerIfNotExists(id,
-            partitionKeyPath,
-            throughput));
+                                                                                            partitionKeyPath,
+                                                                                            throughput));
     }
 
     /**
@@ -230,8 +233,7 @@ public class CosmosDatabase {
      * @return the cosmos sync container response
      * @throws CosmosClientException the cosmos client exception
      */
-    CosmosContainerResponse mapContainerResponseAndBlock(Mono<CosmosAsyncContainerResponse> containerMono)
-        throws CosmosClientException {
+    CosmosContainerResponse mapContainerResponseAndBlock(Mono<CosmosAsyncContainerResponse> containerMono) {
         try {
             return containerMono
                        .map(this::convertResponse)
@@ -313,8 +315,9 @@ public class CosmosDatabase {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(SqlQuerySpec querySpec,
-                                                                             FeedOptions options) {
+    public Iterator<FeedResponse<CosmosContainerProperties>> queryContainers(
+        SqlQuerySpec querySpec,
+        FeedOptions options) {
         return databaseWrapper.queryContainers(querySpec, options)
                    .toIterable()
                    .iterator();
@@ -349,7 +352,7 @@ public class CosmosDatabase {
      * @return the cosmos sync user response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserResponse createUser(CosmosUserProperties settings) throws CosmosClientException {
+    public CosmosUserResponse createUser(CosmosUserProperties settings) {
         return mapUserResponseAndBlock(databaseWrapper.createUser(settings));
     }
 
@@ -360,7 +363,7 @@ public class CosmosDatabase {
      * @return the cosmos sync user response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserResponse upsertUser(CosmosUserProperties settings) throws CosmosClientException {
+    public CosmosUserResponse upsertUser(CosmosUserProperties settings) {
         return mapUserResponseAndBlock(databaseWrapper.upsertUser(settings));
     }
 
@@ -435,8 +438,7 @@ public class CosmosDatabase {
         return new CosmosUser(databaseWrapper.getUser(id), this, id);
     }
 
-    CosmosUserResponse mapUserResponseAndBlock(Mono<CosmosAsyncUserResponse> containerMono)
-        throws CosmosClientException {
+    CosmosUserResponse mapUserResponseAndBlock(Mono<CosmosAsyncUserResponse> containerMono) {
         try {
             return containerMono.map(this::convertUserResponse).block();
         } catch (Exception ex) {
@@ -459,7 +461,7 @@ public class CosmosDatabase {
      * @return the integer. null response indicates database doesn't have any provisioned RUs
      * @throws CosmosClientException the cosmos client exception
      */
-    public Integer readProvisionedThroughput() throws CosmosClientException {
+    public Integer readProvisionedThroughput() {
         return throughputResponseToBlock(databaseWrapper.readProvisionedThroughput());
     }
 
@@ -470,11 +472,11 @@ public class CosmosDatabase {
      * @return the integer
      * @throws CosmosClientException the cosmos client exception
      */
-    public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) throws CosmosClientException {
+    public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) {
         return throughputResponseToBlock(databaseWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
     }
 
-    Integer throughputResponseToBlock(Mono<Integer> throughputResponse) throws CosmosClientException {
+    Integer throughputResponseToBlock(Mono<Integer> throughputResponse) {
         try {
             return throughputResponse.block();
         } catch (Exception ex) {

@@ -115,7 +115,7 @@ public class JsonSerializable {
     }
 
     @JsonIgnore
-    public ClientLogger getLogger() {
+    protected ClientLogger getLogger() {
         return logger;
     }
 

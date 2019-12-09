@@ -37,10 +37,10 @@ public class CosmosScripts {
      * @return the cosmos sync stored procedure response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosStoredProcedureResponse createStoredProcedure(CosmosStoredProcedureProperties properties)
-        throws CosmosClientException {
-        return mapStoredProcedureResponseAndBlock(asyncScripts.createStoredProcedure(properties,
-            new CosmosStoredProcedureRequestOptions()));
+    public CosmosStoredProcedureResponse createStoredProcedure(CosmosStoredProcedureProperties properties) {
+        return mapStoredProcedureResponseAndBlock(
+            asyncScripts.createStoredProcedure(properties, new CosmosStoredProcedureRequestOptions())
+        );
     }
 
     /**
@@ -51,11 +51,11 @@ public class CosmosScripts {
      * @return the cosmos sync stored procedure response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosStoredProcedureResponse createStoredProcedure(CosmosStoredProcedureProperties properties,
-                                                               CosmosStoredProcedureRequestOptions options)
-                                                                throws CosmosClientException {
+    public CosmosStoredProcedureResponse createStoredProcedure(
+        CosmosStoredProcedureProperties properties,
+        CosmosStoredProcedureRequestOptions options) {
         return mapStoredProcedureResponseAndBlock(asyncScripts.createStoredProcedure(properties,
-            options));
+                                                                                     options));
     }
 
     /**
@@ -75,8 +75,9 @@ public class CosmosScripts {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosStoredProcedureProperties>> queryStoredProcedures(String query,
-                                                                                         FeedOptions options) {
+    public Iterator<FeedResponse<CosmosStoredProcedureProperties>> queryStoredProcedures(
+        String query,
+        FeedOptions options) {
         return getFeedIterator(asyncScripts.queryStoredProcedures(query, options));
     }
 
@@ -87,8 +88,9 @@ public class CosmosScripts {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosStoredProcedureProperties>> queryStoredProcedures(SqlQuerySpec querySpec,
-                                                                                         FeedOptions options) {
+    public Iterator<FeedResponse<CosmosStoredProcedureProperties>> queryStoredProcedures(
+        SqlQuerySpec querySpec,
+        FeedOptions options) {
         return getFeedIterator(asyncScripts.queryStoredProcedures(querySpec, options));
 
     }
@@ -101,8 +103,8 @@ public class CosmosScripts {
      */
     public CosmosStoredProcedure getStoredProcedure(String id) {
         return new CosmosStoredProcedure(id,
-            this.container,
-            asyncScripts.getStoredProcedure(id));
+                                         this.container,
+                                         asyncScripts.getStoredProcedure(id));
     }
 
 
@@ -115,8 +117,7 @@ public class CosmosScripts {
      * @return the cosmos sync user defined function response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserDefinedFunctionResponse createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties)
-                                                                                        throws CosmosClientException {
+    public CosmosUserDefinedFunctionResponse createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties) {
         return mapUDFResponseAndBlock(asyncScripts.createUserDefinedFunction(properties));
     }
 
@@ -127,7 +128,7 @@ public class CosmosScripts {
      * @return the iterator
      */
     public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> readAllUserDefinedFunctions(
-                                                                                                FeedOptions options) {
+        FeedOptions options) {
         return getFeedIterator(asyncScripts.readAllUserDefinedFunctions(options));
     }
 
@@ -138,8 +139,9 @@ public class CosmosScripts {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> queryUserDefinedFunctions(String query,
-                                                                                                 FeedOptions options) {
+    public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> queryUserDefinedFunctions(
+        String query,
+        FeedOptions options) {
         return getFeedIterator(asyncScripts.queryUserDefinedFunctions(new SqlQuerySpec(query), options));
     }
 
@@ -150,8 +152,9 @@ public class CosmosScripts {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> queryUserDefinedFunctions(SqlQuerySpec querySpec,
-                                                                                                 FeedOptions options) {
+    public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> queryUserDefinedFunctions(
+        SqlQuerySpec querySpec,
+        FeedOptions options) {
         return getFeedIterator(asyncScripts.queryUserDefinedFunctions(querySpec, options));
     }
 
@@ -163,8 +166,8 @@ public class CosmosScripts {
      */
     public CosmosUserDefinedFunction getUserDefinedFunction(String id) {
         return new CosmosUserDefinedFunction(id,
-            this.container,
-            asyncScripts.getUserDefinedFunction(id));
+                                             this.container,
+                                             asyncScripts.getUserDefinedFunction(id));
     }
 
     /**
@@ -175,7 +178,7 @@ public class CosmosScripts {
      * @throws CosmosClientException the cosmos client exception
      */
     /* Trigger Operations */
-    public CosmosTriggerResponse createTrigger(CosmosTriggerProperties properties) throws CosmosClientException {
+    public CosmosTriggerResponse createTrigger(CosmosTriggerProperties properties) {
         return mapTriggerResponseAndBlock(asyncScripts.createTrigger(properties));
     }
 
@@ -207,8 +210,9 @@ public class CosmosScripts {
      * @param options the options
      * @return the iterator
      */
-    public Iterator<FeedResponse<CosmosTriggerProperties>> queryTriggers(SqlQuerySpec querySpec,
-                                                                         FeedOptions options) {
+    public Iterator<FeedResponse<CosmosTriggerProperties>> queryTriggers(
+        SqlQuerySpec querySpec,
+        FeedOptions options) {
         return getFeedIterator(asyncScripts.queryTriggers(querySpec, options));
     }
 
@@ -220,8 +224,8 @@ public class CosmosScripts {
      */
     public CosmosTrigger getTrigger(String id) {
         return new CosmosTrigger(id,
-            this.container,
-            asyncScripts.getTrigger(id));
+                                 this.container,
+                                 asyncScripts.getTrigger(id));
     }
 
     /**
@@ -232,7 +236,7 @@ public class CosmosScripts {
      * @throws CosmosClientException the cosmos client exception
      */
     CosmosStoredProcedureResponse mapStoredProcedureResponseAndBlock(
-        Mono<CosmosAsyncStoredProcedureResponse> storedProcedureResponseMono) throws CosmosClientException {
+        Mono<CosmosAsyncStoredProcedureResponse> storedProcedureResponseMono) {
         try {
             return storedProcedureResponseMono
                        .map(this::convertResponse)
@@ -268,8 +272,8 @@ public class CosmosScripts {
      * @return the cosmos sync user defined function response
      * @throws CosmosClientException the cosmos client exception
      */
-    CosmosUserDefinedFunctionResponse mapUDFResponseAndBlock(Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono)
-        throws CosmosClientException {
+    CosmosUserDefinedFunctionResponse mapUDFResponseAndBlock(
+        Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono) {
         try {
             return responseMono
                        .map(this::convertResponse)
@@ -293,7 +297,8 @@ public class CosmosScripts {
     CosmosUserDefinedFunctionResponse convertResponse(CosmosAsyncUserDefinedFunctionResponse response) {
         if (response.getUserDefinedFunction() != null) {
             return new CosmosUserDefinedFunctionResponse(response,
-                getUserDefinedFunction(response.getUserDefinedFunction().getId()));
+                                                         getUserDefinedFunction(response.getUserDefinedFunction()
+                                                                                    .getId()));
         } else {
             return new CosmosUserDefinedFunctionResponse(response, null);
         }
@@ -308,8 +313,7 @@ public class CosmosScripts {
      * @return the cosmos sync trigger response
      * @throws CosmosClientException the cosmos client exception
      */
-    CosmosTriggerResponse mapTriggerResponseAndBlock(Mono<CosmosAsyncTriggerResponse> responseMono)
-        throws CosmosClientException {
+    CosmosTriggerResponse mapTriggerResponseAndBlock(Mono<CosmosAsyncTriggerResponse> responseMono) {
         try {
             return responseMono
                        .map(this::convertResponse)
@@ -333,7 +337,7 @@ public class CosmosScripts {
     CosmosTriggerResponse convertResponse(CosmosAsyncTriggerResponse response) {
         if (response.getTrigger() != null) {
             return new CosmosTriggerResponse(response,
-                getTrigger(response.getTrigger().getId()));
+                                             getTrigger(response.getTrigger().getId()));
         } else {
             return new CosmosTriggerResponse(response, null);
         }

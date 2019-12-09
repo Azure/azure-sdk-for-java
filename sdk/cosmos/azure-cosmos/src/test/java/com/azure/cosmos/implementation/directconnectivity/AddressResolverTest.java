@@ -216,7 +216,7 @@ public class AddressResolverTest {
         try {
             resolvedAddresses = this.addressResolver.resolveAsync(request, forceAddressRefresh).block();
         } catch (RuntimeException e) {
-            throw (Exception) e.getCause();
+            throw e;
         } finally {
             assertThat(collectionCacheRefreshed).isEqualTo(collectionCacheRefreshedCount).describedAs("collection cache refresh count mismath");
 
@@ -283,7 +283,7 @@ public class AddressResolverTest {
         try {
             resolvedAddresses = this.addressResolver.resolveAsync(request, forceAddressRefresh).block();
         } catch (RuntimeException e) {
-            throw (Exception) e.getCause();
+            throw e;
         } finally {
             assertThat(collectionCacheRefreshed).isEqualTo(collectionCacheRefreshedCount).describedAs("collection cache refresh count mismath");
 

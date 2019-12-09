@@ -50,7 +50,7 @@ public class CosmosContainer {
      * @return the cosmos sync container response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse read() throws CosmosClientException {
+    public CosmosContainerResponse read() {
         return database.mapContainerResponseAndBlock(this.containerWrapper.read());
     }
 
@@ -61,7 +61,7 @@ public class CosmosContainer {
      * @return the cosmos sync container response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse read(CosmosContainerRequestOptions options) throws CosmosClientException {
+    public CosmosContainerResponse read(CosmosContainerRequestOptions options) {
         return database.mapContainerResponseAndBlock(this.containerWrapper.read(options));
     }
 
@@ -72,7 +72,7 @@ public class CosmosContainer {
      * @return the cosmos sync container response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse delete(CosmosContainerRequestOptions options) throws CosmosClientException {
+    public CosmosContainerResponse delete(CosmosContainerRequestOptions options) {
         return database.mapContainerResponseAndBlock(this.containerWrapper.delete(options));
     }
 
@@ -82,7 +82,7 @@ public class CosmosContainer {
      * @return the cosmos sync container response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse delete() throws CosmosClientException {
+    public CosmosContainerResponse delete() {
         return database.mapContainerResponseAndBlock(this.containerWrapper.delete());
     }
 
@@ -93,7 +93,7 @@ public class CosmosContainer {
      * @return the cosmos sync container response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosContainerResponse replace(CosmosContainerProperties containerProperties) throws CosmosClientException {
+    public CosmosContainerResponse replace(CosmosContainerProperties containerProperties) {
         return database.mapContainerResponseAndBlock(this.containerWrapper.replace(containerProperties));
     }
 
@@ -106,7 +106,7 @@ public class CosmosContainer {
      * @throws CosmosClientException the cosmos client exception
      */
     public CosmosContainerResponse replace(CosmosContainerProperties containerProperties,
-                                           CosmosContainerRequestOptions options) throws CosmosClientException {
+                                           CosmosContainerRequestOptions options) {
         return database.mapContainerResponseAndBlock(this.containerWrapper.replace(containerProperties, options));
     }
 
@@ -116,7 +116,7 @@ public class CosmosContainer {
      * @return the integer. null response indicates database doesn't have any provisioned RUs
      * @throws CosmosClientException the cosmos client exception
      */
-    public Integer readProvisionedThroughput() throws CosmosClientException {
+    public Integer readProvisionedThroughput() {
         return database.throughputResponseToBlock(this.containerWrapper.readProvisionedThroughput());
     }
 
@@ -127,7 +127,7 @@ public class CosmosContainer {
      * @return the integer
      * @throws CosmosClientException the cosmos client exception
      */
-    public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) throws CosmosClientException {
+    public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) {
         return database.throughputResponseToBlock(this.containerWrapper
                                                       .replaceProvisionedThroughput(requestUnitsPerSecond));
     }
@@ -142,7 +142,7 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItemResponse createItem(Object item) throws CosmosClientException {
+    public CosmosItemResponse createItem(Object item) {
         return this.mapItemResponseAndBlock(this.containerWrapper.createItem(item));
     }
 
@@ -154,7 +154,7 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItemResponse createItem(Object item, CosmosItemRequestOptions options) throws CosmosClientException {
+    public CosmosItemResponse createItem(Object item, CosmosItemRequestOptions options) {
         return this.mapItemResponseAndBlock(this.containerWrapper.createItem(item, options));
     }
 
@@ -165,7 +165,7 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItemResponse upsertItem(Object item) throws CosmosClientException {
+    public CosmosItemResponse upsertItem(Object item) {
         return this.mapItemResponseAndBlock(this.containerWrapper.upsertItem(item));
     }
 
@@ -177,7 +177,7 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItemResponse upsertItem(Object item, CosmosItemRequestOptions options) throws CosmosClientException {
+    public CosmosItemResponse upsertItem(Object item, CosmosItemRequestOptions options) {
         return this.mapItemResponseAndBlock(this.containerWrapper.createItem(item, options));
     }
 
@@ -188,8 +188,7 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    CosmosItemResponse mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse> itemMono)
-        throws CosmosClientException {
+    CosmosItemResponse mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse> itemMono) {
         try {
             return itemMono
                        .map(this::convertResponse)
