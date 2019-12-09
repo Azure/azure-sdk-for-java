@@ -23,6 +23,7 @@ public class TestContextManager {
      * Constructs a {@link TestContextManager} based on the test method.
      *
      * @param testMethod Test method being ran.
+     * @param testMode The {@link TestMode} the test is running in.
      */
     public TestContextManager(Method testMethod, TestMode testMode) {
         this.testName = testMethod.getName();
