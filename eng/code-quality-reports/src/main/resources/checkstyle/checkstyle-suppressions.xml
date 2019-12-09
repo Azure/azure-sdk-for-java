@@ -261,4 +261,8 @@
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]test[/\\].*" />
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]samples[/\\].*" />
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]implementation[/\\].*" />
+
+  <!-- Suppress the check on any implementation code and codegen classes -->
+  <suppress checks="LineLength" files=".*[/\\]textanalytics[/\\].*implementation[/\\].*"/>
+
 </suppressions>
