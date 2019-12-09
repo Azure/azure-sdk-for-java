@@ -904,6 +904,7 @@ public final class QueueAsyncClient {
 
     /**
      * Generates a service sas for the queue using the specified {@link QueueServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link QueueServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
