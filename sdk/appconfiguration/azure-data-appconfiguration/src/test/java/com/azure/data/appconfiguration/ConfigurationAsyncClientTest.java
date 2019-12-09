@@ -476,7 +476,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeys(key, key2)))
+            StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeys(key + "," + key2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .verifyComplete();
@@ -506,7 +506,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeys(key).setLabels(label, label2)))
+            StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeys(key).setLabels(label + "," + label2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .verifyComplete();
@@ -637,7 +637,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(testInput.get(3), response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(key, key2)))
+            StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(key + "," + key2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
@@ -676,7 +676,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(testInput.get(3), response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(key).setLabels(label, label2)))
+            StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(key).setLabels(label + "," + label2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
@@ -866,6 +866,9 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client.listConfigurationSettings(new SettingSelector().setKeys("*"))
             .flatMap(configurationSetting -> {
                 logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
+//                if (configurationSetting.isReadOnly()) {
+//                    client.setReadOnlyWithResponse(configurationSetting, false);
+//                }
                 return client.deleteConfigurationSettingWithResponse(configurationSetting, false);
             }).blockLast();
     }

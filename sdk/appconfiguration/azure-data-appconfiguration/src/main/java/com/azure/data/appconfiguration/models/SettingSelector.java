@@ -32,8 +32,8 @@ import java.time.format.DateTimeFormatter;
  */
 @Fluent
 public class SettingSelector {
-    private String[] keys;
-    private String[] labels;
+    private String keys;
+    private String labels;
     private SettingFields[] fields;
     private String acceptDatetime;
 
@@ -58,8 +58,8 @@ public class SettingSelector {
      *
      * @return The expressions to filter ConfigurationSetting keys on.
      */
-    public String[] getKeys() {
-        return keys == null ? new String[0] : CoreUtils.clone(keys);
+    public String getKeys() {
+        return keys == null ? "" : keys;
     }
 
     /**
@@ -78,7 +78,7 @@ public class SettingSelector {
      * @param keys The expressions to filter ConfigurationSetting keys on.
      * @return The updated SettingSelector object
      */
-    public SettingSelector setKeys(String... keys) {
+    public SettingSelector setKeys(String keys) {
         this.keys = keys;
         return this;
     }
@@ -105,8 +105,8 @@ public class SettingSelector {
      *
      * @return labels The labels used to filter GET requests from the service.
      */
-    public String[] getLabels() {
-        return labels == null ? new String[0] : CoreUtils.clone(labels);
+    public String getLabels() {
+        return labels == null ? "" : labels;
     }
 
     /**
@@ -127,7 +127,7 @@ public class SettingSelector {
      * ConfigurationSettings will be returned regardless of their label.
      * @return SettingSelector The updated SettingSelector object.
      */
-    public SettingSelector setLabels(String... labels) {
+    public SettingSelector setLabels(String labels) {
         this.labels = labels;
         return this;
     }
@@ -188,9 +188,6 @@ public class SettingSelector {
         }
 
         return String.format("SettingSelector(keys=%s, labels=%s, acceptDateTime=%s, fields=%s)",
-            CoreUtils.arrayToString(this.keys, key -> key),
-            CoreUtils.arrayToString(this.labels, label -> label),
-            this.acceptDatetime,
-            fields);
+            this.keys, this.labels, this.acceptDatetime, fields);
     }
 }

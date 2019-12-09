@@ -375,7 +375,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(setting, client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue());
             assertConfigurationEquals(setting2, client.addConfigurationSettingWithResponse(setting2, Context.NONE).getValue());
 
-            return client.listConfigurationSettings(new SettingSelector().setKeys(key, key2));
+            return client.listConfigurationSettings(new SettingSelector().setKeys(key + "," + key2));
         });
     }
 
@@ -393,7 +393,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(setting, client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue());
             assertConfigurationEquals(setting2, client.addConfigurationSettingWithResponse(setting2, Context.NONE).getValue());
 
-            return client.listConfigurationSettings(new SettingSelector().setKeys(key).setLabels(label, label2));
+            return client.listConfigurationSettings(new SettingSelector().setKeys(key).setLabels(label + "," + label2));
         });
     }
 
@@ -483,7 +483,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(testInput.get(2), client.addConfigurationSettingWithResponse(testInput.get(2), Context.NONE).getValue());
             assertConfigurationEquals(testInput.get(3), client.setConfigurationSettingWithResponse(testInput.get(3), false, Context.NONE).getValue());
 
-            return client.listRevisions(new SettingSelector().setKeys(key, key2));
+            return client.listRevisions(new SettingSelector().setKeys(key + "," + key2));
         });
     }
 
@@ -502,7 +502,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(testInput.get(2), client.addConfigurationSettingWithResponse(testInput.get(2), Context.NONE).getValue());
             assertConfigurationEquals(testInput.get(3), client.setConfigurationSettingWithResponse(testInput.get(3), false, Context.NONE).getValue());
 
-            return client.listRevisions(new SettingSelector().setKeys(key).setLabels(label, label2));
+            return client.listRevisions(new SettingSelector().setKeys(key).setLabels(label + "," + label2));
         });
     }
 

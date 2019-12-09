@@ -586,8 +586,8 @@ public final class ConfigurationAsyncClient {
             }
 
             String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-            String keys = CoreUtils.arrayToString(selector.getKeys(), key -> key);
-            String labels = CoreUtils.arrayToString(selector.getLabels(), label -> label);
+            String keys = selector.getKeys();
+            String labels = selector.getLabels();
 
             return service.listKeyValues(serviceEndpoint, keys, labels, apiVersion, fields,
                 selector.getAcceptDateTime(), context)
@@ -634,8 +634,8 @@ public final class ConfigurationAsyncClient {
 
             if (selector != null) {
                 String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-                String keys = CoreUtils.arrayToString(selector.getKeys(), key -> key);
-                String labels = CoreUtils.arrayToString(selector.getLabels(), label -> label);
+                String keys = selector.getKeys();
+                String labels = selector.getLabels();
 
                 result = service.listKeyValueRevisions(
                     serviceEndpoint, keys, labels, apiVersion, fields, selector.getAcceptDateTime(), null, context)
