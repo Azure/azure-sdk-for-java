@@ -7,29 +7,43 @@ parameters:
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.8'
+      DisplayName: '$(OSName) on Java $(JavaVersion)'
     macOS - Java 8:
       OSName: 'macOS'
       OSVmImage: 'macOS-10.13'
       JavaVersion: '1.8'
+      DisplayName: '$(OSName) on Java $(JavaVersion)'
     Windows - Java 8:
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
+      DisplayName: '$(OSName) on Java $(JavaVersion)'
     Linux - Java 11:
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.11'
+      DisplayName: '$(OSName) on Java $(JavaVersion)'
     macOS - Java 11:
       OSName: 'macOS'
       OSVmImage: 'macOS-10.13'
       JavaVersion: '1.11'
+      DisplayName: '$(OSName) on Java $(JavaVersion)'
     Windows - Java 11:
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
+      DisplayName: '$(OSName) on Java $(JavaVersion)'
   PreRunSteps: []
   TestName: LiveTest
   TimeoutInMinutes: 60
+  TestStepMavenInputs:
+    options: '-Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3 $(DefaultOptions)'
+    mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '$(JavaVersion)'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    goals: 'test'  
   TestResultsFiles: ''
 
 jobs:
@@ -49,22 +63,16 @@ jobs:
       - ${{ parameters.PreRunSteps }}
 
       - task: Maven@3
-        displayName: 'Run Live tests'
+        displayName: $(DisplayName)
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: '--batch-mode --fail-at-end -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3 --settings eng/settings.xml'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'test'
+          ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 
       - task: PublishTestResults@2
         condition: succeededOrFailed()
         inputs:
           mergeTestResults: true
-          testRunTitle: 'Live tests for $(OSName) on Java $(JavaVersion)'
+          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(DisplayName)'
           ${{ if ne(parameters.TestResultsFiles, '') }}:
             testResultsFiles: ${{ parameters.TestResultsFiles }}
