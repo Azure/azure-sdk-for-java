@@ -5,7 +5,7 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -136,8 +136,8 @@ public final class KeyClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
-            buildConfiguration, serviceVersion));
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
+            buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));
@@ -273,7 +273,7 @@ public final class KeyClientBuilder {
         }
 
         String configEndpoint = configuration.get("AZURE_KEYVAULT_ENDPOINT");
-        if (ImplUtils.isNullOrEmpty(configEndpoint)) {
+        if (CoreUtils.isNullOrEmpty(configEndpoint)) {
             return null;
         }
 

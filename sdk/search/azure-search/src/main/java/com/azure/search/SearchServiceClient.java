@@ -21,6 +21,9 @@ import com.azure.search.models.Skillset;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.TokenInfo;
 
+/**
+ * TODO: Add class description
+ */
 @ServiceClient(builder = SearchServiceClientBuilder.class)
 public class SearchServiceClient {
 

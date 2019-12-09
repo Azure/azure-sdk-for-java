@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Represents Merge Certificate Configuration to merge certificates in key vault.
  */
-public class MergeCertificateOptions {
+public final class MergeCertificateOptions {
 
     /**
      * The name of the certificate.
@@ -31,6 +31,12 @@ public class MergeCertificateOptions {
      */
     private Map<String, String> tags;
 
+    /**
+     * Creates a new MergeCertificationOptions instance.
+     *
+     * @param certificateName The name of the certificate.
+     * @param x509Certificates The certificate or the certificate chain to merge.
+     */
     public MergeCertificateOptions(String certificateName, List<byte[]> x509Certificates) {
         this.certificateName = certificateName;
         this.x509Certificates = x509Certificates;

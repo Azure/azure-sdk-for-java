@@ -283,6 +283,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="scope" value="protected"/>
       <property name="suppressLoadErrors" value="true"/>
     </module>
+    <module name="MissingJavadocMethod"/>
+    <module name="MissingJavadocType"/>
+    <module name="MissingJavadocPackage"/>
+
 
     <!-- Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown. -->
     <!-- The check verifies both checked (in the throws clause) and unchecked throws -->
@@ -377,6 +381,16 @@ page at http://checkstyle.sourceforge.net/config.html -->
       'System.out' and 'System.err' is not allowed as well.
     4) All classes should use ClientLogger as logger only but except ClientLogger itself -->
     <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Public API classes should follow Camelcase rules: -->
+    <!-- 1. ClassName -->
+    <!-- 2. methodName -->
+    <!-- 3. variableName -->
+    <!-- 4. longerVariableOrMethodName -->
+    <module name="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck">
+      <property name="blacklistedWords" value="URL, HTTP, XML, JSON, SAS, CPK, API" />
+    </module>
 
     <!-- CUSTOM CHECKS -->
     <!-- Fluent method checks:

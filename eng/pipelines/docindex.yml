@@ -1,0 +1,205 @@
+resources:
+  repositories:
+    - repository: azure-sdk-tools
+      type: github
+      name: azure/azure-sdk-tools
+      ref: refs/heads/master
+      endpoint: azure
+
+jobs:
+  - job: CreateDocIndex
+    variables:
+      - template: templates/variables/globals.yml
+    pool:
+      vmImage: windows-2019
+    steps:
+      - pwsh: |
+          Invoke-WebRequest -Uri "https://github.com/dotnet/docfx/releases/download/v2.43.2/docfx.zip" `
+          -OutFile "docfx.zip" | Wait-Process; Expand-Archive -Path "docfx.zip" -DestinationPath "./docfx/"
+        workingDirectory: $(Build.BinariesDirectory)
+        displayName: Download and Extract DocFX
+      - task: CmdLine@2
+        displayName: Provision DocFX Directory
+        inputs:
+          script: $(Build.BinariesDirectory)/docfx/docfx.exe init -q
+          workingDirectory: $(Build.SourcesDirectory)
+          failOnStderr: true
+      - pwsh: New-Item -Path . -Name "templates" -ItemType "directory"
+        displayName: Create Template Directory
+        workingDirectory: $(Build.SourcesDirectory)/docfx_project/
+      - task: CopyFiles@2
+        displayName: Copy Template to templates folder
+        inputs:
+          sourceFolder: $(Build.SourcesDirectory)/eng/docgeneration/templates
+          content: '**\*'
+          targetFolder: $(Build.SourcesDirectory)/docfx_project/templates
+          overWrite: true
+      - pwsh: ls
+        workingDirectory: $(Build.SourcesDirectory)/docfx_project/
+      - pwsh: ls
+        workingDirectory: $(Build.SourcesDirectory)/docfx_project/templates
+      - pwsh: |
+          Copy-Item "$(Build.SourcesDirectory)/eng/docgeneration/docfx.json" -Destination "$(Build.SourcesDirectory)/docfx_project/" -Force
+        displayName: Copy over docfx.json
+      - pwsh: |
+
+          # The service mapper is used to map the directory names to the service names to produce
+          # a more friendly index. If something isn't in the mapper then the default will just be
+          # the service name in all caps
+          $serviceMapHash = Get-Content -Path "$(Build.SourcesDirectory)/eng/docgeneration/service-mapper.json" | ConvertFrom-Json -AsHashtable
+
+          # There are some artifact that show up, due to the way we do discovery, that are never shipped.
+          # Keep a list of those here and anything we don't want to ship can be added to here which will
+          # cause them to get skipped when generating the DocIndex
+          $ArtifactsToSkip = (
+            'azure-cosmos-benchmark',
+            'azure-sdk-template'
+          )
+
+          # The list of services is being constructed from the directory list under the sdk folder
+          # which, right now, only contains client/data directories. When management is moved to
+          # the under sdk it'll automatically get picked up.
+          $ServiceListData = Get-ChildItem "$(Build.SourcesDirectory)/sdk" -Directory
+          $YmlPath = "$(Build.SourcesDirectory)/docfx_project/api"
+          New-Item -Path $YmlPath -Name "toc.yml" -Force
+          foreach ($Dir in $ServiceListData)
+          {   
+              $mappedDir = ""
+              if ($serviceMapHash.ContainsKey($Dir.Name)) 
+              {
+                  $mappedDir = $serviceMapHash[$Dir.Name]
+              }
+              else
+              {
+                  $mappedDir = $Dir.Name.ToUpper()
+              }
+
+              # Store the list of artifacts into the arrays and write them into the .md file
+              # after processing the list of subdirectories. This will allow the correct 
+              # division of the artifacts under the Client or Management headings
+              $clientArr = @()
+              $mgmtArr = @()
+
+              $PkgList = Get-ChildItem $Dir.FullName -Directory -Exclude changelog, faq, .github, build
+              if (($PkgList | Measure-Object).count -eq 0)
+              {
+                  continue
+              }
+              foreach ($Pkg in $PkgList)
+              {
+                  # Load the pom file to pull the artifact name and grab the
+                  # parent's relative path to see which parent pom is being
+                  # used to determine whether or not the artifact is client 
+                  # or management.
+                  $PomPath = Join-Path -Path $Pkg -ChildPath "pom.xml"
+
+                  # no pom file = nothing to process
+                  if (Test-Path -path $PomPath) 
+                  {
+                      $xml = New-Object xml
+                      $xml.Load($PomPath)
+
+                      # Get the artifactId from the POM
+                      $artifactId = $xml.project.artifactId
+
+                      $parent = $xml.project.parent.relativePath
+
+                      # If this is an artifact that isn't shipping then just
+                      # move on to the next one
+                      if ($ArtifactsToSkip -contains $artifactId)
+                      {
+                          Write-Output "skipping $artifactId"
+                          continue
+                      }
+
+                      # If the parent is null or empty then the pom isn't directly including 
+                      # one of the pom.[client|data|management].xml and needs to be specially
+                      # handled
+                      if (("" -eq $parent) -or ($null -eq $parent))
+                      {
+                          # Cosmos has a root pom which includes pom.client.xml that won't
+                          # be detected by this logic. It's easier to deal with specially
+                          # than it is to try and climb the pom chain here.
+                          if ($Dir.BaseName -eq 'cosmos') 
+                          {
+                              $clientArr += $artifactId
+                          } 
+                          else 
+                          {
+                              Write-Host "*snowflake* Pom $PomPath, has a null or empty relative path."
+                          }
+                      } 
+                      else 
+                      {
+                          if (($parent.IndexOf('pom.client.xml') -ne -1) -or ($parent.IndexOf('pom.data.xml') -ne -1))
+                          {
+                              $clientArr += $artifactId
+                          } 
+                          else 
+                          {
+                              $mgmtArr += $artifactId
+                          }
+                      }
+                  }
+              }
+              # Only create this if there's something to create
+              if (($clientArr.Count -gt 0) -or ($mgmtArr.Count -gt 0))
+              {
+                New-Item -Path $YmlPath -Name "$($Dir.Name).md" -Force
+                Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: $($mappedDir)`r`n  href: $($Dir.Name).md"
+                # loop through the arrays and add the appropriate artifacts under the appropriate headings
+                if ($clientArr.Count -gt 0)
+                {
+                    Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# Client Libraries"
+                    foreach($lib in $clientArr) 
+                    {
+                        Write-Host "Write $($lib) to $($Dir.Name).md"
+                        Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $lib"
+                    }
+                }
+                if ($mgmtArr.Count -gt 0) 
+                {
+                    Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# Management Libraries"
+                    foreach($lib in $clientArr) 
+                    {
+                        Write-Output "Write $($lib) to $($Dir.Name).md"
+                        Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $lib"
+                    }
+                }
+              }
+          }
+
+          New-Item -Path "$(Build.SourcesDirectory)/docfx_project" -Name "toc.yml" -Force
+          Add-Content -Path "$(Build.SourcesDirectory)/docfx_project/toc.yml" -Value "- name: Azure SDK for Java APIs`r`n  href: api/`r`n  homepage: api/index.md"
+          Copy-Item "$(Build.SourcesDirectory)/README.md" -Destination "$(Build.SourcesDirectory)/docfx_project/api/index.md" -Force
+        displayName: Create main index and navigation toc.yml, copy over readme.
+      - pwsh: ls
+        workingDirectory: $(Build.SourcesDirectory)/docfx_project/api
+      - task: CmdLine@2
+        displayName: Build Doc Content
+        inputs:
+          script: $(Build.BinariesDirectory)/docfx/docfx.exe build
+          workingDirectory: $(Build.SourcesDirectory)/docfx_project/
+          failOnStderr: true
+      - pwsh: |
+          Copy-Item "$(Build.SourcesDirectory)/eng/docgeneration/assets/*" -Destination "$(Build.SourcesDirectory)/docfx_project/_site/" -Force
+        displayName: Replace site assets
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+      - template: eng/pipelines/templates/scripts/mashup-doc-index.yml@azure-sdk-tools
+        parameters:
+          SourceDirectory: $(Build.SourcesDirectory)        
+      - task: CopyFiles@2
+        displayName: Copy HTML to Artifacts Directory
+        inputs:
+          sourceFolder: $(Build.SourcesDirectory)/docfx_project/
+          content: '**\*'
+          targetFolder: $(Build.ArtifactStagingDirectory)/docfx_project
+          overWrite: true
+      - task: PublishPipelineArtifact@0
+        condition: succeeded()
+        inputs:
+          artifactName: "Doc.Index"
+          targetPath: $(Build.ArtifactStagingDirectory)/docfx_project/_site

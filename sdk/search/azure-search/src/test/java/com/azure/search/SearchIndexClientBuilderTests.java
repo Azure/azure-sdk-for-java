@@ -4,7 +4,7 @@
 package com.azure.search;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SearchIndexClientBuilderTests {
     private final ApiKeyCredentials apiKeyCredentials = new ApiKeyCredentials("0123");

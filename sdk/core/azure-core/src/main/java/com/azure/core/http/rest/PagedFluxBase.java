@@ -149,7 +149,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
         if (nextPageLink == null) {
             return Flux.fromIterable(page.getItems());
         }
-        return Flux.fromIterable(page.getItems()).concatWith(byT(nextPageLink));
+        return Flux.fromIterable(page.getItems()).concatWith(Flux.defer(() -> byT(nextPageLink)));
     }
 
     /**
@@ -163,6 +163,6 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
         if (nextPageLink == null) {
             return Flux.just(page);
         }
-        return Flux.just(page).concatWith(byPage(page.getContinuationToken()));
+        return Flux.just(page).concatWith(Flux.defer(() -> byPage(page.getContinuationToken())));
     }
 }

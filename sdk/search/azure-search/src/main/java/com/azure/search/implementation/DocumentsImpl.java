@@ -5,6 +5,10 @@
 // regenerated.
 
 package com.azure.search.implementation;
+import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.serializer.CollectionFormat;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.Document;
 
 import com.azure.core.annotation.BodyParam;
@@ -20,10 +24,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.CollectionFormat;
-import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;

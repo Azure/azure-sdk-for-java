@@ -9,7 +9,7 @@
   <parent>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-sdk-parent</artifactId>
-      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
+      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
       <relativePath>../../../pom.data.xml</relativePath>
     </parent>
 
@@ -50,40 +50,47 @@
         <dependency>
             <groupId>com.microsoft.rest.v2</groupId>
             <artifactId>client-runtime</artifactId>
+            <version>2.1.1</version> <!-- {x-version-update;com.microsoft.rest.v2:client-runtime;external_dependency} -->
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <version>1.7.28</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
         </dependency>
 
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>adal4j</artifactId>
+            <version>1.6.4</version> <!-- {x-version-update;com.microsoft.azure:adal4j;external_dependency} -->
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
+            <version>1.3-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
+            <version>3.2.7</version> <!-- {x-version-update;cglib:cglib-nodep;external_dependency} -->
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>uk.org.lidalia</groupId>
             <artifactId>slf4j-test</artifactId>
+            <version>1.2.0</version> <!-- {x-version-update;uk.org.lidalia:slf4j-test;external_dependency} -->
             <scope>test</scope>
         </dependency>
 
@@ -97,6 +104,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
                 <configuration>
                     <compilerId>groovy-eclipse-compiler</compilerId>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
@@ -108,12 +116,12 @@
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
                         <artifactId>groovy-eclipse-compiler</artifactId>
-                        <version>${groovy-eclipse-compiler.version}</version>
+                        <version>3.4.0-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
                     </dependency>
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
                         <artifactId>groovy-eclipse-batch</artifactId>
-                        <version>${groovy-eclipse-batch.version}</version>
+                        <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
                     </dependency>
                 </dependencies>
             </plugin>

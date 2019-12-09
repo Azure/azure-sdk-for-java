@@ -5,7 +5,7 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.share.models.FileServiceProperties;
+import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
 
 import java.time.Duration;
@@ -184,7 +184,7 @@ public class ShareServiceJavaDocCodeSamples {
     public void getProperties() {
         ShareServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareServiceClient.getProperties
-        FileServiceProperties properties = fileServiceClient.getProperties();
+        ShareServiceProperties properties = fileServiceClient.getProperties();
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.getHourMetrics().isEnabled(),
             properties.getMinuteMetrics().isEnabled());
         // END: com.azure.storage.file.share.ShareServiceClient.getProperties
@@ -196,7 +196,7 @@ public class ShareServiceJavaDocCodeSamples {
     public void getPropertiesWithResponse() {
         ShareServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareServiceClient.getPropertiesWithResponse#duration-context
-        FileServiceProperties properties = fileServiceClient.getPropertiesWithResponse(
+        ShareServiceProperties properties = fileServiceClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1)).getValue();
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.getHourMetrics().isEnabled(),
             properties.getMinuteMetrics().isEnabled());
@@ -204,12 +204,12 @@ public class ShareServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareServiceClient#setProperties(FileServiceProperties)}
+     * Generates a code sample for using {@link ShareServiceClient#setProperties(ShareServiceProperties)}
      */
     public void setProperties() {
         ShareServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareServiceClient.setProperties#fileServiceProperties
-        FileServiceProperties properties = fileServiceClient.getProperties();
+        ShareServiceProperties properties = fileServiceClient.getProperties();
 
         properties.getMinuteMetrics().setEnabled(true);
         properties.getHourMetrics().setEnabled(true);
@@ -220,12 +220,12 @@ public class ShareServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareServiceClient#setProperties(FileServiceProperties)}
+     * Generates a code sample for using {@link ShareServiceClient#setProperties(ShareServiceProperties)}
      */
     public void setPropertiesWithResponse() {
         ShareServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareServiceClient.setPropertiesWithResponse#fileServiceProperties-Context
-        FileServiceProperties properties = fileServiceClient.getPropertiesWithResponse(
+        ShareServiceProperties properties = fileServiceClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1)).getValue();
 
         properties.getMinuteMetrics().setEnabled(true);
@@ -238,12 +238,12 @@ public class ShareServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareServiceClient#setProperties(FileServiceProperties)} to clear CORS in file service.
+     * Generates a code sample for using {@link ShareServiceClient#setProperties(ShareServiceProperties)} to clear CORS in file service.
      */
     public void clearProperties() {
         ShareServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS
-        FileServiceProperties properties = fileServiceClient.getProperties();
+        ShareServiceProperties properties = fileServiceClient.getProperties();
         properties.setCors(Collections.emptyList());
 
         Response<Void> response = fileServiceClient.setPropertiesWithResponse(properties,

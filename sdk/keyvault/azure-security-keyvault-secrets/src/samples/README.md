@@ -58,7 +58,7 @@ try {
 ```
 
 ## Next steps
-Start using KeyVault Java SDK in your solutions. Our SDK details could be found at [SDK README] [SECRETS_SDK_README]. 
+Start using KeyVault Java SDK in your solutions. Our SDK details could be found at [SDK README][SECRETS_SDK_README]. 
 
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
@@ -81,4 +81,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_ManageDeleted]: java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java
 [sample_ManageDeletedAsync]: java/com/azure/security/keyvault/secrets/ManagingDeletedSecretsAsync.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-secrets/samples/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-secrets%2Fsrc%2Fsamples%2FREADME.png)

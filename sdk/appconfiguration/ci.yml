@@ -21,6 +21,8 @@ trigger:
   paths:
     include:
       - sdk/appconfiguration/
+    exclude:
+      - sdk/appconfiguration/mgmt-
 
 pr:
   branches:
@@ -32,6 +34,8 @@ pr:
   paths:
     include:
       - sdk/appconfiguration/
+    exclude:
+      - sdk/appconfiguration/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

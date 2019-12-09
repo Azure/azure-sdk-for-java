@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * TODO: Add class description
+ */
 @Fluent
 public final class GeoPoint {
     private static final String TYPE = "Point";
@@ -25,15 +28,32 @@ public final class GeoPoint {
         this.coordinateSystem = CoordinateSystem.create();
     }
 
+    /**
+     * Retrieve GeoPoint type
+     * @return String type
+     */
     @JsonProperty
     public String getType() {
         return TYPE;
     }
 
+    /**
+     * TODO: Add desc
+     * @param latitude TODO: Add desc
+     * @param longitude TODO: Add desc
+     * @return Add desc
+     */
     public static GeoPoint create(double latitude, double longitude) {
         return new GeoPoint().setCoordinates(Arrays.asList(longitude, latitude));
     }
 
+    /**
+     * TODO: Add desc
+     * @param latitude Add desc
+     * @param longitude Add desc
+     * @param coordinateSystem Add desc
+     * @return Add desc
+     */
     public static GeoPoint create(double latitude, double longitude, CoordinateSystem coordinateSystem) {
         return create(latitude, longitude).setCoordinateSystem(coordinateSystem);
     }
@@ -50,6 +70,11 @@ public final class GeoPoint {
             && (coordinateSystem == null || coordinateSystem.isValid());
     }
 
+    /**
+     * Checks equality between two Geo Points
+     * @param o other GeoPoint
+     * @return true if equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -67,11 +92,19 @@ public final class GeoPoint {
             && Objects.equals(coordinateSystem, other.coordinateSystem);
     }
 
+    /**
+     * Returns hash code for Geo Point
+     * @return int representing hash code
+     */
     @Override
     public int hashCode() {
         return Objects.hash(coordinates, coordinateSystem);
     }
 
+    /**
+     * Retrieve GeoPoint string representation
+     * @return String
+     */
     @Override
     public String toString() {
         if (isValid()) {
@@ -83,19 +116,37 @@ public final class GeoPoint {
         return "";
     }
 
+    /**
+     * Retrieve coordinates
+     * @return TODO
+     */
     public List<Double> getCoordinates() {
         return coordinates;
     }
 
+    /**
+     * Set coordinates
+     * @param coordinates TODO
+     * @return GeoPoint updated
+     */
     public GeoPoint setCoordinates(List<Double> coordinates) {
         this.coordinates = coordinates;
         return this;
     }
 
+    /**
+     * Retrieve GeoPoint CoordinateSystem
+     * @return CoordinateSystem
+     */
     public CoordinateSystem getCoordinateSystem() {
         return coordinateSystem;
     }
 
+    /**
+     * Set CoordinateSystem
+     * @param coordinateSystem CoordinateSystem
+     * @return GeoPoint updated
+     */
     public GeoPoint setCoordinateSystem(CoordinateSystem coordinateSystem) {
         this.coordinateSystem = coordinateSystem;
         return this;

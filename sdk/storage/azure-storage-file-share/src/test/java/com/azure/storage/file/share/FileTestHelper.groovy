@@ -5,15 +5,16 @@ package com.azure.storage.file.share
 
 import com.azure.core.http.rest.Response
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.file.share.models.FileCorsRule
-import com.azure.storage.file.share.models.FileErrorCode
-import com.azure.storage.file.share.models.FileMetrics
-import com.azure.storage.file.share.models.FileRetentionPolicy
-import com.azure.storage.file.share.models.FileServiceProperties
+import com.azure.storage.file.share.models.ShareErrorCode
+import com.azure.storage.file.share.models.ShareRetentionPolicy
+import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareItem
-import com.azure.storage.file.share.models.FileStorageException
+import com.azure.storage.file.share.models.ShareMetrics
+import com.azure.storage.file.share.models.ShareServiceProperties
+import com.azure.storage.file.share.models.ShareStorageException
 
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 
 class FileTestHelper {
@@ -23,21 +24,21 @@ class FileTestHelper {
         return expectedStatusCode == response.getStatusCode()
     }
 
-    static <T extends Throwable> boolean assertExceptionStatusCodeAndMessage(T throwable, int expectedStatusCode, FileErrorCode errMessage) {
+    static <T extends Throwable> boolean assertExceptionStatusCodeAndMessage(T throwable, int expectedStatusCode, ShareErrorCode errMessage) {
         return assertExceptionStatusCode(throwable, expectedStatusCode) && assertExceptionErrorMessage(throwable, errMessage)
     }
 
     static boolean assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
-        return throwable instanceof FileStorageException &&
-            ((FileStorageException) throwable).getStatusCode() == expectedStatusCode
+        return throwable instanceof ShareStorageException &&
+            ((ShareStorageException) throwable).getStatusCode() == expectedStatusCode
     }
 
-    static boolean assertExceptionErrorMessage(Throwable throwable, FileErrorCode errMessage) {
-        return throwable instanceof FileStorageException &&
-            ((FileStorageException) throwable).getErrorCode() == errMessage
+    static boolean assertExceptionErrorMessage(Throwable throwable, ShareErrorCode errMessage) {
+        return throwable instanceof ShareStorageException &&
+            ((ShareStorageException) throwable).getErrorCode() == errMessage
     }
 
-    static boolean assertMetricsAreEqual(FileMetrics expected, FileMetrics actual) {
+    static boolean assertMetricsAreEqual(ShareMetrics expected, ShareMetrics actual) {
         if (expected == null) {
             return actual == null
         } else {
@@ -48,7 +49,7 @@ class FileTestHelper {
         }
     }
 
-    static boolean assertRetentionPoliciesAreEqual(FileRetentionPolicy expected, FileRetentionPolicy actual) {
+    static boolean assertRetentionPoliciesAreEqual(ShareRetentionPolicy expected, ShareRetentionPolicy actual) {
         if (expected == null) {
             return actual == null
         } else {
@@ -57,7 +58,7 @@ class FileTestHelper {
         }
     }
 
-    static boolean assertCorsAreEqual(List<FileCorsRule> expected, List<FileCorsRule> actual) {
+    static boolean assertCorsAreEqual(List<ShareCorsRule> expected, List<ShareCorsRule> actual) {
         if (expected == null) {
             return actual == null
         } else {
@@ -73,7 +74,7 @@ class FileTestHelper {
         }
     }
 
-    static boolean assertCorRulesAreEqual(FileCorsRule expected, FileCorsRule actual) {
+    static boolean assertCorRulesAreEqual(ShareCorsRule expected, ShareCorsRule actual) {
         if (expected == null) {
             return actual == null
         } else {
@@ -107,7 +108,7 @@ class FileTestHelper {
         }
     }
 
-    static boolean assertFileServicePropertiesAreEqual(FileServiceProperties expected, FileServiceProperties actual) {
+    static boolean assertFileServicePropertiesAreEqual(ShareServiceProperties expected, ShareServiceProperties actual) {
         if (expected == null) {
             return actual == null
         } else {
@@ -117,23 +118,24 @@ class FileTestHelper {
         }
     }
 
-    static String createRandomFileWithLength(int size, String folder, String fileName) {
-        def path = Paths.get(folder)
+    static String createRandomFileWithLength(int size, URL folder, String fileName) {
+        def path = folder.getPath()
         if (path == null) {
             throw logger.logExceptionAsError(new RuntimeException("The folder path does not exist."))
         }
 
-        if (!Files.exists(path)) {
-            Files.createDirectory(path)
+        Path folderPaths = new File(path).toPath()
+        if (!Files.exists(folderPaths)) {
+            Files.createDirectory(folderPaths)
         }
-        def randomFile = new File(folder, fileName)
+        def randomFile = new File(folderPaths.toString(), fileName)
         RandomAccessFile raf = new RandomAccessFile(randomFile, "rw")
         raf.setLength(size)
         raf.close()
         return randomFile.getPath()
     }
 
-    static void deleteFolderIfExists(String folder) {
+    static void deleteFilesIfExists(String folder) {
         // Clean up all temporary generated files
         def dir = new File(folder)
         if (dir.isDirectory()) {

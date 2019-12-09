@@ -75,7 +75,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
     private SearchServiceAsyncClient searchServiceClient;
@@ -106,7 +105,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
             ))
             .setAnalyzers(Collections.singletonList(
                 new CustomAnalyzer()
-                    .setTokenizer(TokenizerName.STANDARD_V2.toString())
+                    .setTokenizer(TokenizerName.STANDARD.toString())
                     .setCharFilters(Collections.singletonList(customCharFilterName))
                     .setName(customAnalyzerName)
             ))
@@ -147,7 +146,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
 
     @Override
     public void canUseAllAnalyzerNamesInIndexDefinition() {
-        List<AnalyzerName> allAnalyzerNames = Arrays.asList(AnalyzerName.values());
+        List<AnalyzerName> allAnalyzerNames = new ArrayList<>(AnalyzerName.values());
 
         List<Field> fields = new ArrayList<>();
         int fieldNumber = 0;
@@ -251,7 +250,8 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         Index index = createTestIndex();
         searchServiceClient.createIndex(index).block();
 
-        Arrays.stream(AnalyzerName.values())
+        AnalyzerName.values()
+            .stream()
             .map(an -> new AnalyzeRequest()
                 .setText("One two")
                 .setAnalyzer(an))
@@ -259,7 +259,8 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                 searchServiceClient.analyzeText(index.getName(), r)
             );
 
-        Arrays.stream(TokenizerName.values())
+        TokenizerName.values()
+            .stream()
             .map(tn -> new AnalyzeRequest()
                 .setText("One two")
                 .setTokenizer(tn))
@@ -268,8 +269,8 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         AnalyzeRequest request = new AnalyzeRequest()
             .setText("One two")
             .setTokenizer(TokenizerName.WHITESPACE)
-            .setTokenFilters(Arrays.asList(TokenFilterName.values()))
-            .setCharFilters(Arrays.asList(CharFilterName.values()));
+            .setTokenFilters(new ArrayList<>(TokenFilterName.values()))
+            .setCharFilters(new ArrayList<>(CharFilterName.values()));
         searchServiceClient.analyzeText(index.getName(), request);
     }
 
@@ -730,10 +731,12 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         Analyzer analyzerWithAllTokenFilterAndCharFilters =
             new CustomAnalyzer()
                 .setTokenizer(TokenizerName.LOWERCASE.toString())
-                .setTokenFilters(Stream.of(TokenFilterName.values())
+                .setTokenFilters(TokenFilterName.values()
+                    .stream()
                     .map(TokenFilterName::toString)
                     .collect(Collectors.toList()))
-                .setCharFilters(Stream.of(CharFilterName.values())
+                .setCharFilters(CharFilterName.values()
+                    .stream()
                     .map(CharFilterName::toString)
                     .collect(Collectors.toList()))
                 .setName("abc");
@@ -741,7 +744,8 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
         Index index = createTestIndex();
         List<Analyzer> analyzers = new ArrayList<>();
         analyzers.add(analyzerWithAllTokenFilterAndCharFilters);
-        analyzers.addAll(Arrays.stream(TokenizerName.values())
+        analyzers.addAll(TokenizerName.values()
+            .stream()
             .map(tn -> new CustomAnalyzer()
                 .setTokenizer(tn.toString())
                 .setName(generateName()))
@@ -757,7 +761,8 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
     @Override
     public void canUseAllRegexFlags() {
         Index index = createTestIndex()
-            .setAnalyzers(Arrays.stream(RegexFlags.values())
+            .setAnalyzers(RegexFlags.values()
+                .stream()
                 .map(rf -> new PatternAnalyzer()
                     .setLowerCaseTerms(true)
                     .setPattern(".*")
@@ -791,7 +796,7 @@ public class CustomAnalyzerAsyncTests extends CustomAnalyzerTestsBase {
                     .setIsSearchTokenizer(false)
                     .setLanguage(mtl)
                     .setName(generateName()))
-            .collect(Collectors.toList())
+                .collect(Collectors.toList())
         );
         tokenizers.addAll(
             Arrays.stream(MicrosoftStemmingTokenizerLanguage.values())

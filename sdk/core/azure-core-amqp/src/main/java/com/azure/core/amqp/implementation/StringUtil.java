@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.CoreUtils;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -19,7 +19,7 @@ public final class StringUtil {
     public static String toStackTraceString(final Throwable exception, final String customErrorMessage) {
         final StringBuilder builder = new StringBuilder();
 
-        if (!ImplUtils.isNullOrEmpty(customErrorMessage)) {
+        if (!CoreUtils.isNullOrEmpty(customErrorMessage)) {
             builder.append(customErrorMessage);
             builder.append(System.lineSeparator());
         }

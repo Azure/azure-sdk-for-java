@@ -108,7 +108,7 @@ public class DataSourceExample {
     private static String createTableStorageDataSource(SearchServiceClient client) {
         return createDataSource(
             client,
-            DataSourceType.AZURETABLE,
+            DataSourceType.AZURE_TABLE,
             TABLE_STORAGE_CONNECTION_STRING,
             new DataContainer()
                 .setName("testtable") // Replace your table name here
@@ -120,7 +120,7 @@ public class DataSourceExample {
     private static String createCosmosDBDataSource(SearchServiceClient client) {
         return createDataSource(
             client,
-            DataSourceType.COSMOSDB,
+            DataSourceType.COSMOS_DB,
             COSMOS_DB_CONNECTION_STRING,
             new DataContainer()
                 .setName("testcollection") // Replace your collection name here
@@ -132,7 +132,7 @@ public class DataSourceExample {
     private static String createBlobDataSource(SearchServiceClient client) {
         return createDataSource(
             client,
-            DataSourceType.AZUREBLOB,
+            DataSourceType.AZURE_BLOB,
             BLOB_STORAGE_CONNECTION_STRING,
             new DataContainer()
                 .setName("testcontainer") // Replace your container name here
@@ -144,7 +144,7 @@ public class DataSourceExample {
     private static String createSqlDataSource(SearchServiceClient client) {
         return createDataSource(
             client,
-            DataSourceType.AZURESQL,
+            DataSourceType.AZURE_SQL,
             SQL_CONNECTION_STRING,
             new DataContainer()
                 .setName("testtable"),  // Replace your table or view name here

@@ -11,7 +11,8 @@ import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -28,6 +29,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     private SearchIndexClient client;
 
+    @Disabled
     @Test
     public void canSuggestDynamicDocuments() throws IOException {
         createHotelIndex();
@@ -103,7 +105,8 @@ public class SuggestSyncTests extends SuggestTestBase {
         Assert.assertFalse(suggestResultIterator.hasNext());
     }
 
-    @Override
+    @Disabled
+    @Test
     public void canSuggestStaticallyTypedDocuments() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -122,7 +125,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         verifyCanSuggestStaticallyTypedDocuments(suggestResultIterator.next(), hotels);
     }
 
-    @Override
+    @Test
     public void canSuggestWithDateTimeInStaticModel() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
@@ -152,7 +155,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         verifyCanSuggestWithDateTimeInStaticModel(suggestResultIterator.next());
     }
 
-    @Override
+    @Test
     public void fuzzyIsOffByDefault() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -173,7 +176,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         verifyFuzzyIsOffByDefault(suggestResultWithoutSuggestOptions.next());
     }
 
-    @Override
+    @Test
     public void suggestThrowsWhenGivenBadSuggesterName() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -187,7 +190,7 @@ public class SuggestSyncTests extends SuggestTestBase {
             "The specified suggester name 'Suggester does not exist' does not exist in this index definition.");
     }
 
-    @Override
+    @Test
     public void suggestThrowsWhenRequestIsMalformed() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -203,7 +206,7 @@ public class SuggestSyncTests extends SuggestTestBase {
             "Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'");
     }
 
-    @Override
+    @Test
     public void testCanSuggestWithMinimumCoverage() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -226,7 +229,8 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     }
 
-    @Override
+    @Disabled
+    @Test
     public void testTopTrimsResults() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -247,7 +251,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         verifyTopDocumentSuggest(suggestResultIterator.next());
     }
 
-    @Override
+    @Test
     public void testCanFilter() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -271,7 +275,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         Assert.assertEquals(expectedIds, actualIds);
     }
 
-    @Override
+    @Test
     public void testOrderByProgressivelyBreaksTies() throws IOException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
@@ -295,7 +299,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         Assert.assertEquals(expectedIds, actualIds);
     }
 
-    @Override
+    @Test
     public void testCanSuggestWithSelectedFields() throws IOException {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();

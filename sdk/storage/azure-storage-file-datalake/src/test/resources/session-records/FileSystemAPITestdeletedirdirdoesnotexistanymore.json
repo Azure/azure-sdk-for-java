@@ -1,0 +1,124 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsdeletedirdirdoesnotexistanymore014156460c618820c?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "b61001c0-50b5-4c3e-958f-d653b2310ae1"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D75EEADD51DC7B",
+      "Last-Modified" : "Fri, 01 Nov 2019 16:45:12 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "3a662bd7-a01e-0034-6cd3-90e1d2000000",
+      "Date" : "Fri, 01 Nov 2019 16:45:12 GMT",
+      "x-ms-client-request-id" : "b61001c0-50b5-4c3e-958f-d653b2310ae1"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfsdeletedirdirdoesnotexistanymore014156460c618820c/javapathdeletedirdirdoesnotexistanymore1812248591c6c96?resource=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "85a877ee-10d9-4bc4-8d86-b24023d28f8e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D75EEADD5B3198",
+      "Last-Modified" : "Fri, 01 Nov 2019 16:45:12 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "aa8e0261-801f-00ab-4dd3-909968000000",
+      "Date" : "Fri, 01 Nov 2019 16:45:11 GMT",
+      "x-ms-client-request-id" : "85a877ee-10d9-4bc4-8d86-b24023d28f8e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfsdeletedirdirdoesnotexistanymore014156460c618820c/javapathdeletedirdirdoesnotexistanymore1812248591c6c96?recursive=false",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "844ddba4-7f11-4b33-a944-087875db6a3c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "aa8e0262-801f-00ab-4ed3-909968000000",
+      "Date" : "Fri, 01 Nov 2019 16:45:11 GMT",
+      "x-ms-client-request-id" : "844ddba4-7f11-4b33-a944-087875db6a3c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsdeletedirdirdoesnotexistanymore014156460c618820c/javapathdeletedirdirdoesnotexistanymore1812248591c6c96",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "df27be68-f864-4fce-a515-c2faaee5e70c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "BlobNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "dc705357-e01e-007c-02d3-90d34f000000",
+      "Date" : "Fri, 01 Nov 2019 16:45:12 GMT",
+      "x-ms-client-request-id" : "df27be68-f864-4fce-a515-c2faaee5e70c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprahns.blob.core.windows.net?prefix=jtfsdeletedirdirdoesnotexistanymore&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "76d0f300-258b-4b84-a4c0-62f2150fca4f"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "3a662c33-a01e-0034-42d3-90e1d2000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahns.blob.core.windows.net/\"><Prefix>jtfsdeletedirdirdoesnotexistanymore</Prefix><Containers><Container><Name>jtfsdeletedirdirdoesnotexistanymore014156460c618820c</Name><Properties><Last-Modified>Fri, 01 Nov 2019 16:45:12 GMT</Last-Modified><Etag>\"0x8D75EEADD51DC7B\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 01 Nov 2019 16:45:12 GMT",
+      "x-ms-client-request-id" : "76d0f300-258b-4b84-a4c0-62f2150fca4f",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsdeletedirdirdoesnotexistanymore014156460c618820c?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "4877034c-77aa-4c05-bb29-b208b315f4ec"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "dc705369-e01e-007c-10d3-90d34f000000",
+      "Date" : "Fri, 01 Nov 2019 16:45:12 GMT",
+      "x-ms-client-request-id" : "4877034c-77aa-4c05-bb29-b208b315f4ec"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsdeletedirdirdoesnotexistanymore014156460c618820c", "javapathdeletedirdirdoesnotexistanymore1812248591c6c96" ]
+}

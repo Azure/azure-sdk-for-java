@@ -15,11 +15,14 @@ trigger:
   branches:
     include:
       - master
+      - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/search/
+    exclude:
+      - sdk/search/mgmt-
 
 pr:
   branches:
@@ -31,6 +34,8 @@ pr:
   paths:
     include:
       - sdk/search/
+    exclude:
+      - sdk/search/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml  

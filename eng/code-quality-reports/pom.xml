@@ -23,7 +23,6 @@
 
     <checkstyle.version>8.24</checkstyle.version>
     <junit.version>4.12</junit.version>
-    <project.automatic.module.name>com.azure.eng.code.quality.reports</project.automatic.module.name>
   </properties>
 
   <distributionManagement>

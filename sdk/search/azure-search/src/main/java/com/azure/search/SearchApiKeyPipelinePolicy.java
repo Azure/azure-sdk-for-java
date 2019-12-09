@@ -11,6 +11,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
+/**
+ * TODO: Add class description
+ */
 public class SearchApiKeyPipelinePolicy implements HttpPipelinePolicy {
 
     private final ApiKeyCredentials apiKey;

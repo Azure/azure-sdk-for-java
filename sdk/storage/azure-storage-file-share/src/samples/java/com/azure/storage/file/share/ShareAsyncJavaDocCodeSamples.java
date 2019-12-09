@@ -3,9 +3,9 @@
 package com.azure.storage.file.share;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.share.models.FileAccessPolicy;
-import com.azure.storage.file.share.models.FileHttpHeaders;
-import com.azure.storage.file.share.models.FileSignedIdentifier;
+import com.azure.storage.file.share.models.ShareAccessPolicy;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 
 import java.time.LocalDateTime;
@@ -186,19 +186,19 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#createDirectoryWithResponse(String, ShareFileSmbProperties,
+     * Generates a code sample for using {@link ShareAsyncClient#createDirectoryWithResponse(String, FileSmbProperties,
      * String, Map)}
      */
     public void createDirectoryWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createDirectoryWithResponse#String-ShareFileSmbProperties-String-Map
-        ShareFileSmbProperties smbProperties = new ShareFileSmbProperties();
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map
+        FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         shareAsyncClient.createDirectoryWithResponse("documents", smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the directory completed with status code %d",
                 response.getStatusCode()));
-        // END: com.azure.storage.file.share.ShareAsyncClient.createDirectoryWithResponse#String-ShareFileSmbProperties-String-Map
+        // END: com.azure.storage.file.share.ShareAsyncClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map
     }
 
     /**
@@ -213,19 +213,19 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, FileHttpHeaders,
-     * ShareFileSmbProperties, String, Map)}
+     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, ShareFileHttpHeaders,
+     * FileSmbProperties, String, Map)}
      */
     public void createFileWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-FileHttpHeaders-ShareFileSmbProperties-String-Map
-        FileHttpHeaders httpHeaders = new FileHttpHeaders()
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
             .setContentEncoding("gzip")
             .setContentLanguage("en")
             .setCacheControl("no-transform")
             .setContentDisposition("attachment");
-        ShareFileSmbProperties smbProperties = new ShareFileSmbProperties()
+        FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
             .setFileLastWriteTime(OffsetDateTime.now())
@@ -236,7 +236,7 @@ public class ShareAsyncJavaDocCodeSamples {
             filePermission, Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
                 response.getStatusCode()));
-        // END: com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-FileHttpHeaders-ShareFileSmbProperties-String-Map
+        // END: com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map
     }
 
     /**
@@ -407,11 +407,11 @@ public class ShareAsyncJavaDocCodeSamples {
     public void setAccessPolicyAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.setAccessPolicy#List
-        FileAccessPolicy accessPolicy = new FileAccessPolicy().setPermissions("r")
+        ShareAccessPolicy accessPolicy = new ShareAccessPolicy().setPermissions("r")
             .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
             .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
-        FileSignedIdentifier permission = new FileSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
+        ShareSignedIdentifier permission = new ShareSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
         shareAsyncClient.setAccessPolicy(Collections.singletonList(permission)).doOnSuccess(
             response -> System.out.println("Setting access policies completed."));
         // END: com.azure.storage.file.share.ShareAsyncClient.setAccessPolicy#List
@@ -423,11 +423,11 @@ public class ShareAsyncJavaDocCodeSamples {
     public void setAccessPolicyWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.setAccessPolicyWithResponse#List
-        FileAccessPolicy accessPolicy = new FileAccessPolicy().setPermissions("r")
+        ShareAccessPolicy accessPolicy = new ShareAccessPolicy().setPermissions("r")
             .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
             .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
-        FileSignedIdentifier permission = new FileSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
+        ShareSignedIdentifier permission = new ShareSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
         shareAsyncClient.setAccessPolicyWithResponse(Collections.singletonList(permission))
             .subscribe(response -> System.out.printf("Setting access policies completed completed with status code %d",
                 response.getStatusCode()));

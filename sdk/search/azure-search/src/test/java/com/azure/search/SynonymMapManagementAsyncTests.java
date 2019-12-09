@@ -4,7 +4,7 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SynonymMap;
@@ -12,6 +12,7 @@ import com.azure.search.test.AccessConditionAsyncTests;
 import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -54,7 +55,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
         client = getSearchServiceClientBuilder().buildAsyncClient();
     }
 
-    @Override
+    @Test
     public void createSynonymMapReturnsCorrectDefinition() {
         SynonymMap expectedSynonymMap = createTestSynonymMap();
 
@@ -73,7 +74,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createSynonymMapFailsWithUsefulMessageOnUserError() {
         // Create SynonymMap with invalid synonym
         SynonymMap expectedSynonymMap = createTestSynonymMap()
@@ -87,7 +88,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
         );
     }
 
-    @Override
+    @Test
     public void getSynonymMapReturnsCorrectDefinition() {
         SynonymMap expected = createTestSynonymMap();
         client.createSynonymMap(expected).block();
@@ -103,7 +104,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void getSynonymMapThrowsOnNotFound() {
         final String synonymMapName = "thisSynonymMapDoesNotExist";
         final String exceptionMessage = String.format("No synonym map with the name '%s' was found", synonymMapName);
@@ -121,7 +122,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
         );
     }
 
-    @Override
+    @Test
     public void canUpdateSynonymMap() {
         SynonymMap initial = createTestSynonymMap();
 
@@ -142,7 +143,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExist() {
         SynonymMap expected = createTestSynonymMap();
 
@@ -161,7 +162,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -170,7 +171,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             newSynonymMapFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsSucceedsOnExistingResourceAsync(
@@ -179,7 +180,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             mutateSynonymMapFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapIfExistsFailsOnNoResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfExistsFailsOnNoResourceAsync(
@@ -187,7 +188,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             createOrUpdateSynonymMapAsyncFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchangedAsync(
@@ -196,7 +197,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             mutateSynonymMapFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
         act.updateIfNotChangedFailsWhenResourceChangedAsync(
@@ -205,7 +206,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             mutateSynonymMapFunc);
     }
 
-    @Override
+    @Test
     public void deleteSynonymMapIsIdempotent() {
         SynonymMap synonymMap = createTestSynonymMap();
 
@@ -240,7 +241,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canCreateAndDeleteSynonymMap() {
         SynonymMap synonymMap = createTestSynonymMap();
         client.createSynonymMap(synonymMap).block();
@@ -252,7 +253,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canCreateAndListSynonymMaps() {
         SynonymMap synonymMap1 = createTestSynonymMap();
         SynonymMap synonymMap2 = createTestSynonymMap().setName("test-synonym1");
@@ -272,7 +273,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canListSynonymMapsWithSelectedField() {
         SynonymMap synonymMap1 = createTestSynonymMap();
         SynonymMap synonymMap2 = createTestSynonymMap().setName("test-synonym1");
@@ -303,7 +304,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void existsReturnsTrueForExistingSynonymMap() {
         SynonymMap synonymMap = createTestSynonymMap();
 
@@ -320,7 +321,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void existsReturnsFalseForNonExistingSynonymMap() {
         String synonymMapName = "thisSynonymMapDoesNotExist";
 
@@ -335,7 +336,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createOrUpdateSynonymMapIfNotExistsFailsOnExistingResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -345,7 +346,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             mutateSynonymMapFunc);
     }
 
-    @Override
+    @Test
     public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -358,7 +359,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
             synonymName);
     }
 
-    @Override
+    @Test
     public void deleteSynonymMapIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 

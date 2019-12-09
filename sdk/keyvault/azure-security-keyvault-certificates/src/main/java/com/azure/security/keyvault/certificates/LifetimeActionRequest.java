@@ -23,12 +23,12 @@ class LifetimeActionRequest {
     @JsonProperty(value = "action")
     private Action action;
 
-    LifetimeActionRequest(LifetimeAction lifetimeAction) {
+    LifetimeActionRequest(LifetimeAction lifeTimeAction) {
         action = new Action()
-            .setActionType(lifetimeAction.getActionType());
+            .setActionType(lifeTimeAction.getAction());
         trigger = new Trigger()
-            .daysBeforeExpiry(lifetimeAction.getDaysBeforeExpiry())
-            .lifetimePercentage(lifetimeAction.getLifetimePercentage());
+            .daysBeforeExpiry(lifeTimeAction.getDaysBeforeExpiry())
+            .lifetimePercentage(lifeTimeAction.getLifetimePercentage());
     }
 
     /**

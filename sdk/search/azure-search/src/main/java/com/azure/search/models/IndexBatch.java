@@ -10,6 +10,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * TODO: add class desc
+ */
 @Fluent
 public class IndexBatch<T> extends IndexBatchImpl<T> {
     /**

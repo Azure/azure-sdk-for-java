@@ -28,8 +28,8 @@ public final class DataSource {
     private String description;
 
     /*
-     * The type of the datasource. Possible values include: 'azuresql',
-     * 'cosmosdb', 'azureblob', 'azuretable'
+     * The type of the datasource. Possible values include: 'AzureSql',
+     * 'CosmosDb', 'AzureBlob', 'AzureTable'
      */
     @JsonProperty(value = "type", required = true)
     private DataSourceType type;
@@ -106,7 +106,7 @@ public final class DataSource {
 
     /**
      * Get the type property: The type of the datasource. Possible values
-     * include: 'azuresql', 'cosmosdb', 'azureblob', 'azuretable'.
+     * include: 'AzureSql', 'CosmosDb', 'AzureBlob', 'AzureTable'.
      *
      * @return the type value.
      */
@@ -116,7 +116,7 @@ public final class DataSource {
 
     /**
      * Set the type property: The type of the datasource. Possible values
-     * include: 'azuresql', 'cosmosdb', 'azureblob', 'azuretable'.
+     * include: 'AzureSql', 'CosmosDb', 'AzureBlob', 'AzureTable'.
      *
      * @param type the type value to set.
      * @return the DataSource object itself.

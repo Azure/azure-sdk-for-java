@@ -9,17 +9,16 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
+import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
-
-import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
@@ -94,7 +93,7 @@ class APISpec extends Specification {
 
     static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map{buffer -> buffer.duplicate()}
 
-    public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
+    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
 
     @Shared
     protected KB = 1024
@@ -312,7 +311,7 @@ class APISpec extends Specification {
     }
 
     /**
-     * This helper method will acquire a lease on a blob to prepare for testing leaseAccessConditions. We want to test
+     * This helper method will acquire a lease on a blob to prepare for testing leaseId. We want to test
      * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
      * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
      * with other AC tests.
@@ -322,7 +321,7 @@ class APISpec extends Specification {
      * @param leaseID
      *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
      * @return
-     * The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
+     * The actual leaseId of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
     def setupBlobLeaseCondition(BlobClient bc, String leaseID) {

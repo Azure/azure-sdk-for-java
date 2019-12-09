@@ -6,107 +6,94 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for TokenizerName.
  */
-public enum TokenizerName {
+public final class TokenizerName extends ExpandableStringEnum<TokenizerName> {
     /**
-     * Enum value classic.
+     * Static value classic for TokenizerName.
      */
-    CLASSIC("classic"),
+    public static final TokenizerName CLASSIC = fromString("classic");
 
     /**
-     * Enum value edgeNGram.
+     * Static value edgeNGram for TokenizerName.
      */
-    EDGE_NGRAM("edgeNGram"),
+    public static final TokenizerName EDGE_NGRAM = fromString("edgeNGram");
 
     /**
-     * Enum value keyword_v2.
+     * Static value keyword_v2 for TokenizerName.
      */
-    KEYWORD_V2("keyword_v2"),
+    public static final TokenizerName KEYWORD = fromString("keyword_v2");
 
     /**
-     * Enum value letter.
+     * Static value letter for TokenizerName.
      */
-    LETTER("letter"),
+    public static final TokenizerName LETTER = fromString("letter");
 
     /**
-     * Enum value lowercase.
+     * Static value lowercase for TokenizerName.
      */
-    LOWERCASE("lowercase"),
+    public static final TokenizerName LOWERCASE = fromString("lowercase");
 
     /**
-     * Enum value microsoft_language_tokenizer.
+     * Static value microsoft_language_tokenizer for TokenizerName.
      */
-    MICROSOFT_LANGUAGE_TOKENIZER("microsoft_language_tokenizer"),
+    public static final TokenizerName MICROSOFT_LANGUAGE_TOKENIZER = fromString("microsoft_language_tokenizer");
 
     /**
-     * Enum value microsoft_language_stemming_tokenizer.
+     * Static value microsoft_language_stemming_tokenizer for TokenizerName.
      */
-    MICROSOFT_LANGUAGE_STEMMING_TOKENIZER("microsoft_language_stemming_tokenizer"),
+    public static final TokenizerName MICROSOFT_LANGUAGE_STEMMING_TOKENIZER = fromString("microsoft_language_stemming_tokenizer");
 
     /**
-     * Enum value nGram.
+     * Static value nGram for TokenizerName.
      */
-    N_GRAM("nGram"),
+    public static final TokenizerName NGRAM = fromString("nGram");
 
     /**
-     * Enum value path_hierarchy_v2.
+     * Static value path_hierarchy_v2 for TokenizerName.
      */
-    PATH_HIERARCHY_V2("path_hierarchy_v2"),
+    public static final TokenizerName PATH_HIERARCHY = fromString("path_hierarchy_v2");
 
     /**
-     * Enum value pattern.
+     * Static value pattern for TokenizerName.
      */
-    PATTERN("pattern"),
+    public static final TokenizerName PATTERN = fromString("pattern");
 
     /**
-     * Enum value standard_v2.
+     * Static value standard_v2 for TokenizerName.
      */
-    STANDARD_V2("standard_v2"),
+    public static final TokenizerName STANDARD = fromString("standard_v2");
 
     /**
-     * Enum value uax_url_email.
+     * Static value uax_url_email for TokenizerName.
      */
-    UAX_URL_EMAIL("uax_url_email"),
+    public static final TokenizerName UAX_URL_EMAIL = fromString("uax_url_email");
 
     /**
-     * Enum value whitespace.
+     * Static value whitespace for TokenizerName.
      */
-    WHITESPACE("whitespace");
+    public static final TokenizerName WHITESPACE = fromString("whitespace");
 
     /**
-     * The actual serialized value for a TokenizerName instance.
-     */
-    private final String value;
-
-    TokenizerName(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a TokenizerName instance.
+     * Creates or finds a TokenizerName from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed TokenizerName object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding TokenizerName.
      */
     @JsonCreator
-    public static TokenizerName fromString(String value) {
-        TokenizerName[] items = TokenizerName.values();
-        for (TokenizerName item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static TokenizerName fromString(String name) {
+        return fromString(name, TokenizerName.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known TokenizerName values.
+     */
+    public static Collection<TokenizerName> values() {
+        return values(TokenizerName.class);
     }
 }

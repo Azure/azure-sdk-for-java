@@ -10,7 +10,7 @@ import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -46,7 +46,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
             "The specified suggester name 'Invalid suggester' does not exist in this index definition.\\r\\nParameter name: name");
     }
 
-    @Override
+    @Test
     public void canAutocompleteDefaultsToOneTermMode() {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police", "polite", "pool", "popular");
@@ -57,7 +57,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
-    @Override
+    @Test
     public void canAutocompleteOneTermWithContext() {
         List<String> expectedText = Arrays.asList("very police", "very polite", "very popular");
         List<String> expectedQueryPlusText = Arrays.asList("looking for very police", "looking for very polite", "looking for very popular");
@@ -142,7 +142,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         );
     }
 
-    @Override
+    @Test
     public void canAutocompleteTwoTerms() {
         List<String> expectedText = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
         List<String> expectedQueryPlusText = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
@@ -157,7 +157,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
-    @Override
+    @Test
     public void testAutocompleteCanUseHitHighlighting() {
         List<String> expectedText = Arrays.asList("pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("<b>pool</b>", "<b>popular</b>");
@@ -175,7 +175,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
-    @Override
+    @Test
     public void testAutocompleteWithMultipleSelectedFields() {
         List<String> expectedText = Arrays.asList("model", "modern");
         List<String> expectedQueryPlusText = Arrays.asList("model", "modern");
@@ -191,7 +191,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
-    @Override
+    @Test
     public void testAutocompleteWithSelectedFields() {
         List<String> expectedText = Collections.singletonList("modern");
         List<String> expectedQueryPlusText = Collections.singletonList("modern");
@@ -208,7 +208,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
-    @Override
+    @Test
     public void testAutocompleteTopTrimsResults() {
         List<String> expectedText = Arrays.asList("point", "police");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police");
@@ -224,7 +224,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
-    @Override
+    @Test
     public void testAutocompleteWithFilter() {
         List<String> expectedText = Collections.singletonList("polite");
         List<String> expectedQueryPlusText = Collections.singletonList("polite");
@@ -240,7 +240,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
-    @Override
+    @Test
     public void testAutocompleteOneTermWithContextWithFuzzy() {
         List<String> expectedText = Arrays.asList("very polite", "very police");
         List<String> expectedQueryPlusText = Arrays.asList("very polite", "very police");
@@ -256,7 +256,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
-    @Override
+    @Test
     public void testAutocompleteOneTermWithFuzzy() {
         List<String> expectedText = Arrays.asList("model", "modern", "morel", "motel");
         List<String> expectedQueryPlusText = Arrays.asList("model", "modern", "morel", "motel");
@@ -272,7 +272,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
-    @Override
+    @Test
     public void testAutocompleteTwoTermsWithFuzzy() {
         List<String> expectedText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
         List<String> expectedQueryPlusText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
@@ -288,7 +288,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
-    @Override
+    @Test
     public void testAutocompleteWithFilterAndFuzzy() {
         List<String> expectedText = Arrays.asList("modern", "motel");
         List<String> expectedQueryPlusText = Arrays.asList("modern", "motel");

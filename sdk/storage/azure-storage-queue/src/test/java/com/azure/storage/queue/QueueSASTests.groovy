@@ -215,6 +215,9 @@ class QueueSASTests extends APISpec {
                 .setExpiresOn(expiryTime).setStartsOn(startTime))
         queueClient.setAccessPolicy(Arrays.asList(identifier))
 
+        // Wait 30 seconds as it may take time for the access policy to take effect.
+        sleepIfLive(30000)
+
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasIdentifier = new QueueServiceSasSignatureValues()
@@ -309,6 +312,43 @@ class QueueSASTests extends APISpec {
 
         then:
         notThrown(QueueStorageException)
+    }
+
+    def "accountSAS network account sas token on endpoint"() {
+        setup:
+        def service = new AccountSasService()
+            .setQueueAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setWritePermission(true)
+            .setListPermission(true)
+            .setDeletePermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
+
+        def queueName = testResourceName.randomName(methodName, 60)
+
+        when:
+        def sc = getServiceClientBuilder(null, primaryQueueServiceClient.getQueueServiceUrl() + "?" + sas, null).buildClient()
+        sc.createQueue(queueName)
+
+        def qc = getQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl() + "/" + queueName + "?" + sas).buildClient()
+        qc.delete()
+
+        then:
+        notThrown(Exception)
     }
 
 }

@@ -6,7 +6,7 @@ Files stored in Azure File Share service shares are accessible via the SMB proto
 The File Share service offers the following four resources: the storage account, shares, directories, and files.
 Shares provide a way to organize sets of files and also can be mounted as an SMB file share that is hosted in the cloud.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][storage_docs] |
+[Source code][source_code] | [API reference documentation][reference_docs] | [REST API documentation][rest_api_documentation] | [Product documentation][storage_docs] |
 [Samples][samples]
 
 ## Getting started
@@ -19,12 +19,12 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-file;current})
+[//]: # ({x-version-update-start;com.azure:azure-storage-file-share;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-storage-file</artifactId>
-  <version>12.0.0-preview.5</version>
+  <artifactId>azure-storage-file-share</artifactId>
+  <version>12.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -37,13 +37,13 @@ Storage File Share to use Netty HTTP client.
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-file;current})
+[//]: # ({x-version-update-start;com.azure:azure-storage-file-share;current})
 ```xml
 <!-- Add Storage File Share dependency without Netty HTTP client -->
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-storage-file</artifactId>
-      <version>12.0.0-preview.5</version>
+    <artifactId>azure-storage-file-share</artifactId>
+      <version>12.0.0</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -59,7 +59,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -68,6 +68,9 @@ Netty and include OkHTTP client in your pom.xml.
 When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#file-services), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
 
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ```java
 HttpClient client = new NettyAsyncHttpClientBuilder()
@@ -94,6 +97,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 
 - **SAS Token**
     * Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
+
         ```powershell
         az storage file generate-sas
             --name {account name}
@@ -111,6 +115,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
             --permission rpau
             --connection-string $CONNECTION_STRING
         ```
+
     * Alternatively, get the Account SAS Token from the Azure Portal.
         1. Go to your storage account.
         1. Click on "Shared access signature".
@@ -132,20 +137,26 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 
 ### URL format
 File Shares are addressable using the following URL format:
+
 ```
 https://<storage account>.file.core.windows.net/<share>
 ```
+
 The following URL addresses a queue in the diagram:
+
 ```
 https://myaccount.file.core.windows.net/images-to-download
 ```
 
 #### Resource URI Syntax
 For the storage account, the base URI for queue operations includes the name of the account only:
+
 ```
 https://myaccount.file.core.windows.net
 ```
+
 For file, the base URI includes the name of the account and the name of the directory/file:
+
 ```
 https://myaccount.file.core.windows.net/myshare/mydirectorypath/myfile
 ```
@@ -221,6 +232,7 @@ String directoryURL = String.format("https://%s.file.core.windows.net/%s%s", acc
 ShareDirectoryClient directoryClient = new ShareFileClientBuilder().endpoint(directoryURL)
     .sasToken(sasToken).shareName(shareName).directoryName(directoryPath).buildDirectoryClient();
 ```
+
 ### File
  The file resource includes the properties for that file. It allows the operations of creating, uploading, copying, downloading, deleting files or range of the files, getting properties, setting metadata, listing and force closing the handles.
  Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${directoryPath}`, `${fileName}`, `${sasToken}`
@@ -293,7 +305,7 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory).
 
 ```Java
 String subDirName = "testsubdir";
-directoryClient.createSubDirectory(subDirName);
+directoryClient.createSubdirectory(subDirName);
 ```
 
 ### Create a File
@@ -346,7 +358,7 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
 String subDirName = "testsubdir";
-directoryClient.deleteSubDirectory(subDirName);
+directoryClient.deleteSubdirectory(subDirName);
 ```
 
 ### Delete a file
@@ -512,9 +524,10 @@ If you would like to become an active contributor to this project please follow 
 
 <!-- LINKS -->
 [source_code]: src/
-[api_documentation]: https://docs.microsoft.com/rest/api/storageservices/file-service-rest-api
+[reference_docs]: https://azure.github.io/azure-sdk-for-java/
+[rest_api_documentation]: https://docs.microsoft.com/rest/api/storageservices/file-service-rest-api
 [storage_docs]: https://docs.microsoft.com/azure/storage/files/storage-files-introduction
-[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/free/
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
@@ -525,5 +538,6 @@ If you would like to become an active contributor to this project please follow 
 [csharp_identifiers]: https://docs.microsoft.com/dotnet/csharp/language-reference/
 [storage_file_rest]: https://docs.microsoft.com/rest/api/storageservices/file-service-error-codes
 [samples]: src/samples
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-file/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2FREADME.png)

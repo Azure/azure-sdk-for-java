@@ -22,7 +22,7 @@ import com.azure.search.models.IndexerExecutionStatus;
 import com.azure.search.test.CustomQueryPipelinePolicy;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;

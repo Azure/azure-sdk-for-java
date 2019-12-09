@@ -4,17 +4,17 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -47,13 +47,13 @@ public class ReactorSessionTest {
     @Mock
     private Event event;
     @Mock
-    private CBSNode cbsNode;
+    private ClaimsBasedSecurityNode cbsNode;
     @Mock
     private MessageSerializer serializer;
     @Mock
     private ReactorProvider reactorProvider;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
         when(reactor.selectable()).thenReturn(selectable);
@@ -67,12 +67,12 @@ public class ReactorSessionTest {
 
         MockReactorHandlerProvider handlerProvider = new MockReactorHandlerProvider(reactorProvider, null, handler, null, null);
         AzureTokenManagerProvider azureTokenManagerProvider = new AzureTokenManagerProvider(
-            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
             Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         session = null;
         reactor = null;
@@ -88,23 +88,23 @@ public class ReactorSessionTest {
         // Assert
         verify(session, times(1)).open();
 
-        Assert.assertSame(session, reactorSession.session());
-        Assert.assertEquals(NAME, reactorSession.getSessionName());
-        Assert.assertEquals(TIMEOUT, reactorSession.getOperationTimeout());
+        Assertions.assertSame(session, reactorSession.session());
+        Assertions.assertEquals(NAME, reactorSession.getSessionName());
+        Assertions.assertEquals(TIMEOUT, reactorSession.getOperationTimeout());
     }
 
     @Test
     public void verifyEndpointStates() {
         when(session.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
-        StepVerifier.create(reactorSession.getConnectionStates())
+        StepVerifier.create(reactorSession.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> handler.onSessionRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> handler.close())
-            // Expect two close notifications. One for getErrors() subscription and getEndpointStates();
-            .expectNext(AmqpEndpointState.CLOSED, AmqpEndpointState.CLOSED)
+            .expectNext(AmqpEndpointState.CLOSED)
             .then(() -> reactorSession.close())
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
     }
 }

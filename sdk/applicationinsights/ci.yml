@@ -21,6 +21,8 @@ trigger:
   paths:
     include:
       - sdk/applicationinsights/
+    exclude:
+      - sdk/applicationinsights/mgmt-
 
 pr:
   branches:
@@ -32,6 +34,8 @@ pr:
   paths:
     include:
       - sdk/applicationinsights/
+    exclude:
+      - sdk/applicationinsights/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -5,7 +5,7 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataContainer;
 import com.azure.search.models.DataSource;
@@ -20,6 +20,7 @@ import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -64,7 +65,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         return client.deleteDataSourceWithResponse(name, accessCondition, requestOptions).flatMap(FluxUtil::toMono);
     }
 
-    @Override
+    @Test
     public void createAndListDataSources() {
         DataSource dataSource1 = createTestBlobDataSource(null);
         DataSource dataSource2 = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
@@ -95,7 +96,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void deleteDataSourceIsIdempotent() {
         DataSource dataSource1 = createTestBlobDataSource(null);
 
@@ -118,7 +119,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, res.getStatusCode());
     }
 
-    @Override
+    @Test
     public void canUpdateDataSource() {
         DataSource initial = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
 
@@ -140,7 +141,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createOrUpdateDataSourceIfNotExistsFailsOnExistingResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -150,7 +151,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             mutateDataSourceFunc);
     }
 
-    @Override
+    @Test
     public void createOrUpdateDatasourceIfNotExistsSucceedsOnNoResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -159,7 +160,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             newDataSourceFunc);
     }
 
-    @Override
+    @Test
     public void canCreateAndDeleteDatasource() {
         DataSource dataSource = createTestBlobDataSource(null);
         client.deleteDataSource(dataSource.getName()).block();
@@ -170,7 +171,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void deleteDataSourceIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -181,7 +182,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             BLOB_DATASOURCE_TEST_NAME);
     }
 
-    @Override
+    @Test
     public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -193,7 +194,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             BLOB_DATASOURCE_TEST_NAME);
     }
 
-    @Override
+    @Test
     public void updateDataSourceIfExistsFailsOnNoResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -202,7 +203,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             createOrUpdateDataSourceFunc);
     }
 
-    @Override
+    @Test
     public void updateDataSourceIfExistsSucceedsOnExistingResource() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -212,7 +213,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             mutateDataSourceFunc);
     }
 
-    @Override
+    @Test
     public void updateDataSourceIfNotChangedFailsWhenResourceChanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -222,7 +223,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             mutateDataSourceFunc);
     }
 
-    @Override
+    @Test
     public void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged() {
         AccessConditionAsyncTests act = new AccessConditionAsyncTests();
 
@@ -232,7 +233,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             mutateDataSourceFunc);
     }
 
-    @Override
+    @Test
     public void existsReturnsFalseForNonExistingDatasource() {
         StepVerifier
             .create(client.dataSourceExists("inExistentDataSourceName"))
@@ -240,7 +241,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void existsReturnsTrueForExistingDatasource() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource).block();
@@ -256,7 +257,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME)
             .setType(DataSourceType.fromString("thistypedoesnotexist"));
@@ -268,7 +269,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         );
     }
 
-    @Override
+    @Test
     public void createDataSourceReturnsCorrectDefinition() {
         SoftDeleteColumnDeletionDetectionPolicy deletionDetectionPolicy =
             new SoftDeleteColumnDeletionDetectionPolicy()
@@ -311,7 +312,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         client.deleteDataSource(actualDataSource.getName()).block();
     }
 
-    @Override
+    @Test
     public void getDataSourceReturnsCorrectDefinition() {
         client = getSearchServiceClientBuilder().buildAsyncClient();
 
@@ -338,7 +339,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         client.deleteDataSource(dataSourceName).block();
     }
 
-    @Override
+    @Test
     public void getDataSourceThrowsOnNotFound() {
         client = getSearchServiceClientBuilder().buildAsyncClient();
         assertHttpResponseExceptionAsync(
@@ -348,7 +349,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         );
     }
 
-    @Override
+    @Test
     public void canUpdateConnectionData() {
         // Note: since connection string is not returned when queried from the service, actually saving the
         // datasource, retrieving it and verifying the change, won't work.

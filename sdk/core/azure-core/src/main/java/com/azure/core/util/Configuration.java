@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -128,8 +127,8 @@ public class Configuration implements Cloneable {
      */
     private static final Configuration GLOBAL_CONFIGURATION = new Configuration();
 
-    private static final String LOADED_FROM_RUNTIME = "Loaded {} from runtime parameters with value {}.";
-    private static final String LOADED_FROM_ENVIRONMENT = "Loaded {} from environment variables with value {}.";
+    private static final String LOADED_FROM_RUNTIME = "Loaded {} from runtime parameters.";
+    private static final String LOADED_FROM_ENVIRONMENT = "Loaded {} from environment variables.";
 
     private final ClientLogger logger = new ClientLogger(Configuration.class);
 
@@ -190,7 +189,7 @@ public class Configuration implements Cloneable {
      */
     public <T> T get(String name, Function<String, T> converter) {
         String value = getOrLoad(name);
-        if (ImplUtils.isNullOrEmpty(value)) {
+        if (CoreUtils.isNullOrEmpty(value)) {
             return null;
         }
 
@@ -301,7 +300,7 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("unchecked")
     private <T> T convertOrDefault(String value, T defaultValue) {
         // Value is null or empty, return the default.
-        if (ImplUtils.isNullOrEmpty(value)) {
+        if (CoreUtils.isNullOrEmpty(value)) {
             return defaultValue;
         }
 
@@ -348,7 +347,7 @@ public class Configuration implements Cloneable {
         } else {
             // Value changed, log it!
             configurations.put(name, value);
-            logger.info(logMessage, name, value);
+            logger.verbose(logMessage, name);
             return true;
         }
     }

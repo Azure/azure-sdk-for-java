@@ -20,6 +20,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -152,7 +153,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             .getValue();
     }
 
-    @Override
+    @Test
     public void createIndexerReturnsCorrectDefinition() {
         Indexer expectedIndexer =
             createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
@@ -175,7 +176,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         assertIndexersEqual(expectedIndexer, actualIndexer);
     }
 
-    @Override
+    @Test
     public void canCreateAndListIndexers() {
 
         // Create the data source, note it a valid DS with actual
@@ -201,7 +202,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         assertIndexersEqual(indexer2, indexers.get(1));
     }
 
-    @Override
+    @Test
     public void canCreateAndListIndexerNames() {
         List<Indexer> indexers = prepareIndexersForCreateAndListIndexers();
 
@@ -217,7 +218,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         assertAllIndexerFieldsNullExceptName(indexersRes.get(1));
     }
 
-    @Override
+    @Test
     public void createIndexerFailsWithUsefulMessageOnUserError() {
         Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
             .setDataSourceName("thisdatasourcedoesnotexist");
@@ -228,7 +229,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             "This indexer refers to a data source 'thisdatasourcedoesnotexist' that doesn't exist");
     }
 
-    @Override
+    @Test
     public void canResetIndexerAndGetIndexerStatus() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
@@ -244,7 +245,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatusResponse.getLastResult().getStatus());
     }
 
-    @Override
+    @Test
     public void canRunIndexer() {
         Indexer indexer = createTestDataSourceAndIndexer();
         client.runIndexer(indexer.getName());
@@ -253,7 +254,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 
-    @Override
+    @Test
     public void canRunIndexerWithResponse() {
         Indexer indexer = createTestDataSourceAndIndexer();
         Response<Void> response = client.runIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
@@ -291,7 +292,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         assertValidIndexerExecutionInfo(indexerExecutionInfo);
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexerIfNotExistsFailsOnExistingResource() {
         // Prepare data source and index
         AccessConditionTests act = new AccessConditionTests();
@@ -304,7 +305,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             mutateIndexerFunc);
     }
 
-    @Override
+    @Test
     public void canUpdateIndexer() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
@@ -314,7 +315,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Override
+    @Test
     public void canUpdateIndexerFieldMapping() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
@@ -324,7 +325,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Override
+    @Test
     public void canCreateIndexerWithFieldMapping() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
@@ -335,7 +336,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createAndValidateIndexer(indexer);
     }
 
-    @Override
+    @Test
     public void canUpdateIndexerDisabled() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
@@ -345,7 +346,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Override
+    @Test
     public void canUpdateIndexerSchedule() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
@@ -355,7 +356,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Override
+    @Test
     public void canCreateIndexerWithSchedule() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
@@ -366,7 +367,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createAndValidateIndexer(indexer);
     }
 
-    @Override
+    @Test
     public void canUpdateIndexerBatchSizeMaxFailedItems() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
@@ -378,7 +379,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Override
+    @Test
     public void canCreateIndexerWithBatchSizeMaxFailedItems() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
@@ -392,7 +393,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     // This test currently does not pass on our Dogfood account, as the
     // Storage resource provider is not returning an answer.
-    @Override
+    @Test
     public void canUpdateIndexerBlobParams() {
         // Create the needed Azure blob resources and data source object
         DataSource blobDataSource = createBlobDataSource();
@@ -408,7 +409,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     // This test currently does not pass on our Dogfood account, as the
     // Storage resource provider is not returning an answer.
-    @Override
+    @Test
     public void canCreateIndexerWithBlobParams() {
         // Create the needed Azure blob resources and data source object
         DataSource blobDataSource = createBlobDataSource();
@@ -423,7 +424,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createAndValidateIndexer(indexer);
     }
 
-    @Override
+    @Test
     public void canCreateAndDeleteIndexer() {
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
         Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
@@ -434,7 +435,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Assert.assertFalse(client.indexerExists(indexer.getName()));
     }
 
-    @Override
+    @Test
     public void deleteIndexerIsIdempotent() {
         // Create Datasource
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
@@ -461,7 +462,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Assert.assertEquals(HttpStatus.SC_NOT_FOUND, result.getStatusCode());
     }
 
-    @Override
+    @Test
     public void canCreateAndGetIndexer() {
         String indexerName = "indexer";
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
@@ -481,7 +482,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         assertIndexersEqual(indexer, indexerResult);
     }
 
-    @Override
+    @Test
     public void getIndexerThrowsOnNotFound() {
         assertHttpResponseException(
             () -> client.getIndexer("thisindexerdoesnotexist"),
@@ -489,7 +490,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             "Indexer 'thisindexerdoesnotexist' was not found");
     }
 
-    @Override
+    @Test
     public void createOrUpdateIndexerIfNotExistsSucceedsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -503,7 +504,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Assert.assertTrue(StringUtils.isNoneEmpty(indexerResult.getETag()));
     }
 
-    @Override
+    @Test
     public void deleteIndexerIfExistsWorksOnlyWhenResourceExists() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -518,7 +519,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             indexerName);
     }
 
-    @Override
+    @Test
     public void deleteIndexerIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests act = new AccessConditionTests();
 
@@ -533,7 +534,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             indexerName);
     }
 
-    @Override
+    @Test
     public void updateIndexerIfExistsFailsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsFailsOnNoResource(
@@ -541,7 +542,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             createOrUpdateIndexerFunc);
     }
 
-    @Override
+    @Test
     public void updateIndexerIfExistsSucceedsOnExistingResource() {
         // Prepare datasource and index
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
@@ -553,7 +554,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             mutateIndexerFunc);
     }
 
-    @Override
+    @Test
     public void updateIndexerIfNotChangedFailsWhenResourceChanged() {
         // Prepare datasource and index
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
@@ -565,7 +566,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             mutateIndexerFunc);
     }
 
-    @Override
+    @Test
     public void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged() {
         // Prepare datasource and index
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
@@ -577,7 +578,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             mutateIndexerFunc);
     }
 
-    @Override
+    @Test
     public void canUpdateIndexerSkillset() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
@@ -593,7 +594,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createUpdateAndValidateIndexer(updatedExpected, SQL_DATASOURCE_NAME);
     }
 
-    @Override
+    @Test
     public void canCreateIndexerWithSkillset() {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
@@ -612,7 +613,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createAndValidateIndexer(indexer);
     }
 
-    @Override
+    @Test
     public void existsReturnsTrueForExistingIndexer() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
@@ -620,7 +621,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Assert.assertTrue(client.indexerExistsWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
-    @Override
+    @Test
     public void existsReturnsFalseForNonExistingIndexer() {
         Assert.assertFalse(client.indexerExists("invalidindex"));
     }

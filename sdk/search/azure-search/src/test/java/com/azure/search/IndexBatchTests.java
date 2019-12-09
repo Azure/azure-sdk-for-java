@@ -6,7 +6,7 @@ import com.azure.search.models.IndexAction;
 import com.azure.search.models.IndexActionType;
 import com.azure.search.models.IndexBatch;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;

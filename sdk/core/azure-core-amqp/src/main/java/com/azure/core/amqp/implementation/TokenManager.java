@@ -7,12 +7,10 @@ import com.azure.core.amqp.exception.AmqpResponseCode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.Closeable;
-
 /**
  * Manages the authorization of the client to the CBS node.
  */
-public interface TokenManager extends Closeable {
+public interface TokenManager extends AutoCloseable {
     /**
      * Invokes an authorization call on the CBS node.
      *
@@ -27,4 +25,10 @@ public interface TokenManager extends Closeable {
      * @return A {@link Flux} of authorization results from the CBS node.
      */
     Flux<AmqpResponseCode> getAuthorizationResults();
+
+    /**
+     * Closes the token manager.
+     */
+    @Override
+    void close();
 }

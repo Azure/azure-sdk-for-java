@@ -1,0 +1,87 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfslistfilesystemserror019690f1314b4d43e349c2?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "1c3276e9-e90a-4d13-b489-9230a9b07d69"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D75EEAA63F0308",
+      "Last-Modified" : "Fri, 01 Nov 2019 16:43:40 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "dc6fd643-e01e-007c-5cd3-90d34f000000",
+      "Date" : "Fri, 01 Nov 2019 16:43:39 GMT",
+      "x-ms-client-request-id" : "1c3276e9-e90a-4d13-b489-9230a9b07d69"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprahns.blob.core.windows.net?marker=garbage%20continuation%20token&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "80bf437e-2e52-48ca-99c3-83f42288e626"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeInput",
+      "retry-after" : "0",
+      "Content-Length" : "226",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "3a65698c-a01e-0034-13d3-90e1d2000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>One of the request inputs is out of range.\nRequestId:3a65698c-a01e-0034-13d3-90e1d2000000\nTime:2019-11-01T16:43:40.1298162Z</Message></Error>",
+      "Date" : "Fri, 01 Nov 2019 16:43:39 GMT",
+      "x-ms-client-request-id" : "80bf437e-2e52-48ca-99c3-83f42288e626",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprahns.blob.core.windows.net?prefix=jtfslistfilesystemserror&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "84b9e90e-e727-428b-be15-517086fb46f9"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dc6fd669-e01e-007c-7fd3-90d34f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahns.blob.core.windows.net/\"><Prefix>jtfslistfilesystemserror</Prefix><Containers><Container><Name>jtfslistfilesystemserror019690f1314b4d43e349c2</Name><Properties><Last-Modified>Fri, 01 Nov 2019 16:43:40 GMT</Last-Modified><Etag>\"0x8D75EEAA63F0308\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 01 Nov 2019 16:43:40 GMT",
+      "x-ms-client-request-id" : "84b9e90e-e727-428b-be15-517086fb46f9",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfslistfilesystemserror019690f1314b4d43e349c2?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "80b1bc84-a76a-49af-b64a-edb76939b404"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "3a6569c1-a01e-0034-42d3-90e1d2000000",
+      "Date" : "Fri, 01 Nov 2019 16:43:39 GMT",
+      "x-ms-client-request-id" : "80b1bc84-a76a-49af-b64a-edb76939b404"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfslistfilesystemserror019690f1314b4d43e349c2" ]
+}

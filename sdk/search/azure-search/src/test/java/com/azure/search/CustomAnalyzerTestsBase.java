@@ -11,10 +11,9 @@ import com.azure.search.models.TokenInfo;
 import com.azure.search.models.Tokenizer;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -188,7 +187,8 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
     List<AnalyzerName> getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer() {
         // Only non-language analyzer names can be set on the searchAnalyzer and indexAnalyzer properties.
         // ASSUMPTION: Only language analyzers end in .lucene or .microsoft.
-        return Arrays.stream(AnalyzerName.values())
+        return AnalyzerName.values()
+            .stream()
             .filter(an -> !an.toString().endsWith(".lucene") && !an.toString().endsWith(".microsoft"))
             .collect(Collectors.toList());
     }

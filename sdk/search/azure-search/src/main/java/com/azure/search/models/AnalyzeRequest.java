@@ -57,10 +57,10 @@ public final class AnalyzeRequest {
      * The name of the tokenizer to use to break the given text. If this
      * parameter is not specified, you must specify an analyzer instead. The
      * tokenizer and analyzer parameters are mutually exclusive. Possible
-     * values include: 'classic', 'edgeNGram', 'keyword_v2', 'letter',
-     * 'lowercase', 'microsoft_language_tokenizer',
-     * 'microsoft_language_stemming_tokenizer', 'nGram', 'path_hierarchy_v2',
-     * 'pattern', 'standard_v2', 'uax_url_email', 'whitespace'
+     * values include: 'Classic', 'EdgeNGram', 'Keyword', 'Letter',
+     * 'Lowercase', 'MicrosoftLanguageTokenizer',
+     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
+     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'
      */
     @JsonProperty(value = "tokenizer")
     private TokenizerName tokenizer;
@@ -173,10 +173,10 @@ public final class AnalyzeRequest {
      * Get the tokenizer property: The name of the tokenizer to use to break
      * the given text. If this parameter is not specified, you must specify an
      * analyzer instead. The tokenizer and analyzer parameters are mutually
-     * exclusive. Possible values include: 'classic', 'edgeNGram',
-     * 'keyword_v2', 'letter', 'lowercase', 'microsoft_language_tokenizer',
-     * 'microsoft_language_stemming_tokenizer', 'nGram', 'path_hierarchy_v2',
-     * 'pattern', 'standard_v2', 'uax_url_email', 'whitespace'.
+     * exclusive. Possible values include: 'Classic', 'EdgeNGram', 'Keyword',
+     * 'Letter', 'Lowercase', 'MicrosoftLanguageTokenizer',
+     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
+     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
      *
      * @return the tokenizer value.
      */
@@ -188,10 +188,10 @@ public final class AnalyzeRequest {
      * Set the tokenizer property: The name of the tokenizer to use to break
      * the given text. If this parameter is not specified, you must specify an
      * analyzer instead. The tokenizer and analyzer parameters are mutually
-     * exclusive. Possible values include: 'classic', 'edgeNGram',
-     * 'keyword_v2', 'letter', 'lowercase', 'microsoft_language_tokenizer',
-     * 'microsoft_language_stemming_tokenizer', 'nGram', 'path_hierarchy_v2',
-     * 'pattern', 'standard_v2', 'uax_url_email', 'whitespace'.
+     * exclusive. Possible values include: 'Classic', 'EdgeNGram', 'Keyword',
+     * 'Letter', 'Lowercase', 'MicrosoftLanguageTokenizer',
+     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
+     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
      *
      * @param tokenizer the tokenizer value to set.
      * @return the AnalyzeRequest object itself.

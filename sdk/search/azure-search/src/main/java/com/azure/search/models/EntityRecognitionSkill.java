@@ -27,7 +27,9 @@ public final class EntityRecognitionSkill extends Skill {
 
     /*
      * A value indicating which language code to use. Default is en. Possible
-     * values include: 'de', 'en', 'es', 'fr', 'it'
+     * values include: 'ar', 'cs', 'zh-Hans', 'zh-Hant', 'da', 'nl', 'en',
+     * 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'no', 'pl', 'pt-PT',
+     * 'pt-BR', 'ru', 'es', 'sv', 'tr'
      */
     @JsonProperty(value = "defaultLanguageCode")
     private EntityRecognitionSkillLanguage defaultLanguageCode;
@@ -73,8 +75,9 @@ public final class EntityRecognitionSkill extends Skill {
 
     /**
      * Get the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'de', 'en', 'es',
-     * 'fr', 'it'.
+     * code to use. Default is en. Possible values include: 'ar', 'cs',
+     * 'zh-Hans', 'zh-Hant', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu',
+     * 'it', 'ja', 'ko', 'no', 'pl', 'pt-PT', 'pt-BR', 'ru', 'es', 'sv', 'tr'.
      *
      * @return the defaultLanguageCode value.
      */
@@ -84,8 +87,9 @@ public final class EntityRecognitionSkill extends Skill {
 
     /**
      * Set the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'de', 'en', 'es',
-     * 'fr', 'it'.
+     * code to use. Default is en. Possible values include: 'ar', 'cs',
+     * 'zh-Hans', 'zh-Hant', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu',
+     * 'it', 'ja', 'ko', 'no', 'pl', 'pt-PT', 'pt-BR', 'ru', 'es', 'sv', 'tr'.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the EntityRecognitionSkill object itself.

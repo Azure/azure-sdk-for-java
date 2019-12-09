@@ -12,6 +12,9 @@ import com.azure.search.models.DataSourceType;
 import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * TODO: Add class description
+ */
 public class DataSources {
 
     /**
@@ -36,7 +39,7 @@ public class DataSources {
         DataDeletionDetectionPolicy deletionDetectionPolicy) {
         return new DataSource()
             .setName(name)
-            .setType(DataSourceType.AZURESQL)
+            .setType(DataSourceType.AZURE_SQL)
             .setCredentials(new DataSourceCredentials().setConnectionString(sqlConnectionString))
             .setContainer(new DataContainer().setName(tableOrViewName))
             .setDescription(description)
@@ -68,7 +71,7 @@ public class DataSources {
         String description) {
         return new DataSource()
             .setName(name)
-            .setType(DataSourceType.AZUREBLOB)
+            .setType(DataSourceType.AZURE_BLOB)
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString(storageConnectionString))
             .setContainer(new DataContainer()
@@ -111,7 +114,7 @@ public class DataSources {
         }
         return new DataSource()
             .setName(name)
-            .setType(DataSourceType.AZURETABLE)
+            .setType(DataSourceType.AZURE_TABLE)
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString(storageConnectionString))
             .setContainer(new DataContainer()
@@ -156,7 +159,7 @@ public class DataSources {
         }
         return new DataSource()
             .setName(name)
-            .setType(DataSourceType.COSMOSDB)
+            .setType(DataSourceType.COSMOS_DB)
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString(cosmosDbConnectionString))
             .setContainer(new DataContainer()

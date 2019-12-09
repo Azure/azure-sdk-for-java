@@ -6,87 +6,74 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for SplitSkillLanguage.
  */
-public enum SplitSkillLanguage {
+public final class SplitSkillLanguage extends ExpandableStringEnum<SplitSkillLanguage> {
     /**
-     * Enum value da.
+     * Static value da for SplitSkillLanguage.
      */
-    DA("da"),
+    public static final SplitSkillLanguage DA = fromString("da");
 
     /**
-     * Enum value de.
+     * Static value de for SplitSkillLanguage.
      */
-    DE("de"),
+    public static final SplitSkillLanguage DE = fromString("de");
 
     /**
-     * Enum value en.
+     * Static value en for SplitSkillLanguage.
      */
-    EN("en"),
+    public static final SplitSkillLanguage EN = fromString("en");
 
     /**
-     * Enum value es.
+     * Static value es for SplitSkillLanguage.
      */
-    ES("es"),
+    public static final SplitSkillLanguage ES = fromString("es");
 
     /**
-     * Enum value fi.
+     * Static value fi for SplitSkillLanguage.
      */
-    FI("fi"),
+    public static final SplitSkillLanguage FI = fromString("fi");
 
     /**
-     * Enum value fr.
+     * Static value fr for SplitSkillLanguage.
      */
-    FR("fr"),
+    public static final SplitSkillLanguage FR = fromString("fr");
 
     /**
-     * Enum value it.
+     * Static value it for SplitSkillLanguage.
      */
-    IT("it"),
+    public static final SplitSkillLanguage IT = fromString("it");
 
     /**
-     * Enum value ko.
+     * Static value ko for SplitSkillLanguage.
      */
-    KO("ko"),
+    public static final SplitSkillLanguage KO = fromString("ko");
 
     /**
-     * Enum value pt.
+     * Static value pt for SplitSkillLanguage.
      */
-    PT("pt");
+    public static final SplitSkillLanguage PT = fromString("pt");
 
     /**
-     * The actual serialized value for a SplitSkillLanguage instance.
-     */
-    private final String value;
-
-    SplitSkillLanguage(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a SplitSkillLanguage instance.
+     * Creates or finds a SplitSkillLanguage from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed SplitSkillLanguage object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding SplitSkillLanguage.
      */
     @JsonCreator
-    public static SplitSkillLanguage fromString(String value) {
-        SplitSkillLanguage[] items = SplitSkillLanguage.values();
-        for (SplitSkillLanguage item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static SplitSkillLanguage fromString(String name) {
+        return fromString(name, SplitSkillLanguage.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known SplitSkillLanguage values.
+     */
+    public static Collection<SplitSkillLanguage> values() {
+        return values(SplitSkillLanguage.class);
     }
 }

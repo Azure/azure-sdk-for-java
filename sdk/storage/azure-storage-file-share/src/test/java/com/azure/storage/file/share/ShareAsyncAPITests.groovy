@@ -5,8 +5,8 @@ package com.azure.storage.file.share
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.share.models.FileErrorCode
-import com.azure.storage.file.share.models.FileHttpHeaders
+import com.azure.storage.file.share.models.ShareErrorCode
+import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import reactor.test.StepVerifier
 import spock.lang.Ignore
@@ -20,7 +20,7 @@ class ShareAsyncAPITests extends APISpec {
     ShareAsyncClient primaryShareAsyncClient
     String shareName
     static Map<String, String> testMetadata
-    static ShareFileSmbProperties smbProperties
+    static FileSmbProperties smbProperties
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
@@ -28,7 +28,7 @@ class ShareAsyncAPITests extends APISpec {
         primaryFileServiceAsyncClient = fileServiceBuilderHelper(interceptorManager).buildAsyncClient()
         primaryShareAsyncClient = primaryFileServiceAsyncClient.getShareAsyncClient(shareName)
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        smbProperties = new ShareFileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
+        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get share URL"() {
@@ -89,9 +89,9 @@ class ShareAsyncAPITests extends APISpec {
 
         where:
         metadata                                       | quota | statusCode | errMessage
-        Collections.singletonMap("", "value")          | 1     | 400        | FileErrorCode.EMPTY_METADATA_KEY
-        Collections.singletonMap("metadata!", "value") | 1     | 400        | FileErrorCode.INVALID_METADATA
-        testMetadata                                   | 6000  | 400        | FileErrorCode.INVALID_HEADER_VALUE
+        Collections.singletonMap("", "value")          | 1     | 400        | ShareErrorCode.EMPTY_METADATA_KEY
+        Collections.singletonMap("metadata!", "value") | 1     | 400        | ShareErrorCode.INVALID_METADATA
+        testMetadata                                   | 6000  | 400        | ShareErrorCode.INVALID_HEADER_VALUE
     }
 
     def "Create snapshot"() {
@@ -117,7 +117,7 @@ class ShareAsyncAPITests extends APISpec {
         def createShareShnapshotErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createSnapshot())
         then:
         createShareShnapshotErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, FileErrorCode.SHARE_NOT_FOUND)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
         }
     }
 
@@ -142,7 +142,7 @@ class ShareAsyncAPITests extends APISpec {
         def createSnapshotErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(Collections.singletonMap("", "value")))
         then:
         createSnapshotErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.EMPTY_METADATA_KEY)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY)
         }
     }
 
@@ -160,7 +160,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.delete())
             .verifyErrorSatisfies {
-                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, FileErrorCode.SHARE_NOT_FOUND)
+                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
             }
     }
 
@@ -181,7 +181,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.getProperties())
             .verifyErrorSatisfies {
-                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, FileErrorCode.SHARE_NOT_FOUND)
+                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
             }
     }
 
@@ -208,7 +208,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.setQuota(2))
             .verifyErrorSatisfies {
-                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, FileErrorCode.SHARE_NOT_FOUND)
+                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
             }
     }
 
@@ -236,7 +236,7 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryShareAsyncClient.setMetadata(testMetadata))
             .verifyErrorSatisfies {
-                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, FileErrorCode.SHARE_NOT_FOUND)
+                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
             }
     }
 
@@ -257,7 +257,7 @@ class ShareAsyncAPITests extends APISpec {
         def createDirectoryVerifier = StepVerifier.create(primaryShareAsyncClient.createDirectory("test/directory"))
         then:
         createDirectoryVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, FileErrorCode.PARENT_NOT_FOUND)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.PARENT_NOT_FOUND)
         }
     }
 
@@ -302,7 +302,7 @@ class ShareAsyncAPITests extends APISpec {
         def createDirErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createDirectoryWithResponse("testdirectory", null, null, Collections.singletonMap("", "value")))
         then:
         createDirErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.EMPTY_METADATA_KEY)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY)
         }
     }
 
@@ -354,15 +354,15 @@ class ShareAsyncAPITests extends APISpec {
         }
         where:
         fileName    | maxSize | statusCode | errMsg
-        "testfile:" | 1024    | 400        | FileErrorCode.INVALID_RESOURCE_NAME
-        "fileName"  | -1      | 400        | FileErrorCode.OUT_OF_RANGE_INPUT
+        "testfile:" | 1024    | 400        | ShareErrorCode.INVALID_RESOURCE_NAME
+        "fileName"  | -1      | 400        | ShareErrorCode.OUT_OF_RANGE_INPUT
 
     }
 
     def "Create file maxOverload"() {
         given:
         primaryShareAsyncClient.create().block()
-        FileHttpHeaders httpHeaders = new FileHttpHeaders().setContentType("txt")
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders().setContentType("txt")
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
         expect:
@@ -387,11 +387,11 @@ class ShareAsyncAPITests extends APISpec {
         }
 
         where:
-        fileName    | maxSize | httpHeaders                                      | metadata                              | errMsg
-        "testfile:" | 1024    | null                                             | testMetadata                          | FileErrorCode.INVALID_RESOURCE_NAME
-        "fileName"  | -1      | null                                             | testMetadata                          | FileErrorCode.OUT_OF_RANGE_INPUT
-        "fileName"  | 1024    | new FileHttpHeaders().setContentMd5(new byte[0]) | testMetadata                          | FileErrorCode.INVALID_HEADER_VALUE
-        "fileName"  | 1024    | null                                             | Collections.singletonMap("", "value") | FileErrorCode.EMPTY_METADATA_KEY
+        fileName    | maxSize | httpHeaders                                           | metadata                              | errMsg
+        "testfile:" | 1024    | null                                                  | testMetadata                          | ShareErrorCode.INVALID_RESOURCE_NAME
+        "fileName"  | -1      | null                                                  | testMetadata                          | ShareErrorCode.OUT_OF_RANGE_INPUT
+        "fileName"  | 1024    | new ShareFileHttpHeaders().setContentMd5(new byte[0]) | testMetadata                          | ShareErrorCode.INVALID_HEADER_VALUE
+        "fileName"  | 1024    | null                                                  | Collections.singletonMap("", "value") | ShareErrorCode.EMPTY_METADATA_KEY
 
     }
 
@@ -414,7 +414,7 @@ class ShareAsyncAPITests extends APISpec {
         def deleteDirErrorVerifier = StepVerifier.create(primaryShareAsyncClient.deleteDirectory("testdirectory"))
         then:
         deleteDirErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, FileErrorCode.RESOURCE_NOT_FOUND)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
         }
     }
 
@@ -438,7 +438,7 @@ class ShareAsyncAPITests extends APISpec {
         def deleteFileErrorVerifier = StepVerifier.create(primaryShareAsyncClient.deleteFile("testdirectory"))
         then:
         deleteFileErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, FileErrorCode.RESOURCE_NOT_FOUND)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
         }
     }
 
@@ -474,7 +474,7 @@ class ShareAsyncAPITests extends APISpec {
         // Invalid permission
         StepVerifier.create(primaryShareAsyncClient.createPermissionWithResponse("abcde"))
             .verifyErrorSatisfies {
-                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.fromString("FileInvalidPermission"))
+                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.fromString("FileInvalidPermission"))
             }
     }
 
@@ -486,7 +486,7 @@ class ShareAsyncAPITests extends APISpec {
         // Invalid permission key
         StepVerifier.create(primaryShareAsyncClient.getPermissionWithResponse("abcde"))
             .verifyErrorSatisfies {
-                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.INVALID_HEADER_VALUE)
+                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.INVALID_HEADER_VALUE)
             }
     }
 

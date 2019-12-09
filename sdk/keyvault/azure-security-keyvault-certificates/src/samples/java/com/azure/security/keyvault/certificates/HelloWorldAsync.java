@@ -6,9 +6,9 @@ package com.azure.security.keyvault.certificates;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.Certificate;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.CertificateKeyType;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,15 +31,15 @@ public class HelloWorldAsync {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // Let's create a self signed certificate valid for 1 year. if the certificate
         //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
-            .setReuseKey(true)
+            .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
+            .setKeyReusable(true)
             .setKeyType(CertificateKeyType.EC)
             .setKeyCurveName(CertificateKeyCurveName.P_256);
         Map<String, String> tags = new HashMap<>();
@@ -56,16 +56,16 @@ public class HelloWorldAsync {
         Thread.sleep(22000);
 
         // Let's Get the latest version of the certificate from the key vault.
-        certificateAsyncClient.getCertificateWithPolicy("certificateName")
+        certificateAsyncClient.getCertificate("certificateName")
             .subscribe(certificateResponse ->
                 System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getProperties().getName(),
                     certificateResponse.getSecretId()));
 
         // After some time, we need to disable the certificate temporarily, so we update the enabled status of the certificate.
         // The update method can be used to update the enabled status of the certificate.
-        certificateAsyncClient.getCertificateWithPolicy("certificateName")
+        certificateAsyncClient.getCertificate("certificateName")
             .subscribe(certificateResponseValue -> {
-                Certificate certificate = certificateResponseValue;
+                KeyVaultCertificate certificate = certificateResponseValue;
                 //Update enabled status of the certificate
                 certificate.getProperties().setEnabled(false);
                 certificateAsyncClient.updateCertificateProperties(certificate.getProperties())
@@ -80,7 +80,7 @@ public class HelloWorldAsync {
         //Let's create a certificate issuer.
         certificateAsyncClient.createIssuer("myIssuer", "Test")
             .subscribe(issuer -> {
-                System.out.printf("Issuer created with %s and %s", issuer.getName(), issuer.getProperties().getProvider());
+                System.out.printf("Issuer created with %s and %s", issuer.getName(), issuer.getProvider());
             });
 
         Thread.sleep(2000);
@@ -89,7 +89,7 @@ public class HelloWorldAsync {
         // Let's fetch the issuer we just created from the key vault.
         certificateAsyncClient.getIssuer("myIssuer")
             .subscribe(issuer -> {
-                System.out.printf("Issuer returned with %s and %s", issuer.getName(), issuer.getProperties().getProvider());
+                System.out.printf("Issuer returned with %s and %s", issuer.getName(), issuer.getProvider());
             });
 
         Thread.sleep(2000);
@@ -106,7 +106,7 @@ public class HelloWorldAsync {
         Thread.sleep(22000);
 
         // Let's Get the latest version of our certificate from the key vault.
-        certificateAsyncClient.getCertificateWithPolicy("myCertificate")
+        certificateAsyncClient.getCertificate("myCertificate")
             .subscribe(certificateResponse ->
                 System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getProperties().getName(),
                     certificateResponse.getSecretId()));
@@ -114,14 +114,19 @@ public class HelloWorldAsync {
         Thread.sleep(2000);
 
         // The certificates and issuers are no longer needed, need to delete it from the key vault.
-        certificateAsyncClient.deleteCertificate("certificateName")
-            .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
+        certificateAsyncClient.beginDeleteCertificate("certificateName")
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
+                System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
 
-        certificateAsyncClient.deleteCertificate("myCertificate")
-            .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
-
+        certificateAsyncClient.beginDeleteCertificate("myCertificate")
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
+                System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
 
         certificateAsyncClient.deleteIssuerWithResponse("myIssuer")
             .subscribe(deletedIssuerResponse ->

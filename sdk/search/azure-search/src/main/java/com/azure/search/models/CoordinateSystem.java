@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * TODO: Add class description
+ */
 @Fluent
 public class CoordinateSystem {
     public static final String NAME_PROPERTY = "name";
@@ -49,6 +52,10 @@ public class CoordinateSystem {
             && properties.get(NAME_PROPERTY).startsWith("EPSG");
     }
 
+    /**
+     *
+     * @return String representing coordinate system
+     */
     @Override
     public String toString() {
         if (isValid()) {
@@ -57,6 +64,11 @@ public class CoordinateSystem {
         return "";
     }
 
+    /**
+     * Checks equality between two CoordinateSystems
+     * @param o other Coordinate system
+     * @return boolean true if equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -73,24 +85,46 @@ public class CoordinateSystem {
             && Objects.equals(properties, other.properties);
     }
 
+    /**
+     * Returns hash code for Coordinate System
+     * @return int representing hash code
+     */
     @Override
     public int hashCode() {
         return Objects.hash(type, properties);
     }
 
+    /**
+     * Retrieve CoordinateSystem type
+     * @return String type
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Set  CoordinateSystem type
+     * @param type String
+     * @return updated CoordinateSystem
+     */
     public CoordinateSystem setType(String type) {
         this.type = type;
         return this;
     }
 
+    /**
+     * Retrieve CoordinateSystem properties
+     * @return properties
+     */
     public Map<String, String> getProperties() {
         return properties;
     }
 
+    /**
+     * Set CoordinateSystem properties
+     * @param properties map
+     * @return updated CoordinateSystem
+     */
     public CoordinateSystem setProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;

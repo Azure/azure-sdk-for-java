@@ -10,14 +10,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents information about the entity (such as Azure SQL table or
- * DocumentDb collection) that will be indexed.
+ * Represents information about the entity (such as Azure SQL table or CosmosDB
+ * collection) that will be indexed.
  */
 @Fluent
 public final class DataContainer {
     /*
      * The name of the table or view (for Azure SQL data source) or collection
-     * (for DocumentDB data source) that will be indexed.
+     * (for CosmosDB data source) that will be indexed.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -32,7 +32,7 @@ public final class DataContainer {
 
     /**
      * Get the name property: The name of the table or view (for Azure SQL data
-     * source) or collection (for DocumentDB data source) that will be indexed.
+     * source) or collection (for CosmosDB data source) that will be indexed.
      *
      * @return the name value.
      */
@@ -42,7 +42,7 @@ public final class DataContainer {
 
     /**
      * Set the name property: The name of the table or view (for Azure SQL data
-     * source) or collection (for DocumentDB data source) that will be indexed.
+     * source) or collection (for CosmosDB data source) that will be indexed.
      *
      * @param name the name value to set.
      * @return the DataContainer object itself.

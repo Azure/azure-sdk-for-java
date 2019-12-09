@@ -21,6 +21,8 @@ trigger:
   paths:
     include:
       - sdk/cognitiveservices/
+    exclude:
+      - sdk/cognitiveservices/mgmt-
 
 pr:
   branches:
@@ -32,6 +34,8 @@ pr:
   paths:
     include:
       - sdk/cognitiveservices/
+    exclude:
+      - sdk/cognitiveservices/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -67,9 +71,6 @@ stages:
           stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-imagesearch
           safeName: azurecognitiveservicesimagesearch
-          stagingProfileId: 534d15ee3800f4
-        - name: azure-cognitiveservices-inkrecognizer
-          safeName: azurecognitiveservicesinkrecognizer
           stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-luis-authoring
           safeName: azurecognitiveservicesluisauthoring

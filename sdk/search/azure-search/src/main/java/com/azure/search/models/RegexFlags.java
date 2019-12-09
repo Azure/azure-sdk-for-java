@@ -6,82 +6,69 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for RegexFlags.
  */
-public enum RegexFlags {
+public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
     /**
-     * Enum value CANON_EQ.
+     * Static value CANON_EQ for RegexFlags.
      */
-    CANON_EQ("CANON_EQ"),
+    public static final RegexFlags CANON_EQ = fromString("CANON_EQ");
 
     /**
-     * Enum value CASE_INSENSITIVE.
+     * Static value CASE_INSENSITIVE for RegexFlags.
      */
-    CASE_INSENSITIVE("CASE_INSENSITIVE"),
+    public static final RegexFlags CASE_INSENSITIVE = fromString("CASE_INSENSITIVE");
 
     /**
-     * Enum value COMMENTS.
+     * Static value COMMENTS for RegexFlags.
      */
-    COMMENTS("COMMENTS"),
+    public static final RegexFlags COMMENTS = fromString("COMMENTS");
 
     /**
-     * Enum value DOTALL.
+     * Static value DOTALL for RegexFlags.
      */
-    DOTALL("DOTALL"),
+    public static final RegexFlags DOTALL = fromString("DOTALL");
 
     /**
-     * Enum value LITERAL.
+     * Static value LITERAL for RegexFlags.
      */
-    LITERAL("LITERAL"),
+    public static final RegexFlags LITERAL = fromString("LITERAL");
 
     /**
-     * Enum value MULTILINE.
+     * Static value MULTILINE for RegexFlags.
      */
-    MULTILINE("MULTILINE"),
+    public static final RegexFlags MULTILINE = fromString("MULTILINE");
 
     /**
-     * Enum value UNICODE_CASE.
+     * Static value UNICODE_CASE for RegexFlags.
      */
-    UNICODE_CASE("UNICODE_CASE"),
+    public static final RegexFlags UNICODE_CASE = fromString("UNICODE_CASE");
 
     /**
-     * Enum value UNIX_LINES.
+     * Static value UNIX_LINES for RegexFlags.
      */
-    UNIX_LINES("UNIX_LINES");
+    public static final RegexFlags UNIX_LINES = fromString("UNIX_LINES");
 
     /**
-     * The actual serialized value for a RegexFlags instance.
-     */
-    private final String value;
-
-    RegexFlags(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a RegexFlags instance.
+     * Creates or finds a RegexFlags from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed RegexFlags object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding RegexFlags.
      */
     @JsonCreator
-    public static RegexFlags fromString(String value) {
-        RegexFlags[] items = RegexFlags.values();
-        for (RegexFlags item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static RegexFlags fromString(String name) {
+        return fromString(name, RegexFlags.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known RegexFlags values.
+     */
+    public static Collection<RegexFlags> values() {
+        return values(RegexFlags.class);
     }
 }

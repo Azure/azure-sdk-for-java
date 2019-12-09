@@ -3,6 +3,9 @@
 
 package com.azure.search.models;
 
+/**
+ * TODO: add class desc
+ */
 public class RangeFacetResult {
     private final Long count;
     private final Object from;

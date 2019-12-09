@@ -3,12 +3,12 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.amqp.models.ProxyConfiguration;
 
 import java.time.Duration;
 
@@ -33,18 +33,18 @@ class MockReactorHandlerProvider extends ReactorHandlerProvider {
     }
 
     @Override
-    public ConnectionHandler createConnectionHandler(String connectionId, String hostname, TransportType transportType,
-                                                     ProxyConfiguration configuration) {
+    public ConnectionHandler createConnectionHandler(String connectionId, String hostname, AmqpTransportType transportType,
+                                                     ProxyOptions configuration) {
         return connectionHandler;
     }
 
     @Override
-    public SendLinkHandler createSendLinkHandler(String connectionId, String hostname, String senderName, String entityPath) {
+    public SendLinkHandler createSendLinkHandler(String connectionId, String fullyQualifiedNamespace, String senderName, String entityPath) {
         return sendLinkHandler;
     }
 
     @Override
-    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname, String receiverName, String entityPath) {
+    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String fullyQualifiedNamespace, String receiverName, String entityPath) {
         return receiveLinkHandler;
     }
 }

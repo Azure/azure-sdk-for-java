@@ -3,52 +3,37 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.models.PartitionContext;
-import reactor.core.publisher.Mono;
-
 /**
- * Code snippets for {@link EventProcessorBuilder}.
+ * Code snippets for {@link EventProcessorClientBuilder}.
  */
 public class EventProcessorBuilderJavaDocCodeSamples {
 
     /**
-     * Code snippet for showing how to create a new instance of {@link EventProcessor}.
+     * Code snippet for showing how to create a new instance of {@link EventProcessorClient}.
      *
-     * @return A new instance of {@link EventProcessor}
+     * @return A new instance of {@link EventProcessorClient}
      */
-    // BEGIN: com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation
-    public EventProcessor createEventProcessor() {
+    // BEGIN: com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation
+    public EventProcessorClient createEventProcessor() {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .connectionString(connectionString)
-            .buildAsyncClient();
 
-        EventProcessor eventProcessor = new EventProcessorBuilder()
+        EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup("consumer-group")
-            .eventHubClient(eventHubAsyncClient)
-            .partitionProcessorFactory((PartitionProcessorImpl::new))
-            .partitionManager(new InMemoryPartitionManager())
-            .buildEventProcessor();
-        return eventProcessor;
+            .checkpointStore(new InMemoryCheckpointStore())
+            .processEvent(eventContext -> {
+                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId()
+                    + "and sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+            })
+            .processError(errorContext -> {
+                System.out.printf("Error occurred in partition processor for partition {}, {}",
+                    errorContext.getPartitionContext().getPartitionId(),
+                    errorContext.getThrowable());
+            })
+            .connectionString(connectionString)
+            .buildEventProcessorClient();
+        return eventProcessorClient;
     }
-
-    /**
-     * A partition processor to demo creating an instance of {@link EventProcessor}.
-     */
-    public static final class PartitionProcessorImpl extends PartitionProcessor {
-
-        /**
-         * Processes the event data.
-         *
-         * @return a representation of deferred processing of events.
-         */
-        @Override
-        public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
-            System.out.println("Processing event with sequence number " + eventData.getSequenceNumber());
-            return partitionContext.updateCheckpoint(eventData);
-        }
-    }
-    // END: com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation
+    // END: com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation
 
 }

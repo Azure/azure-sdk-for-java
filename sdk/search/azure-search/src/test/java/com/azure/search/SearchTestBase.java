@@ -14,7 +14,7 @@ import com.azure.search.models.SynonymMap;
 import com.azure.search.models.ValueFacetResult;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.text.ParseException;

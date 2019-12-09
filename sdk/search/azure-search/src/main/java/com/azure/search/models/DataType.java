@@ -6,122 +6,109 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for DataType.
  */
-public enum DataType {
+public final class DataType extends ExpandableStringEnum<DataType> {
     /**
-     * Enum value Edm.String.
+     * Static value Edm.String for DataType.
      */
-    EDM_STRING("Edm.String"),
+    public static final DataType EDM_STRING = fromString("Edm.String");
 
     /**
-     * Enum value Edm.Int32.
+     * Static value Edm.Int32 for DataType.
      */
-    EDM_INT32("Edm.Int32"),
+    public static final DataType EDM_INT32 = fromString("Edm.Int32");
 
     /**
-     * Enum value Edm.Int64.
+     * Static value Edm.Int64 for DataType.
      */
-    EDM_INT64("Edm.Int64"),
+    public static final DataType EDM_INT64 = fromString("Edm.Int64");
 
     /**
-     * Enum value Edm.Double.
+     * Static value Edm.Double for DataType.
      */
-    EDM_DOUBLE("Edm.Double"),
+    public static final DataType EDM_DOUBLE = fromString("Edm.Double");
 
     /**
-     * Enum value Edm.Boolean.
+     * Static value Edm.Boolean for DataType.
      */
-    EDM_BOOLEAN("Edm.Boolean"),
+    public static final DataType EDM_BOOLEAN = fromString("Edm.Boolean");
 
     /**
-     * Enum value Edm.DateTimeOffset.
+     * Static value Edm.DateTimeOffset for DataType.
      */
-    EDM_DATE_TIME_OFFSET("Edm.DateTimeOffset"),
+    public static final DataType EDM_DATE_TIME_OFFSET = fromString("Edm.DateTimeOffset");
 
     /**
-     * Enum value Edm.GeographyPoint.
+     * Static value Edm.GeographyPoint for DataType.
      */
-    EDM_GEOGRAPHY_POINT("Edm.GeographyPoint"),
+    public static final DataType EDM_GEOGRAPHY_POINT = fromString("Edm.GeographyPoint");
 
     /**
-     * Enum value Edm.ComplexType.
+     * Static value Edm.ComplexType for DataType.
      */
-    EDM_COMPLEX_TYPE("Edm.ComplexType"),
+    public static final DataType EDM_COMPLEX_TYPE = fromString("Edm.ComplexType");
 
     /**
-     * Enum value Collection(Edm.String).
+     * Static value Collection(Edm.String) for DataType.
      */
-    COLLECTION_EDM_STRING("Collection(Edm.String)"),
+    public static final DataType COLLECTION_EDM_STRING = fromString("Collection(Edm.String)");
 
     /**
-     * Enum value Collection(Edm.Int32).
+     * Static value Collection(Edm.Int32) for DataType.
      */
-    COLLECTION_EDM_INT32("Collection(Edm.Int32)"),
+    public static final DataType COLLECTION_EDM_INT32 = fromString("Collection(Edm.Int32)");
 
     /**
-     * Enum value Collection(Edm.Int64).
+     * Static value Collection(Edm.Int64) for DataType.
      */
-    COLLECTION_EDM_INT64("Collection(Edm.Int64)"),
+    public static final DataType COLLECTION_EDM_INT64 = fromString("Collection(Edm.Int64)");
 
     /**
-     * Enum value Collection(Edm.Double).
+     * Static value Collection(Edm.Double) for DataType.
      */
-    COLLECTION_EDM_DOUBLE("Collection(Edm.Double)"),
+    public static final DataType COLLECTION_EDM_DOUBLE = fromString("Collection(Edm.Double)");
 
     /**
-     * Enum value Collection(Edm.Boolean).
+     * Static value Collection(Edm.Boolean) for DataType.
      */
-    COLLECTION_EDM_BOOLEAN("Collection(Edm.Boolean)"),
+    public static final DataType COLLECTION_EDM_BOOLEAN = fromString("Collection(Edm.Boolean)");
 
     /**
-     * Enum value Collection(Edm.DateTimeOffset).
+     * Static value Collection(Edm.DateTimeOffset) for DataType.
      */
-    COLLECTION_EDM_DATE_TIME_OFFSET("Collection(Edm.DateTimeOffset)"),
+    public static final DataType COLLECTION_EDM_DATE_TIME_OFFSET = fromString("Collection(Edm.DateTimeOffset)");
 
     /**
-     * Enum value Collection(Edm.GeographyPoint).
+     * Static value Collection(Edm.GeographyPoint) for DataType.
      */
-    COLLECTION_EDM_GEOGRAPHY_POINT("Collection(Edm.GeographyPoint)"),
+    public static final DataType COLLECTION_EDM_GEOGRAPHY_POINT = fromString("Collection(Edm.GeographyPoint)");
 
     /**
-     * Enum value Collection(Edm.ComplexType).
+     * Static value Collection(Edm.ComplexType) for DataType.
      */
-    COLLECTION_EDM_COMPLEX_TYPE("Collection(Edm.ComplexType)");
+    public static final DataType COLLECTION_EDM_COMPLEX_TYPE = fromString("Collection(Edm.ComplexType)");
 
     /**
-     * The actual serialized value for a DataType instance.
-     */
-    private final String value;
-
-    DataType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a DataType instance.
+     * Creates or finds a DataType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed DataType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding DataType.
      */
     @JsonCreator
-    public static DataType fromString(String value) {
-        DataType[] items = DataType.values();
-        for (DataType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static DataType fromString(String name) {
+        return fromString(name, DataType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known DataType values.
+     */
+    public static Collection<DataType> values() {
+        return values(DataType.class);
     }
 }

@@ -671,7 +671,8 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
                 sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
 
-                final SendLinkHandler handler = new SendLinkHandler(MessageSender.this, MessageSender.this.getClientId());
+                final SendLinkHandler handler = new SendLinkHandler(MessageSender.this, MessageSender.this.getClientId(),
+                    MessageSender.this.underlyingFactory.executor);
                 BaseHandler.setHandler(sender, handler);
 
                 if (MessageSender.this.sendLink != null) {

@@ -6,47 +6,34 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for CharFilterName.
  */
-public enum CharFilterName {
+public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
     /**
-     * Enum value html_strip.
+     * Static value html_strip for CharFilterName.
      */
-    HTML_STRIP("html_strip");
+    public static final CharFilterName HTML_STRIP = fromString("html_strip");
 
     /**
-     * The actual serialized value for a CharFilterName instance.
-     */
-    private final String value;
-
-    CharFilterName(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a CharFilterName instance.
+     * Creates or finds a CharFilterName from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed CharFilterName object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding CharFilterName.
      */
     @JsonCreator
-    public static CharFilterName fromString(String value) {
-        CharFilterName[] items = CharFilterName.values();
-        for (CharFilterName item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static CharFilterName fromString(String name) {
+        return fromString(name, CharFilterName.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known CharFilterName values.
+     */
+    public static Collection<CharFilterName> values() {
+        return values(CharFilterName.class);
     }
 }

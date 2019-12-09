@@ -6,122 +6,109 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for KeyPhraseExtractionSkillLanguage.
  */
-public enum KeyPhraseExtractionSkillLanguage {
+public final class KeyPhraseExtractionSkillLanguage extends ExpandableStringEnum<KeyPhraseExtractionSkillLanguage> {
     /**
-     * Enum value da.
+     * Static value da for KeyPhraseExtractionSkillLanguage.
      */
-    DA("da"),
+    public static final KeyPhraseExtractionSkillLanguage DA = fromString("da");
 
     /**
-     * Enum value nl.
+     * Static value nl for KeyPhraseExtractionSkillLanguage.
      */
-    NL("nl"),
+    public static final KeyPhraseExtractionSkillLanguage NL = fromString("nl");
 
     /**
-     * Enum value en.
+     * Static value en for KeyPhraseExtractionSkillLanguage.
      */
-    EN("en"),
+    public static final KeyPhraseExtractionSkillLanguage EN = fromString("en");
 
     /**
-     * Enum value fi.
+     * Static value fi for KeyPhraseExtractionSkillLanguage.
      */
-    FI("fi"),
+    public static final KeyPhraseExtractionSkillLanguage FI = fromString("fi");
 
     /**
-     * Enum value fr.
+     * Static value fr for KeyPhraseExtractionSkillLanguage.
      */
-    FR("fr"),
+    public static final KeyPhraseExtractionSkillLanguage FR = fromString("fr");
 
     /**
-     * Enum value de.
+     * Static value de for KeyPhraseExtractionSkillLanguage.
      */
-    DE("de"),
+    public static final KeyPhraseExtractionSkillLanguage DE = fromString("de");
 
     /**
-     * Enum value it.
+     * Static value it for KeyPhraseExtractionSkillLanguage.
      */
-    IT("it"),
+    public static final KeyPhraseExtractionSkillLanguage IT = fromString("it");
 
     /**
-     * Enum value ja.
+     * Static value ja for KeyPhraseExtractionSkillLanguage.
      */
-    JA("ja"),
+    public static final KeyPhraseExtractionSkillLanguage JA = fromString("ja");
 
     /**
-     * Enum value ko.
+     * Static value ko for KeyPhraseExtractionSkillLanguage.
      */
-    KO("ko"),
+    public static final KeyPhraseExtractionSkillLanguage KO = fromString("ko");
 
     /**
-     * Enum value no.
+     * Static value no for KeyPhraseExtractionSkillLanguage.
      */
-    NO("no"),
+    public static final KeyPhraseExtractionSkillLanguage NO = fromString("no");
 
     /**
-     * Enum value pl.
+     * Static value pl for KeyPhraseExtractionSkillLanguage.
      */
-    PL("pl"),
+    public static final KeyPhraseExtractionSkillLanguage PL = fromString("pl");
 
     /**
-     * Enum value pt-PT.
+     * Static value pt-PT for KeyPhraseExtractionSkillLanguage.
      */
-    PT_PT("pt-PT"),
+    public static final KeyPhraseExtractionSkillLanguage PT_PT = fromString("pt-PT");
 
     /**
-     * Enum value pt-BR.
+     * Static value pt-BR for KeyPhraseExtractionSkillLanguage.
      */
-    PT_BR("pt-BR"),
+    public static final KeyPhraseExtractionSkillLanguage PT_BR = fromString("pt-BR");
 
     /**
-     * Enum value ru.
+     * Static value ru for KeyPhraseExtractionSkillLanguage.
      */
-    RU("ru"),
+    public static final KeyPhraseExtractionSkillLanguage RU = fromString("ru");
 
     /**
-     * Enum value es.
+     * Static value es for KeyPhraseExtractionSkillLanguage.
      */
-    ES("es"),
+    public static final KeyPhraseExtractionSkillLanguage ES = fromString("es");
 
     /**
-     * Enum value sv.
+     * Static value sv for KeyPhraseExtractionSkillLanguage.
      */
-    SV("sv");
+    public static final KeyPhraseExtractionSkillLanguage SV = fromString("sv");
 
     /**
-     * The actual serialized value for a KeyPhraseExtractionSkillLanguage instance.
-     */
-    private final String value;
-
-    KeyPhraseExtractionSkillLanguage(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a KeyPhraseExtractionSkillLanguage instance.
+     * Creates or finds a KeyPhraseExtractionSkillLanguage from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed KeyPhraseExtractionSkillLanguage object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding KeyPhraseExtractionSkillLanguage.
      */
     @JsonCreator
-    public static KeyPhraseExtractionSkillLanguage fromString(String value) {
-        KeyPhraseExtractionSkillLanguage[] items = KeyPhraseExtractionSkillLanguage.values();
-        for (KeyPhraseExtractionSkillLanguage item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static KeyPhraseExtractionSkillLanguage fromString(String name) {
+        return fromString(name, KeyPhraseExtractionSkillLanguage.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known KeyPhraseExtractionSkillLanguage values.
+     */
+    public static Collection<KeyPhraseExtractionSkillLanguage> values() {
+        return values(KeyPhraseExtractionSkillLanguage.class);
     }
 }

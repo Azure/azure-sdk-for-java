@@ -8,6 +8,8 @@ import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import org.junit.Assert;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -27,7 +29,8 @@ import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAU
 public class LookupAsyncTests extends LookupTestBase {
     private SearchIndexAsyncClient client;
 
-    @Override
+    @Disabled
+    @Test
     public void canGetStaticallyTypedDocument() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -41,7 +44,7 @@ public class LookupAsyncTests extends LookupTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canGetStaticallyTypedDocumentWithNullOrEmptyValues() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -55,7 +58,7 @@ public class LookupAsyncTests extends LookupTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canGetStaticallyTypedDocumentWithPascalCaseFields() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -69,7 +72,8 @@ public class LookupAsyncTests extends LookupTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Disabled
+    @Test
     public void canRoundtripStaticallyTypedPrimitiveCollections() {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
         client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildAsyncClient();
@@ -83,7 +87,7 @@ public class LookupAsyncTests extends LookupTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void getStaticallyTypedDocumentSetsUnselectedFieldsToNull() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -107,7 +111,7 @@ public class LookupAsyncTests extends LookupTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void canGetDynamicDocumentWithNullOrEmptyValues() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -145,7 +149,7 @@ public class LookupAsyncTests extends LookupTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void getDynamicDocumentWithEmptyObjectsReturnsObjectsFullOfNulls() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -181,7 +185,7 @@ public class LookupAsyncTests extends LookupTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void emptyDynamicallyTypedPrimitiveCollectionsRoundtripAsObjectArrays() {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
         client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildAsyncClient();
@@ -221,7 +225,7 @@ public class LookupAsyncTests extends LookupTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void emptyDynamicObjectsInCollectionExpandedOnGetWhenCollectionFieldSelected() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -284,7 +288,7 @@ public class LookupAsyncTests extends LookupTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelected() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
@@ -332,7 +336,7 @@ public class LookupAsyncTests extends LookupTestBase {
             .verifyComplete();
     }
 
-    @Override
+    @Test
     public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
         client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildAsyncClient();

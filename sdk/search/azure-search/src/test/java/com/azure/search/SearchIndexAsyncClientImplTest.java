@@ -9,7 +9,7 @@ import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 

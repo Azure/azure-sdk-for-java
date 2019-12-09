@@ -4,7 +4,8 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.ClaimsBasedSecurityNode;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -14,16 +15,18 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.time.Duration;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -35,7 +38,7 @@ public class ReactorReceiverTest {
     @Mock
     private Receiver receiver;
     @Mock
-    private CBSNode cbsNode;
+    private ClaimsBasedSecurityNode cbsNode;
     @Mock
     private Event event;
 
@@ -43,11 +46,11 @@ public class ReactorReceiverTest {
     private ActiveClientTokenManager tokenManager;
     private ReactorReceiver reactorReceiver;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        when(cbsNode.authorize(any())).thenReturn(Mono.empty());
+        when(cbsNode.authorize(any(), any())).thenReturn(Mono.empty());
 
         when(event.getLink()).thenReturn(receiver);
         when(receiver.getRemoteSource()).thenReturn(new Source());
@@ -55,11 +58,11 @@ public class ReactorReceiverTest {
         final String entityPath = "test-entity-path";
         receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
             "test-receiver-name", entityPath);
-        tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode), "test-tokenAudience");
+        tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode), "test-tokenAudience", "test-scopes");
         reactorReceiver = new ReactorReceiver(entityPath, receiver, receiverHandler, tokenManager);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMocks();
 
@@ -84,7 +87,7 @@ public class ReactorReceiverTest {
      */
     @Test
     public void updateEndpointState() {
-        StepVerifier.create(reactorReceiver.getConnectionStates())
+        StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
@@ -103,7 +106,7 @@ public class ReactorReceiverTest {
         final Link link = mock(Link.class);
         final Session session = mock(Session.class);
         final Symbol symbol = Symbol.getSymbol(
-            com.azure.core.amqp.exception.ErrorCondition.UNAUTHORIZED_ACCESS.getErrorCondition());
+            AmqpErrorCondition.UNAUTHORIZED_ACCESS.getErrorCondition());
         final String description = "test-symbol-description";
         final ErrorCondition condition = new ErrorCondition(symbol, description);
         final ArgumentCaptor<ErrorCondition> captor = ArgumentCaptor.forClass(ErrorCondition.class);
@@ -125,10 +128,10 @@ public class ReactorReceiverTest {
         verify(session, times(1)).close();
 
         verify(link).setCondition(captor.capture());
-        Assert.assertSame(condition, captor.getValue());
+        Assertions.assertSame(condition, captor.getValue());
 
         verify(session).setCondition(captor2.capture());
-        Assert.assertSame(condition, captor2.getValue());
+        Assertions.assertSame(condition, captor2.getValue());
     }
 
     @Test
@@ -137,7 +140,7 @@ public class ReactorReceiverTest {
         final Link link = mock(Link.class);
         final Session session = mock(Session.class);
         final Symbol symbol = Symbol.getSymbol(
-            com.azure.core.amqp.exception.ErrorCondition.NOT_IMPLEMENTED.getErrorCondition());
+            AmqpErrorCondition.NOT_IMPLEMENTED.getErrorCondition());
         final String description = "test-symbol-not implemented";
         final ErrorCondition condition = new ErrorCondition(symbol, description);
 
@@ -148,6 +151,7 @@ public class ReactorReceiverTest {
         // Act & Assert
         StepVerifier.create(reactorReceiver.receive())
             .then(() -> receiverHandler.onLinkRemoteClose(event))
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
     }
 }

@@ -159,6 +159,7 @@ public class Sample {
     }
 }
 ```
+
 ## Building
 
 If building from sources, run mvn compile to build. No build steps are necessary if including the package as a maven dependency.
@@ -166,8 +167,6 @@ If building from sources, run mvn compile to build. No build steps are necessary
 ## Running tests
 
 Please refer to CONTRIBUTING.md for information on how to run the tests.
-
-
 
 # Need Help?
 
@@ -189,4 +188,4 @@ When sending pull requests, please send non-breaking PRs to the dev branch and b
 * [Azure Storage Team Blog](http://blogs.msdn.com/b/windowsazurestorage/)
 * [Javadoc](http://azure.github.io/azure-storage-java/)
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/microsoft-azure-storage-blob/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fmicrosoft-azure-storage-blob%2FREADME.png)

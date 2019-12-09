@@ -5,13 +5,16 @@ package com.azure.storage.file.share;
 
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageOutputStream;
-import com.azure.storage.file.share.models.FileStorageException;
+import com.azure.storage.file.share.models.ShareStorageException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+/**
+ * Provides an output stream to write a given storage file resource.
+ */
 public class StorageFileOutputStream extends StorageOutputStream {
     private long offsetPos;
 
@@ -26,7 +29,7 @@ public class StorageFileOutputStream extends StorageOutputStream {
     private Mono<Void> uploadData(Flux<ByteBuffer> inputData, long writeLength, long offset) {
         return client.uploadWithResponse(inputData, writeLength, offset)
             .then()
-            .onErrorResume(t -> t instanceof IOException || t instanceof FileStorageException, e -> {
+            .onErrorResume(t -> t instanceof IOException || t instanceof ShareStorageException, e -> {
                 this.lastError = new IOException(e);
                 return null;
             });

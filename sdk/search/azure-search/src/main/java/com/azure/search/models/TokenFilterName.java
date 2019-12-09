@@ -6,212 +6,199 @@
 
 package com.azure.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
  * Defines values for TokenFilterName.
  */
-public enum TokenFilterName {
+public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName> {
     /**
-     * Enum value arabic_normalization.
+     * Static value arabic_normalization for TokenFilterName.
      */
-    ARABIC_NORMALIZATION("arabic_normalization"),
+    public static final TokenFilterName ARABIC_NORMALIZATION = fromString("arabic_normalization");
 
     /**
-     * Enum value apostrophe.
+     * Static value apostrophe for TokenFilterName.
      */
-    APOSTROPHE("apostrophe"),
+    public static final TokenFilterName APOSTROPHE = fromString("apostrophe");
 
     /**
-     * Enum value asciifolding.
+     * Static value asciifolding for TokenFilterName.
      */
-    ASCIIFOLDING("asciifolding"),
+    public static final TokenFilterName ASCII_FOLDING = fromString("asciifolding");
 
     /**
-     * Enum value cjk_bigram.
+     * Static value cjk_bigram for TokenFilterName.
      */
-    CJK_BIGRAM("cjk_bigram"),
+    public static final TokenFilterName CJK_BIGRAM = fromString("cjk_bigram");
 
     /**
-     * Enum value cjk_width.
+     * Static value cjk_width for TokenFilterName.
      */
-    CJK_WIDTH("cjk_width"),
+    public static final TokenFilterName CJK_WIDTH = fromString("cjk_width");
 
     /**
-     * Enum value classic.
+     * Static value classic for TokenFilterName.
      */
-    CLASSIC("classic"),
+    public static final TokenFilterName CLASSIC = fromString("classic");
 
     /**
-     * Enum value common_grams.
+     * Static value common_grams for TokenFilterName.
      */
-    COMMON_GRAMS("common_grams"),
+    public static final TokenFilterName COMMON_GRAM = fromString("common_grams");
 
     /**
-     * Enum value edgeNGram_v2.
+     * Static value edgeNGram_v2 for TokenFilterName.
      */
-    EDGE_NGRAM_V2("edgeNGram_v2"),
+    public static final TokenFilterName EDGE_NGRAM = fromString("edgeNGram_v2");
 
     /**
-     * Enum value elision.
+     * Static value elision for TokenFilterName.
      */
-    ELISION("elision"),
+    public static final TokenFilterName ELISION = fromString("elision");
 
     /**
-     * Enum value german_normalization.
+     * Static value german_normalization for TokenFilterName.
      */
-    GERMAN_NORMALIZATION("german_normalization"),
+    public static final TokenFilterName GERMAN_NORMALIZATION = fromString("german_normalization");
 
     /**
-     * Enum value hindi_normalization.
+     * Static value hindi_normalization for TokenFilterName.
      */
-    HINDI_NORMALIZATION("hindi_normalization"),
+    public static final TokenFilterName HINDI_NORMALIZATION = fromString("hindi_normalization");
 
     /**
-     * Enum value indic_normalization.
+     * Static value indic_normalization for TokenFilterName.
      */
-    INDIC_NORMALIZATION("indic_normalization"),
+    public static final TokenFilterName INDIC_NORMALIZATION = fromString("indic_normalization");
 
     /**
-     * Enum value keyword_repeat.
+     * Static value keyword_repeat for TokenFilterName.
      */
-    KEYWORD_REPEAT("keyword_repeat"),
+    public static final TokenFilterName KEYWORD_REPEAT = fromString("keyword_repeat");
 
     /**
-     * Enum value kstem.
+     * Static value kstem for TokenFilterName.
      */
-    KSTEM("kstem"),
+    public static final TokenFilterName KSTEM = fromString("kstem");
 
     /**
-     * Enum value length.
+     * Static value length for TokenFilterName.
      */
-    LENGTH("length"),
+    public static final TokenFilterName LENGTH = fromString("length");
 
     /**
-     * Enum value limit.
+     * Static value limit for TokenFilterName.
      */
-    LIMIT("limit"),
+    public static final TokenFilterName LIMIT = fromString("limit");
 
     /**
-     * Enum value lowercase.
+     * Static value lowercase for TokenFilterName.
      */
-    LOWERCASE("lowercase"),
+    public static final TokenFilterName LOWERCASE = fromString("lowercase");
 
     /**
-     * Enum value nGram_v2.
+     * Static value nGram_v2 for TokenFilterName.
      */
-    N_GRAM_V2("nGram_v2"),
+    public static final TokenFilterName NGRAM = fromString("nGram_v2");
 
     /**
-     * Enum value persian_normalization.
+     * Static value persian_normalization for TokenFilterName.
      */
-    PERSIAN_NORMALIZATION("persian_normalization"),
+    public static final TokenFilterName PERSIAN_NORMALIZATION = fromString("persian_normalization");
 
     /**
-     * Enum value phonetic.
+     * Static value phonetic for TokenFilterName.
      */
-    PHONETIC("phonetic"),
+    public static final TokenFilterName PHONETIC = fromString("phonetic");
 
     /**
-     * Enum value porter_stem.
+     * Static value porter_stem for TokenFilterName.
      */
-    PORTER_STEM("porter_stem"),
+    public static final TokenFilterName PORTER_STEM = fromString("porter_stem");
 
     /**
-     * Enum value reverse.
+     * Static value reverse for TokenFilterName.
      */
-    REVERSE("reverse"),
+    public static final TokenFilterName REVERSE = fromString("reverse");
 
     /**
-     * Enum value scandinavian_normalization.
+     * Static value scandinavian_normalization for TokenFilterName.
      */
-    SCANDINAVIAN_NORMALIZATION("scandinavian_normalization"),
+    public static final TokenFilterName SCANDINAVIAN_NORMALIZATION = fromString("scandinavian_normalization");
 
     /**
-     * Enum value scandinavian_folding.
+     * Static value scandinavian_folding for TokenFilterName.
      */
-    SCANDINAVIAN_FOLDING("scandinavian_folding"),
+    public static final TokenFilterName SCANDINAVIAN_FOLDING_NORMALIZATION = fromString("scandinavian_folding");
 
     /**
-     * Enum value shingle.
+     * Static value shingle for TokenFilterName.
      */
-    SHINGLE("shingle"),
+    public static final TokenFilterName SHINGLE = fromString("shingle");
 
     /**
-     * Enum value snowball.
+     * Static value snowball for TokenFilterName.
      */
-    SNOWBALL("snowball"),
+    public static final TokenFilterName SNOWBALL = fromString("snowball");
 
     /**
-     * Enum value sorani_normalization.
+     * Static value sorani_normalization for TokenFilterName.
      */
-    SORANI_NORMALIZATION("sorani_normalization"),
+    public static final TokenFilterName SORANI_NORMALIZATION = fromString("sorani_normalization");
 
     /**
-     * Enum value stemmer.
+     * Static value stemmer for TokenFilterName.
      */
-    STEMMER("stemmer"),
+    public static final TokenFilterName STEMMER = fromString("stemmer");
 
     /**
-     * Enum value stopwords.
+     * Static value stopwords for TokenFilterName.
      */
-    STOPWORDS("stopwords"),
+    public static final TokenFilterName STOPWORDS = fromString("stopwords");
 
     /**
-     * Enum value trim.
+     * Static value trim for TokenFilterName.
      */
-    TRIM("trim"),
+    public static final TokenFilterName TRIM = fromString("trim");
 
     /**
-     * Enum value truncate.
+     * Static value truncate for TokenFilterName.
      */
-    TRUNCATE("truncate"),
+    public static final TokenFilterName TRUNCATE = fromString("truncate");
 
     /**
-     * Enum value unique.
+     * Static value unique for TokenFilterName.
      */
-    UNIQUE("unique"),
+    public static final TokenFilterName UNIQUE = fromString("unique");
 
     /**
-     * Enum value uppercase.
+     * Static value uppercase for TokenFilterName.
      */
-    UPPERCASE("uppercase"),
+    public static final TokenFilterName UPPERCASE = fromString("uppercase");
 
     /**
-     * Enum value word_delimiter.
+     * Static value word_delimiter for TokenFilterName.
      */
-    WORD_DELIMITER("word_delimiter");
+    public static final TokenFilterName WORD_DELIMITER = fromString("word_delimiter");
 
     /**
-     * The actual serialized value for a TokenFilterName instance.
-     */
-    private final String value;
-
-    TokenFilterName(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a TokenFilterName instance.
+     * Creates or finds a TokenFilterName from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed TokenFilterName object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding TokenFilterName.
      */
     @JsonCreator
-    public static TokenFilterName fromString(String value) {
-        TokenFilterName[] items = TokenFilterName.values();
-        for (TokenFilterName item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static TokenFilterName fromString(String name) {
+        return fromString(name, TokenFilterName.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known TokenFilterName values.
+     */
+    public static Collection<TokenFilterName> values() {
+        return values(TokenFilterName.class);
     }
 }

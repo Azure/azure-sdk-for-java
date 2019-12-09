@@ -3,9 +3,9 @@
 
 package com.azure.core.http;
 
-import com.azure.core.implementation.serializer.SerializerAdapter;
-import com.azure.core.implementation.serializer.SerializerEncoding;
-import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.JacksonAdapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

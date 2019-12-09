@@ -188,7 +188,7 @@ public class LifecycleSetupExample {
 
         DataSource dataSource = new DataSource()
             .setName(DATASOURCE_NAME)
-            .setType(DataSourceType.COSMOSDB)
+            .setType(DataSourceType.COSMOS_DB)
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString(COSMOS_DB_CONNECTION_STRING))
             .setContainer(dataContainer)

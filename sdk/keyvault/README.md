@@ -8,6 +8,13 @@ For more information refer to [What is Key Vault?](https://docs.microsoft.com/en
 
 Documentation for this SDK can be found at [Azure Key Vault Java Documentation](https://docs.microsoft.com/en-us/java/api/overview/azure/keyvault)
 
+## Getting started
+
+To get started with a specific library, see the **README.md** file located in the library's project folder. You can find service libraries in the `/sdk/keyvault/azure-security-keyvault-<subcomponent>` directory.
+- [Azure Keyvault Keys README](azure-security-keyvault-keys/README.md)
+- [Azure Keyvault Certificates README](azure-security-keyvault-certificates/README.md)
+- [Azure Keyvault Secrets README](azure-security-keyvault-secrets/README.md)
+
 ## Sample code
 You can find sample code that illustrates key vault usage scenarios [here](https://azure.microsoft.com/en-us/resources/samples/?sort=0&service=key-vault&platform=java).
 
@@ -133,4 +140,4 @@ If you would like to become an active contributor to this project please follow 
 * [Azure Active Directory Documenation](https://docs.microsoft.com/en-us/azure/active-directory/)
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fkeyvault%2Fdata-plane%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2FREADME.png)

@@ -7,12 +7,12 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.RestProxy;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
@@ -34,8 +34,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.security.keyvault.keys.models.KeyType.EC;
 import static com.azure.security.keyvault.keys.models.KeyType.EC_HSM;
 import static com.azure.security.keyvault.keys.models.KeyType.RSA;
@@ -55,11 +55,13 @@ import static com.azure.security.keyvault.keys.models.KeyType.OCT;
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
+    static final String SECRETS_COLLECTION = "secrets";
     JsonWebKey key;
     private final CryptographyService service;
-    private final CryptographyServiceClient cryptographyServiceClient;
+    private CryptographyServiceClient cryptographyServiceClient;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
     private final ClientLogger logger = new ClientLogger(CryptographyAsyncClient.class);
+    private String keyCollection;
 
     /**
      * Creates a CryptographyAsyncClient that uses {@code pipeline} to service requests
@@ -166,6 +168,14 @@ public class CryptographyAsyncClient {
 
     Mono<Response<KeyVaultKey>> getKeyWithResponse(Context context) {
         return cryptographyServiceClient.getKey(context);
+    }
+
+    Mono<JsonWebKey> getSecretKey() {
+        try {
+            return withContext(context -> cryptographyServiceClient.getSecretKey(context)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -582,7 +592,7 @@ public class CryptographyAsyncClient {
     }
 
     private void unpackAndValidateId(String keyId) {
-        if (ImplUtils.isNullOrEmpty(keyId)) {
+        if (CoreUtils.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Key Id is invalid"));
         }
         try {
@@ -591,6 +601,7 @@ public class CryptographyAsyncClient {
             String endpoint = url.getProtocol() + "://" + url.getHost();
             String keyName = (tokens.length >= 3 ? tokens[2] : null);
             String version = (tokens.length >= 4 ? tokens[3] : null);
+            this.keyCollection = (tokens.length >= 2 ? tokens[1] : null);
             if (Strings.isNullOrEmpty(endpoint)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Key endpoint in key id is invalid"));
             } else if (Strings.isNullOrEmpty(keyName)) {
@@ -609,10 +620,14 @@ public class CryptographyAsyncClient {
 
     private boolean ensureValidKeyAvailable() {
         boolean keyAvailableLocally = true;
-        if (this.key == null) {
+        if (this.key == null && keyCollection != null) {
             try {
-                KeyVaultKey keyVaultKey = getKey().block();
-                this.key = keyVaultKey.getKey();
+                if (keyCollection.equals(SECRETS_COLLECTION)) {
+                    this.key = getSecretKey().block();
+                } else {
+                    KeyVaultKey keyVaultKey = getKey().block();
+                    this.key = keyVaultKey.getKey();
+                }
                 keyAvailableLocally = this.key.isValid();
                 initializeCryptoClients();
             } catch (HttpResponseException | NullPointerException e) {
@@ -626,5 +641,9 @@ public class CryptographyAsyncClient {
 
     CryptographyServiceClient getCryptographyServiceClient() {
         return cryptographyServiceClient;
+    }
+
+    void setCryptographyServiceClient(CryptographyServiceClient serviceClient) {
+        this.cryptographyServiceClient = serviceClient;
     }
 }

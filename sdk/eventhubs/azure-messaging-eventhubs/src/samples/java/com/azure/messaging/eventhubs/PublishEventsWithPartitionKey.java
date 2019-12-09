@@ -2,22 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.exception.AmqpException;
-import com.azure.messaging.eventhubs.models.SendOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.io.IOException;
+import java.time.Duration;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Send a list of events with send option configured
+ * Send a Flux of events using a partition key.
  */
 public class PublishEventsWithPartitionKey {
+    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
-     * Main method to invoke this demo about how to send a list of events with partition ID configured in send option
-     * to an Azure Event Hub instance.
+     * Main method to invoke this demo about how to send a list of events with partition key configured in
+     * CreateBatchOptions to an Azure Event Hub instance.
      *
      * @param args Unused arguments to the program.
      */
@@ -29,13 +32,10 @@ public class PublishEventsWithPartitionKey {
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-        // Instantiate a client that will be used to call the service.
-        EventHubAsyncClient client = new EventHubClientBuilder()
+        // Create a producer.
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncClient();
-
-        // Create a producer. This overload of `createProducer` does not accept any arguments
-        EventHubAsyncProducer producer = client.createProducer();
+            .buildAsyncProducerClient();
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(
@@ -44,43 +44,66 @@ public class PublishEventsWithPartitionKey {
             new EventData("Players".getBytes(UTF_8)));
 
         // When an Event Hub producer is not associated with any specific partition, it may be desirable to request that
-        // the Event Hubs service keep different events or batches of events together on the same partition. This can be
+        // the Event Hubs service keep different batches of events together on the same partition. This can be
         // accomplished by setting a partition key when publishing the events.
         //
-        // The partition key is NOT the identifier of a specific partition. Rather, it is an arbitrary piece of string data
-        // that Event Hubs uses as the basis to compute a hash value. Event Hubs will associate the hash value with a specific
-        // partition, ensuring that any events published with the same partition key are rerouted to the same partition.
+        // The partition key is NOT the identifier of a specific partition. Rather, it is an arbitrary piece of string
+        // data that Event Hubs uses as the basis to compute a hash value. Event Hubs will associate the hash value with
+        // a specific partition, ensuring that any events published with the same partition key are rerouted to the same
+        // partition.
         //
-        // All of event data send to the same partition of the partition key 'basketball' associate with.
+        // All the event data with partition key 'basketball' end up in the same partition.
         //
-        // Note that there is no means of accurately predicting which partition will be associated with a given partition key;
-        // we can only be assured that it will be a consistent choice of partition. If you have a need to understand which
-        // exact partition an event is published to, you will need to use an Event Hub producer associated with that partition.
-        SendOptions sendOptions = new SendOptions().setPartitionKey("basketball");
+        // Note that there is no means of accurately predicting which partition will be associated with a given
+        // partition key; we can only be assured that it will be a consistent choice of partition. If you have a need to
+        // understand which exact partition an event is published to, you will need to use
+        // CreateBatchOptions.setPartitionId(String) when creating the EventDataBatch.
+        final CreateBatchOptions options = new CreateBatchOptions()
+            .setPartitionKey("basketball");
+        final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
+            producer.createBatch(options).block());
 
-        // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
-        // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
-        // the event.
-        producer.send(data, sendOptions).subscribe(
-            (ignored) -> System.out.println("Sending a list of events to a partition that the partition key maps to..."),
-            error -> {
-                System.err.println("There was an error sending the event batch: " + error.toString());
+        // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
+        // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
+        // are sent.
+        final Mono<Void> sendOperation = data.flatMap(event -> {
+            final EventDataBatch batch = currentBatch.get();
+            if (batch.tryAdd(event)) {
+                return Mono.empty();
+            }
 
-                if (error instanceof AmqpException) {
-                    AmqpException amqpException = (AmqpException) error;
+            // The batch is full, so we create a new batch and send the batch. Mono.when completes when both operations
+            // have completed.
+            return Mono.when(
+                producer.send(batch),
+                producer.createBatch().map(newBatch -> {
+                    currentBatch.set(newBatch);
 
-                    System.err.println(String.format("Is send operation retriable? %s. Error condition: %s",
-                        amqpException.isTransient(), amqpException.getErrorCondition()));
+                    // Add that event that we couldn't before.
+                    if (!newBatch.tryAdd(event)) {
+                        throw Exceptions.propagate(new IllegalArgumentException(String.format(
+                            "Event is too large for an empty batch. Max size: %s. Event: %s",
+                            newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
+                    }
+
+                    return newBatch;
+                }));
+        }).then()
+            .doFinally(signal -> {
+                final EventDataBatch batch = currentBatch.getAndSet(null);
+                if (batch != null) {
+                    producer.send(batch).block(OPERATION_TIMEOUT);
                 }
-            }, () -> {
-                // Disposing of our producer and client.
-                try {
-                    producer.close();
-                } catch (IOException e) {
-                    System.err.println("Error encountered while closing producer: " + e.toString());
-                }
-
-                client.close();
             });
+
+        // The sendOperation creation and assignment is not a blocking call. It does not get invoked until there is a
+        // subscriber to that operation. For the purpose of this example, we block so the program does not end before
+        // the send operation is complete. Any of the `.subscribe` overloads also work to start the Mono asynchronously.
+        try {
+            sendOperation.block(OPERATION_TIMEOUT);
+        } finally {
+            // Disposing of our producer.
+            producer.close();
+        }
     }
 }

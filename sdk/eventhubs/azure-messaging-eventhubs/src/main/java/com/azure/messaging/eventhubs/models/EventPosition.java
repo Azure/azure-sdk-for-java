@@ -5,9 +5,7 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
-import com.azure.messaging.eventhubs.EventHubClient;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 
 import java.time.Instant;
 import java.util.Locale;
@@ -16,9 +14,6 @@ import java.util.Objects;
 /**
  * Defines a position of an {@link EventData} in the Event Hub partition. The position can be an offset, sequence
  * number, or enqueued time.
- *
- * @see EventHubClient#createConsumer(String, String, EventPosition)
- * @see EventHubAsyncClient#createConsumer(String, String, EventPosition)
  */
 @Immutable
 public final class EventPosition {
@@ -67,8 +62,8 @@ public final class EventPosition {
 
     /**
      * Corresponds to the end of the partition, where no more events are currently enqueued. Use this position to begin
-     * receiving from the next event to be enqueued in the partition after an {@link EventHubAsyncConsumer} is created
-     * with this position.
+     * receiving from the next event to be enqueued in the partition when
+     * {@link EventHubConsumerAsyncClient#receiveFromPartition(String, EventPosition) receiveFromPartition()} invoked.
      *
      * @return An {@link EventPosition} set to the end of an Event Hubs stream and listens for new events.
      */
@@ -113,7 +108,7 @@ public final class EventPosition {
      *     received.
      * @return An {@link EventPosition} object.
      */
-    public static EventPosition fromOffset(long offset, boolean isInclusive) {
+    private static EventPosition fromOffset(long offset, boolean isInclusive) {
         return new EventPosition(isInclusive, offset, null, null);
     }
 

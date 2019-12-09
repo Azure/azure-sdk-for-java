@@ -1,5 +1,7 @@
 package com.azure.storage.blob
 
+import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
@@ -15,6 +17,64 @@ class BlobOutputStreamTest extends APISpec {
 
         when:
         def outputStream = blockBlobClient.getBlobOutputStream()
+        outputStream.write(data)
+        outputStream.close()
+
+        then:
+        blockBlobClient.getProperties().getBlobSize() == data.length
+        convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
+    }
+
+    @Requires({ liveMode() })
+    def "BlockBlob output stream default no overwrite"() {
+        setup:
+        def data = getRandomByteArray(10 * Constants.MB)
+        def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        def outputStream1 = blockBlobClient.getBlobOutputStream()
+        outputStream1.write(data)
+        outputStream1.close()
+
+        and:
+        blockBlobClient.getBlobOutputStream()
+
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Requires({ liveMode() })
+    def "BlockBlob output stream default no overwrite interrupted"() {
+        setup:
+        def data = getRandomByteArray(10 * Constants.MB)
+        def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        def outputStream1 = blockBlobClient.getBlobOutputStream()
+        def outputStream2 = blockBlobClient.getBlobOutputStream()
+        outputStream2.write(data)
+        outputStream2.close()
+
+        and:
+        outputStream1.write(data)
+        outputStream1.close()
+
+        then:
+        def e = thrown(IOException)
+        e.getCause() instanceof BlobStorageException
+        ((BlobStorageException) e.getCause()).getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
+    }
+
+    @Requires({ liveMode() })
+    def "BlockBlob output stream overwrite"() {
+        setup:
+        def data = getRandomByteArray(10 * Constants.MB)
+        def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        def outputStream = blockBlobClient.getBlobOutputStream(true)
         outputStream.write(data)
         outputStream.close()
 

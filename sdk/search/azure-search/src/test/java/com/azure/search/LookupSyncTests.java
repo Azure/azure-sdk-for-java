@@ -8,7 +8,8 @@ import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import org.junit.Assert;
-
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import java.text.ParseException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -24,7 +25,8 @@ import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAU
 public class LookupSyncTests extends LookupTestBase {
     private SearchIndexClient client;
 
-    @Override
+    @Disabled
+    @Test
     public void canGetStaticallyTypedDocument() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -37,7 +39,7 @@ public class LookupSyncTests extends LookupTestBase {
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
-    @Override
+    @Test
     public void canGetStaticallyTypedDocumentWithNullOrEmptyValues() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -50,7 +52,7 @@ public class LookupSyncTests extends LookupTestBase {
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
-    @Override
+    @Test
     public void canGetStaticallyTypedDocumentWithPascalCaseFields() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -63,7 +65,8 @@ public class LookupSyncTests extends LookupTestBase {
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
-    @Override
+    @Disabled
+    @Test
     public void canRoundtripStaticallyTypedPrimitiveCollections() {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
         client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
@@ -76,7 +79,7 @@ public class LookupSyncTests extends LookupTestBase {
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
-    @Override
+    @Test
     public void getStaticallyTypedDocumentSetsUnselectedFieldsToNull() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -96,7 +99,7 @@ public class LookupSyncTests extends LookupTestBase {
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
-    @Override
+    @Test
     public void canGetDynamicDocumentWithNullOrEmptyValues() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -133,7 +136,7 @@ public class LookupSyncTests extends LookupTestBase {
         Assert.assertEquals(expectedDoc, actualDoc);
     }
 
-    @Override
+    @Test
     public void getDynamicDocumentWithEmptyObjectsReturnsObjectsFullOfNulls() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -168,7 +171,7 @@ public class LookupSyncTests extends LookupTestBase {
         Assert.assertEquals(expectedDoc, actualDoc);
     }
 
-    @Override
+    @Test
     public void emptyDynamicallyTypedPrimitiveCollectionsRoundtripAsObjectArrays() {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
         client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
@@ -207,7 +210,7 @@ public class LookupSyncTests extends LookupTestBase {
         Assert.assertEquals(expectedDoc, actualDoc);
     }
 
-    @Override
+    @Test
     public void emptyDynamicObjectsInCollectionExpandedOnGetWhenCollectionFieldSelected() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -269,7 +272,7 @@ public class LookupSyncTests extends LookupTestBase {
         Assert.assertEquals(expectedDoc, actualDoc);
     }
 
-    @Override
+    @Test
     public void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelected() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
@@ -316,7 +319,7 @@ public class LookupSyncTests extends LookupTestBase {
         Assert.assertEquals(expectedDoc, actualDoc);
     }
 
-    @Override
+    @Test
     public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
         client = getSearchIndexClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();

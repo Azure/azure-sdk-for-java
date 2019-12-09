@@ -1,0 +1,89 @@
+[
+  {
+    "extension": "revapi.java",
+    "configuration": {
+      "filter": {
+        "packages": {
+          "regex": true,
+          "exclude": [ "com\\.azure\\..+\\.implementation(\\..+)?" ]
+        }
+      }
+    }
+  },
+  {
+    "extension": "revapi.semver.ignore",
+    "configuration": {
+      "enabled": true,
+      "versionIncreaseAllows": {
+        "major": "breaking",
+        "minor": "nonBreaking",
+        "patch": "equivalent"
+      },
+      "passThroughDifferences": [ "java.class.nonPublicPartOfAPI" ]
+    }
+  },
+  {
+    "extension": "revapi.ignore",
+    "configuration": [
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class org\\.reactivestreams\\.Publisher",
+        "justification": "This class is part of the reactive streams initiative in Java."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class reactor\\.util\\.context\\.Context",
+        "justification": "Reactor is allowed in the public API. Since we don't analyze dependencies, these show up as being unresolved."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class com\\.fasterxml\\.jackson\\.databind\\.ObjectMapper",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.core\\.util\\.serializer\\.JacksonAdapter.*",
+        "justification": "We allow this in com.azure.core.util.serializer.JacksonAdapter."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class reactor\\.core(\\..+)?",
+        "justification": "Reactor is allowed in the public API. Since we don't analyze dependencies, these show up as being unresolved."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class com\\.azure\\.core(?!\\.implementation)(\\..+)?",
+        "justification": "com.azure.core.* classes are allowed in the public API. Since we don't analyze dependencies, these show up as being unresolved."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class (io|reactor)\\.netty\\..+",
+        "exampleUseChainInOldApi": ".*com\\.azure\\.core\\.http\\.netty\\.NettyAsyncHttpClientBuilder.*",
+        "justification": "Dependencies are not checked. io.netty and reactor.netty are allowed in azure-core-http-netty."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class okhttp3\\..+",
+        "exampleUseChainInOldApi": ".*com\\.azure\\.core\\.http\\.okhttp\\.OkHttpAsyncHttpClientBuilder.*",
+        "justification": "Dependencies are not checked. okhttp3 is allowed in azure-core-http-okhttp."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class com\\.azure\\.storage\\..+",
+        "exampleUseChainInOldApi": ".*com\\.azure\\.storage\\..*",
+        "justification": "Dependencies are not checked. azure-storage-common is used in the storage modules."
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class ((com\\.azure\\.messaging\\.eventhubs\\.models\\..+)|(com\\.azure\\.storage\\.blob\\.BlobContainerAsyncClient))",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.messaging\\.eventhubs\\.checkpointstore\\.blob\\..*",
+        "justification": "azure-messaging-eventhubs and azure-storage-blob are used in the Event Hubs checkpoint store."
+      }
+    ]
+  }
+]
