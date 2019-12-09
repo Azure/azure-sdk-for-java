@@ -13,12 +13,27 @@ public class DocumentResult {
 
     private String id;
     private TextDocumentStatistics textDocumentStatistics;
-    private Object error;
+    private Error error;
 
-    public DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics, final Object error) {
+    public boolean isError() {
+        return isError;
+    }
+
+    public void setIsError(final boolean isError) {
+        this.isError = isError;
+    }
+
+    private boolean isError;
+
+    protected DocumentResult(final String id, final Error error, final boolean isError) {
+        this.id = id;
+        this.error = error;
+        this.isError = isError;
+    }
+
+    public DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics) {
         this.id = id;
         this.textDocumentStatistics = textDocumentStatistics;
-        this.error = error;
     }
 
     public String getId() {
@@ -39,11 +54,11 @@ public class DocumentResult {
         return this;
     }
 
-    public Object getError() {
+    public Error getError() {
         return error;
     }
 
-    DocumentResult setError(Object error) {
+    DocumentResult setError(Error error) {
         this.error = error;
         return this;
     }

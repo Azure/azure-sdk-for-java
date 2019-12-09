@@ -14,8 +14,9 @@ import java.util.List;
 public final class NamedEntityResult extends DocumentResult {
     private List<NamedEntity> namedEntities;
 
-    public NamedEntityResult(String id, TextDocumentStatistics textDocumentStatistics, DocumentError error, List<NamedEntity> namedEntities) {
-        super(id, textDocumentStatistics, error);
+    public NamedEntityResult(String id, TextDocumentStatistics textDocumentStatistics,
+                             List<NamedEntity> namedEntities) {
+        super(id, textDocumentStatistics);
         this.namedEntities = namedEntities;
     }
 
