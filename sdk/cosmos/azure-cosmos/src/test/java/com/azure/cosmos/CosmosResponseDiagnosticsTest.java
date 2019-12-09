@@ -76,7 +76,6 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("Status Code : 404");
             assertThat(diagnostics).contains("Operation Type : " + OperationType.Read);
             assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
-            System.out.println(diagnostics);
         }
     }
 
