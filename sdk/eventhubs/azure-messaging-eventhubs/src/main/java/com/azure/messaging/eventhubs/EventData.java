@@ -17,11 +17,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.PUBLISHER_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -117,9 +117,9 @@ public class EventData {
     }
 
     /**
-     * The set of free-form event properties which may be used for passing metadata associated with the event with the
-     * event body during Event Hubs operations. A common use-case for {@code properties()} is to associate serialization
-     * hints for the {@link #getBody()} as an aid to consumers who wish to deserialize the binary data.
+     * Gets the set of free-form event properties which may be used for passing metadata associated with the event with
+     * the event body during Event Hubs operations. A common use-case for {@code properties()} is to associate
+     * serialization hints for the {@link #getBody()} as an aid to consumers who wish to deserialize the binary data.
      *
      * <p><strong>Adding serialization hint using {@code getProperties()}</strong></p>
      * <p>In the sample, the type of telemetry is indicated by adding an application property with key "eventType".</p>
@@ -136,8 +136,8 @@ public class EventData {
      * Properties that are populated by Event Hubs service. As these are populated by the Event Hubs service, they are
      * only present on a <b>received</b> {@link EventData}.
      *
-     * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
-     * the {@link EventData} is not received and is created by the public constructors.
+     * @return An encapsulation of all system properties appended by EventHubs service into {@link EventData}.
+     *     {@code null} if the {@link EventData} is not received from the Event Hubs service.
      */
     public Map<String, Object> getSystemProperties() {
         return systemProperties;
@@ -152,7 +152,7 @@ public class EventData {
      * wish to deserialize the binary data.
      * </p>
      *
-     * @return ByteBuffer representing the data.
+     * @return A byte array representing the data.
      */
     public byte[] getBody() {
         return Arrays.copyOf(body, body.length);
@@ -168,7 +168,8 @@ public class EventData {
     }
 
     /**
-     * Gets the offset of the event when it was received from the associated Event Hub partition.
+     * Gets the offset of the event when it was received from the associated Event Hub partition. This is only present
+     * on a <b>received</b> {@link EventData}.
      *
      * @return The offset within the Event Hub partition of the received event. {@code null} if the {@link EventData}
      *     was not received from Event Hubs service.
@@ -178,8 +179,9 @@ public class EventData {
     }
 
     /**
-     * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to select
-     * a partition to send the message to.
+     * Gets the partition hashing key if it was set when originally publishing the event. If it exists, this value was
+     * used to compute a hash to select a partition to send the message to. This is only present on a <b>received</b>
+     * {@link EventData}.
      *
      * @return A partition key for this Event Data. {@code null} if the {@link EventData} was not received from Event
      *     Hubs service or there was no partition key set when the event was sent to the Event Hub.
@@ -189,7 +191,8 @@ public class EventData {
     }
 
     /**
-     * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition.
+     * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition. This is only present on a
+     * <b>received</b> {@link EventData}.
      *
      * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the {@link EventData}
      *     was not received from Event Hubs service.
@@ -200,7 +203,8 @@ public class EventData {
 
     /**
      * Gets the sequence number assigned to the event when it was enqueued in the associated Event Hub partition. This
-     * is unique for every message received in the Event Hub partition.
+     * is unique for every message received in the Event Hub partition. This is only present on a <b>received</b>
+     * {@link EventData}.
      *
      * @return The sequence number for this event. {@code null} if the {@link EventData} was not received from Event
      *     Hubs service.

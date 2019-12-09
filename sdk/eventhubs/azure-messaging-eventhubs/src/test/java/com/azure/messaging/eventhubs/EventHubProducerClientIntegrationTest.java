@@ -8,7 +8,6 @@ import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +27,6 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
         producer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
-            .scheduler(Schedulers.parallel())
             .buildProducerClient();
     }
 
@@ -140,6 +138,25 @@ public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
 
             // Act & Assert
             producer.send(batch);
+        }
+    }
+
+    /**
+     * Sending with credentials.
+     */
+    @Test
+    public void sendWithCredentials() {
+        // Arrange
+        final EventData event = new EventData("body");
+        final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
+        final EventHubProducerClient client = createBuilder(true)
+            .buildProducerClient();
+
+        // Act & Assert
+        try {
+            client.send(event, options);
+        } finally {
+            dispose(client);
         }
     }
 }

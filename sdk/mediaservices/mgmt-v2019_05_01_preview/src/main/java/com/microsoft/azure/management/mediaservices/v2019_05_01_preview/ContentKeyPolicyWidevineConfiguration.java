@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Specifies a configuration for Widevine licenses.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ContentKeyPolicyWidevineConfiguration.class)
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyWidevineConfiguration")
 public class ContentKeyPolicyWidevineConfiguration extends ContentKeyPolicyConfiguration {
     /**

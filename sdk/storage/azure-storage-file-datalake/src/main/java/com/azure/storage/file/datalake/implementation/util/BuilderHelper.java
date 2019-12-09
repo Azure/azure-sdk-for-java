@@ -3,10 +3,12 @@
 
 package com.azure.storage.file.datalake.implementation.util;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -14,18 +16,21 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.credentials.SasTokenCredential;
+import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
-import com.azure.storage.file.datalake.DataLakeServiceVersion;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * This class provides helper methods for common builder patterns.
@@ -34,32 +39,49 @@ import java.util.function.Supplier;
  */
 public final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-file-datalake";
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
+    // {x-version-update-start;com.azure:azure-storage-file-datalake;current}
+    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.7";
+    // {x-version-update-end}
 
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.
      *
-     * @param credentialPolicySupplier Supplier for credentials in the pipeline.
+     * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
+     * @param tokenCredential {@link TokenCredential} if present.
+     * @param sasTokenCredential {@link SasTokenCredential} if present.
+     * @param endpoint The endpoint for the client.
      * @param retryOptions Retry options to set in the retry policy.
      * @param logOptions Logging options to set in the logging policy.
      * @param httpClient HttpClient to use in the builder.
      * @param additionalPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline.
      * @param configuration Configuration store contain environment settings.
-     * @param serviceVersion {@link DataLakeServiceVersion} of the service to be used when making requests.
+     * @param logger {@link ClientLogger} used to log any exception.
      * @return A new {@link HttpPipeline} from the passed values.
      */
-    public static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
+    public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
+        TokenCredential tokenCredential, SasTokenCredential sasTokenCredential, String endpoint,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
-        List<HttpPipelinePolicy> additionalPolicies, Configuration configuration,
-        DataLakeServiceVersion serviceVersion) {
+        List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, ClientLogger logger) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(getUserAgentPolicy(configuration, serviceVersion));
+        policies.add(getUserAgentPolicy(configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        HttpPipelinePolicy credentialPolicy = credentialPolicySupplier.get();
+        HttpPipelinePolicy credentialPolicy;
+        if (storageSharedKeyCredential != null) {
+            credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
+        } else if (tokenCredential != null) {
+            // The endpoint scope for the BearerToken is the blob endpoint not dfs
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential,
+                String.format("%s/.default", DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "blob", "dfs")));
+        } else if (sasTokenCredential != null) {
+            credentialPolicy =  new SasTokenCredentialPolicy(sasTokenCredential);
+        } else {
+            credentialPolicy =  null;
+        }
+
         if (credentialPolicy != null) {
             policies.add(credentialPolicy);
         }
@@ -114,15 +136,13 @@ public final class BuilderHelper {
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
      * @param configuration Configuration store used to determine whether telemetry information should be included.
-     * @param version {@link DataLakeServiceVersion} of the service to be used when making requests.
      * @return The default {@link UserAgentPolicy} for the module.
      */
-    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration,
-        DataLakeServiceVersion serviceVersion) {
+    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
         return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(),
-            DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration, serviceVersion);
+            DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration);
     }
 
     /*

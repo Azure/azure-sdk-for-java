@@ -100,9 +100,8 @@ public final class SpecializedBlobClientBuilder {
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
         validateConstruction();
         String containerName = getContainerName();
-        BlobServiceVersion serviceVersion = getServiceVersion();
 
-        return new AppendBlobAsyncClient(getHttpPipeline(serviceVersion), getUrl(containerName), serviceVersion,
+        return new AppendBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
             accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
@@ -132,9 +131,8 @@ public final class SpecializedBlobClientBuilder {
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
         validateConstruction();
         String containerName = getContainerName();
-        BlobServiceVersion serviceVersion = getServiceVersion();
 
-        return new BlockBlobAsyncClient(getHttpPipeline(serviceVersion), getUrl(containerName), serviceVersion,
+        return new BlockBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
             accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
@@ -163,9 +161,8 @@ public final class SpecializedBlobClientBuilder {
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
         validateConstruction();
         String containerName = getContainerName();
-        BlobServiceVersion serviceVersion = getServiceVersion();
 
-        return new PageBlobAsyncClient(getHttpPipeline(serviceVersion), getUrl(containerName), serviceVersion,
+        return new PageBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
             accountName, containerName, blobName, snapshot, customerProvidedKey);
     }
 
@@ -176,7 +173,7 @@ public final class SpecializedBlobClientBuilder {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
-        BuilderHelper.validateCpk(customerProvidedKey, endpoint);
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
     }
 
     /*
@@ -190,10 +187,10 @@ public final class SpecializedBlobClientBuilder {
         return CoreUtils.isNullOrEmpty(containerName) ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME : containerName;
     }
 
-    private HttpPipeline getHttpPipeline(BlobServiceVersion serviceVersion) {
+    private HttpPipeline getHttpPipeline() {
         return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, serviceVersion);
+            httpClient, additionalPolicies, configuration, logger);
     }
 
     private BlobServiceVersion getServiceVersion() {
@@ -286,7 +283,7 @@ public final class SpecializedBlobClientBuilder {
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
 
-            String sasToken = parts.getSasQueryParameters().encode();
+            String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }

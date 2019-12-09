@@ -47,7 +47,7 @@ jobs:
           DESIRED_CONSISTENCIES: '["Session"]'
 
       PreRunSteps:
-        - template: ../steps/install-reporting-tools.yml
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
           goals: verify
@@ -112,7 +112,7 @@ jobs:
           DESIRED_CONSISTENCIES: '["Session"]'
 
       PreRunSteps:
-        - template: ../steps/install-reporting-tools.yml
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
           goals: verify
@@ -165,7 +165,7 @@ jobs:
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
       PreRunSteps:
-        - template: ../steps/install-reporting-tools.yml
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
           goals: verify
@@ -226,7 +226,7 @@ jobs:
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
       PreRunSteps:
-        - template: ../steps/install-reporting-tools.yml
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
           goals: verify
@@ -281,7 +281,7 @@ jobs:
           ProfileFlag: '-Pnon-emulator'
 
       PreRunSteps:
-        - template: ../steps/install-reporting-tools.yml
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
           goals: verify
@@ -330,7 +330,7 @@ jobs:
           ProfileFlag: '-Pnon-emulator'
 
       PreRunSteps:
-        - template: ../steps/install-reporting-tools.yml
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
           goals: verify
