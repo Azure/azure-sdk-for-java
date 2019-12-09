@@ -336,13 +336,8 @@ class SASTest extends APISpec {
             .setCreatePermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
-        def sas = new AccountSasSignatureValues()
-            .setServices(service.toString())
-            .setResourceTypes(resourceType.toString())
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(primaryCredential)
-            .encode()
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
         def fileSystemName = generateFileSystemName()
         def pathName = generatePathName()
 
