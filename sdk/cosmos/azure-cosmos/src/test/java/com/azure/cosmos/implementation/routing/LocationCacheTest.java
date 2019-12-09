@@ -23,10 +23,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -233,7 +230,11 @@ public class LocationCacheTest {
                         endpointDiscoveryEnabled,
                         preferredAvailableWriteEndpoints,
                         preferredAvailableReadEndpoints,
-                        writeLocationIndex > 0);
+                        readLocationIndex > 0 && !currentReadEndpoints.get(0).equals(DefaultEndpoint),
+                        writeLocationIndex > 0,
+                        currentReadEndpoints.size() > 1,
+                        currentWriteEndpoints.size() > 1
+                    );
 
                 this.validateGlobalEndpointLocationCacheRefreshAsync();
 
@@ -258,14 +259,17 @@ public class LocationCacheTest {
             boolean endpointDiscoveryEnabled,
             URI[] preferredAvailableWriteEndpoints,
             URI[] preferredAvailableReadEndpoints,
-            boolean isFirstWriteEndpointUnavailable) {
+            boolean isFirstReadEndpointUnavailable,
+            boolean isFirstWriteEndpointUnavailable,
+            boolean hasMoreThanOneReadEndpoints,
+            boolean hasMoreThanOneWriteEndpoints) {
 
         Utils.ValueHolder<Boolean> canRefreshInBackgroundHolder = new Utils.ValueHolder<>();
         canRefreshInBackgroundHolder.v = false;
 
         boolean shouldRefreshEndpoints = this.cache.shouldRefreshEndpoints(canRefreshInBackgroundHolder);
 
-        boolean isMostPreferredLocationUnavailableForRead = false;
+        boolean isMostPreferredLocationUnavailableForRead = isFirstReadEndpointUnavailable;
         boolean isMostPreferredLocationUnavailableForWrite = useMultipleWriteLocations ?
                 false : isFirstWriteEndpointUnavailable;
         if (this.preferredLocations.size() > 0) {
@@ -299,7 +303,11 @@ public class LocationCacheTest {
         }
 
         if (shouldRefreshEndpoints) {
-            assertThat(canRefreshInBackgroundHolder.v).isTrue();
+            if (isMostPreferredLocationUnavailableForRead) {
+                assertThat(canRefreshInBackgroundHolder.v).isEqualTo(hasMoreThanOneReadEndpoints);
+            } else if (isMostPreferredLocationUnavailableForWrite) {
+                assertThat(canRefreshInBackgroundHolder.v).isEqualTo(hasMoreThanOneWriteEndpoints);
+            }
         }
     }
 
@@ -311,7 +319,7 @@ public class LocationCacheTest {
 
         mockedClient.reset();
         List<Mono<Void>> list = IntStream.range(0, 10)
-                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
+                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null, false))
                 .collect(Collectors.toList());
 
         Flux.merge(list).then().block();
@@ -320,7 +328,7 @@ public class LocationCacheTest {
         mockedClient.reset();
 
         IntStream.range(0, 10)
-                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
+                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null, false))
                 .collect(Collectors.toList());
         for (Mono completable : list) {
             completable.block();
@@ -418,7 +426,7 @@ public class LocationCacheTest {
     private static URI createUrl(String url) {
         try {
             return new URI(url);
-        } catch (URISyntaxException e) {
+        } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
     }
