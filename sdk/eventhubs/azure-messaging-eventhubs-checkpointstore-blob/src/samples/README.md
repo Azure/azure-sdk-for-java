@@ -24,3 +24,5 @@ Guidelines](../../CONTRIBUTING.md) for more information.
 [sdk_readme_getting_started]: ../../README.md#getting-started
 [sample_container_client]: ./java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobCheckpointStoreSample.java
 [sample_event_processor]: ./java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorBlobCheckpointStoreSample.java
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs-checkpointstore-blob%2Fsrc%2Fsamples%2FREADME.png)
