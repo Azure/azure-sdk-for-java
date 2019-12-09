@@ -79,6 +79,12 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     @Test
     public abstract void canUpdateConnectionData();
 
+    @Test
+    public abstract void canCreateDataSource();
+
+    @Test
+    public abstract void canCreateDataSourceWithResponse();
+
     DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
         return DataSources.azureBlobStorage(
             BLOB_DATASOURCE_TEST_NAME,

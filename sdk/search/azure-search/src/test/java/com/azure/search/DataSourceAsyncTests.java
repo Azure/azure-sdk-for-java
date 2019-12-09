@@ -366,4 +366,38 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         Assert.assertEquals(initial.getCredentials().getConnectionString(), newConnString);
     }
+
+    @Override
+    public void canCreateDataSource() {
+        DataSource expectedDataSource = createTestBlobDataSource(null);
+
+        StepVerifier.create(client.createDataSource(expectedDataSource))
+            .assertNext(actualDataSource -> {
+                Assert.assertNotNull(actualDataSource);
+                Assert.assertEquals(expectedDataSource.getName(), actualDataSource.getName());
+            })
+            .verifyComplete();
+
+        PagedFlux<DataSource> dataSourcesList = client.listDataSources();
+        StepVerifier.create(dataSourcesList.collectList())
+            .assertNext(result -> {
+                Assert.assertNotNull(result);
+                Assert.assertEquals(1, result.size());
+                Assert.assertEquals(expectedDataSource.getName(), result.get(0).getName());
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void canCreateDataSourceWithResponse() {
+        DataSource expectedDataSource = createTestBlobDataSource(null);
+        StepVerifier.create(client.createDataSourceWithResponse(expectedDataSource, new RequestOptions(), null))
+            .assertNext(response -> {
+                Assert.assertNotNull(response);
+                Assert.assertNotNull(response.getValue());
+                Assert.assertEquals(expectedDataSource.getName(), response.getValue().getName());
+                Assert.assertEquals(HttpStatus.SC_CREATED, response.getStatusCode());
+            })
+            .verifyComplete();
+    }
 }

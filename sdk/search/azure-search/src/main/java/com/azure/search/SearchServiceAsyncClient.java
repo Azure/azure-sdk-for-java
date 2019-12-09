@@ -175,6 +175,38 @@ public class SearchServiceAsyncClient {
     }
 
     /**
+     * Creates a new Azure Cognitive Search data source
+     *
+     * @param dataSource The definition of the dataSource to create.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<DataSource> createDataSource(DataSource dataSource) {
+        return this.createDataSourceWithResponse(dataSource, null).map(Response::getValue);
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search data source
+     *
+     * @param dataSource The definition of the data source to create.
+     * @param requestOptions Additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Response<DataSource>> createDataSourceWithResponse(DataSource dataSource,
+                                                                   RequestOptions requestOptions) {
+        return withContext(context -> this.createDataSourceWithResponse(dataSource, requestOptions, context));
+    }
+
+    Mono<Response<DataSource>> createDataSourceWithResponse(DataSource dataSource,
+                                                            RequestOptions requestOptions,
+                                                            Context context) {
+        return restClient
+            .dataSources()
+            .createWithRestResponseAsync(dataSource, requestOptions, context)
+            .map(Function.identity());
+    }
+
+    /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
      * @param dataSourceName the name of the data source to retrieve

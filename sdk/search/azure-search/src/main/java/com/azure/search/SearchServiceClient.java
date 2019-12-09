@@ -103,6 +103,32 @@ public class SearchServiceClient {
     }
 
     /**
+     * Creates a new Azure Cognitive Search data source
+     *
+     * @param dataSource The definition of the data source to create
+     * @return the data source that was created.
+     */
+    public DataSource createDataSource(DataSource dataSource) {
+        return asyncClient.createDataSource(dataSource).block();
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search data source
+     *
+     * @param dataSource the definition of the data source to create
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation.
+     * Contains the tracking ID sent with the request to help with debugging
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response containing data source that was created.
+     */
+    public Response<DataSource> createDataSourceWithResponse(DataSource dataSource,
+                                                             RequestOptions requestOptions,
+                                                             Context context) {
+        return asyncClient.createDataSourceWithResponse(dataSource, requestOptions, context).block();
+    }
+
+    /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
      * @param dataSourceName the name of the data source to retrieve

@@ -325,7 +325,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         // datasource, retrieving it and verifying the change, won't work.
         // Hence, we only validate that the properties on the local items can change.
 
-        // Create an initial datasource
+        // Create an initial dataSource
         DataSource initial = createTestBlobDataSource(null);
         Assert.assertEquals(initial.getCredentials().getConnectionString(),
             FAKE_STORAGE_CONNECTION_STRING);
@@ -336,5 +336,30 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         initial.setCredentials(new DataSourceCredentials().setConnectionString(newConnString));
 
         Assert.assertEquals(initial.getCredentials().getConnectionString(), newConnString);
+    }
+
+    @Override
+    public void canCreateDataSource() {
+        DataSource expectedDataSource = createTestBlobDataSource(null);
+        DataSource actualDataSource = client.createDataSource(expectedDataSource);
+        Assert.assertNotNull(actualDataSource);
+        Assert.assertEquals(expectedDataSource.getName(), actualDataSource.getName());
+
+        PagedIterable<DataSource> dataSources = client.listDataSources();
+        Assert.assertNotNull(dataSources);
+        List<DataSource> dataSourceList = dataSources.stream().collect(Collectors.toList());
+        Assert.assertNotNull(dataSourceList);
+        Assert.assertEquals(1, dataSourceList.size());
+        Assert.assertEquals(expectedDataSource.getName(), dataSourceList.get(0).getName());
+    }
+
+    @Override
+    public void canCreateDataSourceWithResponse() {
+        DataSource expectedDataSource = createTestBlobDataSource(null);
+        Response<DataSource> response = client.createDataSourceWithResponse(expectedDataSource, new RequestOptions(), null);
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.getValue());
+        Assert.assertEquals(expectedDataSource.getName(), response.getValue().getName());
+        Assert.assertEquals(HttpStatus.SC_CREATED, response.getStatusCode());
     }
 }
