@@ -106,6 +106,11 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     }
 
     @Override
+    public SkuInner sku() {
+        return this.inner().sku();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
     }

@@ -12,6 +12,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -23,7 +24,6 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
-import com.azure.storage.file.share.sas.ShareServiceSasQueryParameters;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -189,8 +189,9 @@ public class ShareClientBuilder {
             }
             this.shareName = length >= 2 ? pathSegments[1] : this.shareName;
 
+            // TODO (gapra) : What happens if a user has custom queries?
             // Attempt to get the SAS token from the URL passed
-            String sasToken = new ShareServiceSasQueryParameters(
+            String sasToken = new CommonSasQueryParameters(
                 StorageImplUtils.parseQueryStringSplitValues(fullUrl.getQuery()), false).encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
