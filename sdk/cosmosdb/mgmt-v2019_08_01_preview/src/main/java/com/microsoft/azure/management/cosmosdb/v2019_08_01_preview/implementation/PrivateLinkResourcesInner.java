@@ -34,7 +34,7 @@ public class PrivateLinkResourcesInner {
     /** The Retrofit service to perform REST calls. */
     private PrivateLinkResourcesService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesInner.
@@ -42,7 +42,7 @@ public class PrivateLinkResourcesInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PrivateLinkResourcesInner(Retrofit retrofit, CosmosDBImpl client) {
+    public PrivateLinkResourcesInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(PrivateLinkResourcesService.class);
         this.client = client;
     }
