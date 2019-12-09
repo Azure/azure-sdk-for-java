@@ -20,7 +20,7 @@ public class RecognizePII {
                 "Recognized PII NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s",
                 entity.getText(),
                 entity.getType(),
-                entity.getSubType(),
+                entity.getSubtype(),
                 entity.getOffset(),
                 entity.getLength(),
                 entity.getScore()));

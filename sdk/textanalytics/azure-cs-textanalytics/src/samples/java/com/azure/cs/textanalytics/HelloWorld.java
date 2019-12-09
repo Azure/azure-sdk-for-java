@@ -11,7 +11,6 @@ import java.util.List;
 public class HelloWorld {
 
     public static void main(String[] args) {
-        // TODO: user AAD token to do the authentication
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
             .subscriptionKey("subscription-key")

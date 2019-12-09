@@ -27,8 +27,8 @@ public final class NamedEntity {
     /*
      * NamedEntity sub type, such as Age/Year/TimeRange etc
      */
-    @JsonProperty(value = "subType")
-    private String subType;
+    @JsonProperty(value = "subtype")
+    private String subtype;
 
     /*
      * Start position (in Unicode characters) for the entity text.
@@ -89,24 +89,24 @@ public final class NamedEntity {
     }
 
     /**
-     * Get the subType property: NamedEntity sub type, such as Age/Year/TimeRange
+     * Get the subtype property: NamedEntity sub type, such as Age/Year/TimeRange
      * etc.
      *
-     * @return the subType value.
+     * @return the subtype value.
      */
-    public String getSubType() {
-        return this.subType;
+    public String getSubtype() {
+        return this.subtype;
     }
 
     /**
-     * Set the subType property: NamedEntity sub type, such as Age/Year/TimeRange
+     * Set the subtype property: NamedEntity sub type, such as Age/Year/TimeRange
      * etc.
      *
-     * @param subType the subType value to set.
+     * @param subtype the subtype value to set.
      * @return the NamedEntity object itself.
      */
-    NamedEntity setSubType(String subType) {
-        this.subType = subType;
+    NamedEntity setSubtype(String subtype) {
+        this.subtype = subtype;
         return this;
     }
 
