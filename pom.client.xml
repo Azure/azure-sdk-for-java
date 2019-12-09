@@ -470,10 +470,6 @@
                 <packages>com.azure.storage.queue*</packages>
               </group>
               <group>
-                <title>Azure Storage Queues - Cryptography</title>
-                <packages>com.azure.storage.queue.cryptography*</packages>
-              </group>
-              <group>
                 <title>Azure Telemetry</title>
                 <title>Azure Telemetry - OpenCensus</title>
                 <packages>com.azure.core.tracing*</packages>
@@ -1207,6 +1203,5 @@
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
-    <module>sdk/storage/azure-storage-queue-cryptography</module>
   </modules>
 </project>
