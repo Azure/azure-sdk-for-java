@@ -8,7 +8,6 @@ import com.azure.cs.textanalytics.models.DetectLanguageResult;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
 import com.azure.cs.textanalytics.models.Error;
 import org.junit.jupiter.api.Test;
-import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
