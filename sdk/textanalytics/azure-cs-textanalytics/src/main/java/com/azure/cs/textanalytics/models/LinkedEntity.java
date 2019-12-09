@@ -14,7 +14,7 @@ import java.util.List;
 @Fluent
 public final class LinkedEntity {
     /*
-     * NamedEntity Linking formal name.
+     * Entity Linking formal name.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -22,7 +22,7 @@ public final class LinkedEntity {
     /*
      * List of instances this entity appears in the text.
      */
-    @JsonProperty(value = "linkedEntityMatches", required = true)
+    @JsonProperty(value = "matches", required = true)
     private List<LinkedEntityMatch> linkedEntityMatches;
 
     /*
@@ -50,7 +50,7 @@ public final class LinkedEntity {
     private String dataSource;
 
     /**
-     * Get the name property: NamedEntity Linking formal name.
+     * Get the name property: Entity Linking formal name.
      *
      * @return the name value.
      */
@@ -59,7 +59,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Set the name property: NamedEntity Linking formal name.
+     * Set the name property: Entity Linking formal name.
      *
      * @param name the name value to set.
      * @return the LinkedEntity object itself.

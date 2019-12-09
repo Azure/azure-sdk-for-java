@@ -20,7 +20,7 @@ public final class LinkedEntityMatch {
     private double score;
 
     /*
-     * NamedEntity text as appears in the request.
+     * Entity text as appears in the request.
      */
     @JsonProperty(value = "text", required = true)
     private String text;
@@ -60,7 +60,7 @@ public final class LinkedEntityMatch {
     }
 
     /**
-     * Get the text property: NamedEntity text as appears in the request.
+     * Get the text property: Entity text as appears in the request.
      *
      * @return the text value.
      */
@@ -69,7 +69,7 @@ public final class LinkedEntityMatch {
     }
 
     /**
-     * Set the text property: NamedEntity text as appears in the request.
+     * Set the text property: Entity text as appears in the request.
      *
      * @param text the text value to set.
      * @return the LinkedEntityMatch object itself.

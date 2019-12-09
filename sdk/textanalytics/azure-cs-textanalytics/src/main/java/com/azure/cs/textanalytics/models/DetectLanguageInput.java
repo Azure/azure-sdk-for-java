@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The UnknownLanguageInput model.
+ * The DetectLanguageInput model.
  */
 @Fluent
 public final class DetectLanguageInput {
@@ -48,17 +48,6 @@ public final class DetectLanguageInput {
      */
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Set the id property: Unique, non-empty document identifier.
-     *
-     * @param id the id value to set.
-     * @return the UnknownLanguageInput object itself.
-     */
-    DetectLanguageInput setId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
