@@ -1,6 +1,8 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+# Python version 3.4 or higher is required to run this script.
+
 # Use case: Append the build qualifier onto the existing version in such a way that the
 # resulting version string is still in semver format. This will be utilized by the build
 # system to modify the version string to produce nightly DevOps builds.

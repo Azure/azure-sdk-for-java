@@ -65,6 +65,15 @@
         </configuration>
       </plugin>
 
+      <!-- This is not a module we need to run revapi on because there are no APIs shipped here. -->
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 

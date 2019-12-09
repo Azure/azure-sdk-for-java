@@ -14,9 +14,9 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
 /**
- * Initializes a new instance of the CosmosDBImpl class.
+ * Initializes a new instance of the CosmosDBManagementClientImpl class.
  */
-public class CosmosDBImpl extends AzureServiceClient {
+public class CosmosDBManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -46,7 +46,7 @@ public class CosmosDBImpl extends AzureServiceClient {
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
      */
-    public CosmosDBImpl withSubscriptionId(String subscriptionId) {
+    public CosmosDBManagementClientImpl withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -69,7 +69,7 @@ public class CosmosDBImpl extends AzureServiceClient {
      * @param subscriptionId1 the subscriptionId1 value.
      * @return the service client itself
      */
-    public CosmosDBImpl withSubscriptionId1(String subscriptionId1) {
+    public CosmosDBManagementClientImpl withSubscriptionId1(String subscriptionId1) {
         this.subscriptionId1 = subscriptionId1;
         return this;
     }
@@ -92,7 +92,7 @@ public class CosmosDBImpl extends AzureServiceClient {
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
      */
-    public CosmosDBImpl withAcceptLanguage(String acceptLanguage) {
+    public CosmosDBManagementClientImpl withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
         return this;
     }
@@ -115,7 +115,7 @@ public class CosmosDBImpl extends AzureServiceClient {
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
      */
-    public CosmosDBImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public CosmosDBManagementClientImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
         return this;
     }
@@ -138,7 +138,7 @@ public class CosmosDBImpl extends AzureServiceClient {
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
      */
-    public CosmosDBImpl withGenerateClientRequestId(boolean generateClientRequestId) {
+    public CosmosDBManagementClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
         return this;
     }
@@ -404,31 +404,31 @@ public class CosmosDBImpl extends AzureServiceClient {
     }
 
     /**
-     * Initializes an instance of CosmosDB client.
+     * Initializes an instance of CosmosDBManagementClient client.
      *
      * @param credentials the management credentials for Azure
      */
-    public CosmosDBImpl(ServiceClientCredentials credentials) {
+    public CosmosDBManagementClientImpl(ServiceClientCredentials credentials) {
         this("https://management.azure.com", credentials);
     }
 
     /**
-     * Initializes an instance of CosmosDB client.
+     * Initializes an instance of CosmosDBManagementClient client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    public CosmosDBImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public CosmosDBManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }
 
     /**
-     * Initializes an instance of CosmosDB client.
+     * Initializes an instance of CosmosDBManagementClient client.
      *
      * @param restClient the REST client to connect to Azure.
      */
-    public CosmosDBImpl(RestClient restClient) {
+    public CosmosDBManagementClientImpl(RestClient restClient) {
         super(restClient);
         initialize();
     }
@@ -467,6 +467,6 @@ public class CosmosDBImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "CosmosDB", "2019-08-01-preiew");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "CosmosDBManagementClient", "2019-08-01-preiew");
     }
 }

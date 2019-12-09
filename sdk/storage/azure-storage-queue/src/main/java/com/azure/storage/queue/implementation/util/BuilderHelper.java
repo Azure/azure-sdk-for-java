@@ -19,6 +19,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
@@ -28,7 +29,6 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
-import com.azure.storage.queue.sas.QueueServiceSasQueryParameters;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
 public final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-queue";
     // {x-version-update-start;com.azure:azure-storage-queue;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.1.0";
+    private static final String DEFAULT_USER_AGENT_VERSION = "12.2.0-beta.1";
     // {x-version-update-end}
 
     private static final Pattern IP_URL_PATTERN = Pattern
@@ -103,11 +103,12 @@ public final class BuilderHelper {
                 parts.setEndpoint(String.format("%s://%s", url.getProtocol(), url.getAuthority()));
             }
 
+            // TODO (gapra) : What happens if a user has custom queries?
             // Attempt to get the SAS token from the URL passed
-            String sasToken = new QueueServiceSasQueryParameters(
+            String sasToken = new CommonSasQueryParameters(
                 StorageImplUtils.parseQueryStringSplitValues(url.getQuery()), false).encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
-                parts.setQueueName(sasToken);
+                parts.setSasToken(sasToken);
             }
 
             return parts;
