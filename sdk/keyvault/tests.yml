@@ -4,6 +4,50 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: keyvault
+          # NB: The PreRunSteps and PostRunSteps are here to prove the concept in the
+          # defined scenario. A script will do this work and we will invoke the script
+          # from the archetype template, so the only changes required will be in
+        # the EnvVars.
+      PreRunSteps:
+          - pwsh: |
+                # $uniqueIdentifier generates a pseudorandom value that represents a unique name that can be used with all resources
+                $uniqueIdentifier =  "t" + [guid]::NewGuid().ToString().Replace("-", "").Substring(0,16)
+                $jobName = "$(Agent.JobName)".Replace(" ", "_")
+                $resourceGroupName = "Tests-$(Build.BuildId)-" + $jobName + "-" + $uniqueIdentifier
+                echo "##vso[task.setvariable variable=ResourceGroupName]$resourceGroupName"
+                echo "##vso[task.setvariable variable=ScopedIdentifier]$uniqueIdentifier"
+                $resourceGroupExpiration = (Get-Date).ToUniversalTime().AddHours(24).ToString("o")
+
+                az login --service-principal -u $env:PROVISIONER_AAD_ID -p $env:PROVISIONER_AAD_SECRET --tenant $env:PROVISIONER_AAD_TENANT
+                az account set --subscription $env:PROVISIONER_SUBSCRIPTION
+
+                az group create --name $resourceGroupName --location $env:PROVISIONER_RG_LOCATION --tags DeleteAfter=$resourceGroupExpiration
+                az group wait --created --resource-group $resourceGroupName
+                $rawDeployOutput = az group deployment create --resource-group $resourceGroupName --template-file sdk/storage/test-resources.json --parameters baseName=$uniqueIdentifier
+
+                $deploymentOutput = $rawDeployOutput | ConvertFrom-JSON -AsHashtable
+                $deploymentOutput.properties.outputs.GetEnumerator() | foreach { Write-Host "##vso[task.setvariable variable=$($_.Name);issecret=true]$($_.value.value)" }
+          env:
+              PROVISIONER_AAD_ID: $(provisioner-aad-id)
+              PROVISIONER_AAD_SECRET: $(provisioner-aad-secret)
+              PROVISIONER_AAD_TENANT: $(provisioner-aad-tenant)
+              PROVISIONER_SUBSCRIPTION: $(provisioner-subscription)
+              PROVISIONER_RG_LOCATION: westus2
+              displayName: Provision Test-Specific Azure Resources
+      PostRunSteps:
+          - pwsh: |
+                az login --service-principal -u $env:PROVISIONER_AAD_ID -p $env:PROVISIONER_AAD_SECRET --tenant $env:PROVISIONER_AAD_TENANT
+                az account set --subscription $env:PROVISIONER_SUBSCRIPTION
+                az group delete --resource-group $(ResourceGroupName) -y --no-wait
+          env:
+              PROVISIONER_AAD_ID: $(provisioner-aad-id)
+              PROVISIONER_AAD_SECRET: $(provisioner-aad-secret)
+              PROVISIONER_AAD_TENANT: $(provisioner-aad-tenant)
+              PROVISIONER_SUBSCRIPTION: $(provisioner-subscription)
+              displayName: Delete Test-Specific Azure Resources
+              condition: succeededOrFailed()
+
+        # This is the only change you should make to your tests.yml files
       EnvVars:
         AZURE_TEST_MODE: RECORD
         ARM_CLIENTID: $(java-keyvault-test-arm-client-id)
