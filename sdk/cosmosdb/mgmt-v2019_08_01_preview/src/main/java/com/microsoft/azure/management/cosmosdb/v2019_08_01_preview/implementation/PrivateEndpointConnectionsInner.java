@@ -39,7 +39,7 @@ public class PrivateEndpointConnectionsInner {
     /** The Retrofit service to perform REST calls. */
     private PrivateEndpointConnectionsService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionsInner.
@@ -47,7 +47,7 @@ public class PrivateEndpointConnectionsInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PrivateEndpointConnectionsInner(Retrofit retrofit, CosmosDBImpl client) {
+    public PrivateEndpointConnectionsInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(PrivateEndpointConnectionsService.class);
         this.client = client;
     }
