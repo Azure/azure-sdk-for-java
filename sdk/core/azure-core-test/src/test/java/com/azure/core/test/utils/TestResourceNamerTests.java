@@ -3,16 +3,20 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.models.RecordedData;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.NoSuchElementException;
 
+import static com.azure.core.test.FakeTestClass.DONOTRECORD_FALSE_SKIPINPLAYBACK;
+import static com.azure.core.test.FakeTestClass.METHOD_WITHOUT_DONOTRECORD;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests for {@link TestResourceNamer}.
@@ -30,22 +34,19 @@ public class TestResourceNamerTests {
      */
     @Test
     public void nullRecordedData() {
-        // Doesn't throw when TestMode.LIVE or doNotRecord = true
-        new TestResourceNamer("testName", TestMode.LIVE, false, null);
-        new TestResourceNamer("testName", TestMode.RECORD, true, null);
+        // Doesn't throw when TestMode.LIVE.
+        assertDoesNotThrow(() ->
+            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.LIVE), null));
+
+        // Doesn't throw when 'doNotRecord' is true.
+        assertDoesNotThrow(() ->
+            new TestResourceNamer(new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.RECORD), null));
 
         // Does throw when TestMode isn't LIVE and doNotRecord = false
-        try {
-            new TestResourceNamer("testName", TestMode.RECORD, false, null);
-        } catch (Exception ex) {
-            assertTrue(ex instanceof NullPointerException);
-        }
-
-        try {
-            new TestResourceNamer("testName", TestMode.PLAYBACK, false, null);
-        } catch (Exception ex) {
-            assertTrue(ex instanceof NullPointerException);
-        }
+        assertThrows(NullPointerException.class, () ->
+            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.RECORD), null));
+        assertThrows(NullPointerException.class, () ->
+            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.PLAYBACK), null));
     }
 
     /**
@@ -54,8 +55,8 @@ public class TestResourceNamerTests {
      */
     @Test
     public void recordedDataIsNotAllowedToReadRecordedValues() {
-        TestResourceNamer resourceNamer = new TestResourceNamer("testName", TestMode.PLAYBACK, true,
-            getRecordedDataWithValue());
+        TestResourceNamer resourceNamer = new TestResourceNamer(new TestContextManager(
+            DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.PLAYBACK), getRecordedDataWithValue());
 
         assertNotEquals(A_VARIABLE, resourceNamer.randomName("prefix", 12));
         assertNotEquals(A_VARIABLE, resourceNamer.randomUuid());
@@ -71,14 +72,18 @@ public class TestResourceNamerTests {
     public void recordedDataIsNotAllowedToRecordValues() {
         RecordedData recordedData = new RecordedData();
 
-        callNamerMethds(new TestResourceNamer("testName", TestMode.LIVE, false, recordedData));
-        validateNoRecordingsMade(new TestResourceNamer("testName", TestMode.PLAYBACK, false, recordedData));
+        callNamerMethds(new TestResourceNamer(
+            new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.LIVE), recordedData));
+        validateNoRecordingsMade(new TestResourceNamer(
+            new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.PLAYBACK), recordedData));
 
         // Reset the recording data.
         recordedData = new RecordedData();
 
-        callNamerMethds(new TestResourceNamer("testName", TestMode.RECORD, true, recordedData));
-        validateNoRecordingsMade(new TestResourceNamer("testName", TestMode.PLAYBACK, false, recordedData));
+        callNamerMethds(new TestResourceNamer(
+            new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.RECORD), recordedData));
+        validateNoRecordingsMade(new TestResourceNamer(
+            new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.PLAYBACK), recordedData));
     }
 
     private void callNamerMethds(TestResourceNamer resourceNamer) {
@@ -95,13 +100,8 @@ public class TestResourceNamerTests {
         assertNoSuchElementException(() -> resourceNamer.recordValueFromConfig(CONFIG_VALUE));
     }
 
-    private void assertNoSuchElementException(Runnable runnable) {
-        try {
-            runnable.run();
-            fail("Expected 'NoSuchElementException' to be thrown.");
-        } catch (Exception ex) {
-            assertTrue(ex instanceof NoSuchElementException);
-        }
+    private void assertNoSuchElementException(Executable executable) {
+        assertThrows(NoSuchElementException.class, executable, "Expected 'NoSuchElementException' to be thrown.");
     }
 
     private RecordedData getRecordedDataWithValue() {

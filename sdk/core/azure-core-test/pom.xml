@@ -84,6 +84,12 @@
       <artifactId>jetty-server</artifactId>
       <version>9.4.11.v20180605</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.4.2</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

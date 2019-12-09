@@ -7,40 +7,24 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
+import static com.azure.core.test.FakeTestClass.DONOTRECORD_FALSE_SKIPINPLAYBACK;
+import static com.azure.core.test.FakeTestClass.METHOD_WITHOUT_DONOTRECORD;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link InterceptorManager}.
  */
 public class InterceptorManagerTests {
-
-    /**
-     * Validates that a {@link NullPointerException} is thrown when the test name is null.
-     */
-    @Test
-    public void nullTestName() {
-        try {
-            new InterceptorManager(null, TestMode.RECORD, false);
-        } catch (Exception ex) {
-            assertTrue(ex instanceof NullPointerException);
-        }
-
-        try {
-            new InterceptorManager(null, new HashMap<>(), false);
-        } catch (Exception ex) {
-            assertTrue(ex instanceof NullPointerException);
-        }
-    }
-
     /**
      * Validates that {@link InterceptorManager#getRecordedData()} is {@code null} when testing in {@link
      * TestMode#LIVE}.
      */
     @Test
     public void recordedDataIsNullInLiveMode() {
-        assertNull(new InterceptorManager("testName", TestMode.LIVE, false).getRecordedData());
-        assertNull(new InterceptorManager("testName", TestMode.LIVE, true).getRecordedData());
+        assertNull(new InterceptorManager(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.LIVE))
+            .getRecordedData());
+        assertNull(new InterceptorManager(new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.LIVE))
+            .getRecordedData());
     }
 
     /**
@@ -49,9 +33,12 @@ public class InterceptorManagerTests {
      */
     @Test
     public void recordedDataIsNullWhenDoNotRecord() {
-        assertNull(new InterceptorManager("testName", TestMode.RECORD, true).getRecordedData());
-        assertNull(new InterceptorManager("testName", TestMode.LIVE, true).getRecordedData());
-        assertNull(new InterceptorManager("testName", TestMode.PLAYBACK, true).getRecordedData());
+        assertNull(new InterceptorManager(new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.RECORD))
+            .getRecordedData());
+        assertNull(new InterceptorManager(new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.LIVE))
+            .getRecordedData());
+        assertNull(new InterceptorManager(new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.PLAYBACK))
+            .getRecordedData());
         assertNull(new InterceptorManager("testName", new HashMap<>(), true).getRecordedData());
     }
 }
