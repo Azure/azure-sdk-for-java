@@ -64,7 +64,6 @@ public final class TextAnalyticsAsyncClient {
      * certainty that the identified language is true.
      *
      * @param text The text to be analyzed.
-     *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has
      * the {@link DetectLanguageResult detected language} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -78,10 +77,9 @@ public final class TextAnalyticsAsyncClient {
      * Returns the detected language and a numeric score between zero and one when the hint of country specified.
      * Scores close to one indicate 100% certainty that the identified language is true.
      *
-     * @param text The text to be analyzed.
+     * @param text        The text to be analyzed.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
-     * specified.
-     *
+     *                    specified.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
      * {@link DetectLanguageResult detected language} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -96,10 +94,9 @@ public final class TextAnalyticsAsyncClient {
      * Returns a {@link Response} containing the detected language and a numeric score between zero and one.
      * Scores close to one indicate 100% certainty that the identified language is true.
      *
-     * @param text The text to be analyzed.
+     * @param text        The text to be analyzed.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
-     * specified.
-     *
+     *                    specified.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
      * {@link DetectLanguageResult detected language} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -131,7 +128,6 @@ public final class TextAnalyticsAsyncClient {
      * Returns the detected language for a batch of input.
      *
      * @param inputs The list of texts to be analyzed.
-     *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link DetectLanguageResult detected languages}.
      * @throws NullPointerException if {@code inputs} is {@code null}.
@@ -144,10 +140,9 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns the detected language for a batch of input with the provided country hint.
      *
-     * @param inputs The list of texts to be analyzed.
+     * @param inputs      The list of texts to be analyzed.
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
-     * alpha-2. Defaults to "US" if not specified.
-     *
+     *                    alpha-2. Defaults to "US" if not specified.
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link DetectLanguageResult detected languages}.
      * @throws NullPointerException if {@code inputs} is {@code null}.
@@ -155,9 +150,24 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs,
                                                                                 String countryHint) {
+        return detectLanguagesWithResponse(inputs, countryHint).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Returns the detected language for a batch of input with the provided country hint.
+     *
+     * @param inputs      The list of texts to be analyzed.
+     * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
+     *                    alpha-2. Defaults to "US" if not specified.
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link DetectLanguageResult detected languages}.
+     * @throws NullPointerException if {@code inputs} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> inputs,
+                                                                                String countryHint) {
         try {
-            return withContext(context -> detectLanguagesWithResponse(inputs, countryHint, context))
-                .flatMap(FluxUtil::toMono);
+            return withContext(context -> detectLanguagesWithResponse(inputs, countryHint, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -165,7 +175,8 @@ public final class TextAnalyticsAsyncClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> inputs,
-                                                                                               String countryHint, Context context) {
+                                                                                               String countryHint,
+                                                                                               Context context) {
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
         // TODO update/validate inputs and id assigning
         for (int i = 0; i < inputs.size(); i++) {
@@ -178,7 +189,6 @@ public final class TextAnalyticsAsyncClient {
      * Returns the detected language for a batch of input.
      *
      * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
-     *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link DetectLanguageResult detected languages}.
      * @throws NullPointerException if {@code inputs} is {@code null}.
@@ -191,10 +201,9 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns the detected language for a batch of input.
      *
-     * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     * @param inputs  The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     * and show statistics.
-     *
+     *                and show statistics.
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link DetectLanguageResult detected languages}.
      * @throws NullPointerException if {@code inputs} is {@code null}.
@@ -208,10 +217,9 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns the detected language for a batch of input.
      *
-     * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     * @param inputs  The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     * and show statistics.
-     *
+     *                and show statistics.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
      * @throws NullPointerException if {@code inputs} is {@code null}.
@@ -276,7 +284,7 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link DetectLanguageResult} equivalent for the error-ed document.
      */
     private DetectLanguageResult convertToErrorDetectLanguageResult(final DocumentError errorDocument) {
-        com.azure.cs.textanalytics.implementation.models.Error serviceError = errorDocument.getError();
+        Error serviceError = errorDocument.getError();
         Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
             .setTarget(serviceError.getTarget());
         return new DetectLanguageResult(errorDocument.getId(), error, true);
@@ -493,50 +501,65 @@ public final class TextAnalyticsAsyncClient {
     // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyPhraseResult> extractKeyPhrases(String text) {
-        return null;
+        return extractKeyPhrases(text, null);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyPhraseResult> extractKeyPhrases(String text, String language) {
-//        try {
-//            final List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
-//            multiLanguageInputs.add(new MultiLanguageInput().setText(text).setLanguage(language));
-//
-//            return withContext(context -> getKeyPhrasesWithResponse(
-//                new MultiLanguageBatchInput().setDocuments(multiLanguageInputs), showStats, context))
-//                .flatMap(response -> {
-//                    final List<DocumentKeyPhrases> documentKeyPhrases = response.getValue().getDocuments();
-//                    if (documentKeyPhrases.size() == 0) {
-//                        return Mono.empty();
-//                    } else {
-//                        return Mono.justOrEmpty(documentKeyPhrases.get(0));
-//                    }
-//                });
-//        } catch (RuntimeException ex) {
-//            return monoError(logger, ex);
-//        }
-        return null;
+        return extractKeyPhrasesWithResponse(text, language).flatMap(FluxUtil::toMono);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language) {
-        return null;
+        try {
+            return withContext(context -> extractKeyPhrasesWithResponse(text, language, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language,
+                                                                                  Context context) {
+        Objects.requireNonNull(text, "'text' cannot be null.");
+        List<TextDocumentInput> documentInputs = new ArrayList<>();
+        documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
+        // TODO: should this be a random number generator?
+        return extractBatchKeyPhrasesWithResponse(documentInputs, null, context).flatMap(response -> {
+            if (response.getValue().iterator().hasNext()) {
+                return Mono.justOrEmpty(new SimpleResponse<>(response, response.getValue().iterator().next()));
+            }
+            return monoError(logger, new RuntimeException("Unable to retrieve key phrases for the provided text."));
+        });
     }
 
     // hackathon user
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Mono<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrases(List<String> inputs)  {
-//        return null;
-//    }
-
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrases(List<String> inputs) {
-        return null;
+    public Mono<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrases(List<String> inputs)  {
+        return extractKeyPhrasesWithResponse(inputs, null).flatMap(FluxUtil::toMono);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrases(List<String> inputs, String language) {
-        return null;
+    public Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractKeyPhrasesWithResponse(List<String> inputs,
+                                                                                                   String language) {
+        try {
+            return withContext(context -> extractKeyPhrasesWithResponse(inputs, language, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractKeyPhrasesWithResponse(List<String> inputs,
+                                                                                            String language,
+                                                                                            Context context) {
+        Objects.requireNonNull(inputs, "'inputs' cannot be null.");
+        List<TextDocumentInput> documentInputs = new ArrayList<>();
+        for (int i =0; i < inputs.size(); i++) {
+            documentInputs.add(new TextDocumentInput(Integer.toString(i), inputs.get(i), language));
+        }
+        // TODO: should this be a random number generator?
+        return extractBatchKeyPhrasesWithResponse(documentInputs, null, context);
     }
 
     // advantage user
@@ -649,18 +672,5 @@ public final class TextAnalyticsAsyncClient {
             new MultiLanguageBatchInput().setDocuments(document), options.getModelVersion(), options.showStatistics(),
             context).map(response -> new SimpleResponse<>(response, null));
     }
-
-
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-////    public List<DocumentLanguage> test(LanguageBatchInput languageBatchInput) {
-////        Mono<SimpleResponse<LanguageResult>> result = service.languagesWithRestResponseAsync(languageBatchInput, Context.NONE)
-////            .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", languageBatchInput))
-////            .doOnSuccess(response -> logger.info("A batch of detected language output - {}", languageBatchInput))
-////            .doOnError(error -> logger.warning("Failed to detected languages - {}", languageBatchInput))
-////            .map(response -> new SimpleResponse<>(response, response.getValue()));
-////        List<DocumentLanguage> documentLanguages = result.block().getValue().getDocuments();
-////
-////        return documentLanguages;
-////    }
 
 }

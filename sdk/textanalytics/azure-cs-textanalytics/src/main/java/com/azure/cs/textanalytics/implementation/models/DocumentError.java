@@ -5,6 +5,7 @@
 package com.azure.cs.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.cs.textanalytics.models.Error;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

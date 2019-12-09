@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
+public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsAsyncClient client;
 
     @Override
@@ -76,7 +76,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
 
     /**
      * Verifies that a single DetectLanguageResult is returned for a text input to detectLanguages.
-     *
      */
     @Test
     public void detectSingleTextLanguage() {
@@ -89,16 +88,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
 
     /**
      * Verifies that an error document is returned for a text input with invalid country hint.
-     *
+     * <p>
      * TODO: update error Model. #6559
      */
-     @Test
-     public void detectLanguageInvalidCountryHint() {
-         Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid Country Hint.");
-         StepVerifier.create(client.detectLanguage("Este es un document escrito en Español.", "en"))
-             .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
-             .verifyComplete();
-     }
+    @Test
+    public void detectLanguageInvalidCountryHint() {
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid Country Hint.");
+        StepVerifier.create(client.detectLanguage("Este es un document escrito en Español.", "en"))
+            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
+            .verifyComplete();
+    }
 
     /**
      * Verifies that a Null pointer exception is thrown when null text is passed.
@@ -112,7 +111,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     }
 
     /**
-     *  Verifies that an error document is returned for a empty text input.
+     * Verifies that an error document is returned for a empty text input.
      */
     @Test
     public void detectLanguageEmptyText() {
