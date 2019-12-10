@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -228,7 +229,7 @@ public final class CoreUtils {
                 StreamResult res =  new StreamResult(new ByteArrayOutputStream());
                 serializer.transform(xmlSource, res);
                 return new String(((ByteArrayOutputStream)res.getOutputStream()).toByteArray(), StandardCharsets.UTF_8);
-            } catch (Exception e) {
+            } catch (TransformerException e) {
                 logger.warning("Failed to pretty print XML: {}", e.getMessage());
             }
         }

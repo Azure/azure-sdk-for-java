@@ -80,6 +80,20 @@ public class CoreUtilsTests {
     }
 
     @Test
+    public void testPrettyPrintFormatJsonOrXmlWithInvalidJsonContent() {
+        String plainJsonContent = "{\"error\":\"code\":\"MethodNotAllowed\",\"message\":\"HTTP POST not allowed\"}}";
+        assertEquals(CoreUtils.printPrettyFormatJsonOrXml(plainJsonContent,
+            ContentType.APPLICATION_JSON), plainJsonContent);
+    }
+
+    @Test
+    public void testPrettyPrintFormatJsonOrXmlWithInvalidXmlContent() {
+        String plainJsonContent = "{\"error\":\"code\":\"MethodNotAllowed\",\"message\":\"HTTP POST not allowed\"}}";
+        assertEquals(CoreUtils.printPrettyFormatJsonOrXml(plainJsonContent,
+            ContentType.APPLICATION_JSON), plainJsonContent);
+    }
+
+    @Test
     public void testPrettyPrintFormatJsonOrXmlWithNullContent() {
         assertNull(CoreUtils.printPrettyFormatJsonOrXml(null, ContentType.APPLICATION_JSON));
     }
