@@ -3,16 +3,15 @@
 
 package com.azure.search;
 
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
+import com.azure.search.models.AutocompleteResult;
 import com.azure.search.models.RequestOptions;
 
-import java.util.Iterator;
 import java.util.UUID;
 
 /**
@@ -33,7 +32,7 @@ public class AutoCompleteExample {
         SearchIndexClient searchClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new SearchApiKeyCredential(API_KEY))
-            .indexName("hotels-sample")
+            .indexName("hotels-sample-index")
             .buildClient();
 
         autoCompleteWithOneTermContext(searchClient);
@@ -49,17 +48,11 @@ public class AutoCompleteExample {
         RequestOptions requestOptions = new RequestOptions()
             .setClientRequestId(UUID.randomUUID());
 
-        PagedIterable<AutocompleteItem> results = searchClient.autocomplete("coffee m",
+        PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = searchClient.autocomplete("coffee m",
             "sg", params, requestOptions, Context.NONE);
 
-        Iterator<PagedResponse<AutocompleteItem>> iterator = results.iterableByPage().iterator();
-
         System.out.println("Received results with one term context:");
-        iterator.forEachRemaining(
-            r -> r.getValue().forEach(
-                res -> System.out.println(res.getText())
-            )
-        );
+        results.forEach(result -> System.out.println(result.getText()));
 
         /* Output:
          * Received results with one term context:
@@ -77,17 +70,11 @@ public class AutoCompleteExample {
         RequestOptions requestOptions = new RequestOptions()
             .setClientRequestId(UUID.randomUUID());
 
-        PagedIterable<AutocompleteItem> results = searchClient.autocomplete("co", "sg", params,
+        PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = searchClient.autocomplete("co", "sg", params,
             requestOptions, Context.NONE);
 
-        Iterator<PagedResponse<AutocompleteItem>> iterator = results.iterableByPage().iterator();
-
         System.out.println("Received results with highlighting:");
-        iterator.forEachRemaining(
-            r -> r.getValue().forEach(
-                res -> System.out.println(res.getText())
-            )
-        );
+        results.forEach(result -> System.out.println(result.getText()));
 
         /* Output:
          * Received results with highlighting:
@@ -104,17 +91,11 @@ public class AutoCompleteExample {
         RequestOptions requestOptions = new RequestOptions()
             .setClientRequestId(UUID.randomUUID());
 
-        PagedIterable<AutocompleteItem> results = searchClient.autocomplete("su", "sg", params,
+        PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = searchClient.autocomplete("su", "sg", params,
             requestOptions, Context.NONE);
 
-        Iterator<PagedResponse<AutocompleteItem>> iterator = results.iterableByPage().iterator();
-
         System.out.println("Received results with filter and fuzzy:");
-        iterator.forEachRemaining(
-            r -> r.getValue().forEach(
-                res -> System.out.println(res.getText())
-            )
-        );
+        results.forEach(result -> System.out.println(result.getText()));
 
         /* Output:
          * Received results with filter and fuzzy:

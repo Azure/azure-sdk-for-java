@@ -22,7 +22,7 @@ public class ListIndexersExample {
     private static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String ADMIN_KEY = Configuration.getGlobalConfiguration()
-        .get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
+        .get("AZURE_COGNITIVE_SEARCH_API_KEY");
 
     public static void main(String[] args) {
         SearchServiceAsyncClient searchServiceClient = new SearchServiceClientBuilder()

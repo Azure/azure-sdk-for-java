@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
+import com.azure.search.models.AutocompleteResult;
 import com.azure.search.models.IndexGetStatisticsResult;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.RequestOptions;
@@ -32,8 +33,8 @@ public class RunningSearchSolutionExample {
      * From the Azure portal, get your Azure Cognitive Search service URL and API admin key,
      * and set the values of these environment variables:
      */
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
-    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_API_KEY");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
+    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
 
     private static final String INDEX_NAME = "hotels-sample-index";
     private static final String INDEXER_NAME = "hotels-sample-indexer";
@@ -87,17 +88,11 @@ public class RunningSearchSolutionExample {
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(
             AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
-        PagedIterable<AutocompleteItem> results = client.autocomplete("co",
+        PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("co",
             SUGGESTER_NAME, params, new RequestOptions(), Context.NONE);
 
-        Iterator<PagedResponse<AutocompleteItem>> iterator = results.iterableByPage().iterator();
-
         System.out.println("Autocomplete with one term context results:");
-        iterator.forEachRemaining(
-            r -> r.getValue().forEach(
-                res -> System.out.printf("      %s%n", res.getText())
-            )
-        );
+        results.forEach(result -> System.out.println(result.getText()));
     }
 
     private static void searchQuery(SearchIndexClient client) {

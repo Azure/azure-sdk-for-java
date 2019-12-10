@@ -327,8 +327,9 @@ public class SearchIndexClient {
      * @param suggesterName suggester name
      * @return auto complete result.
      */
-    public PagedIterable<AutocompleteItem> autocomplete(String searchText, String suggesterName) {
-        return new PagedIterable<>(asyncClient.autocomplete(searchText, suggesterName));
+    public PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(
+        String searchText, String suggesterName) {
+        return new PagedIterableBase<>(asyncClient.autocomplete(searchText, suggesterName));
     }
 
     /**
@@ -342,12 +343,12 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return auto complete result.
      */
-    public PagedIterable<AutocompleteItem> autocomplete(String searchText,
+    public PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
                                                         String suggesterName,
                                                         AutocompleteOptions autocompleteOptions,
                                                         RequestOptions requestOptions,
                                                         Context context) {
-        return new PagedIterable<>(asyncClient.autocomplete(searchText,
+        return new PagedIterableBase<>(asyncClient.autocomplete(searchText,
             suggesterName, autocompleteOptions, requestOptions, context));
     }
 }
