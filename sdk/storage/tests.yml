@@ -27,7 +27,7 @@ jobs:
             $rawDeployOutput = az group deployment create --resource-group $resourceGroupName --template-file sdk/storage/test-resources.json --parameters baseName=$uniqueIdentifier
 
             $deploymentOutput = $rawDeployOutput | ConvertFrom-JSON -AsHashtable
-            $deploymentOutput.properties.outputs.GetEnumerator() | foreach { Write-Host "##vso[task.setvariable variable=$($_.Name);issecret=true]$($_.value.value)" }
+            $deploymentOutput.properties.outputs.GetEnumerator() | foreach { Write-Host "##vso[task.setvariable variable=$($_.Name.ToUpper());issecret=true]$($_.value.value)" }
           env:
             PROVISIONER_AAD_ID: $(provisioner-aad-id)
             PROVISIONER_AAD_SECRET: $(provisioner-aad-secret)
@@ -57,8 +57,7 @@ jobs:
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
 
-        # Use the $(job-...) variables that are defined in the job scope
-        # instead of using the old static resource variables (e.g. $(java-...))
+        # The secret should map directly by name to the environment variable
         PRIMARY_STORAGE_ACCOUNT_NAME: $(PRIMARY_STORAGE_ACCOUNT_NAME)
         PRIMARY_STORAGE_ACCOUNT_KEY: $(PRIMARY_STORAGE_ACCOUNT_KEY)
         SECONDARY_STORAGE_ACCOUNT_NAME: $(SECONDARY_STORAGE_ACCOUNT_NAME)
