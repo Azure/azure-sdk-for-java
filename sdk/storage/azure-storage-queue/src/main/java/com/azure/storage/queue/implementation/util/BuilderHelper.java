@@ -28,6 +28,7 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.queue.sas.QueueServiceSasQueryParameters;
 
 import java.net.MalformedURLException;
@@ -105,10 +106,10 @@ public final class BuilderHelper {
             }
 
             // Attempt to get the SAS token from the URL passed
-            String sasToken = new QueueServiceSasQueryParameters(
+            String sasToken = new CommonSasQueryParameters(
                 StorageImplUtils.parseQueryStringSplitValues(url.getQuery()), false).encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
-                parts.setQueueName(sasToken);
+                parts.setSasToken(sasToken);
             }
 
             return parts;
