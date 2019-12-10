@@ -9,19 +9,22 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class DocumentResult {
-    private String id;
-    private TextDocumentStatistics textDocumentStatistics;
-    private Error error;
-    private boolean isError;
+    private final String id;
+    private final TextDocumentStatistics textDocumentStatistics;
+    private final Error error;
+    private final boolean isError;
 
     DocumentResult(final String id, final Error error, final boolean isError) {
         this.id = id;
         this.error = error;
         this.isError = isError;
+        this.textDocumentStatistics = null;
     }
 
     DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics) {
         this.id = id;
+        this.error = null;
+        this.isError = false;
         this.textDocumentStatistics = textDocumentStatistics;
     }
 

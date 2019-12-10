@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Fluent
 public final class LinkedEntityResult extends DocumentResult {
-    private List<LinkedEntity> linkedEntities;
+    private final List<LinkedEntity> linkedEntities;
 
     /**
      * LinkedEntityResult model constructor
@@ -22,7 +22,8 @@ public final class LinkedEntityResult extends DocumentResult {
      * @param textDocumentStatistics text document statistics
      * @param linkedEntities a list of linked entities
      */
-    public LinkedEntityResult(String id, TextDocumentStatistics textDocumentStatistics, List<LinkedEntity> linkedEntities) {
+    public LinkedEntityResult(String id, TextDocumentStatistics textDocumentStatistics,
+                              List<LinkedEntity> linkedEntities) {
         super(id, textDocumentStatistics);
         this.linkedEntities = linkedEntities;
     }
@@ -33,10 +34,5 @@ public final class LinkedEntityResult extends DocumentResult {
      */
     public List<LinkedEntity> getLinkedEntities() {
         return linkedEntities;
-    }
-
-    LinkedEntityResult setLinkedEntities(List<LinkedEntity> linkedEntities) {
-        this.linkedEntities = linkedEntities;
-        return this;
     }
 }

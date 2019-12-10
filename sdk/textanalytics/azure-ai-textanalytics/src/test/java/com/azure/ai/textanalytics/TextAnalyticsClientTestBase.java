@@ -236,7 +236,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         }
         validateDocuments(expectedResult, actualResult, testApi);
 
-        // TODO error model
+        // TODO (samvaity): error model
         // DocumentError error = new DocumentError().setId("4").setError("error");
         // List<DocumentError> errors = new ArrayList<>();
         // errors.add(error);
@@ -276,6 +276,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                         validateDetectedLanguages(expectedItem.getDetectedLanguages(), actualItem.getDetectedLanguages());
                     }
                 });
+                break;
+            default:
+                break;
         }
     }
 

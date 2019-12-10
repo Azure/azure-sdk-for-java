@@ -9,7 +9,7 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Text Analytics supported by this client library.
  */
 public enum TextAnalyticsServiceVersion implements ServiceVersion {
-    V3_0_preview_1 ("v3.0-preview.1");
+    V3_0_preview_1("v3.0-preview.1");
 
     private final String version;
 

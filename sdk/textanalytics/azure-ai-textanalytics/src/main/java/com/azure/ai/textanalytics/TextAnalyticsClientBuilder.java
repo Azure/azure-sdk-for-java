@@ -32,6 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ *  Text analytics client builder
+ */
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
 public final class TextAnalyticsClientBuilder {
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";

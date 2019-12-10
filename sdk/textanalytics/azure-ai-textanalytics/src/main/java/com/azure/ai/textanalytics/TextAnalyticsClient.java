@@ -20,6 +20,9 @@ import com.azure.ai.textanalytics.models.TextSentimentResult;
 
 import java.util.List;
 
+/**
+ * Text analytics synchronous client
+ */
 @ServiceClient(builder = TextAnalyticsClientBuilder.class)
 public final class TextAnalyticsClient {
     private final TextAnalyticsAsyncClient client;
@@ -65,7 +68,7 @@ public final class TextAnalyticsClient {
      * @param text The text to be analyzed.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified.
-     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing the {@link DetectLanguageResult detected language} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
@@ -111,7 +114,7 @@ public final class TextAnalyticsClient {
      * @param inputs The list of texts to be analyzed.
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
      * alpha-2. Defaults to "US" if not specified.
-     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
      * {@link DetectLanguageResult detected languages} with their numeric scores.
      * @throws NullPointerException if {@code inputs} is {@code null}.
@@ -158,7 +161,7 @@ public final class TextAnalyticsClient {
      * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
-     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
      * {@link DetectLanguageResult detected languages}.
      * @throws NullPointerException if {@code inputs} is {@code null}.
@@ -182,7 +185,8 @@ public final class TextAnalyticsClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NamedEntityResult> recognizeBatchEntitiesWithResponse(String text, String language, Context context) {
+    public Response<NamedEntityResult> recognizeBatchEntitiesWithResponse(String text, String language,
+                                                                          Context context) {
         return null;
     }
 

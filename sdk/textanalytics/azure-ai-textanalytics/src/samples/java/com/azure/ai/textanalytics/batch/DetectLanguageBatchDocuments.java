@@ -26,7 +26,7 @@ public class DetectLanguageBatchDocuments {
 
         // The texts that need be analysed.
         List<DetectLanguageInput> inputs = Arrays.asList(
-            new DetectLanguageInput("1", "This is written in English","US"),
+            new DetectLanguageInput("1", "This is written in English", "US"),
             new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
         );
 

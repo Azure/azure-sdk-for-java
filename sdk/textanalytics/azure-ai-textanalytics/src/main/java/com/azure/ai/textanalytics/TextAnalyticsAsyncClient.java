@@ -38,6 +38,9 @@ import java.util.stream.Stream;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
+/**
+ * Text analytics asynchronous client
+ */
 @ServiceClient(builder = TextAnalyticsClientBuilder.class, isAsync = true)
 public final class TextAnalyticsAsyncClient {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsAsyncClient.class);
@@ -77,7 +80,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns the detected language and a numeric score between zero and one when the hint of country specified.
      * Scores close to one indicate 100% certainty that the identified language is true.
      *
-     * @param text        The text to be analyzed.
+     * @param text The text to be analyzed.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      *                    specified.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
@@ -94,7 +97,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a {@link Response} containing the detected language and a numeric score between zero and one.
      * Scores close to one indicate 100% certainty that the identified language is true.
      *
-     * @param text        The text to be analyzed.
+     * @param text The text to be analyzed.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      *                    specified.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
@@ -140,7 +143,7 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns the detected language for a batch of input with the provided country hint.
      *
-     * @param inputs      The list of texts to be analyzed.
+     * @param inputs The list of texts to be analyzed.
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
      *                    alpha-2. Defaults to "US" if not specified.
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -156,7 +159,7 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns the detected language for a batch of input with the provided country hint.
      *
-     * @param inputs      The list of texts to be analyzed.
+     * @param inputs The list of texts to be analyzed.
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
      *                    alpha-2. Defaults to "US" if not specified.
      * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -164,8 +167,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code inputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> inputs,
-                                                                                String countryHint) {
+    public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(
+        List<String> inputs, String countryHint) {
         try {
             return withContext(context -> detectLanguagesWithResponse(inputs, countryHint, context));
         } catch (RuntimeException ex) {
@@ -178,7 +181,7 @@ public final class TextAnalyticsAsyncClient {
                                                                                                String countryHint,
                                                                                                Context context) {
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
-        // TODO update/validate inputs and id assigning
+        // TODO (samvaity): update/validate inputs and id assigning
         for (int i = 0; i < inputs.size(); i++) {
             languageInputs.add(new DetectLanguageInput(Integer.toString(i), inputs.get(i), countryHint));
         }
@@ -201,7 +204,7 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns the detected language for a batch of input.
      *
-     * @param inputs  The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      *                and show statistics.
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
@@ -217,7 +220,7 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns the detected language for a batch of input.
      *
-     * @param inputs  The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      *                and show statistics.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
@@ -297,7 +300,7 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link DetectLanguageResult} equivalent for the document.
      */
     private DetectLanguageResult convertToDetectLanguageResult(final DocumentLanguage documentLanguage) {
-        // TODO confirm the primary language support from service
+        // TODO (samvaity): confirm the primary language support from service
         return new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(),
             documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages());
     }
@@ -467,7 +470,8 @@ public final class TextAnalyticsAsyncClient {
 
     // advantage user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<LinkedEntityResult>> recognizeBatchLinkedEntities(List<TextDocumentInput> inputs) {
+    public Mono<DocumentResultCollection<LinkedEntityResult>> recognizeBatchLinkedEntities(
+        List<TextDocumentInput> inputs) {
         return null;
     }
 
@@ -555,7 +559,7 @@ public final class TextAnalyticsAsyncClient {
                                                                                             Context context) {
         Objects.requireNonNull(inputs, "'inputs' cannot be null.");
         List<TextDocumentInput> documentInputs = new ArrayList<>();
-        for (int i =0; i < inputs.size(); i++) {
+        for (int i = 0; i < inputs.size(); i++) {
             documentInputs.add(new TextDocumentInput(Integer.toString(i), inputs.get(i), language));
         }
         // TODO: should this be a random number generator?

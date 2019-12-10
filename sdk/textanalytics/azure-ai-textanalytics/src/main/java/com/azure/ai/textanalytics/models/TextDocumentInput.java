@@ -33,12 +33,12 @@ public final class TextDocumentInput {
     @JsonProperty(value = "language")
     private String language;
 
-    public TextDocumentInput (String id, String text) {
+    public TextDocumentInput(String id, String text) {
         this.id = id;
         this.text = text;
     }
 
-    public TextDocumentInput (String id, String text, String language) {
+    public TextDocumentInput(String id, String text, String language) {
         this.id = id;
         this.text = text;
         this.language = language;

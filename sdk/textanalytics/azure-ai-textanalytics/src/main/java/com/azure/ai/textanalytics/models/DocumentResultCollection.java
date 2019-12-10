@@ -6,14 +6,14 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.util.IterableStream;
 
 /**
+ * The DocumentResultCollection model.
  *
- *
- * @param <T>
+ * @param <T> the type of DocumentResultCollection holds
  */
 public class DocumentResultCollection<T> extends IterableStream<T> {
 
-    private String modelVersion;
-    private TextBatchStatistics statistics;
+    private final String modelVersion;
+    private final TextBatchStatistics statistics;
 
     /**
      * Create a document result collection
@@ -37,11 +37,6 @@ public class DocumentResultCollection<T> extends IterableStream<T> {
         return modelVersion;
     }
 
-    DocumentResultCollection<T> setModelVersion(String modelVersion) {
-        this.modelVersion = modelVersion;
-        return this;
-    }
-
     /**
      * Get statistics of the batch documents
      *
@@ -49,10 +44,5 @@ public class DocumentResultCollection<T> extends IterableStream<T> {
      */
     public TextBatchStatistics getStatistics() {
         return statistics;
-    }
-
-    DocumentResultCollection<T> setBatchStatistics(TextBatchStatistics statistics) {
-        this.statistics = statistics;
-        return this;
     }
 }
