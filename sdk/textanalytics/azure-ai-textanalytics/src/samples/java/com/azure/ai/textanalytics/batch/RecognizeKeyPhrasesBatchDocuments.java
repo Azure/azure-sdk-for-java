@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.core.util.Context;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +31,7 @@ public class RecognizeKeyPhrasesBatchDocuments {
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
-        final DocumentResultCollection<KeyPhraseResult> detectedBatchResult = client.extractBatchKeyPhrases(inputs, requestOptions);
+        final DocumentResultCollection<KeyPhraseResult> detectedBatchResult = client.extractBatchKeyPhrasesWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();

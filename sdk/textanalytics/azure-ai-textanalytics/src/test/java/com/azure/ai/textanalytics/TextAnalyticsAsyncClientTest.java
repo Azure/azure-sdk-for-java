@@ -32,8 +32,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguagesBatchInputShowStatistics() {
         detectLanguageShowStatisticsRunner((inputs, options) -> {
-            StepVerifier.create(client.detectBatchLanguages(inputs, options))
-                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
+            StepVerifier.create(client.detectBatchLanguagesWithResponse(inputs, options))
+                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchDetectedLanguages(), "Language"))
                 .verifyComplete();
         });
     }
@@ -56,8 +56,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguagesBatchListCountryHint() {
         detectLanguagesCountryHintRunner((inputs, countryHint) -> {
-            StepVerifier.create(client.detectLanguages(inputs, countryHint))
-                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
+            StepVerifier.create(client.detectLanguagesWithResponse(inputs, countryHint))
+                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchDetectedLanguages(), "Language"))
                 .verifyComplete();
         });
     }
@@ -94,8 +94,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageInvalidCountryHint() {
         Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid Country Hint.");
-        StepVerifier.create(client.detectLanguage("Este es un document escrito en Español.", "en"))
-            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
+        StepVerifier.create(client.detectLanguageWithResponse("Este es un document escrito en Español.", "en"))
+            .assertNext(response -> validateErrorDocument(expectedError, response.getValue().getError()))
             .verifyComplete();
     }
 

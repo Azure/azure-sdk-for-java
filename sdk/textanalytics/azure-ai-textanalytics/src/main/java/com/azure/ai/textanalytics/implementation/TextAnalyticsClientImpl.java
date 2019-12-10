@@ -106,32 +106,62 @@ public final class TextAnalyticsClientImpl {
         @Post("entities/recognition/general")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionGeneral(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
+        Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionGeneral(
+            @HostParam("Endpoint") String endpoint,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input,
+            Context context);
 
         @Post("entities/recognition/pii")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionPii(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
+        Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionPii(
+            @HostParam("Endpoint") String endpoint,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input,
+            Context context);
 
         @Post("entities/linking")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<EntityLinkingResult>> entitiesLinking(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
+        Mono<SimpleResponse<EntityLinkingResult>> entitiesLinking(
+            @HostParam("Endpoint") String endpoint,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input,
+            Context context);
 
         @Post("keyPhrases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<KeyPhraseResult>> keyPhrases(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
+        Mono<SimpleResponse<KeyPhraseResult>> keyPhrases(
+            @HostParam("Endpoint") String endpoint,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input,
+            Context context);
 
         @Post("languages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<LanguageResult>> languages(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") LanguageBatchInput input, Context context);
+        Mono<SimpleResponse<LanguageResult>> languages(
+            @HostParam("Endpoint") String endpoint,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @BodyParam("application/json; charset=utf-8") LanguageBatchInput input,
+            Context context);
 
         @Post("sentiment")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<SentimentResponse>> sentiment(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
+        Mono<SimpleResponse<SentimentResponse>> sentiment(
+            @HostParam("Endpoint") String endpoint,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input,
+            Context context);
     }
 
     /**
@@ -144,7 +174,8 @@ public final class TextAnalyticsClientImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionGeneralWithRestResponseAsync(MultiLanguageBatchInput input, Context context) {
+    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionGeneralWithRestResponseAsync(
+        MultiLanguageBatchInput input, Context context) {
         final String modelVersion = null;
         final Boolean showStats = null;
         return service.entitiesRecognitionGeneral(this.getEndpoint(), modelVersion, showStats, input, context);
@@ -162,7 +193,8 @@ public final class TextAnalyticsClientImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionGeneralWithRestResponseAsync(MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
+    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionGeneralWithRestResponseAsync(
+        MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
         return service.entitiesRecognitionGeneral(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 
@@ -176,7 +208,8 @@ public final class TextAnalyticsClientImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionPiiWithRestResponseAsync(MultiLanguageBatchInput input, Context context) {
+    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionPiiWithRestResponseAsync(
+        MultiLanguageBatchInput input, Context context) {
         final String modelVersion = null;
         final Boolean showStats = null;
         return service.entitiesRecognitionPii(this.getEndpoint(), modelVersion, showStats, input, context);
@@ -194,7 +227,8 @@ public final class TextAnalyticsClientImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionPiiWithRestResponseAsync(MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
+    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionPiiWithRestResponseAsync(
+        MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
         return service.entitiesRecognitionPii(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 
@@ -208,7 +242,8 @@ public final class TextAnalyticsClientImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntityLinkingResult>> entitiesLinkingWithRestResponseAsync(MultiLanguageBatchInput input, Context context) {
+    public Mono<SimpleResponse<EntityLinkingResult>> entitiesLinkingWithRestResponseAsync(
+        MultiLanguageBatchInput input, Context context) {
         final String modelVersion = null;
         final Boolean showStats = null;
         return service.entitiesLinking(this.getEndpoint(), modelVersion, showStats, input, context);
@@ -226,7 +261,8 @@ public final class TextAnalyticsClientImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntityLinkingResult>> entitiesLinkingWithRestResponseAsync(MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
+    public Mono<SimpleResponse<EntityLinkingResult>> entitiesLinkingWithRestResponseAsync(
+        MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
         return service.entitiesLinking(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 
@@ -240,7 +276,8 @@ public final class TextAnalyticsClientImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<KeyPhraseResult>> keyPhrasesWithRestResponseAsync(MultiLanguageBatchInput input, Context context) {
+    public Mono<SimpleResponse<KeyPhraseResult>> keyPhrasesWithRestResponseAsync(
+        MultiLanguageBatchInput input, Context context) {
         final String modelVersion = null;
         final Boolean showStats = null;
         return service.keyPhrases(this.getEndpoint(), modelVersion, showStats, input, context);
@@ -258,7 +295,8 @@ public final class TextAnalyticsClientImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<KeyPhraseResult>> keyPhrasesWithRestResponseAsync(MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
+    public Mono<SimpleResponse<KeyPhraseResult>> keyPhrasesWithRestResponseAsync(
+        MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
         return service.keyPhrases(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 
@@ -272,7 +310,8 @@ public final class TextAnalyticsClientImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LanguageResult>> languagesWithRestResponseAsync(LanguageBatchInput input, Context context) {
+    public Mono<SimpleResponse<LanguageResult>> languagesWithRestResponseAsync(LanguageBatchInput input,
+                                                                               Context context) {
         final String modelVersion = null;
         final Boolean showStats = null;
         return service.languages(this.getEndpoint(), modelVersion, showStats, input, context);
@@ -290,7 +329,9 @@ public final class TextAnalyticsClientImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LanguageResult>> languagesWithRestResponseAsync(LanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
+    public Mono<SimpleResponse<LanguageResult>> languagesWithRestResponseAsync(LanguageBatchInput input,
+                                                                               String modelVersion,
+                                                                               Boolean showStats, Context context) {
         return service.languages(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 
@@ -304,7 +345,8 @@ public final class TextAnalyticsClientImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SentimentResponse>> sentimentWithRestResponseAsync(MultiLanguageBatchInput input, Context context) {
+    public Mono<SimpleResponse<SentimentResponse>> sentimentWithRestResponseAsync(MultiLanguageBatchInput input,
+                                                                                  Context context) {
         final String modelVersion = null;
         final Boolean showStats = null;
         return service.sentiment(this.getEndpoint(), modelVersion, showStats, input, context);
@@ -322,7 +364,9 @@ public final class TextAnalyticsClientImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SentimentResponse>> sentimentWithRestResponseAsync(MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
+    public Mono<SimpleResponse<SentimentResponse>> sentimentWithRestResponseAsync(MultiLanguageBatchInput input,
+                                                                                  String modelVersion,
+                                                                                  Boolean showStats, Context context) {
         return service.sentiment(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 }

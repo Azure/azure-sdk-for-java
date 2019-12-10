@@ -236,7 +236,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         }
         validateDocuments(expectedResult, actualResult, testApi);
 
-        // TODO (samvaity): error model
+        // TODO (savaity): refactor error model in azure-sdk-for-java#6559
         // DocumentError error = new DocumentError().setId("4").setError("error");
         // List<DocumentError> errors = new ArrayList<>();
         // errors.add(error);
