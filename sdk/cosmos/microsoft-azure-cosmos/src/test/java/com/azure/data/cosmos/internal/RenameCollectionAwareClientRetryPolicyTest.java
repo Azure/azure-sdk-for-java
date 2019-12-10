@@ -98,7 +98,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
         DocumentCollection documentCollection = new DocumentCollection();
         documentCollection.resourceId("rid_1");
 
-        Mockito.when(rxClientCollectionCache.resolveCollectionAsync(request)).thenReturn(Mono.just(documentCollection));
+        Mockito.when(rxClientCollectionCache.resolveCollectionAsync(request)).thenReturn(Mono.just(new Utils.ValueHolder<>(documentCollection)));
 
         Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = renameCollectionAwareClientRetryPolicy
                 .shouldRetry(notFoundException);
