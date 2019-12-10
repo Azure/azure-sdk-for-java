@@ -35,7 +35,7 @@ public class RunCommandInput {
     private List<RunCommandInputParameter> parameters;
 
     /**
-     * Get the commandId value.
+     * Get the run command id.
      *
      * @return the commandId value
      */
@@ -44,7 +44,7 @@ public class RunCommandInput {
     }
 
     /**
-     * Set the commandId value.
+     * Set the run command id.
      *
      * @param commandId the commandId value to set
      * @return the RunCommandInput object itself.
@@ -55,7 +55,7 @@ public class RunCommandInput {
     }
 
     /**
-     * Get the script value.
+     * Get optional. The script to be executed.  When this value is given, the given script will override the default script of the command.
      *
      * @return the script value
      */
@@ -64,7 +64,7 @@ public class RunCommandInput {
     }
 
     /**
-     * Set the script value.
+     * Set optional. The script to be executed.  When this value is given, the given script will override the default script of the command.
      *
      * @param script the script value to set
      * @return the RunCommandInput object itself.
@@ -75,7 +75,7 @@ public class RunCommandInput {
     }
 
     /**
-     * Get the parameters value.
+     * Get the run command parameters.
      *
      * @return the parameters value
      */
@@ -84,7 +84,7 @@ public class RunCommandInput {
     }
 
     /**
-     * Set the parameters value.
+     * Set the run command parameters.
      *
      * @param parameters the parameters value to set
      * @return the RunCommandInput object itself.
