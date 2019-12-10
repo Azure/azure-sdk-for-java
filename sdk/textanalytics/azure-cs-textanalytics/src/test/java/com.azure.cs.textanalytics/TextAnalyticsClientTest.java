@@ -6,6 +6,7 @@ package com.azure.cs.textanalytics;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.cs.textanalytics.models.DetectLanguageResult;
 import com.azure.cs.textanalytics.models.DetectedLanguage;
+import com.azure.cs.textanalytics.models.Error;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -92,8 +93,10 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageEmptyText() {
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
         DetectLanguageResult result = client.detectLanguage("");
         assertNotNull(result.getError());
+        validateErrorDocument(expectedError, result.getError());
     }
 
     /**
@@ -111,5 +114,17 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguageFaultyText() {
         DetectLanguageResult result = client.detectLanguage("!@#%%");
         assertEquals(result.getPrimaryLanguage().getIso6391Name(), "(Unknown)");
+    }
+
+    /**
+     * Verifies that an error document is returned for a text input with invalid country hint.
+     *
+     * TODO: update error Model. #6559
+     */
+    @Test
+    public void detectLanguageInvalidCountryHint() {
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid Country Hint.");
+        validateErrorDocument(client.detectLanguage("Este es un document escrito en Español.", "en")
+            .getError(), expectedError);
     }
 }

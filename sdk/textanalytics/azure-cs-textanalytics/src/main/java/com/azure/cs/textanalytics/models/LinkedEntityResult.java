@@ -15,8 +15,9 @@ import java.util.List;
 public final class LinkedEntityResult extends DocumentResult {
     private List<LinkedEntity> linkedEntities;
 
-    public LinkedEntityResult(String id, TextDocumentStatistics textDocumentStatistics, DocumentError error, List<LinkedEntity> linkedEntities) {
-        super(id, textDocumentStatistics, error);
+    public LinkedEntityResult(String id, TextDocumentStatistics textDocumentStatistics,
+                              List<LinkedEntity> linkedEntities) {
+        super(id, textDocumentStatistics);
         this.linkedEntities = linkedEntities;
     }
 

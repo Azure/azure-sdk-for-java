@@ -14,8 +14,8 @@ import java.util.List;
 public final class KeyPhraseResult extends DocumentResult {
     private List<String> keyPhrases;
 
-    public KeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, DocumentError error, List<String> keyPhrases) {
-        super(id, textDocumentStatistics, error);
+    public KeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, List<String> keyPhrases) {
+        super(id, textDocumentStatistics);
         this.keyPhrases = keyPhrases;
     }
 

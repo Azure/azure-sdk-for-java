@@ -4,6 +4,7 @@
 package com.azure.cs.textanalytics;
 
 import com.azure.cs.textanalytics.models.DetectedLanguage;
+import com.azure.cs.textanalytics.models.Error;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -12,9 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
+public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsAsyncClient client;
 
     @Override
@@ -76,7 +76,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
 
     /**
      * Verifies that a single DetectLanguageResult is returned for a text input to detectLanguages.
-     *
      */
     @Test
     public void detectSingleTextLanguage() {
@@ -88,32 +87,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     }
 
     /**
-     * Verifies that an error DetectLanguageResult is returned for a text input with invalid country hint.
-     *
+     * Verifies that an error document is returned for a text input with invalid country hint.
+     * <p>
      * TODO: update error Model. #6559
      */
-    // @Test
-    // public void detectLanguageInvalidCountryHint() {
-    //     DetectedLanguage primaryLanguage = new DetectedLanguage().setName("English").setIso6391Name("en").setScore(1.0);
-    //     Error error = new Error().setCode("Invalid Hint");
-    //     StepVerifier.create(client.detectLanguage("Este es un document escrito en Español.", "en"))
-    //         .assertNext(response -> assertEquals(error.getCode(), ((Error)response.getError()).getCode()))
-    //         .verifyComplete();
-    // }
-
-    /**
-     * Verifies that a single DetectLanguageResult is returned for a single text input with country hint.
-     *
-     * TODO: update error Model. #6559
-     */
-    // @Test
-    // public void detectLanguageCountryHint() {
-    //     DetectedLanguage primaryLanguage = new DetectedLanguage().setName("Spanish").setIso6391Name("es").setScore(1.0);
-    //     Error error = new Error().setCode("Invalid Hint");
-    //     StepVerifier.create(client.detectLanguage("Este es un document escrito en Español.", "es"))
-    //         .assertNext(response -> assertEquals(error, ((Error)response.getError()).getCode()))
-    //         .verifyComplete();
-    // }
+    @Test
+    public void detectLanguageInvalidCountryHint() {
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid Country Hint.");
+        StepVerifier.create(client.detectLanguage("Este es un document escrito en Español.", "en"))
+            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
+            .verifyComplete();
+    }
 
     /**
      * Verifies that a Null pointer exception is thrown when null text is passed.
@@ -127,12 +111,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase{
     }
 
     /**
-     * Verifies that the error result is returned when empty text is passed.
+     * Verifies that an error document is returned for a empty text input.
      */
     @Test
     public void detectLanguageEmptyText() {
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
         StepVerifier.create(client.detectLanguage(""))
-            .assertNext(response -> assertNotNull(response.getError()))
+            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
             .verifyComplete();
     }
 
