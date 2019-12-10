@@ -91,8 +91,8 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
             FAKE_STORAGE_CONNECTION_STRING,
             "fakecontainer",
             "/fakefolder/",
-            deletionDetectionPolicy,
-            FAKE_DESCRIPTION
+            FAKE_DESCRIPTION,
+            deletionDetectionPolicy
         );
     }
 
@@ -102,8 +102,8 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
             FAKE_STORAGE_CONNECTION_STRING,
             "faketable",
             "fake query",
-            deletionDetectionPolicy,
-            FAKE_DESCRIPTION
+            FAKE_DESCRIPTION,
+            deletionDetectionPolicy
         );
     }
 
@@ -117,8 +117,8 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
             "faketable",
             "SELECT ... FROM x where x._ts > @HighWaterMark",
             useChangeDetection,
-            deletionDetectionPolicy,
-            FAKE_DESCRIPTION
+            FAKE_DESCRIPTION,
+            deletionDetectionPolicy
         );
     }
 

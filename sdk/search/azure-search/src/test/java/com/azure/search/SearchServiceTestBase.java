@@ -514,10 +514,10 @@ public abstract class SearchServiceTestBase extends TestBase {
             storageConnString,
             blobContainerDatasourceName,
             "/",
+            "real live blob",
             new SoftDeleteColumnDeletionDetectionPolicy()
                 .setSoftDeleteColumnName("fieldName")
-                .setSoftDeleteMarkerValue("someValue"),
-            "real live blob"
+                .setSoftDeleteMarkerValue("someValue")
         );
     }
 
