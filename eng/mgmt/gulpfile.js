@@ -40,7 +40,7 @@ gulp.task('default', function() {
 
     console.log("--autorest-java");
     console.log("\tOption#1: Path to an autorest.java generator to pass as a --use argument to AutoRest.");
-    console.log("\t\tOption#2: The version of AutoRest.Java. E.g. 2.0.9. You can also pass latest or preview.");
+    console.log("\tOption#2: The version of AutoRest.Java. E.g. 2.0.9. You can also pass latest or preview.");
     console.log("\tUsually you'll only need to provide this and not a --autorest argument in order to work on Java code generation.");
     console.log("\tSee https://github.com/Azure/autorest/blob/master/.attic/developer/autorest-extension.md");
 
@@ -141,7 +141,6 @@ var codegen = function(project, cb) {
                         ' --azure-arm ' +
                         ' --azure-libraries-for-java-folder=' + sdkRoot + ' ' +
                         ` --license-header=MICROSOFT_MIT_NO_CODEGEN ` +
-                        ` --use=@microsoft.azure/autorest.java@` + autoRestJavaVersion +` `
                         generatorPath +
                         regenManager +
                         genInterface +
