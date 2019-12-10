@@ -284,8 +284,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         tags.put("tag2", "value2");
 
         final SettingSelector selector = new SettingSelector()
-            .setLabels("*-second*")
-            .setKeys(keyPrefix + "-fetch-*")
+            .setLabelFilter("*-second*")
+            .setKeyFilter(keyPrefix + "-fetch-*")
             .setFields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
 
         List<ConfigurationSetting> settings = new ArrayList<>(numberToCreate);

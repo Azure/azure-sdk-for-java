@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key1581922353c?api-version=1.0",
+    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key84101864828?api-version=1.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "e07355f2-cf0b-426f-98ec-a6e40f7cc679",
+      "x-ms-client-request-id" : "bab6fc17-21fa-432c-8e0a-c25d07d0344d",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,29 +13,29 @@
       "Access-Control-Allow-Origin" : "*",
       "Access-Control-Allow-Methods" : "GET, PUT, POST, DELETE, PATCH, OPTIONS",
       "Connection" : "keep-alive",
-      "Last-Modified" : "Tue, 10 Dec 2019 05:29:42 GMT",
+      "Last-Modified" : "Tue, 10 Dec 2019 06:08:08 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 10 Dec 2019 05:29:42 GMT",
+      "Date" : "Tue, 10 Dec 2019 06:08:08 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "5087e329-dc7a-4cfe-bc1e-26e6d7252115",
+      "x-ms-correlation-request-id" : "5949cf52-d546-4a33-8def-aaba81721955",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "ETag" : "\"46TtucjVwD4o3qLkbGk8lubkQga\"",
+      "ETag" : "\"PXWTCtRy6Z0TV7nQJYKgx1tvqg5\"",
       "Access-Control-Allow-Credentials" : "true",
-      "Sync-Token" : "zAJw6V16=MDotMSM2MzI3NDg=;sn=632748",
-      "x-ms-request-id" : "5087e329-dc7a-4cfe-bc1e-26e6d7252115",
-      "Body" : "{\"etag\":\"46TtucjVwD4o3qLkbGk8lubkQga\",\"key\":\"key1581922353c\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T05:29:42+00:00\"}",
-      "x-ms-client-request-id" : "e07355f2-cf0b-426f-98ec-a6e40f7cc679",
+      "Sync-Token" : "zAJw6V16=MDotMSM2MzQyNTQ=;sn=634254",
+      "x-ms-request-id" : "5949cf52-d546-4a33-8def-aaba81721955",
+      "Body" : "{\"etag\":\"PXWTCtRy6Z0TV7nQJYKgx1tvqg5\",\"key\":\"key84101864828\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T06:08:08+00:00\"}",
+      "x-ms-client-request-id" : "bab6fc17-21fa-432c-8e0a-c25d07d0344d",
       "Content-Type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key1581929792e?api-version=1.0",
+    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key84101666658?api-version=1.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "488357e0-ad48-48ef-a051-37dfd3a5b9eb",
+      "x-ms-client-request-id" : "aaee21bb-6776-4e50-90ea-4d63ddc94c7b",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -44,29 +44,29 @@
       "Access-Control-Allow-Origin" : "*",
       "Access-Control-Allow-Methods" : "GET, PUT, POST, DELETE, PATCH, OPTIONS",
       "Connection" : "keep-alive",
-      "Last-Modified" : "Tue, 10 Dec 2019 05:29:42 GMT",
+      "Last-Modified" : "Tue, 10 Dec 2019 06:08:09 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 10 Dec 2019 05:29:42 GMT",
+      "Date" : "Tue, 10 Dec 2019 06:08:08 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "7ee9b6c2-54e1-4953-b6f8-80482c66ff38",
+      "x-ms-correlation-request-id" : "5f7b2405-f906-4821-a919-7b0dd7844ddc",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "ETag" : "\"Qchb1K9p6WaecpGvvkMgJtm9Dfa\"",
+      "ETag" : "\"fcdrrSPzZID4eFDRJ1ggeX1rQzz\"",
       "Access-Control-Allow-Credentials" : "true",
-      "Sync-Token" : "zAJw6V16=MDotMSM2MzI3NDk=;sn=632749",
-      "x-ms-request-id" : "7ee9b6c2-54e1-4953-b6f8-80482c66ff38",
-      "Body" : "{\"etag\":\"Qchb1K9p6WaecpGvvkMgJtm9Dfa\",\"key\":\"key1581929792e\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T05:29:42+00:00\"}",
-      "x-ms-client-request-id" : "488357e0-ad48-48ef-a051-37dfd3a5b9eb",
+      "Sync-Token" : "zAJw6V16=MDotMSM2MzQyNTU=;sn=634255",
+      "x-ms-request-id" : "5f7b2405-f906-4821-a919-7b0dd7844ddc",
+      "Body" : "{\"etag\":\"fcdrrSPzZID4eFDRJ1ggeX1rQzz\",\"key\":\"key84101666658\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T06:08:09+00:00\"}",
+      "x-ms-client-request-id" : "aaee21bb-6776-4e50-90ea-4d63ddc94c7b",
       "Content-Type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv?key=key1581922353c%2ckey1581929792e&label=&api-version=1.0",
+    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv?key=key84101864828%2ckey84101666658&label=&api-version=1.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "e648e51b-e396-429b-ba20-8163e48402b8",
+      "x-ms-client-request-id" : "9c16c3d3-1303-4ea9-a04a-53ab14e6274e",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -77,25 +77,25 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 10 Dec 2019 05:29:42 GMT",
+      "Date" : "Tue, 10 Dec 2019 06:08:08 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "2cb1e3ac-c106-4a4e-92e1-d289abfa1bd4",
+      "x-ms-correlation-request-id" : "93f45777-5f56-4d80-a246-32df3c0653d0",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
       "Access-Control-Allow-Credentials" : "true",
-      "Sync-Token" : "zAJw6V16=MDotMSM2MzI3NDk=;sn=632749",
-      "x-ms-request-id" : "2cb1e3ac-c106-4a4e-92e1-d289abfa1bd4",
-      "Body" : "{\"items\":[{\"etag\":\"46TtucjVwD4o3qLkbGk8lubkQga\",\"key\":\"key1581922353c\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T05:29:42+00:00\"},{\"etag\":\"Qchb1K9p6WaecpGvvkMgJtm9Dfa\",\"key\":\"key1581929792e\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T05:29:42+00:00\"}]}",
-      "x-ms-client-request-id" : "e648e51b-e396-429b-ba20-8163e48402b8",
+      "Sync-Token" : "zAJw6V16=MDotMSM2MzQyNTU=;sn=634255",
+      "x-ms-request-id" : "93f45777-5f56-4d80-a246-32df3c0653d0",
+      "Body" : "{\"items\":[{\"etag\":\"fcdrrSPzZID4eFDRJ1ggeX1rQzz\",\"key\":\"key84101666658\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T06:08:09+00:00\"},{\"etag\":\"PXWTCtRy6Z0TV7nQJYKgx1tvqg5\",\"key\":\"key84101864828\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T06:08:08+00:00\"}]}",
+      "x-ms-client-request-id" : "9c16c3d3-1303-4ea9-a04a-53ab14e6274e",
       "Content-Type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv?key=key15819%2a&label=&api-version=1.0",
+    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv?key=key84101%2a&label=&api-version=1.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "1e47fed1-782f-46dc-af7c-2f4786d26631",
+      "x-ms-client-request-id" : "7dc36eda-cd0f-46f7-8555-1ea5772bb72f",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -106,25 +106,25 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 10 Dec 2019 05:29:42 GMT",
+      "Date" : "Tue, 10 Dec 2019 06:08:08 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "9b3047ae-eb94-468b-8d01-2e33f6fa2400",
+      "x-ms-correlation-request-id" : "1b9f65e7-eb5c-4ec7-8080-219357d4d7e0",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
       "Access-Control-Allow-Credentials" : "true",
-      "Sync-Token" : "zAJw6V16=MDotMSM2MzI3NDk=;sn=632749",
-      "x-ms-request-id" : "9b3047ae-eb94-468b-8d01-2e33f6fa2400",
-      "Body" : "{\"items\":[{\"etag\":\"46TtucjVwD4o3qLkbGk8lubkQga\",\"key\":\"key1581922353c\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T05:29:42+00:00\"},{\"etag\":\"Qchb1K9p6WaecpGvvkMgJtm9Dfa\",\"key\":\"key1581929792e\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T05:29:42+00:00\"}]}",
-      "x-ms-client-request-id" : "1e47fed1-782f-46dc-af7c-2f4786d26631",
+      "Sync-Token" : "zAJw6V16=MDotMSM2MzQyNTU=;sn=634255",
+      "x-ms-request-id" : "1b9f65e7-eb5c-4ec7-8080-219357d4d7e0",
+      "Body" : "{\"items\":[{\"etag\":\"fcdrrSPzZID4eFDRJ1ggeX1rQzz\",\"key\":\"key84101666658\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T06:08:09+00:00\"},{\"etag\":\"PXWTCtRy6Z0TV7nQJYKgx1tvqg5\",\"key\":\"key84101864828\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T06:08:08+00:00\"}]}",
+      "x-ms-client-request-id" : "7dc36eda-cd0f-46f7-8555-1ea5772bb72f",
       "Content-Type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key1581922353c?api-version=1.0",
+    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key84101666658?api-version=1.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "f4152fce-838f-40cf-994a-b8b099b0b910",
+      "x-ms-client-request-id" : "dd2ff958-ad2c-4104-8ef9-ed76f0dd5523",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -133,29 +133,29 @@
       "Access-Control-Allow-Origin" : "*",
       "Access-Control-Allow-Methods" : "GET, PUT, POST, DELETE, PATCH, OPTIONS",
       "Connection" : "keep-alive",
-      "Last-Modified" : "Tue, 10 Dec 2019 05:29:42 GMT",
+      "Last-Modified" : "Tue, 10 Dec 2019 06:08:09 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 10 Dec 2019 05:29:42 GMT",
+      "Date" : "Tue, 10 Dec 2019 06:08:08 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "d577826e-166e-4879-b186-e617c32eab6a",
+      "x-ms-correlation-request-id" : "8874dfbc-cfa9-4d90-b0e2-54fed7e2531f",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "ETag" : "\"46TtucjVwD4o3qLkbGk8lubkQga\"",
+      "ETag" : "\"fcdrrSPzZID4eFDRJ1ggeX1rQzz\"",
       "Access-Control-Allow-Credentials" : "true",
-      "Sync-Token" : "zAJw6V16=MDotMSM2MzI3NTA=;sn=632750",
-      "x-ms-request-id" : "d577826e-166e-4879-b186-e617c32eab6a",
-      "Body" : "{\"etag\":\"46TtucjVwD4o3qLkbGk8lubkQga\",\"key\":\"key1581922353c\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T05:29:42+00:00\"}",
-      "x-ms-client-request-id" : "f4152fce-838f-40cf-994a-b8b099b0b910",
+      "Sync-Token" : "zAJw6V16=MDotMSM2MzQyNTY=;sn=634256",
+      "x-ms-request-id" : "8874dfbc-cfa9-4d90-b0e2-54fed7e2531f",
+      "Body" : "{\"etag\":\"fcdrrSPzZID4eFDRJ1ggeX1rQzz\",\"key\":\"key84101666658\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T06:08:09+00:00\"}",
+      "x-ms-client-request-id" : "dd2ff958-ad2c-4104-8ef9-ed76f0dd5523",
       "Content-Type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key1581929792e?api-version=1.0",
+    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key84101864828?api-version=1.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "a531f97d-6741-4377-a411-13eea67406d3",
+      "x-ms-client-request-id" : "8986f16c-2dce-4702-aac6-d050e5625ca7",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -164,23 +164,23 @@
       "Access-Control-Allow-Origin" : "*",
       "Access-Control-Allow-Methods" : "GET, PUT, POST, DELETE, PATCH, OPTIONS",
       "Connection" : "keep-alive",
-      "Last-Modified" : "Tue, 10 Dec 2019 05:29:42 GMT",
+      "Last-Modified" : "Tue, 10 Dec 2019 06:08:08 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 10 Dec 2019 05:29:42 GMT",
+      "Date" : "Tue, 10 Dec 2019 06:08:08 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "efd61f0c-c134-4b98-b5f2-de520c46c151",
+      "x-ms-correlation-request-id" : "3476309e-1bfc-4994-95d8-df1ad402f201",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "ETag" : "\"Qchb1K9p6WaecpGvvkMgJtm9Dfa\"",
+      "ETag" : "\"PXWTCtRy6Z0TV7nQJYKgx1tvqg5\"",
       "Access-Control-Allow-Credentials" : "true",
-      "Sync-Token" : "zAJw6V16=MDotMSM2MzI3NTE=;sn=632751",
-      "x-ms-request-id" : "efd61f0c-c134-4b98-b5f2-de520c46c151",
-      "Body" : "{\"etag\":\"Qchb1K9p6WaecpGvvkMgJtm9Dfa\",\"key\":\"key1581929792e\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T05:29:42+00:00\"}",
-      "x-ms-client-request-id" : "a531f97d-6741-4377-a411-13eea67406d3",
+      "Sync-Token" : "zAJw6V16=MDotMSM2MzQyNTc=;sn=634257",
+      "x-ms-request-id" : "3476309e-1bfc-4994-95d8-df1ad402f201",
+      "Body" : "{\"etag\":\"PXWTCtRy6Z0TV7nQJYKgx1tvqg5\",\"key\":\"key84101864828\",\"label\":null,\"content_type\":null,\"value\":\"value\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-12-10T06:08:08+00:00\"}",
+      "x-ms-client-request-id" : "8986f16c-2dce-4702-aac6-d050e5625ca7",
       "Content-Type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "key15819", "8e38cbf6", "key1581922353c", "key1581929792e" ]
+  "variables" : [ "key84101", "a613350f", "key84101864828", "key84101666658" ]
 }

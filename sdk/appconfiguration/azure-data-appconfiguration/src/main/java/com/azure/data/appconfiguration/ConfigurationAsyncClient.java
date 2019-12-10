@@ -586,10 +586,10 @@ public final class ConfigurationAsyncClient {
             }
 
             String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-            String keys = selector.getKeys();
-            String labels = selector.getLabels();
+            String keyFilter = selector.getKeyFilter();
+            String labelFilter = selector.getLabelFilter();
 
-            return service.listKeyValues(serviceEndpoint, keys, labels, apiVersion, fields,
+            return service.listKeyValues(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
                 selector.getAcceptDateTime(), context)
                 .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", selector))
                 .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", selector))
@@ -634,11 +634,11 @@ public final class ConfigurationAsyncClient {
 
             if (selector != null) {
                 String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-                String keys = selector.getKeys();
-                String labels = selector.getLabels();
+                String keyFilter = selector.getKeyFilter();
+                String labelFilter = selector.getLabelFilter();
 
-                result = service.listKeyValueRevisions(
-                    serviceEndpoint, keys, labels, apiVersion, fields, selector.getAcceptDateTime(), null, context)
+                result = service.listKeyValueRevisions(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
+                    selector.getAcceptDateTime(), null, context)
                     .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
                     .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
                     .doOnError(error ->
