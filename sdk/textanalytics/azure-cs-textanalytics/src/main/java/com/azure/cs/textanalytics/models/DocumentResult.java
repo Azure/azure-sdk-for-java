@@ -15,6 +15,7 @@ public class DocumentResult {
     private TextDocumentStatistics textDocumentStatistics;
     private Error error;
 
+<<<<<<< Updated upstream
     public boolean isError() {
         return isError;
     }
@@ -26,6 +27,15 @@ public class DocumentResult {
     private boolean isError;
 
     protected DocumentResult(final String id, final Error error, final boolean isError) {
+=======
+    /**
+     *
+     * @param id
+     * @param textDocumentStatistics
+     * @param error
+     */
+    public DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics, final Object error) {
+>>>>>>> Stashed changes
         this.id = id;
         this.error = error;
         this.isError = isError;
@@ -40,15 +50,11 @@ public class DocumentResult {
         return id;
     }
 
-    DocumentResult setId(String id) {
-        this.id = id;
-        return this;
-    }
-
     public TextDocumentStatistics getStatistics() {
         return textDocumentStatistics;
     }
 
+<<<<<<< Updated upstream
     DocumentResult setTextDocumentStatistics(TextDocumentStatistics textDocumentStatistics) {
         this.textDocumentStatistics = textDocumentStatistics;
         return this;
@@ -63,4 +69,10 @@ public class DocumentResult {
         return this;
     }
 
+=======
+    public Object getError() {
+        return error;
+    }
+
+>>>>>>> Stashed changes
 }

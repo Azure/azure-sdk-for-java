@@ -2,42 +2,42 @@
 # This file is generated automatically and any changes will be lost.
 
 resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-    - repository: azure-sdk-tools
-      type: github
-      name: Azure/azure-sdk-tools
-      endpoint: azure
+    repositories:
+        - repository: azure-sdk-build-tools
+          type: git
+          name: internal/azure-sdk-build-tools
+        - repository: azure-sdk-tools
+          type: github
+          name: Azure/azure-sdk-tools
+          endpoint: azure
 
 trigger:
-  branches:
-    include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/textanalytics/azure-cs-textanalytics
+    branches:
+        include:
+            - master
+            - feature/*
+            - hotfix/*
+            - release/*
+    paths:
+        include:
+            - sdk/textanalytics/
 
 pr:
-  branches:
-    include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-        - sdk/textanalytics/azure-cs-textanalytics
+    branches:
+        include:
+            - master
+            - feature/*
+            - hotfix/*
+            - release/*
+    paths:
+        include:
+            - sdk/textanalytics/
 
 stages:
     - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
       parameters:
           ServiceDirectory: textanalytics
           Artifacts:
-              - name: azure-cs-text-analytics
-                safeName: azurecstextanalytics
+              - name: azure-ai-textanalytics
+                safeName: azureaitextanalytics
                 stagingProfileId: 88192f04117501

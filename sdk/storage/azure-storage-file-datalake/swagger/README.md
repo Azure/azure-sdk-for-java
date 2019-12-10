@@ -148,6 +148,14 @@ directive:
     $.TransactionalContentMD5["x-ms-parameter-grouping"].name = "path-http-headers";
 ```
 
+### Make eTag in Path JsonProperty to etag
+``` yaml
+directive:
+- from: Path.java
+  where: $
+  transform: >
+    return $.replace('@JsonProperty(value = "eTag")\n    private String eTag;', '@JsonProperty(value = "etag")\n    private String eTag;');
+```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-datalake%2Fswagger%2FREADME.png)
 

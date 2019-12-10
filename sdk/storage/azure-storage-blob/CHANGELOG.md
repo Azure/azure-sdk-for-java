@@ -1,7 +1,10 @@
 # Change Log azure-storage-blob
 
+## Version XX.X.X (XXXX-XX-XX)
+- Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setContainerName, setBlobName, setSnapshotId, generateSasQueryParameters methods on BlobServiceSasSignatureValues to direct users to using the methods added on clients.
+- Fixed a bug where Account SAS would not work when set on clients.
+
 ## Version 12.1.0 (2019-12-04)
-This package's
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.1.0/sdk/storage/azure-storage-blob/README.md)
 and
@@ -21,7 +24,7 @@ and
 - Removed BlobClientBuilder, BlobContainerClientBuilder, BlobServiceClientBuilder, and SpecializedBlobClientBuilder inheritance of BaseBlobClientBuilder
 - Renamed ListBlobContainerOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
 - Renamed ListBlobsOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
-- Reanmed BlobProperties to BlobItemProperties and BlobContainerProperties to BlobContainerItemProperties
+- Renamed BlobProperties to BlobItemProperties and BlobContainerProperties to BlobContainerItemProperties
 - Removes StorageError and StorageErrorException from public API
 - Renamed StorageErrorCode to BlobErrorCode, SignedIdentifier to BlobSignedIdentifier, StorageServiceProperties to BlobServiceProperties, StorageServiceStats to BlobServiceStatistics, CorRules to BlobCorRules, AccessPolicy to BlobAccessPolicy, Logging to BlobAnalyticsLogging, Metrics to BlobMetrics, and RetentionPolicy to BlobRetentionPolicy
 - Renamed BlobHTTPHeaders to BlobHttpHeaders and removed Blob from getter names

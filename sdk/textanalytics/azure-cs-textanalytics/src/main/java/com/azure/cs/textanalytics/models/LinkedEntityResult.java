@@ -4,6 +4,7 @@
 package com.azure.cs.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.cs.textanalytics.implementation.models.Error;
 
 import java.util.List;
 
@@ -15,12 +16,29 @@ import java.util.List;
 public final class LinkedEntityResult extends DocumentResult {
     private List<LinkedEntity> linkedEntities;
 
+<<<<<<< Updated upstream
     public LinkedEntityResult(String id, TextDocumentStatistics textDocumentStatistics,
                               List<LinkedEntity> linkedEntities) {
         super(id, textDocumentStatistics);
+=======
+    /**
+     * LinkedEntityResult model constructor
+     *
+     * @param id document id
+     * @param textDocumentStatistics text document statistics
+     * @param error error model
+     * @param linkedEntities a list of linked entities
+     */
+    public LinkedEntityResult(String id, TextDocumentStatistics textDocumentStatistics, Error error, List<LinkedEntity> linkedEntities) {
+        super(id, textDocumentStatistics, error);
+>>>>>>> Stashed changes
         this.linkedEntities = linkedEntities;
     }
 
+    /**
+     * Get a list of linked entities
+     * @return a list of linked entities.
+     */
     public List<LinkedEntity> getLinkedEntities() {
         return linkedEntities;
     }
