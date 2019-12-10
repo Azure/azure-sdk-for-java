@@ -36,4 +36,9 @@ public enum HttpMethod {
      * The HTTP HEAD method.
      */
     HEAD,
+
+    /**
+     * The HTTP OPTIONS method.
+     */
+    OPTIONS
 }
