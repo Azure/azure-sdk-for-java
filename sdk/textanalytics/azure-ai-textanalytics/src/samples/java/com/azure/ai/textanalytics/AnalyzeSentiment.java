@@ -20,7 +20,7 @@ public class AnalyzeSentiment {
         // The text that need be analysed.
         String text = "The hotel was dark and unclean.";
 
-        final TextSentimentResult sentimentResult = client.analyzeSentiment(text, "US");
+        final TextSentimentResult sentimentResult = client.analyzeSentiment(text);
 
         final TextSentiment documentSentiment = sentimentResult.getDocumentSentiment();
         System.out.printf(

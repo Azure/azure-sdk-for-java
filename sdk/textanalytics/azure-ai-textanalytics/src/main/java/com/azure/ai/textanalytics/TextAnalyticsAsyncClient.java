@@ -3,20 +3,12 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.LanguageResult;
-import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
+import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.LanguageResult;
+import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
@@ -27,6 +19,14 @@ import com.azure.ai.textanalytics.models.NamedEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentimentResult;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -345,6 +345,15 @@ public final class TextAnalyticsAsyncClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NamedEntityResult>> recognizePiiEntitiesWithResponse(String text, String language) {
+        try {
+            return withContext(context ->
+                                   recognizePiiEntitiesWithResponse(text, language, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<NamedEntityResult>> recognizePiiEntitiesWithResponse(String text, String language, Context context) {
         return null;
     }
 
@@ -582,7 +591,6 @@ public final class TextAnalyticsAsyncClient {
             return monoError(logger, ex);
         }
     }
-
 
     Mono<Response<TextSentimentResult>> analyzeSentimentWithResponse(String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
