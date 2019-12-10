@@ -82,7 +82,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param text The text to be analyzed.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
-     *                    specified.
+     * specified.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
      * {@link DetectLanguageResult detected language} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -99,7 +99,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param text The text to be analyzed.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
-     *                    specified.
+     * specified.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
      * {@link DetectLanguageResult detected language} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -113,7 +113,6 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
@@ -145,7 +144,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param inputs The list of texts to be analyzed.
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
-     *                    alpha-2. Defaults to "US" if not specified.
+     * alpha-2. Defaults to "US" if not specified.
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link DetectLanguageResult detected languages}.
      * @throws NullPointerException if {@code inputs} is {@code null}.
@@ -161,7 +160,8 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param inputs The list of texts to be analyzed.
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
-     *                    alpha-2. Defaults to "US" if not specified.
+     * alpha-2. Defaults to "US" if not specified.
+     *
      * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link DetectLanguageResult detected languages}.
      * @throws NullPointerException if {@code inputs} is {@code null}.
@@ -176,7 +176,6 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> inputs,
                                                                                                String countryHint,
                                                                                                Context context) {
@@ -206,7 +205,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     *                and show statistics.
+     * and show statistics.
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
      * {@link DetectLanguageResult detected languages}.
      * @throws NullPointerException if {@code inputs} is {@code null}.
@@ -222,7 +221,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param inputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     *                and show statistics.
+     * and show statistics.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
      * @throws NullPointerException if {@code inputs} is {@code null}.
@@ -522,9 +521,8 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language,
-                                                                                  Context context) {
+                                                                  Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
         List<TextDocumentInput> documentInputs = new ArrayList<>();
         documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
@@ -539,7 +537,7 @@ public final class TextAnalyticsAsyncClient {
 
     // hackathon user
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrases(List<String> inputs)  {
+    public Mono<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrases(List<String> inputs) {
         return extractKeyPhrasesWithResponse(inputs, null).flatMap(FluxUtil::toMono);
     }
 
