@@ -346,7 +346,10 @@ public final class RestProxy implements InvocationHandler {
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
             bodyRepresentation = "(" + httpResponse.getHeaderValue("Content-Length") + "-byte body)";
         } else {
-            bodyRepresentation = responseContent.isEmpty() ? "(empty body)" : "\"" + responseContent + "\"";
+            System.out.println("before: " + responseContent);
+            responseContent = CoreUtils.printPrettyFormatJsonOrXml(responseContent, contentType);
+            System.out.println("after: \n" + responseContent);
+            bodyRepresentation = responseContent.isEmpty() ? "(empty body)" : responseContent;
         }
 
         Exception result;
@@ -354,9 +357,8 @@ public final class RestProxy implements InvocationHandler {
             final Constructor<? extends HttpResponseException> exceptionConstructor =
                 exception.getExceptionType().getConstructor(String.class, HttpResponse.class,
                     exception.getExceptionBodyType());
-            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
-                httpResponse,
-                responseDecodedContent);
+            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", \n" + bodyRepresentation,
+                httpResponse, responseDecodedContent);
         } catch (ReflectiveOperationException e) {
             String message = "Status code " + responseStatusCode + ", but an instance of "
                 + exception.getExceptionType().getCanonicalName() + " cannot be created."

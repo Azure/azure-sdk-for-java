@@ -3,13 +3,19 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.ContentType;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Properties;
 import org.reactivestreams.Publisher;
+import org.xml.sax.InputSource;
 import reactor.core.publisher.Flux;
 
 import java.util.Arrays;
@@ -18,6 +24,12 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * This class contains utility methods useful for building client libraries.
@@ -182,5 +194,42 @@ public final class CoreUtils {
             logger.warning("Failed to get properties from " + propertiesFileName, ex);
         }
         return Collections.emptyMap();
+    }
+
+    /**
+     * Pretty print the json or xml string content. If the content is not in a format of json or xml,
+     * return original string.
+     *
+     * @param content The body content which need to parse.
+     * @return Pretty json or xml format of the content. If it is not in a format of json or xml, returns original one.
+     */
+    public static String printPrettyFormatJsonOrXml(String content, String contentType) {
+        if (content == null || contentType == null) {
+            return content;
+        }
+
+        ClientLogger logger = new ClientLogger(CoreUtils.class);
+        if (contentType.startsWith(ContentType.APPLICATION_JSON)) {
+            try {
+                ObjectMapper prettyPrinter = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+                final Object deserialized = prettyPrinter.readTree(content);
+                return prettyPrinter.writeValueAsString(deserialized);
+            } catch (Exception e) {
+                logger.warning("Failed to pretty print JSON: {}", e.getMessage());
+            }
+        } else if (contentType.startsWith(ContentType.APPLICATION_XML)) {
+            try {
+                Transformer serializer= SAXTransformerFactory.newInstance().newTransformer();
+                serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+                serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+                Source xmlSource=new SAXSource(new InputSource(new ByteArrayInputStream(content.getBytes())));
+                StreamResult res =  new StreamResult(new ByteArrayOutputStream());
+                serializer.transform(xmlSource, res);
+                return new String(((ByteArrayOutputStream)res.getOutputStream()).toByteArray());
+            } catch (Exception e) {
+                logger.warning("Failed to pretty print XML: {}", e.getMessage());
+            }
+        }
+        return content;
     }
 }

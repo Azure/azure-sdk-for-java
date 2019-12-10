@@ -13,6 +13,11 @@ public final class ContentType {
     public static final String APPLICATION_JSON = "application/json";
 
     /**
+     * the default JSON Content-Type header.
+     */
+    public static final String APPLICATION_XML = "application/xml";
+
+    /**
      * the default binary Content-Type header.
      */
     public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
