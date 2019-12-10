@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
+package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -33,7 +33,8 @@ public class SyncTokenPolicyTest extends TestBase {
 
     @Test
     public void parseSyncToken() {
-        final SyncToken syncToken = new SyncToken().fromSyncTokenString(constructSyncTokenString(id, value, sn));
+        String syncTokenString = constructSyncTokenString(id, value, sn);
+        final SyncToken syncToken = SyncToken.fromSyncTokenString(syncTokenString);
         syncTokenEquals(syncToken, id, value, sn);
     }
 

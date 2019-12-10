@@ -10,10 +10,11 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public final class SyncTokenPolicy implements HttpPipelinePolicy {
     private static final String SYNC_TOKEN = "Sync-Token";
-    private ConcurrentHashMap<String, SyncToken> syncTokenMap; // key is sync-token id
+    private final ConcurrentHashMap<String, SyncToken> syncTokenMap; // key is sync-token id
 
     public SyncTokenPolicy() {
         syncTokenMap = new ConcurrentHashMap<>();
@@ -33,7 +34,6 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
         context.getHttpRequest().setHeader(SYNC_TOKEN, getSyncTokenHeader());
 
         return next.process().flatMap(httpResponse -> {
-
             // get the latest sync token from map
             final String syncTokenValue = httpResponse.getHeaders().getValue(SYNC_TOKEN);
             if (syncTokenValue == null) {
@@ -43,7 +43,7 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
             // Sync-Token header could have more than one value
             final String[] syncTokens = syncTokenValue.split(",");
             for (final String syncTokenStr : syncTokens) {
-                final SyncToken syncToken = new SyncToken().fromSyncTokenString(syncTokenStr);
+                final SyncToken syncToken = SyncToken.fromSyncTokenString(syncTokenStr);
                 if (syncToken == null) {
                     return Mono.just(httpResponse);
                 }
@@ -68,17 +68,7 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
     }
 
     private String getSyncTokenHeader() {
-        StringBuilder syncTokenHeaderBuilder = new StringBuilder();
-
-        // Collect all sync tokens as the value of the sync-token header
-        syncTokenMap.forEach((k, v) -> syncTokenHeaderBuilder.append(k).append("=").append(v.getValue()).append(","));
-
-        int syncTokenInRequestBuilderLength = syncTokenHeaderBuilder.length();
-        if (syncTokenInRequestBuilderLength > 0) {
-            syncTokenHeaderBuilder.setLength(syncTokenInRequestBuilderLength - 1);
-        }
-
-        return syncTokenHeaderBuilder.toString();
+        return syncTokenMap.values().stream().map(SyncToken::getSyncTokenStringInRequest)
+            .collect(Collectors.joining(","));
     }
-
 }
