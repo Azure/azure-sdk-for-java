@@ -21,7 +21,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Override
     protected void beforeTest() {
-        beforeTestSetup();
         client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
                                                  .endpoint(getEndPoint())
                                                  .pipeline(httpPipeline)
