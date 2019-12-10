@@ -23,18 +23,10 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Override
     protected void beforeTest() {
-        if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
-                .subscriptionKey("FAKEKEY")
-                .endpoint(getEndPoint())
-                .pipeline(httpPipeline)
-                .buildClient());
-        } else {
-            client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
-                .endpoint(getEndPoint())
-                .pipeline(httpPipeline)
-                .buildClient());
-        }
+        client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
+                                                 .endpoint(getEndPoint())
+                                                 .pipeline(httpPipeline)
+                                                 .buildClient());
     }
 
     /**
@@ -43,8 +35,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguagesBatchInputShowStatistics() {
         detectLanguageShowStatisticsRunner((inputs, options) ->
-            validateBatchResult(client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE).getValue(),
-                getExpectedBatchDetectedLanguages(), "Language"));
+                                               validateBatchResult(client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE).getValue(), getExpectedBatchDetectedLanguages(),
+                                                   "Language"));
     }
 
     /**
