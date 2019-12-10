@@ -29,7 +29,6 @@ import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
-import com.azure.storage.queue.sas.QueueServiceSasQueryParameters;
 
 import java.net.MalformedURLException;
 import java.net.URL;
