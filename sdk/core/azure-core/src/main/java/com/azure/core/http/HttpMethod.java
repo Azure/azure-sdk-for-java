@@ -40,5 +40,15 @@ public enum HttpMethod {
     /**
      * The HTTP OPTIONS method.
      */
-    OPTIONS
+    OPTIONS,
+
+    /**
+     * The HTTP TRACE method.
+     */
+    TRACE,
+
+    /**
+     * The HTTP CONNECT method.
+     */
+    CONNECT
 }
