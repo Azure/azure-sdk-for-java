@@ -1,4 +1,4 @@
-AZURE_CLIENT_ID: trigger: none
+trigger: none
 
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
