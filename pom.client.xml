@@ -302,6 +302,8 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Performs test coverage analysis -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -339,6 +341,42 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+      </plugin>
+
+      <!-- Checks public surface area for breaking changes. -->
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <analysisConfigurationFiles>
+            <configurationFile>
+              <resource>revapi/revapi.json</resource>
+            </configurationFile>
+          </analysisConfigurationFiles>
+          <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+          <checkDependencies>false</checkDependencies>
+          <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>sdk-build-tools</artifactId>
+            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+          </dependency>
+          <dependency>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-java</artifactId>
+            <version>0.20.0</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
 
@@ -432,10 +470,6 @@
                 <packages>com.azure.storage.queue*</packages>
               </group>
               <group>
-                <title>Azure Storage Queues - Cryptography</title>
-                <packages>com.azure.storage.queue.cryptography*</packages>
-              </group>
-              <group>
                 <title>Azure Telemetry</title>
                 <title>Azure Telemetry - OpenCensus</title>
                 <packages>com.azure.core.tracing*</packages>
@@ -515,7 +549,6 @@
         </plugin>
       </plugins>
     </pluginManagement>
-
   </build>
 
   <dependencies>
@@ -645,8 +678,37 @@
           </reportSet>
         </reportSets>
       </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <analysisConfigurationFiles>
+            <configurationFile>
+              <resource>revapi/revapi.json</resource>
+            </configurationFile>
+          </analysisConfigurationFiles>
+          <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+          <checkDependencies>false</checkDependencies>
+          <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report</report>
+            </reports>
+          </reportSet>
+          <reportSet>
+            <inherited>false</inherited>
+            <reports>
+              <report>report-aggregate</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
     </plugins>
   </reporting>
+
   <profiles>
 
     <!-- Skip module-info.java on Java 8 -->
@@ -1141,6 +1203,5 @@
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
-    <module>sdk/storage/azure-storage-queue-cryptography</module>
   </modules>
 </project>

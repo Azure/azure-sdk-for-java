@@ -16,6 +16,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -31,6 +32,7 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class provides helper methods for common builder patterns.
@@ -38,10 +40,10 @@ import java.util.List;
  * RESERVED FOR INTERNAL USE.
  */
 public final class BuilderHelper {
-    private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-file-datalake";
-    // {x-version-update-start;com.azure:azure-storage-file-datalake;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.7";
-    // {x-version-update-end}
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-file-datalake.properties");
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
 
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.
@@ -142,7 +144,7 @@ public final class BuilderHelper {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
         return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(),
-            DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration);
+            PROPERTIES.get(SDK_NAME), PROPERTIES.get(SDK_VERSION), configuration);
     }
 
     /*

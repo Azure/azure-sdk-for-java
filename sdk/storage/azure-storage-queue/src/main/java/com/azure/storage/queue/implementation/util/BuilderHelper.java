@@ -34,6 +34,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -41,10 +42,10 @@ import java.util.regex.Pattern;
  * This class provides helper methods for common builder patterns.
  */
 public final class BuilderHelper {
-    private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-queue";
-    // {x-version-update-start;com.azure:azure-storage-queue;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.1.0";
-    // {x-version-update-end}
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-queue.properties");
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
 
     private static final Pattern IP_URL_PATTERN = Pattern
         .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
@@ -202,7 +203,7 @@ public final class BuilderHelper {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
         return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(),
-            DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration);
+            PROPERTIES.get(SDK_NAME), PROPERTIES.get(SDK_VERSION), configuration);
     }
 
     /*

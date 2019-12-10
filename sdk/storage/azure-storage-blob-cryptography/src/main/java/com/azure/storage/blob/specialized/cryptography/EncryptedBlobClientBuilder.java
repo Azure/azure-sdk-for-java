@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
+
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Blob clients.
  *
@@ -73,6 +75,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {EncryptedBlobAsyncClient.class, EncryptedBlobClient.class})
 public final class EncryptedBlobClientBuilder {
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
 
     private String endpoint;
     private String accountName;
@@ -151,16 +155,14 @@ public final class EncryptedBlobClientBuilder {
             return  httpPipeline;
         }
 
-        String userAgentName = BlobCryptographyConfiguration.NAME;
-        String userAgentVersion = BlobCryptographyConfiguration.VERSION;
         Configuration userAgentConfiguration = (configuration == null) ? Configuration.NONE : configuration;
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
-        policies.add(new UserAgentPolicy(logOptions.getApplicationId(), userAgentName, userAgentVersion,
-            userAgentConfiguration));
+        policies.add(new UserAgentPolicy(logOptions.getApplicationId(), USER_AGENT_PROPERTIES.get(SDK_NAME),
+            USER_AGENT_PROPERTIES.get(SDK_VERSION), userAgentConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
@@ -344,7 +346,7 @@ public final class EncryptedBlobClientBuilder {
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
 
-            String sasToken = parts.getSasQueryParameters().encode();
+            String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }

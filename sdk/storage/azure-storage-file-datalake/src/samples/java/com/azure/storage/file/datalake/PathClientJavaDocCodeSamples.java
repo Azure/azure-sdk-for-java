@@ -13,8 +13,12 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.RolePermissions;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
+import com.azure.storage.file.datalake.sas.PathSasPermission;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +38,7 @@ public class PathClientJavaDocCodeSamples {
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
+    private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
      * Code snippets for {@link DataLakePathClient#create()} and
@@ -237,6 +242,32 @@ public class PathClientJavaDocCodeSamples {
             PathAccessControlEntry.serializeList(pac.getAccessControlList()), pac.getGroup(), pac.getOwner(),
             pac.getPermissions());
         // END: com.azure.storage.file.datalake.DataLakePathClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link DataLakePathClient#generateUserDelegationSas(DataLakeServiceSasSignatureValues, UserDelegationKey)}
+     * and {@link DataLakePathClient#generateSas(DataLakeServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.generateSas#DataLakeServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        PathSasPermission permission = new PathSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.datalake.DataLakePathClient.generateSas#DataLakeServiceSasSignatureValues
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        PathSasPermission myPermission = new PathSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey);
+        // END: com.azure.storage.file.datalake.DataLakePathClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey
     }
 
 }

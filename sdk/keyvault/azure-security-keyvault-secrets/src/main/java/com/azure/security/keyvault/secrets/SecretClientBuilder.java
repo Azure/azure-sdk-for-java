@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -58,8 +59,13 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = SecretClient.class)
 public final class SecretClientBuilder {
     private final ClientLogger logger = new ClientLogger(SecretClientBuilder.class);
+    // This is properties file's name.
+    private static final String AZURE_KEY_VAULT_SECRETS = "azure-key-vault-secrets.properties";
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
 
     private final List<HttpPipelinePolicy> policies;
+    final Map<String, String> properties;
     private TokenCredential credential;
     private HttpPipeline pipeline;
     private URL vaultUrl;
@@ -76,6 +82,7 @@ public final class SecretClientBuilder {
         retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
+        properties = CoreUtils.getProperties(AZURE_KEY_VAULT_SECRETS);
     }
 
     /**
@@ -137,8 +144,8 @@ public final class SecretClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
-            buildConfiguration));
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), properties.get(SDK_NAME),
+            properties.get(SDK_VERSION), buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));

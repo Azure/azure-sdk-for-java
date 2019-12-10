@@ -13,13 +13,13 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.LogLevel;
 import com.azure.core.implementation.LoggingUtil;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -100,7 +100,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param request HTTP request being sent to Azure.
      * @return A Mono which will emit the string to log.
      */
-    private Mono<String> logRequest(final ClientLogger logger, final HttpRequest request) {
+    private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
         int numericLogLevel = LoggingUtil.getEnvironmentLoggingLevel().toNumeric();
         if (shouldLoggingBeSkipped(numericLogLevel)) {
             return Mono.empty();
@@ -117,44 +117,59 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         addHeadersToLogMessage(request.getHeaders(), requestLogMessage, numericLogLevel);
 
-        Mono<String> requestLoggingMono = Mono.defer(() -> Mono.just(requestLogMessage.toString()));
+        if (!httpLogDetailLevel.shouldLogBody()) {
+            return logAndReturn(logger, requestLogMessage, null);
+        }
 
-        if (httpLogDetailLevel.shouldLogBody()) {
-            if (request.getBody() == null) {
-                requestLogMessage.append("(empty body)")
-                    .append(System.lineSeparator())
-                    .append("--> END ")
-                    .append(request.getHttpMethod())
-                    .append(System.lineSeparator());
-            } else {
-                String contentType = request.getHeaders().getValue("Content-Type");
-                long contentLength = getContentLength(logger, request.getHeaders());
+        if (request.getBody() == null) {
+            requestLogMessage.append("(empty body)")
+                .append(System.lineSeparator())
+                .append("--> END ")
+                .append(request.getHttpMethod())
+                .append(System.lineSeparator());
 
-                if (shouldBodyBeLogged(contentType, contentLength)) {
-                    requestLoggingMono = FluxUtil.collectBytesInByteBufferStream(request.getBody()).flatMap(bytes -> {
+            return logAndReturn(logger, requestLogMessage, null);
+        }
+
+        String contentType = request.getHeaders().getValue("Content-Type");
+        long contentLength = getContentLength(logger, request.getHeaders());
+
+        if (shouldBodyBeLogged(contentType, contentLength)) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream((int) contentLength);
+
+            // Add non-mutating operators to the data stream.
+            request.setBody(
+                request.getBody()
+                    .doOnNext(byteBuffer -> {
+                        for (int i = byteBuffer.position(); i < byteBuffer.limit(); i++) {
+                            outputStream.write(byteBuffer.get(i));
+                        }
+                    })
+                    .doFinally(ignored -> {
                         requestLogMessage.append(contentLength)
                             .append("-byte body:")
                             .append(System.lineSeparator())
-                            .append(prettyPrintIfNeeded(logger, contentType, new String(bytes, StandardCharsets.UTF_8)))
+                            .append(prettyPrintIfNeeded(logger, contentType,
+                                new String(outputStream.toByteArray(), StandardCharsets.UTF_8)))
                             .append(System.lineSeparator())
                             .append("--> END ")
                             .append(request.getHttpMethod())
                             .append(System.lineSeparator());
 
-                        return Mono.just(requestLogMessage.toString());
-                    });
-                } else {
-                    requestLogMessage.append(contentLength)
-                        .append("-byte body: (content not logged)")
-                        .append(System.lineSeparator())
-                        .append("--> END ")
-                        .append(request.getHttpMethod())
-                        .append(System.lineSeparator());
-                }
-            }
-        }
+                        logger.info(requestLogMessage.toString());
+                    }));
 
-        return requestLoggingMono.doOnNext(logger::info);
+            return Mono.empty();
+        } else {
+            requestLogMessage.append(contentLength)
+                .append("-byte body: (content not logged)")
+                .append(System.lineSeparator())
+                .append("--> END ")
+                .append(request.getHttpMethod())
+                .append(System.lineSeparator());
+
+            return logAndReturn(logger, requestLogMessage, null);
+        }
     }
 
     /*
@@ -194,32 +209,45 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         addHeadersToLogMessage(response.getHeaders(), responseLogMessage, numericLogLevel);
 
-        Mono<String> responseLoggingMono = Mono.defer(() -> Mono.just(responseLogMessage.toString()));
+        if (!httpLogDetailLevel.shouldLogBody()) {
+            responseLogMessage.append("<-- END HTTP");
+            return logAndReturn(logger, responseLogMessage, response);
+        }
 
-        if (httpLogDetailLevel.shouldLogBody()) {
-            final String contentTypeHeader = response.getHeaderValue("Content-Type");
+        String contentTypeHeader = response.getHeaderValue("Content-Type");
+        long contentLength = getContentLength(logger, response.getHeaders());
 
-            if (shouldBodyBeLogged(contentTypeHeader, getContentLength(logger, response.getHeaders()))) {
-                final HttpResponse bufferedResponse = response.buffer();
-                responseLoggingMono = bufferedResponse.getBodyAsString().flatMap(body -> {
+        if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
+            HttpResponse bufferedResponse = response.buffer();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream((int) contentLength);
+            return bufferedResponse.getBody()
+                .doOnNext(byteBuffer -> {
+                    for (int i = byteBuffer.position(); i < byteBuffer.limit(); i++) {
+                        outputStream.write(byteBuffer.get(i));
+                    }
+                })
+                .doFinally(ignored -> {
                     responseLogMessage.append("Response body:")
                         .append(System.lineSeparator())
-                        .append(prettyPrintIfNeeded(logger, contentTypeHeader, body))
+                        .append(prettyPrintIfNeeded(logger, contentTypeHeader,
+                            new String(outputStream.toByteArray(), StandardCharsets.UTF_8)))
                         .append(System.lineSeparator())
                         .append("<-- END HTTP");
 
-                    return Mono.just(responseLogMessage.toString());
-                }).switchIfEmpty(responseLoggingMono);
-            } else {
-                responseLogMessage.append("(body content not logged)")
-                    .append(System.lineSeparator())
-                    .append("<-- END HTTP");
-            }
+                    logger.info(responseLogMessage.toString());
+                }).then(Mono.just(bufferedResponse));
         } else {
-            responseLogMessage.append("<-- END HTTP");
-        }
+            responseLogMessage.append("(body content not logged)")
+                .append(System.lineSeparator())
+                .append("<-- END HTTP");
 
-        return responseLoggingMono.doOnNext(logger::info).thenReturn(response);
+            return logAndReturn(logger, responseLogMessage, response);
+        }
+    }
+
+    private <T> Mono<T> logAndReturn(ClientLogger logger, StringBuilder logMessageBuilder, T data) {
+        logger.info(logMessageBuilder.toString());
+        return Mono.justOrEmpty(data);
     }
 
     /*
