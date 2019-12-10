@@ -64,7 +64,7 @@ public class VirtualMachineScaleSetVMProfile {
     private String licenseType;
 
     /**
-     * Get the osProfile value.
+     * Get specifies the operating system settings for the virtual machines in the scale set.
      *
      * @return the osProfile value
      */
@@ -73,7 +73,7 @@ public class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the osProfile value.
+     * Set specifies the operating system settings for the virtual machines in the scale set.
      *
      * @param osProfile the osProfile value to set
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -84,7 +84,7 @@ public class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the storageProfile value.
+     * Get specifies the storage settings for the virtual machine disks.
      *
      * @return the storageProfile value
      */
@@ -93,7 +93,7 @@ public class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the storageProfile value.
+     * Set specifies the storage settings for the virtual machine disks.
      *
      * @param storageProfile the storageProfile value to set
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -104,7 +104,7 @@ public class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the networkProfile value.
+     * Get specifies properties of the network interfaces of the virtual machines in the scale set.
      *
      * @return the networkProfile value
      */
@@ -113,7 +113,7 @@ public class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the networkProfile value.
+     * Set specifies properties of the network interfaces of the virtual machines in the scale set.
      *
      * @param networkProfile the networkProfile value to set
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -124,7 +124,7 @@ public class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the diagnosticsProfile value.
+     * Get specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum api-version: 2015-06-15.
      *
      * @return the diagnosticsProfile value
      */
@@ -133,7 +133,7 @@ public class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the diagnosticsProfile value.
+     * Set specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum api-version: 2015-06-15.
      *
      * @param diagnosticsProfile the diagnosticsProfile value to set
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -144,7 +144,7 @@ public class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the extensionProfile value.
+     * Get specifies a collection of settings for extensions installed on virtual machines in the scale set.
      *
      * @return the extensionProfile value
      */
@@ -153,7 +153,7 @@ public class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the extensionProfile value.
+     * Set specifies a collection of settings for extensions installed on virtual machines in the scale set.
      *
      * @param extensionProfile the extensionProfile value to set
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -164,7 +164,7 @@ public class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the licenseType value.
+     * Get specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; If this element is included in a request for an update, the value must match the initial value. This value cannot be updated. &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
      *
      * @return the licenseType value
      */
@@ -173,7 +173,7 @@ public class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the licenseType value.
+     * Set specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; If this element is included in a request for an update, the value must match the initial value. This value cannot be updated. &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
      *
      * @param licenseType the licenseType value to set
      * @return the VirtualMachineScaleSetVMProfile object itself.
