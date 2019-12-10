@@ -111,6 +111,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals("War and Peace", books.get(0).getText());
     }
 
+    @SuppressWarnings("unchecked")
     void verifySuggestWithSelectedFields(PagedResponse<SuggestResult> suggestResultPagedResponse) {
         Assert.assertEquals(1, suggestResultPagedResponse.getValue().size());
         Document result = suggestResultPagedResponse.getValue().get(0).getDocument();

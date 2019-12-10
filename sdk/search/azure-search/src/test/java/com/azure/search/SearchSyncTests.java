@@ -727,12 +727,12 @@ public class SearchSyncTests extends SearchTestBase {
      * @param mapObject object to convert
      * @return {@link Map}{@code <}{@link String}{@code ,}{@link Object}{@code >}
      */
+    @SuppressWarnings("unchecked")
     private static Map<String, Object> convertHashMapToMap(Object mapObject) {
         // This SuppressWarnings is for the checkstyle it is used because api return type can
         // be anything and therefore is an Object in our case we know and we use it only when
         // the return type is LinkedHashMap. The object is converted into HashMap (which LinkedHashMap
         // extends)
-        @SuppressWarnings(value = "unchecked")
         HashMap<String, Object> map = (HashMap<String, Object>) mapObject;
 
         Set<Map.Entry<String, Object>> entries = map.entrySet();

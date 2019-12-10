@@ -20,7 +20,7 @@ public abstract class AccessConditionBase {
      * @throws NoSuchFieldException
      */
     protected Field getETagField(Object obj) throws NoSuchFieldException {
-        Class cls = obj.getClass();
+        Class<?> cls = obj.getClass();
         Field field = cls.getDeclaredField("eTag");
         field.setAccessible(true);
         return field;

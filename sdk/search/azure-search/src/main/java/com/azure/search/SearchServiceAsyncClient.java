@@ -750,7 +750,7 @@ public class SearchServiceAsyncClient {
     Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
                                                     RequestOptions requestOptions,
                                                     Context context) {
-        return this.resourceExistsWithResponse(() -> this.getIndexWithResponse(indexName, requestOptions, context));
+        return resourceExistsWithResponse(() -> this.getIndexWithResponse(indexName, requestOptions, context));
     }
 
     /**
@@ -1415,7 +1415,7 @@ public class SearchServiceAsyncClient {
      * @param action the runnable async action
      * @return true if the resource exists (service returns a '200' status code); otherwise false.
      */
-    private static <T> Mono<Response<Boolean>> resourceExistsWithResponse(Supplier<Mono<Response<T>>> action) {
+    private <T> Mono<Response<Boolean>> resourceExistsWithResponse(Supplier<Mono<Response<T>>> action) {
         return action.get()
             .map(i ->
                 (Response<Boolean>) new SimpleResponse<>(i, i.getStatusCode() == 200))

@@ -28,19 +28,6 @@
 
   <build>
     <plugins>
-      <!-- TODO items to remove the following exemption:
-      https://dev.azure.com/csee2e/Azure%20Search%20SDK/_workitems/edit/1323/
-      https://dev.azure.com/csee2e/Azure%20Search%20SDK/_workitems/edit/1324/
-      https://dev.azure.com/csee2e/Azure%20Search%20SDK/_workitems/edit/1327
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-        <configuration>
-          <failOnWarning>false</failOnWarning>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

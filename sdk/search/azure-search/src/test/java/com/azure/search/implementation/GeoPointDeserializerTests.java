@@ -72,6 +72,7 @@ public class GeoPointDeserializerTests {
         Assert.assertEquals(LinkedHashMap.class, actual.getClass());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void returnsDynamicOnInvalidCrs() throws Exception {
         String input = "{"

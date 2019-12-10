@@ -140,7 +140,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     }
 
     protected SearchServiceClientBuilder getSearchServiceClientBuilder() {
-        return getSearchServiceClientBuilderWithHttpPipelinePolicies(Collections.EMPTY_LIST);
+        return getSearchServiceClientBuilderWithHttpPipelinePolicies(null);
     }
 
     /**
