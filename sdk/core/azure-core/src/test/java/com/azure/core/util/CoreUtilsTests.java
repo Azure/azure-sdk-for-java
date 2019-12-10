@@ -58,12 +58,12 @@ public class CoreUtilsTests {
     @Test
     public void testPrettyPrintFormatJsonOrXmlWithJsonContent() {
         String plainJsonContent = "{\"error\":{\"code\":\"MethodNotAllowed\",\"message\":\"HTTP POST not allowed\"}}";
-        String prettyJsonContent = "{\r\n" +
-            "  \"error\" : {\r\n" +
-            "    \"code\" : \"MethodNotAllowed\",\r\n" +
-            "    \"message\" : \"HTTP POST not allowed\"\r\n" +
-            "  }\r\n" +
-            "}";
+        String prettyJsonContent = "{\r\n"
+            + "  \"error\" : {\r\n"
+            + "    \"code\" : \"MethodNotAllowed\",\r\n"
+            + "    \"message\" : \"HTTP POST not allowed\"\r\n"
+            + "  }\r\n"
+            + "}";
         assertEquals(CoreUtils.printPrettyFormatJsonOrXml(plainJsonContent,
             ContentType.APPLICATION_JSON), prettyJsonContent);
     }
@@ -71,10 +71,10 @@ public class CoreUtilsTests {
     @Test
     public void testPrettyPrintFormatJsonOrXmlWithXmlContent() {
         String plainXmlContent = "<error><errorCode>InvalidRequest</errorCode><message>This is wrong.</message></error>";
-        String prettyXmlContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><error>\r\n" +
-            "    <errorCode>InvalidRequest</errorCode>\r\n" +
-            "    <message>This is wrong.</message>\r\n" +
-            "</error>\r\n";
+        String prettyXmlContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><error>\r\n"
+            + "    <errorCode>InvalidRequest</errorCode>\r\n"
+            + "    <message>This is wrong.</message>\r\n"
+            + "</error>\r\n";
         assertEquals(CoreUtils.printPrettyFormatJsonOrXml(plainXmlContent,
             ContentType.APPLICATION_XML), prettyXmlContent);
     }

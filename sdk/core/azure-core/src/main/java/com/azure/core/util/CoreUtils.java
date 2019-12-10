@@ -203,6 +203,7 @@ public final class CoreUtils {
      * return original string.
      *
      * @param content The body content which need to parse.
+     * @param contentType The format of the contents.
      * @return Pretty json or xml format of the content. If it is not in a format of json or xml, returns original one.
      */
     public static String printPrettyFormatJsonOrXml(String content, String contentType) {
@@ -228,7 +229,8 @@ public final class CoreUtils {
                     content.getBytes(StandardCharsets.UTF_8))));
                 StreamResult res =  new StreamResult(new ByteArrayOutputStream());
                 serializer.transform(xmlSource, res);
-                return new String(((ByteArrayOutputStream)res.getOutputStream()).toByteArray(), StandardCharsets.UTF_8);
+                return new String(((ByteArrayOutputStream) res.getOutputStream()).toByteArray(),
+                    StandardCharsets.UTF_8);
             } catch (TransformerException e) {
                 logger.warning("Failed to pretty print XML: {}", e.getMessage());
             }
