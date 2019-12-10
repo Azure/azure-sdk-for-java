@@ -77,16 +77,16 @@ public final class ConfigurationClientBuilder {
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     private static final String ACCEPT_HEADER = "Accept";
     private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
+    // This is properties file's name.
     private static final String APP_CONFIG_PROPERTIES = "azure-appconfig.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
     private final HttpHeaders headers;
-    private final String clientName;
-    private final String clientVersion;
+    private final Map<String, String> properties;
 
     private ConfigurationClientCredentials credential;
     private TokenCredential tokenCredential;
@@ -106,9 +106,7 @@ public final class ConfigurationClientBuilder {
         policies = new ArrayList<>();
         httpLogOptions = new HttpLogOptions();
 
-        Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
-        clientName = properties.getOrDefault(NAME, "UnknownName");
-        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+        properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
 
         headers = new HttpHeaders()
             .put(ECHO_REQUEST_ID_HEADER, "true")
@@ -175,6 +173,9 @@ public final class ConfigurationClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
         policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
             buildConfiguration));

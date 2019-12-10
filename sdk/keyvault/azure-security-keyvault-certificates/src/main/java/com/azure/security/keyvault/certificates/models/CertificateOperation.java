@@ -33,7 +33,7 @@ public final class CertificateOperation {
      * Indicates if the certificates generated under this policy should be
      * published to certificate transparency logs.
      */
-    private Boolean certificateTransparency;
+    private boolean certificateTransparency;
 
     /**
      * The certificate signing request (CSR) that is being used in the
@@ -110,7 +110,7 @@ public final class CertificateOperation {
      *
      * @return the certificateTransparency status.
      */
-    public Boolean getCertificateTransparency() {
+    public boolean isCertificateTransparent() {
         return this.certificateTransparency;
     }
 
@@ -181,6 +181,6 @@ public final class CertificateOperation {
     private void unpackIssuerParameters(Map<String, Object> issuerParameters) {
         issuerName = (String) issuerParameters.get("name");
         certificateType =  (String) issuerParameters.get("cty");
-        certificateTransparency = (Boolean) issuerParameters.get("cert_transparency");
+        certificateTransparency = issuerParameters.get("cert_transparency") != null ? (Boolean) issuerParameters.get("cert_transparency") : false;
     }
 }

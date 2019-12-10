@@ -38,7 +38,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
     private String defaultServiceVersion;
 
     /**
-     * The blob service properties for soft delete.
+     * The blob service properties for blob soft delete.
      */
     @JsonProperty(value = "properties.deleteRetentionPolicy")
     private DeleteRetentionPolicy deleteRetentionPolicy;
@@ -54,6 +54,12 @@ public class BlobServicePropertiesInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.changeFeed")
     private ChangeFeed changeFeed;
+
+    /**
+     * Sku name and tier.
+     */
+    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
+    private SkuInner sku;
 
     /**
      * Get specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Blob service.
@@ -96,7 +102,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the blob service properties for soft delete.
+     * Get the blob service properties for blob soft delete.
      *
      * @return the deleteRetentionPolicy value
      */
@@ -105,7 +111,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the blob service properties for soft delete.
+     * Set the blob service properties for blob soft delete.
      *
      * @param deleteRetentionPolicy the deleteRetentionPolicy value to set
      * @return the BlobServicePropertiesInner object itself.
@@ -153,6 +159,15 @@ public class BlobServicePropertiesInner extends ProxyResource {
     public BlobServicePropertiesInner withChangeFeed(ChangeFeed changeFeed) {
         this.changeFeed = changeFeed;
         return this;
+    }
+
+    /**
+     * Get sku name and tier.
+     *
+     * @return the sku value
+     */
+    public SkuInner sku() {
+        return this.sku;
     }
 
 }

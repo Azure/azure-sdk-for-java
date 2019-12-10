@@ -55,6 +55,23 @@ jobs:
         inputs:
           versionSpec: '3.6'
 
+      - template: tools/daily-dev-build-variable/daily-dev-build-variable.yml@azure-sdk-tools
+
+      - ${{ each artifact in parameters.Artifacts }}:
+        - script: |
+            python3 --version
+            python3 eng/versioning/set_versions.py --update-type all --build-type client --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
+            python3 eng/versioning/set_versions.py --update-type all --build-type data --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}}
+          condition: eq(variables['SetDevVersion'],'true')
+          displayName: Append dev package version suffix for ${{artifact.name}}
+
+      - script: |
+          python3 --version
+          python3 eng/versioning/update_versions.py --update-type all --build-type client
+          python3 eng/versioning/update_versions.py --update-type all --build-type data
+        condition: eq(variables['SetDevVersion'],'true')
+        displayName: Apply version settings to repository
+
       - script: |
           pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
@@ -73,7 +90,7 @@ jobs:
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           goals: 'package'
-          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinclude-template -Dgenerate-overview' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -98,7 +115,7 @@ jobs:
       - pwsh: |
           $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
         displayName: "Verify versions in POM files"
-        
+
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:
@@ -140,7 +157,7 @@ jobs:
         displayName: 'Install all client libraries (for SpotBugs analysis)'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Dverify-readme'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -148,9 +165,9 @@ jobs:
           publishJUnitResults: false
           goals: 'install'
 
-      # Run SpotBugs, CheckStyle and JavaDoc tools to ensure high code quality - these will fail the build if issues are found
+      # Run SpotBugs, CheckStyle, Revapi, and JavaDoc tools to ensure high code quality - these will fail the build if issues are found
       - task: Maven@3
-        displayName: 'Run SpotBugs, CheckStyle, and JavaDoc'
+        displayName: 'Run SpotBugs, CheckStyle, Revapi, and JavaDoc'
         inputs:
           mavenPomFile: pom.client.xml
           options: '-DskipTests -Dgpg.skip'
@@ -159,7 +176,7 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'spotbugs:check checkstyle:checkstyle-aggregate javadoc:aggregate'
+          goals: 'spotbugs:check checkstyle:checkstyle-aggregate revapi:check javadoc:aggregate'
 
       # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module
       - task: Maven@3
@@ -223,6 +240,7 @@ jobs:
         artifact: reports
 
   - job: 'Test'
+    condition: ne(variables['Skip.Test'], 'true')
 
     variables:
       - template: ../variables/globals.yml

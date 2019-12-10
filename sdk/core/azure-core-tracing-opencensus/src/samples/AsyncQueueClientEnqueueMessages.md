@@ -13,7 +13,7 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.0.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+  <version>12.1.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
 </dependency>
 ```
 [//]: # ({x-version-update-end})

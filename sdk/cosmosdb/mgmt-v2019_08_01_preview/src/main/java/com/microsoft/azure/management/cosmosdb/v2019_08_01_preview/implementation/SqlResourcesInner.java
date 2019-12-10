@@ -44,7 +44,7 @@ public class SqlResourcesInner {
     /** The Retrofit service to perform REST calls. */
     private SqlResourcesService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlResourcesInner.
@@ -52,7 +52,7 @@ public class SqlResourcesInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public SqlResourcesInner(Retrofit retrofit, CosmosDBImpl client) {
+    public SqlResourcesInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(SqlResourcesService.class);
         this.client = client;
     }
