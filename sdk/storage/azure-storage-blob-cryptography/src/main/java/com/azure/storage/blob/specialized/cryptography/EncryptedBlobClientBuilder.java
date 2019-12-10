@@ -161,8 +161,10 @@ public final class EncryptedBlobClientBuilder {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
-        policies.add(new UserAgentPolicy(logOptions.getApplicationId(), USER_AGENT_PROPERTIES.get(SDK_NAME),
-            USER_AGENT_PROPERTIES.get(SDK_VERSION), userAgentConfiguration));
+        String clientName = USER_AGENT_PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = USER_AGENT_PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        policies.add(new UserAgentPolicy(logOptions.getApplicationId(), clientName, clientVersion,
+            userAgentConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 

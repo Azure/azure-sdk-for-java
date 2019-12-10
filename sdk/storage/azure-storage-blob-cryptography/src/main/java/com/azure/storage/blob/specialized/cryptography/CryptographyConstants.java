@@ -17,10 +17,7 @@ final class CryptographyConstants {
 
     static final String AES = "AES";
 
-    // This is properties file's name.
-    private static final String AZURE_STORAGE_PROPERTIES = "azure-storage-blob.properties";
-
-    static final Map<String, String> USER_AGENT_PROPERTIES = CoreUtils.getProperties(AZURE_STORAGE_PROPERTIES);
+    static final Map<String, String> USER_AGENT_PROPERTIES = CoreUtils.getProperties("azure-storage-blob.properties");
 
     static final String AGENT_METADATA_VALUE = "JavaTrack2" + USER_AGENT_PROPERTIES.get("version");
 

@@ -202,8 +202,10 @@ public final class BuilderHelper {
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
-        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(),
-            PROPERTIES.get(SDK_NAME), PROPERTIES.get(SDK_VERSION), configuration);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(), clientName, clientVersion,
+            configuration);
     }
 
     /*
