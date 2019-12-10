@@ -302,6 +302,10 @@ class APISpec extends Specification {
     }
 
     BlobContainerClient getContainerClient(String sasToken, String endpoint) {
+        getContainerClientBuilder(endpoint).sasToken(sasToken).buildClient()
+    }
+
+    BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -310,7 +314,7 @@ class APISpec extends Specification {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
-        builder.sasToken(sasToken).buildClient()
+        return builder
     }
 
     BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {

@@ -601,35 +601,6 @@ class HelperTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    def "BlobURLParts"() {
-        setup:
-        BlobUrlParts parts = new BlobUrlParts()
-            .setScheme("http")
-            .setHost("host")
-            .setContainerName("container")
-            .setBlobName("blob")
-            .setSnapshot("snapshot")
-
-        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues()
-            .setExpiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
-            .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setBlobName("blob")
-            .setContainerName("container")
-
-        parts.setSasQueryParameters(sasValues.generateSasQueryParameters(primaryCredential))
-
-        when:
-        String[] splitParts = parts.toUrl().toString().split("\\?")
-
-        then:
-        splitParts.size() == 2 // Ensure that there is only one question mark even when sas and snapshot are present
-        splitParts[0] == "http://host/container/blob"
-        splitParts[1].contains("snapshot=snapshot")
-        splitParts[1].contains("sp=r")
-        splitParts[1].contains("sig=")
-        splitParts[1].split("&").size() == 6 // snapshot & sv & sr & sp & sig & se
-    }
-
     def "BlobURLParts implicit root"() {
         when:
         def bup = new BlobUrlParts()
@@ -639,29 +610,5 @@ class HelperTest extends APISpec {
 
         then:
         new BlobUrlParts().parse(bup.toUrl()).getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
-    }
-
-    def "URLParser"() {
-        when:
-        BlobUrlParts parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
-
-        then:
-        parts.getScheme() == "http"
-        parts.getHost() == "host"
-        parts.getBlobContainerName() == "container"
-        parts.getBlobName() == finalBlobName
-        parts.getSnapshot() == "snapshot"
-        parts.getSasQueryParameters().getPermissions() == "r"
-        parts.getSasQueryParameters().getVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
-        parts.getSasQueryParameters().getResource() == "c"
-        parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
-
-        where:
-        originalBlobName       | finalBlobName
-        "blob"                 | "blob"
-        "path/to]a blob"       | "path/to]a blob"
-        "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                 | "斑點"
-        "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 }

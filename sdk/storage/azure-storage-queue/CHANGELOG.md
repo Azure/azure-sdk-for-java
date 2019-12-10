@@ -1,5 +1,8 @@
 # Release History
 
+## Version X.X.X (XXXX-XX-XX)
+- Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setQueueName, generateSasQueryParameters methods on QueueServiceSasSignatureValues to direct users to using the methods added on clients.
+
 ## Version 12.1.0 (2019-12-04)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.0.0/sdk/storage/azure-storage-queue/README.md)
