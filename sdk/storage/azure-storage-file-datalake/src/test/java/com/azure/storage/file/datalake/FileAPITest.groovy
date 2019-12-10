@@ -5,9 +5,7 @@ import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobStorageException
 
-import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
 
@@ -192,9 +190,9 @@ class FileAPITest extends APISpec {
         fc.getPropertiesWithResponse(null, null, null)
 
         then:
-        def e = thrown(BlobStorageException)
+        def e = thrown(DataLakeStorageException)
         e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
 //        e.getServiceMessage().contains("The specified blob does not exist.")
     }
 
@@ -562,7 +560,7 @@ class FileAPITest extends APISpec {
         fc.getPropertiesWithResponse(drc, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -581,7 +579,7 @@ class FileAPITest extends APISpec {
         fc.getProperties()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Set HTTP headers null"() {
@@ -677,7 +675,7 @@ class FileAPITest extends APISpec {
         fc.setHttpHeadersWithResponse(null, drc, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -696,7 +694,7 @@ class FileAPITest extends APISpec {
         fc.setHttpHeaders(null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Set metadata min"() {
@@ -774,7 +772,7 @@ class FileAPITest extends APISpec {
         fc.setMetadataWithResponse(null, drc, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -793,7 +791,7 @@ class FileAPITest extends APISpec {
         fc.setMetadata(null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Read all null"() {
@@ -844,7 +842,7 @@ class FileAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        notThrown(BlobStorageException)
+        notThrown(DataLakeStorageException)
         result.length == 0
     }
 
@@ -962,7 +960,7 @@ class FileAPITest extends APISpec {
         fc.readWithResponse(new ByteArrayOutputStream(), null, null, drc, false, null, null).getStatusCode()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1016,7 +1014,7 @@ class FileAPITest extends APISpec {
         fc.getProperties()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Rename error"() {

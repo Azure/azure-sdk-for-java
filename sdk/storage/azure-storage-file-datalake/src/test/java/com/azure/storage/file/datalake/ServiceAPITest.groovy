@@ -3,10 +3,12 @@
 
 package com.azure.storage.file.datalake
 
+import com.azure.core.http.rest.PagedIterable
 import com.azure.core.http.rest.Response
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.FileSystemItem
 import com.azure.storage.file.datalake.models.FileSystemListDetails
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
@@ -41,7 +43,7 @@ class ServiceAPITest extends APISpec {
         primaryDataLakeServiceClient.listFileSystems().iterator().hasNext()
 
         then:
-        notThrown(BlobStorageException)
+        notThrown(DataLakeStorageException)
     }
 
     def "List file systems marker"() {

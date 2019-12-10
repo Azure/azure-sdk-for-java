@@ -9,9 +9,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -276,10 +278,14 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public FileReadResponse readWithResponse(OutputStream stream, FileRange range, DownloadRetryOptions options,
         DataLakeRequestConditions requestConditions, boolean getRangeContentMd5, Duration timeout, Context context) {
-        BlobDownloadResponse response = blockBlobClient.downloadWithResponse(stream, Transforms.toBlobRange(range),
-            Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
-            getRangeContentMd5, timeout, context);
-        return Transforms.toFileReadResponse(response);
+        try {
+            BlobDownloadResponse response = blockBlobClient.downloadWithResponse(stream, Transforms.toBlobRange(range),
+                Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
+                getRangeContentMd5, timeout, context);
+            return Transforms.toFileReadResponse(response);
+        } catch (BlobStorageException ex) {
+            throw logger.logExceptionAsError(DataLakeImplUtils.transformBlobStorageException(ex));
+        }
     }
 
     /**

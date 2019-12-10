@@ -5,7 +5,6 @@ import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobStorageException
 
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
@@ -196,9 +195,9 @@ class DirectoryAPITest extends APISpec {
         dc.getPropertiesWithResponse(null, null, null)
 
         then:
-        def e = thrown(BlobStorageException)
+        def e = thrown(DataLakeStorageException)
         e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
 //        e.getServiceMessage().contains("The specified blob does not exist.")
     }
 
@@ -504,7 +503,7 @@ class DirectoryAPITest extends APISpec {
         dc.getProperties()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Rename error"() {
@@ -708,7 +707,7 @@ class DirectoryAPITest extends APISpec {
         dc.getPropertiesWithResponse(drc, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -727,7 +726,7 @@ class DirectoryAPITest extends APISpec {
         dc.getProperties()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Set HTTP headers null"() {
@@ -820,7 +819,7 @@ class DirectoryAPITest extends APISpec {
         dc.setHttpHeadersWithResponse(null, drc, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -839,7 +838,7 @@ class DirectoryAPITest extends APISpec {
         dc.setHttpHeaders(null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Set metadata all null"() {
@@ -937,7 +936,7 @@ class DirectoryAPITest extends APISpec {
         dc.setMetadataWithResponse(null, drc, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -956,7 +955,7 @@ class DirectoryAPITest extends APISpec {
         dc.setMetadata(null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Create file min"() {
@@ -1118,9 +1117,9 @@ class DirectoryAPITest extends APISpec {
         client.getPropertiesWithResponse(null, null, null)
 
         then:
-        def e = thrown(BlobStorageException)
+        def e = thrown(DataLakeStorageException)
         e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
 //        e.getServiceMessage().contains("The specified blob does not exist.")
     }
 
@@ -1352,9 +1351,9 @@ class DirectoryAPITest extends APISpec {
         client.getPropertiesWithResponse(null, null, null)
 
         then:
-        def e = thrown(BlobStorageException)
+        def e = thrown(DataLakeStorageException)
         e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
 //        e.getServiceMessage().contains("The specified blob does not exist.")
     }
 

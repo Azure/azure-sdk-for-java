@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
 import reactor.core.publisher.Flux
@@ -163,15 +164,15 @@ class APISpec extends Specification {
     }
 
     static TestMode setupTestMode() {
-//        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
-//
-//        if (testMode != null) {
-//            try {
-//                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
-//            } catch (IllegalArgumentException ignore) {
-//                return TestMode.PLAYBACK
-//            }
-//        }
+        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
+
+        if (testMode != null) {
+            try {
+                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
+            } catch (IllegalArgumentException ignore) {
+                return TestMode.PLAYBACK
+            }
+        }
 
         return TestMode.PLAYBACK
     }
@@ -298,6 +299,17 @@ class APISpec extends Specification {
             .fileClient(pathClient)
             .leaseId(leaseId)
             .buildClient()
+    }
+
+    static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileAsyncClient pathAsyncClient) {
+        return createLeaseAsyncClient(pathAsyncClient, null)
+    }
+
+    static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileAsyncClient pathAsyncClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder()
+            .fileAsyncClient(pathAsyncClient)
+            .leaseId(leaseId)
+            .buildAsyncClient()
     }
 
     static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient) {

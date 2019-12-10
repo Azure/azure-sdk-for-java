@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -22,6 +23,7 @@ import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuild
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.Path;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
@@ -241,7 +243,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            return blobContainerAsyncClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType));
+            return blobContainerAsyncClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType))
+                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -283,7 +286,8 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<Void>> deleteWithResponse(DataLakeRequestConditions requestConditions) {
         try {
             return blobContainerAsyncClient.deleteWithResponse(
-                Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -322,6 +326,7 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<FileSystemProperties>> getPropertiesWithResponse(String leaseId) {
         try {
             return blobContainerAsyncClient.getPropertiesWithResponse(leaseId)
+                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex))
                 .map(response -> new SimpleResponse<>(response,
                     Transforms.toFileSystemProperties(response.getValue())));
         } catch (RuntimeException ex) {
@@ -368,7 +373,8 @@ public class DataLakeFileSystemAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             return blobContainerAsyncClient.setMetadataWithResponse(metadata,
-                Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
