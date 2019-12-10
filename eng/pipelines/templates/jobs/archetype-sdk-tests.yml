@@ -1,4 +1,5 @@
 parameters:
+  DisplayName: ''
   ServiceDirectory: ''
   EnvVars: {}
   MaxParallel: 0
@@ -7,32 +8,26 @@ parameters:
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.8'
-      DisplayName: '$(OSName) on Java $(JavaVersion)'
     macOS - Java 8:
       OSName: 'macOS'
       OSVmImage: 'macOS-10.13'
       JavaVersion: '1.8'
-      DisplayName: '$(OSName) on Java $(JavaVersion)'
     Windows - Java 8:
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
-      DisplayName: '$(OSName) on Java $(JavaVersion)'
     Linux - Java 11:
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.11'
-      DisplayName: '$(OSName) on Java $(JavaVersion)'
     macOS - Java 11:
       OSName: 'macOS'
       OSVmImage: 'macOS-10.13'
       JavaVersion: '1.11'
-      DisplayName: '$(OSName) on Java $(JavaVersion)'
     Windows - Java 11:
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
-      DisplayName: '$(OSName) on Java $(JavaVersion)'
   PreRunSteps: []
   TestName: LiveTest
   TimeoutInMinutes: 60
@@ -60,6 +55,11 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
+      - pwsh: |
+        echo "##vso[task.setvariable variable=DisplayName]$(OSName) on Java $(JavaVersion)"
+        displayName: "Setup DisplayName"
+        condition: eq(variables['DisplayName'], '')
+
       - ${{ parameters.PreRunSteps }}
 
       - task: Maven@3
