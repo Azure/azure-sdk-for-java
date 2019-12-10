@@ -57,12 +57,15 @@ class CodeModule:
         # external dependency versions there should only be 2 items resulting from
         # the split which will be module name and external dependency version. 
         items = module_str.split(';')
+
+        self.name = items[0]
+        self.group_id = items[0].split(':')[0]
+        self.artifact_id = items[0].split(':')[1]
+
         if len(items) == 2: 
-            self.name = items[0]
             self.external_dependency = items[1].strip()
             self.update_type = UpdateType.external_dependency
         elif len(items) == 3:
-            self.name = items[0]
             self.dependency = items[1]
             self.current = items[2].strip()
             self.update_type = UpdateType.library

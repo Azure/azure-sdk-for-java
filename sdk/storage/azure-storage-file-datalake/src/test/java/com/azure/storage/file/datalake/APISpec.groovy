@@ -368,6 +368,10 @@ class APISpec extends Specification {
     }
 
     DataLakeFileSystemClient getFileSystemClient(String sasToken, String endpoint) {
+        getFileSystemClientBuilder(endpoint).sasToken(sasToken).buildClient()
+    }
+
+    DataLakeFileSystemClientBuilder getFileSystemClientBuilder(String endpoint) {
         DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -377,7 +381,7 @@ class APISpec extends Specification {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
-        builder.sasToken(sasToken).buildClient()
+        return builder
     }
 
     def generateFileSystemName() {
@@ -628,6 +632,13 @@ class APISpec extends Specification {
             }
         }
         return false
+    }
+
+    def sleepIfLive(long milliseconds) {
+        if (testMode == TestMode.PLAYBACK) {
+            return
+        }
+        sleep(milliseconds)
     }
 
 }

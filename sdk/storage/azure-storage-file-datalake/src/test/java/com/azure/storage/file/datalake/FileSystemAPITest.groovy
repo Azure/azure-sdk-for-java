@@ -828,23 +828,23 @@ class FileSystemAPITest extends APISpec {
         then:
         def dirPath = response.next()
         dirPath.getName() == dirName
-//        dirPath.getETag()
+        dirPath.getETag()
         dirPath.getGroup()
         dirPath.getLastModified()
         dirPath.getOwner()
         dirPath.getPermissions()
-//        dirPath.getContentLength()
+//        dirPath.getContentLength() // known issue with service
         dirPath.isDirectory()
 
         response.hasNext()
         def filePath = response.next()
         filePath.getName() == fileName
-//        filePath.getETag()
+        filePath.getETag()
         filePath.getGroup()
         filePath.getLastModified()
         filePath.getOwner()
         filePath.getPermissions()
-//        filePath.getContentLength()
+//        filePath.getContentLength() // known issue with service
         !filePath.isDirectory()
 
         !response.hasNext()
@@ -1146,6 +1146,19 @@ class FileSystemAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    def "List Paths OAuth"() {
+        setup:
+        def client = getOAuthServiceClient()
+        def fsClient = client.getFileSystemClient(fsc.getFileSystemName())
+        fsClient.createFile(generatePathName())
+
+        when:
+        Iterator<PathItem> items = fsClient.listPaths().iterator()
+
+        then:
+        items.hasNext()
     }
 
 }

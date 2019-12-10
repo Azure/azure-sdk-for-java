@@ -10,6 +10,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -36,7 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
@@ -98,7 +98,6 @@ public final class ConfigurationClientBuilder {
     private HttpPipelinePolicy retryPolicy;
     private Configuration configuration;
     private ConfigurationServiceVersion version;
-    private Supplier<HttpHeaders> headersSupplier;
 
     /**
      * The constructor with defaults.
@@ -180,6 +179,7 @@ public final class ConfigurationClientBuilder {
         policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
             buildConfiguration));
         policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
 
@@ -376,18 +376,6 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder serviceVersion(ConfigurationServiceVersion version) {
         this.version = version;
-        return this;
-    }
-
-    /**
-     * Sets the customized headers that is used when each request is sent. It is possible to use new header value for
-     * each request.
-     *
-     * @param headersSupplier user's headers supplier applied to each request.
-     * @return The updated ConfigurationClientBuilder object.
-     */
-    public ConfigurationClientBuilder headersSupplier(Supplier<HttpHeaders> headersSupplier) {
-        this.headersSupplier = headersSupplier;
         return this;
     }
 

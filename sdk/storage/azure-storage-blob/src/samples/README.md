@@ -9,8 +9,9 @@ Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 This document describes how to use samples and what is done in each sample.
 
 ## Getting started
-
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
+
+For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
 
 ## How to run
 These sample can be run in your IDE with default JDK.
