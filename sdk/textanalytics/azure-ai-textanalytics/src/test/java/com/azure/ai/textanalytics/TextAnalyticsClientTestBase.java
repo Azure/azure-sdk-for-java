@@ -126,9 +126,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     public abstract void detectLanguageEmptyText();
 
     @Test
-    public abstract void detectLanguageNullText();
-
-    @Test
     public abstract void detectLanguageFaultyText();
 
     @Test

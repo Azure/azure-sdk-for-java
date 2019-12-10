@@ -101,14 +101,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that it returns an exception is thrown when null text is passed.
-     */
-    @Test
-    public void detectLanguageNullText() {
-        assertRunnableThrowsException(() -> client.detectLanguage(null), NullPointerException.class);
-    }
-
-    /**
      * Verifies that detectLanguage returns an "UNKNOWN" result when faulty text is passed.
      */
     @Test

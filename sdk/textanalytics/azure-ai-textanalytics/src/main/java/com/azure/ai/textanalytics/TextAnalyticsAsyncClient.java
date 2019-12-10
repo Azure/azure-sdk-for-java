@@ -31,7 +31,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -97,7 +96,6 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
         languageInputs.add(new DetectLanguageInput(Integer.toString(0), text, countryHint));
         // TODO: should this be a random number generator?
@@ -145,7 +143,6 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> inputs,
                                                                                                String countryHint,
                                                                                                Context context) {
-        Objects.requireNonNull("inputs", "'inputs' cannot be null.");
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
         // TODO (samvaity): update/validate inputs and id assigning
         for (int i = 0; i < inputs.size(); i++) {
@@ -304,7 +301,6 @@ public final class TextAnalyticsAsyncClient {
         List<TextDocumentInput> documentInputs = new ArrayList<>();
         // TODO (savaity/shawn) update/validate inputs and id assigning
         for (int i = 0; i < inputs.size(); i++) {
-            Objects.requireNonNull(inputs.get(i), "'input text' cannot be null.")
             documentInputs.add(new TextDocumentInput(Integer.toString(0), inputs.get(i), language));
         }
         return recognizeBatchEntitiesWithResponse(documentInputs, null, context);
@@ -375,7 +371,6 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizePiiEntitiesWithResponse(List<String> inputs,
                                                                                                  String language,
                                                                                                  Context context) {
-        Objects.requireNonNull(inputs, "'inputs' cannot be null.");
         List<TextDocumentInput> documentInputs = new ArrayList<>();
         // TODO (savaity/shawn) update/validate inputs and id assigning
         for (int i = 0; i < inputs.size(); i++) {
@@ -428,7 +423,6 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<LinkedEntityResult>> recognizeLinkedEntitiesWithResponse(String text, String language,
                                                                            Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
         List<TextDocumentInput> documentInputs = new ArrayList<>();
         // TODO (savaity/shawn) update/validate inputs and id assigning
         documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
@@ -458,7 +452,6 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<LinkedEntityResult>>> recognizeLinkedEntitiesWithResponse(
         List<String> inputs, String language, Context context) {
-        Objects.requireNonNull(inputs, "'inputs' cannot be null.");
         List<TextDocumentInput> documentInputs = new ArrayList<>();
         // TODO (savaity/shawn) update/validate inputs and id assigning
         for (int i = 0; i < inputs.size(); i++) {
@@ -511,7 +504,6 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language,
                                                                   Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
         List<TextDocumentInput> documentInputs = new ArrayList<>();
         documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
         // TODO: should this be a random number generator?
@@ -542,7 +534,6 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractKeyPhrasesWithResponse(List<String> inputs,
                                                                                             String language,
                                                                                             Context context) {
-        Objects.requireNonNull(inputs, "'inputs' cannot be null.");
         List<TextDocumentInput> documentInputs = new ArrayList<>();
         for (int i = 0; i < inputs.size(); i++) {
             documentInputs.add(new TextDocumentInput(Integer.toString(i), inputs.get(i), language));
@@ -592,7 +583,6 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<TextSentimentResult>> analyzeSentimentWithResponse(String text, String language, Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
         List<TextDocumentInput> documentInputs = new ArrayList<>();
         documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
         // TODO: should this be a random number generator?
@@ -623,7 +613,6 @@ public final class TextAnalyticsAsyncClient {
                                                                                                String language,
                                                                                                Context context) {
 
-        Objects.requireNonNull(inputs, "'inputs' cannot be null.");
         List<TextDocumentInput> documentInputs = new ArrayList<>();
         for (int i = 0; i < inputs.size(); i++) {
             documentInputs.add(new TextDocumentInput(Integer.toString(i), inputs.get(i), language));

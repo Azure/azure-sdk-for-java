@@ -102,14 +102,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that it returns an exception is thrown when null text is passed.
-     */
-    @Test
-    public void detectLanguageNullText() {
-        StepVerifier.create(client.detectLanguage(null)).verifyError(NullPointerException.class);
-    }
-
-    /**
      * Verifies that an error document is returned for a empty text input.
      */
     @Test
