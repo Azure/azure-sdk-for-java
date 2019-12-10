@@ -12,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Properties;
 import org.reactivestreams.Publisher;
@@ -219,13 +220,14 @@ public final class CoreUtils {
             }
         } else if (contentType.startsWith(ContentType.APPLICATION_XML)) {
             try {
-                Transformer serializer= SAXTransformerFactory.newInstance().newTransformer();
+                Transformer serializer = SAXTransformerFactory.newInstance().newTransformer();
                 serializer.setOutputProperty(OutputKeys.INDENT, "yes");
                 serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-                Source xmlSource=new SAXSource(new InputSource(new ByteArrayInputStream(content.getBytes())));
+                Source xmlSource = new SAXSource(new InputSource(new ByteArrayInputStream(
+                    content.getBytes(StandardCharsets.UTF_8))));
                 StreamResult res =  new StreamResult(new ByteArrayOutputStream());
                 serializer.transform(xmlSource, res);
-                return new String(((ByteArrayOutputStream)res.getOutputStream()).toByteArray());
+                return new String(((ByteArrayOutputStream)res.getOutputStream()).toByteArray(), StandardCharsets.UTF_8);
             } catch (Exception e) {
                 logger.warning("Failed to pretty print XML: {}", e.getMessage());
             }
