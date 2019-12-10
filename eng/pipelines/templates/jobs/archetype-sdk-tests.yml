@@ -1,5 +1,4 @@
 parameters:
-  DisplayName: ''
   ServiceDirectory: ''
   EnvVars: {}
   MaxParallel: 0
