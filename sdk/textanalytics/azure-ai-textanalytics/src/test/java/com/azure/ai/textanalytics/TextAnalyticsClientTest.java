@@ -8,7 +8,6 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.Error;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -19,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
-
-    private final ClientLogger logger = new ClientLogger(TextAnalyticsClientTest.class);
 
     private TextAnalyticsClient client;
 
