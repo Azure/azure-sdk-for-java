@@ -137,9 +137,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     public abstract void detectLanguagesBatchInputShowStatistics();
 
     @Test
-    public abstract void detectLanguagesNullInput();
-
-    @Test
     public abstract void detectLanguagesBatchStringInput();
 
     @Test

@@ -19,11 +19,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Override
     protected void beforeTest() {
-        beforeTestSetup();
-        client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
-            .endpoint(getEndPoint())
-            .pipeline(httpPipeline)
-            .buildAsyncClient());
+//        beforeTestSetup();
+//        client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
+//            .endpoint(getEndPoint())
+//            .pipeline(httpPipeline)
+//            .buildAsyncClient());
+
+
     }
 
     /**
@@ -100,13 +102,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that a Null pointer exception is thrown when null text is passed.
+     * Verifies that an error document is returned  when null text is passed.
      */
     @Test
-    public void detectLanguagesNullInput() {
+    public void detectLanguageNullText() {
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
         detectLanguageRunner((inputs) -> {
-            StepVerifier.create(client.detectBatchLanguagesWithResponse(null, null))
-                .verifyError(NullPointerException.class);
+            StepVerifier.create(client.detectLanguage(null))
+                .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
+                .verifyComplete();
         });
     }
 
@@ -119,14 +123,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         StepVerifier.create(client.detectLanguage(""))
             .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
             .verifyComplete();
-    }
-
-    /**
-     * Verifies that it returns an exception is thrown when null text is passed.
-     */
-    @Test
-    public void detectLanguageNullText() {
-        StepVerifier.create(client.detectLanguage(null)).verifyError(NullPointerException.class);
     }
 
     /**

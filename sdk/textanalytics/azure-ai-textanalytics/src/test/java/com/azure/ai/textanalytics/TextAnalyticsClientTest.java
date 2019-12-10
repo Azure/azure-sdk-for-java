@@ -105,7 +105,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageNullText() {
-        assertRunnableThrowsException(() -> client.detectLanguage(null), NullPointerException.class);
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        validateErrorDocument(client.detectLanguage(null).getError(), expectedError);
     }
 
     /**
