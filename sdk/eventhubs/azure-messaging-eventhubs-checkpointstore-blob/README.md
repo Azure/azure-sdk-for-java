@@ -128,10 +128,7 @@ example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and 
 be found here: [log levels][source_loglevels].
 
 ## Next steps
-Get started by exploring the following samples:
-
-1. [Blob Event Processor Store samples][sample_examples]
-1. [Event Hubs and Event Processor samples][sample_event_hubs]
+Get started by exploring the samples [here][samples_readme].
 
 ## Contributing
 
@@ -144,6 +141,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [maven]: https://maven.apache.org/
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[samples_readme]: ./src/samples/README.md
 [sample_container_client]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobCheckpointStoreSample.java
 [sample_event_hubs]: ./src/samples/java/com/azure/messaging/eventhubs
 [sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorBlobCheckpointStoreSample.java

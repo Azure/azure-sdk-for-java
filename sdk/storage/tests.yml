@@ -25,4 +25,8 @@ jobs:
         AZURE_STORAGE_BLOB_CONNECTION_STRING: $(java-storage-test-blob-connection-string)
         STORAGE_DATA_LAKE_ACCOUNT_NAME: $(java-storage-data-lake-account-name)
         STORAGE_DATA_LAKE_ACCOUNT_KEY: $(java-storage-data-lake-account-key)
+        AZURE_STORAGE_FILE_ACCOUNT_NAME: $(java-storage-account-name)
+        AZURE_STORAGE_FILE_ACCOUNT_KEY: $(java-storage-account-key)
+        AZURE_STORAGE_QUEUE_ACCOUNT_NAME: $(java-storage-account-name)
+        AZURE_STORAGE_QUEUE_ACCOUNT_KEY: $(java-storage-account-key)
       TimeoutInMinutes: 120
