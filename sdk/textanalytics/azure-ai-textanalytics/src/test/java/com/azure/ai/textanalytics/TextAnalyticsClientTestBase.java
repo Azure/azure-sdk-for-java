@@ -3,7 +3,16 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.DetectLanguageInput;
+import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.Error;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextBatchStatistics;
+import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -22,14 +31,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.ai.textanalytics.models.DetectLanguageInput;
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
-import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.Error;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextBatchStatistics;
-import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
@@ -149,6 +150,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             new DetectLanguageInput("1", "Este es un document escrito en Español."),
             new DetectLanguageInput("2", "~@!~:)", "US")
             // add error document => empty text
+        );
+
+        testRunner.accept(detectLanguageInputs, setTextAnalyticsRequestOptions());
+    }
+
+    void detectLanguageDuplicateIdRunner(BiConsumer<List<DetectLanguageInput>,
+                                                          TextAnalyticsRequestOptions> testRunner) {
+        final List<DetectLanguageInput> detectLanguageInputs = Arrays.asList(
+            new DetectLanguageInput("0", "This is written in English", "US"),
+            new DetectLanguageInput("0", "Este es un document escrito en Español.")
         );
 
         testRunner.accept(detectLanguageInputs, setTextAnalyticsRequestOptions());
@@ -355,6 +366,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             fail();
         } catch (Exception ex) {
             assertEquals(exception, ex.getClass());
+        }
+    }
+
+    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+        assertEquals(expectedExceptionType, exception.getClass());
+        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
+    }
+
+    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+        try {
+            exceptionThrower.run();
+            fail();
+        } catch (Throwable ex) {
+            assertRestException(ex, expectedExceptionType, expectedStatusCode);
         }
     }
 }

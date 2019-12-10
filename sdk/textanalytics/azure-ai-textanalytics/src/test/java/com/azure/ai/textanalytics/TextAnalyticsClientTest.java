@@ -3,11 +3,12 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.Error;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -27,9 +28,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     protected void beforeTest() {
         beforeTestSetup();
         client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
-            .endpoint(getEndPoint())
-            .pipeline(httpPipeline)
-            .buildClient());
+                                                 .endpoint(getEndPoint())
+                                                 .pipeline(httpPipeline)
+                                                 .buildClient());
     }
 
     /**
@@ -38,8 +39,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguagesBatchInputShowStatistics() {
         detectLanguageShowStatisticsRunner((inputs, options) ->
-            validateBatchResult(client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE).getValue(), getExpectedBatchDetectedLanguages(),
-                "Language"));
+                                               validateBatchResult(client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE).getValue(), getExpectedBatchDetectedLanguages(),
+                                                   "Language"));
     }
 
     /**
@@ -71,7 +72,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     /**
      * Verifies that a single DetectLanguageResult is returned for a text input to detectLanguages.
-     *
      */
     @Test
     public void detectSingleTextLanguage() {
@@ -86,7 +86,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguagesNullInput() {
-        assertRunnableThrowsException(() -> client.detectBatchLanguagesWithResponse(null, null, Context.NONE).getValue(), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.detectBatchLanguagesWithResponse(null, null, Context.NONE).getValue(), HttpResponseException.class);
     }
 
     /**
@@ -105,8 +105,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageNullText() {
-        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
-        validateErrorDocument(client.detectLanguage(null).getError(), expectedError);
+        assertRunnableThrowsException(() -> client.detectLanguage(null), NullPointerException.class);
     }
 
     /**
@@ -120,13 +119,23 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     /**
      * Verifies that an error document is returned for a text input with invalid country hint.
-     *
+     * <p>
      * TODO: update error Model. #6559
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
         Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid Country Hint.");
         validateErrorDocument(client.detectLanguage("Este es un document escrito en Español.", "en")
-            .getError(), expectedError);
+                                  .getError(), expectedError);
+    }
+
+    /**
+     * Verifies that a Bad request exception is returned for input documents with same ids.
+     */
+    @Test
+    public void detectLanguageDuplicateIdInput() {
+        detectLanguageDuplicateIdRunner((inputs, options) -> {
+            assertRestException(() -> client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE), HttpResponseException.class, 400);
+        });
     }
 }

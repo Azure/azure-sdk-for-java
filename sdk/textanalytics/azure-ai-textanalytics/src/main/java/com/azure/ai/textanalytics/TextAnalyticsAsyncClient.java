@@ -97,6 +97,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
+        Objects.requireNonNull(text, "'text' cannot be null.");
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
         languageInputs.add(new DetectLanguageInput(Integer.toString(0), text, countryHint));
         // TODO: should this be a random number generator?
@@ -144,6 +145,7 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> inputs,
                                                                                                String countryHint,
                                                                                                Context context) {
+        Objects.requireNonNull("inputs", "'inputs' cannot be null.");
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
         // TODO (samvaity): update/validate inputs and id assigning
         for (int i = 0; i < inputs.size(); i++) {
@@ -188,7 +190,6 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(inputs, "'inputs' cannot be null.");
         // TODO: validate inputs?
         final LanguageBatchInput languageBatchInput = new LanguageBatchInput().setDocuments(inputs);
         // TODO: confirm if options null is fine?
@@ -303,6 +304,7 @@ public final class TextAnalyticsAsyncClient {
         List<TextDocumentInput> documentInputs = new ArrayList<>();
         // TODO (savaity/shawn) update/validate inputs and id assigning
         for (int i = 0; i < inputs.size(); i++) {
+            Objects.requireNonNull(inputs.get(i), "'input text' cannot be null.")
             documentInputs.add(new TextDocumentInput(Integer.toString(0), inputs.get(i), language));
         }
         return recognizeBatchEntitiesWithResponse(documentInputs, null, context);
