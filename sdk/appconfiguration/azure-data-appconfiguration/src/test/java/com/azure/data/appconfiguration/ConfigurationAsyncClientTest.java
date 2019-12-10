@@ -866,9 +866,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client.listConfigurationSettings(new SettingSelector().setKeys("*"))
             .flatMap(configurationSetting -> {
                 logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
-//                if (configurationSetting.isReadOnly()) {
-//                    client.setReadOnlyWithResponse(configurationSetting, false);
-//                }
                 return client.deleteConfigurationSettingWithResponse(configurationSetting, false);
             }).blockLast();
     }
