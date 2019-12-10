@@ -12,8 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
-import com.azure.data.appconfiguration.implementation.SyncToken;
-import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -24,25 +22,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SyncTokenPolicyTest extends TestBase {
 
     private static final String SYNC_TOKEN = "Sync-Token";
-    private static final String id = "jtqGc1I4";
-    private static final String newId = "newID";
-    private static final String value = "MDoyOA==";
-    private static final String updatedValue = "UpdatedValue";
-    private static final long sn = 28;
-    private static final long updatedSN = 30;
+    private static final String ID = "jtqGc1I4";
+    private static final String NEW_ID = "newID";
+    private static final String VALUE = "MDoyOA==";
+    private static final String UPDATED_VALUE = "UpdatedValue";
+    private static final long SEQUENCE_NUMBER = 28;
+    private static final long UPDATED_SEQUENCE_NUMBER = 30;
 
     @Test
     public void parseSyncToken() {
-        String syncTokenString = constructSyncTokenString(id, value, sn);
+        String syncTokenString = constructSyncTokenString(ID, VALUE, SEQUENCE_NUMBER);
         final SyncToken syncToken = SyncToken.fromSyncTokenString(syncTokenString);
-        syncTokenEquals(syncToken, id, value, sn);
+        syncTokenEquals(syncToken, ID, VALUE, SEQUENCE_NUMBER);
     }
 
     @Test
     public void singleSyncTokenTest() throws Exception {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
 
-        final String firstSyncToken = constructSyncTokenString(id, value, sn);
+        final String firstSyncToken = constructSyncTokenString(ID, VALUE, SEQUENCE_NUMBER);
         final HttpPipeline pipeline = customizedPipeline(firstSyncToken, syncTokenPolicy);
         final HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
         final String firstRequestHeader = response.getRequest().getHeaders().getValue(SYNC_TOKEN);
@@ -51,17 +49,17 @@ public class SyncTokenPolicyTest extends TestBase {
         final String firstResponseHeader = response.getHeaders().getValue(SYNC_TOKEN);
         assertEquals(firstSyncToken, firstResponseHeader);
 
-        final String secondSyncToken = constructSyncTokenString(id, updatedValue, updatedSN);
+        final String secondSyncToken = constructSyncTokenString(ID, UPDATED_VALUE, UPDATED_SEQUENCE_NUMBER);
         final HttpPipeline pipeline2 = customizedPipeline(secondSyncToken, syncTokenPolicy);
         final HttpResponse response2 = pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
         // verify the new sync token value from the concurrent map
         final String secondRequestHeader = response2.getRequest().getHeaders().getValue(SYNC_TOKEN);
-        assertEquals(constructSyncTokenStringWithoutSeqNumber(id, value), secondRequestHeader);
+        assertEquals(constructSyncTokenStringWithoutSeqNumber(ID, VALUE), secondRequestHeader);
 
         // verify the updated cached sync-token value
         final HttpResponse response3 = pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
         final String thirdRequestHeader = response3.getRequest().getHeaders().getValue(SYNC_TOKEN);
-        assertEquals(constructSyncTokenStringWithoutSeqNumber(id, updatedValue), thirdRequestHeader);
+        assertEquals(constructSyncTokenStringWithoutSeqNumber(ID, UPDATED_VALUE), thirdRequestHeader);
 
     }
 
@@ -69,7 +67,7 @@ public class SyncTokenPolicyTest extends TestBase {
     public void multipleSyncTokenTest() throws Exception {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
 
-        final String syncTokens = constructSyncTokenString(id, value, sn) + "," + constructSyncTokenString(newId, updatedValue, updatedSN);
+        final String syncTokens = constructSyncTokenString(ID, VALUE, SEQUENCE_NUMBER) + "," + constructSyncTokenString(NEW_ID, UPDATED_VALUE, UPDATED_SEQUENCE_NUMBER);
         final HttpPipeline pipeline = customizedPipeline(syncTokens, syncTokenPolicy);
         final HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
         // At first request, the request header should have empty sync-token value
@@ -78,18 +76,18 @@ public class SyncTokenPolicyTest extends TestBase {
         final String firstResponseHeader = response.getHeaders().getValue(SYNC_TOKEN);
         assertEquals(syncTokens, firstResponseHeader);
 
-        final String secondSyncToken = constructSyncTokenString(id, updatedValue, updatedSN);
+        final String secondSyncToken = constructSyncTokenString(ID, UPDATED_VALUE, UPDATED_SEQUENCE_NUMBER);
         final HttpPipeline pipeline2 = customizedPipeline(secondSyncToken, syncTokenPolicy);
         final HttpResponse response2 = pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
         // verify the new sync token value from the concurrent map
         final String secondRequestHeader = response2.getRequest().getHeaders().getValue(SYNC_TOKEN);
-        final String secondRequestHeaderExpected = constructSyncTokenStringWithoutSeqNumber(id, value) + "," + constructSyncTokenStringWithoutSeqNumber(newId, updatedValue);
+        final String secondRequestHeaderExpected = constructSyncTokenStringWithoutSeqNumber(ID, VALUE) + "," + constructSyncTokenStringWithoutSeqNumber(NEW_ID, UPDATED_VALUE);
         assertEquals(secondRequestHeaderExpected, secondRequestHeader);
 
         // verify the updated cached sync-token value
         final HttpResponse response3 = pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
         final String thirdRequestHeader = response3.getRequest().getHeaders().getValue(SYNC_TOKEN);
-        final String thirdRequestHeaderExpected = constructSyncTokenStringWithoutSeqNumber(id, updatedValue) + "," + constructSyncTokenStringWithoutSeqNumber(newId, updatedValue);
+        final String thirdRequestHeaderExpected = constructSyncTokenStringWithoutSeqNumber(ID, UPDATED_VALUE) + "," + constructSyncTokenStringWithoutSeqNumber(NEW_ID, UPDATED_VALUE);
         assertEquals(thirdRequestHeaderExpected, thirdRequestHeader);
     }
 
