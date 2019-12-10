@@ -412,17 +412,8 @@ Exceptions][event_hubs_messaging_exceptions].
 
 Beyond those discussed, the Azure Event Hubs client library offers support for many additional scenarios to help take
 advantage of the full feature set of the Azure Event Hubs service. In order to help explore some of the these scenarios,
-the following set of sample is available:
+the following set of sample is available [here][samples_readme].
 
-- [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
-- [Publish events using Microsoft identity platform][sample_publish_identity]
-- [Publish events to a specific Event Hub partition with partition identifier][sample_publish_partitionId]
-- [Publish events to a specific Event Hub partition with partition key][sample_publish_partitionKey]
-- [Publish events to an Event Hub with a size-limited batch][sample_publish_size_limited]
-- [Publish events with custom metadata][sample_publish_custom_metadata]
-- [Consume events from an Event Hub partition][sample_consume_event]
-- [Consume events starting from an event sequence number][sample_consume_sequence_number]
-- [Consume events from all partitions using EventProcessorClient][sample_event_processor]
 
 ## Contributing
 
@@ -446,6 +437,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
+[samples_readme]: ./src/samples/README.md
 [sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/
 [sample_consume_event]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEvents.java
 [sample_consume_sequence_number]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEventsFromKnownSequenceNumberPosition.java

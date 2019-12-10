@@ -11,6 +11,10 @@ public enum TestMode {
      */
     RECORD,
     /**
+     * Run a live test without recording.
+     */
+    LIVE,
+    /**
      * Playback data from an existing test session.
      */
     PLAYBACK,

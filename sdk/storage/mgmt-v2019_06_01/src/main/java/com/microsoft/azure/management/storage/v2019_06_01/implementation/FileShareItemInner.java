@@ -33,7 +33,8 @@ public class FileShareItemInner extends AzureEntityResource {
 
     /**
      * The maximum size of the share, in gigabytes. Must be greater than 0, and
-     * less than or equal to 5TB (5120).
+     * less than or equal to 5TB (5120). For Large File Shares, the maximum
+     * size is 100000.
      */
     @JsonProperty(value = "properties.shareQuota")
     private Integer shareQuota;
@@ -68,7 +69,7 @@ public class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
+     * Get the maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 100000.
      *
      * @return the shareQuota value
      */
@@ -77,7 +78,7 @@ public class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Set the maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
+     * Set the maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 100000.
      *
      * @param shareQuota the shareQuota value to set
      * @return the FileShareItemInner object itself.
