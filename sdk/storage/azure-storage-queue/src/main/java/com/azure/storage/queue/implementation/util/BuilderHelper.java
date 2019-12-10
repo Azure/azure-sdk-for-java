@@ -19,7 +19,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
@@ -29,11 +28,13 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -41,10 +42,10 @@ import java.util.regex.Pattern;
  * This class provides helper methods for common builder patterns.
  */
 public final class BuilderHelper {
-    private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-queue";
-    // {x-version-update-start;com.azure:azure-storage-queue;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.1.0";
-    // {x-version-update-end}
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-queue.properties");
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
 
     private static final Pattern IP_URL_PATTERN = Pattern
         .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
@@ -103,7 +104,6 @@ public final class BuilderHelper {
                 parts.setEndpoint(String.format("%s://%s", url.getProtocol(), url.getAuthority()));
             }
 
-            // TODO (gapra) : What happens if a user has custom queries?
             // Attempt to get the SAS token from the URL passed
             String sasToken = new CommonSasQueryParameters(
                 StorageImplUtils.parseQueryStringSplitValues(url.getQuery()), false).encode();
@@ -202,8 +202,10 @@ public final class BuilderHelper {
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
-        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(),
-            DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(), clientName, clientVersion,
+            configuration);
     }
 
     /*

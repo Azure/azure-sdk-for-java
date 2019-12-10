@@ -24,39 +24,9 @@ import java.util.Map;
  */
 public interface SqlContainerGetResults extends HasInner<SqlContainerGetResultsInner>, Indexable, Refreshable<SqlContainerGetResults>, Updatable<SqlContainerGetResults.Update>, HasManager<CosmosDBManager> {
     /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
-     * @return the conflictResolutionPolicy value.
-     */
-    ConflictResolutionPolicy conflictResolutionPolicy();
-
-    /**
-     * @return the defaultTtl value.
-     */
-    Integer defaultTtl();
-
-    /**
      * @return the id value.
      */
     String id();
-
-    /**
-     * @return the indexingPolicy value.
-     */
-    IndexingPolicy indexingPolicy();
 
     /**
      * @return the location value.
@@ -69,14 +39,9 @@ public interface SqlContainerGetResults extends HasInner<SqlContainerGetResultsI
     String name();
 
     /**
-     * @return the partitionKey value.
+     * @return the resource value.
      */
-    ContainerPartitionKey partitionKey();
-
-    /**
-     * @return the sqlContainerGetResultsId value.
-     */
-    String sqlContainerGetResultsId();
+    SqlContainerGetPropertiesResource resource();
 
     /**
      * @return the tags value.
@@ -87,11 +52,6 @@ public interface SqlContainerGetResults extends HasInner<SqlContainerGetResultsI
      * @return the type value.
      */
     String type();
-
-    /**
-     * @return the uniqueKeyPolicy value.
-     */
-    UniqueKeyPolicy uniqueKeyPolicy();
 
     /**
      * The entirety of the SqlContainerGetResults definition.
