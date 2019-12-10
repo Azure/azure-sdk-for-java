@@ -45,7 +45,7 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
             for (final String syncTokenStr : syncTokens) {
                 final SyncToken syncToken = SyncToken.fromSyncTokenString(syncTokenStr);
                 if (syncToken == null) {
-                    return Mono.just(httpResponse);
+                    continue;
                 }
 
                 final String tokenId = syncToken.getId();
