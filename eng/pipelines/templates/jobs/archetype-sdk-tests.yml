@@ -55,7 +55,7 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - pwsh: |
+      - script: |
         echo "##vso[task.setvariable variable=DisplayName]$(OSName) on Java $(JavaVersion)"
         displayName: "Setup DisplayName"
         condition: eq(variables['DisplayName'], '')
