@@ -362,6 +362,7 @@ public class SearchAsyncTests extends SearchTestBase {
             }).verifyComplete();
     }
 
+    @Disabled
     @Test
     public void canSearchDynamicDocuments() throws IOException {
         createHotelIndex();

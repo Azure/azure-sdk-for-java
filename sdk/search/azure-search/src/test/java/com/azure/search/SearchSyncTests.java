@@ -58,6 +58,7 @@ public class SearchSyncTests extends SearchTestBase {
         client.search(searchText, searchOptions, requestOptions, Context.NONE).iterableByPage().iterator().next();
     }
 
+    @Disabled
     @Test
     public void canSearchDynamicDocuments() throws IOException {
         createHotelIndex();
