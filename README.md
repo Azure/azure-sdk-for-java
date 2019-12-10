@@ -22,32 +22,33 @@ Java 8 or later is required to use the November 2019 client libraries, otherwise
 
 Each service might have a number of libraries available from each of the following categories:
 
-- [Client: GA November 2019 Releases](#Client-GA-November-2019-Releases)
+- [Client: GA Decemeber 2019 Releases](#Client-GA-Decemeber-2019-Releases)
 - [Client - Previous Versions](#Client-Previous-Versions)
 - [Management](#Management)
 
-### Client: GA November 2019 Releases
+### Client: GA December 2019 Releases
 
-New wave of packages that were released in November 2019 client library as General Availability (GA) and several others that were released in **preview**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](sdk/core/README.md).
+New wave of packages that were released in December 2019 client library as General Availability (GA) and several others that were released in **preview**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](sdk/core/README.md).
 
 These libraries can be easily identified by sdk/ folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
-The libraries released in the GA November 2019 release:
-- [Identity](https://github.com/Azure/azure-sdk-for-java/blob/azure-identity_1.0.0/sdk/identity/azure-identity/README.md)
-- [Key Vault Keys](https://github.com/Azure/azure-sdk-for-java/blob/azure-security-keyvault-keys_4.0.0/sdk/keyvault/azure-security-keyvault-keys/README.md)
-- [Key Vault Secrets](https://github.com/Azure/azure-sdk-for-java/blob/azure-security-keyvault-secrets_4.0.0/sdk/keyvault/azure-security-keyvault-secrets/README.md)
-- [Storage Blobs](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0/sdk/storage/azure-storage-blob/README.md)
-- [Storage Blobs Batch](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0/sdk/storage/azure-storage-blob-batch/README.md)
-- [Storage Blobs Cryptography](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0/sdk/storage/azure-storage-blob-cryptography/README.md)
-- [Storage Queues](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0/sdk/storage/azure-storage-queue/README.md)
+The libraries released in the GA December 2019 release:
+- [Identity](https://github.com/Azure/azure-sdk-for-java/blob/azure-identity_1.0.1/sdk/identity/azure-identity/README.md)
+- [Key Vault Keys](https://github.com/Azure/azure-sdk-for-java/blob/azure-security-keyvault-keys_4.0.1/sdk/keyvault/azure-security-keyvault-keys/README.md)
+- [Key Vault Secrets](https://github.com/Azure/azure-sdk-for-java/blob/azure-security-keyvault-secrets_4.0.1/sdk/keyvault/azure-security-keyvault-secrets/README.md)
+- [Storage Blobs](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.1.0/sdk/storage/azure-storage-blob/README.md)
+- [Storage Blobs Batch](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-batch_12.1.0/sdk/storage/azure-storage-blob-batch/README.md)
+- [Storage Blobs Cryptography](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-cryptography_12.1.0/sdk/storage/azure-storage-blob-cryptography/README.md)
+- [Storage Queues](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.1.0/sdk/storage/azure-storage-queue/README.md)
+- [Storage File Share](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.0.0/sdk/storage/azure-storage-file-share/README.md)
 
-The libraries released in the November 2019 preview:
-- [App Configuration](https://github.com/Azure/azure-sdk-for-java/tree/azure-data-appconfiguration_1.0.0-preview.6/sdk/appconfiguration/azure-data-appconfiguration)
-- [Event Hubs](https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-eventhubs_5.0.0-preview.5/sdk/eventhubs/azure-messaging-eventhubs/README.md)
-- [Event Hubs Checkpoint Store](https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-eventhubs-checkpointstore-blob_1.0.0-preview.3/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md)
-- [Storage File Share](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.0.0-preview.5/sdk/storage/azure-storage-file-share/README.md)
-- [Key Vault Certificates](https://github.com/Azure/azure-sdk-for-java/blob/azure-security-keyvault-certificates_4.0.0-preview.5/sdk/keyvault/azure-security-keyvault-certificates/README.md)
-- [OpenCensus Tracing](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-tracing-opencensus_1.0.0-preview.4/sdk/core/azure-core-tracing-opencensus/README.md)
+The libraries released in the December 2019 beta:
+- [App Configuration](https://github.com/Azure/azure-sdk-for-java/tree/azure-data-appconfiguration_1.0.0-beta.7/sdk/appconfiguration/azure-data-appconfiguration)
+- [Event Hubs](https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-eventhubs_5.0.0-beta.6/sdk/eventhubs/azure-messaging-eventhubs/README.md)
+- [Event Hubs Checkpoint Store](https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-eventhubs-checkpointstore-blob_1.0.0-beta.4/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md)
+- [Key Vault Certificates](https://github.com/Azure/azure-sdk-for-java/blob/azure-security-keyvault-certificates_4.0.0-beta.6/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+- [OpenCensus Tracing](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-tracing-opencensus_1.0.0-beta.5/sdk/core/azure-core-tracing-opencensus/README.md)
+- [OpenTelemetry Tracing](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-tracing-opentelemetry_1.0.0-beta.1/sdk/core/azure-core-tracing-opentelemetry/README.md)
 
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
 
