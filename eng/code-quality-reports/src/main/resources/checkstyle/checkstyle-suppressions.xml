@@ -265,4 +265,8 @@
   <!-- Suppress the check on any implementation code and codegen classes -->
   <suppress checks="LineLength" files=".*[/\\]textanalytics[/\\].*implementation[/\\].*"/>
 
+  <!-- Suppress these checks until CI pipeline setup -->
+  <suppress checks="MissingJavadocMethod" files=".*[/\\]textanalytics[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
+
 </suppressions>
