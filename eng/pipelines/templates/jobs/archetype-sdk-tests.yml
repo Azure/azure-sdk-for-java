@@ -8,26 +8,32 @@ parameters:
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.8'
+      DisplayName: 'Linux - Java 8'
     macOS - Java 8:
       OSName: 'macOS'
       OSVmImage: 'macOS-10.13'
       JavaVersion: '1.8'
+      DisplayName: 'macOS - Java 8'
     Windows - Java 8:
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
+      DisplayName: 'Windows - Java 8'
     Linux - Java 11:
       OSName: 'Linux'
       OSVmImage: 'ubuntu-16.04'
       JavaVersion: '1.11'
+      DisplayName: 'Linux - Java 11'
     macOS - Java 11:
       OSName: 'macOS'
       OSVmImage: 'macOS-10.13'
       JavaVersion: '1.11'
+      DisplayName: 'macOS - Java 11'
     Windows - Java 11:
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
+      DisplayName: 'Windows - Java 11'
   PreRunSteps: []
   TestName: LiveTest
   TimeoutInMinutes: 60
@@ -55,11 +61,6 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - script: |
-          echo "##vso[task.setvariable variable=DisplayName]$(OSName) on Java $(JavaVersion)"
-        displayName: "Setup DisplayName"
-        condition: eq(variables['DisplayName'], '')
-
       - ${{ parameters.PreRunSteps }}
 
       - task: Maven@3
