@@ -11,6 +11,7 @@ import com.azure.ai.textanalytics.models.TextBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentResult;
+import com.azure.core.util.Context;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +32,7 @@ public class AnalyzeSentimentBatchDocuments {
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
-        DocumentResultCollection<TextSentimentResult> detectedBatchResult = client.analyzeBatchSentiment(inputs, requestOptions);
+        DocumentResultCollection<TextSentimentResult> detectedBatchResult = client.analyzeBatchSentimentWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();

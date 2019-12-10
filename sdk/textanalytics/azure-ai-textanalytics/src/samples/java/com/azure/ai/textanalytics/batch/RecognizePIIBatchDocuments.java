@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.models.NamedEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.core.util.Context;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +31,7 @@ public class RecognizePIIBatchDocuments {
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
-        final DocumentResultCollection<NamedEntityResult> detectedBatchResult = client.recognizeBatchPiiEntities(inputs, requestOptions);
+        final DocumentResultCollection<NamedEntityResult> detectedBatchResult = client.recognizeBatchPiiEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();

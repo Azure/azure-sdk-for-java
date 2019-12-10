@@ -73,24 +73,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectLanguageResult> detectLanguage(String text) {
-        return detectLanguage(text, null);
-    }
-
-    /**
-     * Returns the detected language and a numeric score between zero and one when the hint of country specified.
-     * Scores close to one indicate 100% certainty that the identified language is true.
-     *
-     * @param text The text to be analyzed.
-     * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
-     * specified.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link DetectLanguageResult detected language} of the text.
-     * @throws NullPointerException if {@code text} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectLanguageResult> detectLanguage(String text, String countryHint) {
-        return detectLanguageWithResponse(text, countryHint)
-            .flatMap(FluxUtil::toMono);
+        return detectLanguageWithResponse(text, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -136,23 +119,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs) {
-        return detectLanguages(inputs, null);
-    }
-
-    /**
-     * Returns the detected language for a batch of input with the provided country hint.
-     *
-     * @param inputs The list of texts to be analyzed.
-     * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
-     * alpha-2. Defaults to "US" if not specified.
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
-     * @throws NullPointerException if {@code inputs} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> inputs,
-                                                                                String countryHint) {
-        return detectLanguagesWithResponse(inputs, countryHint).flatMap(FluxUtil::toMono);
+        return detectLanguagesWithResponse(inputs, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -291,12 +258,7 @@ public final class TextAnalyticsAsyncClient {
     // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NamedEntityResult> recognizeEntities(String text) {
-        return recognizeEntities(text, null);
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NamedEntityResult> recognizeEntities(String text, String language) {
-        return recognizeEntitiesWithResponse(text, language).flatMap(FluxUtil::toMono);
+        return recognizeEntitiesWithResponse(text, null).flatMap(FluxUtil::toMono);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -369,19 +331,15 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizeBatchEntitiesWithResponse(
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
         return service.entitiesRecognitionGeneralWithRestResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(document), options.getModelVersion(),
-            options.showStatistics(), context).map(response -> new SimpleResponse<>(response, null));
+            new MultiLanguageBatchInput().setDocuments(document), options == null ? null : options.getModelVersion(),
+            options == null ? null : options.showStatistics(), context)
+                   .map(response -> new SimpleResponse<>(response, null));
     }
 
     // (3) PII entities
     // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NamedEntityResult> recognizePiiEntities(String text) {
-        return null;
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NamedEntityResult> recognizePiiEntities(String text, String language) {
         return null;
     }
 
@@ -439,8 +397,8 @@ public final class TextAnalyticsAsyncClient {
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate multiLanguageBatchInput
         return service.entitiesRecognitionPiiWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(document),
-            options.getModelVersion(), options.showStatistics(), context)
-            .map(response -> new SimpleResponse<>(response, null));
+            options == null ? null : options.getModelVersion(), options == null ? null : options.showStatistics(),
+            context).map(response -> new SimpleResponse<>(response, null));
     }
 
     // (4) Link entities
@@ -523,20 +481,15 @@ public final class TextAnalyticsAsyncClient {
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate multiLanguageBatchInput
         return service.entitiesLinkingWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(inputs),
-            options.getModelVersion(), options.showStatistics(), context)
-            .map(response -> new SimpleResponse<>(response, null));
+            options == null ? null : options.getModelVersion(), options == null ? null : options.showStatistics(),
+            context).map(response -> new SimpleResponse<>(response, null));
     }
 
     // (5) key phrase
     // new user
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyPhraseResult> extractKeyPhrases(String text) {
-        return extractKeyPhrases(text, null);
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyPhraseResult> extractKeyPhrases(String text, String language) {
-        return extractKeyPhrasesWithResponse(text, language).flatMap(FluxUtil::toMono);
+        return extractKeyPhrasesWithResponse(text, null).flatMap(FluxUtil::toMono);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -609,20 +562,15 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
         return service.keyPhrasesWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(document),
-            options.getModelVersion(), options.showStatistics(), context).map(response ->
-            new SimpleResponse<>(response, null));
+            options == null ? null : options.getModelVersion(), options == null ? null : options.showStatistics(),
+            context).map(response -> new SimpleResponse<>(response, null));
     }
 
     // (6) sentiment
     // new user,
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TextSentimentResult> analyzeSentiment(String input) {
-        return analyzeSentiment(input);
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextSentimentResult> analyzeSentiment(String text, String language) {
-        return analyzeSentimentWithResponse(text, language).flatMap(FluxUtil::toMono);
+        return analyzeSentimentWithResponse(input, null).flatMap(FluxUtil::toMono);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -698,8 +646,9 @@ public final class TextAnalyticsAsyncClient {
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
         // TODO: validate multiLanguageBatchInput
         return service.sentimentWithRestResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(document), options.getModelVersion(), options.showStatistics(),
-            context).map(response -> new SimpleResponse<>(response, null));
+            new MultiLanguageBatchInput().setDocuments(document), options == null ? null : options.getModelVersion(),
+            options == null ? null : options.showStatistics(), context)
+                   .map(response -> new SimpleResponse<>(response, null));
     }
 
 }

@@ -11,6 +11,7 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextBatchStatistics;
+import com.azure.core.util.Context;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +32,7 @@ public class DetectLanguageBatchDocuments {
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
-        final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = client.detectBatchLanguages(inputs, requestOptions);
+        final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = client.detectBatchLanguagesWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();

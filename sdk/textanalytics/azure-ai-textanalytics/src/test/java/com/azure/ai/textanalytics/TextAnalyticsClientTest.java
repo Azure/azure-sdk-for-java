@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -37,7 +38,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguagesBatchInputShowStatistics() {
         detectLanguageShowStatisticsRunner((inputs, options) ->
-            validateBatchResult(client.detectBatchLanguages(inputs, options), getExpectedBatchDetectedLanguages(),
+            validateBatchResult(client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE).getValue(), getExpectedBatchDetectedLanguages(),
                 "Language"));
     }
 
@@ -56,7 +57,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguagesBatchListCountryHint() {
         detectLanguagesCountryHintRunner((inputs, countryHint) -> validateBatchResult(
-            client.detectLanguages(inputs, countryHint), getExpectedBatchDetectedLanguages(), "Language"));
+            client.detectLanguagesWithResponse(inputs, countryHint, Context.NONE).getValue(), getExpectedBatchDetectedLanguages(), "Language"));
     }
 
     /**
@@ -85,7 +86,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguagesNullInput() {
-        assertRunnableThrowsException(() -> client.detectBatchLanguages(null, null), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.detectBatchLanguagesWithResponse(null, null, Context.NONE).getValue(), NullPointerException.class);
     }
 
     /**
