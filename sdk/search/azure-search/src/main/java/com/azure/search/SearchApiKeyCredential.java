@@ -10,7 +10,7 @@ package com.azure.search;
  * @see SearchIndexClientBuilder
  * @see SearchServiceClientBuilder
  */
-public class ApiKeyCredentials {
+public class SearchApiKeyCredential {
     private final String apiKey;
 
     /**
@@ -18,7 +18,7 @@ public class ApiKeyCredentials {
      *
      * @param apiKey a query or admin API key
      */
-    public ApiKeyCredentials(String apiKey) {
+    public SearchApiKeyCredential(String apiKey) {
         this.apiKey = apiKey;
     }
 

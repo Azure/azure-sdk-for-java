@@ -423,10 +423,10 @@ public class IndexAndServiceStatisticsExample {
      */
     private static SearchServiceClient createClient() {
         String endpoint = String.format("https://%s.%s", SEARCH_SERVICE_NAME, "search.windows.net"); // search.windows.net is the default DNS SUFFIX
-        ApiKeyCredentials apiKeyCredentials = new ApiKeyCredentials(ADMIN_KEY);
+        SearchApiKeyCredential searchApiKeyCredential = new SearchApiKeyCredential(ADMIN_KEY);
         return new SearchServiceClientBuilder()
             .endpoint(endpoint)
-            .credential(apiKeyCredentials)
+            .credential(searchApiKeyCredential)
             .buildClient();
     }
 }

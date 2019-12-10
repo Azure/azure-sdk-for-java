@@ -28,7 +28,7 @@ public class SynonymMapsCreateExample {
     public static void main(String[] args) {
         SearchServiceClient serviceClient = new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(API_ADMIN_KEY))
+            .credential(new SearchApiKeyCredential(API_ADMIN_KEY))
             .buildClient();
 
         String synonymMapName = "desc-synonymmap";

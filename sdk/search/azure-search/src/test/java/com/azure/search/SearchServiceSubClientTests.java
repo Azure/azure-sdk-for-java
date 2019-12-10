@@ -88,14 +88,14 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
     private SearchServiceClient getSearchService() {
         return new SearchServiceClientBuilder()
             .endpoint("https://test1.search.windows.net")
-            .credential(new ApiKeyCredentials("api-key"))
+            .credential(new SearchApiKeyCredential("api-key"))
             .buildClient();
     }
 
     private SearchServiceAsyncClient getAsyncSearchService() {
         return new SearchServiceClientBuilder()
             .endpoint("https://test1.search.windows.net")
-            .credential(new ApiKeyCredentials("api-key"))
+            .credential(new SearchApiKeyCredential("api-key"))
             .buildAsyncClient();
     }
 }

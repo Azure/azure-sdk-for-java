@@ -140,14 +140,14 @@ public class RefineSearchCapabilitiesExample {
     private static SearchServiceClient createServiceClient() {
         return new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(ADMIN_KEY))
+            .credential(new SearchApiKeyCredential(ADMIN_KEY))
             .buildClient();
     }
 
     private static SearchIndexClient createIndexClient() {
         return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(ADMIN_KEY))
+            .credential(new SearchApiKeyCredential(ADMIN_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
     }

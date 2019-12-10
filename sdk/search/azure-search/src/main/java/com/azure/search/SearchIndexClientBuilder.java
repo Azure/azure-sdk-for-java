@@ -32,7 +32,7 @@ import java.util.List;
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
 public class SearchIndexClientBuilder {
 
-    private ApiKeyCredentials apiKeyCredentials;
+    private SearchApiKeyCredential searchApiKeyCredential;
     private String apiVersion;
     private String endpoint;
     private String indexName;
@@ -98,16 +98,16 @@ public class SearchIndexClientBuilder {
     /**
      * Sets the api key to use for request authentication.
      *
-     * @param apiKeyCredentials api key for request authentication
+     * @param searchApiKeyCredential api key for request authentication
      * @return the updated SearchIndexClientBuilder object
      * @throws IllegalArgumentException when the api key is empty
      * @throws IllegalArgumentException when the api key is empty
      */
-    public SearchIndexClientBuilder credential(ApiKeyCredentials apiKeyCredentials) {
-        if (apiKeyCredentials == null || StringUtils.isBlank(apiKeyCredentials.getApiKey())) {
+    public SearchIndexClientBuilder credential(SearchApiKeyCredential searchApiKeyCredential) {
+        if (searchApiKeyCredential == null || StringUtils.isBlank(searchApiKeyCredential.getApiKey())) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Empty apiKeyCredentials"));
         }
-        this.apiKeyCredentials = apiKeyCredentials;
+        this.searchApiKeyCredential = searchApiKeyCredential;
         return this;
     }
 
@@ -133,8 +133,8 @@ public class SearchIndexClientBuilder {
      * @return a {@link SearchIndexAsyncClient} created from the configurations in this builder.
      */
     public SearchIndexAsyncClient buildAsyncClient() {
-        if (apiKeyCredentials != null) {
-            this.policies.add(new SearchApiKeyPipelinePolicy(apiKeyCredentials));
+        if (searchApiKeyCredential != null) {
+            this.policies.add(new SearchApiKeyPipelinePolicy(searchApiKeyCredential));
         }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()

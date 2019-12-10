@@ -34,7 +34,7 @@ public class IndexClientConfigurationExample {
     private static SearchIndexClient createMinimalClient() {
         return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(API_KEY))
+            .credential(new SearchApiKeyCredential(API_KEY))
             .indexName("hotels")
             .buildClient();
     }
@@ -47,7 +47,7 @@ public class IndexClientConfigurationExample {
     private static SearchIndexAsyncClient createAdvancedClient() {
         return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(API_KEY))
+            .credential(new SearchApiKeyCredential(API_KEY))
             .indexName("hotels")
             .apiVersion("2019-05-06")
             .addPolicy(new RetryPolicy())

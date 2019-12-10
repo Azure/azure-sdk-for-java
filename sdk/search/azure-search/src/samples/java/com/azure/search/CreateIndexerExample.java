@@ -37,7 +37,7 @@ public class CreateIndexerExample {
     public static void main(String[] args) {
         SearchServiceAsyncClient searchServiceClient = new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(ADMIN_KEY))
+            .credential(new SearchApiKeyCredential(ADMIN_KEY))
             .buildAsyncClient();
 
         createOrUpdateIndexer(searchServiceClient);

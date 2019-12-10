@@ -40,7 +40,7 @@ public class IndexContentManagementExample {
     private static void basicIndexing() {
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(API_KEY))
+            .credential(new SearchApiKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
 
@@ -60,7 +60,7 @@ public class IndexContentManagementExample {
     private static void advancedIndexing() {
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(API_KEY))
+            .credential(new SearchApiKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
 

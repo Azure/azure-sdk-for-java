@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class SearchApiKeyPipelinePolicy implements HttpPipelinePolicy {
 
-    private final ApiKeyCredentials apiKey;
+    private final SearchApiKeyCredential apiKey;
 
     /**
      * Constructor
@@ -24,7 +24,7 @@ public class SearchApiKeyPipelinePolicy implements HttpPipelinePolicy {
      * @param apiKey Azure Cognitive Search service api admin or query key
      * @throws IllegalArgumentException when the api key is an empty string
      */
-    public SearchApiKeyPipelinePolicy(ApiKeyCredentials apiKey) {
+    public SearchApiKeyPipelinePolicy(SearchApiKeyCredential apiKey) {
         Objects.requireNonNull(apiKey);
         this.apiKey = apiKey;
     }

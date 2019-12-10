@@ -36,7 +36,7 @@ public class DataSourceExample {
     public static void main(String[] args) {
         SearchServiceClient client = new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(ADMIN_KEY))
+            .credential(new SearchApiKeyCredential(ADMIN_KEY))
             .buildClient();
 
         /*

@@ -29,7 +29,7 @@ import java.util.List;
  */
 @ServiceClientBuilder(serviceClients = {SearchServiceClient.class, SearchServiceAsyncClient.class})
 public class SearchServiceClientBuilder {
-    private ApiKeyCredentials apiKeyCredentials;
+    private SearchApiKeyCredential searchApiKeyCredential;
     private String apiVersion;
     private String endpoint;
     private HttpClient httpClient;
@@ -82,15 +82,15 @@ public class SearchServiceClientBuilder {
     /**
      * Sets the api key to use for request authentication.
      *
-     * @param apiKeyCredentials api key for request authentication
+     * @param searchApiKeyCredential api key for request authentication
      * @return the updated SearchServiceClientBuilder object
      * @throws IllegalArgumentException when the api key is empty
      */
-    public SearchServiceClientBuilder credential(ApiKeyCredentials apiKeyCredentials) {
-        if (apiKeyCredentials == null || StringUtils.isBlank(apiKeyCredentials.getApiKey())) {
+    public SearchServiceClientBuilder credential(SearchApiKeyCredential searchApiKeyCredential) {
+        if (searchApiKeyCredential == null || StringUtils.isBlank(searchApiKeyCredential.getApiKey())) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Empty apiKeyCredentials"));
         }
-        this.apiKeyCredentials = apiKeyCredentials;
+        this.searchApiKeyCredential = searchApiKeyCredential;
         return this;
     }
 
@@ -116,8 +116,8 @@ public class SearchServiceClientBuilder {
      * @return a {@link SearchIndexAsyncClient} created from the configurations in this builder.
      */
     public SearchServiceAsyncClient buildAsyncClient() {
-        if (apiKeyCredentials != null) {
-            this.policies.add(new SearchApiKeyPipelinePolicy(apiKeyCredentials));
+        if (searchApiKeyCredential != null) {
+            this.policies.add(new SearchApiKeyPipelinePolicy(searchApiKeyCredential));
         }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
