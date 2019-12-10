@@ -24,10 +24,6 @@ import java.util.stream.Collectors;
  */
 public final class CoreUtils {
     private static final String COMMA = ",";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
-    private static final String UNKNOWN_NAME = "UnknownName";
-    private static final String UNKNOWN_VERSION = "UnknownVersion";
 
     private CoreUtils() {
         // Exists only to defeat instantiation.
@@ -166,10 +162,10 @@ public final class CoreUtils {
 
 
     /**
-     * Helper method that returns {@link UserAgentProperties} from properties defined in {@code propertiesFileName}.
+     * Helper method that returns an immutable {@link Map} of properties defined in {@code propertiesFileName}.
      *
      * @param propertiesFileName The file name defining the properties.
-     * @return {@link UserAgentProperties}.
+     * @return an immutable {@link Map}.
      */
     public static Map<String, String> getProperties(String propertiesFileName) {
         ClientLogger logger = new ClientLogger(CoreUtils.class);

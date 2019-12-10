@@ -14,6 +14,6 @@ class QueueUserAgentPropertiesTest extends Specification {
         Map<String, String> properties = CoreUtils.getProperties("azure-storage-queue.properties")
         expect:
         properties.get("name") == "azure-storage-queue"
-        properties.getVersion().matches("(\\d)+.(\\d)+.(\\d)+([-a-zA-Z0-9.])*")
+        properties.get("version").matches("(\\d)+.(\\d)+.(\\d)+([-a-zA-Z0-9.])*")
     }
 }

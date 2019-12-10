@@ -12,7 +12,7 @@ class BlobCryptographyUserAgentPropertiesTest extends Specification {
         given:
         Map<String, String> properties = CoreUtils.getProperties("azure-storage-blob-cyptography.properties")
         expect:
-        properties.get("name") == "azure-storage-blob-cyptography"
+        properties.get("name") == "azure-storage-blob-cryptography"
         properties.get("version").matches("(\\d)+.(\\d)+.(\\d)+([-a-zA-Z0-9.])*")
     }
 }
