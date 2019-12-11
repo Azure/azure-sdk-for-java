@@ -12,6 +12,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
@@ -203,12 +204,9 @@ public class DataLakeServiceClient {
      * @return The list of file systems.
      */
     public PagedIterable<FileSystemItem> listFileSystems(ListFileSystemsOptions options, Duration timeout) {
-        try {
-            return blobServiceClient.listBlobContainers(Transforms.toListBlobContainersOptions(options), timeout)
-                .mapPage(Transforms::toFileSystemItem);
-        } catch (BlobStorageException ex) {
-            throw logger.logExceptionAsError(DataLakeImplUtils.transformBlobStorageException(ex));
-        }
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobServiceClient.listBlobContainers(Transforms.toListBlobContainersOptions(options), timeout)
+            .mapPage(Transforms::toFileSystemItem), logger);
     }
 
     /**
@@ -243,13 +241,11 @@ public class DataLakeServiceClient {
      */
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Duration timeout, Context context) {
-        try {
+        return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<com.azure.storage.blob.models.UserDelegationKey> response = blobServiceClient
                 .getUserDelegationKeyWithResponse(start, expiry, timeout, context);
             return new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue()));
-        } catch (BlobStorageException ex) {
-            throw logger.logExceptionAsError(DataLakeImplUtils.transformBlobStorageException(ex));
-        }
+            }, logger);
     }
 
     /**

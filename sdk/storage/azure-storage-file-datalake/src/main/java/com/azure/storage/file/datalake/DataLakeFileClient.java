@@ -278,14 +278,12 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public FileReadResponse readWithResponse(OutputStream stream, FileRange range, DownloadRetryOptions options,
         DataLakeRequestConditions requestConditions, boolean getRangeContentMd5, Duration timeout, Context context) {
-        try {
+        return DataLakeImplUtils.returnOrConvertException(() -> {
             BlobDownloadResponse response = blockBlobClient.downloadWithResponse(stream, Transforms.toBlobRange(range),
                 Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
                 getRangeContentMd5, timeout, context);
             return Transforms.toFileReadResponse(response);
-        } catch (BlobStorageException ex) {
-            throw logger.logExceptionAsError(DataLakeImplUtils.transformBlobStorageException(ex));
-        }
+            }, logger);
     }
 
     /**

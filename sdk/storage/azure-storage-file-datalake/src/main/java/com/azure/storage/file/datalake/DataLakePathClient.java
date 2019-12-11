@@ -194,12 +194,9 @@ public class DataLakePathClient {
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        try {
-            return blockBlobClient.setMetadataWithResponse(metadata,
-                Transforms.toBlobRequestConditions(requestConditions), timeout, context);
-        } catch (BlobStorageException ex) {
-            throw logger.logExceptionAsError(DataLakeImplUtils.transformBlobStorageException(ex));
-        }
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
+                timeout, context), logger);
     }
 
     /**
@@ -238,12 +235,9 @@ public class DataLakePathClient {
      */
     public Response<Void> setHttpHeadersWithResponse(PathHttpHeaders headers,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        try {
-            return blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
-                Transforms.toBlobRequestConditions(requestConditions), timeout, context);
-        } catch (BlobStorageException ex) {
-            throw logger.logExceptionAsError(DataLakeImplUtils.transformBlobStorageException(ex));
-        }
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
+                Transforms.toBlobRequestConditions(requestConditions), timeout, context), logger);
     }
 
     /**
@@ -410,13 +404,11 @@ public class DataLakePathClient {
      */
     public Response<PathProperties> getPropertiesWithResponse(DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
-        try {
+        return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
                 Transforms.toBlobRequestConditions(requestConditions), timeout, context);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
-        } catch (BlobStorageException ex) {
-            throw logger.logExceptionAsError(DataLakeImplUtils.transformBlobStorageException(ex));
-        }
+            }, logger);
     }
 
     /**
