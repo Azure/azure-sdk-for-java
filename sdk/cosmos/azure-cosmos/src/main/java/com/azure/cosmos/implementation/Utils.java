@@ -16,7 +16,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -262,20 +261,17 @@ public class Utils {
         return queryString.toString();
     }
 
-    public static URL setQuery(String urlString, String query) {
+    public static URI setQuery(String urlString, String query) {
 
         if (urlString == null)
             throw new IllegalStateException("urlString parameter can't be null.");
         query = Utils.removeLeadingQuestionMark(query);
         try {
             if (query != null && !query.isEmpty()) {
-                return new URI(Utils.addTrailingSlash(urlString) + RuntimeConstants.Separators.Query[0] + query)
-                        .toURL();
+                return new URI(Utils.addTrailingSlash(urlString) + RuntimeConstants.Separators.Query[0] + query);
             } else {
-                return new URI(Utils.addTrailingSlash(urlString)).toURL();
+                return new URI(Utils.addTrailingSlash(urlString));
             }
-        } catch (MalformedURLException e) {
-            throw new IllegalStateException("Uri is invalid: ", e);
         } catch (URISyntaxException e) {
             throw new IllegalStateException("Uri is invalid: ", e);
         }
@@ -499,22 +495,22 @@ public class Utils {
             return null;
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     public static <V> List<V> immutableListOf() {
         return Collections.EMPTY_LIST;
     }
-    
+
     public static <V> List<V> immutableListOf(V v1) {
         List<V> list = new ArrayList<>();
         list.add(v1);
         return Collections.unmodifiableList(list);
     }
-    
+
     public static <K, V> Map<K, V>immutableMapOf() {
         return Collections.emptyMap();
     }
-    
+
     public static <K, V> Map<K, V>immutableMapOf(K k1, V v1) {
         Map<K, V> map = new HashMap<K ,V>();
         map.put(k1,  v1);

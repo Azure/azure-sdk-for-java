@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -87,9 +87,9 @@ public class DocumentProducerTest {
     }
 
     private IRetryPolicyFactory mockDocumentClientIRetryPolicyFactory() {
-        URL url;
+        URI url;
         try {
-            url = new URL("http://localhost");
+            url = new URI("http://localhost");
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }

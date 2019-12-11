@@ -86,11 +86,7 @@ class ClientSideRequestStatistics {
 
         URI locationEndPoint = null;
         if (request.requestContext.locationEndpointToRoute != null) {
-            try {
-                locationEndPoint = request.requestContext.locationEndpointToRoute.toURI();
-            } catch (URISyntaxException e) {
-                throw new IllegalArgumentException(e);
-            }
+            locationEndPoint = request.requestContext.locationEndpointToRoute;
         }
 
         synchronized (this) {

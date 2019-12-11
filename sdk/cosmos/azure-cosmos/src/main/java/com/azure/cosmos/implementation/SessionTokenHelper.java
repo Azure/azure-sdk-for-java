@@ -57,8 +57,9 @@ public class SessionTokenHelper {
         if (request.requestContext.sessionToken == null) {
             request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
         } else {
+
             request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN,
-                                     String.format("%1s:%2s", partitionKeyRangeId, request.requestContext.sessionToken.convertToString()));
+                                     concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, request.requestContext.sessionToken.convertToString()));
         }
     }
 
@@ -159,5 +160,10 @@ public class SessionTokenHelper {
             getLocalSessionToken(request, sessionToken, StringUtils.EMPTY);
             request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
         }
+    }
+
+    public static  String concatPartitionKeyRangeIdWithSessionToken(String partitionKeyRangeRid, String sessionToken) {
+        // e.g., "1:xyz"
+        return partitionKeyRangeRid + ":" + sessionToken;
     }
 }

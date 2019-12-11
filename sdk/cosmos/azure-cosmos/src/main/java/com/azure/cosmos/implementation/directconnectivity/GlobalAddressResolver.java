@@ -20,7 +20,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -39,7 +39,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private final RxPartitionKeyRangeCache routingMapProvider;
     private final int maxEndpoints;
     private final GatewayServiceConfigurationReader serviceConfigReader;
-    final Map<URL, EndpointCache> addressCacheByEndpoint;
+    final Map<URI, EndpointCache> addressCacheByEndpoint;
 
     private GatewayAddressCache gatewayAddressCache;
     private AddressResolver addressResolver;
@@ -69,10 +69,10 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
         this.addressCacheByEndpoint = new ConcurrentHashMap<>();
 
-        for (URL endpoint : endpointManager.getWriteEndpoints()) {
+        for (URI endpoint : endpointManager.getWriteEndpoints()) {
             this.getOrAddEndpoint(endpoint);
         }
-        for (URL endpoint : endpointManager.getReadEndpoints()) {
+        for (URI endpoint : endpointManager.getReadEndpoints()) {
             this.getOrAddEndpoint(endpoint);
         }
     }
@@ -109,11 +109,11 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     private IAddressResolver getAddressResolver(RxDocumentServiceRequest rxDocumentServiceRequest) {
-        URL endpoint = this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
+        URI endpoint = this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
         return this.getOrAddEndpoint(endpoint).addressResolver;
     }
 
-    private EndpointCache getOrAddEndpoint(URL endpoint) {
+    private EndpointCache getOrAddEndpoint(URI endpoint) {
         EndpointCache endpointCache = this.addressCacheByEndpoint.computeIfAbsent(endpoint , key -> {
             GatewayAddressCache gatewayAddressCache = new GatewayAddressCache(endpoint, protocol, this.tokenProvider, this.userAgentContainer, this.httpClient);
             AddressResolver addressResolver = new AddressResolver();
@@ -125,13 +125,13 @@ public class GlobalAddressResolver implements IAddressResolver {
         });
 
         if (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
-            List<URL> allEndpoints = new ArrayList(this.endpointManager.getWriteEndpoints());
+            List<URI> allEndpoints = new ArrayList(this.endpointManager.getWriteEndpoints());
             allEndpoints.addAll(this.endpointManager.getReadEndpoints());
             Collections.reverse(allEndpoints);
-            LinkedList<URL> endpoints = new LinkedList<>(allEndpoints);
+            LinkedList<URI> endpoints = new LinkedList<>(allEndpoints);
             while (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
                 if (endpoints.size() > 0) {
-                    URL dequeueEnpoint = endpoints.pop();
+                    URI dequeueEnpoint = endpoints.pop();
                     if (this.addressCacheByEndpoint.get(dequeueEnpoint) != null) {
                         this.addressCacheByEndpoint.remove(dequeueEnpoint);
                     }
