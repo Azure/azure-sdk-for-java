@@ -13,7 +13,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
-import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;

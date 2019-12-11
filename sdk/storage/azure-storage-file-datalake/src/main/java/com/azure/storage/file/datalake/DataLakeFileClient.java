@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobDownloadResponse;
-import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
