@@ -37,7 +37,7 @@ class QueueSasClientTests extends APISpec {
                 .setIpMax("255.255.255.255"))
     }
 
-    def "QueueSAS enqueue with permissions"() {
+    def "QueueSAS enqueue with perm"() {
         setup:
         def permissions = new QueueSasPermission()
             .setReadPermission(true)
@@ -68,7 +68,7 @@ class QueueSasClientTests extends APISpec {
         thrown(QueueStorageException)
     }
 
-    def "QueueSAS update with permissions"() {
+    def "QueueSAS update with perm"() {
         setup:
         def permissions = new QueueSasPermission()
             .setReadPermission(true)
@@ -100,7 +100,7 @@ class QueueSasClientTests extends APISpec {
     }
 
     // NOTE: Serializer for set access policy keeps milliseconds
-    def "QueueSAS enqueue with identifier"() {
+    def "QueueSAS enqueue with id"() {
         setup:
 
         def permissions = new QueueSasPermission()
@@ -140,7 +140,7 @@ class QueueSasClientTests extends APISpec {
         "sastest" == dequeueMsgIterIdentifier.next().getMessageText()
     }
 
-    def "QueueServiceSAS create delete queue"() {
+    def "QueueServiceSAS create queue"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
