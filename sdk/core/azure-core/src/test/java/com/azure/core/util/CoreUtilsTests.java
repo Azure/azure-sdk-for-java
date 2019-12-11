@@ -58,7 +58,7 @@ public class CoreUtilsTests {
     @Test
     public void testPrettyPrintFormatJsonOrXmlWithJsonContent() {
         String plainJsonContent = "{\"error\":{\"code\":\"MethodNotAllowed\",\"message\":\"HTTP POST not allowed\"}}";
-        String prettyJsonContent = "{" + System.lineSeperator()
+        String prettyJsonContent = "{" + System.lineSeparator()
             + "  \"error\" : {" + System.lineSeparator()
             + "    \"code\" : \"MethodNotAllowed\"," + System.lineSeparator()
             + "    \"message\" : \"HTTP POST not allowed\"" + System.lineSeparator()
