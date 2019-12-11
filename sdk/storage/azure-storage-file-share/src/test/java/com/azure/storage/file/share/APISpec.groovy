@@ -3,8 +3,8 @@
 
 package com.azure.storage.file.share
 
-
 import com.azure.core.util.Configuration
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.StorageTestBase
 import com.azure.storage.file.share.models.ListSharesOptions
 
@@ -13,6 +13,8 @@ import java.time.Duration
 class APISpec extends StorageTestBase {
     URL testFolder = getClass().getClassLoader().getResource("testfiles")
 
+    static def PRIMARY_STORAGE = "AZURE_STORAGE_FILE_"
+    protected static StorageSharedKeyCredential primaryCredential
     // Primary Clients used for API tests
     ShareServiceClient primaryFileServiceClient
     ShareServiceAsyncClient primaryFileServiceAsyncClient

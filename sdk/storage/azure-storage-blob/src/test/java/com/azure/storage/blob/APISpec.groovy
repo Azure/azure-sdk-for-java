@@ -7,8 +7,6 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
-import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.util.CoreUtils
@@ -63,7 +61,7 @@ class APISpec extends StorageTestBase {
 
     static int defaultDataSize = defaultData.remaining()
 
-    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
+    protected static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
 
     // Prefixes for blobs and containers
     String containerPrefix = "jtc" // java test container
@@ -118,6 +116,8 @@ class APISpec extends StorageTestBase {
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
+        System.setProperty("reactor.bufferSize.x", "16")
+        System.setProperty("reactor.bufferSize.small", "100")
     }
 
     def setup() {
@@ -158,7 +158,6 @@ class APISpec extends StorageTestBase {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (isRecordMode()) {
             if (recordLiveMode) {
@@ -203,7 +202,6 @@ class APISpec extends StorageTestBase {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
@@ -221,16 +219,19 @@ class APISpec extends StorageTestBase {
     }
 
     BlobContainerClient getContainerClient(String sasToken, String endpoint) {
+        getContainerClientBuilder(endpoint).sasToken(sasToken).buildClient()
+    }
+
+    BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (isRecordMode() && recordLiveMode) {
             builder.addPolicy(getRecordPolicy())
         }
 
-        builder.sasToken(sasToken).buildClient()
+        return builder
     }
 
     BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
@@ -238,7 +239,6 @@ class APISpec extends StorageTestBase {
             .endpoint(endpoint)
             .blobName(blobName)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (isRecordMode() && recordLiveMode) {
             builder.addPolicy(getRecordPolicy())
@@ -257,7 +257,6 @@ class APISpec extends StorageTestBase {
             .blobName(blobName)
             .snapshot(snapshotId)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (isRecordMode() && recordLiveMode) {
             builder.addPolicy(getRecordPolicy())
@@ -270,7 +269,6 @@ class APISpec extends StorageTestBase {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
@@ -288,7 +286,6 @@ class APISpec extends StorageTestBase {
             .endpoint(endpoint)
             .blobName(blobName)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (isRecordMode() && recordLiveMode) {
             builder.addPolicy(getRecordPolicy())
@@ -301,7 +298,6 @@ class APISpec extends StorageTestBase {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (!CoreUtils.isNullOrEmpty(sasToken)) {
             builder.sasToken(sasToken)

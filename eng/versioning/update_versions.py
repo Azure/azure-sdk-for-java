@@ -1,6 +1,8 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+# Python version 3.4 or higher is required to run this script.
+
 # Use case: Update all the versions in README.md and pom.xml files based on
 # the versions in versions_[client|data|management].txt, external_dependencies.txt
 #

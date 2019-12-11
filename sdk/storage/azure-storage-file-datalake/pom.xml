@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-datalake</artifactId>
-  <version>12.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+  <version>12.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
 
   <name>Microsoft Azure client library for File Storage Data Lake</name>
   <description>This module contains client library for Microsoft Azure File Storage Data Lake.</description>
@@ -55,12 +55,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.1.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -166,7 +166,10 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>-Xlint:unchecked</compilerArgument>
+                  <compilerArgument>
+                    -Xlint:unchecked
+                    -warn:-unused
+                  </compilerArgument>
                 </configuration>
               </execution>
               <execution>
@@ -177,7 +180,10 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>-Xlint:unchecked</compilerArgument>
+                  <compilerArgument>
+                    -Xlint:unchecked
+                    -warn:-unused
+                  </compilerArgument>
                 </configuration>
               </execution>
             </executions>
@@ -229,7 +235,10 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>-Xlint:unchecked</compilerArgument>
+                  <compilerArgument>
+                    -Xlint:unchecked
+                    -warn:-unused
+                  </compilerArgument>
                   <release>8</release>
                 </configuration>
               </execution>
@@ -241,7 +250,10 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>-Xlint:unchecked</compilerArgument>
+                  <compilerArgument>
+                    -Xlint:unchecked
+                    -warn:-unused
+                  </compilerArgument>
                   <release>8</release>
                 </configuration>
               </execution>

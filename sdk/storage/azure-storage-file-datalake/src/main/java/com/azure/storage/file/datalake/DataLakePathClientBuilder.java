@@ -262,7 +262,7 @@ public final class DataLakePathClientBuilder {
             this.fileSystemName = parts.getBlobContainerName();
             this.pathName = Utility.urlEncode(parts.getBlobName());
 
-            String sasToken = parts.getSasQueryParameters().encode();
+            String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }

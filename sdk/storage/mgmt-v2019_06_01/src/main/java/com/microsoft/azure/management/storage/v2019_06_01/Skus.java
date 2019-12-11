@@ -15,5 +15,5 @@ import com.microsoft.azure.arm.model.HasInner;
 /**
  * Type representing Skus.
  */
-public interface Skus extends SupportsListing<Sku>, HasInner<SkusInner> {
+public interface Skus extends SupportsListing<SkuInformation>, HasInner<SkusInner> {
 }

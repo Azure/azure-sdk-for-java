@@ -281,6 +281,10 @@ class APISpec extends StorageTestBase {
     }
 
     DataLakeFileSystemClient getFileSystemClient(String sasToken, String endpoint) {
+        getFileSystemClientBuilder(endpoint).sasToken(sasToken).buildClient()
+    }
+
+    DataLakeFileSystemClientBuilder getFileSystemClientBuilder(String endpoint) {
         DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -290,7 +294,7 @@ class APISpec extends StorageTestBase {
             builder.addPolicy(getRecordPolicy())
         }
 
-        builder.sasToken(sasToken).buildClient()
+        return builder
     }
 
     def generateFileSystemName() {
@@ -449,5 +453,4 @@ class APISpec extends StorageTestBase {
         }
         return false
     }
-
 }

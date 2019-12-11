@@ -23,6 +23,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.Utility
+import reactor.test.StepVerifier
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -667,22 +668,17 @@ class ContainerAPITest extends APISpec {
         normal.create(512)
 
         def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
-
-        def poller = copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(1))
-        poller.waitForCompletion()
+        copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(5)).waitForCompletion()
 
         def metadataBlob = cc.getBlobClient(metadataName).getPageBlobClient()
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
         metadataBlob.createWithResponse(512, null, null, metadata, null, null, null)
 
-        def snapshotTime = normal.createSnapshot().getSnapshotId()
-
         def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
+        uncommittedBlob.stageBlock(getBlockID(), defaultInputStream.get(), defaultData.remaining())
 
-        uncommittedBlob.stageBlock("0000", defaultInputStream.get(), defaultData.remaining())
-
-        return snapshotTime
+        return normal.createSnapshot().getSnapshotId()
     }
 
     def "List blobs flat options copy"() {
@@ -816,7 +812,9 @@ class ContainerAPITest extends APISpec {
 
         expect: "Get first page of blob listings (sync and async)"
         cc.listBlobs(options, null).iterableByPage().iterator().next().getValue().size() == PAGE_SIZE
-        ccAsync.listBlobs(options).byPage().blockFirst().getValue().size() == PAGE_SIZE
+        StepVerifier.create(ccAsync.listBlobs(options).byPage().limitRequest(1))
+            .assertNext({ assert it.getValue().size() == PAGE_SIZE })
+            .verifyComplete()
     }
 
     def "List blobs flat options fail"() {
@@ -1044,12 +1042,10 @@ class ContainerAPITest extends APISpec {
         def uncommittedName = "u" + generateBlobName()
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
-        when:
-        // use async client, as there is no paging functionality for sync yet
-        def blobs = ccAsync.listBlobsByHierarchy("", options).byPage().blockFirst()
-
-        then:
-        blobs.getValue().size() == 1
+        expect:
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options).byPage().limitRequest(1))
+            .assertNext({ assert it.getValue().size() == 1 })
+            .verifyComplete()
     }
 
     @Unroll

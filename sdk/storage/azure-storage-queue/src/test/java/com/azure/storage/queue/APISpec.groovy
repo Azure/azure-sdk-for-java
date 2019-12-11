@@ -3,7 +3,6 @@
 
 package com.azure.storage.queue
 
-
 import com.azure.core.util.Configuration
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageTestBase

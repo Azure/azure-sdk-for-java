@@ -1,0 +1,129 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfssasimplutilstringtosign072433be7d54a7005740d?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "c73a6ff7-313d-441a-b2bf-19d12b8dbfdb"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D77CDE830A4171",
+      "Last-Modified" : "Mon, 09 Dec 2019 19:32:21 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a37b2119-501e-00cf-48c7-ae29c8000000",
+      "Date" : "Mon, 09 Dec 2019 19:32:21 GMT",
+      "x-ms-client-request-id" : "c73a6ff7-313d-441a-b2bf-19d12b8dbfdb"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfssasimplutilstringtosign072433be7d54a7005740d/javapathsasimplutilstringtosign166485a062902e2ba04?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.7 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "87a6d2c7-0acd-464b-be62-d38311e6bbd6"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D77CDE831440F6",
+      "Last-Modified" : "Mon, 09 Dec 2019 19:32:21 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "1f177314-101f-002d-3cc7-aecdba000000",
+      "Date" : "Mon, 09 Dec 2019 19:32:21 GMT",
+      "x-ms-client-request-id" : "87a6d2c7-0acd-464b-be62-d38311e6bbd6"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfssasimplutilstringtosign072433be7d54a7005740d/javapathsasimplutilstringtosign166485a062902e2ba04?position=0&action=append",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.7 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "c5733ff6-2c8b-42b6-98da-30a6ef1b8596",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "1f177315-101f-002d-3dc7-aecdba000000",
+      "Date" : "Mon, 09 Dec 2019 19:32:21 GMT",
+      "x-ms-client-request-id" : "c5733ff6-2c8b-42b6-98da-30a6ef1b8596"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfssasimplutilstringtosign072433be7d54a7005740d/javapathsasimplutilstringtosign166485a062902e2ba04?position=7&retainUncommittedData=false&close=false&action=flush",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.7 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "64ead3fa-be3d-45cf-ae03-7cde7e8a0423"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D77CDE8325485D",
+      "Last-Modified" : "Mon, 09 Dec 2019 19:32:22 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "1f177316-101f-002d-3ec7-aecdba000000",
+      "Date" : "Mon, 09 Dec 2019 19:32:21 GMT",
+      "x-ms-client-request-id" : "64ead3fa-be3d-45cf-ae03-7cde7e8a0423"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprahns.blob.core.windows.net?prefix=jtfssasimplutilstringtosign&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "cb7fb9c4-bf94-4f97-9dd9-352215c1db83"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "a37b217c-501e-00cf-1fc7-ae29c8000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahns.blob.core.windows.net/\"><Prefix>jtfssasimplutilstringtosign</Prefix><Containers><Container><Name>jtfssasimplutilstringtosign072433be7d54a7005740d</Name><Properties><Last-Modified>Mon, 09 Dec 2019 19:32:21 GMT</Last-Modified><Etag>\"0x8D77CDE830A4171\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Mon, 09 Dec 2019 19:32:21 GMT",
+      "x-ms-client-request-id" : "cb7fb9c4-bf94-4f97-9dd9-352215c1db83",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://gaprahns.blob.core.windows.net/jtfssasimplutilstringtosign072433be7d54a7005740d?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "eb1919d2-420b-4f8a-9a87-88977f1649fc"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "a37b218b-501e-00cf-2cc7-ae29c8000000",
+      "Date" : "Mon, 09 Dec 2019 19:32:21 GMT",
+      "x-ms-client-request-id" : "eb1919d2-420b-4f8a-9a87-88977f1649fc"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfssasimplutilstringtosign072433be7d54a7005740d", "javapathsasimplutilstringtosign166485a062902e2ba04" ]
+}
