@@ -191,6 +191,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             Builder spanBuilder = getSpanBuilder(spanName, context);
             span = spanBuilder.setSpanKind(Span.Kind.SERVER).startSpan();
         }
+        if (span.isRecording()) {
+            // If span is sampled in, add additional request attributes
+            addSpanRequestAttributes(span, context, spanName);
+        }
         return context.addData(PARENT_SPAN_KEY, span).addData("scope", TRACER.withSpan(span));
     }
 

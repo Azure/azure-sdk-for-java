@@ -1,4 +1,11 @@
 # Release History
+## Version 1.0.0-beta.2 (2019-01-)
+- Add eventhub properties to attributes of processing spans.
+
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-tracing-opentelemetry_1.0.0-beta.2/sdk/core/azure-core-tracing-opentelemetry/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-tracing-opentelemetry_1.0.0-beta.2/sdk/core/azure-core-tracing-opentelemetry/src/samples).
 
 ## Version 1.0.0-beta.1 (2019-11-26)
 
