@@ -8,19 +8,149 @@
 
 package com.microsoft.azure.management.notificationhubs.v2014_09_01.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.Resource;
+import java.util.Map;
 import com.microsoft.azure.management.notificationhubs.v2014_09_01.NamespaceProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Description of a Namespace resource.
  */
-public class NamespaceResourceInner extends Resource {
+public class NamespaceResourceInner {
+    /**
+     * Gets or sets the id of the created Namespace.
+     */
+    @JsonProperty(value = "id")
+    private String id;
+
+    /**
+     * Gets or sets datacenter location of the Namespace.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
+    /**
+     * Gets or sets name of the Namespace.
+     */
+    @JsonProperty(value = "name")
+    private String name;
+
+    /**
+     * Gets or sets resource type of the Namespace.
+     */
+    @JsonProperty(value = "type")
+    private String type;
+
+    /**
+     * Gets or sets tags of the Namespace.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
+
     /**
      * Gets or sets properties of the Namespace.
      */
     @JsonProperty(value = "properties")
     private NamespaceProperties properties;
+
+    /**
+     * Get gets or sets the id of the created Namespace.
+     *
+     * @return the id value
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set gets or sets the id of the created Namespace.
+     *
+     * @param id the id value to set
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get gets or sets datacenter location of the Namespace.
+     *
+     * @return the location value
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set gets or sets datacenter location of the Namespace.
+     *
+     * @param location the location value to set
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get gets or sets name of the Namespace.
+     *
+     * @return the name value
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set gets or sets name of the Namespace.
+     *
+     * @param name the name value to set
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get gets or sets resource type of the Namespace.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set gets or sets resource type of the Namespace.
+     *
+     * @param type the type value to set
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * Get gets or sets tags of the Namespace.
+     *
+     * @return the tags value
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set gets or sets tags of the Namespace.
+     *
+     * @param tags the tags value to set
+     * @return the NamespaceResourceInner object itself.
+     */
+    public NamespaceResourceInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
 
     /**
      * Get gets or sets properties of the Namespace.
