@@ -16,7 +16,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.CoreUtils
@@ -41,6 +40,7 @@ import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Timeout
 
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
@@ -48,8 +48,10 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 
+@Timeout(value = 10, unit = TimeUnit.MINUTES)
 class APISpec extends Specification {
     @Shared
     ClientLogger logger = new ClientLogger(APISpec.class)
