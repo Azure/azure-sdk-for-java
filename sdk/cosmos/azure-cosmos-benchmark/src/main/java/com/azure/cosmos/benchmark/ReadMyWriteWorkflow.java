@@ -232,7 +232,6 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     private Flux<Document> xPartitionQuery(SqlQuerySpec query) {
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(-1);
-        options.setEnableCrossPartitionQuery(true);
 
         return client.<Document>queryDocuments(getCollectionLink(), query, options)
                 .flatMap(p -> Flux.fromIterable(p.getResults()));

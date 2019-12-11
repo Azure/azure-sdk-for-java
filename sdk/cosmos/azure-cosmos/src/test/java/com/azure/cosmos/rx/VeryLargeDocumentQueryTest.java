@@ -53,8 +53,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         }
 
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
-
+        
         Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
             options, CosmosItemProperties.class);
 

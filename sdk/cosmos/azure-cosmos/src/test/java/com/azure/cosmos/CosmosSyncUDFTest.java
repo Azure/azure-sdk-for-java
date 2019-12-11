@@ -104,7 +104,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         container.getScripts().createUserDefinedFunction(udf);
 
         FeedOptions feedOptions = new FeedOptions();
-        feedOptions.setEnableCrossPartitionQuery(true);
+        
         Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> feedResponseIterator3 =
                 container.getScripts().readAllUserDefinedFunctions(feedOptions);
         assertThat(feedResponseIterator3.hasNext()).isTrue();
@@ -117,7 +117,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         container.getScripts().createUserDefinedFunction(properties);
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
-        feedOptions.setEnableCrossPartitionQuery(true);
+        
 
         Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> feedResponseIterator1 =
                 container.getScripts().queryUserDefinedFunctions(query, feedOptions);

@@ -261,7 +261,6 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                         new SqlParameterList(param));
 
                     FeedOptions feedOptions = new FeedOptions();
-                    feedOptions.setEnableCrossPartitionQuery(true);
 
                     createdLeaseCollection.queryItems(querySpec, feedOptions, CosmosItemProperties.class)
                         .delayElements(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT / 2))

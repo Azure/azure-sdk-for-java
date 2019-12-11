@@ -34,7 +34,8 @@ import java.util.stream.Collectors;
  */
 public class ParallelDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
-
+    private FeedOptions feedOptions;
+    
     private ParallelDocumentQueryExecutionContext(
             IDocumentQueryClient client,
             List<PartitionKeyRange> partitionKeyRanges,
@@ -50,6 +51,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             UUID correlatedActivityId) {
         super(client, partitionKeyRanges, resourceTypeEnum, resourceType, query, feedOptions, resourceLink,
                 rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
+        this.feedOptions = feedOptions;
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
@@ -169,9 +171,9 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<FeedResponse<T>>> {
         private final RequestChargeTracker tracker;
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
-
-        public EmptyPagesFilterTransformer(
-                RequestChargeTracker tracker) {
+        private final FeedOptions feedOptions;
+        
+        public EmptyPagesFilterTransformer(RequestChargeTracker tracker, FeedOptions options) {
 
             if (tracker == null) {
                 throw new IllegalArgumentException("Request Charge Tracker must not be null.");
@@ -179,6 +181,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
             this.tracker = tracker;
             this.previousPage = null;
+            this.feedOptions = options;
         }
 
         private DocumentProducer<T>.DocumentProducerFeedResponse plusCharge(
@@ -222,7 +225,8 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             // Emit an empty page so the downstream observables know when there are no more
             // results.
             return source.filter(documentProducerFeedResponse -> {
-                if (documentProducerFeedResponse.pageResult.getResults().isEmpty()) {
+                if (documentProducerFeedResponse.pageResult.getResults().isEmpty()
+                        && !this.feedOptions.getAllowEmptyPages()) {
                     // filter empty pages and accumulate charge
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     return false;
@@ -304,7 +308,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 .map(DocumentProducer::produceAsync)
                 // Merge results from all partitions.
                 .collect(Collectors.toList());
-        return Flux.concat(obs).compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker()));
+        return Flux.concat(obs).compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), this.feedOptions));
     }
 
     @Override

@@ -149,11 +149,6 @@ public class BridgeInternal {
                         options.getEmitVerboseTracesInQuery().toString());
             }
 
-            if (options.getEnableCrossPartitionQuery() != null) {
-                headers.put(HttpConstants.HttpHeaders.ENABLE_CROSS_PARTITION_QUERY,
-                        options.getEnableCrossPartitionQuery().toString());
-            }
-
             if (options.getMaxDegreeOfParallelism() != 0) {
                 headers.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Boolean.TRUE.toString());
             }

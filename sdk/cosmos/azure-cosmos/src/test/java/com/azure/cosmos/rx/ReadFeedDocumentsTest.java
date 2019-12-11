@@ -6,17 +6,15 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -41,7 +39,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments() {
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
+        
         options.maxItemCount(2);
 
         Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
@@ -59,18 +57,27 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments_withoutEnableCrossPartitionQuery() {
+        // With introduction of queryplan, crosspartition need not be enabled anymore.
+
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
-
         Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
-        FailureValidator validator = FailureValidator.builder().instanceOf(CosmosClientException.class)
-                .statusCode(400)
-                .errorMessageContains("Cross partition query is required but disabled." +
-                                              " Please set x-ms-documentdb-query-enablecrosspartition to true," +
-                                              " specify x-ms-documentdb-partitionkey," +
-                                              " or revise your query to avoid this exception.")
-                .build();
-        validateQueryFailure(feedObservable, validator, FEED_TIMEOUT);
+        FeedResponseListValidator<CosmosItemProperties> validator =
+            new FeedResponseListValidator.Builder<CosmosItemProperties>()
+                                                        .totalSize(createdDocuments.size())
+                                                        .numberOfPagesIsGreaterThanOrEqualTo(1)
+                                                        .exactlyContainsInAnyOrder(createdDocuments
+                                                                                       .stream()
+                                                                                       .map(Resource::getResourceId)
+                                                                                       .collect(Collectors
+                                                                                                    .toList()))
+                                                        .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
+                                                                             .requestChargeGreaterThanOrEqualTo(1.0)
+                                                                             .pageSizeIsLessThanOrEqualTo(options
+                                                                                                              .maxItemCount())
+                                                                             .build())
+                                                        .build();
+        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
     }
 
     // TODO (DANOBLE) ReadFeedDocumentsTest initialization consistently times out in CI environments.

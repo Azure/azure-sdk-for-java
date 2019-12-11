@@ -130,7 +130,6 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -176,7 +175,6 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -225,7 +223,6 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.setEnableCrossPartitionQuery(true);
 
         Flux<Double> totalChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
@@ -250,7 +247,6 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<Document>> requestChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -287,7 +283,6 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.setEnableCrossPartitionQuery(true);
 
         Predicate<Document> isPrimeNumber = new Predicate<Document>() {
 
@@ -347,7 +342,6 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -396,7 +390,6 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         // Query for the documents order by the prop field
         SqlQuerySpec query = new SqlQuerySpec("SELECT r.id FROM r ORDER BY r.prop", new SqlParameterList());
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(5);
 
         // Max degree of parallelism determines the number of partitions that
@@ -434,7 +427,6 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);

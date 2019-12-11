@@ -170,7 +170,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
             FeedOptions options = new FeedOptions();
             options.setMaxDegreeOfParallelism(-1);
-            options.setEnableCrossPartitionQuery(true);
+            
             options.maxItemCount(100);
 
             logger.info("Truncating collection {} documents ...", collection.getId());

@@ -97,7 +97,6 @@ public class DatabaseQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options);
 
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()

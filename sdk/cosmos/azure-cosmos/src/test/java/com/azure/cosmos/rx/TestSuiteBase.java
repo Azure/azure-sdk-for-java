@@ -217,7 +217,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(-1);
-        options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(100);
 
         logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
@@ -563,7 +562,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public static void safeDeleteDocument(CosmosAsyncContainer cosmosContainer, String documentId, Object partitionKey) {
         if (cosmosContainer != null && documentId != null) {
             try {
-                cosmosContainer.getItem(documentId, partitionKey).read().block().getItem().delete().block();
+                cosmosContainer.getItem(documentId, partitionKey).delete().block();
             } catch (Exception e) {
                 CosmosClientException dce = Utils.as(e, CosmosClientException.class);
                 if (dce == null || dce.getStatusCode() != 404) {
@@ -574,7 +573,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static void deleteDocument(CosmosAsyncContainer cosmosContainer, String documentId) {
-        cosmosContainer.getItem(documentId, PartitionKey.None).read().block().getItem().delete();
+        cosmosContainer.getItem(documentId, PartitionKey.None).delete();
     }
 
     public static void deleteUserIfExists(CosmosAsyncClient client, String databaseId, String userId) {

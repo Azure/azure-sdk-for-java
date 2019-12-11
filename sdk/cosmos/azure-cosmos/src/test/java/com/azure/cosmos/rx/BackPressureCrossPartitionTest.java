@@ -96,7 +96,6 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
     private void warmUp() {
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
         // ensure collection is cached
         createdCollection.queryItems("SELECT * FROM r", options, CosmosItemProperties.class).blockFirst();
     }
@@ -117,7 +116,6 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     @Test(groups = { "long" }, dataProvider = "queryProvider", timeOut = 2 * TIMEOUT)
     public void query(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
         FeedOptions options = new FeedOptions();
-        options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(maxItemCount);
         options.setMaxDegreeOfParallelism(2);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
