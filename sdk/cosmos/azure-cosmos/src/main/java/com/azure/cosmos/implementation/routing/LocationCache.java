@@ -184,9 +184,20 @@ public class LocationCache {
         if (this.enableEndpointDiscovery) {
 
             boolean shouldRefresh = this.useMultipleWriteLocations && !this.enableMultipleWriteLocations;
+            List<URL> readLocationEndpoints = currentLocationInfo.readEndpoints;
+            if (this.isEndpointUnavailable(readLocationEndpoints.get(0), OperationType.Read)) {
+                // Since most preferred read endpoint is unavailable, we can only refresh in background if
+                // we have an alternate read endpoint
+                canRefreshInBackground.v = anyEndpointsAvailable(readLocationEndpoints,OperationType.Read);
+                logger.debug("shouldRefreshEndpoints = true,  since the first read endpoint " +
+                        "[{}] is not available for read. canRefreshInBackground = [{}]",
+                    readLocationEndpoints.get(0),
+                    canRefreshInBackground.v);
+                return true;
+            }
+
             if (!Strings.isNullOrEmpty(mostPreferredLocation)) {
                 Utils.ValueHolder<URL> mostPreferredReadEndpointHolder = new Utils.ValueHolder<>();
-                List<URL> readLocationEndpoints = currentLocationInfo.readEndpoints;
                 logger.debug("getReadEndpoints [{}]", readLocationEndpoints);
 
                 if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointByLocation, mostPreferredLocation, mostPreferredReadEndpointHolder)) {
@@ -218,7 +229,7 @@ public class LocationCache {
                 if (this.isEndpointUnavailable(writeLocationEndpoints.get(0), OperationType.Write)) {
                     // Since most preferred write endpoint is unavailable, we can only refresh in background if
                     // we have an alternate write endpoint
-                    canRefreshInBackground.v = writeLocationEndpoints.size() > 1;
+                    canRefreshInBackground.v = anyEndpointsAvailable(writeLocationEndpoints,OperationType.Write);
                     logger.debug("shouldRefreshEndpoints = true, most preferred location " +
                                     "[{}] endpoint [{}] is not available for write. canRefreshInBackground = [{}]",
                             mostPreferredLocation,
@@ -303,6 +314,18 @@ public class LocationCache {
                 return true;
             }
         }
+    }
+
+    private boolean anyEndpointsAvailable(List<URL> endpoints, OperationType expectedAvailableOperations) {
+        Utils.ValueHolder<LocationUnavailabilityInfo> unavailabilityInfoHolder = new Utils.ValueHolder<>();
+        boolean anyEndpointsAvailable = false;
+        for (URL endpoint : endpoints) {
+            if (!isEndpointUnavailable(endpoint, expectedAvailableOperations)) {
+                anyEndpointsAvailable = true;
+                break;
+            }
+        }
+        return anyEndpointsAvailable;
     }
 
     private void markEndpointUnavailable(
