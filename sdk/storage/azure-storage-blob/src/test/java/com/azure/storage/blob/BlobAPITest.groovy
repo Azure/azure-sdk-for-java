@@ -498,7 +498,7 @@ class BlobAPITest extends APISpec {
          * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
          * to change the ETag therefore failing the download.
          */
-        def options = new ParallelTransferOptions(Constants.KB, null, null)
+        def options = new ParallelTransferOptions(Constants.KB * 10, null, null)
 
         /*
          * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is
@@ -514,6 +514,7 @@ class BlobAPITest extends APISpec {
          * so that the download is able to get an ETag before it is changed.
          */
         StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
+            .repeat()
             .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
             .verifyErrorSatisfies({
                 assert it instanceof BlobStorageException
@@ -521,7 +522,7 @@ class BlobAPITest extends APISpec {
             })
 
         // Give the file a chance to be deleted by the download operation before verifying its deletion
-        sleep(500)
+        sleep(300)
         !outFile.exists()
 
         cleanup:
