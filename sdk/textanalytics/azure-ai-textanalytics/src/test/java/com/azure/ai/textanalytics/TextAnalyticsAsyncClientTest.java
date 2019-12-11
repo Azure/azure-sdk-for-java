@@ -130,7 +130,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguageDuplicateIdInput() {
         detectLanguageDuplicateIdRunner((inputs, options) -> {
             StepVerifier.create(client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE))
-                .verifyErrorSatisfies(ex-> assertRestException(ex, HttpResponseException.class, 400));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 400));
         });
     }
 }
