@@ -151,6 +151,74 @@ public class ClientLoggerTests {
     }
 
     /**
+     * Tests that logging an exception when the log level is ERROR the stack trace is logged.
+     */
+    @Test
+    public void logExceptionStackTraceWithErrorLevel() {
+        String logMessage = "This is an exception";
+        String exceptionMessage = "An exception message";
+        RuntimeException runtimeException = createRuntimeException(exceptionMessage);
+
+        String originalLogLevel = setupLogLevel(1);
+        logMessage(new ClientLogger(ClientLoggerTests.class), 4, logMessage, runtimeException);
+        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+
+        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        assertTrue(logValues.contains(logMessage + System.lineSeparator() + runtimeException.getMessage()));
+        assertTrue(logValues.contains(runtimeException.getStackTrace()[0].toString()));
+    }
+
+
+    /**
+     * Tests that logging an exception when the log level is ERROR the stack trace is logged.
+     */
+    @Test
+    public void logExceptionStackTraceWithNoLogLevel() {
+        String logMessage = "This is an exception";
+        String exceptionMessage = "An exception message";
+        RuntimeException runtimeException = createRuntimeException(exceptionMessage);
+
+        String originalLogLevel = setupLogLevel(1);
+        logMessage(new ClientLogger(ClientLoggerTests.class), 5, logMessage, runtimeException);
+        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+
+        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        assertTrue(logValues.isEmpty());
+    }
+
+    /**
+     * Tests that logging an exception when the log level is ERROR the stack trace is logged.
+     */
+    @Test
+    public void logExceptionStackTraceWithoutException() {
+        String logMessage = "This is an exception";
+        Object runtimeException = new Object();
+
+        String originalLogLevel = setupLogLevel(1);
+        logMessage(new ClientLogger(ClientLoggerTests.class), 3, logMessage, runtimeException);
+        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+
+        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        assertTrue(logValues.contains(logMessage));
+    }
+
+    /**
+     * Tests that logging an exception when the log level is ERROR the stack trace is logged.
+     */
+    @Test
+    public void logExceptionWithInvalidLogLevel() {
+        String logMessage = "This is an exception";
+        Object runtimeException = new Object();
+
+        String originalLogLevel = setupLogLevel(1);
+        logMessage(new ClientLogger(ClientLoggerTests.class), 3, logMessage, runtimeException);
+        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+
+        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        assertTrue(logValues.contains(logMessage));
+    }
+
+    /**
      * Tests that logging an exception as warning won't include the stack trace when the environment log level isn't
      * VERBOSE. Additionally, this tests that the exception message isn't logged twice as logging an exception uses
      * the exception message as the format string.
