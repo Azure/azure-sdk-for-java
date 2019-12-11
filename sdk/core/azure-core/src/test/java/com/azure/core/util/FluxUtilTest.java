@@ -6,7 +6,6 @@ package com.azure.core.util;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
@@ -78,19 +77,19 @@ public class FluxUtilTest {
     }
 
     @Test
-    public void testIsFluxByteBufferValidType() throws Exception{
+    public void testIsFluxByteBufferValidType() throws Exception {
         Method method = FluxUtilTest.class.getMethod("mockReturnType");
         Type returnType = method.getGenericReturnType();
         assertTrue(FluxUtil.isFluxByteBuffer(returnType));
     }
 
     @Test
-    public void testToMono(){
+    public void testToMono() {
         String testValue = "some value";
-        Response<String> response = new SimpleResponse(new HttpRequest(HttpMethod.GET, "http://www.test.com"),
+        Response<String> response = new SimpleResponse<String>(new HttpRequest(HttpMethod.GET, "http://www.test.com"),
             202, new HttpHeaders(), testValue);
         StepVerifier.create(FluxUtil.toMono(response))
-            .assertNext(val-> assertEquals(val, testValue))
+            .assertNext(val -> assertEquals(val, testValue))
             .verifyComplete();
     }
 
