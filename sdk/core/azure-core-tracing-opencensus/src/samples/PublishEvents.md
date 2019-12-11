@@ -18,7 +18,6 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
 </dependency>
  ```
 [//]: # ({x-version-update-end})
-
 [//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;current})
 ```xml
 <!-- Adding Azure core tracing OpenCensus plugin package to your project -->

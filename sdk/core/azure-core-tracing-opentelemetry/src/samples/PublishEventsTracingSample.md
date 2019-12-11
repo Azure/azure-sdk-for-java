@@ -27,7 +27,6 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
 [//]: # ({x-version-update-start;com.azure:azure-core-tracing-opentelemetry;current})
 ```xml
 <dependency>
