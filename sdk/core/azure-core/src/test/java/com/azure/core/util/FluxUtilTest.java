@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import java.lang.reflect.ParameterizedType;
+import java.nio.ByteBuffer;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -12,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FluxUtilTest {
@@ -58,6 +61,17 @@ public class FluxUtilTest {
         assertEquals("value3", reactorContext.get("key1"));
         assertTrue(reactorContext.hasKey("key2"));
         assertEquals("value2", reactorContext.get("key2"));
+    }
+
+    @Test
+    public void testIsFluxByteBufferInvalidType() {
+        assertFalse(FluxUtil.isFluxByteBuffer(Mono.class));
+    }
+
+    @Test
+    public void testIsFluxByteBufferValidType() {
+        Flux<ByteBuffer>;
+        assertTrue(FluxUtil.isFluxByteBuffer(body.getClass()));
     }
 
     private Mono<String> getSingle() {
