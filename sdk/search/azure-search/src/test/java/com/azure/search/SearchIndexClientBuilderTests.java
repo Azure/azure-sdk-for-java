@@ -3,6 +3,12 @@
 
 package com.azure.search;
 
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
@@ -291,6 +297,46 @@ public class SearchIndexClientBuilderTests {
             .indexName("indexName")
             .apiVersion(null)
             .buildAsyncClient()
+        );
+    }
+
+    @Test
+    public void whenCreateUsingClientBuilderThenDefaultPoliciesExists() {
+        SearchIndexClientBuilder searchIndexClientBuilder = new SearchIndexClientBuilder();
+        searchIndexClientBuilder
+            .endpoint(searchEndpoint)
+            .indexName(indexName)
+            .credential(searchApiKeyCredential)
+            .apiVersion(apiVersion)
+            .buildAsyncClient();
+
+        int policyCount = searchIndexClientBuilder.getPolicies().size();
+
+        Assert.assertEquals(7, policyCount);
+
+        Assert.assertEquals(1,
+            searchIndexClientBuilder.getPolicies().stream()
+                .filter(p -> p.getClass() == RetryPolicy.class).count()
+        );
+        Assert.assertEquals(1,
+            searchIndexClientBuilder.getPolicies().stream()
+                .filter(p -> p.getClass() == RequestIdPolicy.class).count()
+        );
+        Assert.assertEquals(1,
+            searchIndexClientBuilder.getPolicies().stream()
+                .filter(p -> p.getClass() == UserAgentPolicy.class).count()
+        );
+        Assert.assertEquals(1,
+            searchIndexClientBuilder.getPolicies().stream()
+                .filter(p -> p.getClass() == AddHeadersPolicy.class).count()
+        );
+        Assert.assertEquals(1,
+            searchIndexClientBuilder.getPolicies().stream()
+                .filter(p -> p.getClass() == AddDatePolicy.class).count()
+        );
+        Assert.assertEquals(1,
+            searchIndexClientBuilder.getPolicies().stream()
+                .filter(p -> p.getClass() == HttpLoggingPolicy.class).count()
         );
     }
 

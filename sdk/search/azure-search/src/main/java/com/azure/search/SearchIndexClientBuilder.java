@@ -5,13 +5,20 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
@@ -31,14 +38,23 @@ import org.apache.commons.lang3.StringUtils;
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
 public class SearchIndexClientBuilder extends SearchClientBuilder {
 
-    private final ClientLogger logger = new ClientLogger(SearchIndexClientBuilder.class);
+    // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
+    // request was sent.
+    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
+
     private String indexName;
+    private final HttpHeaders headers;
+    private RetryPolicy retryPolicy;
+    private final ClientLogger logger = new ClientLogger(SearchIndexClientBuilder.class);
 
     /**
      * Default Constructor
      */
     public SearchIndexClientBuilder() {
         init();
+        headers = new HttpHeaders()
+            .put(ECHO_REQUEST_ID_HEADER, "true");
+
     }
 
     /**
@@ -50,6 +66,15 @@ public class SearchIndexClientBuilder extends SearchClientBuilder {
     public SearchIndexClientBuilder apiVersion(SearchServiceVersion apiVersion) {
         this.apiVersion = apiVersion;
         return this;
+    }
+
+    /**
+     *  Returns the list of policies configured for this builder.
+     *
+     *  @return List of HttpPipelinePolicy
+     *  */
+    public List<HttpPipelinePolicy> getPolicies() {
+        return this.policies;
     }
 
     /**
@@ -103,6 +128,19 @@ public class SearchIndexClientBuilder extends SearchClientBuilder {
     }
 
     /**
+     * Sets the configuration store that is used during construction of the service client.
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    public SearchIndexClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /**
      * Http Pipeline policy
      *
      * @param policy policy to add to the pipeline
@@ -114,16 +152,16 @@ public class SearchIndexClientBuilder extends SearchClientBuilder {
     }
 
     /**
-     * Sets the configuration store that is used during construction of the service client.
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     * <p>
+     * The default retry policy will be used if not provided {@link SearchIndexClientBuilder#buildAsyncClient()}
+     * to build {@link SearchServiceAsyncClient} or {@link SearchServiceClient}.
      *
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
-     *
-     * @param configuration The configuration store used to
+     * @param retryPolicy RetryPolicy applied to each request.
      * @return The updated SearchIndexClientBuilder object.
      */
-    public SearchIndexClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
+    public SearchIndexClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
         return this;
     }
 
@@ -151,6 +189,16 @@ public class SearchIndexClientBuilder extends SearchClientBuilder {
      * @return a {@link SearchIndexAsyncClient} created from the configurations in this builder.
      */
     public SearchIndexAsyncClient buildAsyncClient() {
+
+        policies.add(new AddHeadersPolicy(headers));
+        // We need to add RequestId and override the default header, with the one
+        // That the service expects, in order to capture the request ids.
+        policies.add(new RequestIdPolicy("client-request-id"));
+        policies.add(new AddDatePolicy());
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
         return new SearchIndexAsyncClient(endpoint, indexName, apiVersion, prepareForBuildClient());
     }
 }
