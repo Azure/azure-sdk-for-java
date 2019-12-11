@@ -3,12 +3,10 @@
 
 package com.azure.core.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.azure.core.http.ContentType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -53,60 +51,5 @@ public class CoreUtilsTests {
         assertNotNull(CoreUtils.getProperties("foo.properties"));
         assertTrue(CoreUtils.getProperties("foo.properties").isEmpty());
         assertNull(CoreUtils.getProperties("azure-core.properties").get("foo"));
-    }
-
-    @Test
-    public void testPrettyPrintFormatJsonOrXmlWithJsonContent() {
-        String plainJsonContent = "{\"error\":{\"code\":\"MethodNotAllowed\",\"message\":\"HTTP POST not allowed\"}}";
-        String prettyJsonContent = "{" + System.lineSeparator()
-            + "  \"error\" : {" + System.lineSeparator()
-            + "    \"code\" : \"MethodNotAllowed\"," + System.lineSeparator()
-            + "    \"message\" : \"HTTP POST not allowed\"" + System.lineSeparator()
-            + "  }" + System.lineSeparator()
-            + "}";
-        assertEquals(CoreUtils.printPrettyFormatJsonOrXml(plainJsonContent,
-            ContentType.APPLICATION_JSON), prettyJsonContent);
-    }
-
-    @Test
-    public void testPrettyPrintFormatJsonOrXmlWithXmlContent() {
-        String plainXmlContent = "<error><errorCode>InvalidRequest</errorCode><message>This is wrong.</message></error>";
-        String prettyXmlContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><error>" + System.lineSeparator()
-            + "    <errorCode>InvalidRequest</errorCode>" + System.lineSeparator()
-            + "    <message>This is wrong.</message>" + System.lineSeparator()
-            + "</error>" + System.lineSeparator();
-        assertEquals(CoreUtils.printPrettyFormatJsonOrXml(plainXmlContent,
-            ContentType.APPLICATION_XML), prettyXmlContent);
-    }
-
-    @Test
-    public void testPrettyPrintFormatJsonOrXmlWithInvalidJsonContent() {
-        String plainJsonContent = "{\"error\":\"code\":\"MethodNotAllowed\",\"message\":\"HTTP POST not allowed\"}}";
-        assertEquals(CoreUtils.printPrettyFormatJsonOrXml(plainJsonContent,
-            ContentType.APPLICATION_JSON), plainJsonContent);
-    }
-
-    @Test
-    public void testPrettyPrintFormatJsonOrXmlWithInvalidXmlContent() {
-        String plainJsonContent = "{\"error\":\"code\":\"MethodNotAllowed\",\"message\":\"HTTP POST not allowed\"}}";
-        assertEquals(CoreUtils.printPrettyFormatJsonOrXml(plainJsonContent,
-            ContentType.APPLICATION_JSON), plainJsonContent);
-    }
-
-    @Test
-    public void testPrettyPrintFormatJsonOrXmlWithNullContent() {
-        assertNull(CoreUtils.printPrettyFormatJsonOrXml(null, ContentType.APPLICATION_JSON));
-    }
-
-    @Test
-    public void testPrettyPrintFormatJsonOrXmlWithNullContentType() {
-        String content = "some content";
-        assertEquals(CoreUtils.printPrettyFormatJsonOrXml(content, null), content);
-    }
-
-    @Test
-    public void testPrettyPrintFormatJsonOrXmlWithOtherType() {
-        String content = "some content";
-        assertEquals(CoreUtils.printPrettyFormatJsonOrXml(content, "application/abc"), content);
     }
 }

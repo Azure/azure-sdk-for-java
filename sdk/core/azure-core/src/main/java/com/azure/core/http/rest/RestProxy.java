@@ -3,6 +3,7 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.implementation.ImplUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.util.Base64Url;
 import com.azure.core.annotation.ResumeOperation;
@@ -346,7 +347,7 @@ public final class RestProxy implements InvocationHandler {
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
             bodyRepresentation = "(" + httpResponse.getHeaderValue("Content-Length") + "-byte body)";
         } else {
-            responseContent = CoreUtils.printPrettyFormatJsonOrXml(responseContent, contentType);
+            responseContent = ImplUtil.printPrettyFormatJsonOrXml(responseContent, contentType);
             bodyRepresentation = responseContent.isEmpty() ? "(empty body)" : responseContent;
         }
 
