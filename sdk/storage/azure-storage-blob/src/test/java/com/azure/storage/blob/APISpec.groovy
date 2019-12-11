@@ -159,7 +159,7 @@ class APISpec extends Specification {
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
 
         // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
+        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) != null
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
