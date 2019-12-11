@@ -68,22 +68,6 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
         this.defaultPrefetch = prefetch;
     }
 
-    /**
-     * Creates an instance of {@link ContinuablePagedFluxCore}.
-     *
-     * @param pageRetrieverProvider a provider that returns Page Retriever Function.
-     * @param prefetch the number of Pages to be pre-fetched from the Page Retriever Function upon
-     *                 subscription.
-     */
-    ContinuablePagedFluxCore(Supplier<Function<C, Flux<P>>> pageRetrieverProvider, Integer prefetch) {
-        this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
-            "'pageRetrieverProvider' function cannot be null.");
-        if (prefetch <= 0) {
-            throw new IllegalArgumentException("prefetch > 0 required but provided: " + prefetch);
-        }
-        this.defaultPrefetch = prefetch;
-    }
-
     @Override
     public Flux<P> byPage() {
         return byPageIntern(this.pageRetrieverProvider, null, this.defaultPrefetch);
