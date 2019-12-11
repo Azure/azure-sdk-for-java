@@ -49,12 +49,13 @@ public class SettingSelector {
      *
      * <p>
      * Examples:
-     * <ol>
-     * <li>If keyFilter = "*", settings with any key are returned.</li>
-     * <li>If keyFilter = "abc1234", settings with a key equal to "abc1234" are returned.</li>
-     * <li>If keyFilter = "abc*", settings with a key starting with "abc" are returned.</li>
-     * <li>If keyFilter = "*abc*", settings with a key containing "abc" are returned.</li>
-     * </ol>
+     * <ul>
+     * <li>If {@code keyFilter = "*"}, settings with any key are returned.</li>
+     * <li>If {@code keyFilter = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
+     * <li>If {@code keyFilter = "abc*"}, settings with a key starting with "abc" are returned.</li>
+     * <li>If {@code keyFilter = "*abc*"}, settings with a key containing "abc" are returned.</li>
+     * <li>If {@code keyFilter = "abc,def"}, settings with a key equal to "abc" or "def" are returned.</li>
+     * </ul>
      *
      * @return The expressions to filter ConfigurationSetting keys on.
      */
