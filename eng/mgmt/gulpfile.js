@@ -113,7 +113,7 @@ var codegen = function(project, cb) {
     console.log('Generating "' + project + '" from spec file ' + specRoot + '/' + mappings[project].source);
 
     const generatorPath = autoRestJavaVersion == 'preview' || autoRestJavaVersion == 'latest' 
-		|| autoRestJavaVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/)
+		|| autoRestJavaVersion.match(/^[0-9]+\.[0-9]+\.[0-9a-zA-Z]+$/)
         ? `--use=@microsoft.azure/autorest.java@` + autoRestJavaVersion +` `
         : (autoRestJavaVersion == '' ? '' : `--use=${path.resolve(args['autorest-java'])} `);
 
