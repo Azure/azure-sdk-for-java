@@ -30,7 +30,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
@@ -54,30 +53,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-textanalytics.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
-    private static final String AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY = "AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY";
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
-
-    private final ClientLogger logger = new ClientLogger(TextAnalyticsClientTestBase.class);
 
     final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     private boolean showStatistics = false;
-    private String subscriptionKey;
-
-
-    void beforeTestSetup() {
-        if (CoreUtils.isNullOrEmpty(subscriptionKey)) {
-            subscriptionKey = interceptorManager.isPlaybackMode()
-                ? "XYZAAAAAAAAAAAAA"
-                : Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY);
-        }
-
-        Objects.requireNonNull(subscriptionKey, "'Subscription Key' is required and can not be null.");
-    }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
             credential = new DefaultAzureCredentialBuilder().build();
@@ -220,10 +204,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         return interceptorManager.isPlaybackMode()
             ? "http://localhost:8080"
             : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
-    }
-
-    String getSubscriptionKey() {
-        return this.subscriptionKey;
     }
 
     /**

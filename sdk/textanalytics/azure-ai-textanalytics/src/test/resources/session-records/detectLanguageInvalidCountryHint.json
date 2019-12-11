@@ -4,21 +4,21 @@
     "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.0-preview.1/languages",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "755a973d-4213-47af-9457-b174ea94925b",
+      "x-ms-client-request-id" : "a503a035-6aba-4c1d-9336-f96b9248f843",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "6",
+      "x-envoy-upstream-service-time" : "3",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=0",
-      "apim-request-id" : "0e1b0325-822c-4275-aed1-c6184bd45d20",
-      "x-aml-ta-request-id" : "be2c908c-06c2-4fcb-81b5-406047097bab",
+      "apim-request-id" : "6a436f73-426b-41d9-abc2-58dbd71988f5",
+      "x-aml-ta-request-id" : "1de2aba1-24c5-4b51-bd12-a74641e8c5eb",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"innerError\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"},\"message\":\"Invalid document in request.\"}}],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Wed, 11 Dec 2019 02:50:04 GMT",
+      "Body" : "{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"innerError\":{\"code\":\"InvalidCountryHint\",\"message\":\"Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code.\"},\"message\":\"Invalid Country Hint.\"}}],\"modelVersion\":\"2019-10-01\"}",
+      "Date" : "Wed, 11 Dec 2019 02:50:08 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

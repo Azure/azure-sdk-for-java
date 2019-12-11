@@ -1,4 +1,26 @@
 {
-  "networkCallRecords" : [ ],
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.0-preview.1/languages",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "be8ac643-2e6b-4684-a65a-7ffd9418460f",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "3",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "8f42fe05-d06e-434b-ae66-b6de58185216",
+      "x-aml-ta-request-id" : "510ab1c1-1753-4323-978a-3947ac441443",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"innerError\":{\"code\":\"MissingInputRecords\",\"message\":\"Missing input records.\"},\"message\":\"Invalid Request.\"}}",
+      "Date" : "Wed, 11 Dec 2019 02:50:07 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
   "variables" : [ ]
 }
