@@ -18,7 +18,23 @@ public class DataLakeImplUtils {
         }
     }
 
-    public static DataLakeStorageException transformBlobStorageException(BlobStorageException ex) {
-        return new DataLakeStorageException(ex.getServiceMessage(), ex.getResponse(), ex.getValue());
+    public static RuntimeException transformBlobStorageException(RuntimeException ex) {
+        if (!(ex instanceof BlobStorageException)) {
+            return ex;
+        } else {
+            BlobStorageException exception = (BlobStorageException) ex;
+            return new DataLakeStorageException(exception.getServiceMessage(), exception.getResponse(),
+                exception.getValue());
+        }
+    }
+
+    public static Throwable transformBlobStorageException(Throwable ex) {
+        if (!(ex instanceof BlobStorageException)) {
+            return ex;
+        } else {
+            BlobStorageException exception = (BlobStorageException) ex;
+            return new DataLakeStorageException(exception.getServiceMessage(), exception.getResponse(),
+                exception.getValue());
+        }
     }
 }

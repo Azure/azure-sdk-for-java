@@ -7,7 +7,9 @@ import com.azure.core.http.rest.PagedIterable
 import com.azure.core.http.rest.Response
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
+import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils
 import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.FileSystemItem
 import com.azure.storage.file.datalake.models.FileSystemListDetails
@@ -100,10 +102,15 @@ class ServiceAPITest extends APISpec {
 
     def "List file systems error"() {
         when:
-        primaryDataLakeServiceClient.listFileSystems().streamByPage("garbage continuation token").count()
+        PagedIterable<FileSystemItem> items =  primaryDataLakeServiceClient.listFileSystems()
+        try {
+            items.streamByPage("garbage continuation token").count()
+        } catch (BlobStorageException ex) {
+            throw DataLakeImplUtils.transformBlobStorageException(ex)
+        }
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "List file systems with timeout still backed by PagedFlux"() {

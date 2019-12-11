@@ -198,12 +198,11 @@ public class DataLakeFileSystemClient {
     public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Duration timeout, Context context) {
         try {
-            return blobContainerClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType), timeout,
-                context);
+            return blobContainerClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType),
+                timeout, context);
         } catch (BlobStorageException ex) {
             throw logger.logExceptionAsError(DataLakeImplUtils.transformBlobStorageException(ex));
         }
-
     }
 
     /**

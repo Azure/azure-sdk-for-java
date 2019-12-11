@@ -133,4 +133,26 @@ class AsyncErrorMappingTest extends APISpec {
         }
     }
 
+    def "Get file system access policy"() {
+        when:
+        def fileSystemName = generateFileSystemName()
+        def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
+        def getAccessPolicyVerifier = StepVerifier.create(fsac.getAccessPolicyWithResponse(null))
+        then:
+        getAccessPolicyVerifier.verifyErrorSatisfies {
+            assert it instanceof DataLakeStorageException
+        }
+    }
+
+    def "Set file system access policy"() {
+        when:
+        def fileSystemName = generateFileSystemName()
+        def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
+        def setAccessPolicyVerifier = StepVerifier.create(fsac.setAccessPolicyWithResponse(null, null, null))
+        then:
+        setAccessPolicyVerifier.verifyErrorSatisfies {
+            assert it instanceof DataLakeStorageException
+        }
+    }
+
 }

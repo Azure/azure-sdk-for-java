@@ -306,7 +306,7 @@ public class DataLakeServiceAsyncClient {
         OffsetDateTime expiry) {
         try {
             return blobServiceAsyncClient.getUserDelegationKeyWithResponse(start, expiry)
-                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response ->
                 new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue())));
         } catch (RuntimeException ex) {

@@ -11,7 +11,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
@@ -331,7 +330,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             return blockBlobAsyncClient.downloadWithResponse(Transforms.toBlobRange(range),
                 Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
                 getRangeContentMd5).map(Transforms::toFileReadAsyncResponse)
-                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
