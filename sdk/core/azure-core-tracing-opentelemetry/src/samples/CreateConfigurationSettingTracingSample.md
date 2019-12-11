@@ -6,30 +6,38 @@ Following documentation describes instructions to run a sample program for creat
 Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package and **[Logging Exporter][logging_exporter]** as exporter.
 ### Adding dependencies to your project:
 ```xml
-<dependencies>
-    <dependency>
-        <groupId>io.opentelemetry</groupId>
-        <artifactId>opentelemetry-sdk</artifactId>
-        <version>0.2.0</version>
-    </dependency>
-    <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-data-appconfiguration</artifactId>
-        <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
-    </dependency>
-    <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-tracing-opentelemetry</artifactId>
-        <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
-    </dependency>
-    <dependency>
-        <groupId>io.opentelemetry</groupId>
-        <artifactId>opentelemetry-exporters-logging</artifactId>
-        <version>0.2.0</version>
-    </dependency>
-</dependencies>
-
+<dependency>
+    <groupId>io.opentelemetry</groupId>
+    <artifactId>opentelemetry-sdk</artifactId>
+    <version>0.2.0</version>
+</dependency>
+<dependency>
+    <groupId>io.opentelemetry</groupId>
+    <artifactId>opentelemetry-exporters-logging</artifactId>
+    <version>0.2.0</version>
+</dependency>
 ```
+
+[//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-data-appconfiguration</artifactId>
+    <version>1.0.0-beta.7</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opentelemetry;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-core-tracing-opentelemetry</artifactId>
+    <version>1.0.0-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
 #### Sample demonstrates tracing when adding a configuration setting using [azure-data-app-configuration][azure_data_app_configuration] client library.
 ```java
 import com.azure.core.util.Context;
