@@ -30,6 +30,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -98,10 +99,11 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
         languageInputs.add(new DetectLanguageInput(Integer.toString(0), text, countryHint));
-        // TODO: should this be a random number generator?
+        // TODO (savaity):should this be a random number generator?
         return detectBatchLanguagesWithResponse(languageInputs, null, context).flatMap(response -> {
-            if (response.getValue().iterator().hasNext()) {
-                return Mono.justOrEmpty(new SimpleResponse<>(response, response.getValue().iterator().next()));
+            Iterator<DetectLanguageResult> responseItem = response.getValue().iterator();
+            if (responseItem.hasNext()) {
+                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
             }
             return monoError(logger, new RuntimeException("Unable to retrieve language for the provided text."));
         });
@@ -157,7 +159,7 @@ public final class TextAnalyticsAsyncClient {
      */
     private static List<DetectLanguageInput> getLanguageInputList(List<String> inputs, String countryHint) {
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
-        // TODO (savaity): update/validate inputs and id assigning
+        // TODO (savaity):update/validate inputs and id assigning
         for (int i = 0; i < inputs.size(); i++) {
             languageInputs.add(new DetectLanguageInput(Integer.toString(i), inputs.get(i), countryHint));
         }
@@ -174,7 +176,7 @@ public final class TextAnalyticsAsyncClient {
      */
     private static List<TextDocumentInput> getDocumentInputList(List<String> inputs, String language) {
         List<TextDocumentInput> textDocumentInputs = new ArrayList<>();
-        // TODO (savaity): update/validate inputs and id assigning
+        // TODO (savaity):update/validate inputs and id assigning
         for (int i = 0; i < inputs.size(); i++) {
             textDocumentInputs.add(new TextDocumentInput(Integer.toString(i), inputs.get(i), language));
         }
@@ -217,9 +219,9 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
         List<DetectLanguageInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        // TODO: validate inputs?
+        // TODO (savaity): validate inputs?
         final LanguageBatchInput languageBatchInput = new LanguageBatchInput().setDocuments(inputs);
-        // TODO: confirm if options null is fine?
+        // TODO (savaity): confirm if options null is fine?
         return service.languagesWithRestResponseAsync(
             languageBatchInput, options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
@@ -300,13 +302,14 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<NamedEntityResult>> recognizeEntitiesWithResponse(String text, String language, Context context) {
         List<TextDocumentInput> documentInputs = new ArrayList<>();
-        // TODO (savaity/shawn) update/validate inputs and id assigning
+        // TODO (savaity/shawn): update/validate inputs and id assigning
         documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
         return recognizeBatchEntitiesWithResponse(documentInputs, null, context).flatMap(response -> {
-            if (response.getValue().iterator().hasNext()) {
-                return Mono.justOrEmpty(new SimpleResponse<>(response, response.getValue().iterator().next()));
+            Iterator<NamedEntityResult> responseItem = response.getValue().iterator();
+            if (responseItem.hasNext()) {
+                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
             }
-            return monoError(logger, new RuntimeException("Unable to retrieve language for the provided text."));
+            return monoError(logger, new RuntimeException("Unable to recognize entities for the provided text."));
         });
     }
 
@@ -419,11 +422,11 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizeBatchPiiEntitiesWithResponse(
-        List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
-        // TODO: validate multiLanguageBatchInput
-        return service.entitiesRecognitionPiiWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(document),
-            options == null ? null : options.getModelVersion(), options == null ? null : options.showStatistics(),
-            context).map(response -> new SimpleResponse<>(response, null));
+        List<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        return service.entitiesRecognitionPiiWithRestResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(documents), options == null ? null : options.getModelVersion(),
+            options == null ? null : options.showStatistics(),context)
+                   .map(response -> new SimpleResponse<>(response, null));
     }
 
     // (4) Link entities
@@ -446,13 +449,15 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<LinkedEntityResult>> recognizeLinkedEntitiesWithResponse(String text, String language,
                                                                            Context context) {
         List<TextDocumentInput> documentInputs = new ArrayList<>();
-        // TODO (savaity/shawn) update/validate inputs and id assigning
+        // TODO (savaity/shawn): update/validate inputs and id assigning
         documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
         return recognizeBatchLinkedEntitiesWithResponse(documentInputs, null, context).flatMap(response -> {
-            if (response.getValue().iterator().hasNext()) {
-                return Mono.justOrEmpty(new SimpleResponse<>(response, response.getValue().iterator().next()));
+            Iterator<LinkedEntityResult> responseItem = response.getValue().iterator();
+            if (responseItem.hasNext()) {
+                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
             }
-            return monoError(logger, new RuntimeException("Unable to retrieve language for the provided text."));
+            return monoError(logger,
+                new RuntimeException("Unable to recognize linked entities for the provided text."));
         });
     }
 
@@ -498,7 +503,6 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<LinkedEntityResult>>> recognizeBatchLinkedEntitiesWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
-        // TODO: validate multiLanguageBatchInput
         return service.entitiesLinkingWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(inputs),
             options == null ? null : options.getModelVersion(), options == null ? null : options.showStatistics(),
             context).map(response -> new SimpleResponse<>(response, null));
@@ -524,12 +528,13 @@ public final class TextAnalyticsAsyncClient {
                                                                   Context context) {
         List<TextDocumentInput> documentInputs = new ArrayList<>();
         documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
-        // TODO: should this be a random number generator?
+        // TODO (savaity): should this be a random number generator?
         return extractBatchKeyPhrasesWithResponse(documentInputs, null, context).flatMap(response -> {
-            if (response.getValue().iterator().hasNext()) {
-                return Mono.justOrEmpty(new SimpleResponse<>(response, response.getValue().iterator().next()));
+            Iterator<KeyPhraseResult> responseItem = response.getValue().iterator();
+            if (responseItem.hasNext()) {
+                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
             }
-            return monoError(logger, new RuntimeException("Unable to retrieve key phrases for the provided text."));
+            return monoError(logger, new RuntimeException("Unable to extract key phrases for the provided text."));
         });
     }
 
@@ -599,12 +604,13 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<TextSentimentResult>> analyzeSentimentWithResponse(String text, String language, Context context) {
         List<TextDocumentInput> documentInputs = new ArrayList<>();
         documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
-        // TODO: should this be a random number generator?
+        // TODO (savaity): should this be a random number generator?
         return analyzeBatchSentimentWithResponse(documentInputs, null, context).flatMap(response -> {
-            if (response.getValue().iterator().hasNext()) {
-                return Mono.justOrEmpty(new SimpleResponse<>(response, response.getValue().iterator().next()));
+            Iterator<TextSentimentResult> responseItem = response.getValue().iterator();
+            if (responseItem.hasNext()) {
+                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
             }
-            return monoError(logger, new RuntimeException("Unable to retrieve key phrases for the provided text."));
+            return monoError(logger, new RuntimeException("Unable to analyze sentiment for the provided text."));
         });
     }
 
@@ -650,7 +656,6 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<TextSentimentResult>>> analyzeBatchSentimentWithResponse(
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
-        // TODO: validate multiLanguageBatchInput
         return service.sentimentWithRestResponseAsync(
             new MultiLanguageBatchInput().setDocuments(document), options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
