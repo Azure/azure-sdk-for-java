@@ -9,6 +9,7 @@ import com.azure.data.cosmos.internal.PathsHelper;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.ResourceId;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.Exceptions;
@@ -36,7 +37,7 @@ public abstract class RxCollectionCache {
      * @param request Request to resolve.
      * @return an instance of Single&lt;DocumentCollection&gt;
      */
-    public Mono<DocumentCollection> resolveCollectionAsync(
+    public Mono<Utils.ValueHolder<DocumentCollection>> resolveCollectionAsync(
             RxDocumentServiceRequest request) {
         //  Mono Void to represent only terminal events specifically complete and error
         Mono<Void> init = null;
@@ -46,14 +47,17 @@ public abstract class RxCollectionCache {
                 init = mono.then(Mono.fromRunnable(() -> request.setForceNameCacheRefresh(false)));
             }
 
-            Mono<DocumentCollection> collectionInfoObs = this.resolveByPartitionKeyRangeIdentityAsync(
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionInfoObs = this.resolveByPartitionKeyRangeIdentityAsync(
                     request.getPartitionKeyRangeIdentity(), request.properties);
 
             if (init != null) {
                 collectionInfoObs = init.then(collectionInfoObs);
             }
 
-            return collectionInfoObs.flatMap(Mono::just).switchIfEmpty(Mono.defer(() -> {
+            return collectionInfoObs.flatMap(collectionValueHolder -> {
+                if (collectionValueHolder.v != null) {
+                    return Mono.just(collectionValueHolder);
+                }
                 if (request.requestContext.resolvedCollectionRid == null) {
 
                     Mono<DocumentCollection> collectionInfoRes = this.resolveByNameAsync(request.getResourceAddress(), request.properties);
@@ -67,16 +71,23 @@ public abstract class RxCollectionCache {
 
                         request.setResourceId(collection.resourceId());
                         request.requestContext.resolvedCollectionRid = collection.resourceId();
-                        return Mono.just(collection);
+                        return Mono.just(new Utils.ValueHolder<>(collection));
 
                     });
                 } else {
                     return this.resolveByRidAsync(request.requestContext.resolvedCollectionRid, request.properties);
                 }
-            }));
+            });
         } else {
             return resolveByPartitionKeyRangeIdentityAsync(request.getPartitionKeyRangeIdentity(),request.properties)
-                    .flatMap(Mono::just).switchIfEmpty(this.resolveByRidAsync(request.getResourceAddress(), request.properties));
+                .flatMap(collectionValueHolder -> {
+
+                    if (collectionValueHolder.v != null) {
+                        return Mono.just(collectionValueHolder);
+                    }
+
+                    return this.resolveByRidAsync(request.getResourceAddress(), request.properties);
+                });
         }
     }
 
@@ -101,7 +112,7 @@ public abstract class RxCollectionCache {
 
     protected abstract Mono<DocumentCollection> getByNameAsync(String resourceAddress, Map<String, Object> properties);
 
-    private Mono<DocumentCollection> resolveByPartitionKeyRangeIdentityAsync(PartitionKeyRangeIdentity partitionKeyRangeIdentity, Map<String, Object> properties) {
+    private Mono<Utils.ValueHolder<DocumentCollection>> resolveByPartitionKeyRangeIdentityAsync(PartitionKeyRangeIdentity partitionKeyRangeIdentity, Map<String, Object> properties) {
         // if request is targeted at specific partition using x-ms-documentd-partitionkeyrangeid header,
         // which contains value "<collectionrid>,<partitionkeyrangeid>", then resolve to collection rid in this header.
         if (partitionKeyRangeIdentity != null && partitionKeyRangeIdentity.getCollectionRid() != null) {
@@ -117,19 +128,20 @@ public abstract class RxCollectionCache {
 
                     });
         }
-        return Mono.empty();
+        return Mono.just(new Utils.ValueHolder<>(null));
     }
 
-    private Mono<DocumentCollection> resolveByRidAsync(
+    private Mono<Utils.ValueHolder<DocumentCollection>> resolveByRidAsync(
             String resourceId, Map<String, Object> properties) {
 
         ResourceId resourceIdParsed = ResourceId.parse(resourceId);
         String collectionResourceId = resourceIdParsed.getDocumentCollectionId().toString();
 
-        return this.collectionInfoByIdCache.getAsync(
-                collectionResourceId,
-                null,
-                () -> this.getByRidAsync(collectionResourceId, properties));
+        Mono<DocumentCollection> async = this.collectionInfoByIdCache.getAsync(
+            collectionResourceId,
+            null,
+            () -> this.getByRidAsync(collectionResourceId, properties));
+        return async.map(Utils.ValueHolder::new);
     }
 
     private Mono<DocumentCollection> resolveByNameAsync(

@@ -117,22 +117,23 @@ public final class RoutingMapProviderHelper {
             }
 
             return routingMapProvider.tryGetOverlappingRangesAsync(resourceId, queryRange, false, null)
-                       .map(targetRanges::addAll)
-                       .flatMap(aBoolean -> {
-                           if (!targetRanges.isEmpty()) {
-                               Range<String> lastKnownTargetRange = targetRanges.get(targetRanges.size() - 1).toRange();
-                               while (iterator.hasNext()) {
-                                   Range<String> value = iterator.next();
-                                   if (MAX_COMPARATOR.compare(value, lastKnownTargetRange) > 0) {
-                                       // Since we already moved forward on iterator to check above condition, we
-                                       // go to previous when it fails so the the value is not skipped on iteration
-                                       iterator.previous();
-                                       break;
-                                   }
-                               }
-                           }
-                           return Mono.just(targetRanges);
-                       }).flux();
+                                     .map(ranges -> ranges.v)
+                                     .map(targetRanges::addAll)
+                                     .flatMap(aBoolean -> {
+                                         if (!targetRanges.isEmpty()) {
+                                             Range<String> lastKnownTargetRange = targetRanges.get(targetRanges.size() - 1).toRange();
+                                             while (iterator.hasNext()) {
+                                                 Range<String> value = iterator.next();
+                                                 if (MAX_COMPARATOR.compare(value, lastKnownTargetRange) > 0) {
+                                                     // Since we already moved forward on iterator to check above condition, we
+                                                     // go to previous when it fails so the the value is not skipped on iteration
+                                                     iterator.previous();
+                                                     break;
+                                                 }
+                                             }
+                                         }
+                                         return Mono.just(targetRanges);
+                                     }).flux();
         }).repeat(sortedRanges.size())
                    .takeUntil(stringRange -> !iterator.hasNext())
                    .last()
