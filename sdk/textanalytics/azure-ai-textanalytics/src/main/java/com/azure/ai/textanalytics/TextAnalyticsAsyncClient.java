@@ -16,6 +16,7 @@ import com.azure.ai.textanalytics.models.Error;
 import com.azure.ai.textanalytics.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntityResult;
 import com.azure.ai.textanalytics.models.NamedEntityResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsClientOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentimentResult;
@@ -46,10 +47,20 @@ public final class TextAnalyticsAsyncClient {
 
     private final TextAnalyticsClientImpl service;
     private final TextAnalyticsServiceVersion serviceVersion;
+    private final TextAnalyticsClientOptions clientOptions;
+
+    TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion,
+                             TextAnalyticsClientOptions clientOptions) {
+        this.service = service;
+        this.serviceVersion = serviceVersion;
+        this.clientOptions = clientOptions;
+    }
+
 
     TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
+        this.clientOptions = null;
     }
 
     /**
