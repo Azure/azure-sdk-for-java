@@ -141,6 +141,8 @@ class APISpec extends Specification {
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
+        System.setProperty("reactor.bufferSize.x", "16")
+        System.setProperty("reactor.bufferSize.small", "100")
     }
 
     def setup() {
@@ -154,8 +156,6 @@ class APISpec extends Specification {
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
         // The property is to limit flapMap buffer size of concurrency
         // in case the upload or download open too many connections.
-        System.setProperty("reactor.bufferSize.x", "16")
-        System.setProperty("reactor.bufferSize.small", "100")
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
 
@@ -172,9 +172,6 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        System.clearProperty("reactor.bufferSize.x")
-        System.clearProperty("reactor.bufferSize.small")
-
         def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
         for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
             BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
