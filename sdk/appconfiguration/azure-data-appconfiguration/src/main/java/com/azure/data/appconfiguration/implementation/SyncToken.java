@@ -10,14 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
  * SyncToken class requires id, value and sequence number
  */
 public final class SyncToken {
-    private final ClientLogger logger = new ClientLogger(SyncToken.class);
-
     private String id, value;
     private long sequenceNumber;
-
-
-    SyncToken() {
-    }
+    private String syncTokenString;
 
     /**
      * Create an instance of SyncToken class
@@ -26,36 +21,42 @@ public final class SyncToken {
      * @param value Value of Token
      * @param sequenceNumber Token sequence number (version). Higher value means newer version of the same token.
      */
-    SyncToken(String id, String value, long sequenceNumber) {
+    private SyncToken(String id, String value, long sequenceNumber, String syncTokenString) {
         this.id = id;
         this.value = value;
         this.sequenceNumber = sequenceNumber;
+        this.syncTokenString = syncTokenString;
     }
 
-    public SyncToken fromSyncTokenString(String syncToken) {
+    static SyncToken fromSyncTokenString(String syncToken) {
         if (CoreUtils.isNullOrEmpty(syncToken)) {
             return null;
         }
-
         try {
-            final int position = syncToken.indexOf(";sn=");
-            sequenceNumber = Long.parseLong(syncToken.substring(position + 4));
-            final String idValue = syncToken.substring(0, position);
-            final int jointPosition = idValue.indexOf("=");
-            id = idValue.substring(0, jointPosition);
-            value = idValue.substring(jointPosition + 1);
-            if (CoreUtils.isNullOrEmpty(id) || CoreUtils.isNullOrEmpty(value) || sequenceNumber == 0) {
+            final String[] syncTokenParts = syncToken.split(";", 2);
+            // Not a fully formed Sync-Token
+            if (syncTokenParts.length != 2) {
                 return null;
             }
 
+            final String[] idParts = syncTokenParts[0].split("=", 2);
+            // Identifier is missing a section.
+            if (idParts.length != 2) {
+                return null;
+            }
+
+            final String[] snParts = syncTokenParts[1].split("=", 2);
+            if (snParts.length != 2) {
+                return null;
+            }
+
+            final long sequenceNumber = Long.parseLong(snParts[1]);
+            return new SyncToken(idParts[0], idParts[1], sequenceNumber, syncToken);
         } catch (NumberFormatException e) {
-            logger.logExceptionAsError(
+            new ClientLogger(SyncToken.class).logExceptionAsWarning(
                 new RuntimeException("Cannot parse sequence number for invalid number format."));
             return null;
         }
-
-        return new SyncToken(id, value, sequenceNumber);
-
     }
 
     public String getId() {
@@ -70,9 +71,7 @@ public final class SyncToken {
         return sequenceNumber;
     }
 
-
-    @Override
-    public String toString() {
-        return String.format(id + "=" + value);
+    public String getSyncTokenStringInRequest() {
+        return new StringBuilder().append(id).append("=").append(value).toString();
     }
 }

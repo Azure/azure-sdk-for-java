@@ -232,9 +232,9 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                 OffsetDateTime acceptDateTime,
-                                                                 boolean ifChanged,
-                                                                 Context context) {
+                                                                              OffsetDateTime acceptDateTime,
+                                                                              boolean ifChanged,
+                                                                              Context context) {
         return client.getConfigurationSetting(setting, acceptDateTime, ifChanged, context).block();
     }
 

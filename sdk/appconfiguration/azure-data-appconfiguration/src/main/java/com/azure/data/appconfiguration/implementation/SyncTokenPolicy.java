@@ -10,17 +10,18 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public final class SyncTokenPolicy implements HttpPipelinePolicy {
-    private static final String syncTokenHeader = "Sync-Token";
-    private ConcurrentHashMap<String, SyncToken> syncTokenMap; // key is sync-token id
+    private static final String SYNC_TOKEN = "Sync-Token";
+    private final ConcurrentHashMap<String, SyncToken> syncTokenMap; // key is sync-token id
 
     public SyncTokenPolicy() {
         syncTokenMap = new ConcurrentHashMap<>();
     }
 
     /**
-     * Adds the requ
+     * Add or update the sync token id and value to a thread safe map.
      *
      * @param context request context
      * @param next The next policy to invoke.
@@ -28,9 +29,13 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+
+        // attempt to add header to the request
+        context.getHttpRequest().setHeader(SYNC_TOKEN, getSyncTokenHeader());
+
         return next.process().flatMap(httpResponse -> {
             // get the latest sync token from map
-            final String syncTokenValue = httpResponse.getRequest().getHeaders().getValue(syncTokenHeader);
+            final String syncTokenValue = httpResponse.getHeaders().getValue(SYNC_TOKEN);
             if (syncTokenValue == null) {
                 return Mono.just(httpResponse);
             }
@@ -38,9 +43,9 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
             // Sync-Token header could have more than one value
             final String[] syncTokens = syncTokenValue.split(",");
             for (final String syncTokenStr : syncTokens) {
-                final SyncToken syncToken = new SyncToken().fromSyncTokenString(syncTokenStr);
+                final SyncToken syncToken = SyncToken.fromSyncTokenString(syncTokenStr);
                 if (syncToken == null) {
-                    return Mono.just(httpResponse);
+                    continue;
                 }
 
                 final String tokenId = syncToken.getId();
@@ -51,15 +56,19 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
                     final SyncToken existSyncToken = syncTokenMap.get(tokenId);
                     if (existSyncToken.getSequenceNumber() < tokenSequenceNumber) {
                         // update the same sync token.
-                        syncTokenMap.put(tokenId, syncToken);
+                        syncTokenMap.replace(tokenId, existSyncToken, syncToken);
                     }
                 } else {
                     syncTokenMap.put(tokenId, syncToken);
                 }
             }
 
-            httpResponse.getRequest().getHeaders().put(syncTokenHeader, syncTokenValue);
             return Mono.just(httpResponse);
         });
+    }
+
+    private String getSyncTokenHeader() {
+        return syncTokenMap.values().stream().map(SyncToken::getSyncTokenStringInRequest)
+            .collect(Collectors.joining(","));
     }
 }
