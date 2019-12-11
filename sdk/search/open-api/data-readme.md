@@ -142,7 +142,7 @@ directive:
   where: $
   transform: >-
     return $
-    .replace(/(public final class IndexBatchImpl)/g, "class IndexBatchImpl<T>")
+    .replace(/(public final class IndexBatchImpl)/g, "public class IndexBatchImpl<T>")
     .replace(/(private List<IndexAction> actions;)/g, "private List<IndexAction<T>> actions;")
     .replace(/(public List<IndexAction> getActions\(\) {)/g, "public List<IndexAction<T>> getActions() {")
     .replace(/(public IndexBatchImpl setActions\(List<IndexAction> actions\) {)/g, "protected IndexBatchImpl<T> setActions(List<IndexAction<T>> actions) {")
