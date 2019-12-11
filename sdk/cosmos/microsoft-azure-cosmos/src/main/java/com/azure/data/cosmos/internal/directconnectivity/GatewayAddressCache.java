@@ -134,7 +134,7 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     @Override
-    public Mono<AddressInformation[]> tryGetAddresses(RxDocumentServiceRequest request,
+    public Mono<Utils.ValueHolder<AddressInformation[]>> tryGetAddresses(RxDocumentServiceRequest request,
                                                         PartitionKeyRangeIdentity partitionKeyRangeIdentity,
                                                         boolean forceRefreshPartitionAddresses) {
 
@@ -149,7 +149,8 @@ public class GatewayAddressCache implements IAddressCache {
                 PartitionKeyRange.MASTER_PARTITION_KEY_RANGE_ID)) {
 
             // if that's master partition return master partition address!
-            return this.resolveMasterAsync(request, forceRefreshPartitionAddresses, request.properties).map(Pair::getRight);
+            return this.resolveMasterAsync(request, forceRefreshPartitionAddresses, request.properties)
+                       .map(partitionKeyRangeIdentityPair -> new Utils.ValueHolder<>(partitionKeyRangeIdentityPair.getRight()));
         }
 
         Instant suboptimalServerPartitionTimestamp = this.suboptimalServerPartitionTimestamps.get(partitionKeyRangeIdentity);
@@ -199,26 +200,26 @@ public class GatewayAddressCache implements IAddressCache {
             this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
         }
 
-        Mono<AddressInformation[]> addressesObs = this.serverPartitionAddressCache.getAsync(
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs = this.serverPartitionAddressCache.getAsync(
                 partitionKeyRangeIdentity,
                 null,
                 () -> this.getAddressesForRangeId(
                         request,
                         partitionKeyRangeIdentity.getCollectionRid(),
                         partitionKeyRangeIdentity.getPartitionKeyRangeId(),
-                        false));
+                    false)).map(Utils.ValueHolder::new);
 
         return addressesObs.map(
-                addresses -> {
-                    if (notAllReplicasAvailable(addresses)) {
+            addressesValueHolder -> {
+                if (notAllReplicasAvailable(addressesValueHolder.v)) {
                         if (logger.isDebugEnabled()) {
-                            logger.debug("not all replicas available {}", JavaStreamUtils.info(addresses));
+                            logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
                         }
 
                         this.suboptimalServerPartitionTimestamps.putIfAbsent(partitionKeyRangeIdentity, Instant.now());
                     }
 
-                    return addresses;
+                    return addressesValueHolder;
                 }).onErrorResume(throwable -> {
                     Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
                     CosmosClientException dce = com.azure.data.cosmos.internal.Utils.as(unwrappedException, CosmosClientException.class);
@@ -237,7 +238,7 @@ public class GatewayAddressCache implements IAddressCache {
                             this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
 
                             logger.debug("tryGetAddresses: inner onErrorResumeNext return empty", dce);
-                            return Mono.empty();
+                            return Mono.just(new Utils.ValueHolder<>(null));
                         }
                         return Mono.error(unwrappedException);
                     }
