@@ -92,6 +92,13 @@ public class StorageAccountUpdateParameters {
     private LargeFileSharesState largeFileSharesState;
 
     /**
+     * Maintains information about the network routing choice opted by the user
+     * for data transfer.
+     */
+    @JsonProperty(value = "properties.routingPreference")
+    private RoutingPreference routingPreference;
+
+    /**
      * Optional. Indicates the type of storage account. Currently only
      * StorageV2 value supported by server. Possible values include: 'Storage',
      * 'StorageV2', 'BlobStorage', 'FileStorage', 'BlockBlobStorage'.
@@ -296,6 +303,26 @@ public class StorageAccountUpdateParameters {
      */
     public StorageAccountUpdateParameters withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
         this.largeFileSharesState = largeFileSharesState;
+        return this;
+    }
+
+    /**
+     * Get maintains information about the network routing choice opted by the user for data transfer.
+     *
+     * @return the routingPreference value
+     */
+    public RoutingPreference routingPreference() {
+        return this.routingPreference;
+    }
+
+    /**
+     * Set maintains information about the network routing choice opted by the user for data transfer.
+     *
+     * @param routingPreference the routingPreference value to set
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withRoutingPreference(RoutingPreference routingPreference) {
+        this.routingPreference = routingPreference;
         return this;
     }
 

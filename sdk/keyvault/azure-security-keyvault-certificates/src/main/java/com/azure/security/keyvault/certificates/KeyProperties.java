@@ -4,8 +4,8 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
-import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.CertificateKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -18,7 +18,7 @@ class KeyProperties {
         this.exportable = certificatePolicy.isExportable();
         this.keySize = certificatePolicy.getKeySize();
         this.keyType = certificatePolicy.getKeyType();
-        this.reuseKey = certificatePolicy.isReuseKey();
+        this.reuseKey = certificatePolicy.isKeyReusable();
     }
 
 

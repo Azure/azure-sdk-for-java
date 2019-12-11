@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
@@ -21,7 +20,6 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -81,6 +79,7 @@ class EventHubConnection implements Closeable {
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
+     *
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions) {
@@ -95,17 +94,18 @@ class EventHubConnection implements Closeable {
     }
 
     /**
-     * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with
-     * the same {@code linkName}. Otherwise, a new link is created and returned.
+     * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the
+     * same {@code linkName}. Otherwise, a new link is created and returned.
      *
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param eventPosition Position to set the receive link to.
      * @param options Consumer options to use when creating the link.
+     *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
-            ReceiveOptions options) {
+        ReceiveOptions options) {
         return currentConnection.flatMap(connection -> connection.createSession(entityPath).cast(EventHubSession.class))
             .flatMap(session -> {
                 logger.verbose("Creating consumer for path: {}", entityPath);
@@ -123,21 +123,17 @@ class EventHubConnection implements Closeable {
      */
     @Override
     public void close() {
-        if (hasConnection.getAndSet(false)) {
-            try {
-                final AmqpConnection connection = currentConnection.block(connectionOptions.getRetry().getTryTimeout());
-                if (connection != null) {
-                    connection.close();
-                }
+        if (!hasConnection.getAndSet(false)) {
+            return;
+        }
 
-                if (connectionOptions.getScheduler() != null && !connectionOptions.getScheduler().isDisposed()) {
-                    connectionOptions.getScheduler().dispose();
-                }
-            } catch (IOException exception) {
-                throw logger.logExceptionAsError(
-                    new AmqpException(false, "Unable to close connection to service", exception,
-                        new AmqpErrorContext(connectionOptions.getFullyQualifiedNamespace())));
-            }
+        final AmqpConnection connection = currentConnection.block(connectionOptions.getRetry().getTryTimeout());
+        if (connection != null) {
+            connection.close();
+        }
+
+        if (connectionOptions.getScheduler() != null && !connectionOptions.getScheduler().isDisposed()) {
+            connectionOptions.getScheduler().dispose();
         }
     }
 }

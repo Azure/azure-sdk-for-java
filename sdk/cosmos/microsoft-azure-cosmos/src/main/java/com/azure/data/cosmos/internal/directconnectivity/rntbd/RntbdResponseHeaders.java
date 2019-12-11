@@ -26,6 +26,7 @@ import static com.azure.data.cosmos.internal.directconnectivity.WFConstants.Back
 import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdConstants.RntbdIndexingDirective;
 import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
 
+@SuppressWarnings("UnstableApiUsage")
 @JsonFilter("RntbdToken")
 class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 

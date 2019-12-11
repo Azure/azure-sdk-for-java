@@ -9,6 +9,8 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.sas.ShareFileSasPermission;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -586,8 +588,8 @@ public class ShareFileAsyncJavaDocCodeSamples {
     public void forceCloseAllHandles() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.forceCloseAllHandles
-        shareFileAsyncClient.forceCloseAllHandles().subscribe(numberOfHandlesClosed ->
-            System.out.printf("Closed %d open handles on the file%n", numberOfHandlesClosed));
+        shareFileAsyncClient.forceCloseAllHandles().subscribe(handlesClosedInfo ->
+            System.out.printf("Closed %d open handles on the file%n", handlesClosedInfo.getClosedHandles()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.forceCloseAllHandles
     }
 
@@ -629,5 +631,21 @@ public class ShareFileAsyncJavaDocCodeSamples {
         String filePath = shareFileAsyncClient.getFilePath();
         System.out.println("The name of the file is " + filePath);
         // END: com.azure.storage.file.share.ShareFileAsyncClient.getFilePath
+    }
+
+    /**
+     * Code snippet for {@link ShareFileAsyncClient#generateSas(ShareServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.generateSas#ShareServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareFileSasPermission permission = new ShareFileSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        shareFileAsyncClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.generateSas#ShareServiceSasSignatureValues
     }
 }

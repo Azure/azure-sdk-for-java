@@ -1,0 +1,313 @@
+{
+  "advisor/resource-manager": {
+    "source": "specification/advisor/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "apimanagement/resource-manager": {
+    "source": "specification/apimanagement/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "appconfiguration/resource-manager": {
+    "source": "specification/appconfiguration/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "applicationinsights/resource-manager": {
+    "source": "specification/applicationinsights/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "applicationinsights/data-plane": {
+      "source": "specification/applicationinsights/data-plane/readme.md",
+      "args": "--payload-flattening-threshold=1"
+    },
+  "appplatform/resource-manager": {
+    "source": "specification/appplatform/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "appservice/resource-manager": {
+    "source": "specification/web/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"AppService\""
+    }
+  },
+  "automation/resource-manager": {
+    "source": "specification/automation/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "authorization/resource-manager": {
+    "source": "specification/authorization/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "azure-kusto/resource-manager": {
+    "source": "specification/azure-kusto/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "azurestack/resource-manager": {
+    "source": "specification/azurestack/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "batchai/resource-manager": {
+    "source": "specification/batchai/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "cognitiveservices/resource-manager": {
+    "source": "specification/cognitiveservices/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "compute/resource-manager": {
+    "source": "specification/compute/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "consumption/resource-manager": {
+    "source": "specification/consumption/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "containerservice/resource-manager": {
+    "source": "specification/containerservice/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "containerregistry/resource-manager": {
+    "source": "specification/containerregistry/resource-manager/readme.md",
+    "args": "--multiapi=true --fluent=true"
+  },
+  "costmanagement/resource-manager": {
+    "source": "specification/cost-management/resource-manager/readme.md",
+    "args": "--multiapi=true --fluent=true"
+  },
+  "cosmosdb/resource-manager": {
+    "source": "specification/cosmos-db/resource-manager/readme.md",
+    "args": "--multiapi=true --fluent=true"
+  },
+  "datalakeanalytics/resource-manager": {
+    "source": "specification/datalake-analytics/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "datalakestore/resource-manager": {
+    "source": "specification/datalake-store/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "datamigration/resource-manager": {
+    "source": "specification/datamigration/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "devtestlabs/resource-manager" : {
+    "source": "specification/devtestlabs/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "dns/resource-manager": {
+    "source": "specification/dns/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "edgegateway/resource-manager": {
+    "source": "specification/edgegateway/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "eventgrid/resource-manager": {
+    "source": "specification/eventgrid/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "eventgrid/data-plane": {
+    "source": "specification/eventgrid/data-plane/readme.md",
+    "args": "--multiapi"
+  },
+  "eventhub/resource-manager": {
+    "source": "specification/eventhub/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "hanaonazure/resource-manager": {
+    "source": "specification/hanaonazure/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "hdinsight/resource-manager": {
+    "source": "specification/hdinsight/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "iotcentral/resource-manager": {
+    "source": "specification/iotcentral/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"IoTCentral\""
+    }
+  },
+  "iothub/resource-manager": {
+    "source": "specification/iothub/resource-manager/readme.md",
+    "args": "--multiapi --fluent --remove-inner=ErrorDetails",
+    "fconfig": {
+      "\"moduleName\"": "\"IoTHub\""
+    }
+  },
+  "keyvault/resource-manager": {
+    "source": "specification/keyvault/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "loganalytics/data-plane": {
+    "source": "specification/operationalinsights/data-plane/readme.md",
+    "args": "--payload-flattening-threshold=1 --override-client-name=LogAnalyticsDataClient"
+  },
+  "loganalytics/resource-manager": {
+    "source": "specification/operationalinsights/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "logic/resource-manager": {
+    "source": "specification/logic/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "notificationhubs/resource-manager": {
+    "source": "specification/notificationhubs/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "machinelearningservices/resource-manager": {
+    "source": "specification/machinelearningservices/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "maintenance/resource-manager": {
+    "source": "specification/maintenance/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "mariadb/resource-manager": {
+    "source": "specification/mariadb/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "marketplaceordering/resource-manager": {
+    "source": "specification/marketplaceordering/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "mediaservices/resource-manager": {
+    "source": "specification/mediaservices/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "mixedreality/resource-manager": {
+    "source": "specification/mixedreality/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "mysql/resource-manager": {
+    "source": "specification/mysql/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"MySQL\""
+    }
+  },
+  "monitor/resource-manager": {
+    "source": "specification/monitor/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "netapp/resource-manager": {
+    "source": "specification/netapp/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "network/resource-manager": {
+    "source": "specification/network/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "operationsmanagement/resource-manager": {
+    "source": "specification/operationsmanagement/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "peering/resource-manager": {
+    "source": "specification/peering/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "policyinsights/resource-manager": {
+    "source": "specification/policyinsights/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "postgresql/resource-manager": {
+    "source": "specification/postgresql/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"PostgreSQL\""
+    }
+  },
+  "recoveryservices/resource-manager": {
+    "source": "specification/recoveryservices/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "recoveryservicesbackup/resource-manager": {
+    "source": "specification/recoveryservicesbackup/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "recoveryservicessiterecovery/resource-manager": {
+    "source": "specification/recoveryservicessiterecovery/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "redis/resource-manager": {
+    "source": "specification/redis/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"Redis\"",
+      "\"knownPlurals\"": ["\"redis\""],
+      "\"knownSingulars\"": ["\"redis\""]
+    }
+  },
+  "relay/resource-manager": {
+    "source": "specification/relay/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "resourcegraph/resource-manager": {
+    "source": "specification/resourcegraph/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "resourcehealth/resource-manager": {
+    "source": "specification/resourcehealth/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "resources/resource-manager": {
+    "source": "specification/resources/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "search/resource-manager": {
+    "source": "specification/search/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "servicefabric/resource-manager": {
+    "source": "specification/servicefabric/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "servicebus/resource-manager": {
+    "source": "specification/servicebus/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "signalr/resource-manager": {
+    "source": "specification/signalr/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"SignalR\"",
+      "\"knownPlurals\"": ["\"signalr\""],
+      "\"knownSingulars\"": ["\"signalr\""]
+    }
+  },
+  "sql/resource-manager": {
+    "source": "specification/sql/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "sqlvirtualmachine/resource-manager": {
+    "source": "specification/sqlvirtualmachine/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "storage/resource-manager": {
+    "source": "specification/storage/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "storagecache/resource-manager": {
+    "source": "specification/storagecache/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "storageimportexport/resource-manager": {
+    "source": "specification/storageimportexport/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "streamanalytics/resource-manager": {
+    "source": "specification/streamanalytics/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"StreamAnalytics\""
+    }
+  },
+  "vmwarecloudsimple/resource-manager": {
+    "source": "specification/vmwarecloudsimple/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"VMwareCloudSimple\""
+    }
+  }
+}

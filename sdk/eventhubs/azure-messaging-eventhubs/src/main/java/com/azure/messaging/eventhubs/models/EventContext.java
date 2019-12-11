@@ -89,8 +89,9 @@ public class EventContext {
             return monoError(logger, new NullPointerException("'eventData' cannot be null"));
         }
         Checkpoint checkpoint = new Checkpoint()
-            .setConsumerGroup(partitionContext.getConsumerGroup())
+            .setFullyQualifiedNamespace(partitionContext.getFullyQualifiedNamespace())
             .setEventHubName(partitionContext.getEventHubName())
+            .setConsumerGroup(partitionContext.getConsumerGroup())
             .setPartitionId(partitionContext.getPartitionId())
             .setSequenceNumber(eventData.getSequenceNumber())
             .setOffset(eventData.getOffset());

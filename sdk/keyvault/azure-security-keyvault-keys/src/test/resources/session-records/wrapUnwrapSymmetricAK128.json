@@ -1,0 +1,60 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://cameravault.vault.azure.net/secrets/secretKey?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.1.0-beta.1 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 05 Dec 2019 13:55:31 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.109.216;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "242",
+      "x-ms-request-id" : "1e9e27cb-9ee5-4f21-b1e0-3b0034114ba6",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODw==\",\"id\":\"https://cameravault.vault.azure.net/secrets/secretKey/3cceded86c644f5e808c070c5c6dd194\",\"attributes\":{\"enabled\":true,\"created\":1575554131,\"updated\":1575554131,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/secrets/secretKey/3cceded86c644f5e808c070c5c6dd194?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.1.0-beta.1 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 05 Dec 2019 13:55:31 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.109.216;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "242",
+      "x-ms-request-id" : "e14c6cf3-302e-49f2-90e5-5af9d0af0d0d",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODw==\",\"id\":\"https://cameravault.vault.azure.net/secrets/secretKey/3cceded86c644f5e808c070c5c6dd194\",\"attributes\":{\"enabled\":true,\"created\":1575554131,\"updated\":1575554131,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

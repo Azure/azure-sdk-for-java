@@ -35,7 +35,7 @@ public class DocumentQueryExecutionContextFactory {
 
     private final static int PageSizeFactorForTop = 5;
 
-    private static Mono<DocumentCollection> resolveCollection(IDocumentQueryClient client, SqlQuerySpec query,
+    private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(IDocumentQueryClient client, SqlQuerySpec query,
             ResourceType resourceTypeEnum, String resourceLink) {
 
         RxCollectionCache collectionCache = client.getCollectionCache();
@@ -60,7 +60,7 @@ public class DocumentQueryExecutionContextFactory {
             UUID correlatedActivityId) {
 
         // return proxy
-        Flux<DocumentCollection> collectionObs = Flux.empty();
+        Flux<Utils.ValueHolder<DocumentCollection>> collectionObs = Flux.just(new Utils.ValueHolder<>(null));
 
         if (resourceTypeEnum.isCollectionChild()) {
             collectionObs = resolveCollection(client, query, resourceTypeEnum, resourceLink).flux();
@@ -83,7 +83,7 @@ public class DocumentQueryExecutionContextFactory {
         Mono<PartitionedQueryExecutionInfo> queryExecutionInfoMono =
             com.azure.data.cosmos.internal.query.QueryPlanRetriever.getQueryPlanThroughGatewayAsync(client, query, resourceLink);
 
-        return collectionObs.single().flatMap(collection ->
+        return collectionObs.single().flatMap(collectionValueHolder ->
                           queryExecutionInfoMono.flatMap(partitionedQueryExecutionInfo -> {
                               QueryInfo queryInfo =
                                   partitionedQueryExecutionInfo.getQueryInfo();
@@ -110,7 +110,7 @@ public class DocumentQueryExecutionContextFactory {
                               // The partitionKeyRangeIdInternal is no more a public API on FeedOptions, but have the below condition
                               // for handling ParallelDocumentQueryTest#partitionKeyRangeId
                               if (feedOptions != null && !StringUtils.isEmpty(CommonsBridgeInternal.partitionKeyRangeIdInternal(feedOptions))) {
-                                  partitionKeyRanges = queryExecutionContext.getTargetPartitionKeyRangesById(collection.resourceId(),
+                                  partitionKeyRanges = queryExecutionContext.getTargetPartitionKeyRangesById(collectionValueHolder.v.resourceId(),
                                       CommonsBridgeInternal.partitionKeyRangeIdInternal(feedOptions));
                               } else {
                                   List<Range<String>> queryRanges =
@@ -122,11 +122,11 @@ public class DocumentQueryExecutionContextFactory {
                                               .getInternalPartitionKey();
                                       Range<String> range = Range.getPointRange(internalPartitionKey
                                                                                     .getEffectivePartitionKeyString(internalPartitionKey,
-                                                                                        collection.getPartitionKey()));
+                                                                                        collectionValueHolder.v.getPartitionKey()));
                                       queryRanges = Collections.singletonList(range);
                                   }
                                   partitionKeyRanges = queryExecutionContext
-                                                           .getTargetPartitionKeyRanges(collection.resourceId(), queryRanges);
+                                                           .getTargetPartitionKeyRanges(collectionValueHolder.v.resourceId(), queryRanges);
                               }
                               return partitionKeyRanges
                                          .flatMap(pkranges -> createSpecializedDocumentQueryExecutionContextAsync(client,
@@ -138,7 +138,7 @@ public class DocumentQueryExecutionContextFactory {
                                              isContinuationExpected,
                                              partitionedQueryExecutionInfo,
                                              pkranges,
-                                             collection.resourceId(),
+                                             collectionValueHolder.v.resourceId(),
                                              correlatedActivityId).single());
 
                           })).flux();

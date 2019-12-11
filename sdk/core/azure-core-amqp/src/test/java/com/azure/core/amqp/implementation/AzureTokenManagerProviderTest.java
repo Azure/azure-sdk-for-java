@@ -49,20 +49,20 @@ public class AzureTokenManagerProviderTest {
 
     @Test
     public void constructorNullHost() {
-        assertThrows(NullPointerException.class, () -> new AzureTokenManagerProvider(CBSAuthorizationType.JSON_WEB_TOKEN, null, "some-scope"));
+        assertThrows(NullPointerException.class, () -> new AzureTokenManagerProvider(CbsAuthorizationType.JSON_WEB_TOKEN, null, "some-scope"));
     }
 
     @Test
     public void constructorNullScope() {
-        assertThrows(NullPointerException.class, () -> new AzureTokenManagerProvider(CBSAuthorizationType.JSON_WEB_TOKEN, HOST_NAME, null));
+        assertThrows(NullPointerException.class, () -> new AzureTokenManagerProvider(CbsAuthorizationType.JSON_WEB_TOKEN, HOST_NAME, null));
     }
 
     /**
      * Verifies that the correct resource string is returned when we pass in different authorization types.
      */
     @ParameterizedTest
-    @EnumSource(CBSAuthorizationType.class)
-    public void getResourceString(CBSAuthorizationType authorizationType) {
+    @EnumSource(CbsAuthorizationType.class)
+    public void getResourceString(CbsAuthorizationType authorizationType) {
         // Arrange
         final String scope = "some-scope";
         final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(authorizationType, HOST_NAME, scope);
@@ -93,7 +93,7 @@ public class AzureTokenManagerProviderTest {
     public void getCorrectTokenManagerSasToken() {
         // Arrange
         final String aadScope = "some-active-directory-scope";
-        final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST_NAME, aadScope);
+        final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST_NAME, aadScope);
         final String entityPath = "event-hub-test-2/partition/2";
         final AccessToken token = new AccessToken("a-new-access-token", OffsetDateTime.now().plusMinutes(10));
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, HOST_NAME, entityPath);
@@ -118,7 +118,7 @@ public class AzureTokenManagerProviderTest {
     public void getCorrectTokenManagerJwt() {
         // Arrange
         final String aadScope = "some-active-directory-scope";
-        final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(CBSAuthorizationType.JSON_WEB_TOKEN, HOST_NAME, aadScope);
+        final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(CbsAuthorizationType.JSON_WEB_TOKEN, HOST_NAME, aadScope);
         final String entityPath = "event-hub-test-2/partition/2";
         final AccessToken token = new AccessToken("a-new-access-token", OffsetDateTime.now().plusMinutes(10));
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, HOST_NAME, entityPath);
