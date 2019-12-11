@@ -182,17 +182,12 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
-        List<CosmosItemProperties> expectedDocs = createdDocuments;
-        FeedResponseListValidator<CosmosItemProperties> validator =
-            new FeedResponseListValidator.Builder<CosmosItemProperties>()
-                .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId())
-                                               .collect(Collectors.toList()))
-                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
-                                     .requestChargeGreaterThanOrEqualTo(1.0)
-                                     .build())
-                .build();
-        validateQuerySuccess(queryObservable, validator);
+        FailureValidator validator = new FailureValidator.Builder()
+                                         .instanceOf(CosmosClientException.class)
+                                         .statusCode(400)
+                                         .notNullActivityId()
+                                         .build();
+        validateQueryFailure(queryObservable, validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -201,11 +196,16 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
-        FailureValidator validator = new FailureValidator.Builder()
-                .instanceOf(CosmosClientException.class)
-                .statusCode(400)
+        List<CosmosItemProperties> expectedDocs = createdDocuments;
+        FeedResponseListValidator<CosmosItemProperties> validator =
+            new FeedResponseListValidator.Builder<CosmosItemProperties>()
+                .totalSize(expectedDocs.size())
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(Resource::getResourceId).collect(Collectors.toList()))
+                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
+                                     .requestChargeGreaterThanOrEqualTo(1.0)
+                                     .build())
                 .build();
-        validateQueryFailure(queryObservable, validator);
+        validateQuerySuccess(queryObservable, validator);
     }
 
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
