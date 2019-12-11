@@ -143,12 +143,42 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> inputs,
                                                                                                String countryHint,
                                                                                                Context context) {
+        List<DetectLanguageInput> languageInputs = getLanguageInputList(inputs, countryHint);
+        return detectBatchLanguagesWithResponse(languageInputs, null, context);
+    }
+
+    /**
+     * Helper method to convert text list input to LanguageInput.
+     *
+     * @param inputs the list of user provided texts.
+     * @param countryHint the countryHint provided by user for texts.
+     *
+     * @return the LanguageInput list objects to provide the service.
+     */
+    private static List<DetectLanguageInput> getLanguageInputList(List<String> inputs, String countryHint) {
         List<DetectLanguageInput> languageInputs = new ArrayList<>();
-        // TODO (samvaity): update/validate inputs and id assigning
+        // TODO (savaity): update/validate inputs and id assigning
         for (int i = 0; i < inputs.size(); i++) {
             languageInputs.add(new DetectLanguageInput(Integer.toString(i), inputs.get(i), countryHint));
         }
-        return detectBatchLanguagesWithResponse(languageInputs, null, context);
+        return languageInputs;
+    }
+
+    /**
+     * Helper method to convert text list input to TextDocumentInput.
+     *
+     * @param inputs the list of user provided texts.
+     * @param language the language provided by user for texts.
+     *
+     * @return the TextDocumentInput list objects to provide the service.
+     */
+    private static List<TextDocumentInput> getDocumentInputList(List<String> inputs, String language) {
+        List<TextDocumentInput> textDocumentInputs = new ArrayList<>();
+        // TODO (savaity): update/validate inputs and id assigning
+        for (int i = 0; i < inputs.size(); i++) {
+            textDocumentInputs.add(new TextDocumentInput(Integer.toString(i), inputs.get(i), language));
+        }
+        return textDocumentInputs;
     }
 
     /**
@@ -217,11 +247,11 @@ public final class TextAnalyticsAsyncClient {
      * @param languageResult the {@link LanguageResult} containing both the error and document list.
      * @return the combined error and document list.
      */
-    private List<DetectLanguageResult> getDocumentLanguages(final LanguageResult languageResult) {
+    private static List<DetectLanguageResult> getDocumentLanguages(final LanguageResult languageResult) {
         Stream<DetectLanguageResult> validDocumentList = languageResult.getDocuments().stream()
-            .map(this::convertToDetectLanguageResult);
+            .map(TextAnalyticsAsyncClient::convertToDetectLanguageResult);
         Stream<DetectLanguageResult> errorDocumentList = languageResult.getErrors().stream()
-            .map(this::convertToErrorDetectLanguageResult);
+            .map(TextAnalyticsAsyncClient::convertToErrorDetectLanguageResult);
 
         return Stream.concat(validDocumentList, errorDocumentList).collect(Collectors.toList());
     }
@@ -232,7 +262,7 @@ public final class TextAnalyticsAsyncClient {
      * @param errorDocument The error-ed document.
      * @return A {@link DetectLanguageResult} equivalent for the error-ed document.
      */
-    private DetectLanguageResult convertToErrorDetectLanguageResult(final DocumentError errorDocument) {
+    private static DetectLanguageResult convertToErrorDetectLanguageResult(final DocumentError errorDocument) {
         Error serviceError = errorDocument.getError();
         Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
             .setTarget(serviceError.getTarget());
@@ -245,8 +275,8 @@ public final class TextAnalyticsAsyncClient {
      * @param documentLanguage The valid document.
      * @return A {@link DetectLanguageResult} equivalent for the document.
      */
-    private DetectLanguageResult convertToDetectLanguageResult(final DocumentLanguage documentLanguage) {
-        // TODO (samvaity): confirm the primary language support from service
+    private static DetectLanguageResult convertToDetectLanguageResult(final DocumentLanguage documentLanguage) {
+        // TODO (savaity): confirm the primary language support from service
         return new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(),
             documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages());
     }
@@ -298,11 +328,7 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizeEntitiesWithResponse(List<String> inputs,
                                                                                               String language,
                                                                                               Context context) {
-        List<TextDocumentInput> documentInputs = new ArrayList<>();
-        // TODO (savaity/shawn) update/validate inputs and id assigning
-        for (int i = 0; i < inputs.size(); i++) {
-            documentInputs.add(new TextDocumentInput(Integer.toString(0), inputs.get(i), language));
-        }
+        List<TextDocumentInput> documentInputs = getDocumentInputList(inputs, language);
         return recognizeBatchEntitiesWithResponse(documentInputs, null, context);
     }
 
@@ -371,11 +397,7 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizePiiEntitiesWithResponse(List<String> inputs,
                                                                                                  String language,
                                                                                                  Context context) {
-        List<TextDocumentInput> documentInputs = new ArrayList<>();
-        // TODO (savaity/shawn) update/validate inputs and id assigning
-        for (int i = 0; i < inputs.size(); i++) {
-            documentInputs.add(new TextDocumentInput(Integer.toString(0), inputs.get(i), language));
-        }
+        List<TextDocumentInput> documentInputs = getDocumentInputList(inputs, language);
         return recognizeBatchPiiEntitiesWithResponse(documentInputs, null, context);
     }
 
@@ -452,11 +474,7 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<LinkedEntityResult>>> recognizeLinkedEntitiesWithResponse(
         List<String> inputs, String language, Context context) {
-        List<TextDocumentInput> documentInputs = new ArrayList<>();
-        // TODO (savaity/shawn) update/validate inputs and id assigning
-        for (int i = 0; i < inputs.size(); i++) {
-            documentInputs.add(new TextDocumentInput(Integer.toString(0), inputs.get(i), language));
-        }
+        List<TextDocumentInput> documentInputs = getDocumentInputList(inputs, language);
         return recognizeBatchLinkedEntitiesWithResponse(documentInputs, null, context);
     }
 
@@ -534,11 +552,7 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractKeyPhrasesWithResponse(List<String> inputs,
                                                                                             String language,
                                                                                             Context context) {
-        List<TextDocumentInput> documentInputs = new ArrayList<>();
-        for (int i = 0; i < inputs.size(); i++) {
-            documentInputs.add(new TextDocumentInput(Integer.toString(i), inputs.get(i), language));
-        }
-        // TODO: should this be a random number generator?
+        List<TextDocumentInput> documentInputs = getDocumentInputList(inputs, language);
         return extractBatchKeyPhrasesWithResponse(documentInputs, null, context);
     }
 
@@ -613,11 +627,7 @@ public final class TextAnalyticsAsyncClient {
                                                                                                String language,
                                                                                                Context context) {
 
-        List<TextDocumentInput> documentInputs = new ArrayList<>();
-        for (int i = 0; i < inputs.size(); i++) {
-            documentInputs.add(new TextDocumentInput(Integer.toString(i), inputs.get(i), language));
-        }
-        // TODO: should this be a random number generator?
+        List<TextDocumentInput> documentInputs = getDocumentInputList(inputs, language);
         return analyzeBatchSentimentWithResponse(documentInputs, null, context);
     }
 
