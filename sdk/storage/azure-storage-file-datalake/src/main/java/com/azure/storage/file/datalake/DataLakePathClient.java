@@ -407,7 +407,7 @@ public class DataLakePathClient {
             Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
                 Transforms.toBlobRequestConditions(requestConditions), timeout, context);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
-            }, logger);
+        }, logger);
     }
 
     /**

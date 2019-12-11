@@ -243,7 +243,7 @@ public class DataLakeServiceClient {
             Response<com.azure.storage.blob.models.UserDelegationKey> response = blobServiceClient
                 .getUserDelegationKeyWithResponse(start, expiry, timeout, context);
             return new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue()));
-            }, logger);
+        }, logger);
     }
 
     /**

@@ -282,7 +282,7 @@ public class DataLakeFileClient extends DataLakePathClient {
                 Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
                 getRangeContentMd5, timeout, context);
             return Transforms.toFileReadResponse(response);
-            }, logger);
+        }, logger);
     }
 
     /**

@@ -267,7 +267,7 @@ public class DataLakeFileSystemClient {
             Response<BlobContainerProperties> response = blobContainerClient.getPropertiesWithResponse(leaseId, timeout,
                 context);
             return new SimpleResponse<>(response, Transforms.toFileSystemProperties(response.getValue()));
-            }, logger);
+        }, logger);
     }
 
     /**
@@ -533,7 +533,7 @@ public class DataLakeFileSystemClient {
             Response<BlobContainerAccessPolicies> response = blobContainerClient.getAccessPolicyWithResponse(leaseId,
                 timeout, context);
             return new SimpleResponse<>(response, Transforms.toFileSystemAccessPolicies(response.getValue()));
-            }, logger);
+        }, logger);
     }
 
     /**
