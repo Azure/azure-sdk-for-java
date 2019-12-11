@@ -40,7 +40,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -127,6 +127,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
+                  <compilerArgs>-warn:-unused</compilerArgs>
                 </configuration>
               </execution>
               <execution>
@@ -137,6 +138,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
+                  <compilerArgs>-warn:-unused</compilerArgs>
                 </configuration>
               </execution>
             </executions>
@@ -187,6 +189,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
+                  <compilerArgs>-warn:-unused</compilerArgs>
                   <release>8</release>
                 </configuration>
               </execution>
@@ -198,6 +201,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
+                  <compilerArgs>-warn:-unused</compilerArgs>
                   <release>8</release>
                 </configuration>
               </execution>
