@@ -60,7 +60,7 @@ public class SearchServiceClient {
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
+    public SearchServiceVersion getApiVersion() {
         return this.asyncClient.getApiVersion();
     }
 

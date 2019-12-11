@@ -55,7 +55,7 @@ public class SearchIndexAsyncClient {
     /**
      * Search REST API Version
      */
-    private final String apiVersion;
+    private final SearchServiceVersion apiVersion;
 
     /**
      * The endpoint for the Azure Cognitive Search service.
@@ -85,14 +85,15 @@ public class SearchIndexAsyncClient {
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      */
-    SearchIndexAsyncClient(String endpoint, String indexName, String apiVersion, HttpPipeline httpPipeline) {
+    SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion apiVersion,
+        HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
 
         if (StringUtils.isBlank(indexName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid indexName"));
         }
-        if (StringUtils.isBlank(apiVersion)) {
+        if (apiVersion == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid apiVersion"));
         }
         if (httpPipeline == null) {
@@ -108,7 +109,7 @@ public class SearchIndexAsyncClient {
             .searchServiceName(parts.serviceName)
             .indexName(indexName)
             .searchDnsSuffix(parts.dnsSuffix)
-            .apiVersion(apiVersion)
+            .apiVersion(apiVersion.getVersion())
             .pipeline(httpPipeline)
             .serializer(SERIALIZER)
             .build();
@@ -247,7 +248,7 @@ public class SearchIndexAsyncClient {
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
+    public SearchServiceVersion getApiVersion() {
         return this.apiVersion;
     }
 

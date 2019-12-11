@@ -30,7 +30,6 @@ import com.azure.search.models.ServiceStatistics;
 import com.azure.search.models.Skillset;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.TokenInfo;
-import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
@@ -48,7 +47,7 @@ public class SearchServiceAsyncClient {
     /**
      * Search REST API Version
      */
-    private final String apiVersion;
+    private final SearchServiceVersion apiVersion;
 
     /**
      * The endpoint for the Azure Cognitive Search service.
@@ -70,11 +69,11 @@ public class SearchServiceAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    SearchServiceAsyncClient(String endpoint, String apiVersion, HttpPipeline httpPipeline) {
+    SearchServiceAsyncClient(String endpoint, SearchServiceVersion apiVersion, HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
 
-        if (StringUtils.isBlank(apiVersion)) {
+        if (apiVersion == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid apiVersion"));
         }
         if (httpPipeline == null) {
@@ -88,7 +87,7 @@ public class SearchServiceAsyncClient {
         this.restClient = new SearchServiceRestClientBuilder()
             .searchServiceName(parts.serviceName)
             .searchDnsSuffix(parts.dnsSuffix)
-            .apiVersion(apiVersion)
+            .apiVersion(apiVersion.getVersion())
             .pipeline(httpPipeline)
             .build();
     }
@@ -122,7 +121,7 @@ public class SearchServiceAsyncClient {
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
+    public SearchServiceVersion getApiVersion() {
         return this.apiVersion;
     }
 

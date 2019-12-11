@@ -148,7 +148,7 @@ public class SearchIndexClient {
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
+    public SearchServiceVersion getApiVersion() {
         return asyncClient.getApiVersion();
     }
 
