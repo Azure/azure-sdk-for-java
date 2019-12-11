@@ -78,6 +78,17 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
     }
 
     /**
+     * Creates an instance of {@link PagedFluxBase}. The constructor takes in two arguments.
+     * The first argument is the provider that returns page retrieval Function. The second
+     * argument is the default prefetch.
+     *
+     * @param pageRetrieverProvider the Page Retrieval Provider
+     */
+    public PagedFluxBase(PageRetrieverProvider<P> pageRetrieverProvider) {
+        super(pageRetrieverProvider);
+    }
+
+    /**
      * Creates a flux of {@link PagedResponse} starting from the first page.
      *
      * <p><strong>Code sample</strong></p>

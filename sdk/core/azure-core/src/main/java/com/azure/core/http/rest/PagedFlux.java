@@ -37,9 +37,6 @@ import java.util.function.Supplier;
  * @see Flux
  */
 public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
-    private final Supplier<Mono<PagedResponse<T>>> firstPageRetriever;
-    private final Function<String, Mono<PagedResponse<T>>> nextPageRetriever;
-
     /**
      * Creates an instance of {@link PagedFlux} that consists of only a single page of results. The only argument to
      * this constructor therefore is a supplier that fetches the first (and known-only) page of {@code T}.
@@ -51,8 +48,6 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      */
     public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever) {
         super(firstPageRetriever);
-        this.firstPageRetriever = firstPageRetriever;
-        this.nextPageRetriever = continuationToken -> Mono.empty();
     }
 
     /**
@@ -69,8 +64,20 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
                      Function<String, Mono<PagedResponse<T>>> nextPageRetriever) {
         super(firstPageRetriever, nextPageRetriever);
-        this.firstPageRetriever = firstPageRetriever;
-        this.nextPageRetriever = nextPageRetriever;
+    }
+
+    /**
+     * Creates an instance of {@link PagedFlux}. The constructor takes a provider, that when called should
+     * provides Page Retriever Function which accepts continuation token. The provider will be called for
+     * each Subscription to the PagedFlux instance. The Page Retriever Function can get called multiple times
+     * in serial fashion, each time after the completion of the Flux returned by the previous invocation.
+     * The final completion signal will be send to the downstream subscriber when the last Page emitted by
+     * the Flux returned by Page Continuation Function has {@code null} continuation token.
+     *
+     * @param pageRetrieverProvider the Page Retrieval Provider
+     */
+    public PagedFlux(PageRetrieverProvider<PagedResponse<T>> pageRetrieverProvider) {
+        super(pageRetrieverProvider);
     }
 
     /**
@@ -80,11 +87,10 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * @param <S> The mapped type.
      * @return A PagedFlux of type S.
      */
+    @Deprecated
     public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
-        return new PagedFlux<S>(() -> this.firstPageRetriever.get()
-            .map(mapPagedResponse(mapper)),
-            continuationToken -> this.nextPageRetriever.apply(continuationToken)
-                .map(mapPagedResponse(mapper)));
+        return new PagedFlux<S>((PageRetrieverProvider<PagedResponse<S>>) () -> c -> byPage()
+            .map(mapPagedResponse(mapper)));
     }
 
     private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {

@@ -36,7 +36,7 @@ import java.util.function.Supplier;
  * @see Flux
  */
 public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C, T>>
-    extends ContinuablePagedFlux<C, T, P> {
+    extends ContinuablePagedFlux<C, C, T, P> {
 
     private final Supplier<Function<C, Flux<P>>> pageRetrieverProvider;
     private final int defaultPrefetch;
@@ -60,6 +60,22 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      *                 subscription.
      */
     protected ContinuablePagedFluxCore(Supplier<Function<C, Flux<P>>> pageRetrieverProvider, int prefetch) {
+        this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
+            "'pageRetrieverProvider' function cannot be null.");
+        if (prefetch <= 0) {
+            throw new IllegalArgumentException("prefetch > 0 required but provided: " + prefetch);
+        }
+        this.defaultPrefetch = prefetch;
+    }
+
+    /**
+     * Creates an instance of {@link ContinuablePagedFluxCore}.
+     *
+     * @param pageRetrieverProvider a provider that returns Page Retriever Function.
+     * @param prefetch the number of Pages to be pre-fetched from the Page Retriever Function upon
+     *                 subscription.
+     */
+    ContinuablePagedFluxCore(Supplier<Function<C, Flux<P>>> pageRetrieverProvider, Integer prefetch) {
         this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
             "'pageRetrieverProvider' function cannot be null.");
         if (prefetch <= 0) {
