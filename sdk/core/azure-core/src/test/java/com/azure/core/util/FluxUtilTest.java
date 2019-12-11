@@ -9,11 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -23,15 +19,6 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.logging.ClientLogger;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.nio.ByteBuffer;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -139,7 +126,7 @@ public class FluxUtilTest {
         StepVerifier.create(FluxUtil.pagedFluxError(logger, ex))
             .verifyErrorMessage(errMsg);
     }
-    
+
     @Test
     public void testWriteFile() throws Exception {
         String toReplace = "test";
