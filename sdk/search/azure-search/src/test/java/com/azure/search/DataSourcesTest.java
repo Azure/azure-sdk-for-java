@@ -69,12 +69,12 @@ public class DataSourcesTest {
         // check utility method overloads
         DataSource expected = new DataSource()
             .setName("cosmos")
-            .setType(DataSourceType.COSMOS_DB)
+            .setType(DataSourceType.COSMOS)
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
             .setContainer(new DataContainer()
                 .setName("collection"));
-        DataSource actual = DataSources.cosmosDb(
+        DataSource actual = DataSources.cosmos(
             "cosmos", "connectionString", "collection", false);
 
         Assert.assertTrue(assertDataSourceEqual(actual, expected));
@@ -85,13 +85,13 @@ public class DataSourcesTest {
         // check utility method with minimal overloads
         DataSource expected = new DataSource()
             .setName("cosmos")
-            .setType(DataSourceType.COSMOS_DB)
+            .setType(DataSourceType.COSMOS)
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
             .setContainer(new DataContainer()
                 .setName("collection"))
             .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts"));
-        DataSource actual = DataSources.cosmosDb(
+        DataSource actual = DataSources.cosmos(
             "cosmos", "connectionString", "collection");
 
         Assert.assertTrue(assertDataSourceEqual(actual, expected));

@@ -29,7 +29,7 @@ public class DataSourceExample {
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
     private static final String TABLE_STORAGE_CONNECTION_STRING = "<Your Table Storage connection string>";
-    private static final String COSMOS_DB_CONNECTION_STRING = "<Your Cosmos DB connection string>";
+    private static final String COSMOS_CONNECTION_STRING = "<Your Cosmos connection string>";
     private static final String BLOB_STORAGE_CONNECTION_STRING = "<Your Blob Storage connection string>";
     private static final String SQL_CONNECTION_STRING = "<Your SQL connection string>";
 
@@ -46,7 +46,7 @@ public class DataSourceExample {
         Collection<String> names = new HashSet<>();
 
         names.add(createSqlDataSource(client));
-        names.add(createCosmosDBDataSource(client));
+        names.add(createCosmosDataSource(client));
         names.add(createBlobDataSource(client));
         names.add(createTableStorageDataSource(client));
 
@@ -117,11 +117,11 @@ public class DataSourceExample {
         );
     }
 
-    private static String createCosmosDBDataSource(SearchServiceClient client) {
+    private static String createCosmosDataSource(SearchServiceClient client) {
         return createDataSource(
             client,
-            DataSourceType.COSMOS_DB,
-            COSMOS_DB_CONNECTION_STRING,
+            DataSourceType.COSMOS,
+            COSMOS_CONNECTION_STRING,
             new DataContainer()
                 .setName("testcollection") // Replace your collection name here
                 .setQuery(null), // Add your query here or remove this if you don't need one

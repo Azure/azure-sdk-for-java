@@ -107,11 +107,11 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
         );
     }
 
-    DataSource createTestCosmosDbDataSource(
+    DataSource createTestCosmosDataSource(
         DataDeletionDetectionPolicy deletionDetectionPolicy,
         boolean useChangeDetection) {
 
-        return DataSources.cosmosDb(
+        return DataSources.cosmos(
             "azs-java-test-cosmos",
             FAKE_COSMOS_CONNECTION_STRING,
             "faketable",

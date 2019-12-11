@@ -205,7 +205,14 @@ directive:
   - SearchResult.java
   where: $
   transform: >-
-	return $
-	.replace(/(package com.azure.search.models;)/g, "$1\nimport com.fasterxml.jackson.annotation.JsonIgnore;")
-	.replace(/(public Document getDocument())/g, "@JsonIgnore\n$1")
+    return $
+    .replace(/(package com.azure.search.models;)/g, "$1\nimport com.fasterxml.jackson.annotation.JsonIgnore;")
+    .replace(/(public Document getDocument\(\))/g, "@JsonIgnore\n$1")
+
+- from:
+  - DataSourceType.java
+  where: $
+  transform: >-
+    return $
+    .replace(/COSMOSDB\(\"cosmosdb\"\)/g, "COSMOS\(\"cosmosdb\"\)")
 ```

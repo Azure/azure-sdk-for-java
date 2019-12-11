@@ -176,10 +176,10 @@ public class DataSources {
     }
 
      /**
-     * Creates a new DataSource to connect to a CosmosDb database.
+     * Creates a new DataSource to connect to a Cosmos database.
      *
-     * @param name The name of the data source.
-     * @param cosmosDbConnectionString The connection string for the CosmosDb database. It must follow this format:
+     * @param name The name of the datasource.
+     * @param cosmosConnectionString The connection string for the Cosmos database. It must follow this format:
      * AccountName|AccountEndpoint=[your account name or endpoint];
      * AccountKey=[your account key];Database=[your database name]"
      * @param collectionName The name of the collection from which to read documents.
@@ -188,11 +188,11 @@ public class DataSources {
      * @param description Optional. Description of the data source
      * @param deletionDetectionPolicy Optional. The data deletion detection policy for the data source.
      * @return A new DataSource instance.
-     * @throws IllegalArgumentException if name, collectionName or cosmosDbConnectionString are null or empty.
+     * @throws IllegalArgumentException if name, collectionName or cosmosConnectionString are null or empty.
      */
-    public static DataSource cosmosDb(
+    public static DataSource cosmos(
         String name,
-        String cosmosDbConnectionString,
+        String cosmosConnectionString,
         String collectionName,
         String query,
         Boolean useChangeDetection,
@@ -204,14 +204,14 @@ public class DataSources {
         if (StringUtils.isEmpty(collectionName)) {
             throw new IllegalArgumentException("collectionName cannot be null or empty");
         }
-        if (StringUtils.isEmpty(cosmosDbConnectionString)) {
-            throw new IllegalArgumentException("cosmosDbConnectionString cannot be null or empty");
+        if (StringUtils.isEmpty(cosmosConnectionString)) {
+            throw new IllegalArgumentException("cosmosConnectionString cannot be null or empty");
         }
         return new DataSource()
             .setName(name)
-            .setType(DataSourceType.COSMOS_DB)
+            .setType(DataSourceType.COSMOS)
             .setCredentials(new DataSourceCredentials()
-                .setConnectionString(cosmosDbConnectionString))
+                .setConnectionString(cosmosConnectionString))
             .setContainer(new DataContainer()
                 .setName(collectionName)
                 .setQuery(query))
@@ -235,12 +235,12 @@ public class DataSources {
      * @return A new DataSource instance.
      * @throws IllegalArgumentException if name, collectionName or cosmosDbConnectionString are null or empty.
      */
-    public static DataSource cosmosDb(
+    public static DataSource cosmos(
         String name,
         String cosmosDbConnectionString,
         String collectionName,
         Boolean useChangeDetection) {
-        return DataSources.cosmosDb(
+        return DataSources.cosmos(
             name, cosmosDbConnectionString, collectionName, null, useChangeDetection, null, null);
     }
 
@@ -255,10 +255,10 @@ public class DataSources {
      * @return A new DataSource instance.
      * @throws IllegalArgumentException if name, collectionName or cosmosDbConnectionString are null or empty.
      */
-    public static DataSource cosmosDb(
+    public static DataSource cosmos(
         String name,
         String cosmosDbConnectionString,
         String collectionName) {
-        return DataSources.cosmosDb(name, cosmosDbConnectionString, collectionName, null, true, null, null);
+        return DataSources.cosmos(name, cosmosDbConnectionString, collectionName, null, true, null, null);
     }
 }

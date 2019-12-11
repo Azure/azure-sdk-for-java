@@ -41,8 +41,8 @@ public class LifecycleSetupExample {
 
     // Using hard coded connection string to pre-populated Cosmos DB database with sample data set
     // For more information visit https://docs.microsoft.com/en-us/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
-    private static final String COSMOS_DB_CONNECTION_STRING = "AccountEndpoint=https://hotels-docbb.documents.azure.com:443/;AccountKey=4UPsNZyFAjgZ1tzHPGZaxS09XcwLrIawbXBWk6IixcxJoSePTcjBn0mi53XiKWu8MaUgowUhIovOv7kjksqAug==;Database=SampleData";
-    private static final String COSMOS_DB_COLLECTION_NAME = "hotels";
+    private static final String COSMOS_CONNECTION_STRING = "AccountEndpoint=https://hotels-docbb.documents.azure.com:443/;AccountKey=4UPsNZyFAjgZ1tzHPGZaxS09XcwLrIawbXBWk6IixcxJoSePTcjBn0mi53XiKWu8MaUgowUhIovOv7kjksqAug==;Database=SampleData";
+    private static final String COSMOS_COLLECTION_NAME = "hotels";
 
     private static final String INDEX_NAME = "hotels-sample-index";
     private static final String DATASOURCE_NAME = "hotels-sample-datasource";
@@ -54,7 +54,7 @@ public class LifecycleSetupExample {
         SearchServiceClient client = createServiceClient();
 
         // Create a data source for a Cosmos DB database
-        DataSource dataSource = createCosmosDBDataSource(client);
+        DataSource dataSource = createCosmosDataSource(client);
         System.out.println("Created DataSource " + dataSource.getName());
 
         // Create an index
@@ -181,16 +181,16 @@ public class LifecycleSetupExample {
         return client.createOrUpdateIndex(index);
     }
 
-    private static DataSource createCosmosDBDataSource(SearchServiceClient client) {
+    private static DataSource createCosmosDataSource(SearchServiceClient client) {
 
-        DataContainer dataContainer = new DataContainer().setName(COSMOS_DB_COLLECTION_NAME);
+        DataContainer dataContainer = new DataContainer().setName(COSMOS_COLLECTION_NAME);
         HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy = new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts");
 
         DataSource dataSource = new DataSource()
             .setName(DATASOURCE_NAME)
-            .setType(DataSourceType.COSMOS_DB)
+            .setType(DataSourceType.COSMOS)
             .setCredentials(new DataSourceCredentials()
-                .setConnectionString(COSMOS_DB_CONNECTION_STRING))
+                .setConnectionString(COSMOS_CONNECTION_STRING))
             .setContainer(dataContainer)
             .setDataChangeDetectionPolicy(highWaterMarkChangeDetectionPolicy);
 

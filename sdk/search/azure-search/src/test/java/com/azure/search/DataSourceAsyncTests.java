@@ -286,11 +286,11 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         createAndValidateDataSource(createTestSqlDataSourceObject(SQL_DATASOURCE_NAME, null, new SqlIntegratedChangeTrackingPolicy()));
         createAndValidateDataSource(createTestSqlDataSourceObject(SQL_DATASOURCE_NAME, deletionDetectionPolicy, changeDetectionPolicy));
 
-        // CosmosDB
-        createAndValidateDataSource(createTestCosmosDbDataSource(null, false));
-        createAndValidateDataSource(createTestCosmosDbDataSource(null, true));
-        createAndValidateDataSource(createTestCosmosDbDataSource(deletionDetectionPolicy, false));
-        createAndValidateDataSource(createTestCosmosDbDataSource(deletionDetectionPolicy, false));
+        // Cosmos
+        createAndValidateDataSource(createTestCosmosDataSource(null, false));
+        createAndValidateDataSource(createTestCosmosDataSource(null, true));
+        createAndValidateDataSource(createTestCosmosDataSource(deletionDetectionPolicy, false));
+        createAndValidateDataSource(createTestCosmosDataSource(deletionDetectionPolicy, false));
 
         // Azure Blob Storage
         createAndValidateDataSource(createTestBlobDataSource(null));
@@ -319,7 +319,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         createGetAndValidateDataSource(createTestBlobDataSource(null));
         createGetAndValidateDataSource(createTestTableStorageDataSource(null));
         createGetAndValidateDataSource(createTestSqlDataSourceObject(SQL_DATASOURCE_NAME));
-        createGetAndValidateDataSource(createTestCosmosDbDataSource(null, false));
+        createGetAndValidateDataSource(createTestCosmosDataSource(null, false));
     }
 
     private void createGetAndValidateDataSource(DataSource expectedDataSource) {
