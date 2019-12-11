@@ -23,6 +23,7 @@ public final class DetectLanguageInput {
         this.text = text;
         this.countryHint = countryHint;
     }
+    
     /*
      * Unique, non-empty document identifier.
      */

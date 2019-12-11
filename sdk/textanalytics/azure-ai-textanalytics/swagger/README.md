@@ -22,7 +22,7 @@ autorest --java --use=C:\Users\shafang\work\autorest.java
 input-file: C:\Users\shafang\work\azure-rest-api-specs\specification\cognitiveservices\data-plane\TextAnalytics\preview\v3.0-preview.1\TextAnalytics.json
 java: true
 output-folder: C:\Users\shafang\work\azure-sdk-for-java\sdk\cognitiveservices\azure-cs-textanalytics\
-namespace: com.azure.cs.textanalytics
+namespace: com.azure.ai.textanalytics
 enable-xml: true
 generate-client-interfaces: false
 sync-methods: none

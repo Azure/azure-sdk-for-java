@@ -22,9 +22,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Override
     protected void beforeTest() {
         client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
-                                                 .endpoint(getEndPoint())
-                                                 .pipeline(httpPipeline)
-                                                 .buildAsyncClient());
+            .endpoint(getEndPoint())
+            .pipeline(httpPipeline)
+            .buildAsyncClient());
     }
 
     /**
@@ -117,8 +117,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageFaultyText() {
         StepVerifier.create(client.detectLanguage("!@#%%"))
-            .assertNext(response ->
-                            assertEquals(response.getPrimaryLanguage().getIso6391Name(), "(Unknown)"))
+            .assertNext(response -> assertEquals(response.getPrimaryLanguage().getIso6391Name(), "(Unknown)"))
             .verifyComplete();
     }
 
