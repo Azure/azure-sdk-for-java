@@ -15,8 +15,8 @@
         }
     },
     "variables": {
-        "uniqueAzConfigName": "[concat(parameters('baseName'), '-' , parameters('configurationStores_azconfig_name'))]",
-        "endpointValue": "[concat('https://', parameters('configurationStores_azconfig_name'), parameters('endpointSuffix'))]",
+        "uniqueAzConfigName": "[concat(parameters('baseName'),'-' , parameters('configurationStores_azconfig_name'))]",
+        "endpointValue": "[concat('https://',parameters('baseName'), '-', parameters('configurationStores_azconfig_name'), parameters('endpointSuffix'))]",
         "location": "[resourceGroup().location]"
     },
     "resources": [
@@ -31,7 +31,7 @@
         }
     ],
     "outputs": {
-        "AZURE_STORAGE_QUEUE_CONNECTION_STRING": {
+        "AZURE_APPCONFIG_CONNECTION_STRING": {
             "type": "string",
             "value":  "[concat( variables('endpointValue'), ';Id=XXXXX;Secret=YYY')]"
         }
