@@ -196,7 +196,9 @@ public class RestProxyWithMockTests extends RestProxyTests {
             service.get();
             fail();
         } catch (RuntimeException ex) {
-            assertEquals(ex.getMessage(), "Status code 200, \"{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}\"");
+            assertEquals(ex.getMessage(), "Status code 200, {" + System.lineSeparator()
+                + "  error\" : \"Something went wrong, but at least this JSON is valid." + System.lineSeparator()
+                + "}");
         }
     }
 
@@ -219,7 +221,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
             fail();
         } catch (HttpResponseException ex) {
             assertContains(ex.getMessage(), "Status code 200");
-            assertContains(ex.getMessage(), "\"BAD JSON\"");
+            assertContains(ex.getMessage(), "BAD JSON");
         }
     }
 
@@ -242,7 +244,9 @@ public class RestProxyWithMockTests extends RestProxyTests {
             service.get();
             fail();
         } catch (RuntimeException ex) {
-            assertEquals(ex.getMessage(), "Status code 200, \"{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}\"");
+            assertEquals(ex.getMessage(), "Status code 200, {" + System.lineSeparator()
+                + "  error\" : \"Something went wrong, but at least this JSON is valid." + System.lineSeparator()
+                + "}");
         }
     }
 
@@ -265,7 +269,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
             fail();
         } catch (HttpResponseException ex) {
             assertContains(ex.getMessage(), "Status code 200");
-            assertContains(ex.getMessage(), "\"BAD JSON\"");
+            assertContains(ex.getMessage(), "BAD JSON");
         }
     }
 
