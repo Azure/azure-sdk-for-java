@@ -15,7 +15,7 @@ public class HelloWorldDemo {
     }
 
     void runDemo() {
-        // Create a new CosmosAsyncClient via the changeFeedProcessorBuilder
+        // Create a new CosmosAsyncClient via the CosmosClientBuilder
         // It only requires endpoint and key, but other useful settings are available
         CosmosAsyncClient client = new CosmosClientBuilder()
             .setEndpoint("<YOUR ENDPOINT HERE>")

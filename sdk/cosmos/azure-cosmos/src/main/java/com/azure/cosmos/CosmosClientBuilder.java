@@ -18,7 +18,7 @@ import java.util.List;
  * {@code
  * ConnectionPolicy getConnectionPolicy = new ConnectionPolicy();
  * getConnectionPolicy.getConnectionMode(ConnectionMode.DIRECT);
- * CosmonsClient client = new CosmosAsyncClient.changeFeedProcessorBuilder()
+ * CosmonsClient client = new CosmosAsyncClient.cosmosClientBuilder()
  *         .getEndpoint(serviceEndpoint)
  *         .getKey(getKey)
  *         .getConnectionPolicy(getConnectionPolicy)
@@ -55,7 +55,7 @@ public class CosmosClientBuilder {
      * Sets the token resolver
      *
      * @param tokenResolver the token resolver
-     * @return current changeFeedProcessorBuilder
+     * @return current cosmosClientBuilder
      */
     public CosmosClientBuilder setTokenResolver(TokenResolver tokenResolver) {
         this.tokenResolver = tokenResolver;
@@ -201,7 +201,7 @@ public class CosmosClientBuilder {
      * Sets the {@link CosmosKeyCredential} to be used
      *
      * @param cosmosKeyCredential {@link CosmosKeyCredential}
-     * @return current changeFeedProcessorBuilder
+     * @return current cosmosClientBuilder
      */
     public CosmosClientBuilder setCosmosKeyCredential(CosmosKeyCredential cosmosKeyCredential) {
         this.cosmosKeyCredential = cosmosKeyCredential;
@@ -249,7 +249,7 @@ public class CosmosClientBuilder {
     /**
      * Configs
      *
-     * @return current changeFeedProcessorBuilder
+     * @return current cosmosClientBuilder
      */
     CosmosClientBuilder configs(Configs configs) {
         this.configs = configs;
