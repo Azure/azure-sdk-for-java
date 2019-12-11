@@ -104,6 +104,11 @@ class NamespaceResourceImpl extends GroupableResourceCoreImpl<NamespaceResource,
     }
 
     @Override
+    public String region() {
+        return this.inner().region();
+    }
+
+    @Override
     public String scaleUnit() {
         return this.inner().scaleUnit();
     }
@@ -161,6 +166,12 @@ class NamespaceResourceImpl extends GroupableResourceCoreImpl<NamespaceResource,
     @Override
     public NamespaceResourceImpl withProvisioningState(String provisioningState) {
         this.createParameter.withProvisioningState(provisioningState);
+        return this;
+    }
+
+    @Override
+    public NamespaceResourceImpl withRegion(String region) {
+        this.createParameter.withRegion(region);
         return this;
     }
 

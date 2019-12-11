@@ -29,7 +29,7 @@ public class MpnsCredential {
     private String certificateKey;
 
     /**
-     * The Mpns certificate Thumbprint.
+     * The MPNS certificate Thumbprint.
      */
     @JsonProperty(value = "properties.thumbprint")
     private String thumbprint;
@@ -75,7 +75,7 @@ public class MpnsCredential {
     }
 
     /**
-     * Get the Mpns certificate Thumbprint.
+     * Get the MPNS certificate Thumbprint.
      *
      * @return the thumbprint value
      */
@@ -84,7 +84,7 @@ public class MpnsCredential {
     }
 
     /**
-     * Set the Mpns certificate Thumbprint.
+     * Set the MPNS certificate Thumbprint.
      *
      * @param thumbprint the thumbprint value to set
      * @return the MpnsCredential object itself.
