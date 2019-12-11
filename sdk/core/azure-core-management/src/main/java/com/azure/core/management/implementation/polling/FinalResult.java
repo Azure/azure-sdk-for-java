@@ -20,6 +20,8 @@ final class FinalResult {
     @JsonProperty(value = "result")
     private String result;
 
+    FinalResult() {}
+    
     /**
      * Creates FinalResult.
      *

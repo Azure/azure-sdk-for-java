@@ -23,7 +23,7 @@ final class AzureAsyncOperationData {
     private static final ClientLogger logger = new ClientLogger(AzureAsyncOperationData.class);
 
     @JsonProperty(value = "lroRequestMethod", required = true)
-    private final HttpMethod lroRequestMethod;
+    private HttpMethod lroRequestMethod;
     @JsonProperty(value = "lroOperationUri", required = true)
     private URL lroOperationUri;
     @JsonProperty(value = "pollUrl", required = true)
@@ -36,6 +36,8 @@ final class AzureAsyncOperationData {
     private Error pollError;
     @JsonProperty(value = "finalResult")
     private FinalResult finalResult;
+
+    AzureAsyncOperationData() {}
 
     /**
      * Creates AzureAsyncOperationData.

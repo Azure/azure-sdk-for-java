@@ -16,13 +16,15 @@ import java.util.Objects;
  */
 final class ProvisioningStateData {
     @JsonProperty(value = "pollUrl", required = true)
-    private final URL pollUrl;
+    private URL pollUrl;
     @JsonProperty(value = "provisioningState", required = true)
     private String provisioningState;
     @JsonProperty(value = "pollError")
     private Error pollError;
     @JsonProperty(value = "finalResult")
     private FinalResult finalResult;
+
+    ProvisioningStateData() {}
 
     /**
      * Creates ProvisioningStateData.

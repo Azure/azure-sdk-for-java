@@ -54,6 +54,8 @@ public final class PollingState {
     @JsonProperty(value = "lastResponseBody")
     private String lastResponseBody;
 
+    PollingState() {}
+
     /**
      * Creates PollingState from the request-response of a long-running-operation api call.
      *
@@ -317,6 +319,9 @@ public final class PollingState {
         boolean isCompleted = ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)
             || ProvisioningState.FAILED.equalsIgnoreCase(value)
             || ProvisioningState.CANCELED.equalsIgnoreCase(value);
+        if (isCompleted && ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
+            return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        }
         return LongRunningOperationStatus.fromString(value, isCompleted);
     }
 

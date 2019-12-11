@@ -18,6 +18,8 @@ class Error {
     @JsonProperty(value = "responseBody")
     private String responseBody;
 
+    Error() {}
+
     /**
      * Creates Error.
      *

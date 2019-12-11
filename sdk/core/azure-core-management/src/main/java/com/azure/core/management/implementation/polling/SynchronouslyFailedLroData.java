@@ -7,6 +7,9 @@ package com.azure.core.management.implementation.polling;
  * The type to store the data associated a long-running-operation that is Failed to synchronously.
  */
 final class SynchronouslyFailedLroData extends Error {
+
+    SynchronouslyFailedLroData() {}
+
     /**
      * Creates SynchronouslyFailedLroData.
      *
