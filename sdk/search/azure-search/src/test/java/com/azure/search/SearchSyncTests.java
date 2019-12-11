@@ -22,7 +22,6 @@ import com.azure.search.test.environment.models.Bucket;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.NonNullableModel;
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -156,7 +155,6 @@ public class SearchSyncTests extends SearchTestBase {
         Assert.assertNull(secondPage.getContinuationToken());
     }
 
-    @Disabled
     @Test
     public void canSearchStaticallyTypedDocuments() throws IOException {
         createHotelIndex();
@@ -200,7 +198,6 @@ public class SearchSyncTests extends SearchTestBase {
         assertReflectionEquals(hotelsList, actualResults, IGNORE_DEFAULTS);
     }
 
-    @Disabled
     @Test
     public void canRoundTripNonNullableValueTypes() throws Exception {
         setupIndexFromJsonFile(NON_NULLABLE_INDEX_JSON);
@@ -233,7 +230,6 @@ public class SearchSyncTests extends SearchTestBase {
         assertReflectionEquals(doc2, convertToType(result.getItems().get(1).getDocument(), NonNullableModel.class), IGNORE_DEFAULTS);
     }
 
-    @Disabled
     @Test
     public void canSearchWithDateInStaticModel() throws ParseException, IOException {
         createHotelIndex();

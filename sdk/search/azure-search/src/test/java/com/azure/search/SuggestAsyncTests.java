@@ -9,7 +9,6 @@ import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -97,7 +96,6 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Disabled
     @Test
     public void canSuggestStaticallyTypedDocuments() throws IOException {
         createHotelIndex();
@@ -216,7 +214,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .assertNext(this::verifyMinimumCoverage)
             .verifyComplete();
     }
-    @Disabled
+
     @Test
     public void testTopTrimsResults() throws IOException {
         createHotelIndex();

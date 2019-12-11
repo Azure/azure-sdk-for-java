@@ -8,7 +8,6 @@ import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -29,7 +28,6 @@ import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAU
 public class LookupAsyncTests extends LookupTestBase {
     private SearchIndexAsyncClient client;
 
-    @Disabled
     @Test
     public void canGetStaticallyTypedDocument() throws ParseException {
         createHotelIndex();
@@ -72,7 +70,6 @@ public class LookupAsyncTests extends LookupTestBase {
             .verifyComplete();
     }
 
-    @Disabled
     @Test
     public void canRoundtripStaticallyTypedPrimitiveCollections() {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
