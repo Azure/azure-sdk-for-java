@@ -190,22 +190,6 @@ public class ClientLoggerTests {
      * Tests that logging an exception when the log level is ERROR the stack trace is logged.
      */
     @Test
-    public void logExceptionStackTraceWithoutException() {
-        String logMessage = "This is an exception";
-        Object runtimeException = new Object();
-
-        String originalLogLevel = setupLogLevel(1);
-        logMessage(new ClientLogger(ClientLoggerTests.class), 3, logMessage, runtimeException);
-        setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
-
-        String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        assertTrue(logValues.contains(logMessage));
-    }
-
-    /**
-     * Tests that logging an exception when the log level is ERROR the stack trace is logged.
-     */
-    @Test
     public void logExceptionWithInvalidLogLevel() {
         String logMessage = "This is an exception";
         Object runtimeException = new Object();
