@@ -3,7 +3,15 @@
 
 package com.azure.core.util;
 
-import java.lang.reflect.ParameterizedType;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.logging.ClientLogger;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -12,6 +20,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -69,9 +78,51 @@ public class FluxUtilTest {
     }
 
     @Test
-    public void testIsFluxByteBufferValidType() {
-        Flux<ByteBuffer>;
-        assertTrue(FluxUtil.isFluxByteBuffer(body.getClass()));
+    public void testIsFluxByteBufferValidType() throws Exception{
+        Method method = FluxUtilTest.class.getMethod("mockReturnType");
+        Type returnType = method.getGenericReturnType();
+        assertTrue(FluxUtil.isFluxByteBuffer(returnType));
+    }
+
+    @Test
+    public void testToMono(){
+        String testValue = "some value";
+        Response<String> response = new SimpleResponse(new HttpRequest(HttpMethod.GET, "http://www.test.com"),
+            202, new HttpHeaders(), testValue);
+        StepVerifier.create(FluxUtil.toMono(response))
+            .assertNext(val-> assertEquals(val, testValue))
+            .verifyComplete();
+    }
+
+    @Test
+    public void testMonoError() {
+        String errMsg = "It is an error message";
+        RuntimeException ex = new RuntimeException(errMsg);
+        ClientLogger logger = new ClientLogger(FluxUtilTest.class);
+        StepVerifier.create(FluxUtil.monoError(logger, ex))
+            .verifyErrorMessage(errMsg);
+    }
+
+    @Test
+    public void testFluxError() {
+        String errMsg = "It is an error message";
+        RuntimeException ex = new RuntimeException(errMsg);
+        ClientLogger logger = new ClientLogger(FluxUtilTest.class);
+        StepVerifier.create(FluxUtil.fluxError(logger, ex))
+            .verifyErrorMessage(errMsg);
+    }
+
+    @Test
+    public void testPageFluxError() {
+        String errMsg = "It is an error message";
+        RuntimeException ex = new RuntimeException(errMsg);
+        ClientLogger logger = new ClientLogger(FluxUtilTest.class);
+        StepVerifier.create(FluxUtil.pagedFluxError(logger, ex))
+            .verifyErrorMessage(errMsg);
+    }
+
+    public Flux<ByteBuffer> mockReturnType() {
+        return Flux.just(ByteBuffer.wrap(new byte[0]));
     }
 
     private Mono<String> getSingle() {
