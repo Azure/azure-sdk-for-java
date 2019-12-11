@@ -29,7 +29,7 @@ class ContinuationState<C> {
      * @param token the token
      */
     void setLastContinuationToken(C token) {
-        this.isDone = token == null ? true : false;
+        this.isDone = (token == null);
         this.lastContinuationToken = token;
     }
 
