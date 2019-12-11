@@ -291,8 +291,9 @@ class FileSASTests extends APISpec {
             .sasToken(sasWithId)
             .buildClient()
 
-        client1.createDirectory("dir")
-        client1.deleteDirectory("dir")
+        def dirName = testResourceName.randomName(methodName, 60)
+        client1.createDirectory(dirName)
+        client1.deleteDirectory(dirName)
 
         def sasWithPermissions = new ShareServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -306,51 +307,53 @@ class FileSASTests extends APISpec {
             .sasToken(sasWithPermissions)
             .buildClient()
 
-        client2.createDirectory("dir")
-        client2.deleteDirectory("dir")
+        def dirName2 = testResourceName.randomName(methodName, 60)
+        client2.createDirectory(dirName2)
+        client2.deleteDirectory(dirName2)
 
         then:
         notThrown(ShareStorageException)
     }
 
-//    def "AccountSAS network create delete share"() {
-//        setup:
-//        def service = new AccountSasService()
-//            .setFileAccess(true)
-//        def resourceType = new AccountSasResourceType()
-//            .setContainer(true)
-//            .setService(true)
-//            .setObject(true)
-//        def permissions = new AccountSasPermission()
-//            .setReadPermission(true)
-//            .setCreatePermission(true)
-//            .setDeletePermission(true)
-//        def expiryTime = getUTCNow().plusDays(1)
-//
-//        when:
-//        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
-//        def sas = new AccountSasSignatureValues()
-//            .setServices(service.toString())
-//            .setResourceTypes(resourceType.toString())
-//            .setPermissions(permissions)
-//            .setExpiryTime(expiryTime)
-//            .generateSasQueryParameters(credential)
-//            .encode()
-//
-//        then:
-//        sas != null
-//
-//        when:
-//        def scBuilder = fileServiceBuilderHelper(interceptorManager)
-//        scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl())
-//            .sasToken(sas)
-//        def sc = scBuilder.buildClient()
-//        sc.createShare("create")
-//        sc.deleteShare("create")
-//
-//        then:
-//        notThrown(ShareStorageException)
-//    }
+    def "AccountSAS network create delete share"() {
+        setup:
+        def service = new AccountSasService()
+            .setFileAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+
+        when:
+        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(credential)
+            .encode()
+
+        then:
+        sas != null
+
+        when:
+        def scBuilder = fileServiceBuilderHelper(interceptorManager)
+        scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl())
+            .sasToken(sas)
+        def sc = scBuilder.buildClient()
+        def shareName = testResourceName.randomName(methodName, 60)
+        sc.createShare(shareName)
+        sc.deleteShare(shareName)
+
+        then:
+        notThrown(ShareStorageException)
+    }
 
     def "accountSAS network account sas token on endpoint"() {
         setup:
