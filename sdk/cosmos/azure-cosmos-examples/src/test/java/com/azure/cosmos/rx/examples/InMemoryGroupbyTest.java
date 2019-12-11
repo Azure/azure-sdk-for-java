@@ -36,7 +36,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
     private DocumentCollection createdCollection;
 
     @BeforeClass(groups = "samples", timeOut = 2 * TIMEOUT)
-    public void setUp() throws Exception {
+    public void before_InMemoryGroupbyTest() throws Exception {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
@@ -109,7 +109,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         options.setEnableCrossPartitionQuery(true);
 
         Flux<Document> documentsObservable = client
-                .queryDocuments(getCollectionLink(),
+                .<Document>queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
                                 new SqlParameterList(new SqlParameter("@site_id", "ABC"))),
                         options)
@@ -141,7 +141,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         options.setEnableCrossPartitionQuery(true);
 
         Flux<Document> documentsObservable = client
-                .queryDocuments(getCollectionLink(),
+                .<Document>queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
                                 new SqlParameterList(new SqlParameter("@site_id", "ABC"))),
                         options)

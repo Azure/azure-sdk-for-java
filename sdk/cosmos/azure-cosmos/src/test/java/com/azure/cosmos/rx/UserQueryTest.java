@@ -113,7 +113,7 @@ public class UserQueryTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void before_UserQueryTest() throws Exception {
         client = clientBuilder().buildAsyncClient();
 
         createdDatabase = createDatabase(client, databaseId);

@@ -3,11 +3,9 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -24,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -43,24 +40,24 @@ class ClientSideRequestStatistics {
     private final static int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
 
     private final static DateTimeFormatter responseTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss.SSS").withLocale(Locale.US);
+    private final static OperatingSystemMXBean mbean = (com.sun.management.OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private ConnectionMode connectionMode;
+
+    public List<StoreResponseStatistics> responseStatisticsList;
+    public List<StoreResponseStatistics> supplementalResponseStatisticsList;
+    public Map<String, AddressResolutionStatistics> addressResolutionStatistics;
+
+    private GatewayStatistics gatewayStatistic;
+
     private List<URI> contactedReplicas;
     private Set<URI> failedReplicas;
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
     public ZonedDateTime requestStartTime;
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
     public ZonedDateTime requestEndTime;
-
-    public String requestEndTime() {
-        return formatDateTime(this.requestEndTime);
-    }
-
-    public ConnectionMode connectionMode;
-
-    public List<StoreResponseStatistics> responseStatisticsList;
-    public List<StoreResponseStatistics> supplementalResponseStatisticsList;
-    public Map<String, AddressResolutionStatistics> addressResolutionStatistics;
     public Set<URI> regionsContacted;
     public GatewayStatistics gatewayStatistics;
     public SystemInformation systemInformation;
@@ -82,11 +79,6 @@ class ClientSideRequestStatistics {
         return Duration.between(requestStartTime, requestEndTime);
     }
 
-    private boolean isCPUOverloaded() {
-        //  NOTE: CPUMonitor and CPULoadHistory is not implemented in async SDK yet.
-        return false;
-    }
-
     void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
         ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
         connectionMode = ConnectionMode.DIRECT;
@@ -99,11 +91,7 @@ class ClientSideRequestStatistics {
 
         URI locationEndPoint = null;
         if (request.requestContext.locationEndpointToRoute != null) {
-            try {
-                locationEndPoint = request.requestContext.locationEndpointToRoute.toURI();
-            } catch (URISyntaxException e) {
-                throw new IllegalArgumentException(e);
-            }
+            locationEndPoint = request.requestContext.locationEndpointToRoute;
         }
 
         synchronized (this) {
@@ -131,28 +119,16 @@ class ClientSideRequestStatistics {
             if (responseTime.isAfter(this.requestEndTime)) {
                 this.requestEndTime = responseTime;
             }
-            this.gatewayStatistics = new GatewayStatistics();
-            this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
+            this.gatewayStatistic = new GatewayStatistics();
+            this.gatewayStatistic.operationType = rxDocumentServiceRequest.getOperationType();
             if (storeResponse != null) {
-                this.gatewayStatistics.statusCode = storeResponse.getStatus();
-                this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
-
-                ISessionToken sessionToken = null;
-                String headerValue;
-                if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN)) != null) {
-                    sessionToken = SessionTokenHelper.parse(headerValue);
-                }
-
-                double requestCharge = 0;
-                if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE)) != null) {
-                    requestCharge = Double.parseDouble(headerValue);
-                }
-
-                this.gatewayStatistics.sessionToken = (sessionToken != null ? sessionToken.convertToString() : null);
-                this.gatewayStatistics.requestCharge = requestCharge;
-            } else if (exception != null) {
-                this.gatewayStatistics.statusCode = exception.getStatusCode();
-                this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
+                this.gatewayStatistic.statusCode = storeResponse.getStatus();
+                this.gatewayStatistic.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
+                this.gatewayStatistic.sessionToken = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                this.gatewayStatistic.requestCharge = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+            } else if(exception != null){
+                this.gatewayStatistic.statusCode = exception.getStatusCode();
+                this.gatewayStatistic.subStatusCode = exception.getSubStatusCode();
             }
         }
     }
@@ -286,7 +262,7 @@ class ClientSideRequestStatistics {
         public OperationType operationType;
         public int statusCode;
         public int subStatusCode;
-        public double requestCharge;
+        public String requestCharge;
     }
 
     private class SystemInformation {

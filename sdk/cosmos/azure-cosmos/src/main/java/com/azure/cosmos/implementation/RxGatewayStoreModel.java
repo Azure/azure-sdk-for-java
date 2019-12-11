@@ -201,9 +201,9 @@ class RxGatewayStoreModel implements RxStoreModel {
         if (rootUri == null) {
             if (request.getIsMedia()) {
                 // For media read request, always use the write endpoint.
-                rootUri = this.globalEndpointManager.getWriteEndpoints().get(0).toURI();
+                rootUri = this.globalEndpointManager.getWriteEndpoints().get(0);
             } else {
-                rootUri = this.globalEndpointManager.resolveServiceEndpoint(request).toURI();
+                rootUri = this.globalEndpointManager.resolveServiceEndpoint(request);
             }
         }
 

@@ -190,22 +190,22 @@ public interface FeedResponseListValidator<T extends Resource> {
                     if (result != null) {
                         if (value instanceof Double) {
 
-                            Double d = result.getDouble("_aggregate");
+                            Double d = result.getDouble(Constants.Properties.VALUE);
                             assertThat(d).isEqualTo(value);
                         } else if (value instanceof Integer) {
 
-                            Integer d = result.getInt("_aggregate");
+                            Integer d = result.getInt(Constants.Properties.VALUE);
                             assertThat(d).isEqualTo(value);
                         } else if (value instanceof String) {
 
-                            String d = result.getString("_aggregate");
+                            String d = result.getString(Constants.Properties.VALUE);
                             assertThat(d).isEqualTo(value);
                         } else if (value instanceof Document){
 
                             assertThat(result.toString()).isEqualTo(value.toString());
                         } else {
 
-                            assertThat(result.get("_aggregate")).isNull();
+                            assertThat(result.get(Constants.Properties.VALUE)).isNull();
                             assertThat(value).isNull();
                         }
                     } else {

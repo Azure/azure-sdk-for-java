@@ -52,7 +52,7 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = "simple")
-    public void setup() throws Exception {
+    public void before_GatewayServiceConfigurationReaderTest() throws Exception {
         client = clientBuilder().build();
         SpyClientUnderTestFactory.ClientUnderTest clientUnderTest = SpyClientUnderTestFactory.createClientUnderTest(this.clientBuilder());
         HttpClient httpClient = clientUnderTest.getSpyHttpClient();

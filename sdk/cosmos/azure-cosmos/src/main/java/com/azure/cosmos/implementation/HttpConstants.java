@@ -253,7 +253,7 @@ public class HttpConstants {
         // TODO: FIXME we can use maven plugin for generating a version file
         // @see
         // https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven
-        public static final String SDK_VERSION = "4.0.0-preview.1";
+        public static final String SDK_VERSION = "4.0.0-SNAPSHOT";
         public static final String SDK_NAME = "cosmosdb-java-sdk";
     }
 

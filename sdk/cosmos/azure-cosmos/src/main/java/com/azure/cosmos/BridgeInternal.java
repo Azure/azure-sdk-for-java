@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -181,12 +182,12 @@ public class BridgeInternal {
         return rsp.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED;
     }
 
-    public static <T extends Resource> FeedResponse<T> createFeedResponse(List<T> results,
+    public static <T> FeedResponse<T> createFeedResponse(List<T> results,
             Map<String, String> headers) {
         return new FeedResponse<>(results, headers);
     }
 
-    public static <T extends Resource> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
+    public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
             Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         return new FeedResponse<>(results, headers, queryMetricsMap);
     }
@@ -230,7 +231,7 @@ public class BridgeInternal {
         policy.setUsingMultipleWriteLocations(value);
     }
 
-    public static <E extends CosmosClientException> URI getRequestUri(CosmosClientException cosmosClientException) {
+    public static <E extends CosmosClientException> Uri getRequestUri(CosmosClientException cosmosClientException) {
         return cosmosClientException.requestUri;
     }
 

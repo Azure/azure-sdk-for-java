@@ -43,7 +43,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
     // TODO (DANOBLE) VeryLargeDocumentQueryTest::queryLargeDocuments intermittently times out
     //  Move this test back into the emulator group after we've addressed query performance on 4.X.
     //  see https://github.com/Azure/azure-sdk-for-java/issues/6377
-    @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
     public void queryLargeDocuments() {
 
         int cnt = 5;
@@ -56,7 +56,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
-            options);
+            options, CosmosItemProperties.class);
 
         AtomicInteger totalCount = new AtomicInteger();
         StepVerifier.create(feedResponseFlux.subscribeOn(Schedulers.single()))

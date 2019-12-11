@@ -71,7 +71,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
     private DocumentCollection collectionDefinition;
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
-    public void setUp() {
+    public void before_CollectionCRUDAsyncAPITest() {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 

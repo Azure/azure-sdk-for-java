@@ -41,7 +41,7 @@ public class StoreResult {
     final public boolean isGoneException;
     final public boolean isNotFoundException;
     final public boolean isInvalidPartitionException;
-    final public URI storePhysicalAddress;
+    final public Uri storePhysicalAddress;
 
     public StoreResult(
             StoreResponse storeResponse,
@@ -53,7 +53,7 @@ public class StoreResult {
             int currentReplicaSetSize,
             int currentWriteQuorum,
             boolean isValid,
-            URI storePhysicalAddress,
+            Uri storePhysicalAddress,
             long globalCommittedLSN,
             int numberOfReadRegions,
             long itemLSN,

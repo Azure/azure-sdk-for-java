@@ -52,14 +52,14 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosPartitionKeyTests() throws URISyntaxException, IOException {
         assertThat(this.client).isNull();
         client = clientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
@@ -123,8 +123,8 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_DOCUEMNT_ID + "\"");
     }
 
-    @Test(groups = { "simple" })
-    public void testNonPartitionedCollectionOperations() throws Exception {
+    @Test(groups = { "emulator" })
+    public void nonPartitionedCollectionOperations() throws Exception {
         createContainerWithoutPk();
         CosmosAsyncContainer createdContainer = createdDatabase.getContainer(NON_PARTITIONED_CONTAINER_ID);
 
@@ -167,7 +167,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         expectedIds.add(NON_PARTITIONED_CONTAINER_DOCUEMNT_ID);
         expectedIds.add(replacedItemId);
         expectedIds.add(upsertedItemId);
-        Flux<FeedResponse<CosmosItemProperties>> queryFlux = createdContainer.queryItems("SELECT * from c", feedOptions);
+        Flux<FeedResponse<CosmosItemProperties>> queryFlux = createdContainer.queryItems("SELECT * from c", feedOptions, CosmosItemProperties.class);
         FeedResponseListValidator<CosmosItemProperties> queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(3)
                 .numberOfPages(1)
@@ -175,7 +175,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .build();
         validateQuerySuccess(queryFlux, queryValidator);
 
-        queryFlux = createdContainer.readAllItems(feedOptions);
+        queryFlux = createdContainer.readAllItems(feedOptions, CosmosItemProperties.class);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(3)
                 .numberOfPages(1)
@@ -210,7 +210,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
 
         // 3 previous items + 1 created from the sproc
         expectedIds.add(documentCreatedBySprocId);
-        queryFlux = createdContainer.readAllItems(feedOptions);
+        queryFlux = createdContainer.readAllItems(feedOptions, CosmosItemProperties.class);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(4)
                 .numberOfPages(1)
@@ -238,7 +238,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .nullResource().build();
         validateSuccess(deleteMono, validator);
 
-        queryFlux = createdContainer.readAllItems(feedOptions);
+        queryFlux = createdContainer.readAllItems(feedOptions, CosmosItemProperties.class);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(0)
                 .numberOfPages(1)
@@ -246,8 +246,8 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         validateQuerySuccess(queryFlux, queryValidator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT*100)
-    public void testMultiPartitionCollectionReadDocumentWithNoPk() throws InterruptedException {
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT*100)
+    public void multiPartitionCollectionReadDocumentWithNoPk() throws InterruptedException {
         String partitionedCollectionId = "PartitionedCollection" + UUID.randomUUID().toString();
         String IdOfDocumentWithNoPk = UUID.randomUUID().toString();
         CosmosContainerProperties containerSettings = new CosmosContainerProperties(partitionedCollectionId, "/mypk");

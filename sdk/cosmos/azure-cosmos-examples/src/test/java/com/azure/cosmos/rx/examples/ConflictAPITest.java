@@ -49,7 +49,7 @@ public class ConflictAPITest extends DocumentClientTest {
     private Database createdDatabase;
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
-    public void setUp() {
+    public void before_ConflictAPITest() {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 

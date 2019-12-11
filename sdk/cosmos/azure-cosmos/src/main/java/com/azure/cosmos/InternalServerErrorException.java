@@ -43,17 +43,13 @@ public class InternalServerErrorException extends CosmosClientException {
     InternalServerErrorException(Exception innerException) {
         this(RMResources.InternalServerError, innerException, (HttpHeaders) null, (String) null);
     }
-    
+
     public InternalServerErrorException(String message, HttpHeaders headers, URI requestUri) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, requestUri != null ? requestUri.toString() : null);
     }
 
     InternalServerErrorException(String message, HttpHeaders headers, String requestUriString) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, requestUriString);
-    }
-
-    InternalServerErrorException(String message, HttpHeaders headers, URL requestUrl) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, requestUrl != null ? requestUrl.toString() : null);
     }
 
     InternalServerErrorException(String message, Exception innerException, HttpHeaders headers, URI requestUri) {

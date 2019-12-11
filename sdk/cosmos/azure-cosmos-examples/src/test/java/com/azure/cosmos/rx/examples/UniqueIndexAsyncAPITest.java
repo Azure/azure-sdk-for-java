@@ -78,7 +78,7 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
     }
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
-    public void setUp() {
+    public void before_UniqueIndexAsyncAPITest() {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 

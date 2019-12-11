@@ -27,7 +27,6 @@ import org.testng.annotations.Test;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -47,11 +46,11 @@ public class ReplicatedResourceClientPartitionSplitTest {
 
     @Test(groups = { "unit" }, dataProvider = "partitionIsSplittingArgProvider", timeOut = TIMEOUT)
     public void partitionSplit_RefreshCache_Read(ConsistencyLevel consistencyLevel, int partitionIsSplitting) {
-        URI secondary1AddressBeforeMove = URI.create("secondary");
-        URI secondary1AddressAfterMove = URI.create("secondaryNew");
+        Uri secondary1AddressBeforeMove = Uri.create("secondary");
+        Uri secondary1AddressAfterMove = Uri.create("secondaryNew");
 
-        URI primaryAddressBeforeMove = URI.create("primary");
-        URI primaryAddressAfterMove = URI.create("primaryNew");
+        Uri primaryAddressBeforeMove = Uri.create("primary");
+        Uri primaryAddressAfterMove = Uri.create("primaryNew");
 
         String partitionKeyRangeIdBeforeSplit = "1";
         String partitionKeyRangeIdAfterSplit = "2";

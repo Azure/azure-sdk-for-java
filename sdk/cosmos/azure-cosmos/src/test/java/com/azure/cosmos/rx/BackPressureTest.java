@@ -69,7 +69,7 @@ public class BackPressureTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(1);
         options.setEnableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.readAllItems(options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         AtomicInteger valueCount = new AtomicInteger();
@@ -114,7 +114,7 @@ public class BackPressureTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(1);
         options.setEnableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems("SELECT * from r", options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
@@ -191,7 +191,7 @@ public class BackPressureTest extends TestSuiteBase {
         // ensure collection is cached
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
-        createdCollection.queryItems("SELECT * from r", options).blockFirst();
+        createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class).blockFirst();
     }
 
     @AfterClass(groups = { "long" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
