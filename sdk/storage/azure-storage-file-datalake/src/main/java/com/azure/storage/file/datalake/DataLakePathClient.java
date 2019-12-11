@@ -32,8 +32,6 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
-
 /**
  * This class provides a client that contains all operations that apply to any path object.
  */
@@ -412,7 +410,7 @@ public class DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.exists}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.exists}
      *
      * @return true if the path exists, false if it doesn't
      */
@@ -425,7 +423,7 @@ public class DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse#Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.existsWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
