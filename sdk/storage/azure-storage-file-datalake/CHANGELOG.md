@@ -1,5 +1,9 @@
 # Change Log azure-storage-file-datalake
 
+## Version XX.X.X-beta.X (XXXX-XX-XX)
+- Added SAS generation methods on clients to improve discoverability and convenience of sas.
+- Mapped StorageErrorException and BlobStorageException to DataLakeStorageException.
+
 ## Version 12.0.0-beta.7 (2019-12-04)
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md) 
