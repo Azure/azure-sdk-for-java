@@ -28,7 +28,7 @@ Each service might have a number of libraries available from each of the followi
 
 ### Client: GA December 2019 Releases
 
-New wave of packages that were released in December 2019 client library as General Availability (GA) and several others that were released in **preview**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](sdk/core/README.md).
+New wave of packages that were released in December 2019 client library as General Availability (GA) and several others that were released in **beta**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](sdk/core/README.md).
 
 These libraries can be easily identified by sdk/ folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
@@ -43,7 +43,7 @@ The libraries released in the GA December 2019 release:
 - [Storage File Share](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.0.0/sdk/storage/azure-storage-file-share/README.md)
 
 The libraries released in the December 2019 beta:
-- [App Configuration](https://github.com/Azure/azure-sdk-for-java/tree/azure-data-appconfiguration_1.0.0-beta.7/sdk/appconfiguration/azure-data-appconfiguration)
+- [App Configuration](https://github.com/Azure/azure-sdk-for-java/tree/azure-data-appconfiguration_1.0.0-beta.7/sdk/appconfiguration/azure-data-appconfiguration/README.md)
 - [Event Hubs](https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-eventhubs_5.0.0-beta.6/sdk/eventhubs/azure-messaging-eventhubs/README.md)
 - [Event Hubs Checkpoint Store](https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-eventhubs-checkpointstore-blob_1.0.0-beta.4/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md)
 - [Key Vault Certificates](https://github.com/Azure/azure-sdk-for-java/blob/azure-security-keyvault-certificates_4.0.0-beta.6/sdk/keyvault/azure-security-keyvault-certificates/README.md)
