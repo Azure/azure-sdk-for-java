@@ -107,7 +107,7 @@ public class SettingSelector {
      * @return labels The labels used to filter GET requests from the service.
      */
     public String getLabelFilter() {
-        return labelFilter == null ? "" : labelFilter;
+        return labelFilter;
     }
 
     /**
