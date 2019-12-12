@@ -1,6 +1,7 @@
 # Release History
 ## Version 1.0.0-beta.2 (2020-01-03)
 - Add eventhub properties to attributes of processing spans.
+- Remove `Azure` prefix from convenience layer span names.
 
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-tracing-opentelemetry_1.0.0-beta.2/sdk/core/azure-core-tracing-opentelemetry/README.md)
