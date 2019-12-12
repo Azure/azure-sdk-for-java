@@ -118,6 +118,7 @@ public class TracerProvider {
         String spanName = "EventHubs.";
         switch (processKind) {
             case SEND:
+            case LINK:
                 spanName += "send";
                 break;
             case MESSAGE:

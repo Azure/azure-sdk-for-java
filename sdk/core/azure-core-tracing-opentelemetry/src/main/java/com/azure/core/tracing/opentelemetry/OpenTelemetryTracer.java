@@ -66,7 +66,11 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         switch (processKind) {
             case SEND:
-                spanBuilder = getSpanBuilder(spanName, context);
+                // use previosuly created span builder from the LINK process.
+                spanBuilder = getOrDefault(context, SPAN_BUILDER_KEY, null, Builder.class);
+                if (spanBuilder == null) {
+                    return Context.NONE;
+                }
                 span = spanBuilder.setSpanKind(Span.Kind.PRODUCER).startSpan();
                 if (span.isRecording()) {
                     // If span is sampled in, add additional request attributes
@@ -81,6 +85,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 return context.addData(PARENT_SPAN_KEY, span);
             case PROCESS:
                 return startScopedSpan(spanName, context);
+            case LINK:
+                return context.addData(SPAN_BUILDER_KEY, getSpanBuilder(spanName, context));
             default:
                 return Context.NONE;
         }

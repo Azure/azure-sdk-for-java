@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 
 /**
@@ -397,10 +398,13 @@ public class EventHubProducerAsyncClient implements Closeable {
             ? new AtomicReference<>(Context.NONE)
             : null;
 
+        // initiate addLink on send span, get shared span builder for all links
+        Context sharedContext = isTracingEnabled ? tracerProvider.startSpan(parentContext.get(), ProcessKind.LINK) :
+                                    null;
         final List<Message> messages = batch.getEvents().stream().map(event -> {
             final Message message = messageSerializer.serialize(event);
             if (isTracingEnabled) {
-                parentContext.set(event.getContext());
+                tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, event.getContext()));
             }
             if (!CoreUtils.isNullOrEmpty(partitionKey)) {
                 final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
@@ -408,6 +412,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                     : message.getMessageAnnotations();
                 messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
                 message.setMessageAnnotations(messageAnnotations);
+
             }
 
             return message;
@@ -416,7 +421,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         return getSendLink(batch.getPartitionId())
             .flatMap(link -> {
                 if (isTracingEnabled) {
-                    Context userSpanContext = parentContext.get();
+                    Context userSpanContext = sharedContext;
                     Context entityContext = userSpanContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
                     // start send span and store updated context
                     parentContext.set(tracerProvider.startSpan(

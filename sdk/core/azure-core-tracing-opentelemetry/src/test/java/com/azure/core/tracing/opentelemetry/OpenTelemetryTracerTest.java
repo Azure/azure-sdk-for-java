@@ -92,7 +92,6 @@ public class OpenTelemetryTracerTest {
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
         assertEquals(Span.Kind.INTERNAL, recordEventsSpan.toSpanData().getKind());
-        assertEquals(true, true);
     }
 
     @Test
@@ -117,9 +116,11 @@ public class OpenTelemetryTracerTest {
     public void startSpanProcessKindSend() {
         // Arrange
         final SpanId parentSpanId = parentSpan.getContext().getSpanId();
+        // Start user parent span.
+        final Span.Builder spanBuilder = tracer.spanBuilder(METHOD_NAME);
         // Add additional metadata to spans for SEND
         final Context traceContext = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
-            .addData(HOST_NAME_KEY, HOSTNAME_VALUE);
+                                         .addData(HOST_NAME_KEY, HOSTNAME_VALUE).addData(SPAN_BUILDER_KEY, spanBuilder);
 
         // Act
         final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, traceContext, ProcessKind.SEND);
@@ -179,6 +180,14 @@ public class OpenTelemetryTracerTest {
         // verify span attributes
         final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
         verifySpanAttributes(attributeMap);
+    }
+
+    @Test
+    public void startSpanProcessKindLink() {
+        // Act
+        final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, Context.NONE, ProcessKind.LINK);
+
+        assertTrue(updatedContext.getData(SPAN_BUILDER_KEY).isPresent());
     }
 
     @Test
@@ -277,7 +286,7 @@ public class OpenTelemetryTracerTest {
     }
 
     private static void assertSpanWithExplicitParent(Context updatedContext, SpanId parentSpanId) {
-        assertNotNull(updatedContext.getData(PARENT_SPAN_KEY));
+        assertNotNull(updatedContext.getData(PARENT_SPAN_KEY).get());
 
         // verify instance created of opentelemetry-sdk (test impl), span implementation
         assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof ReadableSpan);
@@ -292,7 +301,7 @@ public class OpenTelemetryTracerTest {
     }
 
     private static void assertSpanWithRemoteParent(Context updatedContext, SpanId parentSpanId) {
-        assertNotNull(updatedContext.getData(PARENT_SPAN_KEY));
+        assertNotNull(updatedContext.getData(PARENT_SPAN_KEY).get());
 
         // verify instance created of opentelemetry-sdk (test impl), span implementation
         assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof ReadableSpan);
