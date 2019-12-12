@@ -81,7 +81,6 @@ public class SettingSelector {
      * @return The updated SettingSelector object
      */
     public SettingSelector setKeyFilter(String keyFilter) {
-        Objects.requireNonNull(keyFilter);
         this.keyFilter = keyFilter;
         return this;
     }
