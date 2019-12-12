@@ -63,6 +63,20 @@ class DirectoryAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    def "Exists"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        dc.create()
+
+        then:
+        dc.exists()
+    }
+
+    def "Does not exist"() {
+        expect:
+        !fsc.getDirectoryClient(generatePathName()).exists()
+    }
+
     @Unroll
     def "Create headers"() {
         // Create does not set md5
