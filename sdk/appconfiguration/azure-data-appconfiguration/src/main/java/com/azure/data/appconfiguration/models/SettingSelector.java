@@ -4,12 +4,11 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.core.util.CoreUtils;
+import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 /**
  * A set of options for selecting configuration settings from App Configuration service.
