@@ -25,45 +25,35 @@ class LeaseAsyncErrorMappingTest extends APISpec {
         when:
         def acquireLeaseVerifier = StepVerifier.create(leaseAsyncClient.acquireLeaseWithResponse(-10, null))
         then:
-        acquireLeaseVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        acquireLeaseVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Renew Lease"() {
         when:
         def renewLeaseVerifier = StepVerifier.create(leaseAsyncClient.renewLeaseWithResponse(null))
         then:
-        renewLeaseVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        renewLeaseVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Release Lease"() {
         when:
         def releaseLeaseVerifier = StepVerifier.create(leaseAsyncClient.releaseLeaseWithResponse(null))
         then:
-        releaseLeaseVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        releaseLeaseVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Change Lease"() {
         when:
         def changeLeaseVerifier = StepVerifier.create(leaseAsyncClient.changeLeaseWithResponse(null, null))
         then:
-        changeLeaseVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        changeLeaseVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Break Lease"() {
         when:
         def breakLeaseVerifier = StepVerifier.create(leaseAsyncClient.breakLeaseWithResponse(null, null))
         then:
-        breakLeaseVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        breakLeaseVerifier.verifyError(DataLakeStorageException)
     }
 
 }

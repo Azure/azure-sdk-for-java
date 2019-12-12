@@ -19,9 +19,7 @@ class AsyncErrorMappingTest extends APISpec {
         def fac = fsac.getFileAsyncClient(fileName)
         def readFileVerifier = StepVerifier.create(fac.readWithResponse(null, null, null, false))
         then:
-        readFileVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        readFileVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Get file properties"() {
@@ -30,9 +28,7 @@ class AsyncErrorMappingTest extends APISpec {
         def fac = fsac.getFileAsyncClient(fileName)
         def getPropertiesVerifier = StepVerifier.create(fac.getPropertiesWithResponse(null))
         then:
-        getPropertiesVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        getPropertiesVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Set file http properties"() {
@@ -41,9 +37,7 @@ class AsyncErrorMappingTest extends APISpec {
         def fac = fsac.getFileAsyncClient(fileName)
         def setPropertiesVerifier = StepVerifier.create(fac.setHttpHeadersWithResponse(null, null))
         then:
-        setPropertiesVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        setPropertiesVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Set file metadata"() {
@@ -52,9 +46,7 @@ class AsyncErrorMappingTest extends APISpec {
         def fac = fsac.getFileAsyncClient(fileName)
         def setMetadataVerifier = StepVerifier.create(fac.setMetadataWithResponse(null, null))
         then:
-        setMetadataVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        setMetadataVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Get directory properties"() {
@@ -63,9 +55,7 @@ class AsyncErrorMappingTest extends APISpec {
         def dac = fsac.getDirectoryAsyncClient(directoryName)
         def getPropertiesVerifier = StepVerifier.create(dac.getPropertiesWithResponse(null))
         then:
-        getPropertiesVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        getPropertiesVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Set directory http properties"() {
@@ -74,9 +64,7 @@ class AsyncErrorMappingTest extends APISpec {
         def dac = fsac.getDirectoryAsyncClient(directoryName)
         def setPropertiesVerifier = StepVerifier.create(dac.setHttpHeadersWithResponse(null, null))
         then:
-        setPropertiesVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        setPropertiesVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Set directory metadata"() {
@@ -85,9 +73,7 @@ class AsyncErrorMappingTest extends APISpec {
         def dac = fsac.getDirectoryAsyncClient(directoryName)
         def setMetadataVerifier = StepVerifier.create(dac.setMetadataWithResponse(null, null))
         then:
-        setMetadataVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        setMetadataVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Create file system"() {
@@ -95,9 +81,7 @@ class AsyncErrorMappingTest extends APISpec {
         def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
         def createVerifier = StepVerifier.create(fsac.createWithResponse(null, null))
         then:
-        createVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        createVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Get file system properties"() {
@@ -106,9 +90,7 @@ class AsyncErrorMappingTest extends APISpec {
         def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
         def getPropertiesVerifier = StepVerifier.create(fsac.getPropertiesWithResponse(null))
         then:
-        getPropertiesVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        getPropertiesVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Set file system metadata"() {
@@ -117,9 +99,7 @@ class AsyncErrorMappingTest extends APISpec {
         def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
         def setMetadataVerifier = StepVerifier.create(fsac.setMetadataWithResponse(null, null))
         then:
-        setMetadataVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        setMetadataVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Delete file system"() {
@@ -128,9 +108,7 @@ class AsyncErrorMappingTest extends APISpec {
         def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
         def setMetadataVerifier = StepVerifier.create(fsac.deleteWithResponse(null))
         then:
-        setMetadataVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        setMetadataVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Get file system access policy"() {
@@ -139,9 +117,7 @@ class AsyncErrorMappingTest extends APISpec {
         def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
         def getAccessPolicyVerifier = StepVerifier.create(fsac.getAccessPolicyWithResponse(null))
         then:
-        getAccessPolicyVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        getAccessPolicyVerifier.verifyError(DataLakeStorageException)
     }
 
     def "Set file system access policy"() {
@@ -150,9 +126,7 @@ class AsyncErrorMappingTest extends APISpec {
         def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
         def setAccessPolicyVerifier = StepVerifier.create(fsac.setAccessPolicyWithResponse(null, null, null))
         then:
-        setAccessPolicyVerifier.verifyErrorSatisfies {
-            assert it instanceof DataLakeStorageException
-        }
+        setAccessPolicyVerifier.verifyError(DataLakeStorageException)
     }
 
 }
