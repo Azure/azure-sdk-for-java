@@ -183,7 +183,7 @@ jobs:
         condition: ne(variables['Build.Reason'], 'PullRequest')
 
       - task: PublishPipelineArtifact@0
-        condition: successOrFail()
+        condition: succeededOrFailed()
         displayName: 'Publish reports artifact'
         inputs:
           artifactName: reports
