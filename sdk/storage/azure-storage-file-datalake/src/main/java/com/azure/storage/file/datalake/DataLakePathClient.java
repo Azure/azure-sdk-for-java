@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
@@ -110,7 +111,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Creates a resource.
+     * Creates a resource. By default this method will not overwrite an existing path.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -123,7 +124,28 @@ public class DataLakePathClient {
      * @return Information about the created resource.
      */
     public PathInfo create() {
-        return createWithResponse(null, null, null, null, null, null, Context.NONE).getValue();
+        return create(false);
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.create#boolean}
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @return Information about the created resource.
+     */
+    public PathInfo create(boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return createWithResponse(null, null, null, null, requestConditions, null, Context.NONE).getValue();
     }
 
     /**

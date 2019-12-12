@@ -90,7 +90,7 @@ class APISpec extends Specification {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    public static final String defaultEndpointTemplate = "https://%s.dfs.core.windows.net/"
+    public static final String defaultEndpointTemplate = "http://%s.dfs.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def DATA_LAKE_STORAGE = "STORAGE_DATA_LAKE_"

@@ -2,6 +2,7 @@
 
 ## Version XXXX-X-X-beta.X (XXXX-XX-XX)
 - Added support for exists method on FileClients and DirectoryClients
+- Added support for no overwrite by default on min create method on FileClients and DirectoryClients and flush method on FileClients 
 
 ## Version 12.0.0-beta.7 (2019-12-04)
 This package's 

@@ -64,6 +64,18 @@ class DirectoryAPITest extends APISpec {
         thrown(Exception)
     }
 
+    def "Create overwrite"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        dc.create()
+
+        // Try to create the resource again
+        dc.create(false)
+
+        then:
+        thrown(StorageErrorException)
+    }
+
     def "Exists"() {
         when:
         dc = fsc.getDirectoryClient(generatePathName())
