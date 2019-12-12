@@ -8,7 +8,7 @@ import com.azure.core.util.paging.ContinuablePage;
 /**
  * Represents a paginated REST response from the service.
  *
- * @param <T> Type of the listed objects in that response.
+ * @param <T> Type of items in the page response.
  */
 public interface Page<T> extends ContinuablePage<String, T> {
 }

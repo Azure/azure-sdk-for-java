@@ -39,23 +39,22 @@ import java.util.function.Supplier;
  */
 public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePagedFluxCore<String, T, P> {
     /**
-     * Creates an instance of {@link PagedFluxBase} that consists of only a single page of results.
-     * The only argument to this constructor therefore is a supplier that fetches the first
-     * (and known-only) page from {@code P}.
+     * Creates an instance of {@link PagedFluxBase} that consists of only a single page.
+     * This constructor takes a {@code Supplier} that return the single page of {@code T}.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.core.http.rest.pagedfluxbase.singlepage.instantiation}
      *
-     * @param firstPageRetriever Supplier that retrieves the first page
+     * @param firstPageRetriever Supplier that retrieves the first page.
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever) {
         this(firstPageRetriever, token -> Mono.empty());
     }
 
     /**
-     * Creates an instance of {@link PagedFluxBase}. The constructor takes in two arguments. The first
-     * argument is a supplier that fetches the first page from {@code P}. The second argument is a
-     * function that fetches subsequent pages from {@code P}.
+     * Creates an instance of {@link PagedFluxBase}. The constructor takes a {@code Supplier} and
+     * {@code Function}. The {@code Supplier} returns the first page of {@code T},
+     * the {@code Function} retrieves subsequent pages of {@code T}.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.core.http.rest.pagedfluxbase.instantiation}
@@ -78,13 +77,12 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
     }
 
     /**
-     * Creates an instance of {@link PagedFlux}. The constructor takes a provider, that when called should
+     * Creates an instance of {@link PagedFluxBase}. The constructor takes a provider, that when called should
      * provides Page Retriever Function which accepts continuation token. The provider will be called for
      * each Subscription to the PagedFlux instance. The Page Retriever Function can get called multiple
      * times in serial fashion, each time after the completion of the Flux returned from the previous
-     * invocation. The final completion signal will be send to the downstream subscriber when the last
-     * Page emitted by the Flux returned by Page Continuation Function has {@code null} continuation token.
-     *
+     * invocation. The final completion signal will be send to the Subscriber when the last Page emitted
+     * by the Flux returned by Page Continuation Function has {@code null} continuation token.
      *
      * @param provider the Page Retrieval Provider
      */
@@ -93,7 +91,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
     }
 
     /**
-     * Creates a flux of {@link PagedResponse} starting from the first page.
+     * Creates a Flux of {@link PagedResponse} starting from the first page.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.core.http.rest.pagedfluxbase.bypage}
@@ -105,7 +103,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
     }
 
     /**
-     * Creates a flux of {@link PagedResponse} starting from the next page associated with the given
+     * Creates a Flux of {@link PagedResponse} starting from the next page associated with the given
      * continuation token. To start from first page, use {@link #byPage()} instead.
      *
      * <p><strong>Code sample</strong></p>

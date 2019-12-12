@@ -6,22 +6,24 @@ package com.azure.core.util.paging;
 import reactor.core.publisher.Flux;
 
 /**
- * A contract that represents a Flux that provides the ability to operate on individual items
- * in pages of type {@link ContinuablePage}, also provide ability to operate on individual
- * pages.
+ * A contract that represents a Flux that provides the ability to operate on pages of type
+ * {@link ContinuablePage} and individual items in such pages. This type supports user-provided
+ * continuation tokens, allowing for restarting from a previously-retrieved continuation token.
  *
- * @param <O> the type of continuation option for byPage
  * @param <C> the type of continuation token
  * @param <T> the type of items in the page
  * @param <P> the type of page
+ *
+ * @see Flux
+ * @see ContinuablePage
  */
-public abstract class ContinuablePagedFlux<O, C, T, P extends ContinuablePage<C, T>> extends Flux<T> {
+public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>> extends Flux<T> {
     /**
-     * @return a Flux of {@link ContinuablePage} that this Paged Flux represents.
+     * @return a Flux of {@link ContinuablePage} that this Paged Flux.
      */
     public abstract Flux<P> byPage();
     /**
-     * @return a Flux of {@link ContinuablePage} identified by the given continuation option.
+     * @return a Flux of {@link ContinuablePage} identified by the given continuation token.
      */
-    public abstract Flux<P> byPage(O continuationOption);
+    public abstract Flux<P> byPage(C continuationToken);
 }

@@ -14,18 +14,19 @@ import java.util.function.Supplier;
 /**
  * The default implementation of {@link ContinuablePagedFlux}.
  *
- * The Flux that provides the ability to operate on individual items in pages of type
- * {@link ContinuablePage}, also provide ability to operate on individual pages.
+ * This type is a Flux provides the ability to operate on pages of type {@link ContinuablePage}
+ * and individual items in such pages. This type supports user-provided continuation tokens,
+ * allowing for restarting from a previously-retrieved continuation token.
  *
- * The constructor of this type takes a provider, that when called should provides Page Retriever
- * Function which accepts continuation token. The provider is called for each Subscription to the
- * ContinuablePagedFluxCore instance. Given provider is called per Subscription, the provider
- * implementation can create one or more objects to store any state and Page Retriever Function can
- * capture and use those objects. This indirectly associate the state objects to the Subscription.
- * The Page Retriever Function can get called multiple times in serial fashion, each time after the
- * completion of the Flux returned by the previous invocation. The final completion signal will be
- * send to the downstream subscriber when the last Page emitted by the Flux returned by
- * the Page Retrieval Function has {@code null} continuation token.
+ * The constructor takes a provider, that when called should return Page Retriever Function which
+ * accepts continuation token. The provider is called for each Subscription to this Flux.
+ * Given provider is called per Subscription, the provider implementation can create one or more
+ * objects to store any state and Page Retriever Function can capture and use those objects.
+ * This indirectly associate the state objects to the Subscription. The Page Retriever Function
+ * can get called multiple times in serial fashion, each time after the completion of the Flux
+ * returned by the previous invocation. The final completion signal will be send to the Subscriber
+ * when the last Page emitted by the Flux returned by the Page Retrieval Function has {@code null}
+ * continuation token.
  *
  * <p><strong>Extending PagedFluxCore for Custom Continuation Token support</strong></p>
  * {@codesnippet com.azure.core.util.paging.pagedfluxcore.continuationtoken}
@@ -33,11 +34,11 @@ import java.util.function.Supplier;
  * @param <T> The type of items in a {@link ContinuablePage}
  * @param <P> The {@link ContinuablePage} holding items of type {@code T}.
  *
+ * @see ContinuablePagedFlux
  * @see ContinuablePage
- * @see Flux
  */
 public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C, T>>
-    extends ContinuablePagedFlux<C, C, T, P> {
+    extends ContinuablePagedFlux<C, T, P> {
 
     private final Supplier<Function<C, Flux<P>>> pageRetrieverProvider;
     private final int defaultPrefetch;
@@ -90,7 +91,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      */
     public Flux<P> byPage(int prefetch) {
         if (prefetch <= 0) {
-            throw new IllegalArgumentException("prefetch > 0 required but provided: " + prefetch);
+            return Flux.error(new IllegalArgumentException("prefetch > 0 required but provided: " + prefetch));
         }
         return byPageIntern(this.pageRetrieverProvider, null, prefetch);
     }
@@ -108,7 +109,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
             return Flux.empty();
         }
         if (prefetch <= 0) {
-            throw new IllegalArgumentException("prefetch > 0 required but provided: " + prefetch);
+            return Flux.error(new IllegalArgumentException("prefetch > 0 required but provided: " + prefetch));
         }
         return byPageIntern(this.pageRetrieverProvider, continuationToken, prefetch);
     }
@@ -131,7 +132,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
                              C continuationToken,
                              int prefetch) {
         return Flux.defer(() -> {
-            Function<C, Flux<P>> pageRetriever = provider.get();
+            final Function<C, Flux<P>> pageRetriever = provider.get();
             final ContinuationState<C> state = new ContinuationState<>(continuationToken);
             //
             Flux<Boolean> repeatUntilDone = Mono.just(true)
@@ -165,5 +166,51 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
         byPage()
             .flatMap(page -> Flux.fromIterable(page.getItems()))
             .subscribe(coreSubscriber);
+    }
+
+    /**
+     * Internal type to store Continuation State.
+     *
+     * @param <C> the Continuation Token type
+     */
+    private static class ContinuationState<C> {
+        // The last seen continuation token
+        private C lastContinuationToken;
+        // Indicate whether to call the PageRetrieval Function
+        private boolean isDone;
+
+        /**
+         * Creates ContinuationState.
+         *
+         * @param token the token to start with
+         */
+        ContinuationState(C token) {
+            this.lastContinuationToken = token;
+        }
+
+        /**
+         * Store the last seen continuation token.
+         *
+         * @param token the token
+         */
+        void setLastContinuationToken(C token) {
+            this.isDone = (token == null);
+            this.lastContinuationToken = token;
+        }
+
+        /**
+         * @return the last seen token
+         */
+        C getLastContinuationToken() {
+            return this.lastContinuationToken;
+        }
+
+        /**
+         * @return true if the PageRetrieval Function needs to be invoked
+         * for next set of pages.
+         */
+        boolean isDone() {
+            return this.isDone;
+        }
     }
 }

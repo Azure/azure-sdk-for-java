@@ -3,10 +3,13 @@ package com.azure.core.util.paging;
 import java.util.List;
 
 /**
- * Represents Page from service that has reference to next set of one or more pages.
+ * Represents Page from service that has reference (a.k.a continuation token) to next set
+ * of one or more pages.
  *
  * @param <C> Type of the continuation token
  * @param <T> Type of the items in the page
+ *
+ * @see ContinuablePagedFlux
  */
 public interface ContinuablePage<C, T> {
     /**

@@ -6,16 +6,18 @@ package com.azure.core.http.rest;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Code snippets for {@link PagedFlux}
  */
 public final class PagedFluxJavaDocCodeSnippets {
-    
+
     /**
      * Code snippets for showing usage of {@link PagedFlux} in class docs
      */
@@ -141,6 +143,41 @@ public final class PagedFluxJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for using {@link PagedFlux#PagedFlux(PageRetrieverProvider)}
+     * to create a PagedFlux by applying decoration on another PagedFlux.
+     */
+    public void pagedFluxFromPagedFlux() {
+        // BEGIN: com.azure.core.http.rest.pagedflux.ctr.decoration
+
+        // Transform a PagedFlux with Integer items to PagedFlux of String items.
+        final PagedFlux<Integer> intPagedFlux = createAnInstance();
+
+        Function<PagedResponse<Integer>, PagedResponse<String>> responseMapper
+            = intResponse -> new PagedResponseBase<Void, String>(intResponse.getRequest(),
+                intResponse.getStatusCode(),
+                intResponse.getHeaders(),
+                intResponse.getValue()
+                    .stream()
+                    .map(intValue -> Integer.toString(intValue)).collect(Collectors.toList()),
+                intResponse.getContinuationToken(),
+                null);
+
+        PagedFlux<String> strPagedFlux = new PagedFlux<>(() ->
+            (Function<String, Flux<PagedResponse<String>>>) ct -> intPagedFlux
+                .byPage()
+                .map(responseMapper));
+
+        // Create a PagedFlux from a PagedFlux with all exceptions mapped to a specific exception.
+        final PagedFlux<Integer> pagedFlux = createAnInstance();
+        final PagedFlux<Integer> pagedFluxWithExceptionMapped = new PagedFlux<>(() ->
+            (Function<String, Flux<PagedResponse<Integer>>>) ct -> pagedFlux
+            .byPage()
+            .onErrorMap(t -> new PaginationException(t)));
+
+        // END: com.azure.core.http.rest.pagedflux..ctr.decoration
+    }
+
+    /**
      * Implementation not provided
      *
      * @return A continuation token
@@ -166,5 +203,11 @@ public final class PagedFluxJavaDocCodeSnippets {
      */
     private Mono<PagedResponse<Integer>> getFirstPage() {
         return null;
+    }
+
+    class PaginationException extends RuntimeException {
+        PaginationException(Throwable ex) {
+            super(ex);
+        }
     }
 }
