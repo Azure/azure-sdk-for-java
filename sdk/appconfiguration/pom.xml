@@ -9,8 +9,6 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <!-- NOTE: Commenting out because we should now be binary composed.
-    -->
     <module>azure-data-appconfiguration</module>
   </modules>
 </project>

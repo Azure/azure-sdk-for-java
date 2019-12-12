@@ -7,6 +7,7 @@
   <artifactId>azure-sdk-all</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-sdk-all;current} -->
+<<<<<<< HEAD
 
   <name>Microsoft Azure SDK for Java - All Modules</name>
   <description>Aggregated POM for Microsoft Azure SDK for Java</description>
@@ -405,4 +406,26 @@
     </profile>
 
   </profiles>
+=======
+  <modules>
+    <module>sdk/appconfiguration</module>
+    <module>sdk/applicationinsights</module>
+    <module>sdk/authorization</module>
+    <module>sdk/batch</module>
+    <module>sdk/cognitiveservices</module>
+    <module>sdk/core</module>
+    <module>sdk/cosmos</module>
+    <module>sdk/eventgrid</module>
+    <module>sdk/eventhubs</module>
+    <module>sdk/identity</module>
+    <module>sdk/keyvault</module>
+    <module>sdk/loganalytics</module>
+    <module>sdk/mediaservices</module>
+    <module>sdk/parents</module>
+    <module>sdk/servicebus</module>
+    <module>sdk/storage</module>
+    <module>sdk/template</module>
+    <module>sdk/search</module>
+  </modules>
+>>>>>>> Tidying up the root POM turning it into a true aggregator.
 </project>
