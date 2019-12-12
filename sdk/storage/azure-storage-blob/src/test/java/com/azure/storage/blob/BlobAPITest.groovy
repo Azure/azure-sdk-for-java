@@ -4,7 +4,6 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.RequestConditions
-import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -30,6 +29,7 @@ import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import com.azure.storage.common.implementation.Constants
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -481,7 +481,7 @@ class BlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Download file etag lock"() {
         setup:
-        def file = getRandomFile(Constants.KB * 10)
+        def file = getRandomFile(Constants.MB)
         bc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(testName + "")
         Files.deleteIfExists(file.toPath())
@@ -513,14 +513,14 @@ class BlobAPITest extends APISpec {
          * so that the download is able to get an ETag before it is changed.
          */
         StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
-            .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(100)).subscribe() }))
+            .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
             .verifyErrorSatisfies({
                 assert it instanceof BlobStorageException
                 assert ((BlobStorageException) it).getStatusCode() == 412
             })
 
         // Give the file a chance to be deleted by the download operation before verifying its deletion
-        sleep(100)
+        sleep(500)
         !outFile.exists()
 
         cleanup:
