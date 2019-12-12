@@ -17,6 +17,7 @@ import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditio
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -216,8 +217,9 @@ public class DataLakePathClient {
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
-            timeout, context);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
+                timeout, context), logger);
     }
 
     /**
@@ -256,8 +258,9 @@ public class DataLakePathClient {
      */
     public Response<Void> setHttpHeadersWithResponse(PathHttpHeaders headers,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
-            Transforms.toBlobRequestConditions(requestConditions), timeout, context);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
+                Transforms.toBlobRequestConditions(requestConditions), timeout, context), logger);
     }
 
     /**
@@ -424,9 +427,11 @@ public class DataLakePathClient {
      */
     public Response<PathProperties> getPropertiesWithResponse(DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
-        Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
-            Transforms.toBlobRequestConditions(requestConditions), timeout, context);
-        return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
+                Transforms.toBlobRequestConditions(requestConditions), timeout, context);
+            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
+        }, logger);
     }
 
     /**

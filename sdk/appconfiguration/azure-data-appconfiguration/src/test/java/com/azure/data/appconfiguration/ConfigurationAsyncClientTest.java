@@ -2,13 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -23,11 +22,15 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.context.Context;
 
 import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClientTest.class);
@@ -868,6 +871,19 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
                 return client.deleteConfigurationSettingWithResponse(configurationSetting, false);
             }).blockLast();
+    }
+
+    @Test
+    public void addHeadersFromContextPolicyTest() {
+        final HttpHeaders headers = getCustomizedHeaders();
+        addHeadersFromContextPolicyRunner(expected ->
+            StepVerifier.create(client.addConfigurationSettingWithResponse(expected)
+                .subscriberContext(Context.of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)))
+                .assertNext(response -> {
+                    final HttpHeaders requestHeaders = response.getRequest().getHeaders();
+                    assertContainsHeaders(headers, requestHeaders);
+                })
+                .verifyComplete());
     }
 }
 

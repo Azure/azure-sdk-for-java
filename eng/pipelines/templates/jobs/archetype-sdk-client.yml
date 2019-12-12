@@ -286,7 +286,7 @@ jobs:
           goals: ${{ parameters.TestGoals }}
 
       - task: PublishTestResults@2
-        condition: succeededOrFailed()
+        condition: always()
         inputs:
           mergeTestResults: true
           testRunTitle: '$(OSName) on Java $(JavaVersion)'

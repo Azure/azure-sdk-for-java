@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.http;
 
+import com.azure.data.cosmos.internal.Configs;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelOption;
@@ -63,22 +64,30 @@ class ReactorNettyClient implements HttpClient {
     }
 
     private void configureChannelPipelineHandlers() {
-        this.httpClient = this.httpClient.tcpConfiguration(tcpClient -> {
-            if (this.httpClientConfig.getProxy() != null) {
+        Configs configs = this.httpClientConfig.getConfigs();
+        this.httpClient = this.httpClient
+            .tcpConfiguration(tcpClient -> {
+                if (this.httpClientConfig.getProxy() != null) {
+                    tcpClient =
+                        tcpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP).address(this.httpClientConfig.getProxy()));
+                }
                 tcpClient =
-                    tcpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP).address(this.httpClientConfig.getProxy()));
-            }
-            tcpClient =
-                tcpClient.secure(sslContextSpec -> sslContextSpec.sslContext(this.httpClientConfig.getConfigs().getSslContext()));
-            if (LoggerFactory.getLogger(REACTOR_NETWORK_LOG_CATEGORY).isTraceEnabled()) {
-                tcpClient = tcpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
-            }
-            //  By default, keep alive is enabled on http client
-            tcpClient = tcpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
-                httpClientConfig.getConfigs().getConnectionAcquireTimeoutInMillis());
+                    tcpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()));
+                if (LoggerFactory.getLogger(REACTOR_NETWORK_LOG_CATEGORY).isTraceEnabled()) {
+                    tcpClient = tcpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
+                }
+                //  By default, keep alive is enabled on http client
+                tcpClient = tcpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
+                    configs.getConnectionAcquireTimeoutInMillis());
 
-            return tcpClient;
-        });
+                return tcpClient;
+            }).httpResponseDecoder(httpResponseDecoderSpec -> {
+                httpResponseDecoderSpec.maxInitialLineLength(configs.getMaxHttpInitialLineLength());
+                httpResponseDecoderSpec.maxHeaderSize(configs.getMaxHttpHeaderSize());
+                httpResponseDecoderSpec.maxChunkSize(configs.getMaxHttpChunkSize());
+                httpResponseDecoderSpec.validateHeaders(true);
+                return httpResponseDecoderSpec;
+            });
     }
 
     @Override
