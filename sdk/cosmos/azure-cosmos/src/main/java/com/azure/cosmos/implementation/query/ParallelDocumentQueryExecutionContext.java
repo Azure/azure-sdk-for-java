@@ -304,7 +304,8 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 .map(DocumentProducer::produceAsync)
                 // Merge results from all partitions.
                 .collect(Collectors.toList());
-        return Flux.concat(obs).compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker()));
+        return Flux.mergeSequential(obs, feedOptions.getMaxDegreeOfParallelism(), maxPageSize)
+            .compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker()));
     }
 
     @Override
