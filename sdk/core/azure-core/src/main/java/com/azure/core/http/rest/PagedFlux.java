@@ -78,7 +78,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
 
     /**
      * Creates an instance of {@link PagedFlux}. The constructor takes a provider, that when called should
-     * provides Page Retriever Function which accepts continuation token. The provider will be called for
+     * provide Page Retriever Function which accepts continuation token. The provider will be called for
      * each Subscription to the PagedFlux instance. The Page Retriever Function can get called multiple
      * times in serial fashion, each time after the completion of the Flux returned from the previous
      * invocation. The final completion signal will be send to the Subscriber when the last Page emitted
