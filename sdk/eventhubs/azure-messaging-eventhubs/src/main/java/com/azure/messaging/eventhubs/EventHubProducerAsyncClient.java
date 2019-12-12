@@ -116,8 +116,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
-                                AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
-                                boolean isSharedConnection) {
+                                AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
+                                MessageSerializer messageSerializer, boolean isSharedConnection) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connection = connection;
@@ -226,7 +226,8 @@ public class EventHubProducerAsyncClient implements Closeable {
                                             if (batchMaxSize > maximumLinkSize) {
                                                 return monoError(logger,
                                                     new IllegalArgumentException(String.format(Locale.US,
-                                                        "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
+                                                        "BatchOptions.maximumSizeInBytes (%s bytes)"
+                                                            + " is larger than the link size (%s bytes).",
                                                         batchMaxSize, maximumLinkSize)));
                                             }
 
@@ -234,8 +235,8 @@ public class EventHubProducerAsyncClient implements Closeable {
                                                                       ? batchMaxSize
                                                                       : maximumLinkSize;
 
-                                            return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext,
-                                                tracerProvider));
+                                            return Mono.just(new EventDataBatch(batchSize,
+                                                partitionId, partitionKey, link::getErrorContext, tracerProvider));
                                         }));
     }
 
@@ -427,9 +428,9 @@ public class EventHubProducerAsyncClient implements Closeable {
                                   : link.send(messages);
 
                    }).doOnEach(signal -> {
-                if (isTracingEnabled) {
-                    tracerProvider.endSpan(parentContext.get(), signal);
-                }
+                       if (isTracingEnabled) {
+                           tracerProvider.endSpan(parentContext.get(), signal);
+                       }
             });
     }
 
@@ -449,12 +450,12 @@ public class EventHubProducerAsyncClient implements Closeable {
                    .flatMap(link -> link.getLinkSize()
                                         .flatMap(size -> {
                                             final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                                            final CreateBatchOptions batchOptions = new CreateBatchOptions()
-                                                                                        .setPartitionKey(options.getPartitionKey())
-                                                                                        .setPartitionId(options.getPartitionId())
-                                                                                        .setMaximumSizeInBytes(batchSize);
-                                            return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext,
-                                                tracerProvider));
+                                            final CreateBatchOptions batchOptions =
+                                                new CreateBatchOptions().setPartitionKey(options.getPartitionKey())
+                                                    .setPartitionId(options.getPartitionId())
+                                                    .setMaximumSizeInBytes(batchSize);
+                                            return events.collect(new EventDataCollector(batchOptions, 1,
+                                                link::getErrorContext, tracerProvider));
                                         })
                                         .flatMap(list -> sendInternal(Flux.fromIterable(list))));
     }
