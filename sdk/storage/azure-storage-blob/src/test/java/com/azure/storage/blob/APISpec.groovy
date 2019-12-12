@@ -51,7 +51,7 @@ import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 
-@Timeout(value = 10, unit = TimeUnit.MINUTES)
+@Timeout(value = 5, unit = TimeUnit.MINUTES)
 class APISpec extends Specification {
     @Shared
     ClientLogger logger = new ClientLogger(APISpec.class)
