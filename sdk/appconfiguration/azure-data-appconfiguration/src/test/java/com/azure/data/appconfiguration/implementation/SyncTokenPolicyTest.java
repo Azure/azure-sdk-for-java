@@ -39,10 +39,15 @@ public class SyncTokenPolicyTest extends TestBase {
 
     @Test
     public void singleSyncTokenTest() throws Exception {
+        // Arrange
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
-
         final String firstSyncToken = constructSyncTokenString(ID, VALUE, SEQUENCE_NUMBER);
         final HttpPipeline pipeline = customizedPipeline(firstSyncToken, syncTokenPolicy);
+
+        final String secondSyncToken = constructSyncTokenString(ID, UPDATED_VALUE, UPDATED_SEQUENCE_NUMBER);
+        final HttpPipeline pipeline2 = customizedPipeline(secondSyncToken, syncTokenPolicy);
+
+        // Act and Assert
         // At first request, the request header should have empty sync-token value
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))))
             .assertNext(response -> {
@@ -53,15 +58,13 @@ public class SyncTokenPolicyTest extends TestBase {
             })
             .verifyComplete();
 
-        final String secondSyncToken = constructSyncTokenString(ID, UPDATED_VALUE, UPDATED_SEQUENCE_NUMBER);
-        final HttpPipeline pipeline2 = customizedPipeline(secondSyncToken, syncTokenPolicy);
-        // verify the new sync token value from the concurrent map
+        // Verify the new sync token value from the concurrent map
         StepVerifier.create(pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))))
             .assertNext(response -> assertEquals(constructSyncTokenStringWithoutSeqNumber(ID, VALUE),
                 response.getRequest().getHeaders().getValue(SYNC_TOKEN)))
             .verifyComplete();
 
-        // verify the updated cached sync-token value
+        // Verify the updated cached sync-token value
         StepVerifier.create(pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))))
             .assertNext(response -> assertEquals(constructSyncTokenStringWithoutSeqNumber(ID, UPDATED_VALUE),
                 response.getRequest().getHeaders().getValue(SYNC_TOKEN)))
@@ -71,11 +74,15 @@ public class SyncTokenPolicyTest extends TestBase {
     @Test
     public void multipleSyncTokenTest() throws Exception {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
-
+        // Arrange
         final String syncTokens = constructSyncTokenString(ID, VALUE, SEQUENCE_NUMBER)
             + "," + constructSyncTokenString(NEW_ID, UPDATED_VALUE, UPDATED_SEQUENCE_NUMBER);
         final HttpPipeline pipeline = customizedPipeline(syncTokens, syncTokenPolicy);
 
+        final String secondSyncToken = constructSyncTokenString(ID, UPDATED_VALUE, UPDATED_SEQUENCE_NUMBER);
+        final HttpPipeline pipeline2 = customizedPipeline(secondSyncToken, syncTokenPolicy);
+
+        // Act and Assert
         // At first request, the request header should have empty sync-token value
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))))
             .assertNext(response -> {
@@ -84,9 +91,7 @@ public class SyncTokenPolicyTest extends TestBase {
             })
             .verifyComplete();
 
-        final String secondSyncToken = constructSyncTokenString(ID, UPDATED_VALUE, UPDATED_SEQUENCE_NUMBER);
-        final HttpPipeline pipeline2 = customizedPipeline(secondSyncToken, syncTokenPolicy);
-        // verify the new sync token value from the concurrent map
+        // Verify the new sync token value from the concurrent map
         StepVerifier.create(pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))))
             .assertNext(response -> {
                 final String secondRequestHeaderExpected = constructSyncTokenStringWithoutSeqNumber(ID, VALUE)
@@ -95,7 +100,7 @@ public class SyncTokenPolicyTest extends TestBase {
             })
             .verifyComplete();
 
-        // verify the updated cached sync-token value
+        // Verify the updated cached sync-token value
         StepVerifier.create(pipeline2.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))))
             .assertNext(response -> {
                 final String thirdRequestHeaderExpected = constructSyncTokenStringWithoutSeqNumber(ID, UPDATED_VALUE)
@@ -104,11 +109,10 @@ public class SyncTokenPolicyTest extends TestBase {
             }).verifyComplete();
     }
 
-    private boolean syncTokenEquals(SyncToken syncToken, String id, String value, long sn) {
+    private void syncTokenEquals(SyncToken syncToken, String id, String value, long sn) {
         assertEquals(id, syncToken.getId());
         assertEquals(value, syncToken.getValue());
         assertEquals(sn, syncToken.getSequenceNumber());
-        return true;
     }
 
     private HttpPipeline customizedPipeline(String syncToken, SyncTokenPolicy syncTokenPolicy) {
