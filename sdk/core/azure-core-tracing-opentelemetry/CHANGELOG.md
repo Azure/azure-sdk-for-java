@@ -1,5 +1,5 @@
 # Release History
-## Version 1.0.0-beta.2 (2019-01-)
+## Version 1.0.0-beta.2 (2020-01-03)
 - Add eventhub properties to attributes of processing spans.
 
 This package's
