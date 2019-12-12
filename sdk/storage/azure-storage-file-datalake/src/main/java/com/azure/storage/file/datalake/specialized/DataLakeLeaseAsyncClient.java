@@ -104,7 +104,7 @@ public final class DataLakeLeaseAsyncClient {
     public Mono<Response<String>> acquireLeaseWithResponse(int duration,
         RequestConditions modifiedRequestConditions) {
         return this.blobLeaseAsyncClient.acquireLeaseWithResponse(duration, modifiedRequestConditions)
-            .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -136,7 +136,7 @@ public final class DataLakeLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedRequestConditions) {
         return blobLeaseAsyncClient.renewLeaseWithResponse(modifiedRequestConditions)
-            .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -168,7 +168,7 @@ public final class DataLakeLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions) {
         return blobLeaseAsyncClient.releaseLeaseWithResponse(modifiedRequestConditions)
-            .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -208,7 +208,7 @@ public final class DataLakeLeaseAsyncClient {
     public Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
         RequestConditions modifiedRequestConditions) {
         return blobLeaseAsyncClient.breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions)
-            .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -243,7 +243,7 @@ public final class DataLakeLeaseAsyncClient {
     public Mono<Response<String>> changeLeaseWithResponse(String proposedId,
         RequestConditions modifiedRequestConditions) {
         return blobLeaseAsyncClient.changeLeaseWithResponse(proposedId, modifiedRequestConditions)
-            .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
