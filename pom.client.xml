@@ -1236,5 +1236,6 @@
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
+    <module>sdk/e2e</module>
   </modules>
 </project>
