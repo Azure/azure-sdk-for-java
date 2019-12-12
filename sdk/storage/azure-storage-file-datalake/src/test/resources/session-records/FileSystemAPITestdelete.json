@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsdelete0filesystemapitestdelete36e9259594f3164e80?restype=container",
+    "Uri" : "https://javaadlstests.blob.core.windows.net/jtfsdeletefilesystemapitestdeleteaaa803710e3eaca5fe7?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "a7592e8e-cbef-4785-9678-6dbc23116e4b"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d0b17284-64f4-4906-94a7-32bf83b71caa"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D75EEAD283ED83",
-      "Last-Modified" : "Fri, 01 Nov 2019 16:44:54 GMT",
+      "ETag" : "0x8D77F2EA129CE88",
+      "Last-Modified" : "Thu, 12 Dec 2019 18:10:54 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "3a6606be-a01e-0034-80d3-90e1d2000000",
-      "Date" : "Fri, 01 Nov 2019 16:44:53 GMT",
-      "x-ms-client-request-id" : "a7592e8e-cbef-4785-9678-6dbc23116e4b"
+      "x-ms-request-id" : "d81a5cb5-101e-00a5-5f17-b1caa1000000",
+      "Date" : "Thu, 12 Dec 2019 18:10:53 GMT",
+      "x-ms-client-request-id" : "d0b17284-64f4-4906-94a7-32bf83b71caa"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsdelete0filesystemapitestdelete36e9259594f3164e80?restype=container",
+    "Uri" : "https://javaadlstests.blob.core.windows.net/jtfsdeletefilesystemapitestdeleteaaa803710e3eaca5fe7?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "704ed4ab-5247-4c24-8778-01281c019e4d"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7c6a3281-c2df-4af5-9f7a-4f5f3393cea8"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -34,18 +34,18 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "dc703c99-e01e-007c-0cd3-90d34f000000",
-      "Date" : "Fri, 01 Nov 2019 16:44:54 GMT",
-      "x-ms-client-request-id" : "704ed4ab-5247-4c24-8778-01281c019e4d"
+      "x-ms-request-id" : "d81a5ccd-101e-00a5-7217-b1caa1000000",
+      "Date" : "Thu, 12 Dec 2019 18:10:53 GMT",
+      "x-ms-client-request-id" : "7c6a3281-c2df-4af5-9f7a-4f5f3393cea8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprahns.blob.core.windows.net?prefix=jtfsdelete&comp=list",
+    "Uri" : "https://javaadlstests.blob.core.windows.net?prefix=jtfsdelete&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "cb08b682-7e7b-4b19-b19f-b7e96011db79"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "377361f4-f0aa-4012-8dde-fe002d6ac7d3"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -53,13 +53,13 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "3a6606ea-a01e-0034-23d3-90e1d2000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahns.blob.core.windows.net/\"><Prefix>jtfsdelete</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 01 Nov 2019 16:44:54 GMT",
-      "x-ms-client-request-id" : "cb08b682-7e7b-4b19-b19f-b7e96011db79",
+      "x-ms-request-id" : "d81a5ce8-101e-00a5-0817-b1caa1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://javaadlstests.blob.core.windows.net/\"><Prefix>jtfsdelete</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 18:10:53 GMT",
+      "x-ms-client-request-id" : "377361f4-f0aa-4012-8dde-fe002d6ac7d3",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtfsdelete0filesystemapitestdelete36e9259594f3164e80" ]
+  "variables" : [ "jtfsdeletefilesystemapitestdeleteaaa803710e3eaca5fe7" ]
 }

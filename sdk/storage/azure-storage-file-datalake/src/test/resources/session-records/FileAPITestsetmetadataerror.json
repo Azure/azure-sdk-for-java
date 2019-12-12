@@ -1,96 +1,53 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprahns.blob.core.windows.net/jtfssetmetadataerror0fileapitestsetmetadataerror794379229b6?restype=container",
+    "Uri" : "https://javaadlstests.blob.core.windows.net/jtfssetmetadataerrorfileapitestsetmetadataerror5091548666c1?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "4c4d8bee-d6e3-4bc9-9a77-51f8aad71f8d"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e4492dd5-d53c-4d21-ad63-0aa434913633"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D75EEB4F0046EE",
-      "Last-Modified" : "Fri, 01 Nov 2019 16:48:23 GMT",
+      "ETag" : "0x8D77F2E888A67A0",
+      "Last-Modified" : "Thu, 12 Dec 2019 18:10:13 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "25760d99-501e-0003-12d4-904d7d000000",
-      "Date" : "Fri, 01 Nov 2019 16:48:22 GMT",
-      "x-ms-client-request-id" : "4c4d8bee-d6e3-4bc9-9a77-51f8aad71f8d"
+      "x-ms-request-id" : "d81a0e30-101e-00a5-3b17-b1caa1000000",
+      "Date" : "Thu, 12 Dec 2019 18:10:12 GMT",
+      "x-ms-client-request-id" : "e4492dd5-d53c-4d21-ad63-0aa434913633"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfssetmetadataerror0fileapitestsetmetadataerror794379229b6/javapathsetmetadataerror1fileapitestsetmetadataerror794199005?resource=file",
+    "Uri" : "https://javaadlstests.dfs.core.windows.net/jtfssetmetadataerrorfileapitestsetmetadataerror5091548666c1/javapathsetmetadataerrorfileapitestsetmetadataerror50978155bb?resource=file",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "4f7a609b-60fa-472b-b2f7-1341e0378a19"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-beta.8 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "a812e0f9-353b-4681-9c4f-77b58cc08723"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D75EEB4F0B05E1",
-      "Last-Modified" : "Fri, 01 Nov 2019 16:48:23 GMT",
+      "ETag" : "0x8D77F2E8897F5BD",
+      "Last-Modified" : "Thu, 12 Dec 2019 18:10:13 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "123e839d-201f-006a-0ed4-9012d1000000",
-      "Date" : "Fri, 01 Nov 2019 16:48:22 GMT",
-      "x-ms-client-request-id" : "4f7a609b-60fa-472b-b2f7-1341e0378a19"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "PATCH",
-    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfssetmetadataerror0fileapitestsetmetadataerror794379229b6/javapathsetmetadataerror1fileapitestsetmetadataerror794199005?position=0&action=append",
-    "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "bd6dce8a-4984-4dbd-876d-ccb48ff73adf",
-      "Content-Type" : "application/octet-stream"
-    },
-    "Response" : {
-      "x-ms-version" : "2019-02-02",
-      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "202",
-      "x-ms-request-server-encrypted" : "true",
-      "x-ms-request-id" : "123e839e-201f-006a-0fd4-9012d1000000",
-      "Date" : "Fri, 01 Nov 2019 16:48:23 GMT",
-      "x-ms-client-request-id" : "bd6dce8a-4984-4dbd-876d-ccb48ff73adf"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "PATCH",
-    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfssetmetadataerror0fileapitestsetmetadataerror794379229b6/javapathsetmetadataerror1fileapitestsetmetadataerror794199005?position=7&retainUncommittedData=false&close=false&action=flush",
-    "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "ee404a8c-d497-4ed4-a6ce-b63e8cafd4cf"
-    },
-    "Response" : {
-      "x-ms-version" : "2019-02-02",
-      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D75EEB4F1EA834",
-      "Last-Modified" : "Fri, 01 Nov 2019 16:48:23 GMT",
-      "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "200",
-      "x-ms-request-server-encrypted" : "true",
-      "x-ms-request-id" : "123e839f-201f-006a-10d4-9012d1000000",
-      "Date" : "Fri, 01 Nov 2019 16:48:23 GMT",
-      "x-ms-client-request-id" : "ee404a8c-d497-4ed4-a6ce-b63e8cafd4cf"
+      "x-ms-request-id" : "ce8b3903-701f-0050-5c17-b1eeb0000000",
+      "Date" : "Thu, 12 Dec 2019 18:10:13 GMT",
+      "x-ms-client-request-id" : "a812e0f9-353b-4681-9c4f-77b58cc08723"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprahns.blob.core.windows.net/jtfssetmetadataerror0fileapitestsetmetadataerror794379229b6/javapathsetmetadataerror2fileapitestsetmetadataerror794804164?comp=metadata",
+    "Uri" : "https://javaadlstests.blob.core.windows.net/jtfssetmetadataerrorfileapitestsetmetadataerror5091548666c1/javapathsetmetadataerrorfileapitestsetmetadataerror50922781b6?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "aea3f417-6759-4250-b840-493221c4e495"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "07529117-acb2-42e2-9a08-3f7041e7f3d6"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -99,20 +56,20 @@
       "retry-after" : "0",
       "Content-Length" : "215",
       "StatusCode" : "404",
-      "x-ms-request-id" : "25760ded-501e-0003-5ed4-904d7d000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobNotFound</Code><Message>The specified blob does not exist.\nRequestId:25760ded-501e-0003-5ed4-904d7d000000\nTime:2019-11-01T16:48:23.4500131Z</Message></Error>",
-      "Date" : "Fri, 01 Nov 2019 16:48:22 GMT",
-      "x-ms-client-request-id" : "aea3f417-6759-4250-b840-493221c4e495",
+      "x-ms-request-id" : "d81a0e78-101e-00a5-7417-b1caa1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobNotFound</Code><Message>The specified blob does not exist.\nRequestId:d81a0e78-101e-00a5-7417-b1caa1000000\nTime:2019-12-12T18:10:13.3719553Z</Message></Error>",
+      "Date" : "Thu, 12 Dec 2019 18:10:12 GMT",
+      "x-ms-client-request-id" : "07529117-acb2-42e2-9a08-3f7041e7f3d6",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprahns.blob.core.windows.net?prefix=jtfssetmetadataerror&comp=list",
+    "Uri" : "https://javaadlstests.blob.core.windows.net?prefix=jtfssetmetadataerror&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "ddc3e6a7-3d3d-46d2-be0f-0a37a43c6f13"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4825a71f-8c41-4b69-96ad-bedcffb8b3be"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -120,20 +77,20 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "25760e03-501e-0003-73d4-904d7d000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahns.blob.core.windows.net/\"><Prefix>jtfssetmetadataerror</Prefix><Containers><Container><Name>jtfssetmetadataerror0fileapitestsetmetadataerror794379229b6</Name><Properties><Last-Modified>Fri, 01 Nov 2019 16:48:23 GMT</Last-Modified><Etag>\"0x8D75EEB4F0046EE\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 01 Nov 2019 16:48:22 GMT",
-      "x-ms-client-request-id" : "ddc3e6a7-3d3d-46d2-be0f-0a37a43c6f13",
+      "x-ms-request-id" : "d81a0e97-101e-00a5-1017-b1caa1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://javaadlstests.blob.core.windows.net/\"><Prefix>jtfssetmetadataerror</Prefix><Containers><Container><Name>jtfssetmetadataerrorfileapitestsetmetadataerror5091548666c1</Name><Properties><Last-Modified>Thu, 12 Dec 2019 18:10:13 GMT</Last-Modified><Etag>\"0x8D77F2E888A67A0\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 18:10:12 GMT",
+      "x-ms-client-request-id" : "4825a71f-8c41-4b69-96ad-bedcffb8b3be",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://gaprahns.blob.core.windows.net/jtfssetmetadataerror0fileapitestsetmetadataerror794379229b6?restype=container",
+    "Uri" : "https://javaadlstests.blob.core.windows.net/jtfssetmetadataerrorfileapitestsetmetadataerror5091548666c1?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "bcb87dc7-933b-4491-926d-d77c038911af"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "22a4ba21-3ae5-4dbd-bff4-9f582d9a6f73"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -141,11 +98,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "25760e0d-501e-0003-7dd4-904d7d000000",
-      "Date" : "Fri, 01 Nov 2019 16:48:22 GMT",
-      "x-ms-client-request-id" : "bcb87dc7-933b-4491-926d-d77c038911af"
+      "x-ms-request-id" : "d81a0ebc-101e-00a5-3317-b1caa1000000",
+      "Date" : "Thu, 12 Dec 2019 18:10:12 GMT",
+      "x-ms-client-request-id" : "22a4ba21-3ae5-4dbd-bff4-9f582d9a6f73"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtfssetmetadataerror0fileapitestsetmetadataerror794379229b6", "javapathsetmetadataerror1fileapitestsetmetadataerror794199005", "javapathsetmetadataerror2fileapitestsetmetadataerror794804164" ]
+  "variables" : [ "jtfssetmetadataerrorfileapitestsetmetadataerror5091548666c1", "javapathsetmetadataerrorfileapitestsetmetadataerror50978155bb", "javapathsetmetadataerrorfileapitestsetmetadataerror50922781b6" ]
 }

@@ -165,6 +165,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
+                  <compilerArgs>-warn:-unused</compilerArgs>
                 </configuration>
               </execution>
               <execution>
@@ -175,6 +176,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
+                  <compilerArgs>-warn:-unused</compilerArgs>
                 </configuration>
               </execution>
             </executions>
@@ -225,6 +227,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
+                  <compilerArgs>-warn:-unused</compilerArgs>
                   <release>8</release>
                 </configuration>
               </execution>
@@ -236,6 +239,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
+                  <compilerArgs>-warn:-unused</compilerArgs>
                   <release>8</release>
                 </configuration>
               </execution>
@@ -263,10 +267,10 @@
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+                --add-opens com.azure.storage.common/com.azure.storage.common=ALL-UNNAMED
                 --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
-                --add-opens com.azure.storage.blob/com.azure.storage.blob=ALL-UNNAMED
-                --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
-                --add-opens com.azure.storage.blob/com.azure.storage.blob.specialized=ALL-UNNAMED
+                --add-opens com.azure.storage.common/com.azure.storage.common.policy=ALL-UNNAMED
+                --add-opens com.azure.storage.common/com.azure.storage.common.sas=ALL-UNNAMED
                 --add-reads com.azure.core=ALL-UNNAMED
                 --add-reads com.azure.core.test=ALL-UNNAMED
                 --add-reads com.azure.core.amqp=ALL-UNNAMED

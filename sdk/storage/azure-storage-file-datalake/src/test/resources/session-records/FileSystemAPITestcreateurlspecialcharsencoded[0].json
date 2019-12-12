@@ -1,104 +1,104 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://gaprahns.blob.core.windows.net/jtfscreateurlspecialcharsencoded0003652f7ab4556f50?restype=container",
+    "Uri" : "https://javaadlstests.blob.core.windows.net/jtfscreateurlspecialcharsencoded22269d1246676e21c4?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "c66245c3-9612-4c70-8014-0e8dcbf1c213"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6c08dc55-a83b-4358-abad-ea3755136f0d"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D766E738EB0930",
-      "Last-Modified" : "Mon, 11 Nov 2019 20:39:17 GMT",
+      "ETag" : "0x8D77F2EB07C13A0",
+      "Last-Modified" : "Thu, 12 Dec 2019 18:11:20 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "16750852-101e-0100-0cd0-98082f000000",
-      "Date" : "Mon, 11 Nov 2019 20:39:17 GMT",
-      "x-ms-client-request-id" : "c66245c3-9612-4c70-8014-0e8dcbf1c213"
+      "x-ms-request-id" : "d81a8c99-101e-00a5-7517-b1caa1000000",
+      "Date" : "Thu, 12 Dec 2019 18:11:19 GMT",
+      "x-ms-client-request-id" : "6c08dc55-a83b-4358-abad-ea3755136f0d"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://gaprahns.dfs.core.windows.net/jtfscreateurlspecialcharsencoded0003652f7ab4556f50/%E4%B8%AD%E6%96%87file1?resource=file",
+    "Uri" : "https://javaadlstests.dfs.core.windows.net/jtfscreateurlspecialcharsencoded22269d1246676e21c4/%E4%B8%AD%E6%96%87file1?resource=file",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "bfbb636b-3478-4456-bd7f-d7b2d8927c88"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-beta.8 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "1275ccdb-201b-452f-9da6-d9d099933388"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D766E7390CE6A6",
-      "Last-Modified" : "Mon, 11 Nov 2019 20:39:17 GMT",
+      "ETag" : "0x8D77F2EB0898829",
+      "Last-Modified" : "Thu, 12 Dec 2019 18:11:20 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "ae937d39-501f-0080-5ed0-98edd0000000",
-      "Date" : "Mon, 11 Nov 2019 20:39:17 GMT",
-      "x-ms-client-request-id" : "bfbb636b-3478-4456-bd7f-d7b2d8927c88"
+      "x-ms-request-id" : "ff49f84a-701f-005b-3817-b1f6c4000000",
+      "Date" : "Thu, 12 Dec 2019 18:11:19 GMT",
+      "x-ms-client-request-id" : "1275ccdb-201b-452f-9da6-d9d099933388"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://gaprahns.dfs.core.windows.net/jtfscreateurlspecialcharsencoded0003652f7ab4556f50/%E4%B8%AD%E6%96%87file2?resource=file",
+    "Uri" : "https://javaadlstests.dfs.core.windows.net/jtfscreateurlspecialcharsencoded22269d1246676e21c4/%E4%B8%AD%E6%96%87file2?resource=file",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "ed62659c-ee51-4c82-a17c-b83fe51be22d"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-beta.8 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e911155c-14a7-489f-b235-90a9f5aa58ef"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D766E7391A77AE",
-      "Last-Modified" : "Mon, 11 Nov 2019 20:39:17 GMT",
+      "ETag" : "0x8D77F2EB0932809",
+      "Last-Modified" : "Thu, 12 Dec 2019 18:11:20 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "ae937d3a-501f-0080-5fd0-98edd0000000",
-      "Date" : "Mon, 11 Nov 2019 20:39:17 GMT",
-      "x-ms-client-request-id" : "ed62659c-ee51-4c82-a17c-b83fe51be22d"
+      "x-ms-request-id" : "ff49f84b-701f-005b-3917-b1f6c4000000",
+      "Date" : "Thu, 12 Dec 2019 18:11:19 GMT",
+      "x-ms-client-request-id" : "e911155c-14a7-489f-b235-90a9f5aa58ef"
     },
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "http://gaprahns.blob.core.windows.net/jtfscreateurlspecialcharsencoded0003652f7ab4556f50/%E4%B8%AD%E6%96%87file2",
+    "Uri" : "https://javaadlstests.blob.core.windows.net/jtfscreateurlspecialcharsencoded22269d1246676e21c4/%E4%B8%AD%E6%96%87file2",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "91d5049f-7dad-4db1-a5a0-2a5c25a865ed"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "23c6b927-6bc5-4043-beb7-674d8c40864e"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-lease-status" : "unlocked",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-lease-state" : "available",
-      "Last-Modified" : "Mon, 11 Nov 2019 20:39:17 GMT",
+      "Last-Modified" : "Thu, 12 Dec 2019 18:11:20 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 11 Nov 2019 20:39:17 GMT",
+      "Date" : "Thu, 12 Dec 2019 18:11:19 GMT",
       "x-ms-blob-type" : "BlockBlob",
       "Accept-Ranges" : "bytes",
       "x-ms-server-encrypted" : "true",
       "x-ms-access-tier-inferred" : "true",
       "x-ms-access-tier" : "Hot",
-      "ETag" : "0x8D766E7391A77AE",
-      "x-ms-creation-time" : "Mon, 11 Nov 2019 20:39:17 GMT",
+      "ETag" : "0x8D77F2EB0932809",
+      "x-ms-creation-time" : "Thu, 12 Dec 2019 18:11:20 GMT",
       "Content-Length" : "0",
-      "x-ms-request-id" : "1675094c-101e-0100-71d0-98082f000000",
-      "x-ms-client-request-id" : "91d5049f-7dad-4db1-a5a0-2a5c25a865ed",
+      "x-ms-request-id" : "d81a8cf4-101e-00a5-4117-b1caa1000000",
+      "x-ms-client-request-id" : "23c6b927-6bc5-4043-beb7-674d8c40864e",
       "Content-Type" : "application/octet-stream"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://gaprahns.dfs.core.windows.net/jtfscreateurlspecialcharsencoded0003652f7ab4556f50/%E4%B8%AD%E6%96%87file2?position=0&action=append",
+    "Uri" : "https://javaadlstests.dfs.core.windows.net/jtfscreateurlspecialcharsencoded22269d1246676e21c4/%E4%B8%AD%E6%96%87file2?position=0&action=append",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "fcd1f667-0f12-41bd-b994-2ddd4b00daa1",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-beta.8 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e8028368-887e-455f-9129-f7f27888c323",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
@@ -108,91 +108,91 @@
       "Content-Length" : "0",
       "StatusCode" : "202",
       "x-ms-request-server-encrypted" : "true",
-      "x-ms-request-id" : "ae937d3b-501f-0080-60d0-98edd0000000",
-      "Date" : "Mon, 11 Nov 2019 20:39:17 GMT",
-      "x-ms-client-request-id" : "fcd1f667-0f12-41bd-b994-2ddd4b00daa1"
+      "x-ms-request-id" : "ff49f84c-701f-005b-3a17-b1f6c4000000",
+      "Date" : "Thu, 12 Dec 2019 18:11:19 GMT",
+      "x-ms-client-request-id" : "e8028368-887e-455f-9129-f7f27888c323"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://gaprahns.dfs.core.windows.net/jtfscreateurlspecialcharsencoded0003652f7ab4556f50/%E4%B8%AD%E6%96%87dir1?resource=directory",
+    "Uri" : "https://javaadlstests.dfs.core.windows.net/jtfscreateurlspecialcharsencoded22269d1246676e21c4/%E4%B8%AD%E6%96%87dir1?resource=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "ad90d203-9ee8-42ce-84a6-9bff7902cb21"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-beta.8 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "04774243-3074-4f56-be36-8fff4f4145c8"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D766E73943B94C",
-      "Last-Modified" : "Mon, 11 Nov 2019 20:39:18 GMT",
+      "ETag" : "0x8D77F2EB0AE230C",
+      "Last-Modified" : "Thu, 12 Dec 2019 18:11:20 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "ae937d3c-501f-0080-61d0-98edd0000000",
-      "Date" : "Mon, 11 Nov 2019 20:39:17 GMT",
-      "x-ms-client-request-id" : "ad90d203-9ee8-42ce-84a6-9bff7902cb21"
+      "x-ms-request-id" : "ff49f84d-701f-005b-3b17-b1f6c4000000",
+      "Date" : "Thu, 12 Dec 2019 18:11:19 GMT",
+      "x-ms-client-request-id" : "04774243-3074-4f56-be36-8fff4f4145c8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://gaprahns.dfs.core.windows.net/jtfscreateurlspecialcharsencoded0003652f7ab4556f50/%E4%B8%AD%E6%96%87dir2?resource=directory",
+    "Uri" : "https://javaadlstests.dfs.core.windows.net/jtfscreateurlspecialcharsencoded22269d1246676e21c4/%E4%B8%AD%E6%96%87dir2?resource=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "2367ed5b-b625-4165-b7fd-9892ae2d6937"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-beta.8 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "bc455cbf-7fcc-4767-95f5-1144dc0c2857"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D766E7394BD884",
-      "Last-Modified" : "Mon, 11 Nov 2019 20:39:18 GMT",
+      "ETag" : "0x8D77F2EB0B72CA3",
+      "Last-Modified" : "Thu, 12 Dec 2019 18:11:20 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "ae937d3d-501f-0080-62d0-98edd0000000",
-      "Date" : "Mon, 11 Nov 2019 20:39:17 GMT",
-      "x-ms-client-request-id" : "2367ed5b-b625-4165-b7fd-9892ae2d6937"
+      "x-ms-request-id" : "ff49f84e-701f-005b-3c17-b1f6c4000000",
+      "Date" : "Thu, 12 Dec 2019 18:11:19 GMT",
+      "x-ms-client-request-id" : "bc455cbf-7fcc-4767-95f5-1144dc0c2857"
     },
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "http://gaprahns.blob.core.windows.net/jtfscreateurlspecialcharsencoded0003652f7ab4556f50/%E4%B8%AD%E6%96%87dir2",
+    "Uri" : "https://javaadlstests.blob.core.windows.net/jtfscreateurlspecialcharsencoded22269d1246676e21c4/%E4%B8%AD%E6%96%87dir2",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "6d11a1cd-4bfe-4f49-a5e6-8c8427e6cda8"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d57a3e78-1291-4ae0-8e17-3b67e2e7db3a"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-lease-status" : "unlocked",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-lease-state" : "available",
-      "Last-Modified" : "Mon, 11 Nov 2019 20:39:18 GMT",
+      "Last-Modified" : "Thu, 12 Dec 2019 18:11:20 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 11 Nov 2019 20:39:18 GMT",
+      "Date" : "Thu, 12 Dec 2019 18:11:19 GMT",
       "x-ms-blob-type" : "BlockBlob",
       "Accept-Ranges" : "bytes",
       "x-ms-server-encrypted" : "true",
       "x-ms-meta-hdi_isfolder" : "true",
       "x-ms-access-tier-inferred" : "true",
       "x-ms-access-tier" : "Hot",
-      "ETag" : "0x8D766E7394BD884",
-      "x-ms-creation-time" : "Mon, 11 Nov 2019 20:39:18 GMT",
+      "ETag" : "0x8D77F2EB0B72CA3",
+      "x-ms-creation-time" : "Thu, 12 Dec 2019 18:11:20 GMT",
       "Content-Length" : "0",
-      "x-ms-request-id" : "167509c4-101e-0100-5ad0-98082f000000",
-      "x-ms-client-request-id" : "6d11a1cd-4bfe-4f49-a5e6-8c8427e6cda8",
+      "x-ms-request-id" : "d81a8d94-101e-00a5-5417-b1caa1000000",
+      "x-ms-client-request-id" : "d57a3e78-1291-4ae0-8e17-3b67e2e7db3a",
       "Content-Type" : "application/octet-stream"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://gaprahns.dfs.core.windows.net/jtfscreateurlspecialcharsencoded0003652f7ab4556f50?recursive=false&upn=false&resource=filesystem",
+    "Uri" : "https://javaadlstests.dfs.core.windows.net/jtfscreateurlspecialcharsencoded22269d1246676e21c4?recursive=false&upn=false&resource=filesystem",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "d1c811f3-06c1-41b9-9954-12203ef95e01"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-beta.8 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "2e7f71ed-e328-4598-b224-9bfa8202ee24"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -200,20 +200,20 @@
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "ae937d3e-501f-0080-63d0-98edd0000000",
-      "Body" : "{\"paths\":[{\"contentLength\":\"0\",\"etag\":\"0x8D766E73943B94C\",\"group\":\"$superuser\",\"isDirectory\":\"true\",\"lastModified\":\"Mon, 11 Nov 2019 20:39:18 GMT\",\"name\":\"中文dir1\",\"owner\":\"$superuser\",\"permissions\":\"rwxr-x---\"},{\"contentLength\":\"0\",\"etag\":\"0x8D766E7394BD884\",\"group\":\"$superuser\",\"isDirectory\":\"true\",\"lastModified\":\"Mon, 11 Nov 2019 20:39:18 GMT\",\"name\":\"中文dir2\",\"owner\":\"$superuser\",\"permissions\":\"rwxr-x---\"},{\"contentLength\":\"0\",\"etag\":\"0x8D766E7390CE6A6\",\"group\":\"$superuser\",\"lastModified\":\"Mon, 11 Nov 2019 20:39:17 GMT\",\"name\":\"中文file1\",\"owner\":\"$superuser\",\"permissions\":\"rw-r-----\"},{\"contentLength\":\"0\",\"etag\":\"0x8D766E7391A77AE\",\"group\":\"$superuser\",\"lastModified\":\"Mon, 11 Nov 2019 20:39:17 GMT\",\"name\":\"中文file2\",\"owner\":\"$superuser\",\"permissions\":\"rw-r-----\"}]}\n",
-      "Date" : "Mon, 11 Nov 2019 20:39:17 GMT",
-      "x-ms-client-request-id" : "d1c811f3-06c1-41b9-9954-12203ef95e01",
+      "x-ms-request-id" : "ff49f84f-701f-005b-3d17-b1f6c4000000",
+      "Body" : "{\"paths\":[{\"contentLength\":\"0\",\"etag\":\"0x8D77F2EB0AE230C\",\"group\":\"$superuser\",\"isDirectory\":\"true\",\"lastModified\":\"Thu, 12 Dec 2019 18:11:20 GMT\",\"name\":\"中文dir1\",\"owner\":\"$superuser\",\"permissions\":\"rwxr-x---\"},{\"contentLength\":\"0\",\"etag\":\"0x8D77F2EB0B72CA3\",\"group\":\"$superuser\",\"isDirectory\":\"true\",\"lastModified\":\"Thu, 12 Dec 2019 18:11:20 GMT\",\"name\":\"中文dir2\",\"owner\":\"$superuser\",\"permissions\":\"rwxr-x---\"},{\"contentLength\":\"0\",\"etag\":\"0x8D77F2EB0898829\",\"group\":\"$superuser\",\"lastModified\":\"Thu, 12 Dec 2019 18:11:20 GMT\",\"name\":\"中文file1\",\"owner\":\"$superuser\",\"permissions\":\"rw-r-----\"},{\"contentLength\":\"0\",\"etag\":\"0x8D77F2EB0932809\",\"group\":\"$superuser\",\"lastModified\":\"Thu, 12 Dec 2019 18:11:20 GMT\",\"name\":\"中文file2\",\"owner\":\"$superuser\",\"permissions\":\"rw-r-----\"}]}\n",
+      "Date" : "Thu, 12 Dec 2019 18:11:19 GMT",
+      "x-ms-client-request-id" : "2e7f71ed-e328-4598-b224-9bfa8202ee24",
       "Content-Type" : "application/json;charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://gaprahns.blob.core.windows.net?prefix=jtfscreateurlspecialcharsencoded&comp=list",
+    "Uri" : "https://javaadlstests.blob.core.windows.net?prefix=jtfscreateurlspecialcharsencoded&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "7f527576-0a03-4a78-83ea-ae4c2c0685d7"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "23e68e2a-0183-4838-b2e4-de99eb6ab101"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -221,20 +221,20 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "16750a1d-101e-0100-29d0-98082f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://gaprahns.blob.core.windows.net/\"><Prefix>jtfscreateurlspecialcharsencoded</Prefix><Containers><Container><Name>jtfscreateurlspecialcharsencoded0003652f7ab4556f50</Name><Properties><Last-Modified>Mon, 11 Nov 2019 20:39:17 GMT</Last-Modified><Etag>\"0x8D766E738EB0930\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Mon, 11 Nov 2019 20:39:18 GMT",
-      "x-ms-client-request-id" : "7f527576-0a03-4a78-83ea-ae4c2c0685d7",
+      "x-ms-request-id" : "d81a8dd1-101e-00a5-0917-b1caa1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://javaadlstests.blob.core.windows.net/\"><Prefix>jtfscreateurlspecialcharsencoded</Prefix><Containers><Container><Name>jtfscreateurlspecialcharsencoded22269d1246676e21c4</Name><Properties><Last-Modified>Thu, 12 Dec 2019 18:11:20 GMT</Last-Modified><Etag>\"0x8D77F2EB07C13A0\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 18:11:19 GMT",
+      "x-ms-client-request-id" : "23e68e2a-0183-4838-b2e4-de99eb6ab101",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://gaprahns.blob.core.windows.net/jtfscreateurlspecialcharsencoded0003652f7ab4556f50?restype=container",
+    "Uri" : "https://javaadlstests.blob.core.windows.net/jtfscreateurlspecialcharsencoded22269d1246676e21c4?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0-beta.1 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "f4a8d1dc-c602-4780-89b7-644d834cd8bc"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "80c7ecb5-d95b-4898-b2c8-def3b284cd21"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -242,11 +242,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "16750a53-101e-0100-54d0-98082f000000",
-      "Date" : "Mon, 11 Nov 2019 20:39:18 GMT",
-      "x-ms-client-request-id" : "f4a8d1dc-c602-4780-89b7-644d834cd8bc"
+      "x-ms-request-id" : "d81a8df3-101e-00a5-2717-b1caa1000000",
+      "Date" : "Thu, 12 Dec 2019 18:11:19 GMT",
+      "x-ms-client-request-id" : "80c7ecb5-d95b-4898-b2c8-def3b284cd21"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtfscreateurlspecialcharsencoded0003652f7ab4556f50" ]
+  "variables" : [ "jtfscreateurlspecialcharsencoded22269d1246676e21c4" ]
 }

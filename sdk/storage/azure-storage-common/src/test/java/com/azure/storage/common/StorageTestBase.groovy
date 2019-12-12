@@ -17,10 +17,13 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Specification
+import spock.lang.Timeout
 
 import java.nio.ByteBuffer
 import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
 
+@Timeout(value = 20, unit = TimeUnit.MINUTES) // Per test timeout of 20 minutes
 class StorageTestBase extends Specification {
     private ClientLogger logger = new ClientLogger(StorageTestBase.class)
 
