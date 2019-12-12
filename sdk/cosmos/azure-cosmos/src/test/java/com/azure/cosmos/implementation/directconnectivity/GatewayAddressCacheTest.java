@@ -39,7 +39,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
+import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,7 +93,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                              Protocol protocol) throws Exception {
         Configs configs = ConfigsBuilder.instance().withProtocol(protocol).build();
         // ask gateway for the addresses
-        URL serviceEndpoint = new URL(TestConfigurations.HOST);
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         GatewayAddressCache cache = new GatewayAddressCache(serviceEndpoint,
@@ -125,7 +125,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     public void getMasterAddressesViaGatewayAsync(Protocol protocol) throws Exception {
         Configs configs = ConfigsBuilder.instance().withProtocol(protocol).build();
         // ask gateway for the addresses
-        URL serviceEndpoint = new URL(TestConfigurations.HOST);
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         GatewayAddressCache cache = new GatewayAddressCache(serviceEndpoint,
@@ -169,7 +169,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     @Test(groups = { "direct" }, dataProvider = "targetPartitionsKeyRangeAndCollectionLinkParams", timeOut = TIMEOUT)
     public void tryGetAddresses_ForDataPartitions(String partitionKeyRangeId, String collectionLink, Protocol protocol) throws Exception {
         Configs configs = ConfigsBuilder.instance().withProtocol(protocol).build();
-        URL serviceEndpoint = new URL(TestConfigurations.HOST);
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         GatewayAddressCache cache = new GatewayAddressCache(serviceEndpoint,
@@ -218,7 +218,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Configs configs = new Configs();
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
 
-        URL serviceEndpoint = new URL(TestConfigurations.HOST);
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         GatewayAddressCache cache = new GatewayAddressCache(serviceEndpoint,
@@ -273,7 +273,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Configs configs = new Configs();
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
 
-        URL serviceEndpoint = new URL(TestConfigurations.HOST);
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         GatewayAddressCache cache = new GatewayAddressCache(serviceEndpoint,
@@ -327,7 +327,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Configs configs = new Configs();
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
 
-        URL serviceEndpoint = new URL(TestConfigurations.HOST);
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         int suboptimalRefreshTime = 2;
@@ -434,7 +434,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     @Test(groups = { "direct" }, dataProvider = "protocolProvider",timeOut = TIMEOUT)
     public void tryGetAddresses_ForMasterPartition(Protocol protocol) throws Exception {
         Configs configs = ConfigsBuilder.instance().withProtocol(protocol).build();
-        URL serviceEndpoint = new URL(TestConfigurations.HOST);
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         GatewayAddressCache cache = new GatewayAddressCache(serviceEndpoint,
@@ -478,7 +478,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Configs configs = new Configs();
         HttpClientUnderTestWrapper clientWrapper = getHttpClientUnderTestWrapper(configs);
 
-        URL serviceEndpoint = new URL(TestConfigurations.HOST);
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
 
@@ -525,7 +525,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Configs configs = new Configs();
         HttpClientUnderTestWrapper clientWrapper = getHttpClientUnderTestWrapper(configs);
 
-        URL serviceEndpoint = new URL(TestConfigurations.HOST);
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         GatewayAddressCache cache = new GatewayAddressCache(serviceEndpoint,
@@ -573,7 +573,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Instant start = Instant.now();
         HttpClientUnderTestWrapper clientWrapper = getHttpClientUnderTestWrapper(configs);
 
-        URL serviceEndpoint = new URL(TestConfigurations.HOST);
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         int refreshPeriodInSeconds = 10;
@@ -663,7 +663,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Configs configs = new Configs();
         HttpClientUnderTestWrapper clientWrapper = getHttpClientUnderTestWrapper(configs);
 
-        URL serviceEndpoint = new URL(TestConfigurations.HOST);
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         int refreshPeriodInSeconds = 1;
@@ -767,7 +767,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     private static void assertEqual(AddressInformation actual, Address expected) {
-        assertThat(actual.getPhysicalUri()).isEqualTo(expected.getPhyicalUri());
+        assertThat(actual.getPhysicalUri().getURIAsString()).isEqualTo(expected.getPhyicalUri().replaceAll("/+$", "/"));
         assertThat(actual.getProtocolScheme()).isEqualTo(expected.getProtocolScheme().toLowerCase());
         assertThat(actual.isPrimary()).isEqualTo(expected.IsPrimary());
     }

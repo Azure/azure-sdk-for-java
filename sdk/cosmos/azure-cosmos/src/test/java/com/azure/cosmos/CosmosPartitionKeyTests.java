@@ -52,14 +52,14 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosPartitionKeyTests() throws URISyntaxException, IOException {
         assertThat(this.client).isNull();
         client = clientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
@@ -123,8 +123,8 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_DOCUEMNT_ID + "\"");
     }
 
-    @Test(groups = { "simple" })
-    public void testNonPartitionedCollectionOperations() throws Exception {
+    @Test(groups = { "emulator" })
+    public void nonPartitionedCollectionOperations() throws Exception {
         createContainerWithoutPk();
         CosmosAsyncContainer createdContainer = createdDatabase.getContainer(NON_PARTITIONED_CONTAINER_ID);
 
@@ -246,8 +246,8 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         validateQuerySuccess(queryFlux, queryValidator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT*100)
-    public void testMultiPartitionCollectionReadDocumentWithNoPk() throws InterruptedException {
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT*100)
+    public void multiPartitionCollectionReadDocumentWithNoPk() throws InterruptedException {
         String partitionedCollectionId = "PartitionedCollection" + UUID.randomUUID().toString();
         String IdOfDocumentWithNoPk = UUID.randomUUID().toString();
         CosmosContainerProperties containerSettings = new CosmosContainerProperties(partitionedCollectionId, "/mypk");

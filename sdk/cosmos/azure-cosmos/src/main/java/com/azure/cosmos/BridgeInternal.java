@@ -14,7 +14,9 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -231,7 +233,7 @@ public class BridgeInternal {
         policy.setUsingMultipleWriteLocations(value);
     }
 
-    public static <E extends CosmosClientException> URI getRequestUri(CosmosClientException cosmosClientException) {
+    public static <E extends CosmosClientException> Uri getRequestUri(CosmosClientException cosmosClientException) {
         return cosmosClientException.requestUri;
     }
 
@@ -412,8 +414,15 @@ public class BridgeInternal {
     }
 
     public static void recordResponse(CosmosResponseDiagnostics cosmosResponseDiagnostics,
-                                      RxDocumentServiceRequest request, StoreResult storeResult) {
+                                           RxDocumentServiceRequest request, StoreResult storeResult) {
         cosmosResponseDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResult);
+    }
+
+    public static void recordGatewayResponse(CosmosResponseDiagnostics cosmosResponseDiagnostics,
+                                             RxDocumentServiceRequest rxDocumentServiceRequest,
+                                             StoreResponse storeResponse,
+                                             CosmosClientException exception) {
+        cosmosResponseDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponse, exception);
     }
 
     public static String recordAddressResolutionStart(CosmosResponseDiagnostics cosmosResponseDiagnostics,

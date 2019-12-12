@@ -23,9 +23,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,13 +44,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Tests for {@link LocationCache}
  */
 public class LocationCacheTest {
-    private final static URL DefaultEndpoint = createUrl("https://default.documents.azure.com");
-    private final static URL Location1Endpoint = createUrl("https://location1.documents.azure.com");
-    private final static URL Location2Endpoint = createUrl("https://location2.documents.azure.com");
-    private final static URL Location3Endpoint = createUrl("https://location3.documents.azure.com");
-    private final static URL Location4Endpoint = createUrl("https://location4.documents.azure.com");
+    private final static URI DefaultEndpoint = createUrl("https://default.documents.azure.com");
+    private final static URI Location1Endpoint = createUrl("https://location1.documents.azure.com");
+    private final static URI Location2Endpoint = createUrl("https://location2.documents.azure.com");
+    private final static URI Location3Endpoint = createUrl("https://location3.documents.azure.com");
+    private final static URI Location4Endpoint = createUrl("https://location4.documents.azure.com");
 
-    private static HashMap<String, URL> EndpointByLocation = new HashMap<>();
+    private static HashMap<String, URI> EndpointByLocation = new HashMap<>();
 
     static {
         EndpointByLocation.put("location1", LocationCacheTest.Location1Endpoint);
@@ -178,7 +176,7 @@ public class LocationCacheTest {
         @Override
         public URI getServiceEndpoint() {
             try {
-                return LocationCacheTest.DefaultEndpoint.toURI();
+                return LocationCacheTest.DefaultEndpoint;
             } catch (Exception e) {
                 throw new RuntimeException();
             }
@@ -200,8 +198,8 @@ public class LocationCacheTest {
                         endpointDiscoveryEnabled,
                         isPreferredListEmpty);
 
-                UnmodifiableList<URL> currentWriteEndpoints = this.cache.getWriteEndpoints();
-                UnmodifiableList<URL> currentReadEndpoints = this.cache.getReadEndpoints();
+                UnmodifiableList<URI> currentWriteEndpoints = this.cache.getWriteEndpoints();
+                UnmodifiableList<URI> currentReadEndpoints = this.cache.getReadEndpoints();
                 for (int i = 0; i < readLocationIndex; i++) {
                     this.cache.markEndpointUnavailableForRead(createUrl(Iterables.get(this.databaseAccount.getReadableLocations(), i).getEndpoint()));
                     this.endpointManager.markEndpointUnavailableForRead(createUrl(Iterables.get(this.databaseAccount.getReadableLocations(), i).getEndpoint()));;
@@ -211,28 +209,32 @@ public class LocationCacheTest {
                     this.endpointManager.markEndpointUnavailableForWrite(createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), i).getEndpoint()));
                 }
 
-                Map<String, URL> writeEndpointByLocation = toStream(this.databaseAccount.getWritableLocations())
+                Map<String, URI> writeEndpointByLocation = toStream(this.databaseAccount.getWritableLocations())
                         .collect(Collectors.toMap(i -> i.getName(), i -> createUrl(i.getEndpoint())));
 
-                Map<String, URL> readEndpointByLocation = toStream(this.databaseAccount.getReadableLocations())
+                Map<String, URI> readEndpointByLocation = toStream(this.databaseAccount.getReadableLocations())
                         .collect(Collectors.toMap(i -> i.getName(), i -> createUrl(i.getEndpoint())));
 
-                URL[] preferredAvailableWriteEndpoints = toStream(this.preferredLocations).skip(writeLocationIndex)
+                URI[] preferredAvailableWriteEndpoints = toStream(this.preferredLocations).skip(writeLocationIndex)
                         .filter(location -> writeEndpointByLocation.containsKey(location))
                         .map(location -> writeEndpointByLocation.get(location))
-                        .collect(Collectors.toList()).toArray(new URL[0]);
+                        .collect(Collectors.toList()).toArray(new URI[0]);
 
-                URL[] preferredAvailableReadEndpoints = toStream(this.preferredLocations).skip(readLocationIndex)
+                URI[] preferredAvailableReadEndpoints = toStream(this.preferredLocations).skip(readLocationIndex)
                         .filter(location -> readEndpointByLocation.containsKey(location))
                         .map(location -> readEndpointByLocation.get(location))
-                        .collect(Collectors.toList()).toArray(new URL[0]);
+                        .collect(Collectors.toList()).toArray(new URI[0]);
 
                 this.validateEndpointRefresh(
                         useMultipleWriteLocations,
                         endpointDiscoveryEnabled,
                         preferredAvailableWriteEndpoints,
                         preferredAvailableReadEndpoints,
-                        writeLocationIndex > 0);
+                        readLocationIndex > 0 && !currentReadEndpoints.get(0).equals(DefaultEndpoint),
+                        writeLocationIndex > 0,
+                        currentReadEndpoints.size() > 1,
+                        currentWriteEndpoints.size() > 1
+                    );
 
                 this.validateGlobalEndpointLocationCacheRefreshAsync();
 
@@ -255,16 +257,19 @@ public class LocationCacheTest {
     private void validateEndpointRefresh(
             boolean useMultipleWriteLocations,
             boolean endpointDiscoveryEnabled,
-            URL[] preferredAvailableWriteEndpoints,
-            URL[] preferredAvailableReadEndpoints,
-            boolean isFirstWriteEndpointUnavailable) {
+            URI[] preferredAvailableWriteEndpoints,
+            URI[] preferredAvailableReadEndpoints,
+            boolean isFirstReadEndpointUnavailable,
+            boolean isFirstWriteEndpointUnavailable,
+            boolean hasMoreThanOneReadEndpoints,
+            boolean hasMoreThanOneWriteEndpoints) {
 
         Utils.ValueHolder<Boolean> canRefreshInBackgroundHolder = new Utils.ValueHolder<>();
         canRefreshInBackgroundHolder.v = false;
 
         boolean shouldRefreshEndpoints = this.cache.shouldRefreshEndpoints(canRefreshInBackgroundHolder);
 
-        boolean isMostPreferredLocationUnavailableForRead = false;
+        boolean isMostPreferredLocationUnavailableForRead = isFirstReadEndpointUnavailable;
         boolean isMostPreferredLocationUnavailableForWrite = useMultipleWriteLocations ?
                 false : isFirstWriteEndpointUnavailable;
         if (this.preferredLocations.size() > 0) {
@@ -273,7 +278,7 @@ public class LocationCacheTest {
                             .anyMatch(readLocation -> readLocation.getName().equals(location)))
                     .findFirst().orElse(null);
 
-            URL mostPreferredReadEndpoint = LocationCacheTest.EndpointByLocation.get(mostPreferredReadLocationName);
+            URI mostPreferredReadEndpoint = LocationCacheTest.EndpointByLocation.get(mostPreferredReadLocationName);
             isMostPreferredLocationUnavailableForRead = preferredAvailableReadEndpoints.length == 0 ?
                     true : (!areEqual(preferredAvailableReadEndpoints[0], mostPreferredReadEndpoint));
 
@@ -282,7 +287,7 @@ public class LocationCacheTest {
                             .anyMatch(writeLocation -> writeLocation.getName().equals(location)))
                     .findFirst().orElse(null);
 
-            URL mostPreferredWriteEndpoint = LocationCacheTest.EndpointByLocation.get(mostPreferredWriteLocationName);
+            URI mostPreferredWriteEndpoint = LocationCacheTest.EndpointByLocation.get(mostPreferredWriteLocationName);
 
             if (useMultipleWriteLocations) {
                 isMostPreferredLocationUnavailableForWrite = preferredAvailableWriteEndpoints.length == 0 ?
@@ -298,11 +303,15 @@ public class LocationCacheTest {
         }
 
         if (shouldRefreshEndpoints) {
-            assertThat(canRefreshInBackgroundHolder.v).isTrue();
+            if (isMostPreferredLocationUnavailableForRead) {
+                assertThat(canRefreshInBackgroundHolder.v).isEqualTo(hasMoreThanOneReadEndpoints);
+            } else if (isMostPreferredLocationUnavailableForWrite) {
+                assertThat(canRefreshInBackgroundHolder.v).isEqualTo(hasMoreThanOneWriteEndpoints);
+            }
         }
     }
 
-    private boolean areEqual(URL url1, URL url2) {
+    private boolean areEqual(URI url1, URI url2) {
         return url1.equals(url2);
     }
 
@@ -310,7 +319,7 @@ public class LocationCacheTest {
 
         mockedClient.reset();
         List<Mono<Void>> list = IntStream.range(0, 10)
-                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
+                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null, false))
                 .collect(Collectors.toList());
 
         Flux.merge(list).then().block();
@@ -319,7 +328,7 @@ public class LocationCacheTest {
         mockedClient.reset();
 
         IntStream.range(0, 10)
-                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
+                .mapToObj(index -> this.endpointManager.refreshLocationAsync(null, false))
                 .collect(Collectors.toList());
         for (Mono completable : list) {
             completable.block();
@@ -331,10 +340,10 @@ public class LocationCacheTest {
     private void validateRequestEndpointResolution(
             boolean useMultipleWriteLocations,
             boolean endpointDiscoveryEnabled,
-            URL[] availableWriteEndpoints,
-            URL[] availableReadEndpoints) throws MalformedURLException {
-        URL firstAvailableWriteEndpoint;
-        URL secondAvailableWriteEndpoint;
+            URI[] availableWriteEndpoints,
+            URI[] availableReadEndpoints) throws Exception {
+        URI firstAvailableWriteEndpoint;
+        URI secondAvailableWriteEndpoint;
 
         if (!endpointDiscoveryEnabled) {
             firstAvailableWriteEndpoint = LocationCacheTest.DefaultEndpoint;
@@ -350,14 +359,14 @@ public class LocationCacheTest {
             Iterator<DatabaseAccountLocation> writeLocationsIterator = databaseAccount.getWritableLocations().iterator();
             String writeEndpoint = writeLocationsIterator.next().getEndpoint();
             secondAvailableWriteEndpoint = writeEndpoint != firstAvailableWriteEndpoint.toString()
-                    ? new URL(writeEndpoint)
-                    : new URL(writeLocationsIterator.next().getEndpoint());
+                    ? new URI(writeEndpoint)
+                    : new URI(writeLocationsIterator.next().getEndpoint());
         } else {
             firstAvailableWriteEndpoint = LocationCacheTest.DefaultEndpoint;
             secondAvailableWriteEndpoint = LocationCacheTest.DefaultEndpoint;
         }
 
-        URL firstAvailableReadEndpoint;
+        URI firstAvailableReadEndpoint;
 
         if (!endpointDiscoveryEnabled) {
             firstAvailableReadEndpoint = LocationCacheTest.DefaultEndpoint;
@@ -369,17 +378,17 @@ public class LocationCacheTest {
             firstAvailableReadEndpoint = LocationCacheTest.EndpointByLocation.get(this.preferredLocations.get(0));
         }
 
-        URL firstWriteEnpoint = !endpointDiscoveryEnabled ?
+        URI firstWriteEnpoint = !endpointDiscoveryEnabled ?
                 LocationCacheTest.DefaultEndpoint :
                     createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), 0).getEndpoint());
 
-        URL secondWriteEnpoint = !endpointDiscoveryEnabled ?
+        URI secondWriteEnpoint = !endpointDiscoveryEnabled ?
                 LocationCacheTest.DefaultEndpoint :
                     createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), 1).getEndpoint());
 
         // If current write endpoint is unavailable, write endpoints order doesn't change
         // ALL write requests flip-flop between current write and alternate write endpoint
-        UnmodifiableList<URL> writeEndpoints = this.cache.getWriteEndpoints();
+        UnmodifiableList<URI> writeEndpoints = this.cache.getWriteEndpoints();
 
         assertThat(firstAvailableWriteEndpoint).isEqualTo(writeEndpoints.get(0));
         assertThat(secondAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, true));
@@ -394,13 +403,13 @@ public class LocationCacheTest {
         assertThat(firstAvailableReadEndpoint).isEqualTo(this.resolveEndpointForReadRequest(false));
     }
 
-    private URL resolveEndpointForReadRequest(boolean masterResourceType) {
+    private URI resolveEndpointForReadRequest(boolean masterResourceType) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                 masterResourceType ? ResourceType.Database : ResourceType.Document);
         return this.cache.resolveServiceEndpoint(request);
     }
 
-    private URL resolveEndpointForWriteRequest(ResourceType resourceType, boolean useAlternateWriteEndpoint) {
+    private URI resolveEndpointForWriteRequest(ResourceType resourceType, boolean useAlternateWriteEndpoint) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create, resourceType);
         request.requestContext.RouteToLocation(useAlternateWriteEndpoint ? 1 : 0, resourceType.isCollectionChild());
         return this.cache.resolveServiceEndpoint(request);
@@ -414,10 +423,10 @@ public class LocationCacheTest {
             return RxDocumentServiceRequest.create(OperationType.Create, isMasterResourceType ? ResourceType.Database : ResourceType.Document);
         }
     }
-    private static URL createUrl(String url) {
+    private static URI createUrl(String url) {
         try {
-            return new URL(url);
-        } catch (MalformedURLException e) {
+            return new URI(url);
+        } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
     }

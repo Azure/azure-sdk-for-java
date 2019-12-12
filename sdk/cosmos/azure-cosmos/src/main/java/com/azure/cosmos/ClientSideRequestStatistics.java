@@ -2,14 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
+import com.sun.management.OperatingSystemMXBean;
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -27,18 +33,22 @@ import java.util.Set;
 
 class ClientSideRequestStatistics {
 
-    private final ClientLogger logger = new ClientLogger(ClientSideRequestStatistics.class);
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
 
     private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
         DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US);
+    private final static OperatingSystemMXBean mbean = (com.sun.management.OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
 
     private final ZonedDateTime requestStartTime;
     private ZonedDateTime requestEndTime;
 
+    private ConnectionMode connectionMode;
+    
     private final List<StoreResponseStatistics> responseStatisticsList;
     private final List<StoreResponseStatistics> supplementalResponseStatisticsList;
     private final Map<String, AddressResolutionStatistics> addressResolutionStatistics;
+
+    private GatewayStatistic gatewayStatistic;
 
     private List<URI> contactedReplicas;
     private Set<URI> failedReplicas;
@@ -53,6 +63,7 @@ class ClientSideRequestStatistics {
         this.contactedReplicas = new ArrayList<>();
         this.failedReplicas = new HashSet<>();
         this.regionsContacted = new HashSet<>();
+        this.connectionMode = ConnectionMode.DIRECT;
     }
 
     Duration getRequestLatency() {
@@ -66,6 +77,7 @@ class ClientSideRequestStatistics {
 
     void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
         ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
+        connectionMode = ConnectionMode.DIRECT;
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
         storeResponseStatistics.requestResponseTime = responseTime;
@@ -75,11 +87,7 @@ class ClientSideRequestStatistics {
 
         URI locationEndPoint = null;
         if (request.requestContext.locationEndpointToRoute != null) {
-            try {
-                locationEndPoint = request.requestContext.locationEndpointToRoute.toURI();
-            } catch (URISyntaxException e) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(e));
-            }
+            locationEndPoint = request.requestContext.locationEndpointToRoute;
         }
 
         synchronized (this) {
@@ -99,6 +107,28 @@ class ClientSideRequestStatistics {
             }
         }
     }
+
+    void recordGatewayResponse(RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponse storeResponse, CosmosClientException exception) {
+        ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
+        connectionMode = ConnectionMode.GATEWAY;
+        synchronized (this) {
+            if (responseTime.isAfter(this.requestEndTime)) {
+                this.requestEndTime = responseTime;
+            }
+            this.gatewayStatistic = new GatewayStatistic();
+            this.gatewayStatistic.operationType = rxDocumentServiceRequest.getOperationType();
+            if (storeResponse != null) {
+                this.gatewayStatistic.statusCode = storeResponse.getStatus();
+                this.gatewayStatistic.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
+                this.gatewayStatistic.sessionToken = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                this.gatewayStatistic.requestCharge = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+            } else if(exception != null){
+                this.gatewayStatistic.statusCode = exception.getStatusCode();
+                this.gatewayStatistic.subStatusCode = exception.getSubStatusCode();
+            }
+        }
+    }
+
 
     String recordAddressResolutionStart(URI targetEndpoint) {
         String identifier = Utils.randomUUID().toString();
@@ -124,9 +154,7 @@ class ClientSideRequestStatistics {
 
         synchronized (this) {
             if (!this.addressResolutionStatistics.containsKey(identifier)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Identifier "
-                                                       + identifier
-                                                       + " does not exist. Please call start before calling end"));
+                throw new IllegalArgumentException("Identifier " + identifier + " does not exist. Please call start before calling end");
             }
 
             if (responseTime.isAfter(this.requestEndTime)) {
@@ -148,14 +176,15 @@ class ClientSideRequestStatistics {
 
             //  first trace request start time, as well as total non-head/headfeed requests made.
             stringBuilder.append("RequestStartTime: ")
-                .append("\"").append(this.requestStartTime.format(RESPONSE_TIME_FORMATTER)).append("\"")
+                .append("\"").append(this.requestStartTime.format(responseTimeFormatter)).append("\"")
                 .append(", ")
                 .append("RequestEndTime: ")
-                .append("\"").append(this.requestEndTime.format(RESPONSE_TIME_FORMATTER)).append("\"")
+                .append("\"").append(this.requestEndTime.format(responseTimeFormatter)).append("\"")
                 .append(", ")
                 .append("Duration: ")
                 .append(Duration.between(requestStartTime, requestEndTime).toMillis())
                 .append(" ms, ")
+                .append("Connection Mode : " + this.connectionMode.toString() + ", ")
                 .append("NUMBER of regions attempted: ")
                 .append(this.regionsContacted.isEmpty() ? 1 : this.regionsContacted.size())
                 .append(System.lineSeparator());
@@ -186,6 +215,12 @@ class ClientSideRequestStatistics {
                 stringBuilder.append(this.supplementalResponseStatisticsList.get(i).toString())
                     .append(System.lineSeparator());
             }
+
+            if (this.gatewayStatistic != null) {
+                stringBuilder.append(this.gatewayStatistic).append(System.lineSeparator());
+            }
+
+            printSystemInformation(stringBuilder);
         }
         String requestStatsString = stringBuilder.toString();
         if (!requestStatsString.isEmpty()) {
@@ -218,6 +253,27 @@ class ClientSideRequestStatistics {
         this.regionsContacted = regionsContacted;
     }
 
+    private void printSystemInformation(StringBuilder stringBuilder) {
+        try {
+            long totalMemory = Runtime.getRuntime().totalMemory() / 1024;
+            long freeMemory = Runtime.getRuntime().freeMemory() / 1024;
+            long maxMemory = Runtime.getRuntime().maxMemory() / 1024;
+            String usedMemory = totalMemory - freeMemory + " KB";
+            String availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
+
+            String processCpuLoad = Double.toString(this.mbean.getProcessCpuLoad());
+            String systemCpuLoad = Double.toString(this.mbean.getSystemCpuLoad());
+
+            stringBuilder.append("System State Information -------").append(System.lineSeparator());
+            stringBuilder.append("Used Memory : " + usedMemory).append(System.lineSeparator());
+            stringBuilder.append("Available Memory : " + availableMemory).append(System.lineSeparator());
+            stringBuilder.append("CPU Process Load : " + processCpuLoad).append(System.lineSeparator());
+            stringBuilder.append("CPU System Load : " + systemCpuLoad).append(System.lineSeparator());
+        } catch (Exception e) {
+            // Error while evaluating system information, do nothing
+        }
+    }
+
     private static String formatDateTime(ZonedDateTime dateTime) {
         if (dateTime == null) {
             return null;
@@ -234,17 +290,12 @@ class ClientSideRequestStatistics {
 
         @Override
         public String toString() {
-            return "StoreResponseStatistics{"
-                       + "requestResponseTime=\""
-                       + formatDateTime(requestResponseTime)
-                       + "\""
-                       + ", storeResult="
-                       + storeResult
-                       + ", requestResourceType="
-                       + requestResourceType
-                       + ", requestOperationType="
-                       + requestOperationType
-                       + '}';
+            return "StoreResponseStatistics{" +
+                "requestResponseTime=\"" + formatDateTime(requestResponseTime) + "\"" +
+                ", storeResult=" + storeResult +
+                ", requestResourceType=" + requestResourceType +
+                ", requestOperationType=" + requestOperationType +
+                '}';
         }
     }
 
@@ -258,13 +309,29 @@ class ClientSideRequestStatistics {
 
         @Override
         public String toString() {
-            return "AddressResolutionStatistics{"
-                       + "startTime=\"" + formatDateTime(startTime) + "\""
-                       + ", endTime=\"" + formatDateTime(endTime)
-                       + "\""
-                       + ", targetEndpoint='" + targetEndpoint
-                       + '\''
-                       + '}';
+            return "AddressResolutionStatistics{" +
+                "startTime=\"" + formatDateTime(startTime) + "\"" +
+                ", endTime=\"" + formatDateTime(endTime) + "\"" +
+                ", targetEndpoint='" + targetEndpoint + '\'' +
+                '}';
+        }
+    }
+
+    private class GatewayStatistic {
+        private OperationType operationType;
+        private int statusCode;
+        private int subStatusCode;
+        private String sessionToken;
+        private String requestCharge;
+
+        public String toString() {
+            return "Gateway statistics{ " +
+                "Operation Type : " + this.operationType +
+                "Status Code : " + this.statusCode +
+                "Substatus Code : " + this.statusCode +
+                "Session Token : " + this.sessionToken +
+                "Request Charge : " + requestCharge +
+                '}';
         }
     }
 }

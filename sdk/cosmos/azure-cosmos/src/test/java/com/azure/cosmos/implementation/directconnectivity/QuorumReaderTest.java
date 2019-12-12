@@ -25,7 +25,6 @@ import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.URI;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -76,8 +75,8 @@ public class QuorumReaderTest {
     @Test(groups = "unit", dataProvider = "simpleReadStrongArgProvider")
     public void basicReadStrong_AllReplicasSameLSN(int replicaCountToRead, ReadMode readMode, Long lsn, Long localLSN) {
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
-        URI primaryReplicaURI = URI.create("primary");
-        ImmutableList<URI> secondaryReplicaURIs = ImmutableList.of(URI.create("secondary1"), URI.create("secondary2"), URI.create("secondary3"));
+        Uri primaryReplicaURI = Uri.create("primary");
+        ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(Uri.create("secondary1"), Uri.create("secondary2"), Uri.create("secondary3"));
         AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
                 .withPrimary(primaryReplicaURI)
                 .withSecondary(secondaryReplicaURIs)
@@ -150,8 +149,8 @@ public class QuorumReaderTest {
         int replicaCountToRead = 2;
 
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
-        URI primaryReplicaURI = URI.create("primary");
-        ImmutableList<URI> secondaryReplicaURIs = ImmutableList.of(URI.create("secondary1"), URI.create("secondary2"));
+        Uri primaryReplicaURI = Uri.create("primary");
+        ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(Uri.create("secondary1"), Uri.create("secondary2"));
         AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
                 .withPrimary(primaryReplicaURI)
                 .withSecondary(secondaryReplicaURIs)
@@ -296,8 +295,8 @@ public class QuorumReaderTest {
         int replicaCountToRead = 2;
 
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
-        URI primaryReplicaURI = URI.create("primary");
-        ImmutableList<URI> secondaryReplicaURIs = ImmutableList.of(URI.create("secondary1"), URI.create("secondary2"));
+        Uri primaryReplicaURI = Uri.create("primary");
+        ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(Uri.create("secondary1"), Uri.create("secondary2"));
         AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
                 .withPrimary(primaryReplicaURI)
                 .withSecondary(secondaryReplicaURIs)
@@ -455,8 +454,8 @@ public class QuorumReaderTest {
         int replicaCountToRead = 2;
 
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
-        URI primaryReplicaURI = URI.create("primary");
-        ImmutableList<URI> secondaryReplicaURIs = ImmutableList.of(URI.create("secondary1"));
+        Uri primaryReplicaURI = Uri.create("primary");
+        ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(Uri.create("secondary1"));
         AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
                 .withPrimary(primaryReplicaURI)
                 .withSecondary(secondaryReplicaURIs)

@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;
@@ -27,7 +28,7 @@ import java.util.Map;
  * When a transport level error happens that request is not able to reach the
  * service, an IllegalStateException is thrown instead of CosmosClientException.
  */
-public class CosmosClientException extends RuntimeException {
+public class CosmosClientException extends Exception {
     private static final long serialVersionUID = 1L;
 
     private final int statusCode;
@@ -35,13 +36,12 @@ public class CosmosClientException extends RuntimeException {
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
     private CosmosError cosmosError;
-    private String resourceAddress;
 
     long lsn;
     String partitionKeyRangeId;
     Map<String, String> requestHeaders;
-    URI requestUri;
-
+    Uri requestUri;
+    String resourceAddress;
 
     CosmosClientException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
@@ -232,10 +232,6 @@ public class CosmosClientException extends RuntimeException {
      */
     String getResourceAddress() {
         return this.resourceAddress;
-    }
-
-    void setResourceAddress(String resourceAddress) {
-        this.resourceAddress = resourceAddress;
     }
 
     /**

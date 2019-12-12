@@ -3,8 +3,11 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -47,6 +50,7 @@ abstract class AsyncBenchmark<T> {
     private Meter failureMeter;
 
     final Logger logger;
+    final CosmosAsyncClient v4Client;
     final AsyncDocumentClient client;
     final DocumentCollection collection;
     final String partitionKey;
@@ -56,14 +60,16 @@ abstract class AsyncBenchmark<T> {
     Timer latency;
 
     AsyncBenchmark(Configuration cfg) {
-        client = new AsyncDocumentClient.Builder()
-            .withServiceEndpoint(cfg.getServiceEndpoint())
-            .withMasterKeyOrResourceToken(cfg.getMasterKey())
-            .withConnectionPolicy(cfg.getConnectionPolicy())
-            .withConsistencyLevel(cfg.getConsistencyLevel())
-            .build();
+        v4Client = new CosmosClientBuilder()
+            .setEndpoint(cfg.getServiceEndpoint())
+            .setKey(cfg.getMasterKey())
+            .setConnectionPolicy(cfg.getConnectionPolicy())
+            .setConsistencyLevel(cfg.getConsistencyLevel())
+            .buildAsyncClient();
 
         logger = LoggerFactory.getLogger(this.getClass());
+
+        client =  CosmosBridgeInternal.getAsyncDocumentClient(v4Client);
 
         Database database = DocDBUtils.getDatabase(client, cfg.getDatabaseId());
         collection = DocDBUtils.getCollection(client, database.getSelfLink(), cfg.getCollectionId());
@@ -133,7 +139,7 @@ abstract class AsyncBenchmark<T> {
     }
 
     void shutdown() {
-        client.close();
+        v4Client.close();
     }
 
     protected void onSuccess() {

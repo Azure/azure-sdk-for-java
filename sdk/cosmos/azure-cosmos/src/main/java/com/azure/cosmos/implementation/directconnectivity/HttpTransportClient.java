@@ -100,13 +100,15 @@ public class HttpTransportClient extends TransportClient {
     }
 
     public Mono<StoreResponse> invokeStoreAsync(
-        URI physicalAddress,
+        Uri physicalAddressUri,
         RxDocumentServiceRequest request) {
 
         try {
+            URI physicalAddress = physicalAddressUri.getURI();
+
             ResourceOperation resourceOperation = new ResourceOperation(request.getOperationType(), request.getResourceType());
             // uuid correlation manager
-            UUID activityId = UUID.fromString(request.getActivityId());
+            String activityId = request.getActivityId();
 
             if (resourceOperation.operationType == OperationType.Recreate) {
                 Map<String, String> errorResponseHeaders = new HashMap<>();
@@ -116,7 +118,7 @@ public class HttpTransportClient extends TransportClient {
                 throw new InternalServerErrorException(RMResources.InternalServerError, null, errorResponseHeaders, null);
             }
 
-            HttpRequest httpRequest = prepareHttpMessage(activityId, physicalAddress, resourceOperation, request);
+            HttpRequest httpRequest = prepareHttpMessage(activityId, physicalAddressUri, resourceOperation, request);
 
             MutableVolatile<Instant> sendTimeUtc = new MutableVolatile<>();
 
@@ -218,12 +220,12 @@ public class HttpTransportClient extends TransportClient {
         }
     }
 
-    private void beforeRequest(UUID activityId, URI uri, ResourceType resourceType, HttpHeaders requestHeaders) {
+    private void beforeRequest(String activityId, URI uri, ResourceType resourceType, HttpHeaders requestHeaders) {
         // TODO: perf counters
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/258624
     }
 
-    private void afterRequest(UUID activityId,
+    private void afterRequest(String activityId,
                               int statusCode,
                               double durationInMilliSeconds,
                               HttpHeaders responseHeaders) {
@@ -263,13 +265,13 @@ public class HttpTransportClient extends TransportClient {
     }
 
     private HttpRequest prepareHttpMessage(
-        UUID activityId,
-        URI physicalAddress,
+        String activityId,
+        Uri physicalAddress,
         ResourceOperation resourceOperation,
         RxDocumentServiceRequest request) throws Exception {
 
         HttpRequest httpRequestMessage;
-        URI requestUri;
+        String requestUri;
         HttpMethod method;
 
         // The StreamContent created below will own and dispose its underlying stream, but we may need to reuse the stream on the
@@ -277,83 +279,83 @@ public class HttpTransportClient extends TransportClient {
         // HttpRequestMessage -> StreamContent -> MemoryStream all get disposed, the original stream will be left open.
         switch (resourceOperation.operationType) {
             case Create:
-                requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress, request);
+                requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
                 assert request.getContent() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContent());
                 break;
 
             case ExecuteJavaScript:
-                requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress, request);
+                requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
                 assert request.getContent() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContent());
                 break;
 
             case Delete:
-                requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress, request);
+                requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.DELETE;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
                 break;
 
             case Read:
-                requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress, request);
+                requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.GET;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
                 break;
 
             case ReadFeed:
-                requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress, request);
+                requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.GET;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
                 break;
 
             case Replace:
-                requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress, request);
+                requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.PUT;
                 assert request.getContent() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContent());
                 break;
 
             case Update:
-                requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress, request);
+                requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = new HttpMethod("PATCH");
                 assert request.getContent() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContent());
                 break;
 
             case Query:
             case SqlQuery:
-                requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress, request);
+                requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
                 assert request.getContent() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContent());
                 HttpTransportClient.addHeader(httpRequestMessage.headers(), HttpConstants.HttpHeaders.CONTENT_TYPE, request);
                 break;
 
             case Upsert:
-                requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress, request);
+                requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
                 assert request.getContent() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContent());
                 break;
 
             case Head:
-                requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress, request);
+                requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.HEAD;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
                 break;
 
             case HeadFeed:
-                requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress, request);
+                requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.HEAD;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
                 break;
 
             default:
@@ -475,7 +477,7 @@ public class HttpTransportClient extends TransportClient {
         return httpRequestMessage;
     }
 
-    static URI getResourceFeedUri(ResourceType resourceType, URI physicalAddress, RxDocumentServiceRequest request) throws Exception {
+    static String getResourceFeedUri(ResourceType resourceType, String physicalAddress, RxDocumentServiceRequest request) throws Exception {
         switch (resourceType) {
             case Attachment:
                 return getAttachmentFeedUri(physicalAddress, request);
@@ -511,7 +513,7 @@ public class HttpTransportClient extends TransportClient {
         }
     }
 
-    private static URI getResourceEntryUri(ResourceType resourceType, URI physicalAddress, RxDocumentServiceRequest request) throws Exception {
+    private static String getResourceEntryUri(ResourceType resourceType, String physicalAddress, RxDocumentServiceRequest request) throws Exception {
         switch (resourceType) {
             case Attachment:
                 return getAttachmentEntryUri(physicalAddress, request);
@@ -546,107 +548,111 @@ public class HttpTransportClient extends TransportClient {
         }
     }
 
-    private static URI createURI(URI baseAddress, String resourcePath) {
-        return baseAddress.resolve(HttpUtils.urlEncode(trimBeginningAndEndingSlashes(resourcePath)));
+    static String createURI(String baseAddress, String resourcePath) {
+        if (baseAddress.charAt(baseAddress.length() - 1) == '/') {
+            return baseAddress + HttpUtils.urlEncode(trimBeginningAndEndingSlashes(resourcePath));
+        } else {
+            return baseAddress + '/' + HttpUtils.urlEncode(trimBeginningAndEndingSlashes(resourcePath));
+        }
     }
 
-    static URI getRootFeedUri(URI baseAddress) {
+    static String getRootFeedUri(String baseAddress) {
         return baseAddress;
     }
 
-    private static URI getDatabaseFeedUri(URI baseAddress) {
+    private static String getDatabaseFeedUri(String baseAddress) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Database, StringUtils.EMPTY, true));
     }
 
-    private static URI getDatabaseEntryUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getDatabaseEntryUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Database, request, false));
     }
 
-    private static URI getCollectionFeedUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getCollectionFeedUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.DocumentCollection, request, true));
     }
 
-    private static URI getStoredProcedureFeedUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getStoredProcedureFeedUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.StoredProcedure, request, true));
     }
 
-    private static URI getTriggerFeedUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getTriggerFeedUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Trigger, request, true));
     }
 
-    private static URI getUserDefinedFunctionFeedUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getUserDefinedFunctionFeedUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.UserDefinedFunction, request, true));
     }
 
-    private static URI getCollectionEntryUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getCollectionEntryUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.DocumentCollection, request, false));
     }
 
-    private static URI getStoredProcedureEntryUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getStoredProcedureEntryUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.StoredProcedure, request, false));
     }
 
-    private static URI getTriggerEntryUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getTriggerEntryUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Trigger, request, false));
     }
 
-    private static URI getUserDefinedFunctionEntryUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getUserDefinedFunctionEntryUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.UserDefinedFunction, request, false));
     }
 
-    private static URI getDocumentFeedUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getDocumentFeedUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Document, request, true));
     }
 
-    private static URI getDocumentEntryUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getDocumentEntryUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Document, request, false));
     }
 
-    private static URI getConflictFeedUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getConflictFeedUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Conflict, request, true));
     }
 
-    private static URI getConflictEntryUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getConflictEntryUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Conflict, request, false));
     }
 
-    private static URI getAttachmentFeedUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getAttachmentFeedUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Attachment, request, true));
     }
 
-    private static URI getAttachmentEntryUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getAttachmentEntryUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Attachment, request, false));
     }
 
-    private static URI getUserFeedUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getUserFeedUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.User, request, true));
     }
 
-    private static URI getUserEntryUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getUserEntryUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.User, request, false));
     }
 
-    private static URI getPermissionFeedUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getPermissionFeedUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Permission, request, true));
     }
 
-    private static URI getPermissionEntryUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getPermissionEntryUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Permission, request, false));
     }
 
-    private static URI getOfferFeedUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getOfferFeedUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Offer, request, true));
     }
 
-    private static URI getSchemaFeedUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getSchemaFeedUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Schema, request, true));
     }
 
-    private static URI getSchemaEntryUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getSchemaEntryUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Schema, request, false));
     }
 
-    private static URI getOfferEntryUri(URI baseAddress, RxDocumentServiceRequest request) {
+    private static String getOfferEntryUri(String baseAddress, RxDocumentServiceRequest request) {
         return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Offer, request, false));
     }
 

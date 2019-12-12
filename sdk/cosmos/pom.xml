@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-parent</artifactId>
-  <version>4.0.0-preview.1</version>
+  <version>4.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Cosmos DB SQL API</name>
@@ -55,7 +55,7 @@ Licensed under the MIT License.
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-cosmos</artifactId>
-        <version>4.0.0-preview.1</version>
+        <version>4.0.0-SNAPSHOT</version>
       </dependency>
 
       <dependency>
