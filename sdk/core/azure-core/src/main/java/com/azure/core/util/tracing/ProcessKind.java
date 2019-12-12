@@ -18,9 +18,5 @@ public enum ProcessKind {
     /**
      * Custom process call to process received messages.
      */
-    PROCESS,
-    /**
-     * Custom process call to link messages to Send.
-     */
-    LINK
+    PROCESS
 }

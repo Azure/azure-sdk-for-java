@@ -46,7 +46,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Objects.requireNonNull(spanName, "'spanName' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
 
-        Builder spanBuilder = getSpanBuilder(spanName, context);
+        Builder spanBuilder = getParentSpanBuilder(spanName, context);
         Span span = spanBuilder.startSpan();
 
         return context.addData(PARENT_SPAN_KEY, span);
@@ -66,7 +66,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         switch (processKind) {
             case SEND:
-                // use previosuly created span builder from the LINK process.
+                // use previously created span builder from the LINK process.
                 spanBuilder = getOrDefault(context, SPAN_BUILDER_KEY, null, Builder.class);
                 if (spanBuilder == null) {
                     return Context.NONE;
@@ -78,15 +78,13 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 }
                 return context.addData(PARENT_SPAN_KEY, span);
             case MESSAGE:
-                spanBuilder = getSpanBuilder(spanName, context);
+                spanBuilder = getParentSpanBuilder(spanName, context);
                 span = spanBuilder.startSpan();
                 // Add diagnostic Id and trace-headers to Context
                 context = setContextData(span);
                 return context.addData(PARENT_SPAN_KEY, span);
             case PROCESS:
                 return startScopedSpan(spanName, context);
-            case LINK:
-                return context.addData(SPAN_BUILDER_KEY, getSpanBuilder(spanName, context));
             default:
                 return Context.NONE;
         }
@@ -178,6 +176,11 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         return AmqpPropagationFormatUtil.extractContext(diagnosticId, context);
     }
 
+    @Override
+    public Context getSpanBuilder(String spanName, Context context) {
+        return context.addData(SPAN_BUILDER_KEY, getParentSpanBuilder(spanName, context));
+    }
+
     /**
      * Starts a new child {@link Span} with parent being the remote and uses the {@link Span} is in the current Context,
      * to return an object that represents that scope.
@@ -194,7 +197,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (spanContext != null) {
             span = startSpanWithRemoteParent(spanName, spanContext);
         } else {
-            Builder spanBuilder = getSpanBuilder(spanName, context);
+            Builder spanBuilder = getParentSpanBuilder(spanName, context);
             span = spanBuilder.setSpanKind(Span.Kind.SERVER).startSpan();
         }
         if (span.isRecording()) {
@@ -274,7 +277,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @param context The context containing the span and the span name.
      * @return A {@code Span.Builder} to create and start a new {@code Span}.
      */
-    private Builder getSpanBuilder(String spanName, Context context) {
+    private Builder getParentSpanBuilder(String spanName, Context context) {
         Span parentSpan =  getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         String spanNameKey =  getOrDefault(context, USER_SPAN_NAME_KEY, null, String.class);
 

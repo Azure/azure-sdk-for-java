@@ -204,4 +204,20 @@ public interface Tracer {
      * @throws NullPointerException if {@code diagnosticId} or {@code context} is {@code null}.
      */
     Context extractContext(String diagnosticId, Context context);
+
+    /**
+     * Returns a span builder with the provided name in {@link Context}.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Returns a builder with the provided span name.</p>
+     * {@codesnippet com.azure.core.util.tracing.getSpanBuilder#string-context}
+     *
+     * @param spanName Name to give the span for the created builder.
+     * @param context Additional metadata that is passed through the call stack.
+     *
+     * @return The updated {@link Context} object containing the span builder.
+     * @throws NullPointerException if {@code context} or {@code spanName} is {@code null}.
+     */
+    Context getSpanBuilder(String spanName, Context context);
 }

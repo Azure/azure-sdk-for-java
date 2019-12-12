@@ -183,9 +183,9 @@ public class OpenTelemetryTracerTest {
     }
 
     @Test
-    public void startSpanProcessKindLink() {
+    public void getSpanBuilderTest() {
         // Act
-        final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, Context.NONE, ProcessKind.LINK);
+        final Context updatedContext = openTelemetryTracer.getSpanBuilder(METHOD_NAME, Context.NONE);
 
         assertTrue(updatedContext.getData(SPAN_BUILDER_KEY).isPresent());
     }

@@ -245,7 +245,7 @@ public class EventHubProducerAsyncClientTest {
             }
         );
 
-        when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.LINK))).thenAnswer(
+        when(tracer1.getSpanBuilder(eq("Azure.eventhubs.send"), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_BUILDER_KEY, "value");
@@ -301,7 +301,8 @@ public class EventHubProducerAsyncClientTest {
                 return passed.addData(PARENT_SPAN_KEY, "value");
             }
         );
-        when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.LINK))).thenAnswer(
+
+        when(tracer1.getSpanBuilder(eq("Azure.eventhubs.send"), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_BUILDER_KEY, "value");

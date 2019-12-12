@@ -108,6 +108,20 @@ public class TracerProvider {
         return local;
     }
 
+    /**
+     * For each tracer plugged into the SDK a new context containing the span builder is returned.
+     *
+     * @param context Additional metadata containing the span name for creating the span builer.
+     */
+    public Context getSpanBuilder(Context context) {
+        Context local = Objects.requireNonNull(context, "'context' cannot be null.");
+        String spanName = getSpanName(ProcessKind.SEND);
+        for (Tracer tracer : tracers) {
+            local = tracer.getSpanBuilder(spanName, local);
+        }
+        return local;
+    }
+
     private void end(String statusMessage, Throwable throwable, Context context) {
         for (Tracer tracer : tracers) {
             tracer.end(statusMessage, throwable, context);
@@ -118,7 +132,6 @@ public class TracerProvider {
         String spanName = "EventHubs.";
         switch (processKind) {
             case SEND:
-            case LINK:
                 spanName += "send";
                 break;
             case MESSAGE:

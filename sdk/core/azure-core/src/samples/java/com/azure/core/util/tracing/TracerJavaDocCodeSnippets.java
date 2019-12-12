@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 
 /**
  * Contains code snippets when generating javadocs through doclets for {@link Tracer}.
@@ -120,6 +121,18 @@ public class TracerJavaDocCodeSnippets {
         // END: com.azure.core.util.tracing.extractContext#string-context
     }
 
+    /**
+     * Code snippet for {@link Tracer#getSpanBuilder(String, Context)}
+     */
+    public void getSpanBuilder() {
+        // BEGIN: com.azure.core.util.tracing.getSpanBuilder#string-context
+        // Returns a span builder with the provided name
+        String methodName = "message-span";
+        Context spanContext = tracer.getSpanBuilder(methodName, Context.NONE);
+        System.out.printf("Span context of the current tracing span: %s%n", spanContext.getData(SPAN_BUILDER_KEY).get());
+        // END: com.azure.core.util.tracing.getSpanBuilder#string-context
+    }
+
     //Noop Tracer
     private static final class TracerImplementation implements Tracer {
         @Override
@@ -160,6 +173,10 @@ public class TracerJavaDocCodeSnippets {
         @Override
         public Context extractContext(String diagnosticId, Context context) {
             return null;
+        }
+
+        @Override
+        public Context getSpanBuilder(String spanName, Context context) { return null;
         }
     }
 }
