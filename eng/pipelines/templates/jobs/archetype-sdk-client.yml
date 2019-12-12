@@ -297,8 +297,8 @@ jobs:
         condition: and(eq(variables['SdkType'], 'client'), eq(variables['TestFromSource'],'true'))
 
       - pwsh: |
-          python3 --version
-          python3 eng/versioning/set_versions.py --build-type client --pst
+          python --version
+          python eng/versioning/set_versions.py --build-type client --pst
           if ($LastExitCode -eq 5678) {
             echo "##vso[task.setvariable variable=ShouldRunSourceTests]$true"
           } else {
@@ -308,8 +308,8 @@ jobs:
         condition: and(eq(variables['SdkType'], 'client'), eq(variables['TestFromSource'],'true'))
 
       - script: |
-          python3 --version
-          python3 eng/versioning/update_versions.py --update-type library --build-type client
+          python --version
+          python eng/versioning/update_versions.py --update-type library --build-type client
         condition: eq(variables['ShouldRunSourceTests'],'true')
         displayName: 'Setup for source build'
 
