@@ -4,13 +4,13 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Contains an input document to be analyzed by the service.
  */
-@Fluent
+@Immutable
 public final class TextDocumentInput {
 
     /*

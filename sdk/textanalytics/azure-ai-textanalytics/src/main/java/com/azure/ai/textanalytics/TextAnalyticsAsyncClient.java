@@ -436,7 +436,7 @@ public final class TextAnalyticsAsyncClient {
         List<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.entitiesRecognitionPiiWithRestResponseAsync(
             new MultiLanguageBatchInput().setDocuments(documents), options == null ? null : options.getModelVersion(),
-            options == null ? null : options.showStatistics(),context)
+            options == null ? null : options.showStatistics(), context)
                    .map(response -> new SimpleResponse<>(response, null));
     }
 

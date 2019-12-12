@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The DocumentResult model.
  */
-@Fluent
+@Immutable
 public class DocumentResult {
     private final String id;
     private final TextDocumentStatistics textDocumentStatistics;
