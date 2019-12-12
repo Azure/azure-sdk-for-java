@@ -30,4 +30,3 @@ jobs:
         AZURE_STORAGE_QUEUE_ACCOUNT_NAME: $(java-storage-account-name)
         AZURE_STORAGE_QUEUE_ACCOUNT_KEY: $(java-storage-account-key)
       TimeoutInMinutes: 120
-      mavenOptions: '-Xmx3072m $(LoggingOptions)'
