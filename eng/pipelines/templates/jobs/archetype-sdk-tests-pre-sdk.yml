@@ -24,7 +24,7 @@ jobs:
           goals: 'test'
         env: ${{ parameters.EnvVars }}
       - task: PublishTestResults@2
-        condition: always()
+        condition: succeededOrFailed()
         inputs:
           mergeTestResults: true
           testRunTitle: 'Live tests for ${{ parameters.PomFilePath }}'
