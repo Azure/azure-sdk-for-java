@@ -298,7 +298,7 @@ public final class BlobContainerAsyncClient {
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Context context) {
         return this.azureBlobStorage.containers().createWithRestResponseAsync(
-            null, null, metadata, accessType, null, context)
+            null, null, metadata, accessType, null, null /*cpk-n*/, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
