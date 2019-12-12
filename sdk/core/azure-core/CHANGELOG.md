@@ -7,7 +7,7 @@
 - Logging exception at warning level, and append stack trace if log level is verbose.
 - Fixed HttpLoggingPolicy to take null HttpLogOptions.
 - Changed the User agent format.
-- Hided the secrets from evnironment variable.
+- Hide the secrets from evnironment variable.
 - UserAgentPolicy is using the value stored in the policy no matter what is stored in the passed request. Also, removed the service version from User agent format.
 - Added Iterable<T> overload for IterableStream<T>.
 - Reduce Prefetch Limit for PagedIterable and IterableStream.
