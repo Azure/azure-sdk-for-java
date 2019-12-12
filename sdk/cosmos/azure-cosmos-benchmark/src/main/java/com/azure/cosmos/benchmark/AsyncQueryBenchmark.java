@@ -71,7 +71,6 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
 
     @Override
     protected void performWorkload(BaseSubscriber<FeedResponse<Document>> baseSubscriber, long i) throws InterruptedException {
-        concurrencyControlSemaphore.acquire();
         Flux<FeedResponse<Document>> obs;
         Random r = new Random();
         FeedOptions options = new FeedOptions();
@@ -140,6 +139,7 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
             throw new IllegalArgumentException("Unsupported Operation: " + configuration.getOperationType());
         }
 
+        concurrencyControlSemaphore.acquire();
         LatencySubscriber<FeedResponse> latencySubscriber = new LatencySubscriber(baseSubscriber);
         latencySubscriber.context = latency.time();
         obs.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
