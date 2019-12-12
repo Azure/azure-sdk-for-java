@@ -24,7 +24,6 @@ public final class SyncToken {
     private final String id;
     private final String value;
     private final long sequenceNumber;
-    private final String syncTokenString;
 
     /**
      * Create an instance of SyncToken class.
@@ -35,11 +34,10 @@ public final class SyncToken {
      * Allows for better concurrency and client cache ability. The client may choose to use only token's last version,
      * since token versions are inclusive. Not required for requests.
      */
-    SyncToken(String id, String value, long sequenceNumber, String syncTokenString) {
+    private SyncToken(String id, String value, long sequenceNumber) {
         this.id = id;
         this.value = value;
         this.sequenceNumber = sequenceNumber;
-        this.syncTokenString = syncTokenString;
     }
 
     /**
@@ -87,7 +85,7 @@ public final class SyncToken {
                 return null;
             }
 
-            return new SyncToken(idParts[0], idParts[1], sequenceNumber, syncToken);
+            return new SyncToken(idParts[0], idParts[1], sequenceNumber);
         } catch (IllegalArgumentException ex) {
             logger.logExceptionAsWarning(new RuntimeException("Cannot parse sync token for invalid format.", ex));
         }
@@ -123,18 +121,6 @@ public final class SyncToken {
      */
     public long getSequenceNumber() {
         return sequenceNumber;
-    }
-
-    /**
-     * Get sync-token header in response.
-     *
-     * Response Sync-Token Header Syntax:
-     * <p>Sync-Token: <id>=<value>;sn=<sn></p>
-     *
-     * @return sync-token response header
-     */
-    public String getSyncTokenString() {
-        return syncTokenString;
     }
 }
 
