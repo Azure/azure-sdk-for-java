@@ -17,5 +17,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.DefaultCognitiveServices")
 @Fluent
-public final class DefaultCognitiveServices extends CognitiveServices {
+public final class DefaultCognitiveServicesAccount extends CognitiveServicesAccount {
 }

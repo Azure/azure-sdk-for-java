@@ -22,7 +22,6 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
     /**
      * Static value cosmosdb for DataSourceType.
      */
-
     public static final DataSourceType COSMOS = fromString("cosmosdb");
 
     /**

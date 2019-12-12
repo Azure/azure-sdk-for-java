@@ -3,7 +3,7 @@
 package com.azure.search;
 
 import com.azure.search.models.ConditionalSkill;
-import com.azure.search.models.DefaultCognitiveServices;
+import com.azure.search.models.DefaultCognitiveServicesAccount;
 import com.azure.search.models.EntityCategory;
 import com.azure.search.models.EntityRecognitionSkill;
 import com.azure.search.models.EntityRecognitionSkillLanguage;
@@ -360,7 +360,7 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
             .setName("cognitive-services-key-skillset")
             .setDescription("Skillset for testing")
             .setSkills(skills)
-            .setCognitiveServices(new DefaultCognitiveServices());
+            .setCognitiveServicesAccount(new DefaultCognitiveServicesAccount());
     }
 
     Skillset createTestSkillsetConditional() {

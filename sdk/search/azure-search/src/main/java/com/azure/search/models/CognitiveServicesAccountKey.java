@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.CognitiveServicesByKey")
 @Fluent
-public final class CognitiveServicesByKey extends CognitiveServices {
+public final class CognitiveServicesAccountKey extends CognitiveServicesAccount {
     /*
      * The key property.
      */
@@ -38,9 +38,9 @@ public final class CognitiveServicesByKey extends CognitiveServices {
      * Set the key property: The key property.
      *
      * @param key the key value to set.
-     * @return the CognitiveServicesByKey object itself.
+     * @return the CognitiveServicesAccountKey object itself.
      */
-    public CognitiveServicesByKey setKey(String key) {
+    public CognitiveServicesAccountKey setKey(String key) {
         this.key = key;
         return this;
     }

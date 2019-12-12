@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
-import com.azure.search.models.DefaultCognitiveServices;
+import com.azure.search.models.DefaultCognitiveServicesAccount;
 import com.azure.search.models.EntityCategory;
 import com.azure.search.models.InputFieldMappingEntry;
 import com.azure.search.models.KeyPhraseExtractionSkill;
@@ -379,7 +379,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .assertNext(result ->
                 result.forEach(res -> {
                     Assert.assertNotNull(res.getName());
-                    Assert.assertNull(res.getCognitiveServices());
+                    Assert.assertNull(res.getCognitiveServicesAccount());
                     Assert.assertNull(res.getDescription());
                     Assert.assertNull(res.getSkills());
                     Assert.assertNull(res.getETag());
@@ -532,7 +532,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         assert createdSkillset != null;
 
         // update Cognitive Service
-        createdSkillset.setCognitiveServices(new DefaultCognitiveServices().setDescription("description"));
+        createdSkillset.setCognitiveServicesAccount(new DefaultCognitiveServicesAccount().setDescription("description"));
 
         StepVerifier
             .create(client.createOrUpdateSkillset(createdSkillset))

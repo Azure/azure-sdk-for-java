@@ -37,7 +37,7 @@ public final class Skillset {
      * Details about cognitive services to be used when running skills.
      */
     @JsonProperty(value = "cognitiveServices")
-    private CognitiveServices cognitiveServices;
+    private CognitiveServicesAccount cognitiveServicesAccount;
 
     /*
      * The ETag of the skillset.
@@ -106,24 +106,25 @@ public final class Skillset {
     }
 
     /**
-     * Get the cognitiveServices property: Details about cognitive services to
-     * be used when running skills.
+     * Get the cognitiveServicesAccount property: Details about cognitive
+     * services to be used when running skills.
      *
-     * @return the cognitiveServices value.
+     * @return the cognitiveServicesAccount value.
      */
-    public CognitiveServices getCognitiveServices() {
-        return this.cognitiveServices;
+    public CognitiveServicesAccount getCognitiveServicesAccount() {
+        return this.cognitiveServicesAccount;
     }
 
     /**
-     * Set the cognitiveServices property: Details about cognitive services to
-     * be used when running skills.
+     * Set the cognitiveServicesAccount property: Details about cognitive
+     * services to be used when running skills.
      *
-     * @param cognitiveServices the cognitiveServices value to set.
+     * @param cognitiveServicesAccount the cognitiveServicesAccount value to
+     * set.
      * @return the Skillset object itself.
      */
-    public Skillset setCognitiveServices(CognitiveServices cognitiveServices) {
-        this.cognitiveServices = cognitiveServices;
+    public Skillset setCognitiveServicesAccount(CognitiveServicesAccount cognitiveServicesAccount) {
+        this.cognitiveServicesAccount = cognitiveServicesAccount;
         return this;
     }
 

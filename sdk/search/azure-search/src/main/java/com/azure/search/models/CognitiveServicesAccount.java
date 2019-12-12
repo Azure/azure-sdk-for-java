@@ -16,14 +16,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Abstract base class for describing any cognitive service resource attached
  * to the skillset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = CognitiveServices.class)
-@JsonTypeName("CognitiveServices")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = CognitiveServicesAccount.class)
+@JsonTypeName("CognitiveServicesAccount")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.DefaultCognitiveServices", value = DefaultCognitiveServices.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CognitiveServicesByKey", value = CognitiveServicesByKey.class)
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.DefaultCognitiveServices", value = DefaultCognitiveServicesAccount.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CognitiveServicesByKey", value = CognitiveServicesAccountKey.class)
 })
 @Fluent
-public class CognitiveServices {
+public class CognitiveServicesAccount {
     /*
      * The description property.
      */
@@ -43,9 +43,9 @@ public class CognitiveServices {
      * Set the description property: The description property.
      *
      * @param description the description value to set.
-     * @return the CognitiveServices object itself.
+     * @return the CognitiveServicesAccount object itself.
      */
-    public CognitiveServices setDescription(String description) {
+    public CognitiveServicesAccount setDescription(String description) {
         this.description = description;
         return this;
     }
