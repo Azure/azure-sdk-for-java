@@ -4,6 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.RequestConditions
+import com.azure.core.test.annotation.DoNotRecord
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -477,55 +478,55 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-//    @DoNotRecord
-//    def "Download file etag lock"() {
-//        setup:
-//        def file = getRandomFile(Constants.KB * 10)
-//        bc.uploadFromFile(file.toPath().toString(), true)
-//        def outFile = new File(testName + "")
-//        Files.deleteIfExists(file.toPath())
-//
-//        expect:
-//        def bac = new BlobClientBuilder()
-//            .pipeline(bc.getHttpPipeline())
-//            .endpoint(bc.getBlobUrl())
-//            .buildAsyncClient()
-//            .getBlockBlobAsyncClient()
-//
-//        /*
-//         * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
-//         * to change the ETag therefore failing the download.
-//         */
-//        def options = new ParallelTransferOptions(Constants.KB, null, null)
-//
-//        /*
-//         * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is
-//         * registered for onErrorDropped the error is logged at the ERROR level.
-//         *
-//         * onErrorDropped is triggered once the reactive stream has emitted one element, after that exceptions are
-//         * dropped.
-//         */
-//        Hooks.onErrorDropped({ ignored -> /* do nothing with it */ })
-//
-//        /*
-//         * When the download begins trigger an upload to overwrite the downloading blob after waiting 500 milliseconds
-//         * so that the download is able to get an ETag before it is changed.
-//         */
-//        StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
-//            .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(100)).subscribe() }))
-//            .verifyErrorSatisfies({
-//                assert it instanceof BlobStorageException
-//                assert ((BlobStorageException) it).getStatusCode() == 412
-//            })
-//
-//        // Give the file a chance to be deleted by the download operation before verifying its deletion
-//        sleep(100)
-//        !outFile.exists()
-//
-//        cleanup:
-//        file.delete()
-//        outFile.delete()
-//    }
+    @Requires({ liveMode() })
+    def "Download file etag lock"() {
+        setup:
+        def file = getRandomFile(Constants.KB * 10)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        Files.deleteIfExists(file.toPath())
+
+        expect:
+        def bac = new BlobClientBuilder()
+            .pipeline(bc.getHttpPipeline())
+            .endpoint(bc.getBlobUrl())
+            .buildAsyncClient()
+            .getBlockBlobAsyncClient()
+
+        /*
+         * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
+         * to change the ETag therefore failing the download.
+         */
+        def options = new ParallelTransferOptions(Constants.KB, null, null)
+
+        /*
+         * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is
+         * registered for onErrorDropped the error is logged at the ERROR level.
+         *
+         * onErrorDropped is triggered once the reactive stream has emitted one element, after that exceptions are
+         * dropped.
+         */
+        Hooks.onErrorDropped({ ignored -> /* do nothing with it */ })
+
+        /*
+         * When the download begins trigger an upload to overwrite the downloading blob after waiting 500 milliseconds
+         * so that the download is able to get an ETag before it is changed.
+         */
+        StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
+            .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(100)).subscribe() }))
+            .verifyErrorSatisfies({
+                assert it instanceof BlobStorageException
+                assert ((BlobStorageException) it).getStatusCode() == 412
+            })
+
+        // Give the file a chance to be deleted by the download operation before verifying its deletion
+        sleep(100)
+        !outFile.exists()
+
+        cleanup:
+        file.delete()
+        outFile.delete()
+    }
 
     @Requires({ liveMode() })
     @Unroll
