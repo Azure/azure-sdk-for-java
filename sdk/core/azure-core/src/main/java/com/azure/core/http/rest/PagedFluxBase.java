@@ -65,7 +65,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever,
                          Function<String, Mono<P>> nextPageRetriever) {
-        super(new Supplier<Function<String, Flux<P>>>() {
+        this(new PageRetrieverProvider<P>() {
             @Override
             public Function<String, Flux<P>> get() {
                 return continuationToken -> {
@@ -78,14 +78,18 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
     }
 
     /**
-     * Creates an instance of {@link PagedFluxBase}. The constructor takes in two arguments.
-     * The first argument is the provider that returns page retrieval Function. The second
-     * argument is the default prefetch.
+     * Creates an instance of {@link PagedFlux}. The constructor takes a provider, that when called should
+     * provides Page Retriever Function which accepts continuation token. The provider will be called for
+     * each Subscription to the PagedFlux instance. The Page Retriever Function can get called multiple
+     * times in serial fashion, each time after the completion of the Flux returned from the previous
+     * invocation. The final completion signal will be send to the downstream subscriber when the last
+     * Page emitted by the Flux returned by Page Continuation Function has {@code null} continuation token.
      *
-     * @param pageRetrieverProvider the Page Retrieval Provider
+     *
+     * @param provider the Page Retrieval Provider
      */
-    public PagedFluxBase(PageRetrieverProvider<P> pageRetrieverProvider) {
-        super(pageRetrieverProvider);
+    public PagedFluxBase(PageRetrieverProvider<P> provider) {
+        super(provider);
     }
 
     /**

@@ -6,8 +6,9 @@ package com.azure.core.util.paging;
 import reactor.core.publisher.Flux;
 
 /**
- * A contract that represents a Flux which provides the ability to operate on individual items in pages
- * of type {@link ContinuablePage}, also also provide ability to operate on individual pages.
+ * A contract that represents a Flux that provides the ability to operate on individual items
+ * in pages of type {@link ContinuablePage}, also provide ability to operate on individual
+ * pages.
  *
  * @param <O> the type of continuation option for byPage
  * @param <C> the type of continuation token

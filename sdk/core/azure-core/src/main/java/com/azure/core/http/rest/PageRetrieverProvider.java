@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.http.rest;
 
 import reactor.core.publisher.Flux;
@@ -6,7 +9,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Type represents a provider that when called return a Function to retrieve pages.
+ * Type represents a Provider that when called return a Function to retrieve pages.
  *
  * @param <P> the Page type.
  */
