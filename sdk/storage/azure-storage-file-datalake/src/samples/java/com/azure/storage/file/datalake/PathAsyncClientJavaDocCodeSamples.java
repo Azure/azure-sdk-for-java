@@ -125,6 +125,24 @@ public class PathAsyncClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippet for {@link DataLakePathAsyncClient#exists()}
+     */
+    public void existsCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.exists
+        client.exists().subscribe(response -> System.out.printf("Exists? %b%n", response));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.exists
+    }
+
+    /**
+     * Code snippet for {@link DataLakePathAsyncClient#existsWithResponse()}
+     */
+    public void existsWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse
+        client.existsWithResponse().subscribe(response -> System.out.printf("Exists? %b%n", response.getValue()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse
+    }
+
+    /**
      * Code snippets for {@link DataLakePathAsyncClient#setAccessControlList(List, String, String)}
      */
     public void setAccessControlCodeSnippets() {

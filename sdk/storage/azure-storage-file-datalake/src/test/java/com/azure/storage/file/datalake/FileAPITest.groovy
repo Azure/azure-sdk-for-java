@@ -68,6 +68,20 @@ class FileAPITest extends APISpec {
         thrown(StorageErrorException)
     }
 
+    def "Exists"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        fc.create()
+
+        then:
+        fc.exists()
+    }
+
+    def "Does not exist"() {
+        expect:
+        !fsc.getFileClient(generatePathName()).exists()
+    }
+
     @Unroll
     def "Create headers"() {
         // Create does not set md5
