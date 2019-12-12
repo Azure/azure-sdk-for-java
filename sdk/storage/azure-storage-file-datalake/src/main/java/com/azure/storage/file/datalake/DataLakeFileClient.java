@@ -189,7 +189,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
-     * By default this method will not overwrite existing data.
+     * <p>By default this method will not overwrite existing data.</p>
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
@@ -225,7 +225,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return Information about the created resource.
      */
     public PathInfo flush(long position, boolean overwrite) {
-        DataLakeRequestConditions requestConditions = null;
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
         if (!overwrite) {
             requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }

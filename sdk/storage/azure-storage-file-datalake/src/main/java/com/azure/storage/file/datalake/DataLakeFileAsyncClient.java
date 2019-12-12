@@ -218,7 +218,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
-     * By default this method will not overwrite existing data.
+     * <p>By default this method will not overwrite existing data.</p>
      *
      * <p><strong>Code Samples>Code Samples</strong></p>
      *
