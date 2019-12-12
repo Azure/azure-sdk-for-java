@@ -31,12 +31,12 @@ class RolloutImpl extends GroupableResourceCoreImpl<Rollout, RolloutInner, Rollo
         this.createOrUpdateParameter.withLocation(inner().location());
         this.createOrUpdateParameter.withTags(inner().getTags());
         return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.createOrUpdateParameter)
-            .map(new Func1<RolloutInner, RolloutInner>() {
-               @Override
-               public RolloutInner call(RolloutInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
+            .to(new Func1<Observable<RolloutRequestInner>, Observable<RolloutInner>>() {
+                @Override
+                public Observable<RolloutInner> call(Observable<RolloutRequestInner> rolloutRequestInnerObservable) {
+                    resetCreateUpdateParameters();
+                    return getInnerAsync();
+                }
             })
             .map(innerToFluentMap(this));
     }
@@ -45,12 +45,12 @@ class RolloutImpl extends GroupableResourceCoreImpl<Rollout, RolloutInner, Rollo
     public Observable<Rollout> updateResourceAsync() {
         RolloutsInner client = this.manager().inner().rollouts();
         return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.createOrUpdateParameter)
-            .map(new Func1<RolloutInner, RolloutInner>() {
-               @Override
-               public RolloutInner call(RolloutInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
+            .to(new Func1<Observable<RolloutRequestInner>, Observable<RolloutInner>>() {
+                @Override
+                public Observable<RolloutInner> call(Observable<RolloutRequestInner> rolloutRequestInnerObservable) {
+                    resetCreateUpdateParameters();
+                    return getInnerAsync();
+                }
             })
             .map(innerToFluentMap(this));
     }
