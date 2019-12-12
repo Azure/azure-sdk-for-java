@@ -354,7 +354,7 @@ public class DataLakePathAsyncClient {
         try {
             return this.blockBlobAsyncClient.setMetadataWithResponse(metadata,
                 Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -402,7 +402,7 @@ public class DataLakePathAsyncClient {
         try {
             return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
                 Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -444,7 +444,7 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathProperties>> getPropertiesWithResponse(DataLakeRequestConditions requestConditions) {
         try {
             return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -479,8 +479,8 @@ public class DataLakePathAsyncClient {
      */
     public Mono<Response<Boolean>> existsWithResponse() {
         try {
-            // TODO (gapra) : Once datalake error mapping is merged, add onErrorMap
-            return blockBlobAsyncClient.existsWithResponse();
+            return blockBlobAsyncClient.existsWithResponse()
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

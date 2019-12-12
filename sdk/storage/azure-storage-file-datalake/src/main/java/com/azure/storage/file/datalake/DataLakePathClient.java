@@ -459,8 +459,8 @@ public class DataLakePathClient {
      * @return true if the path exists, false if it doesn't
      */
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
-        // TODO (gapra) : Once error mapping is merged add error mapping
-        return blockBlobClient.existsWithResponse(timeout, context);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blockBlobClient.existsWithResponse(timeout, context), logger);
     }
 
     /**
