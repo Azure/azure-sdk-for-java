@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
 import com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
