@@ -64,9 +64,7 @@ public class BasicDemo {
         }
 
         createAndReplaceItem();
-
         queryItems();
-
         queryWithContinuationToken();
 
         //Close client
