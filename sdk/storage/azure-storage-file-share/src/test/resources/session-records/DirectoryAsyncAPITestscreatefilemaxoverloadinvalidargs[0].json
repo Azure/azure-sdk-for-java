@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs97512b51c5a3a7d5?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs90418e407a003aa2?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "49bcf77a-387f-4db8-9094-6376c6009ac6"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "90c346ec-a185-4087-a5fa-d4c4829073d3"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D778504D511C0A",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:18 GMT",
+      "ETag" : "0x8D77F24EF0FC3AE",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:30 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "660baf3a-401a-0075-7539-aab7cd000000",
-      "Date" : "Wed, 04 Dec 2019 00:24:18 GMT",
-      "x-ms-client-request-id" : "49bcf77a-387f-4db8-9094-6376c6009ac6"
+      "x-ms-request-id" : "3d95067d-a01a-00fc-2a0d-b10ee9000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:29 GMT",
+      "x-ms-client-request-id" : "90c346ec-a185-4087-a5fa-d4c4829073d3"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs97512b51c5a3a7d5/createfilemaxoverloadinvalidargs754755cef13a1777?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs90418e407a003aa2/createfilemaxoverloadinvalidargs075596e8d98ba4d9?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "4ca916c7-64b0-4783-b725-14770f4a2b67"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9b72ea94-8e1d-48d7-bc1b-c4dfca394fdb"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-12-04T00:24:18.6460393Z",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:18 GMT",
+      "x-ms-file-creation-time" : "2019-12-12T17:01:30.3120869Z",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:30 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Dec 2019 00:24:18 GMT",
-      "ETag" : "0x8D778504D56B8E9",
+      "Date" : "Thu, 12 Dec 2019 17:01:29 GMT",
+      "ETag" : "0x8D77F24EF186FE5",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-12-04T00:24:18.6460393Z",
+      "x-ms-file-change-time" : "2019-12-12T17:01:30.3120869Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "660baf3c-401a-0075-7639-aab7cd000000",
-      "x-ms-client-request-id" : "4ca916c7-64b0-4783-b725-14770f4a2b67",
-      "x-ms-file-last-write-time" : "2019-12-04T00:24:18.6460393Z"
+      "x-ms-request-id" : "3d95067f-a01a-00fc-2b0d-b10ee9000000",
+      "x-ms-client-request-id" : "9b72ea94-8e1d-48d7-bc1b-c4dfca394fdb",
+      "x-ms-file-last-write-time" : "2019-12-12T17:01:30.3120869Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs97512b51c5a3a7d5/createfilemaxoverloadinvalidargs754755cef13a1777%2ftestfile:",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs90418e407a003aa2/createfilemaxoverloadinvalidargs075596e8d98ba4d9%2ftestfile:",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "775ec8a5-e6b4-4c2f-bd90-1baa04df14f1"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "cd6f18d0-22d4-424c-b29d-134c3ab76406"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -64,13 +64,53 @@
       "retry-after" : "0",
       "Content-Length" : "243",
       "StatusCode" : "400",
-      "x-ms-request-id" : "660baf3d-401a-0075-7739-aab7cd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:660baf3d-401a-0075-7739-aab7cd000000\nTime:2019-12-04T00:24:18.6943341Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:24:18 GMT",
-      "x-ms-client-request-id" : "775ec8a5-e6b4-4c2f-bd90-1baa04df14f1",
+      "x-ms-request-id" : "3d950681-a01a-00fc-2d0d-b10ee9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:3d950681-a01a-00fc-2d0d-b10ee9000000\nTime:2019-12-12T17:01:30.3533440Z</Message></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:01:30 GMT",
+      "x-ms-client-request-id" : "cd6f18d0-22d4-424c-b29d-134c3ab76406",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=createfilemaxoverloadinvalidargs&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d71f0b70-d76b-4c5a-bf57-d9c9fcc1f196"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "3d950683-a01a-00fc-2f0d-b10ee9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>createfilemaxoverloadinvalidargs</Prefix><Shares><Share><Name>createfilemaxoverloadinvalidargs90418e407a003aa2</Name><Properties><Last-Modified>Thu, 12 Dec 2019 17:01:30 GMT</Last-Modified><Etag>\"0x8D77F24EF0FC3AE\"</Etag><Quota>5120</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:01:30 GMT",
+      "x-ms-client-request-id" : "d71f0b70-d76b-4c5a-bf57-d9c9fcc1f196",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs90418e407a003aa2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "93937616-419d-4290-96ec-1ebea7835320"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "3d950684-a01a-00fc-300d-b10ee9000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:30 GMT",
+      "x-ms-client-request-id" : "93937616-419d-4290-96ec-1ebea7835320"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "createfilemaxoverloadinvalidargs97512b51c5a3a7d5", "createfilemaxoverloadinvalidargs754755cef13a1777" ]
+  "variables" : [ "createfilemaxoverloadinvalidargs90418e407a003aa2", "createfilemaxoverloadinvalidargs075596e8d98ba4d9" ]
 }

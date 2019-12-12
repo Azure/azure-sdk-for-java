@@ -12,6 +12,7 @@ import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
 import spock.lang.Unroll
 
+import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -142,13 +143,15 @@ class DirectoryAPITests extends APISpec {
     def "Create directory permission and key error"() {
         when:
         FileSmbProperties properties = new FileSmbProperties().setFilePermissionKey(filePermissionKey)
+
+        def permission = useValidPermission ? filePermission : new String(getRandomByteArray(9 * Constants.KB), StandardCharsets.UTF_8)
         primaryDirectoryClient.createWithResponse(properties, permission, null, null, null)
         then:
         thrown(IllegalArgumentException)
         where:
-        filePermissionKey   | permission
-        "filePermissionKey" | filePermission
-        null                | new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))
+        filePermissionKey   | useValidPermission
+        "filePermissionKey" | true
+        null                | false
     }
 
     def "Delete directory"() {
@@ -237,15 +240,16 @@ class DirectoryAPITests extends APISpec {
         when:
         FileSmbProperties properties = new FileSmbProperties().setFilePermissionKey(filePermissionKey)
         primaryDirectoryClient.create()
+        def permission = useValidPermission ? filePermission : new String(getRandomByteArray(9 * Constants.KB), StandardCharsets.UTF_8)
         primaryDirectoryClient.setPropertiesWithResponse(properties, permission, null, null)
 
         then:
         thrown(IllegalArgumentException)
 
         where:
-        filePermissionKey   | permission
-        "filePermissionKey" | filePermission
-        null                | new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))
+        filePermissionKey   | useValidPermission
+        "filePermissionKey" | true
+        null                | false
     }
 
     def "Set metadata"() {

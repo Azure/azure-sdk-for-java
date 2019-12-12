@@ -1,0 +1,87 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/deletequeuequeueserviceapitestsdeletequeuee25200518bfcb",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4155e003-d700-4a9f-911f-50592b0da2cf"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "244a0bf0-6003-00e1-2213-b1d703000000",
+      "Date" : "Thu, 12 Dec 2019 17:45:30 GMT",
+      "x-ms-client-request-id" : "4155e003-d700-4a9f-911f-50592b0da2cf"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/deletequeuequeueserviceapitestsdeletequeuee25200518bfcb",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6ee49da2-8917-4778-889a-f593ab4d02ca"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "244a0bfd-6003-00e1-2d13-b1d703000000",
+      "Date" : "Thu, 12 Dec 2019 17:45:30 GMT",
+      "x-ms-client-request-id" : "6ee49da2-8917-4778-889a-f593ab4d02ca"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/deletequeuequeueserviceapitestsdeletequeuee25200518bfcb/messages",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "da3dd747-c56a-4a04-aa62-aaa9165f7a34",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "QueueNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "244a0c0c-6003-00e1-3913-b1d703000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:244a0c0c-6003-00e1-3913-b1d703000000\nTime:2019-12-12T17:45:31.0448830Z</Message></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:45:30 GMT",
+      "x-ms-client-request-id" : "da3dd747-c56a-4a04-aa62-aaa9165f7a34",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=deletequeue&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4f3ad12f-33a3-4ee7-abe9-a99cf30d6b36"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "244a0c17-6003-00e1-4413-b1d703000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>deletequeue</Prefix><Queues /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:45:30 GMT",
+      "x-ms-client-request-id" : "4f3ad12f-33a3-4ee7-abe9-a99cf30d6b36",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "deletequeuequeueserviceapitestsdeletequeuee25200518bfcb" ]
+}

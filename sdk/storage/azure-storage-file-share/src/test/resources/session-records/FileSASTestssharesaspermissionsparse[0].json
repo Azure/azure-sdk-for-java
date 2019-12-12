@@ -1,4 +1,25 @@
 {
-  "networkCallRecords" : [ ],
-  "variables" : [ "sharesaspermissionsparse035623bc19c3ce34f48d" ]
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=sharesaspermissionsparse&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d6e5055f-3dc6-403e-9adf-e199cd542bfa"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "6fcb6852-f01a-004e-4b0d-b1f593000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>sharesaspermissionsparse</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:02:08 GMT",
+      "x-ms-client-request-id" : "d6e5055f-3dc6-403e-9adf-e199cd542bfa",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "sharesaspermissionsparse7033465732afebbaf4dd" ]
 }

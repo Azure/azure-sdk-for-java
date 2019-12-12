@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setquotaerrorshareasyncapitestssetquotaerrorc9c97392cb1a?restype=share&comp=properties",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setquotaerrorshareasyncapitestssetquotaerror4a05937947f9?restype=share&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "421fd1fa-aaca-4b6f-a07e-69c37d482ee1"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3bd1f278-a287-4164-a920-30dff1ea1f26"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,34 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "0ec7356f-501a-0025-6739-aaa8c5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:0ec7356f-501a-0025-6739-aaa8c5000000\nTime:2019-12-04T00:25:09.2982727Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:25:08 GMT",
-      "x-ms-client-request-id" : "421fd1fa-aaca-4b6f-a07e-69c37d482ee1",
+      "x-ms-request-id" : "bd8bba1c-f01a-0089-110e-b18952000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:bd8bba1c-f01a-0089-110e-b18952000000\nTime:2019-12-12T17:02:59.8207117Z</Message></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:02:58 GMT",
+      "x-ms-client-request-id" : "3bd1f278-a287-4164-a920-30dff1ea1f26",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=setquotaerror&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "82f85e19-b1f4-41ab-9916-7fb19ab47e0e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "bd8bba23-f01a-0089-180e-b18952000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>setquotaerror</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:02:59 GMT",
+      "x-ms-client-request-id" : "82f85e19-b1f4-41ab-9916-7fb19ab47e0e",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "setquotaerrorshareasyncapitestssetquotaerrorc9c97392cb1a" ]
+  "variables" : [ "setquotaerrorshareasyncapitestssetquotaerror4a05937947f9" ]
 }

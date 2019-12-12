@@ -269,13 +269,14 @@ class QueueSASTests extends APISpec {
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()
-        sc.createQueue("queue")
+        def queueName = generateRandomName(16)
+        sc.createQueue(queueName)
 
         then:
         notThrown(QueueStorageException)
 
         when:
-        sc.deleteQueue("queue")
+        sc.deleteQueue(queueName)
 
         then:
         notThrown(QueueStorageException)
@@ -338,13 +339,13 @@ class QueueSASTests extends APISpec {
             .generateSasQueryParameters(primaryCredential)
             .encode()
 
-        def queueName = testResourceName.randomName(methodName, 60)
+        def queueName = generateRandomName(60)
 
         when:
-        def sc = getServiceClientBuilder(null, primaryQueueServiceClient.getQueueServiceUrl() + "?" + sas, null).buildClient()
+        def sc = sasQueueServiceBuilderHelper(primaryQueueServiceClient.getQueueServiceUrl() + "?" + sas).buildClient()
         sc.createQueue(queueName)
 
-        def qc = getQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl() + "/" + queueName + "?" + sas).buildClient()
+        def qc = sasQueueBuilderHelper(primaryQueueServiceClient.getQueueServiceUrl() + "/" + queueName + "?" + sas).buildClient()
         qc.delete()
 
         then:

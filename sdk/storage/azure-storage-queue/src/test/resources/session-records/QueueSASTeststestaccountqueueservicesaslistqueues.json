@@ -1,4 +1,26 @@
 {
-  "networkCallRecords" : [ ],
-  "variables" : [ "testaccountqueueservicesaslistqueues99324a6ab7227f", "2019-12-03T23:35:20.018108Z" ]
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=testaccountqueueservicesaslistqueues&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f3364c92-8686-4730-8081-95415952c911"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "244a0abf-6003-00e1-1513-b1d703000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>testaccountqueueservicesaslistqueues</Prefix><Queues /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:45:29 GMT",
+      "x-ms-client-request-id" : "f3364c92-8686-4730-8081-95415952c911",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "testaccountqueueservicesaslistqueues747690f9c9af01", "2019-12-12T17:45:29.799716400Z" ]
 }

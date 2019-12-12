@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsharewithinvalidargs3992586bb5ad48aa445?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsharewithinvalidargs9846756843b3f4b2644?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "bab159f0-3b23-4082-9082-7d5e8295221a"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "120a0dd1-9103-46a5-9d61-0c8833e08612"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,34 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "0ec734cc-501a-0025-0139-aaa8c5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:0ec734cc-501a-0025-0139-aaa8c5000000\nTime:2019-12-04T00:25:02.5887988Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:25:02 GMT",
-      "x-ms-client-request-id" : "bab159f0-3b23-4082-9082-7d5e8295221a",
+      "x-ms-request-id" : "bd8bb31f-f01a-0089-7d0d-b18952000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:bd8bb31f-f01a-0089-7d0d-b18952000000\nTime:2019-12-12T17:02:43.4930389Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:02:42 GMT",
+      "x-ms-client-request-id" : "120a0dd1-9103-46a5-9d61-0c8833e08612",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=createsharewithinvalidargs&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f9c89619-fe8e-4ff7-a216-b89e84de1eb3"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "bd8bb322-f01a-0089-800d-b18952000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>createsharewithinvalidargs</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:02:42 GMT",
+      "x-ms-client-request-id" : "f9c89619-fe8e-4ff7-a216-b89e84de1eb3",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "createsharewithinvalidargs3992586bb5ad48aa445" ]
+  "variables" : [ "createsharewithinvalidargs9846756843b3f4b2644" ]
 }

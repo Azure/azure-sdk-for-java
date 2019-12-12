@@ -6,11 +6,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
@@ -72,7 +71,8 @@ public final class PlaybackClient implements HttpClient {
         }
 
         if (networkCallRecord.getException() != null) {
-            throw logger.logExceptionAsWarning(Exceptions.propagate(networkCallRecord.getException().get()));
+            return Mono.error(networkCallRecord.getException().get());
+            // throw logger.logExceptionAsWarning(Exceptions.propagate(networkCallRecord.getException().get()));
         }
 
         // Overwrite the request header if any.

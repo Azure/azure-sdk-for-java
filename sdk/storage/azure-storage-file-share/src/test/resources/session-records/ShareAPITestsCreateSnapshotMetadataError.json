@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsnapshotmetadataerror80263992b9e66b74149?restype=share&comp=snapshot",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsnapshotmetadataerror51790dffd2bf36faf46?restype=share&comp=snapshot",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "7386e6ce-307d-42af-95ac-610559aebc97"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e2e68a31-b45f-4e5f-92cb-81a9fcfc436d"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,34 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "0ec734de-501a-0025-0b39-aaa8c5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:0ec734de-501a-0025-0b39-aaa8c5000000\nTime:2019-12-04T00:25:03.1443361Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:25:02 GMT",
-      "x-ms-client-request-id" : "7386e6ce-307d-42af-95ac-610559aebc97",
+      "x-ms-request-id" : "bd8bb401-f01a-0089-500d-b18952000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:bd8bb401-f01a-0089-500d-b18952000000\nTime:2019-12-12T17:02:46.4548834Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:02:45 GMT",
+      "x-ms-client-request-id" : "e2e68a31-b45f-4e5f-92cb-81a9fcfc436d",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=createsnapshotmetadataerror&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "c8d3f39e-c4a1-4456-9188-d2ebb75e61cd"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "bd8bb404-f01a-0089-530d-b18952000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>createsnapshotmetadataerror</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:02:45 GMT",
+      "x-ms-client-request-id" : "c8d3f39e-c4a1-4456-9188-d2ebb75e61cd",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "createsnapshotmetadataerror80263992b9e66b74149" ]
+  "variables" : [ "createsnapshotmetadataerror51790dffd2bf36faf46" ]
 }

@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/create?restype=share&sv=2019-02-02&ss=f&srt=sco&se=2019-12-05T00%3A24%3A51Z&sp=rdc&sig=REDACTED",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/accountsasnetworkcreatedeleteshare49446f28ce46420?restype=share&sv=2019-02-02&ss=f&srt=sco&se=2019-12-13T17%3A02%3A10Z&sp=rdc&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "35d066ec-e57d-4620-89be-7dfc3c87cad0"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "c4123580-58f6-4dc1-94ff-55b4f65c11d9"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7785061313206",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:51 GMT",
+      "ETag" : "0x8D77F2506E6C32B",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:02:10 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "0ec733fd-501a-0025-7f39-aaa8c5000000",
-      "Date" : "Wed, 04 Dec 2019 00:24:51 GMT",
-      "x-ms-client-request-id" : "35d066ec-e57d-4620-89be-7dfc3c87cad0"
+      "x-ms-request-id" : "6fcb6872-f01a-004e-680d-b1f593000000",
+      "Date" : "Thu, 12 Dec 2019 17:02:09 GMT",
+      "x-ms-client-request-id" : "c4123580-58f6-4dc1-94ff-55b4f65c11d9"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/create?restype=share&sv=2019-02-02&ss=f&srt=sco&se=2019-12-05T00%3A24%3A51Z&sp=rdc&sig=REDACTED",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/accountsasnetworkcreatedeleteshare49446f28ce46420?restype=share&sv=2019-02-02&ss=f&srt=sco&se=2019-12-13T17%3A02%3A10Z&sp=rdc&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "9c3c5e33-2b87-459d-8301-ef6f59ed96d0"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "54deee3b-001a-4850-87be-b997420b1339"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -34,11 +34,32 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "0ec733ff-501a-0025-8039-aaa8c5000000",
-      "Date" : "Wed, 04 Dec 2019 00:24:51 GMT",
-      "x-ms-client-request-id" : "9c3c5e33-2b87-459d-8301-ef6f59ed96d0"
+      "x-ms-request-id" : "6fcb6874-f01a-004e-690d-b1f593000000",
+      "Date" : "Thu, 12 Dec 2019 17:02:09 GMT",
+      "x-ms-client-request-id" : "54deee3b-001a-4850-87be-b997420b1339"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=accountsasnetworkcreatedeleteshare&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7509e150-3017-4eac-9f3b-9a802935e96d"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "6fcb6875-f01a-004e-6a0d-b1f593000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>accountsasnetworkcreatedeleteshare</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:02:09 GMT",
+      "x-ms-client-request-id" : "7509e150-3017-4eac-9f3b-9a802935e96d",
+      "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "accountsasnetworkcreatedeleteshare246438ab1f6bc25", "2019-12-04T00:24:51.900279200Z" ]
+  "variables" : [ "accountsasnetworkcreatedeleteshare72404ff82d2d489", "2019-12-12T17:02:10.085520700Z", "accountsasnetworkcreatedeleteshare49446f28ce46420" ]
 }

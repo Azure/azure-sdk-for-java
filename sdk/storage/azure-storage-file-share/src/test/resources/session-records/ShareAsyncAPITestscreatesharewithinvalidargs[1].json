@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsharewithinvalidargs38824c2c249374df54e?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsharewithinvalidargs71931b88237a7c5a24b?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "10efe4ab-036b-4ff8-9f75-5aed0fd4c0d3"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "0cf6e3f0-d4a7-4b85-ae0d-d26c895442f0"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,34 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "0ec73553-501a-0025-5939-aaa8c5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:0ec73553-501a-0025-5939-aaa8c5000000\nTime:2019-12-04T00:25:08.2782878Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:25:07 GMT",
-      "x-ms-client-request-id" : "10efe4ab-036b-4ff8-9f75-5aed0fd4c0d3",
+      "x-ms-request-id" : "bd8bb99b-f01a-0089-1d0e-b18952000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:bd8bb99b-f01a-0089-1d0e-b18952000000\nTime:2019-12-12T17:02:58.7286588Z</Message></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:02:57 GMT",
+      "x-ms-client-request-id" : "0cf6e3f0-d4a7-4b85-ae0d-d26c895442f0",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=createsharewithinvalidargs&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7f386d8b-895e-46ef-95e6-c6a10b2b0fc6"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "bd8bb99e-f01a-0089-200e-b18952000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>createsharewithinvalidargs</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:02:57 GMT",
+      "x-ms-client-request-id" : "7f386d8b-895e-46ef-95e6-c6a10b2b0fc6",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "createsharewithinvalidargs38824c2c249374df54e" ]
+  "variables" : [ "createsharewithinvalidargs71931b88237a7c5a24b" ]
 }

@@ -156,7 +156,7 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "List empty queues"() {
         when:
-        def listQueueVerifier = StepVerifier.create((primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions())))
+        def listQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions().setPrefix(testName)))
         then:
         listQueueVerifier
             .expectNextCount(0)

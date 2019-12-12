@@ -23,7 +23,7 @@ class StorageFileInputOutputStreamTests extends APISpec {
         when:
         length = 30 * Constants.MB
         fileClient.create(length)
-        byte[] randomBytes = FileTestHelper.getRandomBuffer(length)
+        byte[] randomBytes = getRandomByteArray(length)
 
         StorageFileOutputStream outStream = fileClient.getFileOutputStream()
         outStream.write(randomBytes)
@@ -50,7 +50,7 @@ class StorageFileInputOutputStreamTests extends APISpec {
         when:
         length = 7 * Constants.MB
         fileClient.create(length)
-        byte[] randomBytes = FileTestHelper.getRandomBuffer(9 * Constants.MB)
+        byte[] randomBytes = getRandomByteArray(9 * Constants.MB)
 
         StorageFileOutputStream outStream = fileClient.getFileOutputStream()
         outStream.write(randomBytes, 2 * Constants.MB, length)

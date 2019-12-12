@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/sethttpheaderserrorfileapitestssethttpheaderserror261650677?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/sethttpheaderserrorfileapitestssethttpheaderserror4ae028330?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "02069d06-f541-4fb7-9dff-6fc9dc347582"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e2590967-af47-43b4-aa3e-74ed385aa0ec"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7785056A024A6",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:34 GMT",
+      "ETag" : "0x8D77F24F5706EBE",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:40 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "0812557a-201a-0021-5139-aa5d47000000",
-      "Date" : "Wed, 04 Dec 2019 00:24:33 GMT",
-      "x-ms-client-request-id" : "02069d06-f541-4fb7-9dff-6fc9dc347582"
+      "x-ms-request-id" : "c7e8526b-601a-00ea-6a0d-b1cf77000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:40 GMT",
+      "x-ms-client-request-id" : "e2590967-af47-43b4-aa3e-74ed385aa0ec"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/sethttpheaderserrorfileapitestssethttpheaderserror261650677/sethttpheaderserrorfileapitestssethttpheaderserror261335960",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/sethttpheaderserrorfileapitestssethttpheaderserror4ae028330/sethttpheaderserrorfileapitestssethttpheaderserror4ae70908d",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "a996025a-1314-40fd-a3d2-f289281e2702"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b6e9f74b-729d-4bef-9fba-f4e5e1235537"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-12-04T00:24:34.2704371Z",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:34 GMT",
+      "x-ms-file-creation-time" : "2019-12-12T17:01:41.0042619Z",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:41 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Dec 2019 00:24:33 GMT",
-      "ETag" : "0x8D7785056A6D0F3",
+      "Date" : "Thu, 12 Dec 2019 17:01:40 GMT",
+      "ETag" : "0x8D77F24F577EEFB",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2019-12-04T00:24:34.2704371Z",
+      "x-ms-file-change-time" : "2019-12-12T17:01:41.0042619Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "0812557c-201a-0021-5239-aa5d47000000",
-      "x-ms-client-request-id" : "a996025a-1314-40fd-a3d2-f289281e2702",
-      "x-ms-file-last-write-time" : "2019-12-04T00:24:34.2704371Z"
+      "x-ms-request-id" : "c7e8526d-601a-00ea-6b0d-b1cf77000000",
+      "x-ms-client-request-id" : "b6e9f74b-729d-4bef-9fba-f4e5e1235537",
+      "x-ms-file-last-write-time" : "2019-12-12T17:01:41.0042619Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/sethttpheaderserrorfileapitestssethttpheaderserror261650677/sethttpheaderserrorfileapitestssethttpheaderserror261335960?comp=properties",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/sethttpheaderserrorfileapitestssethttpheaderserror4ae028330/sethttpheaderserrorfileapitestssethttpheaderserror4ae70908d?comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "0ec4a3d9-afa6-4ff3-bbb2-c568b05192fe"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4709e533-e6c0-48de-9c48-e6378843d2cf"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -64,13 +64,53 @@
       "retry-after" : "0",
       "Content-Length" : "236",
       "StatusCode" : "400",
-      "x-ms-request-id" : "0812557d-201a-0021-5339-aa5d47000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:0812557d-201a-0021-5339-aa5d47000000\nTime:2019-12-04T00:24:34.3007756Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:24:33 GMT",
-      "x-ms-client-request-id" : "0ec4a3d9-afa6-4ff3-bbb2-c568b05192fe",
+      "x-ms-request-id" : "c7e8526e-601a-00ea-6c0d-b1cf77000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:c7e8526e-601a-00ea-6c0d-b1cf77000000\nTime:2019-12-12T17:01:41.0371817Z</Message></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:01:40 GMT",
+      "x-ms-client-request-id" : "4709e533-e6c0-48de-9c48-e6378843d2cf",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=sethttpheaderserror&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "116e8a3b-280d-4798-af4e-7ae9d7f6355e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "c7e8526f-601a-00ea-6d0d-b1cf77000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>sethttpheaderserror</Prefix><Shares><Share><Name>sethttpheaderserrorfileapitestssethttpheaderserror4ae028330</Name><Properties><Last-Modified>Thu, 12 Dec 2019 17:01:40 GMT</Last-Modified><Etag>\"0x8D77F24F5706EBE\"</Etag><Quota>5120</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:01:40 GMT",
+      "x-ms-client-request-id" : "116e8a3b-280d-4798-af4e-7ae9d7f6355e",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/sethttpheaderserrorfileapitestssethttpheaderserror4ae028330?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "95cd9c58-cd0e-44e7-950b-ec7bd48b042e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "c7e85270-601a-00ea-6e0d-b1cf77000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:40 GMT",
+      "x-ms-client-request-id" : "95cd9c58-cd0e-44e7-950b-ec7bd48b042e"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "sethttpheaderserrorfileapitestssethttpheaderserror261650677", "sethttpheaderserrorfileapitestssethttpheaderserror261335960" ]
+  "variables" : [ "sethttpheaderserrorfileapitestssethttpheaderserror4ae028330", "sethttpheaderserrorfileapitestssethttpheaderserror4ae70908d" ]
 }

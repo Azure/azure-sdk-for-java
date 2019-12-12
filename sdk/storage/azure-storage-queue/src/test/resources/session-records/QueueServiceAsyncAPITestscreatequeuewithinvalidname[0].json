@@ -4,8 +4,8 @@
     "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/a_b",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "a1cf9fc0-7b3b-4468-94a4-2841c3e7ccc6"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ad6268ef-3488-4c7b-9132-f01c5fe76cde"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,10 +14,32 @@
       "retry-after" : "0",
       "Content-Length" : "243",
       "StatusCode" : "400",
-      "x-ms-request-id" : "62cdc42d-0003-0072-0332-aa4148000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:62cdc42d-0003-0072-0332-aa4148000000\nTime:2019-12-03T23:35:27.3872790Z</Message></Error>",
-      "Date" : "Tue, 03 Dec 2019 23:35:26 GMT",
-      "x-ms-client-request-id" : "a1cf9fc0-7b3b-4468-94a4-2841c3e7ccc6",
+      "x-ms-request-id" : "244a1261-6003-00e1-6913-b1d703000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:244a1261-6003-00e1-6913-b1d703000000\nTime:2019-12-12T17:45:37.1456584Z</Message></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:45:36 GMT",
+      "x-ms-client-request-id" : "ad6268ef-3488-4c7b-9132-f01c5fe76cde",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=createqueuewithinvalidname&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7cd0c4c0-96b5-425d-9023-b5c9fc28d424"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "b834efc5-b003-012b-7013-b1029b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>createqueuewithinvalidname</Prefix><Queues /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:45:36 GMT",
+      "x-ms-client-request-id" : "7cd0c4c0-96b5-425d-9023-b5c9fc28d424",
       "Content-Type" : "application/xml"
     },
     "Exception" : null

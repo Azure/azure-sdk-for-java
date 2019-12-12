@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/getpermissionerrorshareapitestsgetpermissionerror3ab176631?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/getpermissionerrorshareapitestsgetpermissionerrore4482881e?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "6c40a731-14ac-40c1-bfd0-c71f3d873845"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b56c2346-7fde-47a6-a988-c6228aa81a6c"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D778506A66AA19",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:25:07 GMT",
+      "ETag" : "0x8D77F25233BDC18",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:02:57 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "0ec73544-501a-0025-5139-aaa8c5000000",
-      "Date" : "Wed, 04 Dec 2019 00:25:06 GMT",
-      "x-ms-client-request-id" : "6c40a731-14ac-40c1-bfd0-c71f3d873845"
+      "x-ms-request-id" : "bd8bb91a-f01a-0089-260e-b18952000000",
+      "Date" : "Thu, 12 Dec 2019 17:02:56 GMT",
+      "x-ms-client-request-id" : "b56c2346-7fde-47a6-a988-c6228aa81a6c"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/getpermissionerrorshareapitestsgetpermissionerror3ab176631?restype=share&comp=filepermission",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/getpermissionerrorshareapitestsgetpermissionerrore4482881e?restype=share&comp=filepermission",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "0722dd1d-1053-4e20-877f-26dc09ccf881"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "bcd90951-da01-4906-be10-cd180899a44d"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -35,13 +35,53 @@
       "retry-after" : "0",
       "Content-Length" : "335",
       "StatusCode" : "400",
-      "x-ms-request-id" : "0ec73546-501a-0025-5239-aaa8c5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:0ec73546-501a-0025-5239-aaa8c5000000\nTime:2019-12-04T00:25:07.4394772Z</Message><HeaderName>x-ms-file-permission-key</HeaderName><HeaderValue>abcde</HeaderValue></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:25:06 GMT",
-      "x-ms-client-request-id" : "0722dd1d-1053-4e20-877f-26dc09ccf881",
+      "x-ms-request-id" : "bd8bb91f-f01a-0089-2a0e-b18952000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:bd8bb91f-f01a-0089-2a0e-b18952000000\nTime:2019-12-12T17:02:57.8177867Z</Message><HeaderName>x-ms-file-permission-key</HeaderName><HeaderValue>abcde</HeaderValue></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:02:56 GMT",
+      "x-ms-client-request-id" : "bcd90951-da01-4906-be10-cd180899a44d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=getpermissionerror&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "09cba651-4f8e-4677-b5fb-b94dcf618af4"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "bd8bb923-f01a-0089-2e0e-b18952000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>getpermissionerror</Prefix><Shares><Share><Name>getpermissionerrorshareapitestsgetpermissionerrore4482881e</Name><Properties><Last-Modified>Thu, 12 Dec 2019 17:02:57 GMT</Last-Modified><Etag>\"0x8D77F25233BDC18\"</Etag><Quota>5120</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:02:57 GMT",
+      "x-ms-client-request-id" : "09cba651-4f8e-4677-b5fb-b94dcf618af4",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/getpermissionerrorshareapitestsgetpermissionerrore4482881e?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "aa1ea675-ae63-49c4-ad7f-b9cb8d72511e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "bd8bb926-f01a-0089-310e-b18952000000",
+      "Date" : "Thu, 12 Dec 2019 17:02:57 GMT",
+      "x-ms-client-request-id" : "aa1ea675-ae63-49c4-ad7f-b9cb8d72511e"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "getpermissionerrorshareapitestsgetpermissionerror3ab176631" ]
+  "variables" : [ "getpermissionerrorshareapitestsgetpermissionerrore4482881e" ]
 }

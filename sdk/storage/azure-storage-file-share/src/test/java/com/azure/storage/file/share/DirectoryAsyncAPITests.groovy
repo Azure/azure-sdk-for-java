@@ -220,7 +220,7 @@ class DirectoryAsyncAPITests extends APISpec {
             assert it instanceof IllegalArgumentException
         }
         when:
-        setPropertiesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.setProperties(null, new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))))
+        setPropertiesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.setProperties(null, new String(getRandomByteArray(9 * Constants.KB))))
         then:
         setPropertiesVerifier.verifyErrorSatisfies {
             assert it instanceof IllegalArgumentException

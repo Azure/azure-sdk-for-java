@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deletesharefileserviceasyncapitestsdeleteshare16462174ded?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deletesharefileserviceasyncapitestsdeleteshare63d18487699?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "343a163c-c553-4518-8360-1e5084a2569f"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ca14fe7b-a8b2-4bfb-b931-431ba7cbf89d"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7785065745609",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:59 GMT",
+      "ETag" : "0x8D77F250CDC14C6",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:02:20 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "0ec7346f-501a-0025-4839-aaa8c5000000",
-      "Date" : "Wed, 04 Dec 2019 00:24:58 GMT",
-      "x-ms-client-request-id" : "343a163c-c553-4518-8360-1e5084a2569f"
+      "x-ms-request-id" : "6fcb6924-f01a-004e-6b0d-b1f593000000",
+      "Date" : "Thu, 12 Dec 2019 17:02:19 GMT",
+      "x-ms-client-request-id" : "ca14fe7b-a8b2-4bfb-b931-431ba7cbf89d"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deletesharefileserviceasyncapitestsdeleteshare16462174ded?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deletesharefileserviceasyncapitestsdeleteshare63d18487699?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "1f8a100e-ebcc-4a3c-a893-695b1b590198"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "227a4371-98a5-4cb9-afd2-969bf9f51903"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -34,11 +34,32 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "0ec73471-501a-0025-4939-aaa8c5000000",
-      "Date" : "Wed, 04 Dec 2019 00:24:58 GMT",
-      "x-ms-client-request-id" : "1f8a100e-ebcc-4a3c-a893-695b1b590198"
+      "x-ms-request-id" : "6fcb6926-f01a-004e-6c0d-b1f593000000",
+      "Date" : "Thu, 12 Dec 2019 17:02:19 GMT",
+      "x-ms-client-request-id" : "227a4371-98a5-4cb9-afd2-969bf9f51903"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=deleteshare&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "cbe8946b-5853-4501-bcd2-95cbcba69eab"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "6fcb6927-f01a-004e-6d0d-b1f593000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>deleteshare</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:02:19 GMT",
+      "x-ms-client-request-id" : "cbe8946b-5853-4501-bcd2-95cbcba69eab",
+      "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "deletesharefileserviceasyncapitestsdeleteshare16462174ded" ]
+  "variables" : [ "deletesharefileserviceasyncapitestsdeleteshare63d18487699" ]
 }

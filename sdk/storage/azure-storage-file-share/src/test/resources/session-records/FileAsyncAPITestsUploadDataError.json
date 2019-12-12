@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploaddataerrorfileasyncapitestsuploaddataerrorbc01082634?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploaddataerrorfileasyncapitestsuploaddataerrorbbd6903862?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "91f3db57-321d-4bc0-91bf-422784e292b6"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "bf9e0f1f-6773-4caf-ad53-56204249d753"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D778505A949D43",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:40 GMT",
+      "ETag" : "0x8D77F24F80CC913",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:45 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "081255ed-201a-0021-2439-aa5d47000000",
-      "Date" : "Wed, 04 Dec 2019 00:24:39 GMT",
-      "x-ms-client-request-id" : "91f3db57-321d-4bc0-91bf-422784e292b6"
+      "x-ms-request-id" : "c7e852f1-601a-00ea-520d-b1cf77000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:45 GMT",
+      "x-ms-client-request-id" : "bf9e0f1f-6773-4caf-ad53-56204249d753"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploaddataerrorfileasyncapitestsuploaddataerrorbc01082634/uploaddataerrorfileasyncapitestsuploaddataerrorbc03480353?comp=range",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploaddataerrorfileasyncapitestsuploaddataerrorbbd6903862/uploaddataerrorfileasyncapitestsuploaddataerrorbbd7776920?comp=range",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "e1407aad-535e-4102-ae18-bbea22524088",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6349960d-0e28-44bb-bef5-308a0993a6c2",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
@@ -36,13 +36,53 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "081255ef-201a-0021-2539-aa5d47000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:081255ef-201a-0021-2539-aa5d47000000\nTime:2019-12-04T00:24:41.1252870Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:24:40 GMT",
-      "x-ms-client-request-id" : "e1407aad-535e-4102-ae18-bbea22524088",
+      "x-ms-request-id" : "c7e852f4-601a-00ea-540d-b1cf77000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:c7e852f4-601a-00ea-540d-b1cf77000000\nTime:2019-12-12T17:01:48.1148331Z</Message></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:01:47 GMT",
+      "x-ms-client-request-id" : "6349960d-0e28-44bb-bef5-308a0993a6c2",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=uploaddataerror&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "1eb033cf-205b-473c-bbd7-22cb044433c1"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "c7e85306-601a-00ea-600d-b1cf77000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>uploaddataerror</Prefix><Shares><Share><Name>uploaddataerrorfileasyncapitestsuploaddataerrorbbd6903862</Name><Properties><Last-Modified>Thu, 12 Dec 2019 17:01:45 GMT</Last-Modified><Etag>\"0x8D77F24F80CC913\"</Etag><Quota>5120</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:01:48 GMT",
+      "x-ms-client-request-id" : "1eb033cf-205b-473c-bbd7-22cb044433c1",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/uploaddataerrorfileasyncapitestsuploaddataerrorbbd6903862?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "2b00473c-c2a7-423f-b51b-b019826d02bf"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "c7e85307-601a-00ea-610d-b1cf77000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:48 GMT",
+      "x-ms-client-request-id" : "2b00473c-c2a7-423f-b51b-b019826d02bf"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "uploaddataerrorfileasyncapitestsuploaddataerrorbc01082634", "uploaddataerrorfileasyncapitestsuploaddataerrorbc03480353" ]
+  "variables" : [ "uploaddataerrorfileasyncapitestsuploaddataerrorbbd6903862", "uploaddataerrorfileasyncapitestsuploaddataerrorbbd7776920" ]
 }

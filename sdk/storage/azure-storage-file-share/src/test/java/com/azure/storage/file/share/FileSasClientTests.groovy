@@ -1,6 +1,6 @@
 package com.azure.storage.file.share
 
-import com.azure.storage.common.StorageSharedKeyCredential
+
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
@@ -29,11 +29,11 @@ class FileSasClientTests extends APISpec {
     private String data
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
+        shareName = generateRandomName()
 
-        primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
-        primaryShareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
-        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
+        primaryFileServiceClient = fileServiceBuilderHelper().buildClient()
+        primaryShareClient = shareBuilderHelper(shareName).buildClient()
+        primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
 
         data = "test"
         primaryShareClient.create()
@@ -66,7 +66,7 @@ class FileSasClientTests extends APISpec {
 
         when:
         def sas = primaryFileClient.generateSas(sasValues)
-        def client = fileBuilderHelper(interceptorManager, shareName, filePath)
+        def client = fileBuilderHelper(shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl())
             .sasToken(sas)
             .buildFileClient()
@@ -93,7 +93,7 @@ class FileSasClientTests extends APISpec {
         when:
         def sas = primaryFileClient.generateSas(sasValues)
 
-        def client = fileBuilderHelper(interceptorManager, shareName, filePath)
+        def client = fileBuilderHelper(shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl())
             .sasToken(sas)
             .buildFileClient()
@@ -132,23 +132,25 @@ class FileSasClientTests extends APISpec {
         def sasValues = new ShareServiceSasSignatureValues(identifier.getId())
         def sasWithId = primaryShareClient.generateSas(sasValues)
 
-        ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
+        ShareClient client1 = shareBuilderHelper(primaryShareClient.getShareName())
             .endpoint(primaryShareClient.getShareUrl())
             .sasToken(sasWithId)
             .buildClient()
 
-        client1.createDirectory("dir")
-        client1.deleteDirectory("dir")
+        def directoryName = generateRandomName()
+        client1.createDirectory(directoryName)
+        client1.deleteDirectory(directoryName)
 
         sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions)
         def sasWithPermissions = primaryShareClient.generateSas(sasValues)
-        def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
+        def client2 = shareBuilderHelper(primaryShareClient.getShareName())
             .endpoint(primaryFileClient.getFileUrl())
             .sasToken(sasWithPermissions)
             .buildClient()
 
-        client2.createDirectory("dir")
-        client2.deleteDirectory("dir")
+        directoryName = generateRandomName()
+        client2.createDirectory(directoryName)
+        client2.deleteDirectory(directoryName)
 
         then:
         notThrown(ShareStorageException)
@@ -171,12 +173,13 @@ class FileSasClientTests extends APISpec {
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryFileServiceClient.generateAccountSas(sasValues)
-        def scBuilder = fileServiceBuilderHelper(interceptorManager)
+        def scBuilder = fileServiceBuilderHelper()
         scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()
-        sc.createShare("create")
-        sc.deleteShare("create")
+        def shareName = generateRandomName()
+        sc.createShare(shareName)
+        sc.deleteShare(shareName)
 
         then:
         notThrown(ShareStorageException)

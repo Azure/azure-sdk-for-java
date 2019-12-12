@@ -9,7 +9,6 @@ import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
-import com.azure.storage.queue.models.SendMessageResult
 import com.azure.storage.queue.sas.QueueSasPermission
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues
 
@@ -22,8 +21,8 @@ class QueueSasClientTests extends APISpec {
     def resp
 
     def setup() {
-        primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
-        sasClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 10))
+        primaryQueueServiceClient = queueServiceBuilderHelper().buildClient()
+        sasClient = primaryQueueServiceClient.getQueueClient(generateRandomName(10))
         sasClient.create()
         resp = sasClient.sendMessage("test")
     }
@@ -48,7 +47,7 @@ class QueueSasClientTests extends APISpec {
         when:
         def sasPermissions = sasClient.generateSas(sasValues)
 
-        def clientPermissions = queueBuilderHelper(interceptorManager)
+        def clientPermissions = queueBuilderHelper()
             .endpoint(sasClient.getQueueUrl())
             .queueName(sasClient.getQueueName())
             .sasToken(sasPermissions)
@@ -80,7 +79,7 @@ class QueueSasClientTests extends APISpec {
         when:
         def sasPermissions = sasClient.generateSas(sasValues)
 
-        def clientPermissions = queueBuilderHelper(interceptorManager)
+        def clientPermissions = queueBuilderHelper()
             .endpoint(sasClient.getQueueUrl())
             .queueName(sasClient.getQueueName())
             .sasToken(sasPermissions)
@@ -112,7 +111,7 @@ class QueueSasClientTests extends APISpec {
         def startTime = getUtcNow().minusDays(1).truncatedTo(ChronoUnit.SECONDS)
 
         QueueSignedIdentifier identifier = new QueueSignedIdentifier()
-            .setId(testResourceName.randomUuid())
+            .setId(getRandomUUID())
             .setAccessPolicy(new QueueAccessPolicy().setPermissions(permissions.toString())
                 .setExpiresOn(expiryTime).setStartsOn(startTime))
         sasClient.setAccessPolicy(Arrays.asList(identifier))
@@ -125,7 +124,7 @@ class QueueSasClientTests extends APISpec {
 
         def sasIdentifier = sasClient.generateSas(sasValues)
 
-        def clientBuilder = queueBuilderHelper(interceptorManager)
+        def clientBuilder = queueBuilderHelper()
         def clientIdentifier = clientBuilder
             .endpoint(sasClient.getQueueUrl())
             .queueName(sasClient.getQueueName())
@@ -157,17 +156,19 @@ class QueueSasClientTests extends APISpec {
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryQueueServiceClient.generateAccountSas(sasValues)
 
-        def scBuilder = queueServiceBuilderHelper(interceptorManager)
+        def scBuilder = queueServiceBuilderHelper()
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()
-        sc.createQueue("queue")
+
+        def queueName = generateRandomName(16)
+        sc.createQueue(queueName)
 
         then:
         notThrown(QueueStorageException)
 
         when:
-        sc.deleteQueue("queue")
+        sc.deleteQueue(queueName)
 
         then:
         notThrown(QueueStorageException)
@@ -188,7 +189,7 @@ class QueueSasClientTests extends APISpec {
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryQueueServiceClient.generateAccountSas(sasValues)
 
-        def scBuilder = queueServiceBuilderHelper(interceptorManager)
+        def scBuilder = queueServiceBuilderHelper()
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()

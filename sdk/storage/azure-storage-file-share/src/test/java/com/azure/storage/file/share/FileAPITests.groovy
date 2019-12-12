@@ -149,13 +149,14 @@ class FileAPITests extends APISpec {
     def "Create file permission and key error"() {
         when:
         FileSmbProperties smbProperties = new FileSmbProperties().setFilePermissionKey(filePermissionKey)
+        def permission = useValidPermission ? filePermission : new String(getRandomByteArray(9 * Constants.KB), StandardCharsets.UTF_8)
         primaryFileClient.createWithResponse(1024, null, smbProperties, permission, null, null, null)
         then:
         thrown(IllegalArgumentException)
         where:
-        filePermissionKey   | permission
-        "filePermissionKey" | filePermission
-        null                | new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))
+        filePermissionKey   | useValidPermission
+        "filePermissionKey" | true
+        null                | false
     }
 
     def "Upload and download data"() {

@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deleteshareshareapitestsdeletesharea3b484313023d650?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deleteshareshareapitestsdeletesharedef64960e8673a43?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "c15f7a8b-093c-4707-89da-cd859bc011fb"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "a420acd1-22dc-478f-9693-c1b3bc2f7bce"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7785067E8141F",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:25:03 GMT",
+      "ETag" : "0x8D77F251C8438F4",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:02:46 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "0ec734e0-501a-0025-0d39-aaa8c5000000",
-      "Date" : "Wed, 04 Dec 2019 00:25:02 GMT",
-      "x-ms-client-request-id" : "c15f7a8b-093c-4707-89da-cd859bc011fb"
+      "x-ms-request-id" : "bd8bb405-f01a-0089-540d-b18952000000",
+      "Date" : "Thu, 12 Dec 2019 17:02:45 GMT",
+      "x-ms-client-request-id" : "a420acd1-22dc-478f-9693-c1b3bc2f7bce"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deleteshareshareapitestsdeletesharea3b484313023d650?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deleteshareshareapitestsdeletesharedef64960e8673a43?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "06e6b17d-5459-41be-85f7-12928f666d2c"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ae02672e-9b90-4066-b7ff-672f25fd1478"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -34,11 +34,32 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "0ec734e2-501a-0025-0e39-aaa8c5000000",
-      "Date" : "Wed, 04 Dec 2019 00:25:02 GMT",
-      "x-ms-client-request-id" : "06e6b17d-5459-41be-85f7-12928f666d2c"
+      "x-ms-request-id" : "bd8bb40b-f01a-0089-590d-b18952000000",
+      "Date" : "Thu, 12 Dec 2019 17:02:45 GMT",
+      "x-ms-client-request-id" : "ae02672e-9b90-4066-b7ff-672f25fd1478"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=deleteshare&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3880030e-a60f-473c-8089-6f17982c7aaf"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "bd8bb40e-f01a-0089-5c0d-b18952000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>deleteshare</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:02:45 GMT",
+      "x-ms-client-request-id" : "3880030e-a60f-473c-8089-6f17982c7aaf",
+      "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "deleteshareshareapitestsdeletesharea3b484313023d650" ]
+  "variables" : [ "deleteshareshareapitestsdeletesharedef64960e8673a43" ]
 }

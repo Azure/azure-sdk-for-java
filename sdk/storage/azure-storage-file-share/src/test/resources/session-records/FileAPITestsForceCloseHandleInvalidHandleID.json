@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/forceclosehandleinvalidhandleid7275751c11fc3c013?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/forceclosehandleinvalidhandleid814169a7da126a96d?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "2fb40886-ab23-49fc-ba9f-86c5cbda011a"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "8de413ca-600c-4281-ab23-2c4817a644f8"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7785059612945",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:38 GMT",
+      "ETag" : "0x8D77F24F6B7954B",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:43 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "081255bb-201a-0021-0439-aa5d47000000",
-      "Date" : "Wed, 04 Dec 2019 00:24:37 GMT",
-      "x-ms-client-request-id" : "2fb40886-ab23-49fc-ba9f-86c5cbda011a"
+      "x-ms-request-id" : "c7e852a9-601a-00ea-1b0d-b1cf77000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:42 GMT",
+      "x-ms-client-request-id" : "8de413ca-600c-4281-ab23-2c4817a644f8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/forceclosehandleinvalidhandleid7275751c11fc3c013/forceclosehandleinvalidhandleid23732d3ac0a2794a6",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/forceclosehandleinvalidhandleid814169a7da126a96d/forceclosehandleinvalidhandleid266098d00f9f45852",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "c4ff34d7-e8e8-48ba-837b-9cafa0ed19b6"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "a0963873-c24d-4475-8dbd-c411eab81a7f"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-12-04T00:24:38.9087996Z",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:38 GMT",
+      "x-ms-file-creation-time" : "2019-12-12T17:01:43.1453016Z",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:43 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Dec 2019 00:24:38 GMT",
-      "ETag" : "0x8D77850596A92FC",
+      "Date" : "Thu, 12 Dec 2019 17:01:43 GMT",
+      "ETag" : "0x8D77F24F6BEA158",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2019-12-04T00:24:38.9087996Z",
+      "x-ms-file-change-time" : "2019-12-12T17:01:43.1453016Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "081255bd-201a-0021-0539-aa5d47000000",
-      "x-ms-client-request-id" : "c4ff34d7-e8e8-48ba-837b-9cafa0ed19b6",
-      "x-ms-file-last-write-time" : "2019-12-04T00:24:38.9087996Z"
+      "x-ms-request-id" : "c7e852ab-601a-00ea-1c0d-b1cf77000000",
+      "x-ms-client-request-id" : "a0963873-c24d-4475-8dbd-c411eab81a7f",
+      "x-ms-file-last-write-time" : "2019-12-12T17:01:43.1453016Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/forceclosehandleinvalidhandleid7275751c11fc3c013/forceclosehandleinvalidhandleid23732d3ac0a2794a6?comp=forceclosehandles",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/forceclosehandleinvalidhandleid814169a7da126a96d/forceclosehandleinvalidhandleid266098d00f9f45852?comp=forceclosehandles",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "5b021077-b6f9-4b2c-a2f3-0f8b4f77d32f"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "fe887a27-b392-490b-81b7-9de9359d5460"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -64,13 +64,53 @@
       "retry-after" : "0",
       "Content-Length" : "335",
       "StatusCode" : "400",
-      "x-ms-request-id" : "081255bf-201a-0021-0639-aa5d47000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:081255bf-201a-0021-0639-aa5d47000000\nTime:2019-12-04T00:24:38.9371967Z</Message><HeaderName>x-ms-handle-id</HeaderName><HeaderValue>invalidHandleId</HeaderValue></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:24:38 GMT",
-      "x-ms-client-request-id" : "5b021077-b6f9-4b2c-a2f3-0f8b4f77d32f",
+      "x-ms-request-id" : "c7e852ac-601a-00ea-1d0d-b1cf77000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:c7e852ac-601a-00ea-1d0d-b1cf77000000\nTime:2019-12-12T17:01:43.1731868Z</Message><HeaderName>x-ms-handle-id</HeaderName><HeaderValue>invalidHandleId</HeaderValue></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:01:43 GMT",
+      "x-ms-client-request-id" : "fe887a27-b392-490b-81b7-9de9359d5460",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=forceclosehandleinvalidhandleid&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4442452a-4a78-487c-a947-83da02c9d6fa"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "c7e852ad-601a-00ea-1e0d-b1cf77000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>forceclosehandleinvalidhandleid</Prefix><Shares><Share><Name>forceclosehandleinvalidhandleid814169a7da126a96d</Name><Properties><Last-Modified>Thu, 12 Dec 2019 17:01:43 GMT</Last-Modified><Etag>\"0x8D77F24F6B7954B\"</Etag><Quota>5120</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:01:43 GMT",
+      "x-ms-client-request-id" : "4442452a-4a78-487c-a947-83da02c9d6fa",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/forceclosehandleinvalidhandleid814169a7da126a96d?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4fad8add-f9b6-4ad5-97a8-4e1fcf02779d"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "c7e852ae-601a-00ea-1f0d-b1cf77000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:43 GMT",
+      "x-ms-client-request-id" : "4fad8add-f9b6-4ad5-97a8-4e1fcf02779d"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "forceclosehandleinvalidhandleid7275751c11fc3c013", "forceclosehandleinvalidhandleid23732d3ac0a2794a6" ]
+  "variables" : [ "forceclosehandleinvalidhandleid814169a7da126a96d", "forceclosehandleinvalidhandleid266098d00f9f45852" ]
 }

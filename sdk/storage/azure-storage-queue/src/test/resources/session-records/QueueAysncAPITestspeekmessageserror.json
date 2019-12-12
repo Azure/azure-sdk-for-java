@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/peekmessageserror821264df5a121649e499a8a7/messages?peekonly=true",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/peekmessageserror894513f222ef8e475442d801/messages?peekonly=true",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "dd78ea97-810c-4697-8d12-7c2574fcff7b"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "96055d13-29ee-4ac1-8ec3-af59026276c6"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,35 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "62cd808c-0003-0072-0632-aa4148000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:62cd808c-0003-0072-0632-aa4148000000\nTime:2019-12-03T23:34:43.5754714Z</Message></Error>",
-      "Date" : "Tue, 03 Dec 2019 23:34:42 GMT",
-      "x-ms-client-request-id" : "dd78ea97-810c-4697-8d12-7c2574fcff7b",
+      "x-ms-request-id" : "2449c50b-6003-00e1-3413-b1d703000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2449c50b-6003-00e1-3413-b1d703000000\nTime:2019-12-12T17:44:23.1136001Z</Message></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:44:22 GMT",
+      "x-ms-client-request-id" : "96055d13-29ee-4ac1-8ec3-af59026276c6",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=peekmessageserror&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.2.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "62e44a15-ef6d-4206-8850-908044adeb9a"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "2449c518-6003-00e1-4013-b1d703000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>peekmessageserror</Prefix><Queues /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:44:22 GMT",
+      "x-ms-client-request-id" : "62e44a15-ef6d-4206-8850-908044adeb9a",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "peekmessageserror821264df5a121649e499a8a7" ]
+  "variables" : [ "peekmessageserror894513f222ef8e475442d801" ]
 }

@@ -1,141 +1,180 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://gapradev.file.core.windows.net/filesasclienttestsfilesasnetworktestdownloadupload11910eb?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesasnetworktestdownloadupload371247ec498b0e6d?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "60ec0837-286a-40a8-a093-43ab191d92a7"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f4d05f22-6170-4399-afa8-1a05c534315c"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7780FC6BF0439",
-      "Last-Modified" : "Tue, 03 Dec 2019 16:42:25 GMT",
+      "ETag" : "0x8D77F2503436987",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:02:04 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "afed10cf-e01a-001e-48f8-a97ee3000000",
-      "Date" : "Tue, 03 Dec 2019 16:42:24 GMT",
-      "x-ms-client-request-id" : "60ec0837-286a-40a8-a093-43ab191d92a7"
+      "x-ms-request-id" : "6fcb681b-f01a-004e-1d0d-b1f593000000",
+      "Date" : "Thu, 12 Dec 2019 17:02:03 GMT",
+      "x-ms-client-request-id" : "f4d05f22-6170-4399-afa8-1a05c534315c"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://gapradev.file.core.windows.net/filesasclienttestsfilesasnetworktestdownloadupload11910eb/filename",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesasnetworktestdownloadupload371247ec498b0e6d/filename",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "870f1cfa-6d8a-48cd-b597-fe305a4192ed"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "969f07d0-6dab-4fc6-9234-e529979ec6fe"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-file-permission-key" : "15581347578553677299*8114634751575874941",
+      "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-12-03T16:42:25.2568727Z",
-      "Last-Modified" : "Tue, 03 Dec 2019 16:42:25 GMT",
+      "x-ms-file-creation-time" : "2019-12-12T17:02:04.1923359Z",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:02:04 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 03 Dec 2019 16:42:24 GMT",
-      "ETag" : "0x8D7780FC6DF2097",
+      "Date" : "Thu, 12 Dec 2019 17:02:03 GMT",
+      "ETag" : "0x8D77F25034A271F",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2019-12-03T16:42:25.2568727Z",
+      "x-ms-file-change-time" : "2019-12-12T17:02:04.1923359Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "afed10d2-e01a-001e-49f8-a97ee3000000",
-      "x-ms-client-request-id" : "870f1cfa-6d8a-48cd-b597-fe305a4192ed",
-      "x-ms-file-last-write-time" : "2019-12-03T16:42:25.2568727Z"
+      "x-ms-request-id" : "6fcb681d-f01a-004e-1e0d-b1f593000000",
+      "x-ms-client-request-id" : "969f07d0-6dab-4fc6-9234-e529979ec6fe",
+      "x-ms-file-last-write-time" : "2019-12-12T17:02:04.1923359Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://gapradev.file.core.windows.net/filesasclienttestsfilesasnetworktestdownloadupload11910eb/filename?comp=range",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesasnetworktestdownloadupload371247ec498b0e6d/filename?comp=range",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "7466e09f-410c-4560-9b15-a6f3aa1a77ff",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "45a66728-3fb9-4c3c-bf2d-8701e64a013a",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7780FC6F3B7F6",
-      "Last-Modified" : "Tue, 03 Dec 2019 16:42:25 GMT",
+      "ETag" : "0x8D77F25034FA6BB",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:02:04 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "afed10d4-e01a-001e-4af8-a97ee3000000",
+      "x-ms-request-id" : "6fcb681e-f01a-004e-1f0d-b1f593000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 03 Dec 2019 16:42:24 GMT",
-      "x-ms-client-request-id" : "7466e09f-410c-4560-9b15-a6f3aa1a77ff",
+      "Date" : "Thu, 12 Dec 2019 17:02:03 GMT",
+      "x-ms-client-request-id" : "45a66728-3fb9-4c3c-bf2d-8701e64a013a",
       "Content-MD5" : "CY9rzUYh03PK3k6DJie09g=="
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://gapradev.file.core.windows.net/filesasclienttestsfilesasnetworktestdownloadupload11910eb/filename?sv=2019-02-02&spr=https%2Chttp&st=2019-12-02T16%3A42%3A25Z&se=2019-12-04T16%3A42%3A25Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesasnetworktestdownloadupload371247ec498b0e6d/filename?sv=2019-02-02&spr=https%2Chttp&st=2019-12-11T17%3A02%3A04Z&se=2019-12-13T17%3A02%3A04Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "28800290-c247-4d65-adc2-957c41c6c009"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "577f1ef1-d6bf-483f-a8d1-6c54c9ef516b"
     },
     "Response" : {
       "x-ms-lease-status" : "unlocked",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-12-03T16:42:25.2568727Z",
-      "Access-Control-Allow-Origin" : "*",
+      "x-ms-file-creation-time" : "2019-12-12T17:02:04.1923359Z",
       "x-ms-lease-state" : "available",
-      "Last-Modified" : "Tue, 03 Dec 2019 16:42:25 GMT",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:02:04 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
       "x-ms-file-attributes" : "Archive",
       "Content-Length" : "1024",
-      "x-ms-request-id" : "afed10d5-e01a-001e-4bf8-a97ee3000000",
+      "x-ms-request-id" : "6fcb681f-f01a-004e-200d-b1f593000000",
       "Body" : "test\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
       "Content-Type" : "type",
-      "x-ms-file-permission-key" : "15581347578553677299*8114634751575874941",
+      "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
       "x-ms-version" : "2019-02-02",
-      "Date" : "Tue, 03 Dec 2019 16:42:24 GMT",
+      "Date" : "Thu, 12 Dec 2019 17:02:03 GMT",
       "Accept-Ranges" : "bytes",
       "x-ms-server-encrypted" : "true",
       "x-ms-type" : "File",
       "Cache-Control" : "cache",
-      "ETag" : "0x8D7780FC6F3B7F6",
+      "ETag" : "0x8D77F25034FA6BB",
       "Content-Disposition" : "disposition",
-      "x-ms-file-change-time" : "2019-12-03T16:42:25.2568727Z",
+      "x-ms-file-change-time" : "2019-12-12T17:02:04.1923359Z",
       "x-ms-file-parent-id" : "0",
       "Content-Language" : "language",
-      "x-ms-client-request-id" : "28800290-c247-4d65-adc2-957c41c6c009",
-      "x-ms-file-last-write-time" : "2019-12-03T16:42:25.2568727Z"
+      "x-ms-client-request-id" : "577f1ef1-d6bf-483f-a8d1-6c54c9ef516b",
+      "x-ms-file-last-write-time" : "2019-12-12T17:02:04.1923359Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://gapradev.file.core.windows.net/filesasclienttestsfilesasnetworktestdownloadupload11910eb/filename?comp=range&sv=2019-02-02&spr=https%2Chttp&st=2019-12-02T16%3A42%3A25Z&se=2019-12-04T16%3A42%3A25Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesasnetworktestdownloadupload371247ec498b0e6d/filename?comp=range&sv=2019-02-02&spr=https%2Chttp&st=2019-12-11T17%3A02%3A04Z&se=2019-12-13T17%3A02%3A04Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "6b3471ea-f4ce-4ed7-8c4e-8c9e72515354",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9b20e878-d2c4-4c24-bf2d-e1b483d19803",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7780FC71A7995",
-      "Last-Modified" : "Tue, 03 Dec 2019 16:42:25 GMT",
+      "ETag" : "0x8D77F2503618560",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:02:04 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "afed10d6-e01a-001e-4cf8-a97ee3000000",
+      "x-ms-request-id" : "6fcb6820-f01a-004e-210d-b1f593000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 03 Dec 2019 16:42:25 GMT",
-      "x-ms-client-request-id" : "6b3471ea-f4ce-4ed7-8c4e-8c9e72515354",
+      "Date" : "Thu, 12 Dec 2019 17:02:04 GMT",
+      "x-ms-client-request-id" : "9b20e878-d2c4-4c24-bf2d-e1b483d19803",
       "Content-MD5" : "CY9rzUYh03PK3k6DJie09g=="
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=filesasnetworktestdownloadupload&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "fb303745-e7c5-48c8-9168-9958e8aed64e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "6fcb6821-f01a-004e-220d-b1f593000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>filesasnetworktestdownloadupload</Prefix><Shares><Share><Name>filesasnetworktestdownloadupload371247ec498b0e6d</Name><Properties><Last-Modified>Thu, 12 Dec 2019 17:02:04 GMT</Last-Modified><Etag>\"0x8D77F2503436987\"</Etag><Quota>5120</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:02:04 GMT",
+      "x-ms-client-request-id" : "fb303745-e7c5-48c8-9168-9958e8aed64e",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesasnetworktestdownloadupload371247ec498b0e6d?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ba6deb16-e363-43cf-b34b-a3b97107df7e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "6fcb6822-f01a-004e-230d-b1f593000000",
+      "Date" : "Thu, 12 Dec 2019 17:02:04 GMT",
+      "x-ms-client-request-id" : "ba6deb16-e363-43cf-b34b-a3b97107df7e"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "filesasclienttestsfilesasnetworktestdownloadupload11910eb", "2019-12-03T16:42:25.407336100Z", "2019-12-03T16:42:25.412335400Z" ]
+  "variables" : [ "filesasnetworktestdownloadupload371247ec498b0e6d", "2019-12-12T17:02:04.098404600Z", "2019-12-12T17:02:04.098404600Z" ]
 }

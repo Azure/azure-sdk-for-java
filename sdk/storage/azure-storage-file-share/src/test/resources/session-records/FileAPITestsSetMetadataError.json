@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setmetadataerrorfileapitestssetmetadataerrord5f861638892?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setmetadataerrorfileapitestssetmetadataerrore3967887a1ad?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "69930cbb-05b1-4c8b-a4a2-9d5fc3e1e42d"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7ba0ea0b-8f5b-413d-b3ce-bc8fd6ab317e"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7785056E15C3F",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:34 GMT",
+      "ETag" : "0x8D77F24F5B157FB",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:41 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "08125585-201a-0021-5939-aa5d47000000",
-      "Date" : "Wed, 04 Dec 2019 00:24:33 GMT",
-      "x-ms-client-request-id" : "69930cbb-05b1-4c8b-a4a2-9d5fc3e1e42d"
+      "x-ms-request-id" : "c7e8527e-601a-00ea-780d-b1cf77000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:41 GMT",
+      "x-ms-client-request-id" : "7ba0ea0b-8f5b-413d-b3ce-bc8fd6ab317e"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setmetadataerrorfileapitestssetmetadataerrord5f861638892/setmetadataerrorfileapitestssetmetadataerrord5f723452e64",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setmetadataerrorfileapitestssetmetadataerrore3967887a1ad/setmetadataerrorfileapitestssetmetadataerrore3940601e93b",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "5965fbf1-9ccd-4f65-9764-39f5262f5b1a"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "15f12513-c79b-4e2a-af2a-d048fd90542d"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-12-04T00:24:34.6978313Z",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:34 GMT",
+      "x-ms-file-creation-time" : "2019-12-12T17:01:41.4246624Z",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:41 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Dec 2019 00:24:33 GMT",
-      "ETag" : "0x8D7785056E80809",
+      "Date" : "Thu, 12 Dec 2019 17:01:41 GMT",
+      "ETag" : "0x8D77F24F5B814E0",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2019-12-04T00:24:34.6978313Z",
+      "x-ms-file-change-time" : "2019-12-12T17:01:41.4246624Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "08125588-201a-0021-5b39-aa5d47000000",
-      "x-ms-client-request-id" : "5965fbf1-9ccd-4f65-9764-39f5262f5b1a",
-      "x-ms-file-last-write-time" : "2019-12-04T00:24:34.6978313Z"
+      "x-ms-request-id" : "c7e85280-601a-00ea-790d-b1cf77000000",
+      "x-ms-client-request-id" : "15f12513-c79b-4e2a-af2a-d048fd90542d",
+      "x-ms-file-last-write-time" : "2019-12-12T17:01:41.4246624Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setmetadataerrorfileapitestssetmetadataerrord5f861638892/setmetadataerrorfileapitestssetmetadataerrord5f723452e64?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setmetadataerrorfileapitestssetmetadataerrore3967887a1ad/setmetadataerrorfileapitestssetmetadataerrore3940601e93b?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "496d424c-e3d6-4019-a93a-a27c42051b5c"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "db5bb530-59ea-47a5-8cfa-a192880e9d4c"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -64,13 +64,53 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "08125589-201a-0021-5c39-aa5d47000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:08125589-201a-0021-5c39-aa5d47000000\nTime:2019-12-04T00:24:34.7271808Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:24:33 GMT",
-      "x-ms-client-request-id" : "496d424c-e3d6-4019-a93a-a27c42051b5c",
+      "x-ms-request-id" : "c7e85281-601a-00ea-7a0d-b1cf77000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:c7e85281-601a-00ea-7a0d-b1cf77000000\nTime:2019-12-12T17:01:41.4555762Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:01:41 GMT",
+      "x-ms-client-request-id" : "db5bb530-59ea-47a5-8cfa-a192880e9d4c",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=setmetadataerror&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "844a3642-f85a-4471-94a0-45f8f4301cf9"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "c7e85282-601a-00ea-7b0d-b1cf77000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>setmetadataerror</Prefix><Shares><Share><Name>setmetadataerrorfileapitestssetmetadataerrore3967887a1ad</Name><Properties><Last-Modified>Thu, 12 Dec 2019 17:01:41 GMT</Last-Modified><Etag>\"0x8D77F24F5B157FB\"</Etag><Quota>5120</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:01:41 GMT",
+      "x-ms-client-request-id" : "844a3642-f85a-4471-94a0-45f8f4301cf9",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/setmetadataerrorfileapitestssetmetadataerrore3967887a1ad?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "488ad2c1-4628-47ac-a5bf-b1a02e44db93"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "c7e85283-601a-00ea-7c0d-b1cf77000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:41 GMT",
+      "x-ms-client-request-id" : "488ad2c1-4628-47ac-a5bf-b1a02e44db93"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "setmetadataerrorfileapitestssetmetadataerrord5f861638892", "setmetadataerrorfileapitestssetmetadataerrord5f723452e64" ]
+  "variables" : [ "setmetadataerrorfileapitestssetmetadataerrore3967887a1ad", "setmetadataerrorfileapitestssetmetadataerrore3940601e93b" ]
 }

@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs3357915e6f8595d5?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs656068092ec2d3b5?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "c166b50b-3f0f-44d9-8197-e8a493f5bd1e"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "2511a981-b6c9-44b8-acb7-6cb4950f277f"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7785047B520B3",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:09 GMT",
+      "ETag" : "0x8D77F24E8224E25",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:18 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "660bae4d-401a-0075-4839-aab7cd000000",
-      "Date" : "Wed, 04 Dec 2019 00:24:08 GMT",
-      "x-ms-client-request-id" : "c166b50b-3f0f-44d9-8197-e8a493f5bd1e"
+      "x-ms-request-id" : "1ecc899c-201a-00a9-4b0d-b1e59e000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:18 GMT",
+      "x-ms-client-request-id" : "2511a981-b6c9-44b8-acb7-6cb4950f277f"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs3357915e6f8595d5/createfilemaxoverloadinvalidargs71741be2c34c0568?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs656068092ec2d3b5/createfilemaxoverloadinvalidargs863381cacf86f80d?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "be35f853-ce67-4423-b7e5-36a845272ece"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e3013caf-f5b1-4a39-bcae-e1901611fb6b"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-12-04T00:24:09.2373710Z",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:09 GMT",
+      "x-ms-file-creation-time" : "2019-12-12T17:01:18.6780096Z",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:18 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Dec 2019 00:24:08 GMT",
-      "ETag" : "0x8D7785047BB12CE",
+      "Date" : "Thu, 12 Dec 2019 17:01:18 GMT",
+      "ETag" : "0x8D77F24E82937C0",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-12-04T00:24:09.2373710Z",
+      "x-ms-file-change-time" : "2019-12-12T17:01:18.6780096Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "660bae4f-401a-0075-4939-aab7cd000000",
-      "x-ms-client-request-id" : "be35f853-ce67-4423-b7e5-36a845272ece",
-      "x-ms-file-last-write-time" : "2019-12-04T00:24:09.2373710Z"
+      "x-ms-request-id" : "1ecc899e-201a-00a9-4c0d-b1e59e000000",
+      "x-ms-client-request-id" : "e3013caf-f5b1-4a39-bcae-e1901611fb6b",
+      "x-ms-file-last-write-time" : "2019-12-12T17:01:18.6780096Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs3357915e6f8595d5/createfilemaxoverloadinvalidargs71741be2c34c0568%2ffileName",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs656068092ec2d3b5/createfilemaxoverloadinvalidargs863381cacf86f80d%2ffileName",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "378f73a3-a4aa-4f07-9d5b-d77f76e83406"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b945df67-da26-4bf4-b4c4-8258214dbcf1"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -64,13 +64,53 @@
       "retry-after" : "0",
       "Content-Length" : "236",
       "StatusCode" : "400",
-      "x-ms-request-id" : "660bae50-401a-0075-4a39-aab7cd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:660bae50-401a-0075-4a39-aab7cd000000\nTime:2019-12-04T00:24:09.2654693Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:24:08 GMT",
-      "x-ms-client-request-id" : "378f73a3-a4aa-4f07-9d5b-d77f76e83406",
+      "x-ms-request-id" : "1ecc899f-201a-00a9-4d0d-b1e59e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:1ecc899f-201a-00a9-4d0d-b1e59e000000\nTime:2019-12-12T17:01:18.7227923Z</Message></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:01:18 GMT",
+      "x-ms-client-request-id" : "b945df67-da26-4bf4-b4c4-8258214dbcf1",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=createfilemaxoverloadinvalidargs&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7b42e293-ce28-4f83-853f-dfbad5733b33"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "1ecc89a0-201a-00a9-4e0d-b1e59e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>createfilemaxoverloadinvalidargs</Prefix><Shares><Share><Name>createfilemaxoverloadinvalidargs656068092ec2d3b5</Name><Properties><Last-Modified>Thu, 12 Dec 2019 17:01:18 GMT</Last-Modified><Etag>\"0x8D77F24E8224E25\"</Etag><Quota>5120</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:01:18 GMT",
+      "x-ms-client-request-id" : "7b42e293-ce28-4f83-853f-dfbad5733b33",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createfilemaxoverloadinvalidargs656068092ec2d3b5?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "dc872e25-7a46-488c-8f51-14ad0d00d42a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "1ecc89a1-201a-00a9-4f0d-b1e59e000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:18 GMT",
+      "x-ms-client-request-id" : "dc872e25-7a46-488c-8f51-14ad0d00d42a"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "createfilemaxoverloadinvalidargs3357915e6f8595d5", "createfilemaxoverloadinvalidargs71741be2c34c0568" ]
+  "variables" : [ "createfilemaxoverloadinvalidargs656068092ec2d3b5", "createfilemaxoverloadinvalidargs863381cacf86f80d" ]
 }

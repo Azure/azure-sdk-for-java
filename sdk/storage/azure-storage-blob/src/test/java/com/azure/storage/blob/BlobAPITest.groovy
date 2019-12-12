@@ -29,6 +29,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
+import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
@@ -515,8 +516,20 @@ class BlobAPITest extends APISpec {
         StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
             .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
             .verifyErrorSatisfies({
-                assert it instanceof BlobStorageException
-                assert ((BlobStorageException) it).getStatusCode() == 412
+                /*
+                 * Reactor may opt to convert multiple BlobStorageExceptions into a single CompositeException, attempt
+                 * to unwrap it. If the exception isn't a CompositeException Exceptions.unwrapMultiple will simply
+                 * return the passed exception wrapped in a singleton list.
+                 *
+                 * Another potential wrinkle cause by the CompositeException is the possibility that the exceptions may
+                 * be ReactiveException which is wrapping the BlobStorageException, this will need to be unwrapped using
+                 * Exceptions.unwrap. If the exception isn't a ReactiveException Exceptions.unwrap will simply return
+                 * the passed exception.
+                 */
+                assert Exceptions.unwrapMultiple(it).stream().anyMatch({
+                    def exception = Exceptions.unwrap(it)
+                    exception instanceof BlobStorageException && ((BlobStorageException) exception).getStatusCode() == 412
+                })
             })
 
         // Give the file a chance to be deleted by the download operation before verifying its deletion

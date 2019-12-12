@@ -1,54 +1,94 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createdirectorywithmetadata68550dea6b41d61774b?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createdirectorywithmetadata82334708258d3394646?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "9d9b166f-f99f-4e16-af72-a95de54cae1b"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b190d0f6-4afa-4b55-ae97-c7c5e1d70bd6"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D778504235FC4B",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:23:59 GMT",
+      "ETag" : "0x8D77F24DF236A27",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:03 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "660bad80-401a-0075-2f39-aab7cd000000",
-      "Date" : "Wed, 04 Dec 2019 00:23:59 GMT",
-      "x-ms-client-request-id" : "9d9b166f-f99f-4e16-af72-a95de54cae1b"
+      "x-ms-request-id" : "1ecc8506-201a-00a9-6d0d-b1e59e000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:03 GMT",
+      "x-ms-client-request-id" : "b190d0f6-4afa-4b55-ae97-c7c5e1d70bd6"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createdirectorywithmetadata68550dea6b41d61774b/createdirectorywithmetadata609007d4f151f2ebb4c?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createdirectorywithmetadata82334708258d3394646/createdirectorywithmetadata499595abb6f9772d349?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "0d00c545-96bb-491e-b5c0-885b56b76d0d"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9f7046d4-932a-401d-a179-e3fa8ecc49fb"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-12-04T00:24:00.0188764Z",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:00 GMT",
+      "x-ms-file-creation-time" : "2019-12-12T17:01:03.6306848Z",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:03 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Dec 2019 00:23:59 GMT",
-      "ETag" : "0x8D77850423C715C",
+      "Date" : "Thu, 12 Dec 2019 17:01:03 GMT",
+      "ETag" : "0x8D77F24DF312DA0",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-12-04T00:24:00.0188764Z",
+      "x-ms-file-change-time" : "2019-12-12T17:01:03.6306848Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "660bad82-401a-0075-3039-aab7cd000000",
-      "x-ms-client-request-id" : "0d00c545-96bb-491e-b5c0-885b56b76d0d",
-      "x-ms-file-last-write-time" : "2019-12-04T00:24:00.0188764Z"
+      "x-ms-request-id" : "1ecc8508-201a-00a9-6e0d-b1e59e000000",
+      "x-ms-client-request-id" : "9f7046d4-932a-401d-a179-e3fa8ecc49fb",
+      "x-ms-file-last-write-time" : "2019-12-12T17:01:03.6306848Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=createdirectorywithmetadata&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "2a22aaee-181c-4a1a-bf4c-56992e43e35e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "1ecc8509-201a-00a9-6f0d-b1e59e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>createdirectorywithmetadata</Prefix><Shares><Share><Name>createdirectorywithmetadata82334708258d3394646</Name><Properties><Last-Modified>Thu, 12 Dec 2019 17:01:03 GMT</Last-Modified><Etag>\"0x8D77F24DF236A27\"</Etag><Quota>5120</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:01:03 GMT",
+      "x-ms-client-request-id" : "2a22aaee-181c-4a1a-bf4c-56992e43e35e",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createdirectorywithmetadata82334708258d3394646?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b105a727-4ee7-4e93-a22d-bc1911acbe97"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "1ecc850a-201a-00a9-700d-b1e59e000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:03 GMT",
+      "x-ms-client-request-id" : "b105a727-4ee7-4e93-a22d-bc1911acbe97"
     },
     "Exception" : null
   } ],
-  "variables" : [ "createdirectorywithmetadata68550dea6b41d61774b", "createdirectorywithmetadata609007d4f151f2ebb4c" ]
+  "variables" : [ "createdirectorywithmetadata82334708258d3394646", "createdirectorywithmetadata499595abb6f9772d349" ]
 }

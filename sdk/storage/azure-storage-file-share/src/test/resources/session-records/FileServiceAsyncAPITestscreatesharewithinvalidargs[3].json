@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsharewithinvalidargs8649489ab8f969e5e4e?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsharewithinvalidargs43970fd78b200196241?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "9013780a-92af-40d5-b23c-7da9258e7d42"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7d583a6f-eb60-4ec4-ab9a-87c7b776b427"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,34 @@
       "retry-after" : "0",
       "Content-Length" : "326",
       "StatusCode" : "400",
-      "x-ms-request-id" : "0ec7346e-501a-0025-4739-aaa8c5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:0ec7346e-501a-0025-4739-aaa8c5000000\nTime:2019-12-04T00:24:59.0403724Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>5200</HeaderValue></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:24:58 GMT",
-      "x-ms-client-request-id" : "9013780a-92af-40d5-b23c-7da9258e7d42",
+      "x-ms-request-id" : "6fcb6922-f01a-004e-690d-b1f593000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:6fcb6922-f01a-004e-690d-b1f593000000\nTime:2019-12-12T17:02:20.1821250Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>5200</HeaderValue></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:02:19 GMT",
+      "x-ms-client-request-id" : "7d583a6f-eb60-4ec4-ab9a-87c7b776b427",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=createsharewithinvalidargs&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d9134631-7acd-445f-b6c6-744482129e2d"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "6fcb6923-f01a-004e-6a0d-b1f593000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>createsharewithinvalidargs</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:02:19 GMT",
+      "x-ms-client-request-id" : "d9134631-7acd-445f-b6c6-744482129e2d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "createsharewithinvalidargs8649489ab8f969e5e4e" ]
+  "variables" : [ "createsharewithinvalidargs43970fd78b200196241" ]
 }

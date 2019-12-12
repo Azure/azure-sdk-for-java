@@ -5,17 +5,16 @@ package com.azure.storage.file.share
 
 import com.azure.core.http.rest.Response
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.file.share.models.ShareErrorCode
-import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareCorsRule
+import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareItem
 import com.azure.storage.file.share.models.ShareMetrics
+import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
 import com.azure.storage.file.share.models.ShareStorageException
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 class FileTestHelper {
     private static final ClientLogger logger = new ClientLogger(FileTestHelper.class)
@@ -144,13 +143,5 @@ class FileTestHelper {
                 Files.delete(children[i].toPath())
             }
         }
-    }
-
-    // TODO : Move this into a common package test class?
-    static byte[] getRandomBuffer(int length) {
-        final Random randGenerator = new Random()
-        final byte[] buff = new byte[length]
-        randGenerator.nextBytes(buff)
-        return buff
     }
 }

@@ -25,6 +25,7 @@ class APISpec extends StorageTestBase {
      * Setup the File service clients commonly used for the API tests.
      */
     def setup() {
+        primaryCredential = getCredential(PRIMARY_STORAGE)
         connectionString = isPlaybackMode()
             ? "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
             : Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
@@ -34,9 +35,7 @@ class APISpec extends StorageTestBase {
      * Clean up the test shares, directories and files for the account.
      */
     def cleanup() {
-        ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
-            .connectionString(connectionString)
-            .buildClient()
+        ShareServiceClient cleanupFileServiceClient = fileServiceBuilderHelper().buildClient()
         cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(testName.toLowerCase()),
             Duration.ofSeconds(30), null).each {
             cleanupFileServiceClient.deleteShare(it.getName())
@@ -46,6 +45,18 @@ class APISpec extends StorageTestBase {
     def fileServiceBuilderHelper() {
         def builder = new ShareServiceClientBuilder()
             .connectionString(connectionString)
+            .httpClient(getHttpClient())
+
+        if (isRecordMode()) {
+            builder.addPolicy(getRecordPolicy())
+        }
+
+        return builder
+    }
+
+    def sasFileServiceBuilderHelper(String endpointWithSas) {
+        def builder = new ShareServiceClientBuilder()
+            .endpoint(endpointWithSas)
             .httpClient(getHttpClient())
 
         if (isRecordMode()) {
@@ -68,6 +79,18 @@ class APISpec extends StorageTestBase {
         return builder
     }
 
+    def sasShareBuilderHelper(String endpointWithSas) {
+        def builder = new ShareClientBuilder()
+            .endpoint(endpointWithSas)
+            .httpClient(getHttpClient())
+
+        if (isRecordMode()) {
+            builder.addPolicy(getRecordPolicy())
+        }
+
+        return builder
+    }
+
     def directoryBuilderHelper(final String shareName, final String directoryPath) {
         return pathBuilderHelper(shareName, directoryPath)
     }
@@ -81,6 +104,18 @@ class APISpec extends StorageTestBase {
             .connectionString(connectionString)
             .shareName(shareName)
             .resourcePath(resourcePath)
+            .httpClient(getHttpClient())
+
+        if (isRecordMode()) {
+            builder.addPolicy(getRecordPolicy())
+        }
+
+        return builder
+    }
+
+    def sasFileBuilderHelper(String endpointWithSas) {
+        def builder = new ShareFileClientBuilder()
+            .endpoint(endpointWithSas)
             .httpClient(getHttpClient())
 
         if (isRecordMode()) {

@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deletesharedoesnotexist59816c6f834eb8e434f56?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/deletesharedoesnotexist787653964929dd0244e41?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "baa2b3cc-6f0a-42c2-9bde-aa42ee238667"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "a9bfee2d-10d8-44ae-8265-e156775bc5fa"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,34 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "0ec73472-501a-0025-4a39-aaa8c5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:0ec73472-501a-0025-4a39-aaa8c5000000\nTime:2019-12-04T00:24:59.2105367Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:24:58 GMT",
-      "x-ms-client-request-id" : "baa2b3cc-6f0a-42c2-9bde-aa42ee238667",
+      "x-ms-request-id" : "6fcb6928-f01a-004e-6e0d-b1f593000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:6fcb6928-f01a-004e-6e0d-b1f593000000\nTime:2019-12-12T17:02:20.3582890Z</Message></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:02:20 GMT",
+      "x-ms-client-request-id" : "a9bfee2d-10d8-44ae-8265-e156775bc5fa",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=deletesharedoesnotexist&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "1ea20456-6fb2-45aa-b7a2-2a857e39a13c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "6fcb6929-f01a-004e-6f0d-b1f593000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>deletesharedoesnotexist</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:02:20 GMT",
+      "x-ms-client-request-id" : "1ea20456-6fb2-45aa-b7a2-2a857e39a13c",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "deletesharedoesnotexist15720832b04ecc5ef4054", "deletesharedoesnotexist59816c6f834eb8e434f56" ]
+  "variables" : [ "deletesharedoesnotexist20562ebfa4bbc0af3405a", "deletesharedoesnotexist787653964929dd0244e41" ]
 }

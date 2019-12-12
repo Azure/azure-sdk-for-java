@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsubdirectorymetadataerror8808145db40cd2788?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsubdirectorymetadataerror8647298baccd77b47?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "3b75471e-9839-4ec3-a63b-e38adcd234f7"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ccc362fd-1887-41da-8806-890587e11586"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D77850468FF8A3",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:07 GMT",
+      "ETag" : "0x8D77F24E6774464",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:15 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "660bae1e-401a-0075-2739-aab7cd000000",
-      "Date" : "Wed, 04 Dec 2019 00:24:06 GMT",
-      "x-ms-client-request-id" : "3b75471e-9839-4ec3-a63b-e38adcd234f7"
+      "x-ms-request-id" : "1ecc893c-201a-00a9-770d-b1e59e000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:15 GMT",
+      "x-ms-client-request-id" : "ccc362fd-1887-41da-8806-890587e11586"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsubdirectorymetadataerror8808145db40cd2788/createsubdirectorymetadataerror9174651f853f58918?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsubdirectorymetadataerror8647298baccd77b47/createsubdirectorymetadataerror2198560b1b8fa2320?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "adedd492-d33c-4c75-9345-1d0ee7f67079"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f5ff47ff-616c-464c-a10b-ace5f249eb85"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-12-04T00:24:07.3266101Z",
-      "Last-Modified" : "Wed, 04 Dec 2019 00:24:07 GMT",
+      "x-ms-file-creation-time" : "2019-12-12T17:01:15.8783409Z",
+      "Last-Modified" : "Thu, 12 Dec 2019 17:01:15 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Dec 2019 00:24:06 GMT",
-      "ETag" : "0x8D77850469783B5",
+      "Date" : "Thu, 12 Dec 2019 17:01:15 GMT",
+      "ETag" : "0x8D77F24E67E05B1",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-12-04T00:24:07.3266101Z",
+      "x-ms-file-change-time" : "2019-12-12T17:01:15.8783409Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "660bae20-401a-0075-2839-aab7cd000000",
-      "x-ms-client-request-id" : "adedd492-d33c-4c75-9345-1d0ee7f67079",
-      "x-ms-file-last-write-time" : "2019-12-04T00:24:07.3266101Z"
+      "x-ms-request-id" : "1ecc893f-201a-00a9-790d-b1e59e000000",
+      "x-ms-client-request-id" : "f5ff47ff-616c-464c-a10b-ace5f249eb85",
+      "x-ms-file-last-write-time" : "2019-12-12T17:01:15.8783409Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsubdirectorymetadataerror8808145db40cd2788/createsubdirectorymetadataerror9174651f853f58918%2ftestsubdirectory?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsubdirectorymetadataerror8647298baccd77b47/createsubdirectorymetadataerror2198560b1b8fa2320%2ftestsubdirectory?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0-beta.6 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "9e83fbc7-0dc4-4c71-8648-2c7d93fe954a"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "58af8296-cc29-48d7-b326-14dd86a0c7dd"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -64,13 +64,53 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "660bae21-401a-0075-2939-aab7cd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:660bae21-401a-0075-2939-aab7cd000000\nTime:2019-12-04T00:24:07.3563418Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Wed, 04 Dec 2019 00:24:06 GMT",
-      "x-ms-client-request-id" : "9e83fbc7-0dc4-4c71-8648-2c7d93fe954a",
+      "x-ms-request-id" : "1ecc8941-201a-00a9-7b0d-b1e59e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:1ecc8941-201a-00a9-7b0d-b1e59e000000\nTime:2019-12-12T17:01:15.9091417Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Thu, 12 Dec 2019 17:01:15 GMT",
+      "x-ms-client-request-id" : "58af8296-cc29-48d7-b326-14dd86a0c7dd",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?prefix=createsubdirectorymetadataerror&include=&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b7cb1c92-0908-47da-ae17-677f80778706"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "1ecc8944-201a-00a9-7e0d-b1e59e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Prefix>createsubdirectorymetadataerror</Prefix><Shares><Share><Name>createsubdirectorymetadataerror8647298baccd77b47</Name><Properties><Last-Modified>Thu, 12 Dec 2019 17:01:15 GMT</Last-Modified><Etag>\"0x8D77F24E6774464\"</Etag><Quota>5120</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 12 Dec 2019 17:01:15 GMT",
+      "x-ms-client-request-id" : "b7cb1c92-0908-47da-ae17-677f80778706",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/createsubdirectorymetadataerror8647298baccd77b47?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.1.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "abbb5356-d99b-46c8-9279-43ebbe0dbb14"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "1ecc8946-201a-00a9-800d-b1e59e000000",
+      "Date" : "Thu, 12 Dec 2019 17:01:15 GMT",
+      "x-ms-client-request-id" : "abbb5356-d99b-46c8-9279-43ebbe0dbb14"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "createsubdirectorymetadataerror8808145db40cd2788", "createsubdirectorymetadataerror9174651f853f58918" ]
+  "variables" : [ "createsubdirectorymetadataerror8647298baccd77b47", "createsubdirectorymetadataerror2198560b1b8fa2320" ]
 }
