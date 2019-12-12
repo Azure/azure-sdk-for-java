@@ -17,11 +17,11 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
         if (response.getResource() != null) {
             super.setProperties(new CosmosStoredProcedureProperties(response));
             storedProcedure = new CosmosAsyncStoredProcedure(this.getProperties().getId(), cosmosContainer);
-            storedProcedureResponse = null;
         } else {
-            storedProcedureResponse = null;
             storedProcedure = null;
         }
+        storedProcedureResponse = null;
+
     }
 
     CosmosAsyncStoredProcedureResponse(StoredProcedureResponse response, CosmosAsyncContainer cosmosContainer) {

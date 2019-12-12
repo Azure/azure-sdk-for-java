@@ -248,7 +248,7 @@ public class CosmosAsyncContainer {
      *
      * @param <T> the type parameter
      * @param klass the class type
-     * @return an {@link Flux} containing one or several feed response pages of the read cosmos items or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the read cosmos items or an error.
      */
     public <T> Flux<FeedResponse<T>> readAllItems(Class<T> klass) {
         return readAllItems(new FeedOptions(), klass);
@@ -264,7 +264,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter
      * @param options the feed options.
      * @param klass the class type
-     * @return an {@link Flux} containing one or several feed response pages of the read cosmos items or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the read cosmos items or an error.
      */
     public <T> Flux<FeedResponse<T>> readAllItems(FeedOptions options, Class<T> klass) {
         return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
@@ -285,7 +285,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter
      * @param query the query.
      * @param klass the class type
-     * @return an {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     public <T> Flux<FeedResponse<T>> queryItems(String query, Class<T> klass) {
         return queryItems(new SqlQuerySpec(query), null);
@@ -302,7 +302,7 @@ public class CosmosAsyncContainer {
      * @param query the query.
      * @param options the feed options.
      * @param klass the class type
-     * @return an {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     public <T> Flux<FeedResponse<T>> queryItems(String query, FeedOptions options, Class<T> klass) {
         return queryItems(new SqlQuerySpec(query), options, klass);
@@ -318,7 +318,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter
      * @param querySpec the SQL query specification.
      * @param klass the class type
-     * @return an {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     public <T> Flux<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, Class<T> klass) {
         return queryItems(querySpec, klass);
@@ -335,7 +335,7 @@ public class CosmosAsyncContainer {
      * @param querySpec the SQL query specification.
      * @param options the feed options.
      * @param klass the class type
-     * @return an {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     public <T> Flux<FeedResponse<T>> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
         return getDatabase().getDocClientWrapper().queryDocuments(getLink(),
@@ -355,7 +355,7 @@ public class CosmosAsyncContainer {
      * failure the {@link Flux} will error.
      *
      * @param changeFeedOptions the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the
+     * @return a {@link Flux} containing one or several feed response pages of the
      * obtained items or an error.
      */
     public Flux<FeedResponse<CosmosItemProperties>> queryChangeFeedItems(ChangeFeedOptions changeFeedOptions) {

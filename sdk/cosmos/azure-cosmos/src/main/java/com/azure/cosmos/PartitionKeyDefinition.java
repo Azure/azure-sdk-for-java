@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -18,7 +17,6 @@ import java.util.List;
  * document property is used as the partition key in a collection that has multiple partitions.
  */
 public final class PartitionKeyDefinition extends JsonSerializable {
-    private final ClientLogger logger = new ClientLogger(PartitionKeyDefinition.class);
     private List<String> paths;
     private PartitionKind kind;
     private PartitionKeyDefinitionVersion version;

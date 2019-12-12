@@ -126,7 +126,7 @@ public class CosmosAsyncUser {
      * In case of failure the {@link Flux} will error.
      *
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read permissions or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the read permissions or an error.
      */
     public Flux<FeedResponse<CosmosPermissionProperties>> readAllPermissions(FeedOptions options) {
         return getDatabase().getDocClientWrapper()
@@ -144,7 +144,7 @@ public class CosmosAsyncUser {
      * In case of failure the {@link Flux} will error.
      *
      * @param query the query.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
      */
     public Flux<FeedResponse<CosmosPermissionProperties>> queryPermissions(String query) {
         return queryPermissions(query);
@@ -159,7 +159,7 @@ public class CosmosAsyncUser {
      *
      * @param query the query.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
      */
     public Flux<FeedResponse<CosmosPermissionProperties>> queryPermissions(String query, FeedOptions options) {
         return getDatabase().getDocClientWrapper()

@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,7 +15,6 @@ import java.util.Iterator;
  */
 public class CosmosDatabase {
 
-    private final ClientLogger logger = new ClientLogger(CosmosDatabase.class);
     private final CosmosAsyncDatabase databaseWrapper;
     private final CosmosClient client;
     private final String id;

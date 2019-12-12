@@ -357,7 +357,7 @@ public class CosmosAsyncClient implements AutoCloseable {
      *
      * @param query the query.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
     public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(String query, FeedOptions options) {
         return queryDatabases(new SqlQuerySpec(query), options);
@@ -372,7 +372,7 @@ public class CosmosAsyncClient implements AutoCloseable {
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
     public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
         return getDocClientWrapper().queryDatabases(querySpec, options)

@@ -67,7 +67,7 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link Flux} will error.
      *
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read cosmos stored procedures
+     * @return a {@link Flux} containing one or several feed response pages of the read cosmos stored procedures
      * properties or an error.
      */
     public Flux<FeedResponse<CosmosStoredProcedureProperties>> readAllStoredProcedures(FeedOptions options) {
@@ -87,7 +87,7 @@ public class CosmosAsyncScripts {
      *
      * @param query the the query.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained stored procedures or
+     * @return a {@link Flux} containing one or several feed response pages of the obtained stored procedures or
      * an error.
      */
     public Flux<FeedResponse<CosmosStoredProcedureProperties>> queryStoredProcedures(String query,
@@ -104,7 +104,7 @@ public class CosmosAsyncScripts {
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained stored procedures or
+     * @return a {@link Flux} containing one or several feed response pages of the obtained stored procedures or
      * an error.
      */
     public Flux<FeedResponse<CosmosStoredProcedureProperties>> queryStoredProcedures(SqlQuerySpec querySpec,
@@ -159,7 +159,7 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link Flux} will error.
      *
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read user defined functions or an
+     * @return a {@link Flux} containing one or several feed response pages of the read user defined functions or an
      * error.
      */
     public Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> readAllUserDefinedFunctions(FeedOptions options) {
@@ -179,7 +179,7 @@ public class CosmosAsyncScripts {
      *
      * @param query the query.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained user defined functions 
+     * @return a {@link Flux} containing one or several feed response pages of the obtained user defined functions 
      * or an error.
      */
     public Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> queryUserDefinedFunctions(String query,
@@ -196,7 +196,7 @@ public class CosmosAsyncScripts {
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained user defined functions 
+     * @return a {@link Flux} containing one or several feed response pages of the obtained user defined functions 
      * or an error.
      */
     public Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> queryUserDefinedFunctions(SqlQuerySpec querySpec,
@@ -247,7 +247,7 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link Flux} will error.
      *
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read cosmos rigger properties or 
+     * @return a {@link Flux} containing one or several feed response pages of the read cosmos rigger properties or 
      * an error.
      */
     public Flux<FeedResponse<CosmosTriggerProperties>> readAllTriggers(FeedOptions options) {
@@ -267,7 +267,7 @@ public class CosmosAsyncScripts {
      *
      * @param query the query.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
      */
     public Flux<FeedResponse<CosmosTriggerProperties>> queryTriggers(String query, FeedOptions options) {
         return queryTriggers(new SqlQuerySpec(query), options);
@@ -282,7 +282,7 @@ public class CosmosAsyncScripts {
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
      */
     public Flux<FeedResponse<CosmosTriggerProperties>> queryTriggers(SqlQuerySpec querySpec,
                                                                      FeedOptions options) {

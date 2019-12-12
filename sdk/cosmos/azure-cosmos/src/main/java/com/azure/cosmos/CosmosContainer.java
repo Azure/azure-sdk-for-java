@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,7 +15,6 @@ import java.util.Iterator;
  */
 public class CosmosContainer {
 
-    private final ClientLogger logger = new ClientLogger(CosmosContainer.class);
     private final CosmosAsyncContainer containerWrapper;
     private final CosmosDatabase database;
     private final String id;
@@ -198,7 +196,7 @@ public class CosmosContainer {
             if (throwable instanceof CosmosClientException) {
                 throw (CosmosClientException) throwable;
             } else {
-                throw Exceptions.propagate(ex);
+                throw ex;
             }
         }
     }

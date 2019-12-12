@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Strings;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CosmosConflictProperties extends Resource {
-    private final ClientLogger logger = new ClientLogger(CosmosConflictProperties.class);
 
     /**
      * Initialize a conflict object.

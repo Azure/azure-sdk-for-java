@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.Constants;
 
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.List;
  * collection in the Azure Cosmos DB service.
  */
 public class UniqueKeyPolicy extends JsonSerializable {
-    private final ClientLogger logger = new ClientLogger(UniqueKeyPolicy.class);
     private List<UniqueKey> uniqueKeys;
 
     public UniqueKeyPolicy() {

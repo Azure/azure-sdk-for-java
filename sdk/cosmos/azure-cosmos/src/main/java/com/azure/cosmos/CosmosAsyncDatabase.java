@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
@@ -18,7 +17,6 @@ import static com.azure.cosmos.Resource.validateResource;
  * Perform read and delete databases, update database throughput, and perform operations on child resources
  */
 public class CosmosAsyncDatabase {
-    private final ClientLogger logger = new ClientLogger(CosmosAsyncDatabase.class);
     private final CosmosAsyncClient client;
     private String id;
 
@@ -121,7 +119,7 @@ public class CosmosAsyncDatabase {
      * created container. In case of failure the {@link Mono} will error.
      *
      * @param containerProperties the container properties.
-     * @return an {@link Flux} containing the single cosmos container response with
+     * @return a {@link Flux} containing the single cosmos container response with
      * the created container or an error.
      * @throws IllegalArgumentException containerProperties cannot be null
      */
@@ -138,7 +136,7 @@ public class CosmosAsyncDatabase {
      *
      * @param containerProperties the container properties.
      * @param throughput the throughput for the container
-     * @return an {@link Flux} containing the single cosmos container response with
+     * @return a {@link Flux} containing the single cosmos container response with
      * the created container or an error.
      * @throws IllegalArgumentException thown if containerProerties are null
      */
@@ -162,7 +160,7 @@ public class CosmosAsyncDatabase {
      *
      * @param containerProperties the containerProperties.
      * @param options the cosmos container request options
-     * @return an {@link Flux} containing the cosmos container response with the
+     * @return a {@link Flux} containing the cosmos container response with the
      * created container or an error.
      * @throws IllegalArgumentException containerProperties can not be null
      */
@@ -190,7 +188,7 @@ public class CosmosAsyncDatabase {
      * @param containerProperties the containerProperties.
      * @param throughput the throughput for the container
      * @param options the cosmos container request options
-     * @return an {@link Flux} containing the cosmos container response with the
+     * @return a {@link Flux} containing the cosmos container response with the
      * created container or an error.
      * @throws IllegalArgumentException containerProperties cannot be null
      */
@@ -213,7 +211,7 @@ public class CosmosAsyncDatabase {
      *
      * @param id the cosmos container id
      * @param partitionKeyPath the partition key path
-     * @return an {@link Flux} containing the cosmos container response with the
+     * @return a {@link Flux} containing the cosmos container response with the
      * created container or an error.
      */
     public Mono<CosmosAsyncContainerResponse> createContainer(String id, String partitionKeyPath) {
@@ -230,7 +228,7 @@ public class CosmosAsyncDatabase {
      * @param id the cosmos container id
      * @param partitionKeyPath the partition key path
      * @param throughput the throughput for the container
-     * @return an {@link Flux} containing the cosmos container response with the
+     * @return a {@link Flux} containing the cosmos container response with the
      * created container or an error.
      */
     public Mono<CosmosAsyncContainerResponse> createContainer(String id, String partitionKeyPath, int throughput) {
@@ -287,7 +285,7 @@ public class CosmosAsyncDatabase {
      *
      * @param id the cosmos container id
      * @param partitionKeyPath the partition key path
-     * @return an {@link Flux} containing the cosmos container response with the
+     * @return a {@link Flux} containing the cosmos container response with the
      * created container or an error.
      */
     public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath) {
@@ -307,7 +305,7 @@ public class CosmosAsyncDatabase {
      * @param id the cosmos container id
      * @param partitionKeyPath the partition key path
      * @param throughput the throughput for the container
-     * @return an {@link Flux} containing the cosmos container response with the
+     * @return a {@link Flux} containing the cosmos container response with the
      * created container or an error.
      */
     public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath,
@@ -482,7 +480,7 @@ public class CosmosAsyncDatabase {
      * contain one or several feed response of the read cosmos users. In case of
      * failure the {@link Flux} will error.
      *
-     * @return an {@link Flux} containing one or several feed response pages of the
+     * @return a {@link Flux} containing one or several feed response pages of the
      * read cosmos users or an error.
      */
     public Flux<FeedResponse<CosmosUserProperties>> readAllUsers() {
@@ -497,7 +495,7 @@ public class CosmosAsyncDatabase {
      * failure the {@link Flux} will error.
      *
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the
+     * @return a {@link Flux} containing one or several feed response pages of the
      * read cosmos users or an error.
      */
     public Flux<FeedResponse<CosmosUserProperties>> readAllUsers(FeedOptions options) {

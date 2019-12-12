@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.logging.ClientLogger;
-
 import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +11,6 @@ import java.util.List;
  * Represents the Connection policy associated with a DocumentClient in the Azure Cosmos DB database service.
  */
 public final class ConnectionPolicy {
-    private final ClientLogger logger = new ClientLogger(ConnectionPolicy.class);
     private static final int DEFAULT_REQUEST_TIMEOUT_IN_MILLIS = 60 * 1000;
     // defaultMediaRequestTimeout is based upon the blob client timeout and the
     // retry policy.

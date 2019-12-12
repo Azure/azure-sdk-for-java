@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.Utils;
@@ -19,7 +18,6 @@ import java.util.Map;
  * Represents a database account in the Azure Cosmos DB database service.
  */
 public class DatabaseAccount extends Resource {
-    private final ClientLogger logger = new ClientLogger(DatabaseAccount.class);
     private ConsistencyPolicy consistencyPolicy;
 
     private long maxMediaStorageUsageInMB;

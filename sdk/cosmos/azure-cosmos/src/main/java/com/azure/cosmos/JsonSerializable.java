@@ -92,8 +92,9 @@ public class JsonSerializable {
                         return value.asLong();
                     } else if (value.isDouble()) {
                         return value.asDouble();
+                    } else{
+                        return value;
                     }
-                    break;
                 case STRING:
                     return value.asText();
                 default:
