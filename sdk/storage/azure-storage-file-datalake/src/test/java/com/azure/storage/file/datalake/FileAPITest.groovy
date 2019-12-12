@@ -1421,7 +1421,7 @@ class FileAPITest extends APISpec {
         fc.flush(defaultDataSize, false)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
     }
 
     def "Get File Name and Build Client"() {

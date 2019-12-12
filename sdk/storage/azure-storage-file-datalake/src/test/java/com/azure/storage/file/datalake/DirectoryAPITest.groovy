@@ -6,7 +6,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 
-import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
 
@@ -36,7 +35,7 @@ class DirectoryAPITest extends APISpec {
         dc.create()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
     }
 
     def "Create defaults"() {
@@ -72,7 +71,7 @@ class DirectoryAPITest extends APISpec {
         dc.create(false)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
     }
 
     def "Exists"() {
