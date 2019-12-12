@@ -73,7 +73,7 @@ public class CosmosConflictProperties extends Resource {
                 return klass.getConstructor(String.class).newInstance(resourceAsString);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                          | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                throw logger.logExceptionAsError(new IllegalStateException("Failed to instantiate class object.", e));
+                throw new IllegalStateException("Failed to instantiate class object.", e);
             }
         } else {
             return null;

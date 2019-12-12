@@ -101,7 +101,7 @@ public final class IndexingPolicy extends JsonSerializable {
         try {
             result = IndexingMode.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.INDEXING_MODE)));
         } catch (IllegalArgumentException e) {
-            this.getLogger().warning("INVALID indexingMode value {}.",
+            this.getLogger().warn("INVALID indexingMode value {}.",
                 super.getString(Constants.Properties.INDEXING_MODE));
         }
         return result;

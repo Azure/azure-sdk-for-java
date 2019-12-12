@@ -76,7 +76,7 @@ public class CosmosTriggerProperties extends Resource {
         } catch (IllegalArgumentException e) {
             // ignore the exception and return the default
             this.getLogger()
-                .warning("INVALID triggerType value {}.", super.getString(Constants.Properties.TRIGGER_TYPE));
+                .warn("INVALID triggerType value {}.", super.getString(Constants.Properties.TRIGGER_TYPE));
         }
         return result;
     }
@@ -104,7 +104,7 @@ public class CosmosTriggerProperties extends Resource {
                 StringUtils.upperCase(super.getString(Constants.Properties.TRIGGER_OPERATION)));
         } catch (IllegalArgumentException e) {
             // ignore the exception and return the default
-            this.getLogger().warning("INVALID triggerOperation value {}.",
+            this.getLogger().warn("INVALID triggerOperation value {}.",
                 super.getString(Constants.Properties.TRIGGER_OPERATION));
         }
         return result;

@@ -160,7 +160,7 @@ public class ConflictResolutionPolicy extends JsonSerializable {
                 return ConflictResolutionMode
                            .valueOf(Strings.fromCamelCaseToUpperCase(super.getString(Constants.Properties.MODE)));
             } catch (IllegalArgumentException e) {
-                this.getLogger().warning("INVALID ConflictResolutionMode getValue {}.",
+                this.getLogger().warn("INVALID ConflictResolutionMode getValue {}.",
                     super.getString(Constants.Properties.MODE));
                 return ConflictResolutionMode.INVALID;
             }

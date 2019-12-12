@@ -145,7 +145,7 @@ public class CosmosAsyncDatabase {
     public Mono<CosmosAsyncContainerResponse> createContainer(CosmosContainerProperties containerProperties,
                                                               int throughput) {
         if (containerProperties == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("containerProperties"));
+            throw new IllegalArgumentException("containerProperties");
         }
         validateResource(containerProperties);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
@@ -169,7 +169,7 @@ public class CosmosAsyncDatabase {
     public Mono<CosmosAsyncContainerResponse> createContainer(CosmosContainerProperties containerProperties,
                                                               CosmosContainerRequestOptions options) {
         if (containerProperties == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("containerProperties"));
+            throw new IllegalArgumentException("containerProperties");
         }
         validateResource(containerProperties);
         if (options == null) {

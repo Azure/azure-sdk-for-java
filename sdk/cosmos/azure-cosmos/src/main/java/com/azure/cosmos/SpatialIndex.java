@@ -46,7 +46,7 @@ final class SpatialIndex extends Index {
         try {
             result = DataType.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.DATA_TYPE)));
         } catch (IllegalArgumentException e) {
-            this.getLogger().warning("INVALID index dataType value {}.",
+            this.getLogger().warn("INVALID index dataType value {}.",
                 super.getString(Constants.Properties.DATA_TYPE));
         }
         return result;

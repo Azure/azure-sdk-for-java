@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 
 import java.net.URI;
-import java.net.URL;
 import java.util.Map;
 
 /**

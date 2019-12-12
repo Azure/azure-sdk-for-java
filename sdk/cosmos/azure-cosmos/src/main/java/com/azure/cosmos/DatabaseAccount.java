@@ -196,7 +196,7 @@ public class DatabaseAccount extends Resource {
                     this.queryEngineConfiguration = Utils.getSimpleObjectMapper()
                                                         .readValue(queryEngineConfigurationJsonString, typeRef);
                 } catch (IOException e) {
-                    throw logger.logExceptionAsError(new IllegalArgumentException(e));
+                    throw new IllegalArgumentException(e);
                 }
                 if (this.queryEngineConfiguration == null) {
                     this.queryEngineConfiguration = new HashMap<>();

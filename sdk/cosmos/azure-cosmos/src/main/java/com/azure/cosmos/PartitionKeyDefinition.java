@@ -117,7 +117,7 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      */
     public PartitionKeyDefinition setPaths(List<String> paths) {
         if (paths == null || paths.size() == 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("getPaths must not be null or empty."));
+            throw new IllegalArgumentException("getPaths must not be null or empty.");
         }
 
         this.paths = paths;

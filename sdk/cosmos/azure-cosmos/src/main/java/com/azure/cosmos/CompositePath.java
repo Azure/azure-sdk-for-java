@@ -64,7 +64,7 @@ public class CompositePath extends JsonSerializable {
                 return CompositePathSortOrder
                            .valueOf(StringUtils.upperCase(super.getString(Constants.Properties.ORDER)));
             } catch (IllegalArgumentException e) {
-                this.getLogger().warning("INVALID getIndexingMode getValue {}.",
+                this.getLogger().warn("INVALID getIndexingMode getValue {}.",
                     super.getString(Constants.Properties.ORDER));
                 return CompositePathSortOrder.ASCENDING;
             }

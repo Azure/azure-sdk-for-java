@@ -63,7 +63,7 @@ public final class HashIndex extends Index {
             result = DataType.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.DATA_TYPE)));
         } catch (IllegalArgumentException e) {
             // Ignore exception and let the caller handle null value.
-            this.getLogger().warning("INVALID index dataType value {}.",
+            this.getLogger().warn("INVALID index dataType value {}.",
                 super.getString(Constants.Properties.DATA_TYPE));
         }
         return result;

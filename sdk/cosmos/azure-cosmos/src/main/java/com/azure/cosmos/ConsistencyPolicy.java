@@ -46,7 +46,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
                 StringUtils.upperCase(super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL)));
         } catch (IllegalArgumentException e) {
             // ignore the exception and return the default
-            this.getLogger().warning("Unknown consistency level {}, value ignored.",
+            this.getLogger().warn("Unknown consistency level {}, value ignored.",
                 super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL));
         }
         return result;

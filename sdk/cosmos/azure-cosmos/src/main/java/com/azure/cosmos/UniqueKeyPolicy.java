@@ -56,7 +56,7 @@ public class UniqueKeyPolicy extends JsonSerializable {
      */
     public UniqueKeyPolicy uniqueKeys(List<UniqueKey> uniqueKeys) {
         if (uniqueKeys == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("uniqueKeys cannot be null."));
+            throw new IllegalArgumentException("uniqueKeys cannot be null.");
         }
         this.uniqueKeys = uniqueKeys;
         return this;

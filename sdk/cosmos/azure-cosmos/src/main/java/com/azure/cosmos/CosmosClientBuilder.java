@@ -258,7 +258,7 @@ public class CosmosClientBuilder {
 
     private void ifThrowIllegalArgException(boolean value, String error) {
         if (value) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(error));
+            throw new IllegalArgumentException(error);
         }
     }
 }

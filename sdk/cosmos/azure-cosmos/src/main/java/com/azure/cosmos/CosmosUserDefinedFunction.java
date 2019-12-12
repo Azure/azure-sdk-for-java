@@ -41,7 +41,7 @@ public class CosmosUserDefinedFunction {
      * @return the cosmos sync user defined function response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserDefinedFunctionResponse read() {
+    public CosmosUserDefinedFunctionResponse read() throws CosmosClientException {
         return container.getScripts().mapUDFResponseAndBlock(userDefinedFunction.read());
     }
 
@@ -52,7 +52,8 @@ public class CosmosUserDefinedFunction {
      * @return the cosmos sync user defined function response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserDefinedFunctionResponse replace(CosmosUserDefinedFunctionProperties udfSettings) {
+    public CosmosUserDefinedFunctionResponse replace(CosmosUserDefinedFunctionProperties udfSettings) throws
+        CosmosClientException {
         return container.getScripts().mapUDFResponseAndBlock(userDefinedFunction.replace(udfSettings));
     }
 
@@ -62,7 +63,7 @@ public class CosmosUserDefinedFunction {
      * @return the cosmos sync response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserDefinedFunctionResponse delete() {
+    public CosmosUserDefinedFunctionResponse delete() throws CosmosClientException {
         return container.getScripts().mapUDFResponseAndBlock(userDefinedFunction.delete());
     }
 }

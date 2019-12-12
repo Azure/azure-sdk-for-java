@@ -176,10 +176,10 @@ class ClientSideRequestStatistics {
 
             //  first trace request start time, as well as total non-head/headfeed requests made.
             stringBuilder.append("RequestStartTime: ")
-                .append("\"").append(this.requestStartTime.format(responseTimeFormatter)).append("\"")
+                .append("\"").append(this.requestStartTime.format(RESPONSE_TIME_FORMATTER)).append("\"")
                 .append(", ")
                 .append("RequestEndTime: ")
-                .append("\"").append(this.requestEndTime.format(responseTimeFormatter)).append("\"")
+                .append("\"").append(this.requestEndTime.format(RESPONSE_TIME_FORMATTER)).append("\"")
                 .append(", ")
                 .append("Duration: ")
                 .append(Duration.between(requestStartTime, requestEndTime).toMillis())
@@ -290,12 +290,12 @@ class ClientSideRequestStatistics {
 
         @Override
         public String toString() {
-            return "StoreResponseStatistics{" +
-                "requestResponseTime=\"" + formatDateTime(requestResponseTime) + "\"" +
-                ", storeResult=" + storeResult +
-                ", requestResourceType=" + requestResourceType +
-                ", requestOperationType=" + requestOperationType +
-                '}';
+            return "StoreResponseStatistics{"
+                       + "requestResponseTime=\"" + formatDateTime(requestResponseTime) + "\"" +
+                       ", storeResult=" + storeResult
+                       + ", requestResourceType=" + requestResourceType 
+                       + ", requestOperationType=" + requestOperationType 
+                       + '}';
         }
     }
 

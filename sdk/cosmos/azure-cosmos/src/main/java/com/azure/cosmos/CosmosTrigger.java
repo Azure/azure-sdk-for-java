@@ -39,7 +39,7 @@ public class CosmosTrigger {
      * @return the cosmos sync trigger response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosTriggerResponse read() {
+    public CosmosTriggerResponse read() throws CosmosClientException {
         return container.getScripts().mapTriggerResponseAndBlock(trigger.read());
     }
 
@@ -50,7 +50,7 @@ public class CosmosTrigger {
      * @return the cosmos sync trigger response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosTriggerResponse replace(CosmosTriggerProperties triggerSettings) {
+    public CosmosTriggerResponse replace(CosmosTriggerProperties triggerSettings) throws CosmosClientException {
         return container.getScripts().mapTriggerResponseAndBlock(trigger.replace(triggerSettings));
     }
 
@@ -60,7 +60,7 @@ public class CosmosTrigger {
      * @return the cosmos sync response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosTriggerResponse delete() {
+    public CosmosTriggerResponse delete() throws CosmosClientException {
         return container.getScripts().mapTriggerResponseAndBlock(trigger.delete());
     }
 

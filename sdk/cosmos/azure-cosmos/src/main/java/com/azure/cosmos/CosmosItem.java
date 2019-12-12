@@ -52,7 +52,7 @@ public class CosmosItem {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItemResponse read(CosmosItemRequestOptions options) {
+    public CosmosItemResponse read(CosmosItemRequestOptions options) throws CosmosClientException {
         return container.mapItemResponseAndBlock(asyncItem.read(options));
     }
 
@@ -64,7 +64,7 @@ public class CosmosItem {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItemResponse replace(Object item, CosmosItemRequestOptions options) {
+    public CosmosItemResponse replace(Object item, CosmosItemRequestOptions options) throws CosmosClientException {
         return container.mapItemResponseAndBlock(asyncItem.replace(item, options));
     }
 
@@ -75,7 +75,7 @@ public class CosmosItem {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItemResponse delete(CosmosItemRequestOptions options) {
+    public CosmosItemResponse delete(CosmosItemRequestOptions options) throws CosmosClientException {
         return container.mapItemResponseAndBlock(asyncItem.delete(options));
     }
 

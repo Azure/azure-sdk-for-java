@@ -98,7 +98,7 @@ public class IncludedPath extends JsonSerializable {
                         result.add(new SpatialIndex(jsonObject.toString()));
                         break;
                     default:
-                        throw logger.logExceptionAsError(new IllegalStateException("Unexpected value: " + indexKind));
+                        throw new IllegalStateException("Unexpected value: " + indexKind);
                 }
             }
 

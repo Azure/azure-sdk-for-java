@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
  */
 public class CosmosContainerProperties extends Resource {
 
-    private final ClientLogger logger = new ClientLogger(CosmosContainerProperties.class);
     private IndexingPolicy indexingPolicy;
     private UniqueKeyPolicy uniqueKeyPolicy;
     private PartitionKeyDefinition partitionKeyDefinition;
@@ -91,7 +89,7 @@ public class CosmosContainerProperties extends Resource {
      */
     public CosmosContainerProperties setIndexingPolicy(IndexingPolicy indexingPolicy) {
         if (indexingPolicy == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("IndexingPolicy cannot be null."));
+            throw new IllegalArgumentException("IndexingPolicy cannot be null.");
         }
         this.indexingPolicy = indexingPolicy;
         super.set(Constants.Properties.INDEXING_POLICY, indexingPolicy);
@@ -126,7 +124,7 @@ public class CosmosContainerProperties extends Resource {
      */
     public CosmosContainerProperties setUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
         if (uniqueKeyPolicy == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("uniqueKeyPolicy cannot be null."));
+            throw new IllegalArgumentException("uniqueKeyPolicy cannot be null.");
         }
 
         this.uniqueKeyPolicy = uniqueKeyPolicy;
@@ -162,8 +160,8 @@ public class CosmosContainerProperties extends Resource {
      */
     public CosmosContainerProperties setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         if (partitionKeyDefinition == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "partitionKeyDefinition cannot be null."));
+            throw new IllegalArgumentException(
+                "partitionKeyDefinition cannot be null.");
         }
 
         this.partitionKeyDefinition = partitionKeyDefinition;
@@ -190,8 +188,8 @@ public class CosmosContainerProperties extends Resource {
      */
     public CosmosContainerProperties setConflictResolutionPolicy(ConflictResolutionPolicy value) {
         if (value == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "CONFLICT_RESOLUTION_POLICY cannot be null."));
+            throw new IllegalArgumentException(
+                "CONFLICT_RESOLUTION_POLICY cannot be null.");
         }
 
         super.set(Constants.Properties.CONFLICT_RESOLUTION_POLICY, value);

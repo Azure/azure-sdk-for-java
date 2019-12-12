@@ -216,7 +216,7 @@ public class AddressResolverTest {
         try {
             resolvedAddresses = this.addressResolver.resolveAsync(request, forceAddressRefresh).block();
         } catch (RuntimeException e) {
-            throw e;
+            throw (Exception) e.getCause();
         } finally {
             assertThat(collectionCacheRefreshed).isEqualTo(collectionCacheRefreshedCount).describedAs("collection cache refresh count mismath");
 
@@ -248,7 +248,7 @@ public class AddressResolverTest {
         int collectionCacheRefreshed,
         int routingMapCacheRefreshed,
         int addressCacheRefreshed,
-        boolean nameBased) throws Exception {
+        boolean nameBased) throws Exception{
 
         if (targetServiceIdentity != null && targetPartitionKeyRange != null) {
             targetServiceIdentity.partitionKeyRangeIds.add(new PartitionKeyRangeIdentity(collectionAfterRefresh != null ? collectionAfterRefresh.getResourceId() : collectionBeforeRefresh.getResourceId(), targetPartitionKeyRange.getId()));
@@ -283,7 +283,7 @@ public class AddressResolverTest {
         try {
             resolvedAddresses = this.addressResolver.resolveAsync(request, forceAddressRefresh).block();
         } catch (RuntimeException e) {
-            throw e;
+            throw (Exception) e.getCause();
         } finally {
             assertThat(collectionCacheRefreshed).isEqualTo(collectionCacheRefreshedCount).describedAs("collection cache refresh count mismath");
 

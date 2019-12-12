@@ -274,4 +274,8 @@ public class CosmosClientException extends Exception {
         }
         return null;
     }
+
+    public void setResourceAddress(String resourceAddress) {
+        this.resourceAddress = resourceAddress;
+    }
 }

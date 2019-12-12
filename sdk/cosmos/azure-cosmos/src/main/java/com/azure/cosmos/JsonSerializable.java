@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
@@ -13,6 +12,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -30,7 +31,7 @@ import java.util.Map;
  */
 public class JsonSerializable {
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
-    private final ClientLogger logger = new ClientLogger(JsonSerializable.class);
+    private final static Logger logger = LoggerFactory.getLogger(JsonSerializable.class);
     transient ObjectNode propertyBag = null;
     private ObjectMapper om;
 
@@ -115,7 +116,7 @@ public class JsonSerializable {
     }
 
     @JsonIgnore
-    protected ClientLogger getLogger() {
+    protected Logger getLogger() {
         return logger;
     }
 
@@ -323,7 +324,7 @@ public class JsonSerializable {
                     return c.cast(c.getMethod("valueOf", String.class).invoke(null, value));
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                              | NoSuchMethodException | SecurityException e) {
-                    throw logger.logExceptionAsError(new IllegalStateException("Failed to create enum.", e));
+                    throw new IllegalStateException("Failed to create enum.", e);
                 }
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
                 try {
@@ -334,8 +335,8 @@ public class JsonSerializable {
                     return constructor.newInstance(toJson(jsonObj));
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                              | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                    throw logger.logExceptionAsError(new IllegalStateException(
-                        "Failed to instantiate class object.", e));
+                    throw new IllegalStateException(
+                        "Failed to instantiate class object.", e);
                 }
             } else {
                 // POJO
@@ -343,7 +344,7 @@ public class JsonSerializable {
                 try {
                     return this.getMapper().treeToValue(jsonObj, c);
                 } catch (IOException e) {
-                    throw logger.logExceptionAsError(new IllegalStateException("Failed to get POJO.", e));
+                    throw new IllegalStateException("Failed to get POJO.", e);
                 }
             }
         }
@@ -397,7 +398,7 @@ public class JsonSerializable {
                         result.add(c.cast(c.getMethod("valueOf", String.class).invoke(null, value)));
                     } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                                  | NoSuchMethodException | SecurityException e) {
-                        throw logger.logExceptionAsError(new IllegalStateException("Failed to create enum.", e));
+                        throw new IllegalStateException("Failed to create enum.", e);
                     }
                 } else if (isJsonSerializable) {
                     // JsonSerializable
@@ -409,15 +410,15 @@ public class JsonSerializable {
                         result.add(constructor.newInstance(toJson(n)));
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                                  | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                        throw logger.logExceptionAsError(new IllegalStateException(
-                            "Failed to instantiate class object.", e));
+                        throw new IllegalStateException(
+                            "Failed to instantiate class object.", e);
                     }
                 } else {
                     // POJO
                     try {
                         result.add(this.getMapper().treeToValue(n, c));
                     } catch (IOException e) {
-                        throw logger.logExceptionAsError(new IllegalStateException("Failed to get POJO.", e));
+                        throw new IllegalStateException("Failed to get POJO.", e);
                     }
                 }
             }
@@ -514,8 +515,8 @@ public class JsonSerializable {
         try {
             return (ObjectNode) getMapper().readTree(json);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                String.format("Unable to parse JSON %s", json), e));
+            throw new IllegalArgumentException(
+                String.format("Unable to parse JSON %s", json), e);
         }
     }
 
@@ -523,7 +524,7 @@ public class JsonSerializable {
         try {
             return getMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw logger.logExceptionAsError(new IllegalStateException("Unable to convert JSON to STRING", e));
+            throw new IllegalStateException("Unable to convert JSON to STRING", e);
         }
     }
 
@@ -531,7 +532,7 @@ public class JsonSerializable {
         try {
             return getMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw logger.logExceptionAsError(new IllegalStateException("Unable to convert JSON to STRING", e));
+            throw new IllegalStateException("Unable to convert JSON to STRING", e);
         }
     }
 
@@ -560,14 +561,14 @@ public class JsonSerializable {
             try {
                 return this.getMapper().readValue(o.toString(), c);
             } catch (IOException e) {
-                throw logger.logExceptionAsError(new IllegalStateException("Failed to convert to collection.", e));
+                throw new IllegalStateException("Failed to convert to collection.", e);
             }
         }
         if (ObjectNode.class.isAssignableFrom(c)) {
             // JSONObject
             if (ObjectNode.class != c) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "We support JSONObject but not its sub-classes."));
+                throw new IllegalArgumentException(
+                    "We support JSONObject but not its sub-classes.");
             }
             return c.cast(this.propertyBag);
         } else {
@@ -576,7 +577,7 @@ public class JsonSerializable {
             try {
                 return this.getMapper().readValue(this.toJson(), c);
             } catch (IOException e) {
-                throw logger.logExceptionAsError(new IllegalStateException("Failed to get POJO.", e));
+                throw new IllegalStateException("Failed to get POJO.", e);
             }
         }
     }

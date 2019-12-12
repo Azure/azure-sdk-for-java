@@ -187,8 +187,8 @@ Licensed under the MIT License.
         <configuration>
           <includeTestSourceDirectory>false</includeTestSourceDirectory>
           <excludes>**/implementation/**,**/BridgeInternal.java,**/CosmosBridgeInternal.java</excludes>
-          <failsOnError>true</failsOnError>
-          <failOnViolation>true</failOnViolation>
+          <failsOnError>false</failsOnError>
+          <failOnViolation>false</failOnViolation>
         </configuration>
       </plugin>
 

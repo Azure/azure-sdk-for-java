@@ -39,7 +39,8 @@ public class CosmosClient implements AutoCloseable {
      * @return the {@link CosmosDatabaseResponse} with the created database.
      * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties) {
+    public CosmosDatabaseResponse createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties) throws
+        CosmosClientException {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(databaseProperties));
     }
 
@@ -50,7 +51,7 @@ public class CosmosClient implements AutoCloseable {
      * @return the {@link CosmosDatabaseResponse} with the created database.
      * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabaseIfNotExists(String id) {
+    public CosmosDatabaseResponse createDatabaseIfNotExists(String id) throws CosmosClientException {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(id));
     }
 
@@ -64,7 +65,7 @@ public class CosmosClient implements AutoCloseable {
      * @throws CosmosClientException the cosmos client exception.
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
-                                                 CosmosDatabaseRequestOptions options) {
+                                                 CosmosDatabaseRequestOptions options) throws CosmosClientException {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, options));
     }
 
@@ -75,7 +76,8 @@ public class CosmosClient implements AutoCloseable {
      * @return the {@link CosmosDatabaseResponse} with the created database.
      * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties) {
+    public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties) throws
+        CosmosClientException {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties));
     }
 
@@ -86,7 +88,7 @@ public class CosmosClient implements AutoCloseable {
      * @return the {@link CosmosDatabaseResponse} with the created database.
      * @throws CosmosClientException the cosmos client exception.
      */
-    public CosmosDatabaseResponse createDatabase(String id) {
+    public CosmosDatabaseResponse createDatabase(String id) throws CosmosClientException {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id));
 
     }
@@ -102,7 +104,7 @@ public class CosmosClient implements AutoCloseable {
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
                                                  int throughput,
-                                                 CosmosDatabaseRequestOptions options) {
+                                                 CosmosDatabaseRequestOptions options) throws CosmosClientException {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughput, options));
     }
 
@@ -115,7 +117,7 @@ public class CosmosClient implements AutoCloseable {
      * @throws CosmosClientException the cosmos client exception
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
-                                                 int throughput) {
+                                                 int throughput) throws CosmosClientException {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughput));
     }
 
@@ -128,11 +130,12 @@ public class CosmosClient implements AutoCloseable {
      * @return the {@link CosmosDatabaseResponse} with the created database.
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosDatabaseResponse createDatabase(String id, int throughput) {
+    public CosmosDatabaseResponse createDatabase(String id, int throughput) throws CosmosClientException {
         return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id, throughput));
     }
 
-    CosmosDatabaseResponse mapDatabaseResponseAndBlock(Mono<CosmosAsyncDatabaseResponse> databaseMono) {
+    CosmosDatabaseResponse mapDatabaseResponseAndBlock(Mono<CosmosAsyncDatabaseResponse> databaseMono) throws
+        CosmosClientException {
         try {
             return databaseMono
                        .map(this::convertResponse)
@@ -140,9 +143,9 @@ public class CosmosClient implements AutoCloseable {
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
-                throw logger.logExceptionAsError((CosmosClientException) throwable);
+                throw (CosmosClientException) throwable;
             } else {
-                throw logger.logExceptionAsError(Exceptions.propagate(ex));
+                throw Exceptions.propagate(ex);
             }
         }
     }

@@ -191,7 +191,7 @@ public final class ConnectionPolicy {
      */
     public ConnectionPolicy setRetryOptions(RetryOptions retryOptions) {
         if (retryOptions == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("retryOptions value must not be null."));
+            throw new IllegalArgumentException("retryOptions value must not be null.");
         }
 
         this.retryOptions = retryOptions;
