@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.context.Context;
 
 import java.net.HttpURLConnection;
 import java.time.Duration;
@@ -877,7 +878,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         final HttpHeaders headers = getCustomizedHeaders();
         addHeadersFromContextPolicyRunner(expected ->
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected)
-                .subscriberContext(reactor.util.context.Context.of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)))
+                .subscriberContext(Context.of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)))
                 .assertNext(response -> {
                     final HttpHeaders requestHeaders = response.getRequest().getHeaders();
                     assertContainsHeaders(headers, requestHeaders);
