@@ -232,7 +232,7 @@ public final class RestProxy implements InvocationHandler {
             // segment in the host.
             if (path != null && !path.isEmpty() && !path.equals("/")) {
                 String hostPath = urlBuilder.getPath();
-                if (hostPath == null || hostPath.isEmpty() || hostPath.equals("/")) {
+                if (hostPath == null || hostPath.isEmpty() || hostPath.equals("/") || path.contains("://")) {
                     urlBuilder.setPath(path);
                 } else {
                     urlBuilder.setPath(hostPath + "/" + path);
