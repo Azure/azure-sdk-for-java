@@ -80,8 +80,7 @@ public class ConfigurationClientCredentials {
      * @return a flux of headers to add for authorization
      * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
      */
-    Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod,
-                                                                  Flux<ByteBuffer> contents) {
+    Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuffer> contents) {
         return contents
             .collect(() -> {
                 try {
@@ -115,7 +114,7 @@ public class ConfigurationClientCredentials {
         }
 
         private Map<String, String> getAuthenticationHeaders(final URL url, final String httpMethod,
-                                                             final MessageDigest messageDigest) {
+            final MessageDigest messageDigest) {
             final Map<String, String> headers = new HashMap<>();
             final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
 

@@ -12,6 +12,11 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+/**
+ * A policy uses a concurrent map to maintain the latest sync-tokens. When this HTTP pipeline policy is triggered, the
+ * policy will retrieve all sync-tokens without sequence number segment from the concurrent map and use it in the HTTP
+ * request. Also after received the HTTP response, update the latest sync-tokens to the map.
+ */
 public final class SyncTokenPolicy implements HttpPipelinePolicy {
     private static final String SYNC_TOKEN = "Sync-Token";
     private final ConcurrentHashMap<String, SyncToken> syncTokenMap; // key is sync-token id
@@ -25,7 +30,7 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
      *
      * @param context request context
      * @param next The next policy to invoke.
-     * @return
+     * @return A {@link Mono} representing the HTTP response that will arrive asynchronously.
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -67,6 +72,11 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
         });
     }
 
+    /**
+     * Get all latest sync-tokens from the concurrent map and convert to one sync-token string.
+     * All sync-tokens seperate by a comma delimiter.
+     * @return sync-token string
+     */
     private String getSyncTokenHeader() {
         return syncTokenMap.values().stream().map(SyncToken::getSyncTokenStringInRequest)
             .collect(Collectors.joining(","));

@@ -92,7 +92,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> addConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                              Context context) {
+        Context context) {
         return client.addConfigurationSetting(setting, context).block();
     }
 
@@ -152,8 +152,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                              boolean ifUnchanged,
-                                                                              Context context) {
+        boolean ifUnchanged, Context context) {
         return client.setConfigurationSetting(setting, ifUnchanged, context).block();
     }
 
@@ -232,9 +231,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                              OffsetDateTime acceptDateTime,
-                                                                              boolean ifChanged,
-                                                                              Context context) {
+        OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
         return client.getConfigurationSetting(setting, acceptDateTime, ifChanged, context).block();
     }
 
@@ -292,8 +289,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                                 boolean ifUnchanged,
-                                                                                 Context context) {
+        boolean ifUnchanged, Context context) {
         return client.deleteConfigurationSetting(setting, ifUnchanged, context).block();
     }
 
@@ -353,7 +349,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setReadOnlyWithResponse(ConfigurationSetting setting, boolean isReadOnly,
-                                                                  Context context) {
+        Context context) {
         return client.setReadOnly(setting, isReadOnly, context).block();
     }
 
