@@ -25,9 +25,8 @@ public class ManagedIdentityCredentialLiveTest {
     @Test
     public void testMSIEndpointWithSystemAssigned() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeTrue("Skipping MSI endpoint with system assigned",
-            configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)
-                && !configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeFalse(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         IdentityClient client = new IdentityClientBuilder().build();
         StepVerifier.create(client.authenticateToManagedIdentityEndpoint(
@@ -41,9 +40,8 @@ public class ManagedIdentityCredentialLiveTest {
     @Test
     public void testMSIEndpointWithSystemAssignedAccessKeyVault() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeTrue("Skipping MSI endpoint with system assigned access Key Vault",
-            configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)
-                && !configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeFalse(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
 
@@ -61,9 +59,8 @@ public class ManagedIdentityCredentialLiveTest {
     @Test
     public void testMSIEndpointWithUserAssigned() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeTrue("Skipping MSI endpoint with user assigned",
-            configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)
-                && configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         IdentityClient client = new IdentityClientBuilder()
             .clientId(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
@@ -79,9 +76,8 @@ public class ManagedIdentityCredentialLiveTest {
     @Test
     public void testMSIEndpointWithUserAssignedAccessKeyVault() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeTrue("Skipping MSI endpoint with user assigned access Key Vault",
-            configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)
-                && configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
             .clientId(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
@@ -101,8 +97,8 @@ public class ManagedIdentityCredentialLiveTest {
     @Test
     public void testIMDSEndpointWithSystemAssigned() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeTrue("Skipping IMDS with system assigned",
-            checkIMDSAvailable() && !configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeTrue(checkIMDSAvailable());
+        org.junit.Assume.assumeFalse(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         IdentityClient client = new IdentityClientBuilder().build();
         StepVerifier.create(client.authenticateToIMDSEndpoint(
@@ -114,8 +110,8 @@ public class ManagedIdentityCredentialLiveTest {
     @Test
     public void testIMDSEndpointWithSystemAssignedAccessKeyVault() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeTrue("Skipping IMDS with system assigned access Key Vault",
-            checkIMDSAvailable() && !configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeTrue(checkIMDSAvailable());
+        org.junit.Assume.assumeFalse(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
 
@@ -133,8 +129,8 @@ public class ManagedIdentityCredentialLiveTest {
     @Test
     public void testIMDSEndpointWithUserAssigned() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeTrue("Skipping IMDS with user assigned",
-            checkIMDSAvailable() && configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeTrue(checkIMDSAvailable());
+        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         IdentityClient client = new IdentityClientBuilder()
             .clientId(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
@@ -148,8 +144,8 @@ public class ManagedIdentityCredentialLiveTest {
     @Test
     public void testIMDSEndpointWithUserAssignedAccessKeyVault() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeTrue("Skipping IMDS with user assigned access Key Vault",
-            checkIMDSAvailable() && configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeTrue(checkIMDSAvailable());
+        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
             .clientId(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
