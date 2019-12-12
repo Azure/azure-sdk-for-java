@@ -9,9 +9,16 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -120,6 +127,24 @@ public class FluxUtilTest {
             .verifyErrorMessage(errMsg);
     }
 
+    @Test
+    public void testWriteFile() throws Exception {
+        String toReplace = "test";
+        String original = "hello there";
+        String target = "testo there";
+
+        Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(toReplace.getBytes(StandardCharsets.UTF_8)));
+        File file = createFileIfNotExist("target/test1");
+        FileOutputStream stream = new FileOutputStream(file);
+        stream.write(original.getBytes(StandardCharsets.UTF_8));
+        stream.close();
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
+            FluxUtil.writeFile(body, channel).block();
+            byte[] outputStream = Files.readAllBytes(file.toPath());
+            assertTrue(Arrays.equals(outputStream, target.getBytes(StandardCharsets.UTF_8)));
+        }
+    }
+
     public Flux<ByteBuffer> mockReturnType() {
         return Flux.just(ByteBuffer.wrap(new byte[0]));
     }
@@ -148,5 +173,14 @@ public class FluxUtilTest {
             + context.getData("LastName").orElse("");
 
         return Flux.just(msg.split(" "));
+    }
+
+    private File createFileIfNotExist(String fileName) throws IOException {
+        File file = new File(fileName);
+        if (file.getParentFile() != null) {
+            file.getParentFile().mkdirs();
+        }
+        file.createNewFile();
+        return file;
     }
 }
