@@ -211,7 +211,7 @@ public interface Tracer {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Returns a builder with the provided span name.</p>
-     * {@codesnippet com.azure.core.util.tracing.getSpanBuilder#string-context}
+     * {@codesnippet com.azure.core.util.tracing.getSharedSpanBuilder#string-context}
      *
      * @param spanName Name to give the span for the created builder.
      * @param context Additional metadata that is passed through the call stack.
@@ -219,5 +219,5 @@ public interface Tracer {
      * @return The updated {@link Context} object containing the span builder.
      * @throws NullPointerException if {@code context} or {@code spanName} is {@code null}.
      */
-    Context getSpanBuilder(String spanName, Context context);
+    Context getSharedSpanBuilder(String spanName, Context context);
 }

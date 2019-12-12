@@ -185,7 +185,7 @@ public class OpenTelemetryTracerTest {
     @Test
     public void getSpanBuilderTest() {
         // Act
-        final Context updatedContext = openTelemetryTracer.getSpanBuilder(METHOD_NAME, Context.NONE);
+        final Context updatedContext = openTelemetryTracer.getSharedSpanBuilder(METHOD_NAME, Context.NONE);
 
         assertTrue(updatedContext.getData(SPAN_BUILDER_KEY).isPresent());
     }

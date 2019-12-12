@@ -396,7 +396,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 if (isFirst.getAndSet(false)) {
                     parentContext.set(event.getContext());
                     // get shared span builder for all links
-                    sharedContext.set(tracerProvider.getSpanBuilder(parentContext.get()));
+                    sharedContext.set(tracerProvider.getSharedSpanBuilder(parentContext.get()));
                 }
                 Context sharedSpanBuilderContext = sharedContext.get();
                 tracerProvider.addSpanLinks(sharedSpanBuilderContext.addData(SPAN_CONTEXT_KEY, event.getContext()));

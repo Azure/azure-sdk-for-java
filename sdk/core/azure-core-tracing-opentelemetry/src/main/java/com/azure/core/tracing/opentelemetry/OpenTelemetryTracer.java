@@ -46,7 +46,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Objects.requireNonNull(spanName, "'spanName' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
 
-        Builder spanBuilder = getParentSpanBuilder(spanName, context);
+        Builder spanBuilder = getSpanBuilder(spanName, context);
         Span span = spanBuilder.startSpan();
 
         return context.addData(PARENT_SPAN_KEY, span);
@@ -78,7 +78,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 }
                 return context.addData(PARENT_SPAN_KEY, span);
             case MESSAGE:
-                spanBuilder = getParentSpanBuilder(spanName, context);
+                spanBuilder = getSpanBuilder(spanName, context);
                 span = spanBuilder.startSpan();
                 // Add diagnostic Id and trace-headers to Context
                 context = setContextData(span);
@@ -177,8 +177,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     @Override
-    public Context getSpanBuilder(String spanName, Context context) {
-        return context.addData(SPAN_BUILDER_KEY, getParentSpanBuilder(spanName, context));
+    public Context getSharedSpanBuilder(String spanName, Context context) {
+        return context.addData(SPAN_BUILDER_KEY, getSpanBuilder(spanName, context));
     }
 
     /**
@@ -197,7 +197,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (spanContext != null) {
             span = startSpanWithRemoteParent(spanName, spanContext);
         } else {
-            Builder spanBuilder = getParentSpanBuilder(spanName, context);
+            Builder spanBuilder = getSpanBuilder(spanName, context);
             span = spanBuilder.setSpanKind(Span.Kind.SERVER).startSpan();
         }
         if (span.isRecording()) {
@@ -277,7 +277,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @param context The context containing the span and the span name.
      * @return A {@code Span.Builder} to create and start a new {@code Span}.
      */
-    private Builder getParentSpanBuilder(String spanName, Context context) {
+    private Builder getSpanBuilder(String spanName, Context context) {
         Span parentSpan =  getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         String spanNameKey =  getOrDefault(context, USER_SPAN_NAME_KEY, null, String.class);
 

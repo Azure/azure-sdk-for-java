@@ -181,6 +181,12 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
         return AmqpPropagationFormatUtil.extractContext(diagnosticId, context);
     }
 
+    @Override
+    public Context getSharedSpanBuilder(String spanName, Context context) {
+        return Context.NONE;
+        // Remove OpenCensus support for tracing in https://github.com/Azure/azure-sdk-for-java/issues/6781
+    }
+
     /**
      * Starts a new child {@link Span} with parent being the remote and uses the {@link Span} is in the current Context,
      * to return an object that represents that scope.

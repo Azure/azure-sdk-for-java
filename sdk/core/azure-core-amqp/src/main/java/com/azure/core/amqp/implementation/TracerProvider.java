@@ -113,11 +113,11 @@ public class TracerProvider {
      *
      * @param context Additional metadata containing the span name for creating the span builer.
      */
-    public Context getSpanBuilder(Context context) {
+    public Context getSharedSpanBuilder(Context context) {
         Context local = Objects.requireNonNull(context, "'context' cannot be null.");
         String spanName = getSpanName(ProcessKind.SEND);
         for (Tracer tracer : tracers) {
-            local = tracer.getSpanBuilder(spanName, local);
+            local = tracer.getSharedSpanBuilder(spanName, local);
         }
         return local;
     }

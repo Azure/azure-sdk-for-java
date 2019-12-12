@@ -122,13 +122,13 @@ public class TracerJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link Tracer#getSpanBuilder(String, Context)}
+     * Code snippet for {@link Tracer#getSharedSpanBuilder(String, Context)}
      */
-    public void getSpanBuilder() {
+    public void getSharedSpanBuilder() {
         // BEGIN: com.azure.core.util.tracing.getSpanBuilder#string-context
         // Returns a span builder with the provided name
         String methodName = "message-span";
-        Context spanContext = tracer.getSpanBuilder(methodName, Context.NONE);
+        Context spanContext = tracer.getSharedSpanBuilder(methodName, Context.NONE);
         System.out.printf("Span context of the current tracing span: %s%n", spanContext.getData(SPAN_BUILDER_KEY).get());
         // END: com.azure.core.util.tracing.getSpanBuilder#string-context
     }
@@ -176,7 +176,7 @@ public class TracerJavaDocCodeSnippets {
         }
 
         @Override
-        public Context getSpanBuilder(String spanName, Context context) { return null;
+        public Context getSharedSpanBuilder(String spanName, Context context) { return null;
         }
     }
 }
