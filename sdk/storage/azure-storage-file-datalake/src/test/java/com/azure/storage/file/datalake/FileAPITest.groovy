@@ -75,7 +75,7 @@ class FileAPITest extends APISpec {
         fc.create(false)
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
     }
 
     def "Exists"() {
