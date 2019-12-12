@@ -138,7 +138,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
     }
 
     protected int parallelism(FeedOptions options) {
-        int parallelism = feedOptions.getMaxDegreeOfParallelism();
+        int parallelism = options.getMaxDegreeOfParallelism();
         if (parallelism == -1) {
             parallelism = Configs.CPU_CNT;
         } else if (parallelism == 0) {
