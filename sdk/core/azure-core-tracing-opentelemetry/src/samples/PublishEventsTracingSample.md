@@ -6,30 +6,37 @@ Following documentation describes instructions to run a sample program for publi
 Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **[Logging Exporter][logging_exporter]** as exporter.
 ### Adding dependencies to your project:
 ```xml
-<dependencies>
-    <dependency>
-        <groupId>io.opentelemetry</groupId>
-        <artifactId>opentelemetry-sdk</artifactId>
-        <version>0.2.0</version>
-    </dependency>
-    <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-messaging-eventhubs</artifactId>
-        <version>5.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
-    </dependency>
-    <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-tracing-opentelemetry</artifactId>
-        <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
-    </dependency>
-    <dependency>
-        <groupId>io.opentelemetry</groupId>
-        <artifactId>opentelemetry-exporters-logging</artifactId>
-        <version>0.2.0</version>
-    </dependency>
-</dependencies>
-
+<dependency>
+    <groupId>io.opentelemetry</groupId>
+    <artifactId>opentelemetry-sdk</artifactId>
+    <version>0.2.0</version>
+</dependency>
+<dependency>
+    <groupId>io.opentelemetry</groupId>
+    <artifactId>opentelemetry-exporters-logging</artifactId>
+    <version>0.2.0</version>
+</dependency>
 ```
+
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-messaging-eventhubs</artifactId>
+    <version>5.0.0-beta.6</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opentelemetry;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-core-tracing-opentelemetry</artifactId>
+    <version>1.0.0-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
 #### Sample demonstrates tracing when publishing multiple events to an eventhub instance using [azure-messaging-eventhubs][azure_messaging_eventhubs] client library.
 ```java
 import com.azure.core.util.Context;

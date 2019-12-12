@@ -140,6 +140,24 @@ public class PathClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippets for {@link DataLakePathClient#exists()}
+     */
+    public void existsCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.exists
+        System.out.printf("Exists? %b%n", client.exists());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.exists
+    }
+
+    /**
+     * Code snippet for {@link DataLakePathClient#existsWithResponse(Duration, Context)}
+     */
+    public void existsWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.existsWithResponse#Duration-Context
+        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, new Context(key2, value2)).getValue());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.existsWithResponse#Duration-Context
+    }
+
+    /**
      * Code snippets for {@link DataLakePathClient#setAccessControlList(List, String, String)}
      */
     public void setAccessControlListCodeSnippets() {

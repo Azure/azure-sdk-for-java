@@ -424,6 +424,41 @@ public class DataLakePathAsyncClient {
     }
 
     /**
+     * Determines if the path this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.exists}
+     *
+     * @return true if the path exists, false if it doesn't
+     */
+    public Mono<Boolean> exists() {
+        try {
+            return existsWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Determines if the path this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse}
+     *
+     * @return true if the path exists, false if it doesn't
+     */
+    public Mono<Response<Boolean>> existsWithResponse() {
+        try {
+            // TODO (gapra) : Once datalake error mapping is merged, add onErrorMap
+            return blockBlobAsyncClient.existsWithResponse();
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
      * Changes the access control list, group and/or owner for a resource.
      *
      * <p><strong>Code Samples</strong></p>
