@@ -243,7 +243,7 @@ class QueueSASTests extends APISpec {
     }
 
     @Test
-    def "QueueServiceSAS create delete queue"() {
+    def "AccountSAS create delete queue"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
@@ -284,7 +284,7 @@ class QueueSASTests extends APISpec {
     }
 
     @Test
-    def "QueueServiceSAS list queues"() {
+    def "AccountSAS list queues"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
@@ -316,7 +316,7 @@ class QueueSASTests extends APISpec {
         notThrown(QueueStorageException)
     }
 
-    def "accountSAS network on endpoint"() {
+    def "AccountSAS network on endpoint"() {
         setup:
         def service = new AccountSasService()
             .setQueueAccess(true)

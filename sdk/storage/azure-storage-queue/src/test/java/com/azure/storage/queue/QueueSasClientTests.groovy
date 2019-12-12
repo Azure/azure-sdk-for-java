@@ -140,7 +140,7 @@ class QueueSasClientTests extends APISpec {
         "sastest" == dequeueMsgIterIdentifier.next().getMessageText()
     }
 
-    def "QueueServiceSAS create queue"() {
+    def "AccountSAS create queue"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
@@ -174,7 +174,7 @@ class QueueSasClientTests extends APISpec {
         notThrown(QueueStorageException)
     }
 
-    def "QueueServiceSAS list queues"() {
+    def "AccountSAS list queues"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
