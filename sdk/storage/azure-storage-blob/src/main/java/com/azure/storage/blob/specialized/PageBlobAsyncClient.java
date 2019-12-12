@@ -206,7 +206,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null, null, 0, size, null, null, metadata,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), sequenceNumber, null, headers, getCustomerProvidedKey(), context)
+            requestConditions.getIfNoneMatch(), sequenceNumber, null, headers, getCustomerProvidedKey(), null /*cpkn*/,
+            context)
             .map(rb -> {
                 PageBlobCreateHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -297,7 +298,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfSequenceNumberLessThan(),
             pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
-            pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
+            pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), null /*cpkn*/, context)
             .map(rb -> {
                 PageBlobUploadPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -414,7 +415,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), context)
+            getCustomerProvidedKey(), null /*cpkn*/, context)
             .map(rb -> {
                 PageBlobUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -487,7 +488,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfSequenceNumberLessThan(),
             pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
-            pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
+            pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), null /*cpkn*/, context)
             .map(rb -> {
                 PageBlobClearPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -611,7 +612,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
 
         return this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(null, null, getSnapshotId(),
-            null, prevSnapshot, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
+            null, prevSnapshot, null /*prevsnapurl*/, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -674,7 +675,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.pageBlobs().resizeWithRestResponseAsync(null, null, size, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
+            requestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), null /*cpkn*/, context)
             .map(rb -> {
                 PageBlobResizeHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null,
