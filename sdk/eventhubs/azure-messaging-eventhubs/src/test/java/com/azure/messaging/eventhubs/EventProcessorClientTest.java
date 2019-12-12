@@ -128,7 +128,7 @@ public class EventProcessorClientTest {
                 return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
-        when(tracer1.start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+        when(tracer1.start(eq("Eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT_KEY, "value1")
@@ -200,7 +200,7 @@ public class EventProcessorClientTest {
                 return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
-        when(tracer1.start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+        when(tracer1.start(eq("Eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT_KEY, "value1")
@@ -256,7 +256,7 @@ public class EventProcessorClientTest {
                 return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
-        when(tracer1.start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+        when(tracer1.start(eq("Eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT_KEY, "value1")
@@ -277,7 +277,7 @@ public class EventProcessorClientTest {
 
         //Assert
         verify(tracer1, times(1)).extractContext(eq(diagnosticId), any());
-        verify(tracer1, times(1)).start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer1, times(1)).start(eq("Eventhubs.process"), any(), eq(ProcessKind.PROCESS));
         verify(tracer1, times(1)).end(eq(""), any(IllegalStateException.class), any());
     }
 
@@ -316,7 +316,7 @@ public class EventProcessorClientTest {
                 return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
-        when(tracer1.start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+        when(tracer1.start(eq("Eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (Closeable) () -> {
@@ -337,7 +337,7 @@ public class EventProcessorClientTest {
 
         //Assert
         verify(tracer1, times(1)).extractContext(eq(diagnosticId), any());
-        verify(tracer1, times(1)).start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer1, times(1)).start(eq("Eventhubs.process"), any(), eq(ProcessKind.PROCESS));
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 

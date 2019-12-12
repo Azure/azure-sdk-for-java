@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests OpenCensus tracing package using opencensus-impl
  */
 public class OpenCensusTracerTest {
-    private static final String METHOD_NAME = "Azure.eventhubs.send";
+    private static final String METHOD_NAME = "Eventhubs.send";
     private static final String HOSTNAME_VALUE = "testEventDataNameSpace.servicebus.windows.net";
     private static final String ENTITY_PATH_VALUE = "test";
     private static final String COMPONENT_VALUE = "eventhubs";
