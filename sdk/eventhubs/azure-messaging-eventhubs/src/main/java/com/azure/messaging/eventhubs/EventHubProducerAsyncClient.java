@@ -116,8 +116,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
-                                AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-                                MessageSerializer messageSerializer, boolean isSharedConnection) {
+        AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
+        boolean isSharedConnection) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connection = connection;
@@ -170,7 +170,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      * events in the partition event stream.
      *
      * @param partitionId The unique identifier of a partition associated with the Event Hub.
+     *
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     *
      * @throws NullPointerException if {@code partitionId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -191,7 +193,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      * Creates an {@link EventDataBatch} configured with the options specified.
      *
      * @param options A set of options used to configure the {@link EventDataBatch}.
+     *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
+     *
      * @throws NullPointerException if {@code options} is null.
      */
     public Mono<EventDataBatch> createBatch(CreateBatchOptions options) {
@@ -204,40 +208,39 @@ public class EventHubProducerAsyncClient implements Closeable {
         final int batchMaxSize = options.getMaximumSizeInBytes();
 
         if (!CoreUtils.isNullOrEmpty(partitionKey)
-                && !CoreUtils.isNullOrEmpty(partitionId)) {
+            && !CoreUtils.isNullOrEmpty(partitionId)) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "CreateBatchOptions.getPartitionKey() and CreateBatchOptions.getPartitionId() are both set. "
                     + "Only one or the other can be used. partitionKey: '%s'. partitionId: '%s'",
                 partitionKey, partitionId)));
         } else if (!CoreUtils.isNullOrEmpty(partitionKey)
-                       && partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
+            && partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "Partition key '%s' exceeds the maximum allowed length: '%s'.", partitionKey,
                 MAX_PARTITION_KEY_LENGTH)));
         }
 
         return getSendLink(partitionId)
-                   .flatMap(link -> link.getLinkSize()
-                                        .flatMap(size -> {
-                                            final int maximumLinkSize = size > 0
-                                                                            ? size
-                                                                            : MAX_MESSAGE_LENGTH_BYTES;
+            .flatMap(link -> link.getLinkSize()
+                .flatMap(size -> {
+                    final int maximumLinkSize = size > 0
+                        ? size
+                        : MAX_MESSAGE_LENGTH_BYTES;
 
-                                            if (batchMaxSize > maximumLinkSize) {
-                                                return monoError(logger,
-                                                    new IllegalArgumentException(String.format(Locale.US,
-                                                        "BatchOptions.maximumSizeInBytes (%s bytes)"
-                                                            + " is larger than the link size (%s bytes).",
-                                                        batchMaxSize, maximumLinkSize)));
-                                            }
+                    if (batchMaxSize > maximumLinkSize) {
+                        return monoError(logger,
+                            new IllegalArgumentException(String.format(Locale.US,
+                                "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
+                                batchMaxSize, maximumLinkSize)));
+                    }
 
-                                            final int batchSize = batchMaxSize > 0
-                                                                      ? batchMaxSize
-                                                                      : maximumLinkSize;
+                    final int batchSize = batchMaxSize > 0
+                        ? batchMaxSize
+                        : maximumLinkSize;
 
-                                            return Mono.just(new EventDataBatch(batchSize,
-                                                partitionId, partitionKey, link::getErrorContext, tracerProvider));
-                                        }));
+                    return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext,
+                        tracerProvider));
+                }));
     }
 
     /**
@@ -251,6 +254,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * </p>
      *
      * @param event Event to send to the service.
+     *
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     Mono<Void> send(EventData event) {
@@ -273,6 +277,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @param event Event to send to the service.
      * @param options The set of options to consider when sending this event.
+     *
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     Mono<Void> send(EventData event, SendOptions options) {
@@ -291,6 +296,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * size is the max amount allowed on the link.
      *
      * @param events Events to send to the service.
+     *
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     Mono<Void> send(Iterable<EventData> events) {
@@ -308,6 +314,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @param events Events to send to the service.
      * @param options The set of options to consider when sending this batch.
+     *
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     Mono<Void> send(Iterable<EventData> events, SendOptions options) {
@@ -326,6 +333,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * size is the max amount allowed on the link.
      *
      * @param events Events to send to the service.
+     *
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     Mono<Void> send(Flux<EventData> events) {
@@ -343,6 +351,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @param events Events to send to the service.
      * @param options The set of options to consider when sending this batch.
+     *
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     Mono<Void> send(Flux<EventData> events, SendOptions options) {
@@ -359,7 +368,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      * Sends the batch to the associated Event Hub.
      *
      * @param batch The batch to send to the service.
+     *
      * @return A {@link Mono} that completes when the batch is pushed to the service.
+     *
      * @throws NullPointerException if {@code batch} is {@code null}.
      * @see EventHubProducerAsyncClient#createBatch()
      * @see EventHubProducerAsyncClient#createBatch(CreateBatchOptions)
@@ -384,18 +395,18 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String partitionKey = batch.getPartitionKey();
         final boolean isTracingEnabled = tracerProvider.isEnabled();
         final AtomicReference<Context> parentContext = isTracingEnabled
-                                                           ? new AtomicReference<>(Context.NONE)
-                                                           : null;
+            ? new AtomicReference<>(Context.NONE)
+            : null;
         final AtomicReference<Context> sharedContext = isTracingEnabled
-                                                           ? new AtomicReference<>(Context.NONE)
-                                                           : null;
+            ? new AtomicReference<>(Context.NONE)
+            : null;
         final AtomicReference<Boolean> isFirst = new AtomicReference<>(true);
 
         final List<Message> messages = batch.getEvents().stream().map(event -> {
             final Message message = messageSerializer.serialize(event);
             if (isTracingEnabled) {
+                parentContext.set(event.getContext());
                 if (isFirst.getAndSet(false)) {
-                    parentContext.set(event.getContext());
                     // get shared span builder for all links
                     sharedContext.set(tracerProvider.getSharedSpanBuilder(parentContext.get()));
                 }
@@ -404,33 +415,32 @@ public class EventHubProducerAsyncClient implements Closeable {
             }
             if (!CoreUtils.isNullOrEmpty(partitionKey)) {
                 final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
-                                                                  ? new MessageAnnotations(new HashMap<>())
-                                                                  : message.getMessageAnnotations();
+                    ? new MessageAnnotations(new HashMap<>())
+                    : message.getMessageAnnotations();
                 messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
                 message.setMessageAnnotations(messageAnnotations);
-
             }
 
             return message;
         }).collect(Collectors.toList());
 
         return getSendLink(batch.getPartitionId())
-                   .flatMap(link -> {
-                       if (isTracingEnabled) {
-                           Context userSpanContext = sharedContext.get();
-                           Context entityContext = userSpanContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
-                           // start send span and store updated context
-                           parentContext.set(tracerProvider.startSpan(
-                               entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
-                       }
-                       return messages.size() == 1
-                                  ? link.send(messages.get(0))
-                                  : link.send(messages);
+            .flatMap(link -> {
+                if (isTracingEnabled) {
+                    Context userSpanContext = sharedContext.get();
+                    Context entityContext = userSpanContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
+                    // start send span and store updated context
+                    parentContext.set(tracerProvider.startSpan(
+                        entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
+                }
+                return messages.size() == 1
+                    ? link.send(messages.get(0))
+                    : link.send(messages);
 
-                   }).doOnEach(signal -> {
-                       if (isTracingEnabled) {
-                           tracerProvider.endSpan(parentContext.get(), signal);
-                       }
+            }).doOnEach(signal -> {
+                if (isTracingEnabled) {
+                    tracerProvider.endSpan(parentContext.get(), signal);
+                }
             });
     }
 
@@ -439,7 +449,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String partitionId = options.getPartitionId();
 
         if (!CoreUtils.isNullOrEmpty(partitionKey)
-                && !CoreUtils.isNullOrEmpty(partitionId)) {
+            && !CoreUtils.isNullOrEmpty(partitionId)) {
             return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
                 "SendOptions.getPartitionKey() and SendOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",
@@ -447,38 +457,38 @@ public class EventHubProducerAsyncClient implements Closeable {
         }
 
         return getSendLink(options.getPartitionId())
-                   .flatMap(link -> link.getLinkSize()
-                                        .flatMap(size -> {
-                                            final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                                            final CreateBatchOptions batchOptions =
-                                                new CreateBatchOptions().setPartitionKey(options.getPartitionKey())
-                                                    .setPartitionId(options.getPartitionId())
-                                                    .setMaximumSizeInBytes(batchSize);
-                                            return events.collect(new EventDataCollector(batchOptions, 1,
-                                                link::getErrorContext, tracerProvider));
-                                        })
-                                        .flatMap(list -> sendInternal(Flux.fromIterable(list))));
+            .flatMap(link -> link.getLinkSize()
+                .flatMap(size -> {
+                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
+                    final CreateBatchOptions batchOptions = new CreateBatchOptions()
+                        .setPartitionKey(options.getPartitionKey())
+                        .setPartitionId(options.getPartitionId())
+                        .setMaximumSizeInBytes(batchSize);
+                    return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext,
+                        tracerProvider));
+                })
+                .flatMap(list -> sendInternal(Flux.fromIterable(list))));
     }
 
     private Mono<Void> sendInternal(Flux<EventDataBatch> eventBatches) {
         return eventBatches
-                   .flatMap(this::send)
-                   .then()
-                   .doOnError(error -> {
-                       logger.error(Messages.ERROR_SENDING_BATCH, error);
-                   });
+            .flatMap(this::send)
+            .then()
+            .doOnError(error -> {
+                logger.error(Messages.ERROR_SENDING_BATCH, error);
+            });
     }
 
     private String getEntityPath(String partitionId) {
         return CoreUtils.isNullOrEmpty(partitionId)
-                   ? eventHubName
-                   : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, partitionId);
+            ? eventHubName
+            : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, partitionId);
     }
 
     private String getLinkName(String partitionId) {
         return CoreUtils.isNullOrEmpty(partitionId)
-                   ? StringUtil.getRandomString("EC")
-                   : StringUtil.getRandomString("PS");
+            ? StringUtil.getRandomString("EC")
+            : StringUtil.getRandomString("PS");
     }
 
     private Mono<AmqpSendLink> getSendLink(String partitionId) {
@@ -489,7 +499,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             return Mono.just(openLink);
         } else {
             return connection.createSendLink(getLinkName(partitionId), entityPath, retryOptions)
-                       .map(link -> openLinks.computeIfAbsent(entityPath, unusedKey -> link));
+                .map(link -> openLinks.computeIfAbsent(entityPath, unusedKey -> link));
         }
     }
 
@@ -518,7 +528,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * AmqpErrorCondition#LINK_PAYLOAD_SIZE_EXCEEDED}.
      */
     private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>,
-                                                                    List<EventDataBatch>> {
+        List<EventDataBatch>> {
         private final String partitionKey;
         private final String partitionId;
         private final int maxMessageSize;
@@ -529,11 +539,11 @@ public class EventHubProducerAsyncClient implements Closeable {
         private volatile EventDataBatch currentBatch;
 
         EventDataCollector(CreateBatchOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider,
-                           TracerProvider tracerProvider) {
+            TracerProvider tracerProvider) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
-                                      ? options.getMaximumSizeInBytes()
-                                      : MAX_MESSAGE_LENGTH_BYTES;
+                ? options.getMaximumSizeInBytes()
+                : MAX_MESSAGE_LENGTH_BYTES;
             this.partitionKey = options.getPartitionKey();
             this.partitionId = options.getPartitionId();
             this.contextProvider = contextProvider;
