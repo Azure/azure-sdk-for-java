@@ -329,7 +329,7 @@ jobs:
         condition: or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true'))
 
       - task: PublishTestResults@2
-        condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true'))
+        condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
         inputs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
