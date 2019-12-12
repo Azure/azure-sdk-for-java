@@ -1,6 +1,8 @@
 # Change Log azure-storage-file-datalake
 
-## Version XXXX-X-X-beta.X (XXXX-XX-XX)
+## Version XX.X.X-beta.X (XXXX-XX-XX)
+- Added SAS generation methods on clients to improve discoverability and convenience of sas.
+- Mapped StorageErrorException and BlobStorageException to DataLakeStorageException.
 - Added support for exists method on FileClients and DirectoryClients
 
 ## Version 12.0.0-beta.7 (2019-12-04)
