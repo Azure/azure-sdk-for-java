@@ -306,14 +306,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 // Merge results from all partitions.
                 .collect(Collectors.toList());
 
-        int parallelism = feedOptions.getMaxDegreeOfParallelism();
-        if (parallelism == -1) {
-            parallelism = Configs.CPU_CNT;
-        } else if (parallelism == 0) {
-            parallelism = 1;
-        }
-
-        return Flux.mergeSequential(obs, parallelism, maxPageSize)
+        return Flux.mergeSequential(obs, parallelism(feedOptions), maxPageSize > 0 ? maxPageSize : DEFAULT_PREFETCH)
             .compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker()));
     }
 

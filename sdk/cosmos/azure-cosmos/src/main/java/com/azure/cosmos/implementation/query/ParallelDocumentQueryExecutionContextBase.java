@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
@@ -32,6 +33,7 @@ import java.util.function.Function;
 public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resource>
         extends DocumentQueryExecutionContextBase<T> implements IDocumentQueryExecutionComponent<T> {
 
+    protected final int DEFAULT_PREFETCH = 32;
     protected final List<DocumentProducer<T>> documentProducers;
     protected final List<PartitionKeyRange> partitionKeyRanges;
     protected final SqlQuerySpec querySpec;
@@ -133,5 +135,16 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         for (DocumentProducer<T> producer : this.documentProducers) {
             producer.top = newTop;
         }
+    }
+
+    protected int parallelism(FeedOptions options) {
+        int parallelism = feedOptions.getMaxDegreeOfParallelism();
+        if (parallelism == -1) {
+            parallelism = Configs.CPU_CNT;
+        } else if (parallelism == 0) {
+            parallelism = 1;
+        }
+
+        return parallelism;
     }
 }
