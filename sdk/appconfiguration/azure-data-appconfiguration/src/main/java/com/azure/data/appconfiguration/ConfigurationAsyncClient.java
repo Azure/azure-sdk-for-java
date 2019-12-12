@@ -585,9 +585,9 @@ public final class ConfigurationAsyncClient {
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
             }
 
-            String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-            String keyFilter = selector.getKeyFilter();
-            String labelFilter = selector.getLabelFilter();
+            final String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+            final String keyFilter = selector.getKeyFilter();
+            final String labelFilter = selector.getLabelFilter();
 
             return service.listKeyValues(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
                 selector.getAcceptDateTime(), context)
@@ -633,9 +633,9 @@ public final class ConfigurationAsyncClient {
             Mono<PagedResponse<ConfigurationSetting>> result;
 
             if (selector != null) {
-                String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-                String keyFilter = selector.getKeyFilter();
-                String labelFilter = selector.getLabelFilter();
+                final String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+                final String keyFilter = selector.getKeyFilter();
+                final String labelFilter = selector.getLabelFilter();
 
                 result = service.listKeyValueRevisions(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
                     selector.getAcceptDateTime(), null, context)

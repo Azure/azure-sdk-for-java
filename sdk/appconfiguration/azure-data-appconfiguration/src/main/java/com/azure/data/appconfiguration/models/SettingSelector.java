@@ -9,6 +9,7 @@ import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * A set of options for selecting configuration settings from App Configuration service.
@@ -60,7 +61,7 @@ public class SettingSelector {
      * @return The expressions to filter ConfigurationSetting keys on.
      */
     public String getKeyFilter() {
-        return keyFilter == null ? "" : keyFilter;
+        return keyFilter;
     }
 
     /**
@@ -80,6 +81,7 @@ public class SettingSelector {
      * @return The updated SettingSelector object
      */
     public SettingSelector setKeyFilter(String keyFilter) {
+        Objects.requireNonNull(keyFilter);
         this.keyFilter = keyFilter;
         return this;
     }
