@@ -138,6 +138,8 @@ public class DataLakePathClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
+     * @param overwrite Whether or not to overwrite, should data exist on the path.
+     *
      * @return Information about the created resource.
      */
     public PathInfo create(boolean overwrite) {

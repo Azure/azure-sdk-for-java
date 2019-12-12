@@ -225,6 +225,8 @@ public class DataLakePathAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
+     * @param overwrite Whether or not to overwrite, should data exist on the file.
+     *
      * @return A reactive response containing information about the created resource.
      */
     public Mono<PathInfo> create(boolean overwrite) {

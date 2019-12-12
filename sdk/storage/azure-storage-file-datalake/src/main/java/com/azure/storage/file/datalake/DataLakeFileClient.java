@@ -219,6 +219,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
+     * @param overwrite Whether or not to overwrite, should data exist on the file.
      *
      * @return Information about the created resource.
      */
