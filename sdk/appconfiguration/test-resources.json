@@ -5,7 +5,7 @@
         "baseName": {
             "type": "String"
         },
-        "configurationStores_azconfig_name": {
+        "configurationStores_azconfig_java_name": {
             "defaultValue": "azconfig-java",
             "type": "String"
         },
@@ -15,25 +15,25 @@
         }
     },
     "variables": {
-        "uniqueAzConfigName": "[concat(parameters('baseName'),'-' , parameters('configurationStores_azconfig_name'))]",
-        "endpointValue": "[concat('https://',parameters('baseName'), '-', parameters('configurationStores_azconfig_name'), parameters('endpointSuffix'))]",
+        "uniqueAzConfigName": "[concat(parameters('baseName'),'-' , parameters('configurationStores_azconfig_java_name'))]",
+        "endpointValue": "[concat('https://',parameters('baseName'), '-', parameters('configurationStores_azconfig_java_name'), parameters('endpointSuffix'))]",
         "location": "[resourceGroup().location]"
     },
     "resources": [
         {
             "type": "Microsoft.AppConfiguration/configurationStores",
             "apiVersion": "2019-02-01-preview",
-            "name": "[variables('uniqueAzConfigName')]",
-            "location":"[variables('location')]",
+            "name": "[parameters('baseName')]",
+            "location":"[resourceGroup().location]",
             "properties": {
                 "endpoint":"[variables('endpointValue')]"
             }
         }
     ],
     "outputs": {
-        "AZURE_APPCONFIG_CONNECTION_STRING": {
+        "AZURE_KEYVAULT_ENDPOINT": {
             "type": "string",
-            "value":  "[concat( variables('endpointValue'), ';Id=XXXXX;Secret=YYY')]"
+            "value": "[listKeys(resourceId('Microsoft.AppConfiguration/configurationStores', parameters('baseName')), '2019-02-01-preview').value[0].connectionString]"
         }
     }
 }
