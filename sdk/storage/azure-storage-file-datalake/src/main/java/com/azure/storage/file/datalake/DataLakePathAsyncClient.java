@@ -13,11 +13,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
@@ -194,7 +194,7 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Creates a resource.
+     * Creates a resource. By default this method will not overwrite an existing path.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -208,7 +208,34 @@ public class DataLakePathAsyncClient {
      */
     public Mono<PathInfo> create() {
         try {
-            return createWithResponse(null, null, null, null, null).flatMap(FluxUtil::toMono);
+            return create(false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.create#boolean}
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param overwrite Whether or not to overwrite, should data exist on the file.
+     *
+     * @return A reactive response containing information about the created resource.
+     */
+    public Mono<PathInfo> create(boolean overwrite) {
+        try {
+            DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+            if (!overwrite) {
+                requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+            return createWithResponse(null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -326,7 +353,7 @@ public class DataLakePathAsyncClient {
         try {
             return this.blockBlobAsyncClient.setMetadataWithResponse(metadata,
                 Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -374,7 +401,7 @@ public class DataLakePathAsyncClient {
         try {
             return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
                 Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex));
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -416,7 +443,7 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathProperties>> getPropertiesWithResponse(DataLakeRequestConditions requestConditions) {
         try {
             return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -451,8 +478,8 @@ public class DataLakePathAsyncClient {
      */
     public Mono<Response<Boolean>> existsWithResponse() {
         try {
-            // TODO (gapra) : Once datalake error mapping is merged, add onErrorMap
-            return blockBlobAsyncClient.existsWithResponse();
+            return blockBlobAsyncClient.existsWithResponse()
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

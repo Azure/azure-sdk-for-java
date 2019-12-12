@@ -66,6 +66,18 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    def "Create overwrite"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        fc.create()
+
+        // Try to create the resource again
+        fc.create(false)
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
     def "Exists"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -1395,6 +1407,18 @@ class FileAPITest extends APISpec {
 
         when:
         fc.flush(1)
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    def "Flush data overwrite"() {
+        when:
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        // Attempt to write data without overwrite enabled
+        fc.flush(defaultDataSize, false)
 
         then:
         thrown(DataLakeStorageException)

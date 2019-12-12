@@ -6,7 +6,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 
-import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
 
@@ -36,7 +35,7 @@ class DirectoryAPITest extends APISpec {
         dc.create()
 
         then:
-        notThrown(StorageErrorException)
+        notThrown(DataLakeStorageException)
     }
 
     def "Create defaults"() {
@@ -58,6 +57,18 @@ class DirectoryAPITest extends APISpec {
         when:
         dc.createWithResponse(null, null, null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null,
             Context.NONE)
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    def "Create overwrite"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        dc.create()
+
+        // Try to create the resource again
+        dc.create(false)
 
         then:
         thrown(DataLakeStorageException)
