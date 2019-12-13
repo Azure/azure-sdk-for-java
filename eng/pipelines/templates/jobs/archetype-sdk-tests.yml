@@ -62,7 +62,6 @@ jobs:
 
     steps:
       - pwsh: |
-          Uninstall-AzureRm
           Install-Module -Name Az -AllowClobber -Scope AllUsers
         displayName: Install Az Module
 
