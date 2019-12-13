@@ -13,7 +13,7 @@
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-ai-textanalytics</artifactId>  <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+    <artifactId>azure-ai-textanalytics</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
 ```

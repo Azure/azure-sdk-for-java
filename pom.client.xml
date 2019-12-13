@@ -474,6 +474,10 @@
                 <title>Azure Telemetry - OpenCensus</title>
                 <packages>com.azure.core.tracing*</packages>
               </group>
+              <group>
+                <title>Azure Text Analytics</title>
+                <packages>com.azure.ai.textanalytics*</packages>
+              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
