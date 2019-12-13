@@ -37,6 +37,7 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
         super(new ArrayDeque<>(Arrays.asList(new EnvironmentCredential(identityClientOptions),
             new ManagedIdentityCredential(null, identityClientOptions),
             new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
-                identityClientOptions))));
+                identityClientOptions),
+            new CliCredential(identityClientOptions))));
     }
 }
