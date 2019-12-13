@@ -19,11 +19,15 @@ import reactor.core.publisher.Flux;
  */
 public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>> extends Flux<T> {
     /**
-     * @return a Flux of {@link ContinuablePage} that this Paged Flux.
+     * @return a Flux that emits stream of {@link ContinuablePage} in this Paged Flux.
      */
     public abstract Flux<P> byPage();
     /**
-     * @return a Flux of {@link ContinuablePage} identified by the given continuation token.
+     * Get a Flux that emits stream of {@link ContinuablePage} identified by the given
+     * continuation token.
+     *
+     * @param continuationToken the continuation token
+     * @return a Flux of {@link ContinuablePage}
      */
     public abstract Flux<P> byPage(C continuationToken);
 }

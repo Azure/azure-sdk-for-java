@@ -67,11 +67,9 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
         this(new PageRetrieverProvider<P>() {
             @Override
             public Function<String, Flux<P>> get() {
-                return continuationToken -> {
-                    return continuationToken == null
-                        ? firstPageRetriever.get().flux()
-                        : nextPageRetriever.apply(continuationToken).flux();
-                };
+                return continuationToken -> continuationToken == null
+                    ? firstPageRetriever.get().flux()
+                    : nextPageRetriever.apply(continuationToken).flux();
             }
         });
     }

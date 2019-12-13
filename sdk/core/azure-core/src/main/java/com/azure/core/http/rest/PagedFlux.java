@@ -67,11 +67,9 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
         this(new PageRetrieverProvider<PagedResponse<T>>() {
             @Override
             public Function<String, Flux<PagedResponse<T>>> get() {
-                return continuationToken -> {
-                    return continuationToken == null
-                        ? firstPageRetriever.get().flux()
-                        : nextPageRetriever.apply(continuationToken).flux();
-                };
+                return continuationToken -> continuationToken == null
+                    ? firstPageRetriever.get().flux()
+                    : nextPageRetriever.apply(continuationToken).flux();
             }
         });
     }
@@ -104,7 +102,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * @param mapper The mapper function to convert from type T to type S.
      * @param <S> The mapped type.
      * @return A PagedFlux of type S.
-     * @Deprecated refer the decoration samples for PagedFlux constructor that takes provider
+     * @deprecated refer the decoration samples for PagedFlux constructor that takes provider
      */
     @Deprecated
     public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
