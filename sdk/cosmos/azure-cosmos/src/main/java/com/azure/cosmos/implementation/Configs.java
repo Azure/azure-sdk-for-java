@@ -17,8 +17,6 @@ import static com.google.common.base.Strings.emptyToNull;
 
 public class Configs {
     private static final Logger logger = LoggerFactory.getLogger(Configs.class);
-    public static final int CPU_CNT = Runtime.getRuntime().availableProcessors();
-
     private final SslContext sslContext;
 
     // The names we use are consistent with the:
@@ -54,6 +52,7 @@ public class Configs {
 
     private static final int MAX_SHORT_BARRIER_RETRIES_FOR_MULTI_REGION = 4;
     private static final int SHORT_BARRIER_RETRY_INTERVAL_IN_MS_FOR_MULTI_REGION = 10;
+    private static final int CPU_CNT = Runtime.getRuntime().availableProcessors();
     private static final int DEFAULT_DIRECT_HTTPS_POOL_SIZE = CPU_CNT * 500;
 
     //  Reactor Netty Constants
@@ -64,6 +63,10 @@ public class Configs {
 
     public Configs() {
         this.sslContext = sslContextInit();
+    }
+
+    public static int getCPUCnt() {
+        return CPU_CNT;
     }
 
     private SslContext sslContextInit() {

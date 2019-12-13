@@ -350,7 +350,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
     private int fluxSequentialMergeConcurrency(FeedOptions options, int numberOfPartitions) {
         int parallelism = options.getMaxDegreeOfParallelism();
         if (parallelism < 0) {
-            parallelism = Configs.CPU_CNT;
+            parallelism = Configs.getCPUCnt();
         } else if (parallelism == 0) {
             parallelism = 1;
         }
@@ -362,7 +362,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         int maxBufferedItemCount = options.getMaxBufferedItemCount();
 
         if (maxBufferedItemCount <= 0) {
-            maxBufferedItemCount = Math.min(Configs.CPU_CNT * numberOfPartitions * pageSize, 100_000);
+            maxBufferedItemCount = Math.min(Configs.getCPUCnt() * numberOfPartitions * pageSize, 100_000);
         }
 
         int fluxPrefetch = Math.max(maxBufferedItemCount / (Math.max(fluxConcurrency * pageSize, 1)), 1);
