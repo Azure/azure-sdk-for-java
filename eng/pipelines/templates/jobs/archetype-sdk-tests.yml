@@ -43,7 +43,7 @@ parameters:
     jdkVersionOption: '$(JavaVersion)'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
-    goals: 'test'  
+    goals: 'test'
   TestResultsFiles: ''
 
 jobs:
