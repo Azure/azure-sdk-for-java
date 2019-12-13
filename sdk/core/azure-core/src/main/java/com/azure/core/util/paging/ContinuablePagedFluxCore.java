@@ -123,7 +123,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
     @Override
     public void subscribe(CoreSubscriber<? super T> coreSubscriber) {
         byPage()
-            .flatMap(page -> Flux.fromIterable(page.getItems()))
+            .flatMap(page -> Flux.fromIterable(page.getElements()))
             .subscribe(coreSubscriber);
     }
 

@@ -57,11 +57,6 @@ public class PagedFluxCoreJavaDocCodeSnippets {
             }
 
             @Override
-            public List<File> getItems() {
-                return null;
-            }
-
-            @Override
             public FileContinuationToken getContinuationToken() {
                 return null;
             }
