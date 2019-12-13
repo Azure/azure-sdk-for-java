@@ -1,4 +1,5 @@
 <!--
+
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT License.
 -->
@@ -7,133 +8,187 @@ Licensed under the MIT License.
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
-    <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
+    <version>1.2.0</version>
+    <!--
+     {x-version-update;com.azure:azure-data-sdk-parent;current}
+    -->
     <relativePath>../../pom.data.xml</relativePath>
   </parent>
-
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos-parent</artifactId>
-  <version>3.4.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-parent;current} -->
+  <version>3.4.2</version>
+  <!--
+   {x-version-update;com.microsoft.azure:azure-cosmos-parent;current}
+  -->
   <packaging>pom</packaging>
-
   <name>Microsoft Azure Cosmos DB SQL API</name>
-  <description>This package contains Microsoft Azure SDK for Azure Cosmos DB SQL API (with Reactive Extension RX support)</description>
+  <description>
+    This package contains Microsoft Azure SDK for Azure Cosmos DB SQL API (with Reactive Extension RX support)
+  </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
-
   <distributionManagement>
     <site>
       <id>azure-java-build-docs</id>
       <url>${site.url}/site/${project.artifactId}</url>
     </site>
   </distributionManagement>
-
   <scm>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <cosmosdb-sdk-direct-impl.version>${project.version}</cosmosdb-sdk-direct-impl.version>
     <direct-connectivity-version>${project.version}</direct-connectivity-version>
+    <metrics.version>4.1.0</metrics.version>
+    <micrometer.version>1.2.0</micrometer.version>
+    <mockito.version>1.10.19</mockito.version>
+    <netty.version>4.1.42.Final</netty.version>
+    <netty-tcnative.version>2.0.26.Final</netty-tcnative.version>
     <sdk-version>${project.version}</sdk-version>
+    <guava.version>27.0.1-jre</guava.version>
+    <reactor-core.version>3.3.0.RELEASE</reactor-core.version>
+    <reactor-netty.version>0.9.0.RELEASE</reactor-netty.version>
     <test.groups>unit</test.groups>
-    <collectedArtifactsForReleaseLocation>${project.basedir}/target/collectedArtifactsForRelease</collectedArtifactsForReleaseLocation>
+    <collectedArtifactsForReleaseLocation>
+      ${project.basedir}/target/collectedArtifactsForRelease
+    </collectedArtifactsForReleaseLocation>
     <javadoc.opts/>
   </properties>
-
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-cosmos</artifactId>
+        <version>3.4.2</version>
+        <!--
+         {x-version-update;com.microsoft.azure:azure-cosmos;current}
+        -->
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-core</artifactId>
+        <version>${reactor-core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-codec-http</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-tcnative</artifactId>
+        <version>${netty-tcnative.version}</version>
+        <classifier>linux-x86_64</classifier>
+      </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-handler</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <profiles>
-  <profile>
-    <!-- unit test -->
-    <id>unit</id>
-    <properties>
-      <env>default</env>
-      <test.groups>unit</test.groups>
-    </properties>
-    <activation>
-      <activeByDefault>true</activeByDefault>
-    </activation>
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-          <configuration>
-          </configuration>
-        </plugin>
-      </plugins>
-    </build>
-  </profile>
-  <profile>
-    <!-- integration tests, requires Cosmos DB endpoint -->
-    <id>fast</id>
-    <properties>
-      <test.groups>simple,cosmosv3</test.groups>
-    </properties>
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        </plugin>
-      </plugins>
-    </build>
-  </profile>
-  <profile>
-    <!-- integration tests, requires Cosmos DB endpoint -->
-    <id>long</id>
-    <properties>
-      <test.groups>long</test.groups>
-    </properties>
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        </plugin>
-      </plugins>
-    </build>
-  </profile>
-  <profile>
-    <!-- integration tests, requires Cosmos DB endpoint -->
-    <id>direct</id>
-    <properties>
-      <test.groups>direct</test.groups>
-    </properties>
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        </plugin>
-      </plugins>
-    </build>
-  </profile>
-  <profile>
-    <!-- integration tests, requires Cosmos DB endpoint with multi master support -->
-    <id>multi-master</id>
-    <properties>
-      <test.groups>multi-master</test.groups>
-    </properties>
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        </plugin>
-      </plugins>
-    </build>
-  </profile>
     <profile>
-      <!-- integration tests, requires Cosmos DB endpoint -->
+      <!--  unit test  -->
+      <id>unit</id>
+      <properties>
+        <env>default</env>
+        <test.groups>unit</test.groups>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration> </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!--  integration tests, requires Cosmos DB endpoint  -->
+      <id>fast</id>
+      <properties>
+        <test.groups>simple,cosmosv3</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!--  integration tests, requires Cosmos DB endpoint  -->
+      <id>long</id>
+      <properties>
+        <test.groups>long</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!--  integration tests, requires Cosmos DB endpoint  -->
+      <id>direct</id>
+      <properties>
+        <test.groups>direct</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!--
+       integration tests, requires Cosmos DB endpoint with multi master support
+      -->
+      <id>multi-master</id>
+      <properties>
+        <test.groups>multi-master</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!--  integration tests, requires Cosmos DB endpoint  -->
       <id>examples</id>
       <properties>
-        <!-- reset the test group as examples have no test group -->
+        <!--
+         reset the test group as examples have no test group
+        -->
         <test.groups>samples,examples</test.groups>
       </properties>
       <build>
@@ -141,9 +196,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-            </configuration>
+            <configuration> </configuration>
             <executions>
               <execution>
                 <goals>
@@ -157,23 +210,26 @@ Licensed under the MIT License.
       </build>
     </profile>
     <profile>
-       <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-       <id>emulator</id>
-       <properties>
-         <test.groups>emulator</test.groups>
-       </properties>
-       <build>
-         <plugins>
-           <plugin>
-             <groupId>org.apache.maven.plugins</groupId>
-             <artifactId>maven-failsafe-plugin</artifactId>
-             <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-           </plugin>
-         </plugins>
-       </build>
-     </profile>
+      <!--
+       integration tests, requires Cosmos DB Emulator Endpoint
+      -->
+      <id>emulator</id>
+      <properties>
+        <test.groups>emulator</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
-      <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
+      <!--
+       integration tests, requires Cosmos DB Emulator Endpoint
+      -->
       <id>non-emulator</id>
       <properties>
         <test.groups>non-emulator</test.groups>
@@ -183,13 +239,12 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
           </plugin>
         </plugins>
       </build>
     </profile>
     <profile>
-      <!-- e2e integration tests, requires Cosmos DB endpoint -->
+      <!--  e2e integration tests, requires Cosmos DB endpoint  -->
       <id>e2e</id>
       <properties>
         <test.groups>e2e</test.groups>
@@ -199,7 +254,6 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
           </plugin>
         </plugins>
       </build>
@@ -211,7 +265,6 @@ Licensed under the MIT License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
             <groups>unit</groups>
             <includes>
@@ -228,7 +281,6 @@ Licensed under the MIT License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
           <configuration>
             <includes>
               <include>%regex[.*]</include>
@@ -254,9 +306,7 @@ Licensed under the MIT License.
     </pluginManagement>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <inherited>true</inherited>
         <configuration>
           <quiet>true</quiet>
@@ -279,7 +329,6 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -292,7 +341,6 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
@@ -302,7 +350,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
-        <version>2.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-eclipse-plugin;external_dependency} -->
+        <version>2.8</version>
         <configuration>
           <classpathContainers>
             <classpathContainer>
@@ -314,24 +362,18 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <version>1.8</version>
         <executions>
           <execution>
-            <phase></phase>
+            <phase/>
             <id>default-cli</id>
             <configuration>
               <target>
-                <copy file="sdk/pom.xml"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}.pom"/>
-                <copy file="pom.xml"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-parent-${sdk-version}.pom"/>
-
-                 <copy file="sdk/target/azure-cosmos-${sdk-version}-sources.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}-sources.jar"/>
-                <copy file="sdk/target/azure-cosmos-${sdk-version}-javadoc.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}-javadoc.jar"/>
-                <copy file="sdk/target/azure-cosmos-${sdk-version}.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}.jar"/>
+                <copy file="sdk/pom.xml" tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}.pom"/>
+                <copy file="pom.xml" tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-parent-${sdk-version}.pom"/>
+                <copy file="sdk/target/azure-cosmos-${sdk-version}-sources.jar" tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}-sources.jar"/>
+                <copy file="sdk/target/azure-cosmos-${sdk-version}-javadoc.jar" tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}-javadoc.jar"/>
+                <copy file="sdk/target/azure-cosmos-${sdk-version}.jar" tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}.jar"/>
               </target>
             </configuration>
             <goals>
@@ -342,18 +384,15 @@ Licensed under the MIT License.
       </plugin>
     </plugins>
   </build>
-
   <developers>
     <developer>
       <id>microsoft</id>
       <name>Microsoft Corporation</name>
     </developer>
   </developers>
-
   <modules>
     <module>microsoft-azure-cosmos</module>
     <module>microsoft-azure-cosmos-benchmark</module>
     <module>microsoft-azure-cosmos-examples</module>
   </modules>
-
 </project>

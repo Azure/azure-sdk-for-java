@@ -1,10 +1,10 @@
 ## Changelog
 
-### 3.4.1
+### 3.4.2
 - Changefeed bug fixes (includes all the bug fixes released in 3.3.3) 
 - Disaster Recovery related bug fixes
 - Exception when Cosmos DB HTTP response header is larger than 8192 bytes: https://github.com/Azure/azure-sdk-for-java/issues/6069
-- Vulnerability through dependency in the SDK v3.4.0: https://github.com/Azure/azure-sdk-for-java/issues/6433
+- Vulnerability through dependency in the SDK: https://github.com/Azure/azure-sdk-for-java/issues/6433
 - CosmosSyncScripts null pointer exception in azure-cosmos: https://github.com/Azure/azure-sdk-for-java/issues/6281
 - Default consistency level parsing for Bounded Staleness and Consistent Prefix: https://github.com/Azure/azure-sdk-for-java/issues/6707
 - Null Value Holder change: https://github.com/Azure/azure-sdk-for-java/issues/6307
