@@ -4,7 +4,20 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.models.*;
+import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
+import com.azure.ai.textanalytics.implementation.models.DocumentError;
+import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
+import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
+import com.azure.ai.textanalytics.implementation.models.DocumentLinkedEntities;
+import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
+import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
+import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
+import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.LanguageResult;
+import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.SentenceSentiment;
+import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
+import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
@@ -471,8 +484,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NamedEntityResult>> recognizePiiEntitiesWithResponse(String text, String language) {
         try {
-            return withContext(context ->
-                                   recognizePiiEntitiesWithResponse(text, language, context));
+            return withContext(context -> recognizePiiEntitiesWithResponse(text, language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -517,8 +529,7 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizePiiEntitiesWithResponse(
         List<String> inputs, String language) {
         try {
-            return withContext(context ->
-                recognizePiiEntitiesWithResponse(inputs, language, context));
+            return withContext(context -> recognizePiiEntitiesWithResponse(inputs, language, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -696,7 +707,6 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<LinkedEntityResult>>> recognizeBatchLinkedEntitiesWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options, Context context) {
         final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput().setDocuments(inputs);
-
         return service.entitiesLinkingWithRestResponseAsync(
             batchInput,
             options == null ? null : options.getModelVersion(),
@@ -811,9 +821,8 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractKeyPhrasesWithResponse(List<String> inputs,
-                                                                                            String language,
-                                                                                            Context context) {
+    Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractKeyPhrasesWithResponse(
+        List<String> inputs, String language, Context context) {
         List<TextDocumentInput> documentInputs = getDocumentInputList(inputs, language);
         return extractBatchKeyPhrasesWithResponse(documentInputs, null, context);
     }
@@ -968,10 +977,8 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<DocumentResultCollection<TextSentimentResult>>> analyzeSentimentWithResponse(List<String> inputs,
-                                                                                               String language,
-                                                                                               Context context) {
-
+    Mono<Response<DocumentResultCollection<TextSentimentResult>>> analyzeSentimentWithResponse(
+        List<String> inputs, String language, Context context) {
         List<TextDocumentInput> documentInputs = getDocumentInputList(inputs, language);
         return analyzeBatchSentimentWithResponse(documentInputs, null, context);
     }
@@ -1056,13 +1063,9 @@ public final class TextAnalyticsAsyncClient {
     }
 
     private List<TextSentiment> convertToSentenceSentiments(final List<SentenceSentiment> sentenceSentiments) {
-
         final List<TextSentiment> sentenceSentimentCollection = new ArrayList<>();
-
         sentenceSentiments.stream().forEach(sentenceSentiment -> {
-
             final TextSentiment singleSentenceSentiment = new TextSentiment();
-
             singleSentenceSentiment.setLength(Integer.toString(sentenceSentiment.getLength()));
             singleSentenceSentiment.setLength(Integer.toString(sentenceSentiment.getOffset()));
             final TextSentimentClass sentimentClass = convertToTextSentimentClass(sentenceSentiment.getSentiment());
@@ -1073,10 +1076,8 @@ public final class TextAnalyticsAsyncClient {
             // sentenceSentiment.getWarnings();
             sentenceSentimentCollection.add(singleSentenceSentiment);
         });
-
         return sentenceSentimentCollection;
     }
-
 
     private void setTextSentimentScore(final SentimentConfidenceScorePerLabel sentimentScore,
         final TextSentimentClass textSentimentClass, final TextSentiment textSentimentResult) {
@@ -1122,5 +1123,4 @@ public final class TextAnalyticsAsyncClient {
             .setTarget(serviceError.getTarget());
         return new TextSentimentResult(documentError.getId(), error, true);
     }
-
 }
