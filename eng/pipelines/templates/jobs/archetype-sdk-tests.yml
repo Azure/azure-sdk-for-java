@@ -76,6 +76,7 @@ jobs:
           -ServiceDirectory ${{ parameters.ServiceDirectory }}
           -TestApplicationId $env:TEST_APPLICATION_ID
           -TestApplicationSecret $env:TEST_APPLICATION_SECRET
+          -TestApplicationOid $env:TEST_APPLICATION_OID
           -TenantId $env:TENANT_ID
           -ProvisionerApplicationId $env:PROVISIONER_APPLICATION_ID
           -ProvisionerApplicationSecret $env:PROVISIONER_APPLICATION_SECRET
@@ -84,6 +85,7 @@ jobs:
         env:
           TEST_APPLICATION_ID: $(aad-azure-sdk-test-client-id)
           TEST_APPLICATION_SECRET: $(aad-azure-sdk-test-client-secret)
+          TEST_APPLICATION_OID: $(aad-azure-sdk-test-client-oid)
           TENANT_ID: $(aad-azure-sdk-test-tenant-id)
           PROVISIONER_APPLICATION_ID: $(provisioner-aad-id)
           PROVISIONER_APPLICATION_SECRET: $(provisioner-aad-secret)
