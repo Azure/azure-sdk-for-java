@@ -16,7 +16,10 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.util.concurrent.Queues;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +36,7 @@ import java.util.function.Function;
 public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resource>
         extends DocumentQueryExecutionContextBase<T> implements IDocumentQueryExecutionComponent<T> {
 
+    protected final Logger logger;
     protected final int DEFAULT_PREFETCH = 32;
     protected final List<DocumentProducer<T>> documentProducers;
     protected final List<PartitionKeyRange> partitionKeyRanges;
@@ -47,6 +51,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         super(client, resourceTypeEnum, resourceType, query, feedOptions, resourceLink, getLazyFeedResponse,
                 correlatedActivityId);
 
+        logger = LoggerFactory.getLogger(this.getClass());
         documentProducers = new ArrayList<>();
 
         this.partitionKeyRanges = partitionKeyRanges;
@@ -137,7 +142,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         }
     }
 
-    protected int parallelism(FeedOptions options) {
+    protected int fluxConcurrency(FeedOptions options, int numberOfPartitions) {
         int parallelism = options.getMaxDegreeOfParallelism();
         if (parallelism == -1) {
             parallelism = Configs.CPU_CNT;
@@ -145,6 +150,17 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             parallelism = 1;
         }
 
-        return parallelism;
+        return Math.max(numberOfPartitions, parallelism);
+    }
+
+    protected int fluxPrefetch(FeedOptions options, int numberOfPartitions, int pageSize, int fluxConcurrency) {
+        int maxBufferedItemCount = options.getMaxBufferedItemCount();
+
+        if (maxBufferedItemCount <= 0) {
+            maxBufferedItemCount = Math.min(Configs.CPU_CNT * numberOfPartitions * pageSize, 1_000_000);
+        }
+
+        int fluxPrefetch = maxBufferedItemCount / (fluxConcurrency * pageSize) + 1;
+        return Math.min(fluxPrefetch, Queues.XS_BUFFER_SIZE * 4);
     }
 }

@@ -8,7 +8,6 @@ import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IDocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -306,7 +305,11 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 // Merge results from all partitions.
                 .collect(Collectors.toList());
 
-        return Flux.mergeSequential(obs, parallelism(feedOptions), maxPageSize > 0 ? maxPageSize : DEFAULT_PREFETCH)
+        int fluxConcurrency = fluxConcurrency(feedOptions, obs.size());
+        int fluxPrefetch = fluxPrefetch(feedOptions, obs.size(), maxPageSize, fluxConcurrency);
+
+        logger.debug("Query: FluxConcurrency {}, FluxPrefetch {}", fluxConcurrency, fluxPrefetch);
+        return Flux.mergeSequential(obs, fluxConcurrency, fluxPrefetch)
             .compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker()));
     }
 
