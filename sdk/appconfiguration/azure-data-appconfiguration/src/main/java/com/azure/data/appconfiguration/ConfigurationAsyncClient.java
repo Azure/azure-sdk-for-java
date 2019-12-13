@@ -585,11 +585,11 @@ public final class ConfigurationAsyncClient {
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
             }
 
-            String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-            String keys = CoreUtils.arrayToString(selector.getKeys(), key -> key);
-            String labels = CoreUtils.arrayToString(selector.getLabels(), label -> label);
+            final String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+            final String keyFilter = selector.getKeyFilter();
+            final String labelFilter = selector.getLabelFilter();
 
-            return service.listKeyValues(serviceEndpoint, keys, labels, apiVersion, fields,
+            return service.listKeyValues(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
                 selector.getAcceptDateTime(), context)
                 .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", selector))
                 .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", selector))
@@ -633,12 +633,12 @@ public final class ConfigurationAsyncClient {
             Mono<PagedResponse<ConfigurationSetting>> result;
 
             if (selector != null) {
-                String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-                String keys = CoreUtils.arrayToString(selector.getKeys(), key -> key);
-                String labels = CoreUtils.arrayToString(selector.getLabels(), label -> label);
+                final String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+                final String keyFilter = selector.getKeyFilter();
+                final String labelFilter = selector.getLabelFilter();
 
-                result = service.listKeyValueRevisions(
-                    serviceEndpoint, keys, labels, apiVersion, fields, selector.getAcceptDateTime(), null, context)
+                result = service.listKeyValueRevisions(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
+                    selector.getAcceptDateTime(), null, context)
                     .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
                     .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
                     .doOnError(error ->
