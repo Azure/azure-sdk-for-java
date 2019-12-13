@@ -22,7 +22,7 @@ public class LogAnalyticsOperationResultInner extends OperationStatusResponseInn
     private LogAnalyticsOutput properties;
 
     /**
-     * Get the properties value.
+     * Get logAnalyticsOutput.
      *
      * @return the properties value
      */
