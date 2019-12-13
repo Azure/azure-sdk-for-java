@@ -186,9 +186,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         List<DetectedLanguage> detectedLanguageList2 = new ArrayList<>(Collections.singletonList(detectedLanguage2));
         List<DetectedLanguage> detectedLanguageList3 = new ArrayList<>(Collections.singletonList(detectedLanguage3));
 
-        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(26).setTransactionsCount(1);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(39).setTransactionsCount(1);
-        TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics().setCharacterCount(6).setTransactionsCount(1);
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(26).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(39).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics().setCharacterCount(6).setTransactionCount(1);
 
         DetectLanguageResult detectLanguageResult1 = new DetectLanguageResult("0", textDocumentStatistics1, detectedLanguage1, detectedLanguageList1);
         DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, detectedLanguage2, detectedLanguageList2);
@@ -245,9 +245,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         List<NamedEntity> namedEntityList2 = new ArrayList<>(Collections.singletonList(namedEntity2));
         List<NamedEntity> namedEntityList3 = new ArrayList<>(Collections.singletonList(namedEntity3));
 
-        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(26).setTransactionsCount(1);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(39).setTransactionsCount(1);
-        TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics().setCharacterCount(6).setTransactionsCount(1);
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(26).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(39).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics().setCharacterCount(6).setTransactionCount(1);
 
         NamedEntityResult namedEntityResult1 = new NamedEntityResult("0", textDocumentStatistics1, namedEntityList1);
         NamedEntityResult namedEntityResult2 = new NamedEntityResult("1", textDocumentStatistics2, namedEntityList2);

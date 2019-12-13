@@ -64,7 +64,7 @@ public final class TextDocumentStatistics {
      * @param transactionCount the transactionsCount value to set.
      * @return the TextDocumentStatistics object itself.
      */
-    public TextDocumentStatistics setTransactionsCount(int transactionCount) {
+    public TextDocumentStatistics setTransactionCount(int transactionCount) {
         this.transactionCount = transactionCount;
         return this;
     }
