@@ -202,7 +202,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             null, data, length, null, contentMd5, metadata, requestConditions.getLeaseId(), tier,
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(),
-            context)
+            null /*cpkn*/, context)
             .map(rb -> {
                 BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -278,7 +278,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId, Context context) {
         return this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null, null,
-            base64BlockId, length, data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(), context)
+            base64BlockId, length, data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(), null /*cpkn*/,
+            context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -361,7 +362,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             url, sourceRange.toHeaderValue(), sourceContentMd5, null, null, leaseId,
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), context)
+            getCustomerProvidedKey(), null /*cpkn*/, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -508,7 +509,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             new BlockLookupList().setLatest(base64BlockIds), null, null, null, metadata, requestConditions.getLeaseId(),
             tier, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(),
-            context)
+            null /*cpkn*/, context)
             .map(rb -> {
                 BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
