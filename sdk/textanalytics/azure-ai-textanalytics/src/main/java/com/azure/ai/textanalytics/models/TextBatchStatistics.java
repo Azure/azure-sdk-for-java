@@ -17,27 +17,27 @@ public final class TextBatchStatistics {
      * Number of documents submitted in the request.
      */
     @JsonProperty(value = "documentsCount", required = true)
-    private int documentCount;
+    private int documentsCount;
 
     /*
      * Number of valid documents. This excludes empty, over-size limit or
      * non-supported languages documents.
      */
     @JsonProperty(value = "validDocumentsCount", required = true)
-    private int validDocumentCount;
+    private int validDocumentsCount;
 
     /*
      * Number of invalid documents. This includes empty, over-size limit or
      * non-supported languages documents.
      */
     @JsonProperty(value = "erroneousDocumentsCount", required = true)
-    private int erroneousDocumentCount;
+    private int erroneousDocumentsCount;
 
     /*
      * Number of transactions for the request.
      */
     @JsonProperty(value = "transactionsCount", required = true)
-    private long transactionCount;
+    private long transactionsCount;
 
     /**
      * Get the documentsCount property: Number of documents submitted in the
@@ -45,8 +45,8 @@ public final class TextBatchStatistics {
      *
      * @return the documentsCount value.
      */
-    public int getDocumentCount() {
-        return this.documentCount;
+    public int getDocumentsCount() {
+        return this.documentsCount;
     }
 
     /**
@@ -54,56 +54,56 @@ public final class TextBatchStatistics {
      * request.
      *
      * @param documentsCount the documentsCount value to set.
-     * @return the DocumentBatchStatistics object itself.
+     * @return the RequestStatistics object itself.
      */
-    public TextBatchStatistics setDocumentCount(int documentsCount) {
-        this.documentCount = documentsCount;
+    public TextBatchStatistics setDocumentsCount(int documentsCount) {
+        this.documentsCount = documentsCount;
         return this;
     }
 
     /**
-     * Get the validDocumentCount property: Number of valid documents. This
+     * Get the validDocumentsCount property: Number of valid documents. This
      * excludes empty, over-size limit or non-supported languages documents.
      *
-     * @return the validDocumentCount value.
+     * @return the validDocumentsCount value.
      */
-    public int getValidDocumentCount() {
-        return this.validDocumentCount;
+    public int getValidDocumentsCount() {
+        return this.validDocumentsCount;
     }
 
     /**
-     * Set the validDocumentCount property: Number of valid documents. This
+     * Set the validDocumentsCount property: Number of valid documents. This
      * excludes empty, over-size limit or non-supported languages documents.
      *
-     * @param validDocumentCount the validDocumentCount value to set.
-     * @return the DocumentBatchStatistics object itself.
+     * @param validDocumentsCount the validDocumentsCount value to set.
+     * @return the RequestStatistics object itself.
      */
-    public TextBatchStatistics setValidDocumentCount(int validDocumentCount) {
-        this.validDocumentCount = validDocumentCount;
+    public TextBatchStatistics setValidDocumentsCount(int validDocumentsCount) {
+        this.validDocumentsCount = validDocumentsCount;
         return this;
     }
 
     /**
-     * Get the erroneousDocumentCount property: Number of invalid documents.
+     * Get the erroneousDocumentsCount property: Number of invalid documents.
      * This includes empty, over-size limit or non-supported languages
      * documents.
      *
-     * @return the erroneousDocumentCount value.
+     * @return the erroneousDocumentsCount value.
      */
-    public int getErroneousDocumentCount() {
-        return this.erroneousDocumentCount;
+    public int getErroneousDocumentsCount() {
+        return this.erroneousDocumentsCount;
     }
 
     /**
-     * Set the erroneousDocumentCount property: Number of invalid documents.
+     * Set the erroneousDocumentsCount property: Number of invalid documents.
      * This includes empty, over-size limit or non-supported languages
      * documents.
      *
-     * @param erroneousDocumentCount the erroneousDocumentCount value to set.
-     * @return the DocumentBatchStatistics object itself.
+     * @param erroneousDocumentsCount the erroneousDocumentsCount value to set.
+     * @return the RequestStatistics object itself.
      */
-    public TextBatchStatistics setErroneousDocumentCount(int erroneousDocumentCount) {
-        this.erroneousDocumentCount = erroneousDocumentCount;
+    public TextBatchStatistics setErroneousDocumentsCount(int erroneousDocumentsCount) {
+        this.erroneousDocumentsCount = erroneousDocumentsCount;
         return this;
     }
 
@@ -113,19 +113,19 @@ public final class TextBatchStatistics {
      *
      * @return the transactionsCount value.
      */
-    public long getTransactionCount() {
-        return this.transactionCount;
+    public long getTransactionsCount() {
+        return this.transactionsCount;
     }
 
     /**
      * Set the transactionsCount property: Number of transactions for the
      * request.
      *
-     * @param transactionCount the transactionsCount value to set.
-     * @return the DocumentBatchStatistics object itself.
+     * @param transactionsCount the transactionsCount value to set.
+     * @return the RequestStatistics object itself.
      */
-    public TextBatchStatistics setTransactionCount(long transactionCount) {
-        this.transactionCount = transactionCount;
+    public TextBatchStatistics setTransactionsCount(long transactionsCount) {
+        this.transactionsCount = transactionsCount;
         return this;
     }
 }

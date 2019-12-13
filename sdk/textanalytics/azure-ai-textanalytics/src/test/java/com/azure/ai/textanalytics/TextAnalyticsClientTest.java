@@ -9,7 +9,6 @@ import com.azure.ai.textanalytics.models.Error;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
-import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;

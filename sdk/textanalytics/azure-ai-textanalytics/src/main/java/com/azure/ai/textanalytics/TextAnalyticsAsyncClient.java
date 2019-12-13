@@ -43,6 +43,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -955,7 +956,7 @@ public final class TextAnalyticsAsyncClient {
 
     private DocumentResultCollection<TextSentimentResult> toDocumentResultCollection(
         final SentimentResponse sentimentResponse) {
-        return new DocumentResultCollection<>(getDocumentTextSentiment(sentimentResponse),
+        return new DocumentResultCollection<TextSentimentResult>(getDocumentTextSentiment(sentimentResponse),
             sentimentResponse.getModelVersion(), sentimentResponse.getStatistics());
     }
 
@@ -969,62 +970,63 @@ public final class TextAnalyticsAsyncClient {
     }
 
     private TextSentimentResult convertToTextSentimentResult(final DocumentSentiment documentSentiment) {
-
+        // Document text sentiment
+        final TextSentiment documentSentimentText = new TextSentiment();
+        final TextSentimentClass documentSentimentClass = convertToTextSentimentClass(documentSentiment.getSentiment());
+        if (documentSentimentClass == null) {
+            return null;
+        }
         //TODO (shawn): calculate max length
-        documentSentimentText.setLength("MAX_LENGTH").setOffset(0);
+        documentSentimentText.setLength("MAX_LENGTH").setOffset(0).setTextSentimentClass(documentSentimentClass);
+        setTextSentimentScore(documentSentiment.getDocumentScores(), documentSentimentClass, documentSentimentText);
 
-
-
-        List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences();
-
-
+        // Sentence text sentiment
+        final List<TextSentiment> sentenceSentimentTexts =
+            convertToSentenceSentiments(documentSentiment.getSentences());
 
         return new TextSentimentResult(documentSentiment.getId(), documentSentiment.getStatistics(),
-            documentSentimentText, documentSentiment.getSentences());
+            documentSentimentText, sentenceSentimentTexts);
     }
 
-    private List<TextSentiment> convertToSentenceSentiments(final List<SentenceSentiment> sentenceSentiments ) {
+    private List<TextSentiment> convertToSentenceSentiments(final List<SentenceSentiment> sentenceSentiments) {
 
         final List<TextSentiment> sentenceSentimentCollection = new ArrayList<>();
+
         sentenceSentiments.stream().forEach(sentenceSentiment -> {
+
             final TextSentiment singleSentenceSentiment = new TextSentiment();
-            sentenceSentiment.getLength();
-            sentenceSentiment.getOffset();
-            sentenceSentiment.getSentenceScores();
-            sentenceSentiment.getSentiment();
 
+            singleSentenceSentiment.setLength(Integer.toString(sentenceSentiment.getLength()));
+            singleSentenceSentiment.setLength(Integer.toString(sentenceSentiment.getOffset()));
+            final TextSentimentClass sentimentClass = convertToTextSentimentClass(sentenceSentiment.getSentiment());
+            setTextSentimentScore(sentenceSentiment.getSentenceScores(), sentimentClass, singleSentenceSentiment);
+            singleSentenceSentiment.setTextSentimentClass(sentimentClass);
 
-            // TODO (Shawn): warnings are missnig
+            // TODO (Shawn): warnings are missing
             // sentenceSentiment.getWarnings();
-
+            sentenceSentimentCollection.add(singleSentenceSentiment);
         });
 
         return sentenceSentimentCollection;
     }
 
 
-    private TextSentiment convertToTextSentiment(DocumentSentiment documentSentiment) {
-        final TextSentimentClass textSentimentClass = convertToTextSentimentClass(documentSentiment.getSentiment());
-        if (textSentimentClass == null) {
-            return null;
-        }
-
-        TextSentiment documentSentimentText = new TextSentiment().setTextSentimentClass(textSentimentClass);
-        SentimentConfidenceScorePerLabel sentimentScore = documentSentiment.getDocumentScores();
+    private void setTextSentimentScore(final SentimentConfidenceScorePerLabel sentimentScore,
+        final TextSentimentClass textSentimentClass, final TextSentiment textSentimentResult) {
         switch (textSentimentClass) {
             case POSITIVE:
-                documentSentimentText.setPositiveScore(sentimentScore.getPositive());
+                textSentimentResult.setPositiveScore(sentimentScore.getPositive());
                 break;
             case NEUTRAL:
-                documentSentimentText.setNeutralScore(sentimentScore.getNeutral());
+                textSentimentResult.setNeutralScore(sentimentScore.getNeutral());
                 break;
             case NEGATIVE:
-                documentSentimentText.setNegativeScore(sentimentScore.getNegative());
+                textSentimentResult.setNegativeScore(sentimentScore.getNegative());
                 break;
             case MIXED:
-                documentSentimentText.setPositiveScore(sentimentScore.getPositive());
-                documentSentimentText.setNeutralScore(sentimentScore.getNeutral());
-                documentSentimentText.setNegativeScore(sentimentScore.getNegative());
+                textSentimentResult.setPositiveScore(sentimentScore.getPositive());
+                textSentimentResult.setNeutralScore(sentimentScore.getNeutral());
+                textSentimentResult.setNegativeScore(sentimentScore.getNegative());
                 break;
             default:
                 break;
@@ -1032,7 +1034,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     private TextSentimentClass convertToTextSentimentClass(final String sentiment) {
-        switch (sentiment.toLowerCase()) {
+        switch (sentiment.toLowerCase(Locale.ENGLISH)) {
             case "positive":
                 return TextSentimentClass.POSITIVE;
             case "neutral":
@@ -1042,8 +1044,8 @@ public final class TextAnalyticsAsyncClient {
             case "mixed":
                 return TextSentimentClass.MIXED;
             default:
-                throw logger.logExceptionAsWarning(new RuntimeException(String.format("'%s' is not valid text sentiment."));
-                return null;
+                throw logger.logExceptionAsWarning(
+                    new RuntimeException(String.format("'%s' is not valid text sentiment.")));
         }
     }
 
@@ -1053,8 +1055,5 @@ public final class TextAnalyticsAsyncClient {
             .setTarget(serviceError.getTarget());
         return new TextSentimentResult(documentError.getId(), error, true);
     }
-
-
-
 
 }

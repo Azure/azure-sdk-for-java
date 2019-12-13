@@ -11,6 +11,7 @@ import com.azure.ai.textanalytics.models.TextBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentResult;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 
 import java.util.Arrays;
@@ -21,8 +22,10 @@ public class AnalyzeSentimentBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+//            .subscriptionKey("subscription-key")
+//            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY"))
+            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
             .buildClient();
 
         // The texts that need be analysed.
@@ -37,10 +40,10 @@ public class AnalyzeSentimentBatchDocuments {
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
-            batchStatistics.getDocumentCount(),
-            batchStatistics.getErroneousDocumentCount(),
-            batchStatistics.getTransactionCount(),
-            batchStatistics.getValidDocumentCount());
+            batchStatistics.getDocumentsCount(),
+            batchStatistics.getErroneousDocumentsCount(),
+            batchStatistics.getTransactionsCount(),
+            batchStatistics.getValidDocumentsCount());
 
         // Detecting sentiment for each of document from a batch of documents
         detectedBatchResult.stream().forEach(result -> {

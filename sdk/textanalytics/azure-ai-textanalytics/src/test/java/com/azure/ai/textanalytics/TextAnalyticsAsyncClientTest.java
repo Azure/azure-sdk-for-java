@@ -4,12 +4,8 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.Error;
-import com.azure.ai.textanalytics.models.NamedEntityResult;
-import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
