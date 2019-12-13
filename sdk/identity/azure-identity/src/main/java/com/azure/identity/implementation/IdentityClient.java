@@ -24,8 +24,10 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.awt.Desktop;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -43,9 +45,12 @@ import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.UUID;
@@ -99,6 +104,57 @@ public class IdentityClient {
         }
     }
 
+    /**
+     * Asynchronously acquire a token from Active Directory with Aure CLI.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateWithAzureCli(TokenRequestContext request) {
+        String azCommand = "az account get-access-token --resource ";
+        String azureCliNotInstalled = "Azure CLI not installed";
+        String errorString = "'az' is not recognized";
+    
+        StringBuilder command = new StringBuilder();
+        command.append(azCommand);
+        String scopes = ScopeUtil.scopesToResource(request.getScopes());
+        command.append(scopes);
+    
+        AccessToken token = null;
+        try {
+            ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", command.toString());
+            builder.redirectErrorStream(true);
+            Process p = builder.start();
+                
+            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            StringBuilder output = new StringBuilder();
+            while (true) {
+                line = r.readLine();
+                    if (line == null) {
+                        break;
+                    }
+                    if(line.startsWith(errorString)){
+                        throw new Exception(azureCliNotInstalled);
+                    }
+                    output.append(line);
+                }
+            String outputString = output.toString();
+            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(outputString, Map.class,
+                        SerializerEncoding.JSON);
+            String accessToken = objectMap.get("accessToken");
+            String time = objectMap.get("expiresOn");
+            String a = time.substring(0, time.indexOf("."));
+            String t = String.join("T", a.split(" "));
+            OffsetDateTime expiresOn = LocalDateTime.parse(t, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                        .atOffset(ZoneOffset.UTC);
+            token = new AccessToken(accessToken, expiresOn);
+            } catch (Exception e) {
+                return Mono.error(e);
+            }
+            return Mono.just(token);
+    }
+    
     /**
      * Asynchronously acquire a token from Active Directory with a client secret.
      *
