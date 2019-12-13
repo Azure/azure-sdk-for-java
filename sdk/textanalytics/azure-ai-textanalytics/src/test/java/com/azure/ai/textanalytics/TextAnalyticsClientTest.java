@@ -24,9 +24,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Override
     protected void beforeTest() {
         client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
-                                                 .endpoint(getEndPoint())
-                                                 .pipeline(httpPipeline)
-                                                 .buildClient());
+            .endpoint(getEndPoint())
+            .pipeline(httpPipeline)
+            .buildClient());
     }
 
     /**
@@ -34,9 +34,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguagesBatchInputShowStatistics() {
-        detectLanguageShowStatisticsRunner((inputs, options) ->
-                                               validateBatchResult(client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE).getValue(), getExpectedBatchDetectedLanguages(),
-                                                   "Language"));
+        detectLanguageShowStatisticsRunner((inputs, options) -> validateBatchResult(
+            client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE).getValue(),
+            getExpectedBatchDetectedLanguages(), "Language"));
     }
 
     /**
@@ -54,7 +54,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguagesBatchListCountryHint() {
         detectLanguagesCountryHintRunner((inputs, countryHint) -> validateBatchResult(
-            client.detectLanguagesWithResponse(inputs, countryHint, Context.NONE).getValue(), getExpectedBatchDetectedLanguages(), "Language"));
+            client.detectLanguagesWithResponse(inputs, countryHint, Context.NONE).getValue(),
+            getExpectedBatchDetectedLanguages(), "Language"));
     }
 
     /**
@@ -82,7 +83,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguagesNullInput() {
-        assertRunnableThrowsException(() -> client.detectBatchLanguagesWithResponse(null, null, Context.NONE).getValue(), HttpResponseException.class);
+        assertRunnableThrowsException(() -> client.detectBatchLanguagesWithResponse(null, null,
+            Context.NONE).getValue(), HttpResponseException.class);
     }
 
     /**
@@ -123,7 +125,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageDuplicateIdInput() {
         detectLanguageDuplicateIdRunner((inputs, options) -> {
-            assertRestException(() -> client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE), HttpResponseException.class, 400);
+            assertRestException(() -> client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE),
+                HttpResponseException.class, 400);
         });
     }
 }

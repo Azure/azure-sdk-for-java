@@ -201,7 +201,7 @@ public final class TextAnalyticsClientBuilder {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
         this.endpoint = endpoint;
         return this;
@@ -233,7 +233,7 @@ public final class TextAnalyticsClientBuilder {
      */
     public TextAnalyticsClientBuilder credential(TokenCredential tokenCredential) {
         // token credential can not be null value
-        Objects.requireNonNull(tokenCredential);
+        Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         this.tokenCredential = tokenCredential;
 
         // Clear subscription key based credential in favor of TokenCredential

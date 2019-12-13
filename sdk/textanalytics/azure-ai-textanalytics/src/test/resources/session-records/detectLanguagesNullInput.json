@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com//text/analytics/v3.0-preview.1/languages",
+    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.0-preview.1/languages",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "0a5882cd-8acb-4186-8499-160295806f10",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "1c049c47-2727-4a10-8c38-47993e0b2650",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "2",
+      "x-envoy-upstream-service-time" : "3",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "291e88ca-6ff8-49b0-b4ed-a912857cbb08",
-      "x-aml-ta-request-id" : "1a19acf8-5826-44bb-9429-a87baf366cd6",
+      "apim-request-id" : "ef1029bf-7fe5-4bec-9424-4292177367ba",
+      "x-aml-ta-request-id" : "94603f55-aedf-41b6-8ecc-55c8c69eb8ae",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"innerError\":{\"code\":\"MissingInputRecords\",\"message\":\"Missing input records.\"},\"message\":\"Invalid Request.\"}}",
-      "Date" : "Tue, 10 Dec 2019 23:32:46 GMT",
+      "Date" : "Thu, 12 Dec 2019 02:38:35 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

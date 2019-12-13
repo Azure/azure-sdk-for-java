@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
@@ -10,6 +11,7 @@ import com.azure.core.util.IterableStream;
  *
  * @param <T> the type of DocumentResultCollection holds
  */
+@Immutable
 public class DocumentResultCollection<T> extends IterableStream<T> {
 
     private final String modelVersion;

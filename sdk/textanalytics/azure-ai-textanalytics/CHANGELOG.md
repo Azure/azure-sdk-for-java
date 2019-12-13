@@ -1,7 +1,11 @@
 # Release History
-### Features included in `com.azure.cs.textanalytics`
-- This is initial SDK release for text analytics service.
-- Packages scoped by functionality
-    - `com.azure.cs.textanalytics` contains a `TextAnalyticsClient`, `TextAnalyticsAsyncClient`, `TextAnalyticsClient` and `TextAnalyticsAsyncClient` for text analytics operations.
-- Client instances are scoped to text analytics service.
-- Reactive streams support using [Project Reactor](https://projectreactor.io/).
+## Version 1.0.0-beta.1 (-01-)
+For details on the Azure SDK for Java (Januaruy 2019 Preview) release refer to the [release announcement](https://azure.github.io/azure-sdk/releases/2019-10-11/java.html).
+
+- TODO: (shawn) https://github.com/azure/azure-sdk-for-java/issues/6507
+
+This package's 
+[documentation]() 
+and 
+[samples]() 
+demonstrate the new API.
