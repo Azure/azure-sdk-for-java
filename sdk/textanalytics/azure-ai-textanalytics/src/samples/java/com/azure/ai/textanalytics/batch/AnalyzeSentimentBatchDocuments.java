@@ -30,8 +30,8 @@ public class AnalyzeSentimentBatchDocuments {
 
         // The texts that need be analysed.
         List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("1", "The hotel was dark and unclean.", "US"),
-            new TextDocumentInput("2", "The restaurant had amazing gnocci.", "US")
+            new TextDocumentInput("1", "The hotel was dark and unclean.", "en"),
+            new TextDocumentInput("2", "The restaurant had amazing gnocci.", "en")
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);

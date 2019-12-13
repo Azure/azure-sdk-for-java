@@ -10,5 +10,5 @@ public enum TextSentimentClass {
     POSITIVE,
     NEGATIVE,
     NEUTRAL,
-    MIXED;
+    MIXED
 }

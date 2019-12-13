@@ -4,19 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
-import com.azure.ai.textanalytics.implementation.models.DocumentError;
-import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
-import com.azure.ai.textanalytics.implementation.models.DocumentLinkedEntities;
-import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
-import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
-import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
-import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.LanguageResult;
-import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.SentenceSentiment;
-import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
-import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.*;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
@@ -748,13 +736,27 @@ public final class TextAnalyticsAsyncClient {
 
     // Key Phrases
 
-    // (5) key phrase
-    // new user
+    /**
+     * TODO (shawn): add doc
+     *
+     * @param text the text to be analyzed.
+     * @return A {@link Mono} containing the {@link KeyPhraseResult key phrases} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyPhraseResult> extractKeyPhrases(String text) {
         return extractKeyPhrasesWithResponse(text, null).flatMap(FluxUtil::toMono);
     }
 
+    /**
+     * TODO (shawn): add doc
+     *
+     * @param text the text to be analyzed.
+     * @param language TODO (shawn): add doc
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
+     * {@link KeyPhraseResult key phrases} of the text.
+     * @throws NullPointerException if {@code text} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language) {
         try {
@@ -764,11 +766,10 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language,
-                                                                  Context context) {
+    Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language, Context context) {
         List<TextDocumentInput> documentInputs = new ArrayList<>();
-        documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
         // TODO (savaity): should this be a random number generator?
+        documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
         return extractBatchKeyPhrasesWithResponse(documentInputs, null, context).flatMap(response -> {
             Iterator<KeyPhraseResult> responseItem = response.getValue().iterator();
             if (responseItem.hasNext()) {
@@ -778,12 +779,28 @@ public final class TextAnalyticsAsyncClient {
         });
     }
 
-    // hackathon user
+    /**
+     * TODO (shawn): add doc
+     *
+     * @param inputs A list of text to be analyzed.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link KeyPhraseResult key phrases} of the text.
+     * @throws NullPointerException if {@code inputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrases(List<String> inputs) {
         return extractKeyPhrasesWithResponse(inputs, null).flatMap(FluxUtil::toMono);
     }
 
+    /**
+     * TODO (shawn): add doc
+     *
+     * @param inputs A list of text to be analyzed.
+     * @param language TODO (shawn): add doc
+     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link KeyPhraseResult key phrases}.
+     * @throws NullPointerException if {@code inputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractKeyPhrasesWithResponse(List<String> inputs,
                                                                                                    String language) {
@@ -801,12 +818,28 @@ public final class TextAnalyticsAsyncClient {
         return extractBatchKeyPhrasesWithResponse(documentInputs, null, context);
     }
 
-    // advantage user
+    /**
+     * TODO (shawn): add doc
+     *
+     * @param inputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
+     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
+     * {@link KeyPhraseResult key phrases}.
+     * @throws NullPointerException if {@code inputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<KeyPhraseResult>> extractBatchKeyPhrases(List<TextDocumentInput> inputs) {
         return extractBatchKeyPhrasesWithResponse(inputs, null).flatMap(FluxUtil::toMono);
     }
 
+    /**
+     * TODO (shawn): add doc
+     *
+     * @param inputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
+     * @param options TODO (shawn): add doc
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link DocumentResultCollection batch} of {@link KeyPhraseResult key phrases}.
+     * @throws NullPointerException if {@code inputs} is {@code null}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
         List<TextDocumentInput> inputs, TextAnalyticsRequestOptions options) {
@@ -819,9 +852,43 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
         List<TextDocumentInput> document, TextAnalyticsRequestOptions options, Context context) {
-        return service.keyPhrasesWithRestResponseAsync(new MultiLanguageBatchInput().setDocuments(document),
-            options == null ? null : options.getModelVersion(), options == null ? null : options.showStatistics(),
-            context).map(response -> new SimpleResponse<>(response, null));
+        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput().setDocuments(document);
+        return service.keyPhrasesWithRestResponseAsync(
+            batchInput,
+            options == null ? null : options.getModelVersion(),
+            options == null ? null : options.showStatistics(), context)
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of key phrases input - {}", batchInput))
+            .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", batchInput))
+            .doOnError(error -> logger.warning("Failed to key phrases - {}", batchInput))
+            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
+    }
+
+    private DocumentResultCollection<KeyPhraseResult> toDocumentResultCollection(
+        final com.azure.ai.textanalytics.implementation.models.KeyPhraseResult keyPhraseResult) {
+        return new DocumentResultCollection<>(getDocumentNamedEntities(keyPhraseResult),
+            keyPhraseResult.getModelVersion(), keyPhraseResult.getStatistics());
+    }
+
+    private List<KeyPhraseResult> getDocumentNamedEntities(
+        final com.azure.ai.textanalytics.implementation.models.KeyPhraseResult keyPhraseResult) {
+        Stream<KeyPhraseResult> validDocumentList = keyPhraseResult.getDocuments().stream()
+            .map(this::convertToKeyPhraseResult);
+        Stream<KeyPhraseResult> errorDocumentList = keyPhraseResult.getErrors().stream()
+            .map(this::convertToErrorKeyPhraseResult);
+
+        return Stream.concat(validDocumentList, errorDocumentList).collect(Collectors.toList());
+    }
+
+    private KeyPhraseResult convertToKeyPhraseResult(final DocumentKeyPhrases documentKeyPhrases) {
+        return new KeyPhraseResult(documentKeyPhrases.getId(), documentKeyPhrases.getStatistics(),
+            documentKeyPhrases.getKeyPhrases());
+    }
+
+    private KeyPhraseResult convertToErrorKeyPhraseResult(final DocumentError documentError) {
+        final Error serviceError = documentError.getError();
+        final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
+            .setTarget(serviceError.getTarget());
+        return new KeyPhraseResult(documentError.getId(), error, true);
     }
 
     // Sentiment

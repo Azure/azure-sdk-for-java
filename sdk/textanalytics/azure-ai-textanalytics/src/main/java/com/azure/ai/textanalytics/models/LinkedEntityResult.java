@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 import java.util.List;
 
@@ -11,13 +11,15 @@ import java.util.List;
 /**
  * The LinkedEntityResult model.
  */
-@Immutable
+// TODO (shawn): Should be @Immutable, but will produce spotbug/checkstyle error
+@Fluent
 public final class LinkedEntityResult extends DocumentResult {
-    private List<LinkedEntity> linkedEntities;
+    private final List<LinkedEntity> linkedEntities;
 
     // TODO(shawn): not public modifier
     public LinkedEntityResult(String id, Error error, boolean isError) {
         super(id, error, isError);
+        linkedEntities = null;
     }
 
     // TODO(shawn): not public modifier

@@ -10,9 +10,16 @@ import java.util.List;
 /**
  * The KeyPhraseResult model.
  */
+// TODO (shawn): Should be @Immutable, but will produce spotbug/checkstyle error
 @Fluent
 public final class KeyPhraseResult extends DocumentResult {
     private List<String> keyPhrases;
+
+    // TODO(shawn): not public modifier
+    public KeyPhraseResult(String id, Error error, boolean isError) {
+        super(id, error, isError);
+        keyPhrases = null;
+    }
 
     public KeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, List<String> keyPhrases) {
         super(id, textDocumentStatistics);
