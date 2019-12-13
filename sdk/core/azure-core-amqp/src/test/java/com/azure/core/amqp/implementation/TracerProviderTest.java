@@ -32,7 +32,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TracerProviderTest {
-    private static final String METHOD_NAME = "Eventhubs.send";
+    private static final String METHOD_NAME = "EventHubs.send";
 
     @Mock
     private Tracer tracer;

@@ -247,7 +247,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     /**
      * Extracts the component name from the given span name.
      *
-     * @param spanName The spanName containing the component name i.e spanName = "Eventhubs.send"
+     * @param spanName The spanName containing the component name i.e spanName = "EventHubs.send"
      * @return The component name contained in the context i.e "eventhubs"
      */
     private static String parseComponentValue(String spanName) {
