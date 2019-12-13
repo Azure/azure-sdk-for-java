@@ -18,7 +18,7 @@ import com.azure.storage.queue.models.SendMessageResult
 import com.azure.storage.queue.sas.QueueSasPermission
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues
 import org.junit.Test
-import spock.lang.Requires
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -243,7 +243,7 @@ class QueueSASTests extends APISpec {
     }
 
     @Test
-    @Requires({liveMode()})
+    @Ignore
     def "Test Account QueueServiceSAS create queue delete queue"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
