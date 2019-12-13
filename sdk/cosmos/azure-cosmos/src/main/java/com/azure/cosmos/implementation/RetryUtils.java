@@ -24,10 +24,12 @@ public class RetryUtils {
             if (e == null) {
                 return Flux.error(t);
             }
+            policy.captureStartTimeIfNotSet();
             Flux<IRetryPolicy.ShouldRetryResult> shouldRetryResultFlux = policy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(s -> {
 
                 if (s.backOffTime != null) {
+                    policy.incrementRetry();
                     return Mono.delay(Duration.ofMillis(s.backOffTime.toMillis())).flux();
                 } else if (s.exception != null) {
                     return Flux.error(s.exception);
@@ -50,23 +52,32 @@ public class RetryUtils {
      * @return
      */
 
-    public static <T> Function<Throwable, Mono<T>> toRetryWithAlternateFunc(Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod, IRetryPolicy retryPolicy, Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod, Duration minBackoffForInBackoffCallback) {
+    public static <T> Function<Throwable, Mono<T>> toRetryWithAlternateFunc(Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod,
+                                                                            IRetryPolicy retryPolicy,
+                                                                            Function<Quadruple<Boolean, Boolean, Duration, Integer>,
+                                                                            Mono<T>> inBackoffAlternateCallbackMethod, Duration minBackoffForInBackoffCallback,
+                                                                            RxDocumentServiceRequest rxDocumentServiceRequest) {
         return throwable -> {
+            if(rxDocumentServiceRequest.requestContext != null && retryPolicy.getRetryCount() > 0) {
+                retryPolicy.updateEndTime();
+                rxDocumentServiceRequest.requestContext.updateRetryContext(retryPolicy);
+            }
             Exception e = Utils.as(throwable, Exception.class);
             if (e == null) {
                 return Mono.error(throwable);
             }
-
+            retryPolicy.captureStartTimeIfNotSet();
             Flux<IRetryPolicy.ShouldRetryResult> shouldRetryResultFlux = retryPolicy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(shouldRetryResult -> {
                 if (!shouldRetryResult.shouldRetry) {
+                    retryPolicy.updateEndTime();
                     if(shouldRetryResult.exception == null) {
                         return Mono.error(e);
                     } else {
                         return Mono.error(shouldRetryResult.exception);
                     }
                 }
-
+                retryPolicy.incrementRetry();
                 if (inBackoffAlternateCallbackMethod != null
                         && shouldRetryResult.backOffTime.compareTo(minBackoffForInBackoffCallback) > 0) {
                     StopWatch stopwatch = new StopWatch();
@@ -74,22 +85,22 @@ public class RetryUtils {
                     return inBackoffAlternateCallbackMethod.apply(shouldRetryResult.policyArg)
                             .onErrorResume(recurrsiveWithAlternateFunc(callbackMethod, retryPolicy,
                                     inBackoffAlternateCallbackMethod, shouldRetryResult, stopwatch,
-                                    minBackoffForInBackoffCallback));
+                                    minBackoffForInBackoffCallback, rxDocumentServiceRequest));
                 } else {
                     return recurrsiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod,
-                            shouldRetryResult, minBackoffForInBackoffCallback)
+                            shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest)
                             .delaySubscription(Duration.ofMillis(shouldRetryResult.backOffTime.toMillis()));
                 }
             }).single();
         };
     }
 
-    private static <T> Mono<T> recurrsiveFunc(Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod, IRetryPolicy retryPolicy, Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod, IRetryPolicy.ShouldRetryResult shouldRetryResult, Duration minBackoffForInBackoffCallback) {
+    private static <T> Mono<T> recurrsiveFunc(Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod, IRetryPolicy retryPolicy, Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod, IRetryPolicy.ShouldRetryResult shouldRetryResult, Duration minBackoffForInBackoffCallback, RxDocumentServiceRequest rxDocumentServiceRequest) {
         return callbackMethod.apply(shouldRetryResult.policyArg).onErrorResume(toRetryWithAlternateFunc(
-                callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback));
+                callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback, rxDocumentServiceRequest));
     }
 
-    private static <T> Function<Throwable, Mono<T>> recurrsiveWithAlternateFunc(Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod, IRetryPolicy retryPolicy, Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod, IRetryPolicy.ShouldRetryResult shouldRetryResult, StopWatch stopwatch, Duration minBackoffForInBackoffCallback) {
+    private static <T> Function<Throwable, Mono<T>> recurrsiveWithAlternateFunc(Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod, IRetryPolicy retryPolicy, Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod, IRetryPolicy.ShouldRetryResult shouldRetryResult, StopWatch stopwatch, Duration minBackoffForInBackoffCallback,RxDocumentServiceRequest rxDocumentServiceRequest) {
         return throwable -> {
             Exception e = Utils.as(throwable, Exception.class);
             if (e == null) {
@@ -103,7 +114,7 @@ public class RetryUtils {
                     ? Duration.ofMillis(shouldRetryResult.backOffTime.toMillis() - stopwatch.getTime())
                     : Duration.ZERO;
             return recurrsiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, shouldRetryResult,
-                    minBackoffForInBackoffCallback)
+                    minBackoffForInBackoffCallback, rxDocumentServiceRequest)
                     .delaySubscription(Flux.just(0L).delayElements(Duration.ofMillis(backoffTime.toMillis())));
         };
     }

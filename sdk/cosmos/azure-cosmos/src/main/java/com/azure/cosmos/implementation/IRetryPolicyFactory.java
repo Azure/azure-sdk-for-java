@@ -7,5 +7,5 @@ package com.azure.cosmos.implementation;
  * This is meant to be internally used only by our sdk.
  */
 public interface IRetryPolicyFactory {
-    IDocumentClientRetryPolicy getRequestPolicy();
+    DocumentClientRetryPolicy getRequestPolicy();
 }

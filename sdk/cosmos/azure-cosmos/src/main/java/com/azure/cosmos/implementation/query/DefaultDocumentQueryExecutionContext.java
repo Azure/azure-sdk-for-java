@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
@@ -19,7 +20,6 @@ import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.IDocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
@@ -122,7 +122,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     protected Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeInternalAsyncFunc() {
         RxCollectionCache collectionCache = this.client.getCollectionCache();
         IPartitionKeyRangeCache partitionKeyRangeCache =  this.client.getPartitionKeyRangeCache();
-        IDocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy();
 
         retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(collectionCache, retryPolicyInstance, resourceLink, feedOptions);
         if (super.resourceTypeEnum.isPartitioned()) {
@@ -134,7 +134,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                     feedOptions);
         }
 
-        final IDocumentClientRetryPolicy finalRetryPolicyInstance = retryPolicyInstance;
+        final DocumentClientRetryPolicy finalRetryPolicyInstance = retryPolicyInstance;
 
         return req -> {
             finalRetryPolicyInstance.onBeforeSendRequest(req);
@@ -167,7 +167,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         };
     }
 
-    private Mono<FeedResponse<T>> executeOnceAsync(IDocumentClientRetryPolicy retryPolicyInstance, String continuationToken) {
+    private Mono<FeedResponse<T>> executeOnceAsync(DocumentClientRetryPolicy retryPolicyInstance, String continuationToken) {
         // Don't reuse request, as the rest of client SDK doesn't reuse requests between retries.
         // The code leaves some temporary garbage in request (in RequestContext etc.),
         // which shold be erased during retries.

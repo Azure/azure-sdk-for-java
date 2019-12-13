@@ -398,6 +398,11 @@ public class BridgeInternal {
         cosmosResponseDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResult);
     }
 
+    public static void recordRetryContext(CosmosResponseDiagnostics cosmosResponseDiagnostics,
+                                      RxDocumentServiceRequest request) {
+        cosmosResponseDiagnostics.clientSideRequestStatistics().recordRetryContext(request);
+    }
+
     public static void recordGatewayResponse(CosmosResponseDiagnostics cosmosResponseDiagnostics,
                                              RxDocumentServiceRequest rxDocumentServiceRequest,
                                              StoreResponse storeResponse,

@@ -3,13 +3,13 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.ClearingSessionContainerClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.IDocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.OperationType;
@@ -41,7 +41,7 @@ public class RxClientCollectionCache extends RxCollectionCache {
 
     public RxClientCollectionCache(ISessionContainer sessionContainer,
             RxStoreModel storeModel,
-            IAuthorizationTokenProvider tokenProvider, 
+            IAuthorizationTokenProvider tokenProvider,
             IRetryPolicyFactory retryPolicy) {
         this.storeModel = storeModel;
         this.tokenProvider = tokenProvider;
@@ -50,21 +50,21 @@ public class RxClientCollectionCache extends RxCollectionCache {
     }
 
     protected Mono<DocumentCollection> getByRidAsync(String collectionRid, Map<String, Object> properties) {
-        IDocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy());
+        DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy());
         return ObservableHelper.inlineIfPossible(
                 () -> this.readCollectionAsync(PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties)
                 , retryPolicyInstance);
     }
 
     protected Mono<DocumentCollection> getByNameAsync(String resourceAddress, Map<String, Object> properties) {
-        IDocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy());
+        DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy());
         return ObservableHelper.inlineIfPossible(
                 () -> this.readCollectionAsync(resourceAddress, retryPolicyInstance, properties),
                 retryPolicyInstance);
     }
 
-    private Mono<DocumentCollection> readCollectionAsync(String collectionLink, IDocumentClientRetryPolicy retryPolicyInstance, Map<String, Object> properties) {
-       
+    private Mono<DocumentCollection> readCollectionAsync(String collectionLink, DocumentClientRetryPolicy retryPolicyInstance, Map<String, Object> properties) {
+
         String path = Utils.joinPath(collectionLink, null);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                 OperationType.Read,

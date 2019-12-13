@@ -12,8 +12,8 @@ import com.azure.cosmos.PartitionKeyRangeGoneException;
 import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.RetryWithException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.Quadruple;
+import com.azure.cosmos.implementation.RetryPolicyWithDiagnostics;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
+public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
 
     private final static Logger logger = LoggerFactory.getLogger(GoneAndRetryWithRetryPolicy.class);
     private final static int DEFAULT_WAIT_TIME_IN_SECONDS = 30;

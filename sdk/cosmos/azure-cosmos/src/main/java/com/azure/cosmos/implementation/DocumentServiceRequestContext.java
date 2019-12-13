@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.List;
 
 public class DocumentServiceRequestContext implements Cloneable{
@@ -35,6 +36,11 @@ public class DocumentServiceRequestContext implements Cloneable{
     public volatile StoreResult quorumSelectedStoreResponse;
     public volatile PartitionKeyInternal effectivePartitionKey;
     public volatile CosmosResponseDiagnostics cosmosResponseDiagnostics;
+    public RetryContext retryContext;
+
+    public DocumentServiceRequestContext() {
+        retryContext = new RetryContext();
+    }
 
     /**
      * Sets routing directive for GlobalEndpointManager to resolve the request
@@ -70,6 +76,14 @@ public class DocumentServiceRequestContext implements Cloneable{
         this.usePreferredLocations = null;
     }
 
+    public void updateRetryContext(IRetryPolicy retryPolicy) {
+        this.retryContext.retryCount = retryPolicy.getRetryCount();
+        Duration latency = retryPolicy.getRetryLatency();
+        if(latency != null) {
+            this.retryContext.totalTimeInRetry = latency.toMillis();
+        }
+    }
+
     @Override
     public DocumentServiceRequestContext clone() {
         DocumentServiceRequestContext context = new DocumentServiceRequestContext();
@@ -92,6 +106,7 @@ public class DocumentServiceRequestContext implements Cloneable{
         context.effectivePartitionKey = this.effectivePartitionKey;
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
         context.cosmosResponseDiagnostics = this.cosmosResponseDiagnostics;
+        context.retryContext = new RetryContext(this.retryContext);
 
         return context;
     }

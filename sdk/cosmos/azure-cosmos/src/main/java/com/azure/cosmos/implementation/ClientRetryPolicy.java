@@ -22,14 +22,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  *  Client policy is combination of endpoint change retry + throttling retry.
  */
-public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
+public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     private final static Logger logger = LoggerFactory.getLogger(ClientRetryPolicy.class);
 
     final static int RetryIntervalInMS = 1000; //Once we detect failover wait for 1 second before retrying request.
     final static int MaxRetryCount = 120;
 
-    private final IDocumentClientRetryPolicy throttlingRetry;
+    private final DocumentClientRetryPolicy throttlingRetry;
     private final GlobalEndpointManager globalEndpointManager;
     private final boolean enableEndpointDiscovery;
     private int failoverRetryCount;
@@ -148,7 +148,6 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         }
 
         this.failoverRetryCount++;
-
         // Mark the current read endpoint as unavailable
         if (this.isReadRequest) {
             logger.warn("marking the endpoint {} as unavailable for read",this.locationEndpoint);

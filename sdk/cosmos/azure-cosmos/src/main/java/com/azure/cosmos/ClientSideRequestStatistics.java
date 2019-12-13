@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
@@ -50,15 +51,15 @@ class ClientSideRequestStatistics {
     public List<StoreResponseStatistics> supplementalResponseStatisticsList;
     public Map<String, AddressResolutionStatistics> addressResolutionStatistics;
 
-    private GatewayStatistics gatewayStatistic;
-
     private List<URI> contactedReplicas;
     private Set<URI> failedReplicas;
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
     public ZonedDateTime requestStartTime;
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
     public ZonedDateTime requestEndTime;
+    public long requestLatency;
     public Set<URI> regionsContacted;
+    public RetryContext retryContext;
     public GatewayStatistics gatewayStatistics;
     public SystemInformation systemInformation;
 
@@ -73,6 +74,7 @@ class ClientSideRequestStatistics {
         this.regionsContacted = new HashSet<>();
         this.connectionMode = ConnectionMode.DIRECT;
         this.systemInformation = new SystemInformation();
+        this.retryContext = retryContext;
     }
 
     Duration getRequestLatency() {
@@ -90,8 +92,11 @@ class ClientSideRequestStatistics {
         storeResponseStatistics.requestResourceType = request.getResourceType();
 
         URI locationEndPoint = null;
-        if (request.requestContext.locationEndpointToRoute != null) {
-            locationEndPoint = request.requestContext.locationEndpointToRoute;
+        if(request != null && request.requestContext != null) {
+            this.retryContext = new RetryContext(request.requestContext.retryContext);
+            if (request.requestContext.locationEndpointToRoute != null) {
+                locationEndPoint = request.requestContext.locationEndpointToRoute;
+            }
         }
 
         synchronized (this) {
@@ -119,16 +124,21 @@ class ClientSideRequestStatistics {
             if (responseTime.isAfter(this.requestEndTime)) {
                 this.requestEndTime = responseTime;
             }
-            this.gatewayStatistic = new GatewayStatistics();
-            this.gatewayStatistic.operationType = rxDocumentServiceRequest.getOperationType();
+
+            if(rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
+                this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
+            }
+
+            this.gatewayStatistics = new GatewayStatistics();
+            this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
             if (storeResponse != null) {
-                this.gatewayStatistic.statusCode = storeResponse.getStatus();
-                this.gatewayStatistic.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
-                this.gatewayStatistic.sessionToken = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
-                this.gatewayStatistic.requestCharge = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+                this.gatewayStatistics.statusCode = storeResponse.getStatus();
+                this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
+                this.gatewayStatistics.sessionToken = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                this.gatewayStatistics.requestCharge = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
             } else if(exception != null){
-                this.gatewayStatistic.statusCode = exception.getStatusCode();
-                this.gatewayStatistic.subStatusCode = exception.getSubStatusCode();
+                this.gatewayStatistics.statusCode = exception.getStatusCode();
+                this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
             }
         }
     }
@@ -175,6 +185,7 @@ class ClientSideRequestStatistics {
         //  need to lock in case of concurrent operations. this should be extremely rare since toString()
         //  should only be called at the end of request.
         synchronized (this) {
+            requestLatency= getRequestLatency().toMillis();
             //  only take last 10 responses from this list - this has potential of having large number of entries.
             //  since this is for establishing consistency, we can make do with the last responses to paint a meaningful picture.
             int supplementalResponseStatisticsListCount = this.supplementalResponseStatisticsList.size();
@@ -238,6 +249,10 @@ class ClientSideRequestStatistics {
             return null;
         }
         return dateTime.format(responseTimeFormatter);
+    }
+
+    public void recordRetryContext(RxDocumentServiceRequest request) {
+        this.retryContext = new RetryContext(request.requestContext.retryContext);
     }
 
     public static class StoreResponseStatistics {

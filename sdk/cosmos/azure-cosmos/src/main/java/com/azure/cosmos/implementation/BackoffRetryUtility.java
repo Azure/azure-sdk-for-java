@@ -41,12 +41,13 @@ public class BackoffRetryUtility {
     static public <T> Mono<T> executeAsync(
             Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod, IRetryPolicy retryPolicy,
             Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod,
-            Duration minBackoffForInBackoffCallback) {
+            Duration minBackoffForInBackoffCallback,
+            RxDocumentServiceRequest request) {
 
         return Mono.defer(() -> {
             // TODO: is defer required?
             return callbackMethod.apply(InitialArgumentValuePolicyArg).onErrorResume(
-                    RetryUtils.toRetryWithAlternateFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod,minBackoffForInBackoffCallback));
+                RetryUtils.toRetryWithAlternateFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback, request));
         });
     }
 

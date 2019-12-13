@@ -17,16 +17,16 @@ import reactor.core.publisher.Mono;
  * The expectation that is the outer retry policy in the retry policy chain and nobody can overwrite ShouldRetryResult.
  * Once we clear the session we expect call to fail and throw exception to the client. Otherwise we may violate session consistency.
  */
-public class ClearingSessionContainerClientRetryPolicy implements IDocumentClientRetryPolicy {
+public class ClearingSessionContainerClientRetryPolicy extends DocumentClientRetryPolicy {
 
     private final static Logger logger = LoggerFactory.getLogger(ClearingSessionContainerClientRetryPolicy.class);
 
-    private final IDocumentClientRetryPolicy retryPolicy;
+    private final DocumentClientRetryPolicy retryPolicy;
     private final ISessionContainer sessionContainer;
     private RxDocumentServiceRequest request;
     private boolean hasTriggered = false;
 
-    public ClearingSessionContainerClientRetryPolicy(ISessionContainer sessionContainer, IDocumentClientRetryPolicy retryPolicy) {
+    public ClearingSessionContainerClientRetryPolicy(ISessionContainer sessionContainer, DocumentClientRetryPolicy retryPolicy) {
         this.sessionContainer = sessionContainer;
         this.retryPolicy = retryPolicy;
     }
@@ -35,6 +35,9 @@ public class ClearingSessionContainerClientRetryPolicy implements IDocumentClien
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
         this.request = request;
         this.retryPolicy.onBeforeSendRequest(request);
+        if(request.requestContext!= null && request.requestContext.retryContext != null) {
+            request.requestContext.retryContext.retryCount = this.getRetryCount();
+        }
     }
 
     @Override

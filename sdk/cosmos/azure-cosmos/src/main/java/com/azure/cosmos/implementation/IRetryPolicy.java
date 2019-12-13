@@ -25,6 +25,18 @@ public interface IRetryPolicy  {
     Mono<ShouldRetryResult> shouldRetry(Exception e);
 
 
+    int getRetryCount();
+
+    void incrementRetry();
+
+    void captureStartTimeIfNotSet();
+
+    void updateEndTime();
+
+    Duration getRetryLatency();
+
+
+
     class ShouldRetryResult {
         /// <summary>
         /// How long to wait before next retry. 0 indicates retry immediately.
@@ -54,7 +66,7 @@ public interface IRetryPolicy  {
         }
 
         public static ShouldRetryResult error(Exception e) {
-            Utils.checkNotNullOrThrow(e, "exception", "cannot be null");
+          //  Utils.checkNotNullOrThrow(e, "exception", "cannot be null");
             return new ShouldRetryResult(null, e, false, null);
         }
 
