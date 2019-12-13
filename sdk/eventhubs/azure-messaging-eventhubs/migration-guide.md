@@ -16,9 +16,10 @@ For users new to the Java SDK for Event Hubs, please see the [README for azure-m
   - [Receiving events](#receiving-events)
   - [Minor renames](#minor-renames)
 - [Migration samples](#migration-samples)
-  - [Migrating from `PartitionSender` or `EventHubClient` to `EventHubProducerAsyncClient` for sending events](#migrating-from-partitionsender-or-eventhubclient-to-eventhubproducerasyncclient-for-sending-events)
-  - [Migrating code from `PartitionReceiver` to `EventHubConsumerClient` for receiving events](#migrating-code-from-partitionreceiver-to-eventhubconsumerclient-for-receiving-events)
-  - [Migrating code from `EventProcessorHost` to `EventHubConsumerClient` for receiving events](#migrating-code-from-eventprocessorhost-to-eventhubconsumerclient-for-receiving-events)
+  - [Migrating code from `PartitionSender` or `EventHubClient` to `EventHubProducerAsyncClient` for sending events](#migrating-code-from-partitionsender-or-eventhubclient-to-eventhubproducerasyncclient-for-sending-events)
+  - [Migrating code from `PartitionReceiver` to `EventHubConsumerAsyncClient` for receiving events in batches](#migrating-code-from-partitionreceiver-to-eventhubconsumerasyncclient-for-receiving-events-in-batches)
+  - [Migrating code from `EventProcessorHost` to `EventProcessorClient` for receiving events](#migrating-code-from-eventprocessorhost-to-eventprocessorclient-for-receiving-events)
+
 ## Prerequisites
 Java Development Kit (JDK) with version 8 or above
 
@@ -103,7 +104,7 @@ to load balance events between all the partitions. The behaviour is determined w
 * [Receiving events](#migrating-code-from-partitionreceiver-to-eventhubconsumerclient-for-receiving-events)
 * [Receiving events with checkpointing](#migrating-code-from-eventprocessorhost-to-eventhubconsumerclient-for-receiving-events)
 
-### Migrating from `PartitionSender` or `EventHubClient` to `EventHubProducerAsyncClient` for sending events
+### Migrating code from `PartitionSender` or `EventHubClient` to `EventHubProducerAsyncClient` for sending events
 In v3, there were multiple options on how to publish events to an Event Hub.
 
 In v5, this has been consolidated into a more efficient `send(EventDataBatch)` method. Batching merges information from
@@ -115,14 +116,14 @@ to specific partition][PublishEventsToSpecificPartition].
 
 So in v3:
 ```java
-EventHubClient client = EventHubClient.createFromConnectionString("connection-string-for-an-event-hub",
-    Executors.newScheduledThreadPool(4)).get();
+EventHubClient client = EventHubClient.createFromConnectionStringSync("connection-string-for-an-event-hub",
+    Executors.newScheduledThreadPool(4));
 
 List<EventData> events = Arrays.asList(EventData.create("foo".getBytes()), EventData.create("bar".getBytes()));
 
 CompletableFuture<Void> sendFuture = client.createPartitionSender("my-partition-id")
-    .thenCompose(sender -> {
-        EventDataBatch batch = sender.createBatch();
+    .thenCompose(producer -> {
+        EventDataBatch batch = producer.createBatch();
         for (EventData event : events) {
             try {
                 // Assuming all events fit into a single batch. This returns false if it does not.
@@ -133,8 +134,9 @@ CompletableFuture<Void> sendFuture = client.createPartitionSender("my-partition-
             }
         }
 
-        return sender.send(batch);
+        return producer.send(batch);
     });
+
 sendFuture.get();
 ```
 
@@ -161,176 +163,114 @@ Mono<Void> sendOperation = producer.createBatch(options).flatMap(batch -> {
 sendOperation.block();
 ```
 
-### Migrating code from `PartitionReceiver` to `EventHubConsumerClient` for receiving events
+### Migrating code from `PartitionReceiver` to `EventHubConsumerAsyncClient` for receiving events in batches
 
-In V2, event handlers were passed as positional arguments to `receive`.
+In v3, events were received by creating a `PartitionReceiver` and invoking `receive(int)` multiple times to receive
+events up to a certain number.
 
-In V5, event handlers are passed as part of a `SubscriptionEventHandlers` shaped object.
+In v5, [project Reactor][project-reactor] is used, so events can be streamed as they come in without having to use a 
+batched receive approach. 
 
-For example, this code which receives from a partition in V2:
+This code which receives from a partition in v3:
 
-```typescript
-const client = EventHubClient.createFromConnectionString(connectionString);
-const rcvHandler = client.receive(partitionId, onMessageHandler, onErrorHandler, {
-  eventPosition: EventPosition.fromStart(),
-  consumerGroup: consumerGroupName
-});
-await rcvHandler.stop();
-```
-
-Becomes this in V5:
-
-```typescript
-const eventHubConsumerClient = new EventHubConsumerClient(consumerGroupName, connectionString);
-
-const subscription = eventHubConsumerClient.subscribe(
-  partitionId, {
- processInitialize: (initContext) => {
- initContext.setStartingPosition(EventPosition.fromStart());
- },
- processEvents: onMessageHandler,
- processError: onErrorHandler
-});
-
-await subscription.close();
-```
-
-See [`receiveEvents.ts`](https://github.com/Azure/azure-sdk-for-js/blob/master/sdk/eventhub/event-hubs/samples/receiveEvents.ts)
-for a sample program demonstrating this.
-
-In V5, this has been consolidated into a more efficient `sendBatch` method.
-Batching merges information from multiple messages into a single send, reducing
-the amount of network communication needed vs sending messages one at a time.
-
-So in V2:
 ```java
-const eventsToSend = [
-  // events go here
-];
+EventHubClient client = EventHubClient.createFromConnectionStringSync("connection-string-for-an-event-hub",
+    Executors.newScheduledThreadPool(5));
+PartitionReceiver consumer = client.createReceiverSync("my-consumer-group", "my-partition-id",
+    EventPosition.fromStartOfStream());
 
-const client = EventHubClient.createFromConnectionString(connectionString);
+// Gets 100 events or until the receive timeout elapses.
+consumer.receive(100).thenAccept(events -> {
+    for (EventData event : events) {
+        System.out.println("Sequence number: " + event.getSystemProperties().getSequenceNumber());
+        System.out.println("Contents: " + new String(event.getBytes(), StandardCharsets.UTF_8));
+    }
+}).get();
 
-// Would fail if the total size of events exceed the max size supported by the library.
-await client.sendBatch(eventsToSend, partitionId);
+// Gets the next 50 events or until the receive timeout elapses.
+consumer.receive(50).thenAccept(events -> {
+    for (EventData event : events) {
+        System.out.println("Sequence number: " + event.getSystemProperties().getSequenceNumber());
+        System.out.println("Contents: " + new String(event.getBytes(), StandardCharsets.UTF_8));
+    }
+}).get();
 ```
 
-In V5:
-```typescript
-const producer = new EventHubProducerClient(connectionString);
+Becomes this in v5:
+```java
+EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
+        .connectionString("connection-string-for-an-event-hub")
+        .consumerGroup("my-consumer-group")
+        .buildAsyncConsumerClient();
 
-const eventsToSend = [
-  // events go here
-];
+// This is a non-blocking call. It'll subscribe and return a Disposable. This will stream events as they come
+// in, starting from the beginning of the partition.
+Disposable subscription = consumer.receiveFromPartition("my-partition-id", EventPosition.earliest())
+        .subscribe(partitionEvent -> {
+            EventData event = partitionEvent.getData();
+            System.out.println("Sequence number: " + event.getSequenceNumber());
+            System.out.println("Contents: " + new String(event.getBody(), StandardCharsets.UTF_8));
+        });
 
-let batch = await producer.createBatch();
-let i = 0;
+// Keep fetching events
+// When you are finished, dispose of the subscription.
+subscription.dispose();
+```
 
-while (i < eventsToSend.length) {
-  // messages can fail to be added to the batch if they exceed the maximum size configured for
-  // the EventHub.
-  const isAdded = batch.tryAdd(eventsToSend[i]);
+See [`ConsumeEvents.java`][ConsumeEvents] for a sample program demonstrating this.
 
-  if (isAdded) {
- console.log(`Added event number ${i} to the batch`);
- ++i;
- continue;
-  }
+### Migrating code from `EventProcessorHost` to `EventProcessorClient` for receiving events
 
-  if (batch.count === 0) {
- // If we can't add it and the batch is empty that means the message we're trying to send
- // is too large, even when it would be the _only_ message in the batch.
- //
- // At this point you'll need to decide if you're okay with skipping this message entirely
- // or find some way to shrink it.
- console.log(`Message was too large and can't be sent until it's made smaller. Skipping...`);
- ++i;
- continue;
-  }
+In v3, `EventProcessorHost` allowed you to balance the load between multiple instances of your program and checkpoint
+events when receiving.
 
-  // otherwise this just signals a good spot to send our batch
-  console.log(`Batch is full - sending ${batch.count} messages as a single batch.`);
-  await producer.sendBatch(batch);
+In v5, `EventProcessorClient` allows you to do the same and includes a plugin model, so other durable stores can be used
+if desired.
 
-  // and create a new one to house the next set of messages
-  batch = await producer.createBatch();
+The following code in v3:
+```java
+private static void main(String[] args) throws Exception {
+    EventProcessorHost processor = EventProcessorHost.EventProcessorHostBuilder.newBuilder("a-processor-name", "my-consumer-group")
+            .useAzureStorageCheckpointLeaseManager("storage-connection-string", "storage-container-name", "prefix")
+            .useEventHubConnectionString("connection-string-for-an-event-hub")
+            .build();
+
+    processor.registerEventProcessor(MyEventProcessor.class).get();
+
+    // When you are finished processing events.
+    processor.unregisterEventProcessor();
 }
 
-// send any remaining messages, if any.
-if (batch.count > 0) {
-  console.log(`Sending remaining ${batch.count} messages as a single batch.`)
-  await producer.sendBatch(batch);
-}
+class MyEventProcessor implements IEventProcessor {
+        @Override
+        public void onOpen(PartitionContext context) {
+            System.out.println("Started receiving on partition: " + context.getPartitionId());
+        }
+
+        @Override
+        public void onClose(PartitionContext context, CloseReason reason)  {
+            System.out.printf("Stopped receiving on partition: %s. Reason: %s%n", context.getPartitionId(), reason);
+        }
+
+        @Override
+        public void onEvents(PartitionContext context, Iterable<EventData> events) {
+            System.out.println("Received events from partition: %s." + context.getPartitionId());
+            for (EventData event : events) {
+                System.out.println("Sequence number: " + event.getSystemProperties().getSequenceNumber());
+                System.out.println("Contents: " + new String(event.getBytes(), StandardCharsets.UTF_8));
+            }
+        }
+
+        @Override
+        public void onError(PartitionContext context, Throwable error) {
+            System.err.printf("Error occurred on partition: %s. Error: %s%n", context.getPartitionId(), error);
+        }
+    }
 ```
 
-### Migrating code from `EventProcessorHost` to `EventHubConsumerClient` for receiving events
-
-In V2, `EventProcessorHost` allowed you to balance the load between multiple instances of
-your program when receiving events.
-
-In V5, `EventHubConsumerClient` allows you to do the same with the `subscribe()` method if you
-pass a `CheckpointStore` to the constructor.
-
-So in V2:
-```typescript
-const eph = EventProcessorHost.createFromConnectionString(
-  EventProcessorHost.createHostName(ephName),
-  storageConnectionString,
-  storageContainerName,
-  ehConnectionString,
-  {
- eventHubPath: eventHubName,
- onEphError: (error) => {
- // This is your error handler for errors occuring during load balancing.
- console.log("Error when running EPH: %O", error);
- }
-  }
-);
-
-// In V2, you get a single event passed to your callback. If you had asynchronous code running in your callback,
-// it is not awaited before the callback is called for the next event.
-const onMessage = (context, event) => { /** your code here **/ }
-
-// This is your error handler for errors occurring when receiving events.
-const onError = (error) => {
-  console.log("Received Error: %O", error);
-};
-
-await eph.start(onMessage, onError);
-```
-
-And in V5:
-```typescript
-import { EventHubConsumerClient, CheckpointStore } from "@azure/event-hubs";
-import { ContainerClient } from "@azure/storage-blob";
-import { BlobCheckpointStore } from "@azure/eventhubs-checkpointstore-blob";
-
-const containerClient = new ContainerClient(storageConnectionString, storageContainerName);
-const checkpointStore : CheckpointStore = new BlobCheckpointStore(containerClient);
-const eventHubConsumerClient = new EventHubConsumerClient(consumerGroupName, ehConnectionString, eventHubName);
-
-const subscription = eventHubConsumerClient.subscribe(
-  partitionId, {
- // In V5 we deliver events in batches, rather than a single message at a time.
- // You can control the batch size via the options passed to the client.
- //
- // If your callback is an async function or returns a promise, it will be awaited before the
- // callback is called for the next batch of events.
- processEvents: (events, context) => { /** your code here **/ },
-
- // Prior to V5 errors were handled by separate callbacks depending
- // on where they were thrown i.e when managing different partitions vs receiving from each partition.
- //
- // In V5 you only need a single error handler for all of those cases.
- processError: (error, context) => {
- if (context.partitionId) {
- console.log("Error when receiving events from partition %s: %O", context.partitionId, error)
- } else {
- console.log("Error from the consumer client: %O", error);
- }
- }
-});
-
-await subscription.close();
+And in v5:
+```java
+// TODO
 ```
 
 <!-- Links -->
@@ -351,3 +291,4 @@ await subscription.close();
 [PublishEventsWithAzureIdentity]: src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithAzureIdentity.java
 [PublishEventsWithCustomMetadata]: src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithCustomMetadata.java
 [README]: README.md
+[project-reactor]: https://projectreactor.io/
