@@ -35,8 +35,10 @@ public class DocumentQueryExecutionContextFactory {
 
     private final static int PageSizeFactorForTop = 5;
 
-    private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(IDocumentQueryClient client, SqlQuerySpec query,
-                                                                                 ResourceType resourceTypeEnum, String resourceLink) {
+    private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(IDocumentQueryClient client,
+                                                                                 SqlQuerySpec query,
+                                                                                 ResourceType resourceTypeEnum,
+                                                                                 String resourceLink) {
 
         RxCollectionCache collectionCache = client.getCollectionCache();
 
@@ -107,7 +109,7 @@ public class DocumentQueryExecutionContextFactory {
 
                               if (feedOptions != null 
                                       && feedOptions.partitionKey() != null
-                                      && feedOptions.partitionKey() != PartitionKey.None) {
+                                      && feedOptions.partitionKey() != PartitionKey.NONE) {
                                   PartitionKeyInternal internalPartitionKey =
                                       feedOptions.partitionKey()
                                           .getInternalPartitionKey();

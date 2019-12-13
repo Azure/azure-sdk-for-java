@@ -45,6 +45,7 @@ public class Main {
             case QueryAggregate:
             case QueryTopOrderby:
             case QueryAggregateTopOrderby:
+            case QueryInClauseParallel:
                 benchmark = new AsyncQueryBenchmark(cfg);
                 break;
 

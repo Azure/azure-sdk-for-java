@@ -20,7 +20,10 @@ public class RequestEntityTooLargeException extends CosmosClientException {
         this(RMResources.RequestEntityTooLarge);
     }
 
-    public RequestEntityTooLargeException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public RequestEntityTooLargeException(CosmosError cosmosError,
+                                          long lsn,
+                                          String partitionKeyRangeId,
+                                          Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -43,13 +46,13 @@ public class RequestEntityTooLargeException extends CosmosClientException {
     }
 
     RequestEntityTooLargeException(String message,
-                                          Exception innerException,
-                                          HttpHeaders headers,
-                                          String requestUriString) {
+                                   Exception innerException,
+                                   HttpHeaders headers,
+                                   String requestUriString) {
         super(String.format(RMResources.RequestEntityTooLarge, message),
-                innerException,
-                HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE,
-                requestUriString);
+            innerException,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE,
+            requestUriString);
     }
 }

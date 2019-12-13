@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
@@ -76,7 +77,7 @@ public class ProxyHostTest extends TestSuiteBase {
         try {
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
             connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
-            clientWithRightProxy = CosmosAsyncClient.builder().setEndpoint(TestConfigurations.HOST)
+            clientWithRightProxy = new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
                     .setKey(TestConfigurations.MASTER_KEY)
                     .setConnectionPolicy(connectionPolicy)
                     .setConsistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
@@ -109,7 +110,7 @@ public class ProxyHostTest extends TestSuiteBase {
 
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
             connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
-            clientWithRightProxy = CosmosAsyncClient.builder().setEndpoint(TestConfigurations.HOST)
+            clientWithRightProxy = new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
                     .setKey(TestConfigurations.MASTER_KEY)
                     .setConnectionPolicy(connectionPolicy)
                     .setConsistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();

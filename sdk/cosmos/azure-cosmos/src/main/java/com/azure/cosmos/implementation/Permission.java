@@ -109,6 +109,6 @@ public class Permission extends Resource {
      * @param partitionkey the partition key.
      */
     public void setResourcePartitionKey(PartitionKey partitionkey) {
-        BridgeInternal.setProperty(this, Constants.Properties.RESOURCE_PARTITION_KEY, partitionkey.getInternalPartitionKey().toJson());
+        BridgeInternal.setProperty(this, Constants.Properties.RESOURCE_PARTITION_KEY, BridgeInternal.getPartitionKeyInternal(partitionkey).toJson());
     }
 }

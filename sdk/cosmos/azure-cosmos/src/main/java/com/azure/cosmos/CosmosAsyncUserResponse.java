@@ -7,13 +7,15 @@ import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.User;
 
 public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties> {
-    private CosmosAsyncUser user;
+    @SuppressWarnings("EnforceFinalFields")
+    private final CosmosAsyncUser user;
 
     CosmosAsyncUserResponse(ResourceResponse<User> response, CosmosAsyncDatabase database) {
         super(response);
-        if(response.getResource() == null){
+        if (response.getResource() == null) {
             super.setProperties(null);
-        }else{
+            this.user = null;
+        } else {
             super.setProperties(new CosmosUserProperties(response));
             this.user = new CosmosAsyncUser(this.getProperties().getId(), database);
         }
@@ -33,7 +35,7 @@ public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties
      *
      * @return {@link CosmosUserProperties}
      */
-    public CosmosUserProperties getProperties(){
+    public CosmosUserProperties getProperties() {
         return super.getProperties();
     }
 }

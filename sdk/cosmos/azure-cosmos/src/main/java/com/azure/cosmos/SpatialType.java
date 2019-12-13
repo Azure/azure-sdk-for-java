@@ -8,7 +8,6 @@ import org.apache.commons.text.WordUtils;
 
 /**
  * Defines the target data type of an index path specification in the Azure Cosmos DB service.
- * 
  */
 public enum SpatialType {
     /**
@@ -33,7 +32,7 @@ public enum SpatialType {
 
     @Override
     public String toString() {
-        return StringUtils.remove(WordUtils.capitalizeFully(this.name(), '_'), '_');        
+        return StringUtils.remove(WordUtils.capitalizeFully(this.name(), '_'), '_');
     }
 }
 

@@ -192,7 +192,8 @@ abstract class AsyncBenchmark<T> {
         failureMeter = metricsRegistry.meter("#Unsuccessful Operations");
 
         if (configuration.getOperationType() == Configuration.Operation.ReadLatency
-                || configuration.getOperationType() == Configuration.Operation.WriteLatency) {
+                || configuration.getOperationType() == Configuration.Operation.WriteLatency
+                || configuration.getOperationType() == Configuration.Operation.QueryInClauseParallel) {
             latency = metricsRegistry.timer("Latency");
         }
 

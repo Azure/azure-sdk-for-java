@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a partition key definition in the Azure Cosmos DB database service. A partition key definition specifies which
+ * Represents a partition key definition in the Azure Cosmos DB database service. A partition key definition
+ * specifies which
  * document property is used as the partition key in a collection that has multiple partitions.
  */
 public final class PartitionKeyDefinition extends JsonSerializable {
@@ -70,11 +71,12 @@ public final class PartitionKeyDefinition extends JsonSerializable {
             } else {
                 String versionStr = String.valueOf(versionObject);
                 if (StringUtils.isNumeric(versionStr)) {
-                    this.version = PartitionKeyDefinitionVersion.valueOf(String.format("V%d", Integer.parseInt(versionStr)));
+                    this.version = PartitionKeyDefinitionVersion.valueOf(String.format("V%d",
+                        Integer.parseInt(versionStr)));
                 } else {
                     this.version = !Strings.isNullOrEmpty(versionStr)
-                            ? PartitionKeyDefinitionVersion.valueOf(StringUtils.upperCase(versionStr))
-                            : null;
+                                       ? PartitionKeyDefinitionVersion.valueOf(StringUtils.upperCase(versionStr))
+                                       : null;
                 }
             }
         }
@@ -109,6 +111,7 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      *
      * @param paths the paths to document properties that form the partition key.
      * @return this PartitionKeyDefinition.
+     * @throws IllegalArgumentException thrown if an error occurs
      */
     public PartitionKeyDefinition setPaths(List<String> paths) {
         if (paths == null || paths.size() == 0) {

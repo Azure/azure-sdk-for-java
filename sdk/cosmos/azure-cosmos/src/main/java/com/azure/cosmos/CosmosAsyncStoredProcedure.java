@@ -8,7 +8,8 @@ import reactor.core.publisher.Mono;
 
 public class CosmosAsyncStoredProcedure {
 
-    private CosmosAsyncContainer cosmosContainer;
+    @SuppressWarnings("EnforceFinalFields")
+    private final CosmosAsyncContainer cosmosContainer;
     private String id;
 
     CosmosAsyncStoredProcedure(String id, CosmosAsyncContainer cosmosContainer) {
@@ -18,6 +19,7 @@ public class CosmosAsyncStoredProcedure {
 
     /**
      * Get the id of the {@link CosmosAsyncStoredProcedure}
+     *
      * @return the id of the {@link CosmosAsyncStoredProcedure}
      */
     public String id() {
@@ -26,6 +28,7 @@ public class CosmosAsyncStoredProcedure {
 
     /**
      * Set the id of the {@link CosmosAsyncStoredProcedure}
+     *
      * @param id the id of the {@link CosmosAsyncStoredProcedure}
      * @return the same {@link CosmosAsyncStoredProcedure} that had the id set
      */
@@ -60,18 +63,20 @@ public class CosmosAsyncStoredProcedure {
      * @return an {@link Mono} containing the single resource response with the read stored procedure or an error.
      */
     public Mono<CosmosAsyncStoredProcedureResponse> read(CosmosStoredProcedureRequestOptions options) {
-        if(options == null) {
+        if (options == null) {
             options = new CosmosStoredProcedureRequestOptions();
         }
-        return cosmosContainer.getDatabase().getDocClientWrapper().readStoredProcedure(getLink(), options.toRequestOptions())
-                .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer)).single();
+        return cosmosContainer.getDatabase().getDocClientWrapper().readStoredProcedure(getLink(),
+            options.toRequestOptions())
+                   .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer)).single();
     }
 
     /**
      * Deletes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored procedure.
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored 
+     * procedure.
      * In case of failure the {@link Mono} will error.
      *
      * @return an {@link Mono} containing the single resource response for the deleted stored procedure or an error.
@@ -84,50 +89,54 @@ public class CosmosAsyncStoredProcedure {
      * Deletes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored procedure.
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored 
+     * procedure.
      * In case of failure the {@link Mono} will error.
      *
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response for the deleted stored procedure or an error.
      */
     public Mono<CosmosAsyncStoredProcedureResponse> delete(CosmosStoredProcedureRequestOptions options) {
-        if(options == null) {
+        if (options == null) {
             options = new CosmosStoredProcedureRequestOptions();
         }
         return cosmosContainer.getDatabase()
-                .getDocClientWrapper()
-                .deleteStoredProcedure(getLink(), options.toRequestOptions())
-                .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer))
-                .single();
+                   .getDocClientWrapper()
+                   .deleteStoredProcedure(getLink(), options.toRequestOptions())
+                   .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer))
+                   .single();
     }
 
     /**
      * Executes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure response.
+     * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure 
+     * response.
      * In case of failure the {@link Mono} will error.
      *
      * @param procedureParams the array of procedure parameter values.
-     * @param options         the request options.
+     * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
-    public Mono<CosmosAsyncStoredProcedureResponse> execute(Object[] procedureParams, CosmosStoredProcedureRequestOptions options) {
-        if(options == null) {
+    public Mono<CosmosAsyncStoredProcedureResponse> execute(Object[] procedureParams,
+                                                            CosmosStoredProcedureRequestOptions options) {
+        if (options == null) {
             options = new CosmosStoredProcedureRequestOptions();
         }
         return cosmosContainer.getDatabase()
-                .getDocClientWrapper()
-                .executeStoredProcedure(getLink(), options.toRequestOptions(), procedureParams)
-                .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer))
-                .single();
+                   .getDocClientWrapper()
+                   .executeStoredProcedure(getLink(), options.toRequestOptions(), procedureParams)
+                   .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer))
+                   .single();
     }
 
     /**
      * Replaces a stored procedure.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored procedure.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored 
+     * procedure.
      * In case of failure the {@link Mono} will error.
      *
      * @param storedProcedureSettings the stored procedure properties
@@ -141,38 +150,40 @@ public class CosmosAsyncStoredProcedure {
      * Replaces a stored procedure.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored procedure.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored 
+     * procedure.
      * In case of failure the {@link Mono} will error.
      *
      * @param storedProcedureSettings the stored procedure properties.
-     * @param options                 the request options.
+     * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the replaced stored procedure or an error.
      */
     public Mono<CosmosAsyncStoredProcedureResponse> replace(CosmosStoredProcedureProperties storedProcedureSettings,
                                                             CosmosStoredProcedureRequestOptions options) {
-        if(options == null) {
+        if (options == null) {
             options = new CosmosStoredProcedureRequestOptions();
         }
         return cosmosContainer.getDatabase()
-                .getDocClientWrapper()
-                .replaceStoredProcedure(new StoredProcedure(storedProcedureSettings.toJson()), options.toRequestOptions())
-                .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer))
-                .single();
+                   .getDocClientWrapper()
+                   .replaceStoredProcedure(new StoredProcedure(storedProcedureSettings.toJson()),
+                       options.toRequestOptions())
+                   .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer))
+                   .single();
     }
 
-    String URIPathSegment() {
+    String getURIPathSegment() {
         return Paths.STORED_PROCEDURES_PATH_SEGMENT;
     }
 
-    String parentLink() {
+    String getParentLink() {
         return cosmosContainer.getLink();
     }
 
     String getLink() {
         StringBuilder builder = new StringBuilder();
-        builder.append(parentLink());
+        builder.append(getParentLink());
         builder.append("/");
-        builder.append(URIPathSegment());
+        builder.append(getURIPathSegment());
         builder.append("/");
         builder.append(id());
         return builder.toString();

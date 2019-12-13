@@ -22,16 +22,16 @@ public class AddressSelector {
         this.protocol = protocol;
     }
 
-    public Mono<List<URI>> resolveAllUriAsync(
+    public Mono<List<Uri>> resolveAllUriAsync(
         RxDocumentServiceRequest request,
         boolean includePrimary,
         boolean forceRefresh) {
         Mono<List<AddressInformation>> allReplicaAddressesObs = this.resolveAddressesAsync(request, forceRefresh);
         return allReplicaAddressesObs.map(allReplicaAddresses -> allReplicaAddresses.stream().filter(a -> includePrimary || !a.isPrimary())
-            .map(a -> HttpUtils.toURI(a.getPhysicalUri())).collect(Collectors.toList()));
+            .map(a -> a.getPhysicalUri()).collect(Collectors.toList()));
     }
 
-    public Mono<URI> resolvePrimaryUriAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh) {
+    public Mono<Uri> resolvePrimaryUriAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh) {
         Mono<List<AddressInformation>> replicaAddressesObs = this.resolveAddressesAsync(request, forceAddressRefresh);
         return replicaAddressesObs.flatMap(replicaAddresses -> {
             try {
@@ -42,7 +42,7 @@ public class AddressSelector {
         });
     }
 
-    public static URI getPrimaryUri(RxDocumentServiceRequest request, List<AddressInformation> replicaAddresses) throws GoneException {
+    public static Uri getPrimaryUri(RxDocumentServiceRequest request, List<AddressInformation> replicaAddresses) throws GoneException {
         AddressInformation primaryAddress = null;
 
         if (request.getDefaultReplicaIndex() != null) {
@@ -51,24 +51,25 @@ public class AddressSelector {
                 primaryAddress = replicaAddresses.get(defaultReplicaIndex);
             }
         } else {
-            primaryAddress = replicaAddresses.stream().filter(address -> address.isPrimary() && !address.getPhysicalUri().contains("["))
+            primaryAddress = replicaAddresses.stream().filter(address -> address.isPrimary() && !address.getPhysicalUri().getURIAsString().contains("["))
                 .findAny().orElse(null);
         }
 
         if (primaryAddress == null) {
             // Primary endpoint (of the desired protocol) was not found.
             throw new GoneException(String.format("The requested resource is no longer available at the server. Returned addresses are {%s}",
-                    replicaAddresses.stream().map(AddressInformation::getPhysicalUri).collect(Collectors.joining(","))), null);
+                                                  String.join(",", replicaAddresses.stream()
+                                                      .map(address -> address.getPhysicalUri().getURIAsString()).collect(Collectors.toList()))), null);
         }
 
-        return HttpUtils.toURI(primaryAddress.getPhysicalUri());
+        return primaryAddress.getPhysicalUri();
     }
 
     public Mono<List<AddressInformation>> resolveAddressesAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh) {
         Mono<List<AddressInformation>> resolvedAddressesObs =
             (this.addressResolver.resolveAsync(request, forceAddressRefresh))
                 .map(addresses -> Arrays.stream(addresses)
-                    .filter(address -> !Strings.isNullOrEmpty(address.getPhysicalUri()) && Strings.areEqualIgnoreCase(address.getProtocolScheme(), this.protocol.scheme()))
+                    .filter(address -> !Strings.isNullOrEmpty(address.getPhysicalUri().getURIAsString()) && Strings.areEqualIgnoreCase(address.getProtocolScheme(), this.protocol.scheme()))
                     .collect(Collectors.toList()));
 
         return resolvedAddressesObs.map(

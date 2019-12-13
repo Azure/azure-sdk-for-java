@@ -44,8 +44,9 @@ public class RetryOptions {
      * the server before an error is returned to the application.
      *
      * @param maxRetryAttemptsOnThrottledRequests the max number of retry attempts on failed requests due to a
-     *                                            throttle error.
+     * throttle error.
      * @return the RetryOptions.
+     * @throws IllegalArgumentException thrown if an error occurs
      */
     public RetryOptions setMaxRetryAttemptsOnThrottledRequests(int maxRetryAttemptsOnThrottledRequests) {
         if (maxRetryAttemptsOnThrottledRequests < 0) {
@@ -79,11 +80,12 @@ public class RetryOptions {
      *
      * @param maxRetryWaitTimeInSeconds the maximum number of seconds a request will be retried.
      * @return the RetryOptions.
+     * @throws IllegalArgumentException thrown if an error occurs
      */
     public RetryOptions setMaxRetryWaitTimeInSeconds(int maxRetryWaitTimeInSeconds) {
         if (maxRetryWaitTimeInSeconds < 0 || maxRetryWaitTimeInSeconds > Integer.MAX_VALUE / 1000) {
             throw new IllegalArgumentException(
-                    "value must be a positive integer between the range of 0 to " + Integer.MAX_VALUE / 1000);
+                "value must be a positive integer between the range of 0 to " + Integer.MAX_VALUE / 1000);
         }
 
         this.maxRetryWaitTimeInSeconds = maxRetryWaitTimeInSeconds;
@@ -92,9 +94,9 @@ public class RetryOptions {
 
     @Override
     public String toString() {
-        return "RetryOptions{" +
-                "maxRetryAttemptsOnThrottledRequests=" + maxRetryAttemptsOnThrottledRequests +
-                ", maxRetryWaitTimeInSeconds=" + maxRetryWaitTimeInSeconds +
-                '}';
+        return "RetryOptions{"
+                   + "maxRetryAttemptsOnThrottledRequests=" + maxRetryAttemptsOnThrottledRequests
+                   + ", maxRetryWaitTimeInSeconds=" + maxRetryWaitTimeInSeconds
+                   + '}';
     }
 }

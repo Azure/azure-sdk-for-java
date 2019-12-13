@@ -20,8 +20,10 @@ public class Resource extends JsonSerializable {
 
     static void validateResource(Resource resource) {
         if (!StringUtils.isEmpty(resource.getId())) {
-            if (resource.getId().indexOf('/') != -1 || resource.getId().indexOf('\\') != -1 ||
-                    resource.getId().indexOf('?') != -1 || resource.getId().indexOf('#') != -1) {
+            if (resource.getId().indexOf('/') != -1
+                    || resource.getId().indexOf('\\') != -1
+                    || resource.getId().indexOf('?') != -1
+                    || resource.getId().indexOf('#') != -1) {
                 throw new IllegalArgumentException("Id contains illegal chars.");
             }
 
@@ -33,7 +35,7 @@ public class Resource extends JsonSerializable {
 
     /**
      * Copy constructor.
-     * 
+     *
      * @param resource resource to by copied.
      */
     protected Resource(Resource resource) {
@@ -56,7 +58,7 @@ public class Resource extends JsonSerializable {
      * Constructor.
      *
      * @param objectNode the {@link ObjectNode} that represent the
-     *                   {@link JsonSerializable}
+     * {@link JsonSerializable}
      */
     Resource(ObjectNode objectNode) {
         super(objectNode);
@@ -65,7 +67,7 @@ public class Resource extends JsonSerializable {
     /**
      * Constructor.
      *
-     * @param jsonString   the json string that represents the resource.
+     * @param jsonString the json string that represents the resource.
      * @param objectMapper the custom object mapper
      */
     Resource(String jsonString, ObjectMapper objectMapper) {
@@ -112,6 +114,7 @@ public class Resource extends JsonSerializable {
     }
 
     // TODO: make private
+
     /**
      * Set the ID associated with the resource.
      *
@@ -149,8 +152,9 @@ public class Resource extends JsonSerializable {
      */
     public OffsetDateTime getTimestamp() {
         Long seconds = super.getLong(Constants.Properties.LAST_MODIFIED);
-        if (seconds == null)
+        if (seconds == null) {
             return null;
+        }
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(seconds.longValue()), ZoneOffset.UTC);
     }
 
@@ -187,8 +191,6 @@ public class Resource extends JsonSerializable {
     /**
      * Sets the alt-link associated with the resource from the Azure Cosmos DB
      * service.
-     * 
-     * @param altLink
      */
     Resource setAltLink(String altLink) {
         this.altLink = altLink;

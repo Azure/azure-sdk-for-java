@@ -56,10 +56,10 @@ public final class PartitionKeyRangeIdentity {
 
     public String toHeader() {
         if (this.collectionRid != null) {
-            return String.format("%s,%s", this.collectionRid, this.partitionKeyRangeId);
+            return this.collectionRid + "," + this.partitionKeyRangeId;
         }
 
-        return String.format("%s", this.partitionKeyRangeId);
+        return this.partitionKeyRangeId;
     }
 
     @Override
@@ -69,7 +69,7 @@ public final class PartitionKeyRangeIdentity {
                    ", partitionKeyRangeId='" + partitionKeyRangeId + '\'' +
                    '}';
     }
-    
+
     @Override
     public boolean equals(Object other) {
         if (null == other) {
