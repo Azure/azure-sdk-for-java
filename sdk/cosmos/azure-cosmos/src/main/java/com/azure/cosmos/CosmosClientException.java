@@ -41,7 +41,7 @@ public class CosmosClientException extends Exception {
     long lsn;
     String partitionKeyRangeId;
     Map<String, String> requestHeaders;
-    URI requestUri;
+    Uri requestUri;
     String resourceAddress;
 
     CosmosClientException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {

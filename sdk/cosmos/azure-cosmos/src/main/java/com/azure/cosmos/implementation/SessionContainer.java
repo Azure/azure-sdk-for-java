@@ -218,30 +218,43 @@ public final class SessionContainer implements ISessionContainer {
         }
     }
 
-    private void addSessionToken(ResourceId resourceId, String partitionKeyRangeId, ISessionToken parsedSessionToken) {
-        this.collectionResourceIdToSessionTokens.compute(
-                resourceId.getUniqueDocumentCollectionId(), (k, existingTokens) -> {
-                    if (existingTokens == null) {
-                        ConcurrentHashMap<String, ISessionToken> tokens = new ConcurrentHashMap<>();
-                        tokens.put(partitionKeyRangeId, parsedSessionToken);
-                        return tokens;
-                    }
-
-                    existingTokens.merge(partitionKeyRangeId, parsedSessionToken, (existingSessionTokens, newSessionToken) -> {
-                        try {
-                            if (existingSessionTokens == null) {
-                                return newSessionToken;
-                            }
-
-                            return existingSessionTokens.merge(newSessionToken);
-                        } catch (CosmosClientException e) {
-                            throw new IllegalStateException(e);
-                        }
-                    });
-
-                    return existingTokens;
+    private void updateExistingTokensInternal(ConcurrentHashMap<String, ISessionToken>  existingTokens, String partitionKeyRangeId, ISessionToken parsedSessionToken) {
+        existingTokens.merge(partitionKeyRangeId, parsedSessionToken, (existingSessionTokens, newSessionToken) -> {
+            try {
+                if (existingSessionTokens == null) {
+                    return newSessionToken;
                 }
-        );
+
+                return existingSessionTokens.merge(newSessionToken);
+            } catch (CosmosClientException e) {
+                throw new IllegalStateException(e);
+            }
+        });
+    }
+
+    private void addSessionToken(ResourceId resourceId, String partitionKeyRangeId, ISessionToken parsedSessionToken) {
+        ConcurrentHashMap<String, ISessionToken> existingTokensIfAny = this.collectionResourceIdToSessionTokens.get(resourceId.getUniqueDocumentCollectionId());
+
+        if (existingTokensIfAny != null) {
+            // if an entry for this collection exists, no need to lock the outer ConcurrentHashMap.
+
+            updateExistingTokensInternal(existingTokensIfAny, partitionKeyRangeId, parsedSessionToken);
+            return;
+        }
+
+        this.collectionResourceIdToSessionTokens.compute(
+            resourceId.getUniqueDocumentCollectionId(), (k, existingTokens) -> {
+                if (existingTokens == null) {
+                    logger.info("Registering a new collection resourceId [{}] in SessionTokens", resourceId);
+                    ConcurrentHashMap<String, ISessionToken> tokens =
+                        new ConcurrentHashMap(200, 0.75f, 2000);
+                    tokens.put(partitionKeyRangeId, parsedSessionToken);
+                    return tokens;
+                }
+
+                updateExistingTokensInternal(existingTokens, partitionKeyRangeId, parsedSessionToken);
+                return existingTokens;
+            });
     }
 
     private static String getCombinedSessionToken(ConcurrentHashMap<String, ISessionToken> tokens) {

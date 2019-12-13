@@ -18,7 +18,7 @@ import reactor.core.publisher.Flux;
 
 import java.lang.reflect.Field;
 import java.net.URI;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -93,12 +93,12 @@ public class GlobalEndPointManagerTest {
         GlobalEndpointManager globalEndPointManager = getGlobalEndPointManager();
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson2);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
-        globalEndPointManager.markEndpointUnavailableForRead(new URL(("https://testaccount-eastus.documents.azure.com:443/")));
+        globalEndPointManager.markEndpointUnavailableForRead(new URI(("https://testaccount-eastus.documents.azure.com:443/")));
         globalEndPointManager.refreshLocationAsync(null, false).block(); // Cache will be refreshed as there is no preferred active region remaining
         LocationCache locationCache = this.getLocationCache(globalEndPointManager);
         Assert.assertEquals(locationCache.getReadEndpoints().size(), 1, "ReadEnpoints should have 1 value");
 
-        Map<String, URL> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
+        Map<String, URI> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
         Assert.assertEquals(availableReadEndpointByLocation.size(), 1);
         Assert.assertTrue(availableReadEndpointByLocation.keySet().contains("East Asia"));
 
@@ -109,7 +109,7 @@ public class GlobalEndPointManagerTest {
 
         databaseAccount = new DatabaseAccount(dbAccountJson3);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
-        globalEndPointManager.markEndpointUnavailableForRead(new URL(("https://testaccount-eastasia.documents.azure.com:443/")));
+        globalEndPointManager.markEndpointUnavailableForRead(new URI(("https://testaccount-eastasia.documents.azure.com:443/")));
         globalEndPointManager.refreshLocationAsync(null, false).block();// Cache will be refreshed as there is no preferred active region remaining
         locationCache = this.getLocationCache(globalEndPointManager);
         Assert.assertEquals(locationCache.getReadEndpoints().size(), 1);
@@ -145,13 +145,13 @@ public class GlobalEndPointManagerTest {
         LocationCache locationCache = getLocationCache(globalEndPointManager);
         databaseAccount = new DatabaseAccount(dbAccountJson2);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
-        globalEndPointManager.markEndpointUnavailableForRead(new URL(("https://testaccount-eastus.documents.azure.com:443/")));
+        globalEndPointManager.markEndpointUnavailableForRead(new URI(("https://testaccount-eastus.documents.azure.com:443/")));
         globalEndPointManager.refreshLocationAsync(null, false).block(); // Refreshing location cache due to region outage, moving from East US to East Asia
 
         locationCache = this.getLocationCache(globalEndPointManager);
         Assert.assertEquals(locationCache.getReadEndpoints().size(), 2); //Cache will not refresh immediately, other preferred region East Asia is still active
 
-        Map<String, URL> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
+        Map<String, URI> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
         Assert.assertEquals(availableReadEndpointByLocation.size(), 2);
         Assert.assertTrue(availableReadEndpointByLocation.keySet().iterator().next().equalsIgnoreCase("East Asia"));
 
@@ -162,7 +162,7 @@ public class GlobalEndPointManagerTest {
 
         databaseAccount = new DatabaseAccount(dbAccountJson3);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
-        globalEndPointManager.markEndpointUnavailableForRead(new URL(("https://testaccount-eastasia.documents.azure.com:443/")));
+        globalEndPointManager.markEndpointUnavailableForRead(new URI(("https://testaccount-eastasia.documents.azure.com:443/")));
         globalEndPointManager.refreshLocationAsync(null, false).block();// Making eastasia unavailable
 
         locationCache = this.getLocationCache(globalEndPointManager);
@@ -184,13 +184,13 @@ public class GlobalEndPointManagerTest {
         GlobalEndpointManager globalEndPointManager = getGlobalEndPointManager();
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson2);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
-        globalEndPointManager.markEndpointUnavailableForWrite(new URL(("https://testaccount-eastus.documents.azure.com:443/")));
+        globalEndPointManager.markEndpointUnavailableForWrite(new URI(("https://testaccount-eastus.documents.azure.com:443/")));
         globalEndPointManager.refreshLocationAsync(null, true).block(); // Refreshing location cache due to write forbidden, moving from East US to East Asia
 
         LocationCache locationCache = this.getLocationCache(globalEndPointManager);
         Assert.assertEquals(locationCache.getReadEndpoints().size(), 1);
 
-        Map<String, URL> availableWriteEndpointByLocation = this.getAvailableWriteEndpointByLocation(locationCache);
+        Map<String, URI> availableWriteEndpointByLocation = this.getAvailableWriteEndpointByLocation(locationCache);
         Assert.assertTrue(availableWriteEndpointByLocation.keySet().contains("East Asia"));
 
         AtomicBoolean isRefreshing = getIsRefreshing(globalEndPointManager);
@@ -200,7 +200,7 @@ public class GlobalEndPointManagerTest {
 
         databaseAccount = new DatabaseAccount(dbAccountJson3);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
-        globalEndPointManager.markEndpointUnavailableForWrite(new URL(("https://testaccount-eastasia.documents.azure.com:443/")));
+        globalEndPointManager.markEndpointUnavailableForWrite(new URI(("https://testaccount-eastasia.documents.azure.com:443/")));
         globalEndPointManager.refreshLocationAsync(null, true).block();// Refreshing location cache due to write forbidden, moving from East Asia to West US
 
         locationCache = this.getLocationCache(globalEndPointManager);
@@ -254,7 +254,7 @@ public class GlobalEndPointManagerTest {
 
         LocationCache locationCache = this.getLocationCache(globalEndPointManager);
         Assert.assertEquals(locationCache.getReadEndpoints().size(), 1);
-        Map<String, URL> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
+        Map<String, URI> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
         Assert.assertEquals(availableReadEndpointByLocation.size(), 1);
         Assert.assertTrue(availableReadEndpointByLocation.keySet().iterator().next().equalsIgnoreCase("East Asia"));
 
@@ -282,7 +282,7 @@ public class GlobalEndPointManagerTest {
         return locationCache;
     }
 
-    private Map<String, URL> getAvailableWriteEndpointByLocation(LocationCache locationCache) throws Exception {
+    private Map<String, URI> getAvailableWriteEndpointByLocation(LocationCache locationCache) throws Exception {
         Field locationInfoField = LocationCache.class.getDeclaredField("locationInfo");
         locationInfoField.setAccessible(true);
         Object locationInfo = locationInfoField.get(locationCache);
@@ -293,10 +293,10 @@ public class GlobalEndPointManagerTest {
         Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointByLocation");
         availableReadEndpointByLocationField.setAccessible(true);
 
-        return (Map<String, URL>) availableWriteEndpointByLocationField.get(locationInfo);
+        return (Map<String, URI>) availableWriteEndpointByLocationField.get(locationInfo);
     }
 
-    private Map<String, URL> getAvailableReadEndpointByLocation(LocationCache locationCache) throws Exception {
+    private Map<String, URI> getAvailableReadEndpointByLocation(LocationCache locationCache) throws Exception {
         Field locationInfoField = LocationCache.class.getDeclaredField("locationInfo");
         locationInfoField.setAccessible(true);
         Object locationInfo = locationInfoField.get(locationCache);
@@ -305,7 +305,7 @@ public class GlobalEndPointManagerTest {
         Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointByLocation");
         availableReadEndpointByLocationField.setAccessible(true);
 
-        return (Map<String, URL>) availableReadEndpointByLocationField.get(locationInfo);
+        return (Map<String, URI>) availableReadEndpointByLocationField.get(locationInfo);
     }
 
     private AtomicBoolean getIsRefreshing(GlobalEndpointManager globalEndPointManager) throws Exception {
@@ -341,8 +341,8 @@ public class GlobalEndPointManagerTest {
         LocationCache locationCache = getLocationCache(globalEndPointManager);
         Assert.assertEquals(locationCache.getReadEndpoints().size(), 1, "ReadEnpoints should have 1 value");
 
-        Map<String, URL> availableWriteEndpointByLocation = this.getAvailableWriteEndpointByLocation(locationCache);
-        Map<String, URL> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
+        Map<String, URI> availableWriteEndpointByLocation = this.getAvailableWriteEndpointByLocation(locationCache);
+        Map<String, URI> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
         Assert.assertEquals(availableWriteEndpointByLocation.size(), 1);
         Assert.assertEquals(availableReadEndpointByLocation.size(), 2);
         Assert.assertTrue(availableWriteEndpointByLocation.keySet().contains("East US"));

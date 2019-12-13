@@ -121,7 +121,7 @@ public class StoreReader {
         }).flux().doAfterTerminate(() -> SessionTokenHelper.setOriginalSessionToken(entity, originalSessionToken)).single();
     }
 
-    private Flux<ReadReplicaResult> earlyResultIfNotEnoughReplicas(List<URI> replicaAddresses,
+    private Flux<ReadReplicaResult> earlyResultIfNotEnoughReplicas(List<Uri> replicaAddresses,
                                                                    RxDocumentServiceRequest request,
                                                                    int replicaCountToRead) {
         if (replicaAddresses.size() < replicaCountToRead) {
@@ -138,7 +138,7 @@ public class StoreReader {
     }
 
     private Flux<StoreResult> toStoreResult(RxDocumentServiceRequest request,
-                                                  Pair<Flux<StoreResponse>, URI> storeRespAndURI,
+                                                  Pair<Flux<StoreResponse>, Uri> storeRespAndURI,
                                                   ReadMode readMode,
                                                   boolean requiresValidLsn) {
 
@@ -151,7 +151,7 @@ public class StoreReader {
                                         readMode != ReadMode.Strong,
                                         storeRespAndURI.getRight());
 
-                                BridgeInternal.getContactedReplicas(request.requestContext.cosmosResponseDiagnostics).add(storeRespAndURI.getRight());
+                                BridgeInternal.getContactedReplicas(request.requestContext.cosmosResponseDiagnostics).add(storeRespAndURI.getRight().getURI());
                                 return Flux.just(storeResult);
                             } catch (Exception e) {
                                 // RxJava1 doesn't allow throwing checked exception from Observable operators
@@ -174,7 +174,7 @@ public class StoreReader {
                                 readMode != ReadMode.Strong,
                                 null);
                         if (storeException instanceof TransportException) {
-                            BridgeInternal.getFailedReplicas(request.requestContext.cosmosResponseDiagnostics).add(storeRespAndURI.getRight());
+                            BridgeInternal.getFailedReplicas(request.requestContext.cosmosResponseDiagnostics).add(storeRespAndURI.getRight().getURI());
                         }
                         return Flux.just(storeResult);
                     } catch (Exception e) {
@@ -185,7 +185,7 @@ public class StoreReader {
     }
 
     private Flux<List<StoreResult>> readFromReplicas(List<StoreResult> resultCollector,
-                                                           List<URI> resolveApiResults,
+                                                           List<Uri> resolveApiResults,
                                                            final AtomicInteger replicasToRead,
                                                            RxDocumentServiceRequest entity,
                                                            boolean includePrimary,
@@ -202,13 +202,13 @@ public class StoreReader {
         if (entity.requestContext.timeoutHelper.isElapsed()) {
             return Flux.error(new GoneException());
         }
-        List<Pair<Flux<StoreResponse>, URI>> readStoreTasks = new ArrayList<>();
+        List<Pair<Flux<StoreResponse>, Uri>> readStoreTasks = new ArrayList<>();
         int uriIndex = StoreReader.generateNextRandom(resolveApiResults.size());
 
         while (resolveApiResults.size() > 0) {
             uriIndex = uriIndex % resolveApiResults.size();
-            URI uri = resolveApiResults.get(uriIndex);
-            Pair<Mono<StoreResponse>, URI> res;
+            Uri uri = resolveApiResults.get(uriIndex);
+            Pair<Mono<StoreResponse>, Uri> res;
             try {
                 res = this.readFromStoreAsync(resolveApiResults.get(uriIndex),
                                               entity);
@@ -346,7 +346,7 @@ public class StoreReader {
             requestedCollectionId = entity.requestContext.resolvedCollectionRid;
         }
 
-        Mono<List<URI>> resolveApiResultsObs = this.addressSelector.resolveAllUriAsync(
+        Mono<List<Uri>> resolveApiResultsObs = this.addressSelector.resolveAllUriAsync(
                 entity,
                 includePrimary,
                 entity.requestContext.forceRefreshAddressCache);
@@ -496,7 +496,7 @@ public class StoreReader {
             return Mono.error(new GoneException());
         }
 
-        Mono<URI> primaryUriObs = this.addressSelector.resolvePrimaryUriAsync(
+        Mono<Uri> primaryUriObs = this.addressSelector.resolvePrimaryUriAsync(
                 entity,
                 entity.requestContext.forceRefreshAddressCache);
 
@@ -513,7 +513,7 @@ public class StoreReader {
                         }
 
 
-                        Pair<Mono<StoreResponse>, URI> storeResponseObsAndUri = this.readFromStoreAsync(primaryUri, entity);
+                        Pair<Mono<StoreResponse>, Uri> storeResponseObsAndUri = this.readFromStoreAsync(primaryUri, entity);
 
                         return storeResponseObsAndUri.getLeft().flatMap(
                                 storeResponse -> {
@@ -576,8 +576,8 @@ public class StoreReader {
         });
     }
 
-    private Pair<Mono<StoreResponse>, URI> readFromStoreAsync(
-            URI physicalAddress,
+    private Pair<Mono<StoreResponse>, Uri> readFromStoreAsync(
+            Uri physicalAddress,
             RxDocumentServiceRequest request) throws CosmosClientException {
 
         if (request.requestContext.timeoutHelper.isElapsed()) {
@@ -657,7 +657,7 @@ public class StoreReader {
                                   Exception responseException,
                                   boolean requiresValidLsn,
                                   boolean useLocalLSNBasedHeaders,
-                                  URI storePhysicalAddress) throws CosmosClientException {
+                                  Uri storePhysicalAddress) throws CosmosClientException {
 
         if (responseException == null) {
             String headerValue = null;

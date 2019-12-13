@@ -17,7 +17,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     private final int backgroundRefreshLocationTimeIntervalInMS;
     private final LocationCache locationCache;
-    private final URL defaultEndpoint;
+    private final URI defaultEndpoint;
     private final ConnectionPolicy connectionPolicy;
     private final DatabaseAccountManagerInternal owner;
     private final AtomicBoolean isRefreshing;
@@ -54,13 +54,13 @@ public class GlobalEndpointManager implements AutoCloseable {
                             connectionPolicy.getPreferredLocations():
                             Collections.emptyList()
                     ),
-                    owner.getServiceEndpoint().toURL(),
+                    owner.getServiceEndpoint(),
                     connectionPolicy.getEnableEndpointDiscovery(),
                     BridgeInternal.getUseMultipleWriteLocations(connectionPolicy),
                     configs);
 
             this.owner = owner;
-            this.defaultEndpoint = owner.getServiceEndpoint().toURL();
+            this.defaultEndpoint = owner.getServiceEndpoint();
             this.connectionPolicy = connectionPolicy;
 
             this.isRefreshing = new AtomicBoolean(false);
@@ -77,18 +77,18 @@ public class GlobalEndpointManager implements AutoCloseable {
         startRefreshLocationTimerAsync(true).block();
     }
 
-    public UnmodifiableList<URL> getReadEndpoints() {
+    public UnmodifiableList<URI> getReadEndpoints() {
         // readonly
         return this.locationCache.getReadEndpoints();
     }
 
-    public UnmodifiableList<URL> getWriteEndpoints() {
+    public UnmodifiableList<URI> getWriteEndpoints() {
         //readonly
         return this.locationCache.getWriteEndpoints();
     }
 
     public static Mono<DatabaseAccount> getDatabaseAccountFromAnyLocationsAsync(
-            URL defaultEndpoint, List<String> locations, Function<URL, Mono<DatabaseAccount>> getDatabaseAccountFn) {
+            URI defaultEndpoint, List<String> locations, Function<URI, Mono<DatabaseAccount>> getDatabaseAccountFn) {
 
         return getDatabaseAccountFn.apply(defaultEndpoint).onErrorResume(
                 e -> {
@@ -107,16 +107,16 @@ public class GlobalEndpointManager implements AutoCloseable {
                 });
     }
 
-    public URL resolveServiceEndpoint(RxDocumentServiceRequest request) {
+    public URI resolveServiceEndpoint(RxDocumentServiceRequest request) {
         return this.locationCache.resolveServiceEndpoint(request);
     }
 
-    public void markEndpointUnavailableForRead(URL endpoint) {
+    public void markEndpointUnavailableForRead(URI endpoint) {
         logger.debug("Marking endpoint {} unavailable for read",endpoint);
         this.locationCache.markEndpointUnavailableForRead(endpoint);;
     }
 
-    public void markEndpointUnavailableForWrite(URL endpoint) {
+    public void markEndpointUnavailableForWrite(URI endpoint) {
         logger.debug("Marking  endpoint {} unavailable for Write",endpoint);
         this.locationCache.markEndpointUnavailableForWrite(endpoint);
     }
@@ -252,13 +252,9 @@ public class GlobalEndpointManager implements AutoCloseable {
                 }).subscribeOn(scheduler);
     }
 
-    private Mono<DatabaseAccount> getDatabaseAccountAsync(URL serviceEndpoint) {
-        try {
-            return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint.toURI())
-                    .doOnNext(i -> logger.debug("account retrieved: {}", i)).single();
-        } catch (URISyntaxException e) {
-            return Mono.error(e);
-        }
+    private Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
+        return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
+            .doOnNext(i -> logger.debug("account retrieved: {}", i)).single();
     }
 
     public boolean isClosed() {

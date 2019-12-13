@@ -102,13 +102,15 @@ public final class RntbdTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<StoreResponse> invokeStoreAsync(final URI address, final RxDocumentServiceRequest request) {
+    public Mono<StoreResponse> invokeStoreAsync(final Uri addressUri, final RxDocumentServiceRequest request) {
 
-        logger.debug("RntbdTransportClient.invokeStoreAsync({}, {})", address, request);
+        logger.debug("RntbdTransportClient.invokeStoreAsync({}, {})", addressUri, request);
 
-        checkNotNull(address, "expected non-null address");
+        checkNotNull(addressUri, "expected non-null address");
         checkNotNull(request, "expected non-null request");
         this.throwIfClosed();
+
+        URI address = addressUri.getURI();
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, address);
 

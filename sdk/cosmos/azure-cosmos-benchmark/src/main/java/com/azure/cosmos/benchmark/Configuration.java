@@ -74,6 +74,7 @@ class Configuration {
             + "\tWriteThroughput - run a Write workload that prints only throughput\n"
             + "\tReadLatency - run a READ workload that prints both throughput and latency *\n"
             + "\tWriteLatency - run a Write workload that prints both throughput and latency\n"
+            + "\tQueryInClauseParallel - run a 'Select * from c where c.pk in (....)' workload that prints latency\n"
             + "\tQueryCross - run a 'Select * from c where c._rid = SOME_RID' workload that prints throughput\n"
             + "\tQuerySingle - run a 'Select * from c where c.pk = SOME_PK' workload that prints throughput\n"
             + "\tQuerySingleMany - run a 'Select * from c where c.pk = \"pk\"' workload that prints throughput\n"
@@ -122,6 +123,7 @@ class Configuration {
         WriteThroughput,
         ReadLatency,
         WriteLatency,
+        QueryInClauseParallel,
         QueryCross,
         QuerySingle,
         QuerySingleMany,
