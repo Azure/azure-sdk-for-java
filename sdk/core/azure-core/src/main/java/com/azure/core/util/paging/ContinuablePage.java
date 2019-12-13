@@ -3,7 +3,10 @@
 
 package com.azure.core.util.paging;
 
+import com.azure.core.util.IterableStream;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents Page from service that has reference (a.k.a continuation token) to next set
@@ -16,9 +19,20 @@ import java.util.List;
  */
 public interface ContinuablePage<C, T> {
     /**
-     * @return list of items in the page.
+     * @return a iterable stream of elements in the page.
      */
-    List<T> getItems();
+    IterableStream<T> getElements();
+
+    /**
+     * @return list of elements in the page.
+     *
+     * @deprecated use {@link this#getElements()}.
+     */
+    @Deprecated
+    default List<T> getItems() {
+        return this.getElements().stream().collect(Collectors.toList());
+    }
+
     /**
      * @return A reference to the next page, or {@code null} if there are no more pages.
      */

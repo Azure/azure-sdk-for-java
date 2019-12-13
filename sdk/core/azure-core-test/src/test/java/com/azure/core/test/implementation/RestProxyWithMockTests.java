@@ -36,6 +36,7 @@ import com.azure.core.test.http.MockHttpClient;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.IterableStream;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.nio.charset.StandardCharsets;
@@ -468,8 +469,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
         }
 
         @Override
-        public List<KeyValue> getItems() {
-            return items;
+        public IterableStream<KeyValue> getElements() {
+            return new IterableStream<KeyValue>(items);
         }
 
         @Override
@@ -488,8 +489,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
         }
 
         @Override
-        public List<T> getItems() {
-            return items;
+        public IterableStream<T> getElements() {
+            return new IterableStream<>(items);
         }
 
         @Override

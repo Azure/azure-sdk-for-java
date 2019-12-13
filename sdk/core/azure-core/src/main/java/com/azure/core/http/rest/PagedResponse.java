@@ -4,6 +4,7 @@ package com.azure.core.http.rest;
 
 import java.io.Closeable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Response of a REST API that returns page.
@@ -21,6 +22,6 @@ public interface PagedResponse<T> extends Page<T>, Response<List<T>>, Closeable 
      * @return The items in the page.
      */
     default List<T> getValue() {
-        return getItems();
+        return this.getElements().stream().collect(Collectors.toList());
     }
 }

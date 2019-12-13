@@ -3,6 +3,7 @@
 
 package com.azure.core.util.paging;
 
+import com.azure.core.util.IterableStream;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -50,6 +51,11 @@ public class PagedFluxCoreJavaDocCodeSnippets {
         }
 
         class FilePage implements ContinuablePage<FileContinuationToken, File> {
+            @Override
+            public IterableStream<File> getElements() {
+                return null;
+            }
+
             @Override
             public List<File> getItems() {
                 return null;
