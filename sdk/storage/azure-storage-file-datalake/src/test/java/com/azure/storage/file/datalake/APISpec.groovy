@@ -215,7 +215,7 @@ class APISpec extends Specification {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (testMode != TestMode.PLAYBACK) {
-            if (!recordLiveMode) {
+            if (testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET

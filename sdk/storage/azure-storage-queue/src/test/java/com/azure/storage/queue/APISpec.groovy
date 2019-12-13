@@ -53,7 +53,7 @@ class APISpec extends Specification {
         logger.info("Test Mode: {}, Name: {}", testMode, methodName)
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode, interceptorManager.getRecordedData())
-        if (getTestMode() != TestMode.LIVE) {
+        if (getTestMode() != TestMode.PLAYBACK) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;" +
@@ -129,7 +129,7 @@ class APISpec extends Specification {
         }
         return builder
             .connectionString(connectionString)
-            .httpClient(interceptorManager.getPlaybackClient())
+            .httpClient(getHttpClient())
     }
 
     def queueBuilderHelper(final InterceptorManager interceptorManager) {
@@ -141,7 +141,7 @@ class APISpec extends Specification {
         return builder
             .connectionString(connectionString)
             .queueName(queueName)
-            .httpClient(interceptorManager.getPlaybackClient())
+            .httpClient(getHttpClient())
     }
 
     QueueServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,

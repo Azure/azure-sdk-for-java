@@ -246,8 +246,8 @@ class APISpec extends Specification {
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
-            if (!recordLiveMode) {
+        if (testMode != TestMode.PLAYBACK) {
+            if (testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -732,7 +732,7 @@ class APISpec extends Specification {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }

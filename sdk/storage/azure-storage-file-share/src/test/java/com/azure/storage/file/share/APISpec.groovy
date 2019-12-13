@@ -58,7 +58,7 @@ class APISpec extends Specification {
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
-        if (getTestMode() == TestMode.RECORD) {
+        if (getTestMode() != TestMode.PLAYBACK) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
@@ -71,7 +71,7 @@ class APISpec extends Specification {
      */
     def cleanup() {
         interceptorManager.close()
-        if (getTestMode() == TestMode.RECORD) {
+        if (getTestMode() != TestMode.PLAYBACK) {
             ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
@@ -86,7 +86,7 @@ class APISpec extends Specification {
         String accountName
         String accountKey
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
