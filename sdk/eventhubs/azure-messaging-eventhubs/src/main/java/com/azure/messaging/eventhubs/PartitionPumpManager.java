@@ -30,6 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
@@ -90,7 +92,7 @@ class PartitionPumpManager {
             try {
                 eventHubConsumer.close();
             } catch (Exception ex) {
-                logger.warning("Failed to close consumer for partition {}", partitionId, ex);
+                logger.warning(Messages.FAILED_CLOSE_CONSUMER_PARTITION, partitionId, ex);
             } finally {
                 partitionPumps.remove(partitionId);
             }
@@ -140,7 +142,8 @@ class PartitionPumpManager {
         eventHubConsumer.receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
             .subscribe(partitionEvent -> {
                 EventData eventData = partitionEvent.getData();
-                Context processSpanContext = startProcessTracingSpan(eventData);
+                Context processSpanContext = startProcessTracingSpan(eventData, eventHubConsumer.getEventHubName(),
+                    eventHubConsumer.getFullyQualifiedNamespace());
                 if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
                     eventData.addContext(SPAN_CONTEXT_KEY, processSpanContext);
                 }
@@ -168,7 +171,7 @@ class PartitionPumpManager {
             // also fails just log and continue
             partitionProcessor.processError(new ErrorContext(partitionContext, error));
         } catch (Exception ex) {
-            logger.warning("Failed while processing error {}", claimedOwnership.getPartitionId(), ex);
+            logger.warning(Messages.FAILED_WHILE_PROCESSING_ERROR, claimedOwnership.getPartitionId(), ex);
         }
     }
 
@@ -186,7 +189,7 @@ class PartitionPumpManager {
             }
             partitionProcessor.close(new CloseContext(partitionContext, closeReason));
         } catch (Exception ex) {
-            logger.warning("Failed while processing error on receive {}", claimedOwnership.getPartitionId(), ex);
+            logger.warning(Messages.FAILED_PROCESSING_ERROR_RECEIVE, claimedOwnership.getPartitionId(), ex);
         } finally {
             try {
                 // close the consumer
@@ -199,15 +202,19 @@ class PartitionPumpManager {
     }
 
     /*
-     * Starts a new process tracing span and attached context the EventData object for users.
+     * Starts a new process tracing span and attaches the returned context to the EventData object for users.
      */
-    private Context startProcessTracingSpan(EventData eventData) {
+    private Context startProcessTracingSpan(EventData eventData, String eventHubName, String fullyQualifiedNamespace) {
         Object diagnosticId = eventData.getProperties().get(DIAGNOSTIC_ID_KEY);
         if (diagnosticId == null || !tracerProvider.isEnabled()) {
             return Context.NONE;
         }
+
         Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
-        return tracerProvider.startSpan(spanContext, ProcessKind.PROCESS);
+        Context entityContext = spanContext.addData(ENTITY_PATH_KEY, eventHubName);
+
+        return tracerProvider.startSpan(entityContext.addData(HOST_NAME_KEY, fullyQualifiedNamespace),
+            ProcessKind.PROCESS);
     }
 
     /*
@@ -225,12 +232,12 @@ class PartitionPumpManager {
                 close.close();
                 tracerProvider.endSpan(processSpanContext, signal);
             } catch (IOException ioException) {
-                logger.error("EventProcessor.run() endTracingSpan().close() failed with an error %s", ioException);
+                logger.error(Messages.EVENT_PROCESSOR_RUN_END, ioException);
             }
 
         } else {
             logger.warning(String.format(Locale.US,
-                "Process span scope type is not of type Closeable, but type: %s. Not closing the scope and span",
+                Messages.PROCESS_SPAN_SCOPE_TYPE_ERROR,
                 spanScope.get() != null ? spanScope.getClass() : "null"));
         }
     }

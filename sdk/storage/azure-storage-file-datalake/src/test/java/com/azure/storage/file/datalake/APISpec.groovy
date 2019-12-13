@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
 import reactor.core.publisher.Flux
@@ -300,6 +301,17 @@ class APISpec extends Specification {
             .buildClient()
     }
 
+    static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileAsyncClient pathAsyncClient) {
+        return createLeaseAsyncClient(pathAsyncClient, null)
+    }
+
+    static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileAsyncClient pathAsyncClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder()
+            .fileAsyncClient(pathAsyncClient)
+            .leaseId(leaseId)
+            .buildAsyncClient()
+    }
+
     static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient) {
         return createLeaseClient(pathClient, null)
     }
@@ -368,6 +380,10 @@ class APISpec extends Specification {
     }
 
     DataLakeFileSystemClient getFileSystemClient(String sasToken, String endpoint) {
+        getFileSystemClientBuilder(endpoint).sasToken(sasToken).buildClient()
+    }
+
+    DataLakeFileSystemClientBuilder getFileSystemClientBuilder(String endpoint) {
         DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -377,7 +393,7 @@ class APISpec extends Specification {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
-        builder.sasToken(sasToken).buildClient()
+        return builder
     }
 
     def generateFileSystemName() {
@@ -628,6 +644,13 @@ class APISpec extends Specification {
             }
         }
         return false
+    }
+
+    def sleepIfLive(long milliseconds) {
+        if (testMode == TestMode.PLAYBACK) {
+            return
+        }
+        sleep(milliseconds)
     }
 
 }

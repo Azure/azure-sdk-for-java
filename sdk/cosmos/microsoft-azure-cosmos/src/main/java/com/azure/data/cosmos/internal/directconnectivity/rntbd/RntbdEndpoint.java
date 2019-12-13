@@ -105,19 +105,19 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
-        public int connectionTimeout() {
+        public int connectionTimeoutInMillis() {
             final long value = this.options.connectionTimeout().toMillis();
             assert value <= Integer.MAX_VALUE;
             return (int)value;
         }
 
         @JsonProperty
-        public long idleConnectionTimeout() {
+        public long idleConnectionTimeoutInNanos() {
             return this.options.idleChannelTimeout().toNanos();
         }
 
         @JsonProperty
-        public long idleEndpointTimeout() {
+        public long idleEndpointTimeoutInNanos() {
             return this.options.idleEndpointTimeout().toNanos();
         }
 
@@ -137,22 +137,22 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
-        public long receiveHangDetectionTime() {
+        public long receiveHangDetectionTimeInNanos() {
             return this.options.receiveHangDetectionTime().toNanos();
         }
 
         @JsonProperty
-        public long requestTimeout() {
+        public long requestTimeoutInNanos() {
             return this.options.requestTimeout().toNanos();
         }
 
         @JsonProperty
-        public long sendHangDetectionTime() {
+        public long sendHangDetectionTimeInNanos() {
             return this.options.sendHangDetectionTime().toNanos();
         }
 
         @JsonProperty
-        public long shutdownTimeout() {
+        public long shutdownTimeoutInNanos() {
             return this.options.shutdownTimeout().toNanos();
         }
 

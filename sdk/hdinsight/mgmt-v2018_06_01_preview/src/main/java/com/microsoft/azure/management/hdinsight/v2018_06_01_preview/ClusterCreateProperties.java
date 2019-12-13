@@ -40,6 +40,12 @@ public class ClusterCreateProperties {
     private ClusterDefinition clusterDefinition;
 
     /**
+     * The cluster kafka rest proxy configuration.
+     */
+    @JsonProperty(value = "kafkaRestProperties")
+    private KafkaRestProperties kafkaRestProperties;
+
+    /**
      * The security profile.
      */
     @JsonProperty(value = "securityProfile")
@@ -140,6 +146,26 @@ public class ClusterCreateProperties {
      */
     public ClusterCreateProperties withClusterDefinition(ClusterDefinition clusterDefinition) {
         this.clusterDefinition = clusterDefinition;
+        return this;
+    }
+
+    /**
+     * Get the cluster kafka rest proxy configuration.
+     *
+     * @return the kafkaRestProperties value
+     */
+    public KafkaRestProperties kafkaRestProperties() {
+        return this.kafkaRestProperties;
+    }
+
+    /**
+     * Set the cluster kafka rest proxy configuration.
+     *
+     * @param kafkaRestProperties the kafkaRestProperties value to set
+     * @return the ClusterCreateProperties object itself.
+     */
+    public ClusterCreateProperties withKafkaRestProperties(KafkaRestProperties kafkaRestProperties) {
+        this.kafkaRestProperties = kafkaRestProperties;
         return this;
     }
 
