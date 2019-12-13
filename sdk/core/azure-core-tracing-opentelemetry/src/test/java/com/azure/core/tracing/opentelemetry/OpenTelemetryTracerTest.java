@@ -41,10 +41,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests Azure-OpenTelemetry tracing package using opentelemetry-sdk
  */
 public class OpenTelemetryTracerTest {
-    private static final String METHOD_NAME = "Azure.eventhubs.send";
+    private static final String METHOD_NAME = "EventHubs.send";
     private static final String HOSTNAME_VALUE = "testEventDataNameSpace.servicebus.windows.net";
     private static final String ENTITY_PATH_VALUE = "test";
-    private static final String COMPONENT_VALUE = "eventhubs";
+    private static final String COMPONENT_VALUE = "EventHubs";
     private OpenTelemetryTracer openTelemetryTracer;
     private Tracer tracer;
     private Context tracingContext;
