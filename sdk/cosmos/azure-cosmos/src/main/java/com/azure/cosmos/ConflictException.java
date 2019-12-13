@@ -21,7 +21,8 @@ public class ConflictException extends CosmosClientException {
         this(RMResources.EntityAlreadyExists);
     }
 
-    public ConflictException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public ConflictException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
+                             Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.CONFLICT, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -48,13 +49,13 @@ public class ConflictException extends CosmosClientException {
     }
 
     ConflictException(String message,
-                             Exception innerException,
-                             HttpHeaders headers,
-                             String requestUriString) {
+                      Exception innerException,
+                      HttpHeaders headers,
+                      String requestUriString) {
         super(String.format("%s: %s", RMResources.EntityAlreadyExists, message),
-                innerException,
-                HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.CONFLICT,
-                requestUriString);
+            innerException,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.CONFLICT,
+            requestUriString);
     }
 }

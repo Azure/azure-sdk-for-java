@@ -16,7 +16,10 @@ public class MethodNotAllowedException extends CosmosClientException {
         this(RMResources.MethodNotAllowed);
     }
 
-    public MethodNotAllowedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public MethodNotAllowedException(CosmosError cosmosError,
+                                     long lsn,
+                                     String partitionKeyRangeId,
+                                     Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.METHOD_NOT_ALLOWED, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -39,13 +42,13 @@ public class MethodNotAllowedException extends CosmosClientException {
     }
 
     public MethodNotAllowedException(String message,
-                                 Exception innerException,
+                                     Exception innerException,
                                      HttpHeaders headers,
-                                 String requestUriString) {
+                                     String requestUriString) {
         super(String.format("%s: %s", RMResources.MethodNotAllowed, message),
-                innerException,
-                HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.METHOD_NOT_ALLOWED,
-                requestUriString);
+            innerException,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.METHOD_NOT_ALLOWED,
+            requestUriString);
     }
 }

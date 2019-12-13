@@ -4,6 +4,7 @@ package com.azure.cosmos.examples;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosClientBuilder;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -14,9 +15,9 @@ public class HelloWorldDemo {
     }
 
     void runDemo() {
-        // Create a new CosmosAsyncClient via the builder
+        // Create a new CosmosAsyncClient via the CosmosClientBuilder
         // It only requires endpoint and key, but other useful settings are available
-        CosmosAsyncClient client = CosmosAsyncClient.builder()
+        CosmosAsyncClient client = new CosmosClientBuilder()
             .setEndpoint("<YOUR ENDPOINT HERE>")
             .setKey("<YOUR KEY HERE>")
             .buildAsyncClient();

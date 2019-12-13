@@ -284,7 +284,7 @@ public interface AsyncDocumentClient {
      *
      * @param database the database.
      * @param options  the request options.
-     * @return an {@link Flux} containing the single resource response with the created database or an error.
+     * @return a {@link Flux} containing the single resource response with the created database or an error.
      */
     Flux<ResourceResponse<Database>> createDatabase(Database database, RequestOptions options);
 
@@ -297,7 +297,7 @@ public interface AsyncDocumentClient {
      *
      * @param databaseLink the database link.
      * @param options      the request options.
-     * @return an {@link Flux} containing the single resource response with the deleted database or an error.
+     * @return a {@link Flux} containing the single resource response with the deleted database or an error.
      */
     Flux<ResourceResponse<Database>> deleteDatabase(String databaseLink, RequestOptions options);
 
@@ -310,7 +310,7 @@ public interface AsyncDocumentClient {
      *
      * @param databaseLink the database link.
      * @param options      the request options.
-     * @return an {@link Flux} containing the single resource response with the read database or an error.
+     * @return a {@link Flux} containing the single resource response with the read database or an error.
      */
     Flux<ResourceResponse<Database>> readDatabase(String databaseLink, RequestOptions options);
 
@@ -322,7 +322,7 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
     Flux<FeedResponse<Database>> readDatabases(FeedOptions options);
 
@@ -335,7 +335,7 @@ public interface AsyncDocumentClient {
      *
      * @param query   the query.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
     Flux<FeedResponse<Database>> queryDatabases(String query, FeedOptions options);
 
@@ -348,7 +348,7 @@ public interface AsyncDocumentClient {
      *
      * @param querySpec the SQL query specification.
      * @param options   the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained databases or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained databases or an error.
      */
     Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options);
 
@@ -362,7 +362,7 @@ public interface AsyncDocumentClient {
      * @param databaseLink the database link.
      * @param collection   the collection.
      * @param options      the request options.
-     * @return an {@link Flux} containing the single resource response with the created collection or an error.
+     * @return a {@link Flux} containing the single resource response with the created collection or an error.
      */
     Flux<ResourceResponse<DocumentCollection>> createCollection(String databaseLink, DocumentCollection collection,
                                                                 RequestOptions options);
@@ -376,7 +376,7 @@ public interface AsyncDocumentClient {
      *
      * @param collection the document collection to use.
      * @param options    the request options.
-     * @return an {@link Flux} containing the single resource response with the replaced document collection or an error.
+     * @return a {@link Flux} containing the single resource response with the replaced document collection or an error.
      */
     Flux<ResourceResponse<DocumentCollection>> replaceCollection(DocumentCollection collection, RequestOptions options);
 
@@ -389,7 +389,7 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param options        the request options.
-     * @return an {@link Flux} containing the single resource response for the deleted database or an error.
+     * @return a {@link Flux} containing the single resource response for the deleted database or an error.
      */
     Flux<ResourceResponse<DocumentCollection>> deleteCollection(String collectionLink, RequestOptions options);
 
@@ -402,7 +402,7 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param options        the request options.
-     * @return an {@link Flux} containing the single resource response with the read collection or an error.
+     * @return a {@link Flux} containing the single resource response with the read collection or an error.
      */
     Flux<ResourceResponse<DocumentCollection>> readCollection(String collectionLink, RequestOptions options);
 
@@ -415,7 +415,7 @@ public interface AsyncDocumentClient {
      *
      * @param databaseLink the database link.
      * @param options      the fee options.
-     * @return an {@link Flux} containing one or several feed response pages of the read collections or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the read collections or an error.
      */
     Flux<FeedResponse<DocumentCollection>> readCollections(String databaseLink, FeedOptions options);
 
@@ -429,7 +429,7 @@ public interface AsyncDocumentClient {
      * @param databaseLink the database link.
      * @param query        the query.
      * @param options      the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained collections or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained collections or an error.
      */
     Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, String query, FeedOptions options);
 
@@ -443,7 +443,7 @@ public interface AsyncDocumentClient {
      * @param databaseLink the database link.
      * @param querySpec    the SQL query specification.
      * @param options      the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained collections or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained collections or an error.
      */
     Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, SqlQuerySpec querySpec, FeedOptions options);
 
@@ -458,7 +458,7 @@ public interface AsyncDocumentClient {
      * @param document                     the document represented as a POJO or Document object.
      * @param options                      the request options.
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
-     * @return an {@link Flux} containing the single resource response with the created document or an error.
+     * @return a {@link Flux} containing the single resource response with the created document or an error.
      */
     Flux<ResourceResponse<Document>> createDocument(String collectionLink, Object document, RequestOptions options,
                                                     boolean disableAutomaticIdGeneration);
@@ -474,7 +474,7 @@ public interface AsyncDocumentClient {
      * @param document                     the document represented as a POJO or Document object to upsert.
      * @param options                      the request options.
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
-     * @return an {@link Flux} containing the single resource response with the upserted document or an error.
+     * @return a {@link Flux} containing the single resource response with the upserted document or an error.
      */
     Flux<ResourceResponse<Document>> upsertDocument(String collectionLink, Object document, RequestOptions options,
                                                           boolean disableAutomaticIdGeneration);
@@ -489,7 +489,7 @@ public interface AsyncDocumentClient {
      * @param documentLink the document link.
      * @param document     the document represented as a POJO or Document object.
      * @param options      the request options.
-     * @return an {@link Flux} containing the single resource response with the replaced document or an error.
+     * @return a {@link Flux} containing the single resource response with the replaced document or an error.
      */
     Flux<ResourceResponse<Document>> replaceDocument(String documentLink, Object document, RequestOptions options);
 
@@ -502,7 +502,7 @@ public interface AsyncDocumentClient {
      *
      * @param document the document to replace (containing the document id).
      * @param options  the request options.
-     * @return an {@link Flux} containing the single resource response with the replaced document or an error.
+     * @return a {@link Flux} containing the single resource response with the replaced document or an error.
      */
     Flux<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options);
 
@@ -515,7 +515,7 @@ public interface AsyncDocumentClient {
      *
      * @param documentLink the document link.
      * @param options      the request options.
-     * @return an {@link Flux} containing the single resource response for the deleted document or an error.
+     * @return a {@link Flux} containing the single resource response for the deleted document or an error.
      */
     Flux<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options);
 
@@ -528,7 +528,7 @@ public interface AsyncDocumentClient {
      *
      * @param documentLink the document link.
      * @param options      the request options.
-     * @return an {@link Flux} containing the single resource response with the read document or an error.
+     * @return a {@link Flux} containing the single resource response with the read document or an error.
      */
     Flux<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options);
 
@@ -541,7 +541,7 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read documents or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the read documents or an error.
      */
     Flux<FeedResponse<Document>> readDocuments(String collectionLink, FeedOptions options);
 
@@ -556,7 +556,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the link to the parent document collection.
      * @param query          the query.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained document or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained document or an error.
      */
     Flux<FeedResponse<Document>> queryDocuments(String collectionLink, String query, FeedOptions options);
 
@@ -570,7 +570,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the link to the parent document collection.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained documents or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
     <T> Flux<FeedResponse<T>> queryDocuments(String collectionLink, SqlQuerySpec querySpec, FeedOptions options);
 
@@ -582,7 +582,7 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink    the link to the parent document collection.
      * @param changeFeedOptions the change feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained documents or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
     Flux<FeedResponse<Document>> queryDocumentChangeFeed(String collectionLink,
                                                                ChangeFeedOptions changeFeedOptions);
@@ -595,7 +595,7 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the link to the parent document collection.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained partition key ranges or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained partition key ranges or an error.
      */
     Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink, FeedOptions options);
 
@@ -609,7 +609,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink  the collection link.
      * @param storedProcedure the stored procedure to create.
      * @param options         the request options.
-     * @return an {@link Flux} containing the single resource response with the created stored procedure or an error.
+     * @return a {@link Flux} containing the single resource response with the created stored procedure or an error.
      */
     Flux<ResourceResponse<StoredProcedure>> createStoredProcedure(String collectionLink, StoredProcedure storedProcedure,
                                                                   RequestOptions options);
@@ -624,7 +624,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink  the collection link.
      * @param storedProcedure the stored procedure to upsert.
      * @param options         the request options.
-     * @return an {@link Flux} containing the single resource response with the upserted stored procedure or an error.
+     * @return a {@link Flux} containing the single resource response with the upserted stored procedure or an error.
      */
     Flux<ResourceResponse<StoredProcedure>> upsertStoredProcedure(String collectionLink, StoredProcedure storedProcedure,
                                                                         RequestOptions options);
@@ -638,7 +638,7 @@ public interface AsyncDocumentClient {
      *
      * @param storedProcedure the stored procedure to use.
      * @param options         the request options.
-     * @return an {@link Flux} containing the single resource response with the replaced stored procedure or an error.
+     * @return a {@link Flux} containing the single resource response with the replaced stored procedure or an error.
      */
     Flux<ResourceResponse<StoredProcedure>> replaceStoredProcedure(StoredProcedure storedProcedure, RequestOptions options);
 
@@ -651,7 +651,7 @@ public interface AsyncDocumentClient {
      *
      * @param storedProcedureLink the stored procedure link.
      * @param options             the request options.
-     * @return an {@link Flux} containing the single resource response for the deleted stored procedure or an error.
+     * @return a {@link Flux} containing the single resource response for the deleted stored procedure or an error.
      */
     Flux<ResourceResponse<StoredProcedure>> deleteStoredProcedure(String storedProcedureLink, RequestOptions options);
 
@@ -664,7 +664,7 @@ public interface AsyncDocumentClient {
      *
      * @param storedProcedureLink the stored procedure link.
      * @param options             the request options.
-     * @return an {@link Flux} containing the single resource response with the read stored procedure or an error.
+     * @return a {@link Flux} containing the single resource response with the read stored procedure or an error.
      */
     Flux<ResourceResponse<StoredProcedure>> readStoredProcedure(String storedProcedureLink, RequestOptions options);
 
@@ -677,7 +677,7 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read stored procedures or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the read stored procedures or an error.
      */
     Flux<FeedResponse<StoredProcedure>> readStoredProcedures(String collectionLink, FeedOptions options);
 
@@ -691,7 +691,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the collection link.
      * @param query          the query.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained stored procedures or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained stored procedures or an error.
      */
     Flux<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink, String query, FeedOptions options);
 
@@ -705,7 +705,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained stored procedures or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained stored procedures or an error.
      */
     Flux<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink, SqlQuerySpec querySpec,
                                                                     FeedOptions options);
@@ -719,7 +719,7 @@ public interface AsyncDocumentClient {
      *
      * @param storedProcedureLink the stored procedure link.
      * @param procedureParams     the array of procedure parameter values.
-     * @return an {@link Flux} containing the single resource response with the stored procedure response or an error.
+     * @return a {@link Flux} containing the single resource response with the stored procedure response or an error.
      */
     Flux<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, Object[] procedureParams);
 
@@ -733,7 +733,7 @@ public interface AsyncDocumentClient {
      * @param storedProcedureLink the stored procedure link.
      * @param options             the request options.
      * @param procedureParams     the array of procedure parameter values.
-     * @return an {@link Flux} containing the single resource response with the stored procedure response or an error.
+     * @return a {@link Flux} containing the single resource response with the stored procedure response or an error.
      */
     Flux<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, RequestOptions options,
                                                                Object[] procedureParams);
@@ -748,7 +748,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the collection link.
      * @param trigger        the trigger.
      * @param options        the request options.
-     * @return an {@link Flux} containing the single resource response with the created trigger or an error.
+     * @return a {@link Flux} containing the single resource response with the created trigger or an error.
      */
     Flux<ResourceResponse<Trigger>> createTrigger(String collectionLink, Trigger trigger, RequestOptions options);
 
@@ -762,7 +762,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the collection link.
      * @param trigger        the trigger to upsert.
      * @param options        the request options.
-     * @return an {@link Flux} containing the single resource response with the upserted trigger or an error.
+     * @return a {@link Flux} containing the single resource response with the upserted trigger or an error.
      */
     Flux<ResourceResponse<Trigger>> upsertTrigger(String collectionLink, Trigger trigger, RequestOptions options);
 
@@ -775,7 +775,7 @@ public interface AsyncDocumentClient {
      *
      * @param trigger the trigger to use.
      * @param options the request options.
-     * @return an {@link Flux} containing the single resource response with the replaced trigger or an error.
+     * @return a {@link Flux} containing the single resource response with the replaced trigger or an error.
      */
     Flux<ResourceResponse<Trigger>> replaceTrigger(Trigger trigger, RequestOptions options);
 
@@ -788,7 +788,7 @@ public interface AsyncDocumentClient {
      *
      * @param triggerLink the trigger link.
      * @param options     the request options.
-     * @return an {@link Flux} containing the single resource response for the deleted trigger or an error.
+     * @return a {@link Flux} containing the single resource response for the deleted trigger or an error.
      */
     Flux<ResourceResponse<Trigger>> deleteTrigger(String triggerLink, RequestOptions options);
 
@@ -801,7 +801,7 @@ public interface AsyncDocumentClient {
      *
      * @param triggerLink the trigger link.
      * @param options     the request options.
-     * @return an {@link Flux} containing the single resource response for the read trigger or an error.
+     * @return a {@link Flux} containing the single resource response for the read trigger or an error.
      */
     Flux<ResourceResponse<Trigger>> readTrigger(String triggerLink, RequestOptions options);
 
@@ -814,7 +814,7 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read triggers or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the read triggers or an error.
      */
     Flux<FeedResponse<Trigger>> readTriggers(String collectionLink, FeedOptions options);
 
@@ -828,7 +828,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the collection link.
      * @param query          the query.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
      */
     Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, String query, FeedOptions options);
 
@@ -842,7 +842,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
      */
     Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, SqlQuerySpec querySpec, FeedOptions options);
 
@@ -856,7 +856,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the collection link.
      * @param udf            the user defined function.
      * @param options        the request options.
-     * @return an {@link Flux} containing the single resource response with the created user defined function or an error.
+     * @return a {@link Flux} containing the single resource response with the created user defined function or an error.
      */
     Flux<ResourceResponse<UserDefinedFunction>> createUserDefinedFunction(String collectionLink, UserDefinedFunction udf,
                                                                           RequestOptions options);
@@ -871,7 +871,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the collection link.
      * @param udf            the user defined function to upsert.
      * @param options        the request options.
-     * @return an {@link Flux} containing the single resource response with the upserted user defined function or an error.
+     * @return a {@link Flux} containing the single resource response with the upserted user defined function or an error.
      */
     Flux<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunction(String collectionLink, UserDefinedFunction udf,
                                                                                 RequestOptions options);
@@ -885,7 +885,7 @@ public interface AsyncDocumentClient {
      *
      * @param udf     the user defined function.
      * @param options the request options.
-     * @return an {@link Flux} containing the single resource response with the replaced user defined function or an error.
+     * @return a {@link Flux} containing the single resource response with the replaced user defined function or an error.
      */
     Flux<ResourceResponse<UserDefinedFunction>> replaceUserDefinedFunction(UserDefinedFunction udf, RequestOptions options);
 
@@ -898,7 +898,7 @@ public interface AsyncDocumentClient {
      *
      * @param udfLink the user defined function link.
      * @param options the request options.
-     * @return an {@link Flux} containing the single resource response for the deleted user defined function or an error.
+     * @return a {@link Flux} containing the single resource response for the deleted user defined function or an error.
      */
     Flux<ResourceResponse<UserDefinedFunction>> deleteUserDefinedFunction(String udfLink, RequestOptions options);
 
@@ -911,7 +911,7 @@ public interface AsyncDocumentClient {
      *
      * @param udfLink the user defined function link.
      * @param options the request options.
-     * @return an {@link Flux} containing the single resource response for the read user defined function or an error.
+     * @return a {@link Flux} containing the single resource response for the read user defined function or an error.
      */
     Flux<ResourceResponse<UserDefinedFunction>> readUserDefinedFunction(String udfLink, RequestOptions options);
 
@@ -924,7 +924,7 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read user defined functions or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the read user defined functions or an error.
      */
     Flux<FeedResponse<UserDefinedFunction>> readUserDefinedFunctions(String collectionLink, FeedOptions options);
 
@@ -938,7 +938,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the collection link.
      * @param query          the query.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained user defined functions or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained user defined functions or an error.
      */
     Flux<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink, String query,
                                                                             FeedOptions options);
@@ -953,7 +953,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained user defined functions or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained user defined functions or an error.
      */
     Flux<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink, SqlQuerySpec querySpec,
                                                                             FeedOptions options);
@@ -967,7 +967,7 @@ public interface AsyncDocumentClient {
      *
      * @param conflictLink the conflict link.
      * @param options      the request options.
-     * @return an {@link Flux} containing the single resource response with the read conflict or an error.
+     * @return a {@link Flux} containing the single resource response with the read conflict or an error.
      */
     Flux<ResourceResponse<Conflict>> readConflict(String conflictLink, RequestOptions options);
 
@@ -980,7 +980,7 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read conflicts or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the read conflicts or an error.
      */
     Flux<FeedResponse<Conflict>> readConflicts(String collectionLink, FeedOptions options);
 
@@ -994,7 +994,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the collection link.
      * @param query          the query.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained conflicts or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained conflicts or an error.
      */
     Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, String query, FeedOptions options);
 
@@ -1008,7 +1008,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained conflicts or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained conflicts or an error.
      */
     Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, SqlQuerySpec querySpec, FeedOptions options);
 
@@ -1021,7 +1021,7 @@ public interface AsyncDocumentClient {
      *
      * @param conflictLink the conflict link.
      * @param options      the request options.
-     * @return an {@link Flux} containing the single resource response for the deleted conflict or an error.
+     * @return a {@link Flux} containing the single resource response for the deleted conflict or an error.
      */
     Flux<ResourceResponse<Conflict>> deleteConflict(String conflictLink, RequestOptions options);
 
@@ -1035,7 +1035,7 @@ public interface AsyncDocumentClient {
      * @param databaseLink the database link.
      * @param user         the user to create.
      * @param options      the request options.
-     * @return an {@link Flux} containing the single resource response with the created user or an error.
+     * @return a {@link Flux} containing the single resource response with the created user or an error.
      */
     Flux<ResourceResponse<User>> createUser(String databaseLink, User user, RequestOptions options);
 
@@ -1049,7 +1049,7 @@ public interface AsyncDocumentClient {
      * @param databaseLink the database link.
      * @param user         the user to upsert.
      * @param options      the request options.
-     * @return an {@link Flux} containing the single resource response with the upserted user or an error.
+     * @return a {@link Flux} containing the single resource response with the upserted user or an error.
      */
     Flux<ResourceResponse<User>> upsertUser(String databaseLink, User user, RequestOptions options);
 
@@ -1062,7 +1062,7 @@ public interface AsyncDocumentClient {
      *
      * @param user    the user to use.
      * @param options the request options.
-     * @return an {@link Flux} containing the single resource response with the replaced user or an error.
+     * @return a {@link Flux} containing the single resource response with the replaced user or an error.
      */
     Flux<ResourceResponse<User>> replaceUser(User user, RequestOptions options);
 
@@ -1075,7 +1075,7 @@ public interface AsyncDocumentClient {
      *
      * @param userLink the user link.
      * @param options  the request options.
-     * @return an {@link Flux} containing the single resource response for the deleted user or an error.
+     * @return a {@link Flux} containing the single resource response for the deleted user or an error.
      */
     Flux<ResourceResponse<User>> deleteUser(String userLink, RequestOptions options);
 
@@ -1088,7 +1088,7 @@ public interface AsyncDocumentClient {
      *
      * @param userLink the user link.
      * @param options  the request options.
-     * @return an {@link Flux} containing the single resource response with the read user or an error.
+     * @return a {@link Flux} containing the single resource response with the read user or an error.
      */
     Flux<ResourceResponse<User>> readUser(String userLink, RequestOptions options);
 
@@ -1101,7 +1101,7 @@ public interface AsyncDocumentClient {
      *
      * @param databaseLink the database link.
      * @param options      the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read users or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the read users or an error.
      */
     Flux<FeedResponse<User>> readUsers(String databaseLink, FeedOptions options);
 
@@ -1115,7 +1115,7 @@ public interface AsyncDocumentClient {
      * @param databaseLink the database link.
      * @param query        the query.
      * @param options      the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained users or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained users or an error.
      */
     Flux<FeedResponse<User>> queryUsers(String databaseLink, String query, FeedOptions options);
 
@@ -1129,7 +1129,7 @@ public interface AsyncDocumentClient {
      * @param databaseLink the database link.
      * @param querySpec    the SQL query specification.
      * @param options      the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained users or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained users or an error.
      */
     Flux<FeedResponse<User>> queryUsers(String databaseLink, SqlQuerySpec querySpec, FeedOptions options);
 
@@ -1143,7 +1143,7 @@ public interface AsyncDocumentClient {
      * @param userLink   the user link.
      * @param permission the permission to create.
      * @param options    the request options.
-     * @return an {@link Flux} containing the single resource response with the created permission or an error.
+     * @return a {@link Flux} containing the single resource response with the created permission or an error.
      */
     Flux<ResourceResponse<Permission>> createPermission(String userLink, Permission permission, RequestOptions options);
 
@@ -1157,7 +1157,7 @@ public interface AsyncDocumentClient {
      * @param userLink   the user link.
      * @param permission the permission to upsert.
      * @param options    the request options.
-     * @return an {@link Flux} containing the single resource response with the upserted permission or an error.
+     * @return a {@link Flux} containing the single resource response with the upserted permission or an error.
      */
     Flux<ResourceResponse<Permission>> upsertPermission(String userLink, Permission permission, RequestOptions options);
 
@@ -1170,7 +1170,7 @@ public interface AsyncDocumentClient {
      *
      * @param permission the permission to use.
      * @param options    the request options.
-     * @return an {@link Flux} containing the single resource response with the replaced permission or an error.
+     * @return a {@link Flux} containing the single resource response with the replaced permission or an error.
      */
     Flux<ResourceResponse<Permission>> replacePermission(Permission permission, RequestOptions options);
 
@@ -1183,7 +1183,7 @@ public interface AsyncDocumentClient {
      *
      * @param permissionLink the permission link.
      * @param options        the request options.
-     * @return an {@link Flux} containing the single resource response for the deleted permission or an error.
+     * @return a {@link Flux} containing the single resource response for the deleted permission or an error.
      */
     Flux<ResourceResponse<Permission>> deletePermission(String permissionLink, RequestOptions options);
 
@@ -1196,7 +1196,7 @@ public interface AsyncDocumentClient {
      *
      * @param permissionLink the permission link.
      * @param options        the request options.
-     * @return an {@link Flux} containing the single resource response with the read permission or an error.
+     * @return a {@link Flux} containing the single resource response with the read permission or an error.
      */
     Flux<ResourceResponse<Permission>> readPermission(String permissionLink, RequestOptions options);
 
@@ -1209,7 +1209,7 @@ public interface AsyncDocumentClient {
      *
      * @param permissionLink the permission link.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read permissions or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the read permissions or an error.
      */
     Flux<FeedResponse<Permission>> readPermissions(String permissionLink, FeedOptions options);
 
@@ -1223,7 +1223,7 @@ public interface AsyncDocumentClient {
      * @param permissionLink the permission link.
      * @param query          the query.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
      */
     Flux<FeedResponse<Permission>> queryPermissions(String permissionLink, String query, FeedOptions options);
 
@@ -1237,7 +1237,7 @@ public interface AsyncDocumentClient {
      * @param permissionLink the permission link.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
      */
     Flux<FeedResponse<Permission>> queryPermissions(String permissionLink, SqlQuerySpec querySpec, FeedOptions options);
 
@@ -1249,7 +1249,7 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param offer the offer to use.
-     * @return an {@link Flux} containing the single resource response with the replaced offer or an error.
+     * @return a {@link Flux} containing the single resource response with the replaced offer or an error.
      */
     Flux<ResourceResponse<Offer>> replaceOffer(Offer offer);
 
@@ -1261,7 +1261,7 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param offerLink the offer link.
-     * @return an {@link Flux} containing the single resource response with the read offer or an error.
+     * @return a {@link Flux} containing the single resource response with the read offer or an error.
      */
     Flux<ResourceResponse<Offer>> readOffer(String offerLink);
 
@@ -1273,7 +1273,7 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read offers or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the read offers or an error.
      */
     Flux<FeedResponse<Offer>> readOffers(FeedOptions options);
 
@@ -1286,7 +1286,7 @@ public interface AsyncDocumentClient {
      *
      * @param query   the query.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained offers or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained offers or an error.
      */
     Flux<FeedResponse<Offer>> queryOffers(String query, FeedOptions options);
 
@@ -1299,7 +1299,7 @@ public interface AsyncDocumentClient {
      *
      * @param querySpec the query specification.
      * @param options   the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained offers or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained offers or an error.
      */
     Flux<FeedResponse<Offer>> queryOffers(SqlQuerySpec querySpec, FeedOptions options);
 
@@ -1310,7 +1310,7 @@ public interface AsyncDocumentClient {
      * The {@link Flux} upon successful completion will contain a single resource response with the database account.
      * In case of failure the {@link Flux} will error.
      *
-     * @return an {@link Flux} containing the single resource response with the database account or an error.
+     * @return a {@link Flux} containing the single resource response with the database account or an error.
      */
     Flux<DatabaseAccount> getDatabaseAccount();
 

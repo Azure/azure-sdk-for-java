@@ -358,7 +358,6 @@ Licensed under the MIT License.
         <version>1.8</version>
         <executions>
           <execution>
-            <phase></phase>
             <id>default-cli</id>
             <configuration>
               <target>

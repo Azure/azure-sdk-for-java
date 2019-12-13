@@ -32,7 +32,7 @@ public interface ChangeFeedContextClient {
      *
      * @param partitionKeyRangesOrCollectionLink the link of the resources to be read, or owner collection link, SelfLink or AltLink. E.g. /dbs/db_rid/colls/coll_rid/pkranges.
      * @param feedOptions the options for the request; it can be set as null.
-     * @return an an {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return an a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRangeFeed(String partitionKeyRangesOrCollectionLink, FeedOptions feedOptions);
 
@@ -41,7 +41,7 @@ public interface ChangeFeedContextClient {
      *
      * @param collectionLink Specifies the collection to read documents from.
      * @param feedOptions The options for processing the query results feed.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     Flux<FeedResponse<CosmosItemProperties>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink, ChangeFeedOptions feedOptions);
 
@@ -109,7 +109,7 @@ public interface ChangeFeedContextClient {
      * @param containerLink  the reference to the parent container.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
     <T> Flux<FeedResponse<T>> queryItems(CosmosAsyncContainer containerLink, SqlQuerySpec querySpec, FeedOptions options, Class<T> klass);
 

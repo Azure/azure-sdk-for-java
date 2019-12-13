@@ -13,9 +13,9 @@ public enum PartitionKind {
      * The Partition of a document is calculated based on the hash value of the PartitionKey.
      */
     HASH;
-    
+
     @Override
     public String toString() {
-        return WordUtils.capitalizeFully(this.name());        
-    }    
+        return WordUtils.capitalizeFully(this.name());
+    }
 }

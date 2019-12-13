@@ -20,6 +20,7 @@ public class CosmosUserProperties extends Resource {
 
     /**
      * Gets the id
+     *
      * @return the id of the user
      */
     public String getId() {
@@ -28,6 +29,7 @@ public class CosmosUserProperties extends Resource {
 
     /**
      * Sets the id
+     *
      * @param id the name of the resource.
      * @return the current instance of cosmos user properties
      */
@@ -45,11 +47,11 @@ public class CosmosUserProperties extends Resource {
     }
 
     CosmosUserProperties(ResourceResponse<User> response) {
-        super(response.getResource().toJson()); 
+        super(response.getResource().toJson());
     }
 
     // Converting document collection to CosmosContainerProperties
-    CosmosUserProperties(User user){
+    CosmosUserProperties(User user) {
         super(user.toJson());
     }
 
@@ -67,7 +69,7 @@ public class CosmosUserProperties extends Resource {
         }
     }
 
-    public User getV2User() {
+    User getV2User() {
         return new User(this.toJson());
     }
 

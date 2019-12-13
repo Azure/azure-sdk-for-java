@@ -20,7 +20,8 @@ public class LockedException extends CosmosClientException {
         this(RMResources.Locked);
     }
 
-    public LockedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public LockedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
+                           Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.LOCKED, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -39,17 +40,17 @@ public class LockedException extends CosmosClientException {
     }
 
     LockedException(Exception innerException) {
-        this(RMResources.Locked,  innerException, null, null);
+        this(RMResources.Locked, innerException, null, null);
     }
 
     LockedException(String message,
-                           Exception innerException,
-                           HttpHeaders headers,
-                           String requestUriString) {
+                    Exception innerException,
+                    HttpHeaders headers,
+                    String requestUriString) {
         super(String.format("%s: %s", RMResources.Locked, message),
-                innerException,
-                HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.LOCKED,
-                requestUriString);
+            innerException,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.LOCKED,
+            requestUriString);
     }
 }

@@ -39,7 +39,7 @@ public class CosmosError extends Resource {
      * Initialize a new instance of the Error object.
      *
      * @param errorCode the error code.
-     * @param message   the error message.
+     * @param message the error message.
      */
     public CosmosError(String errorCode, String message) {
         this(errorCode, message, null);
@@ -47,13 +47,10 @@ public class CosmosError extends Resource {
 
     /**
      * Initialize a new instance of the Error object.
-     * 
-     * @param errorCode
-     *            the error code.
-     * @param message
-     *            the error message.
-     * @param additionalErrorInfo
-     *            additional error info.
+     *
+     * @param errorCode the error code.
+     * @param message the error message.
+     * @param additionalErrorInfo additional error info.
      */
     public CosmosError(String errorCode, String message, String additionalErrorInfo) {
         super();
@@ -109,9 +106,8 @@ public class CosmosError extends Resource {
 
     /**
      * Sets the partitioned query execution info.
-     * 
-     * @param additionalErrorInfo
-     *            the partitioned query execution info.
+     *
+     * @param additionalErrorInfo the partitioned query execution info.
      */
     private void setAdditionalErrorInfo(String additionalErrorInfo) {
         super.set(Constants.Properties.ADDITIONAL_ERROR_INFO, additionalErrorInfo);
@@ -119,7 +115,7 @@ public class CosmosError extends Resource {
 
     /**
      * Gets the partitioned query execution info.
-     * 
+     *
      * @return the partitioned query execution info.
      */
     public String getPartitionedQueryExecutionInfo() {

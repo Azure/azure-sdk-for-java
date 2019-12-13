@@ -15,7 +15,7 @@ public enum PartitionKeyDefinitionVersion {
 
     /**
      * Enhanced version of hash partitioning - offers better distribution of long partition keys and uses less storage.
-     *
+     * <p>
      * This version should be used for any practical purpose, but it is available in newer SDKs only.
      */
     V2(2);

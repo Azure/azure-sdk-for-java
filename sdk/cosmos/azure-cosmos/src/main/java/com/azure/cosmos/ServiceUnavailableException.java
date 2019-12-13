@@ -16,7 +16,10 @@ public class ServiceUnavailableException extends CosmosClientException {
         this(RMResources.ServiceUnavailable);
     }
 
-    public ServiceUnavailableException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+    public ServiceUnavailableException(CosmosError cosmosError,
+                                       long lsn,
+                                       String partitionKeyRangeId,
+                                       Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
@@ -43,9 +46,9 @@ public class ServiceUnavailableException extends CosmosClientException {
                                        HttpHeaders headers,
                                        String requestUriString) {
         super(String.format("%s: %s", RMResources.ServiceUnavailable, message),
-                innerException,
-                HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                requestUriString);
+            innerException,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+            requestUriString);
     }
 }

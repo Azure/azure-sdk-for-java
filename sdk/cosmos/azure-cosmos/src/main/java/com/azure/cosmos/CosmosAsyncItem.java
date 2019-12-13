@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import reactor.core.publisher.Mono;
 
 public class CosmosAsyncItem {
-    private Object partitionKey;
+    private final Object partitionKey;
     private CosmosAsyncContainer container;
     private String id;
 
@@ -20,6 +20,7 @@ public class CosmosAsyncItem {
 
     /**
      * Get the id of the {@link CosmosAsyncItem}
+     *
      * @return the id of the {@link CosmosAsyncItem}
      */
     public String getId() {
@@ -28,6 +29,7 @@ public class CosmosAsyncItem {
 
     /**
      * Set the id of the {@link CosmosAsyncItem}
+     *
      * @param id the id of the {@link CosmosAsyncItem}
      * @return the same {@link CosmosAsyncItem} that had the id set
      */
@@ -38,8 +40,8 @@ public class CosmosAsyncItem {
 
     /**
      * Reads an item.
-     *
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a cosmos item response with the read item
      * In case of failure the {@link Mono} will error.
      *
@@ -51,8 +53,8 @@ public class CosmosAsyncItem {
 
     /**
      * Reads an item.
-     *
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a cosmos item response with the read item
      * In case of failure the {@link Mono} will error.
      *
@@ -65,29 +67,29 @@ public class CosmosAsyncItem {
         }
         RequestOptions requestOptions = options.toRequestOptions();
         return container.getDatabase().getDocClientWrapper()
-                .readDocument(getLink(), requestOptions)
-                .map(response -> new CosmosAsyncItemResponse(response, requestOptions.getPartitionKey(), container))
-                .single();
+                   .readDocument(getLink(), requestOptions)
+                   .map(response -> new CosmosAsyncItemResponse(response, requestOptions.getPartitionKey(), container))
+                   .single();
     }
 
     /**
      * Replaces an item with the passed in item.
-     *
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single cosmos item response with the replaced item.
      * In case of failure the {@link Mono} will error.
      *
      * @param item the item to replace (containing the document id).
      * @return an {@link Mono} containing the  cosmos item resource response with the replaced item or an error.
      */
-    public Mono<CosmosAsyncItemResponse> replace(Object item){
+    public Mono<CosmosAsyncItemResponse> replace(Object item) {
         return replace(item, new CosmosItemRequestOptions(partitionKey));
     }
 
     /**
      * Replaces an item with the passed in item.
-     *
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single cosmos item response with the replaced item.
      * In case of failure the {@link Mono} will error.
      *
@@ -95,25 +97,26 @@ public class CosmosAsyncItem {
      * @param options the request comosItemRequestOptions
      * @return an {@link Mono} containing the  cosmos item resource response with the replaced item or an error.
      */
-    public Mono<CosmosAsyncItemResponse> replace(Object item, CosmosItemRequestOptions options){
+    public Mono<CosmosAsyncItemResponse> replace(Object item, CosmosItemRequestOptions options) {
         Document doc = CosmosItemProperties.fromObject(item);
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
         RequestOptions requestOptions = options.toRequestOptions();
         return container.getDatabase()
-                .getDocClientWrapper()
-                .replaceDocument(getLink(), doc, requestOptions)
-                .map(response -> new CosmosAsyncItemResponse(response, requestOptions.getPartitionKey(), container))
-                .single();
+                   .getDocClientWrapper()
+                   .replaceDocument(getLink(), doc, requestOptions)
+                   .map(response -> new CosmosAsyncItemResponse(response, requestOptions.getPartitionKey(), container))
+                   .single();
     }
 
     /**
      * Deletes the item.
-     *
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single cosmos item response with the replaced item.
      * In case of failure the {@link Mono} will error.
+     *
      * @return an {@link Mono} containing the  cosmos item resource response.
      */
     public Mono<CosmosAsyncItemResponse> delete() {
@@ -122,43 +125,43 @@ public class CosmosAsyncItem {
 
     /**
      * Deletes the item.
-     *
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single cosmos item response with the replaced item.
      * In case of failure the {@link Mono} will error.
      *
      * @param options the request options
      * @return an {@link Mono} containing the  cosmos item resource response.
      */
-    public Mono<CosmosAsyncItemResponse> delete(CosmosItemRequestOptions options){
+    public Mono<CosmosAsyncItemResponse> delete(CosmosItemRequestOptions options) {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
         RequestOptions requestOptions = options.toRequestOptions();
         return container.getDatabase()
-                        .getDocClientWrapper()
-                        .deleteDocument(getLink(), requestOptions)
-                        .map(response -> new CosmosAsyncItemResponse(response, requestOptions.getPartitionKey(), container))
-                        .single();
+                   .getDocClientWrapper()
+                   .deleteDocument(getLink(), requestOptions)
+                   .map(response -> new CosmosAsyncItemResponse(response, requestOptions.getPartitionKey(), container))
+                   .single();
     }
-    
+
     void setContainer(CosmosAsyncContainer container) {
         this.container = container;
     }
 
-    String URIPathSegment() {
+    String getURIPathSegment() {
         return Paths.DOCUMENTS_PATH_SEGMENT;
     }
 
-    String parentLink() {
+    String getParentLink() {
         return this.container.getLink();
     }
 
     String getLink() {
         StringBuilder builder = new StringBuilder();
-        builder.append(parentLink());
+        builder.append(getParentLink());
         builder.append("/");
-        builder.append(URIPathSegment());
+        builder.append(getURIPathSegment());
         builder.append("/");
         builder.append(getId());
         return builder.toString();

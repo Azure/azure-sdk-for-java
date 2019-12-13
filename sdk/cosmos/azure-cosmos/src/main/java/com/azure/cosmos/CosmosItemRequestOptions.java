@@ -21,15 +21,16 @@ public class CosmosItemRequestOptions {
     /**
      * Constructor
      */
-    public CosmosItemRequestOptions(){
+    public CosmosItemRequestOptions() {
         super();
     }
 
     /**
      * Constructor
-     * @param partitionKey the partition key 
+     *
+     * @param partitionKey the partition key
      */
-    public CosmosItemRequestOptions(Object partitionKey){
+    public CosmosItemRequestOptions(Object partitionKey) {
         super();
         if (partitionKey instanceof PartitionKey) {
             setPartitionKey((PartitionKey) partitionKey);
@@ -160,6 +161,7 @@ public class CosmosItemRequestOptions {
 
     /**
      * Sets the partition key
+     *
      * @param partitionKey the partition key
      * @return the CosmosItemRequestOptions.
      */
@@ -170,6 +172,7 @@ public class CosmosItemRequestOptions {
 
     /**
      * Gets the partition key
+     *
      * @return the partition key
      */
     public PartitionKey getPartitionKey() {

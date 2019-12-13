@@ -36,18 +36,12 @@ public abstract class Index extends JsonSerializable {
      * Returns an instance of RangeIndex class with specified DataType.
      * <p>
      * Here is an example to create RangeIndex instance passing in the DataType:
-     * <pre>
-     * {@code
-     *
-     * RangeIndex rangeIndex = Index.RANGE(DataType.NUMBER);
-     *
-     * }
-     * </pre>
+     * {@code RangeIndex rangeIndex = Index.range(DataType.NUMBER); }
      *
      * @param dataType the data type.
      * @return an instance of RangeIndex type.
      */
-    public static RangeIndex Range(DataType dataType) {
+    public static RangeIndex range(DataType dataType) {
         return new RangeIndex(dataType);
     }
 
@@ -55,19 +49,13 @@ public abstract class Index extends JsonSerializable {
      * Returns an instance of RangeIndex class with specified DataType and precision.
      * <p>
      * Here is an example to create RangeIndex instance passing in the DataType and precision:
-     * <pre>
-     * {@code
+     * {@code RangeIndex rangeIndex = Index.RANGE(DataType.NUMBER, -1);}
      *
-     * RangeIndex rangeIndex = Index.RANGE(DataType.NUMBER, -1);
-     *
-     * }
-     * </pre>
-     *
-     * @param dataType  specifies the target data type for the index path specification.
+     * @param dataType specifies the target data type for the index path specification.
      * @param precision specifies the precision to be used for the data type associated with this index.
      * @return an instance of RangeIndex type.
      */
-    public static RangeIndex Range(DataType dataType, int precision) {
+    public static RangeIndex range(DataType dataType, int precision) {
         return new RangeIndex(dataType, precision);
     }
 
@@ -75,17 +63,13 @@ public abstract class Index extends JsonSerializable {
      * Returns an instance of HashIndex class with specified DataType.
      * <p>
      * Here is an example to create HashIndex instance passing in the DataType:
-     * <pre>
-     * {@code
      *
-     * HashIndex hashIndex = Index.HASH(DataType.STRING);
-     * }
-     * </pre>
+     * {@code  HashIndex hashIndex = Index.HASH(DataType.STRING);}
      *
      * @param dataType specifies the target data type for the index path specification.
      * @return an instance of HashIndex type.
      */
-    public static HashIndex Hash(DataType dataType) {
+    public static HashIndex hash(DataType dataType) {
         return new HashIndex(dataType);
     }
 
@@ -96,11 +80,11 @@ public abstract class Index extends JsonSerializable {
      * <p>
      * HashIndex hashIndex = Index.HASH(DataType.STRING, 3);
      *
-     * @param dataType  specifies the target data type for the index path specification.
+     * @param dataType specifies the target data type for the index path specification.
      * @param precision specifies the precision to be used for the data type associated with this index.
      * @return an instance of HashIndex type.
      */
-    public static HashIndex Hash(DataType dataType, int precision) {
+    public static HashIndex hash(DataType dataType, int precision) {
         return new HashIndex(dataType, precision);
     }
 
@@ -114,7 +98,7 @@ public abstract class Index extends JsonSerializable {
      * @param dataType specifies the target data type for the index path specification.
      * @return an instance of SpatialIndex type.
      */
-    public static SpatialIndex Spatial(DataType dataType) {
+    public static SpatialIndex spatial(DataType dataType) {
         return new SpatialIndex(dataType);
     }
 

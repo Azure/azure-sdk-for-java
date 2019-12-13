@@ -62,14 +62,14 @@ public class BridgeInternal {
     }
 
     public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
-            Class<T> cls) {
+                                                                          Class<T> cls) {
         return new FeedResponse<T>(response.getQueryResponse(cls), response.getResponseHeaders());
     }
 
     public static <T extends Resource> FeedResponse<T> toChaneFeedResponsePage(RxDocumentServiceResponse response,
-            Class<T> cls) {
+                                                                               Class<T> cls) {
         return new FeedResponse<T>(noChanges(response) ? Collections.emptyList() : response.getQueryResponse(cls),
-                response.getResponseHeaders(), noChanges(response));
+            response.getResponseHeaders(), noChanges(response));
     }
 
     public static StoredProcedureResponse toStoredProcedureResponse(RxDocumentServiceResponse response) {
@@ -83,9 +83,9 @@ public class BridgeInternal {
         Map<String, String> responseHeader = response.getResponseHeaders();
 
         account.setMaxMediaStorageUsageInMB(
-                Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.MAX_MEDIA_STORAGE_USAGE_IN_MB)));
+            Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.MAX_MEDIA_STORAGE_USAGE_IN_MB)));
         account.setMediaStorageUsageInMB(
-                Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.CURRENT_MEDIA_STORAGE_USAGE_IN_MB)));
+            Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.CURRENT_MEDIA_STORAGE_USAGE_IN_MB)));
 
         return account;
     }
@@ -96,8 +96,9 @@ public class BridgeInternal {
 
     public static Map<String, String> getFeedHeaders(ChangeFeedOptions options) {
 
-        if (options == null)
+        if (options == null) {
             return new HashMap<>();
+        }
 
         Map<String, String> headers = new HashMap<>();
 
@@ -124,8 +125,9 @@ public class BridgeInternal {
 
     public static Map<String, String> getFeedHeaders(FeedOptions options) {
 
-        if (options == null)
+        if (options == null) {
             return new HashMap<>();
+        }
 
         Map<String, String> headers = new HashMap<>();
 
@@ -148,12 +150,12 @@ public class BridgeInternal {
 
             if (options.getEmitVerboseTracesInQuery() != null) {
                 headers.put(HttpConstants.HttpHeaders.EMIT_VERBOSE_TRACES_IN_QUERY,
-                        options.getEmitVerboseTracesInQuery().toString());
+                    options.getEmitVerboseTracesInQuery().toString());
             }
 
             if (options.getEnableCrossPartitionQuery() != null) {
                 headers.put(HttpConstants.HttpHeaders.ENABLE_CROSS_PARTITION_QUERY,
-                        options.getEnableCrossPartitionQuery().toString());
+                    options.getEnableCrossPartitionQuery().toString());
             }
 
             if (options.getMaxDegreeOfParallelism() != 0) {
@@ -162,12 +164,12 @@ public class BridgeInternal {
 
             if (options.setResponseContinuationTokenLimitInKb() > 0) {
                 headers.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
-                        Strings.toString(options.setResponseContinuationTokenLimitInKb()));
+                    Strings.toString(options.setResponseContinuationTokenLimitInKb()));
             }
 
             if (options.populateQueryMetrics()) {
                 headers.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS,
-                        String.valueOf(options.populateQueryMetrics()));
+                    String.valueOf(options.populateQueryMetrics()));
             }
         }
 
@@ -193,7 +195,7 @@ public class BridgeInternal {
     }
 
     public static <E extends CosmosClientException> E setResourceAddress(E e, String resourceAddress) {
-        e.resourceAddress = resourceAddress;
+        e.setResourceAddress(resourceAddress);
         return e;
     }
 
@@ -206,7 +208,7 @@ public class BridgeInternal {
     }
 
     public static <E extends CosmosClientException> String getResourceAddress(E e) {
-        return e.resourceAddress;
+        return e.getResourceAddress();
     }
 
     public static <E extends CosmosClientException> E setLSN(E e, long lsn) {
@@ -236,12 +238,12 @@ public class BridgeInternal {
     }
 
     public static <E extends CosmosClientException> void setRequestHeaders(CosmosClientException cosmosClientException,
-            Map<String, String> requestHeaders) {
+                                                                           Map<String, String> requestHeaders) {
         cosmosClientException.requestHeaders = requestHeaders;
     }
 
     public static <E extends CosmosClientException> Map<String, String> getRequestHeaders(
-            CosmosClientException cosmosClientException) {
+        CosmosClientException cosmosClientException) {
         return cosmosClientException.requestHeaders;
     }
 
@@ -274,14 +276,14 @@ public class BridgeInternal {
     }
 
     public static <T extends Resource> void putQueryMetricsIntoMap(FeedResponse<T> response, String partitionKeyRangeId,
-            QueryMetrics queryMetrics) {
+                                                                   QueryMetrics queryMetrics) {
         response.queryMetricsMap().put(partitionKeyRangeId, queryMetrics);
     }
 
     public static QueryMetrics createQueryMetricsFromDelimitedStringAndClientSideMetrics(
         String queryMetricsDelimitedString, ClientSideMetrics clientSideMetrics, String activityId) {
         return QueryMetrics.createFromDelimitedStringAndClientSideMetrics(queryMetricsDelimitedString,
-                clientSideMetrics, activityId);
+            clientSideMetrics, activityId);
     }
 
     public static QueryMetrics createQueryMetricsFromCollection(Collection<QueryMetrics> queryMetricsCollection) {
@@ -327,7 +329,9 @@ public class BridgeInternal {
         return JsonSerializable.getValue(value);
     }
 
-    public static CosmosClientException setCosmosResponseDiagnostics(CosmosClientException cosmosClientException, CosmosResponseDiagnostics cosmosResponseDiagnostics) {
+    public static CosmosClientException setCosmosResponseDiagnostics(
+                                            CosmosClientException cosmosClientException,
+                                            CosmosResponseDiagnostics cosmosResponseDiagnostics) {
         return cosmosClientException.setCosmosResponseDiagnostics(cosmosResponseDiagnostics);
     }
 
@@ -346,20 +350,30 @@ public class BridgeInternal {
         return new CosmosClientException(statusCode, null, null, innerException);
     }
 
-    public static CosmosClientException createCosmosClientException(int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
+    public static CosmosClientException createCosmosClientException(int statusCode, CosmosError cosmosErrorResource,
+                                                                    Map<String, String> responseHeaders) {
         return new CosmosClientException(/* resourceAddress */ null, statusCode, cosmosErrorResource, responseHeaders);
     }
 
-    public static CosmosClientException createCosmosClientException(String resourceAddress, int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
-        CosmosClientException cosmosClientException = new CosmosClientException(statusCode, cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, null);
-        cosmosClientException.resourceAddress = resourceAddress;
+    public static CosmosClientException createCosmosClientException(String resourceAddress,
+                                                                    int statusCode,
+                                                                    CosmosError cosmosErrorResource,
+                                                                    Map<String, String> responseHeaders) {
+        CosmosClientException cosmosClientException = new CosmosClientException(statusCode,
+            cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, null);
+        cosmosClientException.setResourceAddress(resourceAddress);
         cosmosClientException.setError(cosmosErrorResource);
         return cosmosClientException;
     }
 
-    public static CosmosClientException createCosmosClientException(String message, Exception exception, Map<String, String> responseHeaders, int statusCode, String resourceAddress) {
-        CosmosClientException cosmosClientException = new CosmosClientException(statusCode, message, responseHeaders, exception);
-        cosmosClientException.resourceAddress = resourceAddress;
+    public static CosmosClientException createCosmosClientException(String message,
+                                                                    Exception exception,
+                                                                    Map<String, String> responseHeaders,
+                                                                    int statusCode,
+                                                                    String resourceAddress) {
+        CosmosClientException cosmosClientException = new CosmosClientException(statusCode, message, responseHeaders,
+            exception);
+        cosmosClientException.setResourceAddress(resourceAddress);
         return cosmosClientException;
     }
 
@@ -375,11 +389,17 @@ public class BridgeInternal {
         return container.getLink();
     }
 
-    public static String extractResourceSelfLink(Resource resource) { return resource.getSelfLink(); }
+    public static String extractResourceSelfLink(Resource resource) {
+        return resource.getSelfLink();
+    }
 
-    public static void setResourceSelfLink(Resource resource, String selfLink) { resource.setSelfLink(selfLink); }
+    public static void setResourceSelfLink(Resource resource, String selfLink) {
+        resource.setSelfLink(selfLink);
+    }
 
-    public static void populatePropertyBagJsonSerializable(JsonSerializable jsonSerializable) { jsonSerializable.populatePropertyBag(); }
+    public static void populatePropertyBagJsonSerializable(JsonSerializable jsonSerializable) {
+        jsonSerializable.populatePropertyBag();
+    }
 
     public static void setMapper(JsonSerializable jsonSerializable, ObjectMapper om) {
         jsonSerializable.setMapper(om);
@@ -419,7 +439,8 @@ public class BridgeInternal {
         return cosmosResponseDiagnostics.clientSideRequestStatistics().getContactedReplicas();
     }
 
-    public static void setContactedReplicas(CosmosResponseDiagnostics cosmosResponseDiagnostics, List<URI> contactedReplicas) {
+    public static void setContactedReplicas(CosmosResponseDiagnostics cosmosResponseDiagnostics,
+                                            List<URI> contactedReplicas) {
         cosmosResponseDiagnostics.clientSideRequestStatistics().setContactedReplicas(contactedReplicas);
     }
 
@@ -429,5 +450,9 @@ public class BridgeInternal {
 
     public static ConcurrentMap<String, QueryMetrics> queryMetricsFromFeedResponse(FeedResponse feedResponse) {
         return feedResponse.queryMetrics();
+    }
+
+    public static PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
+        return partitionKey.getInternalPartitionKey();
     }
 }

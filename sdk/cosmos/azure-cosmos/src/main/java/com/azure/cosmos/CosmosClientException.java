@@ -61,7 +61,7 @@ public class CosmosClientException extends Exception {
     /**
      * Creates a new instance of the CosmosClientException class.
      *
-     * @param statusCode   the http status code of the response.
+     * @param statusCode the http status code of the response.
      * @param errorMessage the error message.
      */
     CosmosClientException(int statusCode, String errorMessage) {
@@ -73,7 +73,7 @@ public class CosmosClientException extends Exception {
     /**
      * Creates a new instance of the CosmosClientException class.
      *
-     * @param statusCode     the http status code of the response.
+     * @param statusCode the http status code of the response.
      * @param innerException the original exception.
      */
     CosmosClientException(int statusCode, Exception innerException) {
@@ -83,8 +83,8 @@ public class CosmosClientException extends Exception {
     /**
      * Creates a new instance of the CosmosClientException class.
      *
-     * @param statusCode      the http status code of the response.
-     * @param cosmosErrorResource   the error resource object.
+     * @param statusCode the http status code of the response.
+     * @param cosmosErrorResource the error resource object.
      * @param responseHeaders the response headers.
      */
     CosmosClientException(int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
@@ -95,12 +95,15 @@ public class CosmosClientException extends Exception {
      * Creates a new instance of the CosmosClientException class.
      *
      * @param resourceAddress the address of the resource the request is associated with.
-     * @param statusCode      the http status code of the response.
-     * @param cosmosErrorResource   the error resource object.
+     * @param statusCode the http status code of the response.
+     * @param cosmosErrorResource the error resource object.
      * @param responseHeaders the response headers.
      */
 
-    CosmosClientException(String resourceAddress, int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
+    CosmosClientException(String resourceAddress,
+                          int statusCode,
+                          CosmosError cosmosErrorResource,
+                          Map<String, String> responseHeaders) {
         this(statusCode, cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, null);
         this.resourceAddress = resourceAddress;
         this.cosmosError = cosmosErrorResource;
@@ -109,13 +112,14 @@ public class CosmosClientException extends Exception {
     /**
      * Creates a new instance of the CosmosClientException class.
      *
-     * @param message         the string message.
-     * @param statusCode      the http status code of the response.
-     * @param exception       the exception object.
+     * @param message the string message.
+     * @param statusCode the http status code of the response.
+     * @param exception the exception object.
      * @param responseHeaders the response headers.
      * @param resourceAddress the address of the resource the request is associated with.
      */
-    CosmosClientException(String message, Exception exception, Map<String, String> responseHeaders, int statusCode, String resourceAddress) {
+    CosmosClientException(String message, Exception exception, Map<String, String> responseHeaders, int statusCode,
+                          String resourceAddress) {
         this(statusCode, message, responseHeaders, exception);
         this.resourceAddress = resourceAddress;
     }
@@ -189,7 +193,7 @@ public class CosmosClientException extends Exception {
      * requests
      *
      * @return the recommended time interval after which the client can retry failed
-     *         requests.
+     * requests.
      */
     public long getRetryAfterInMilliseconds() {
         long retryIntervalInMilliseconds = 0;
@@ -246,9 +250,10 @@ public class CosmosClientException extends Exception {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" + "error=" + cosmosError + ", resourceAddress='" + resourceAddress + '\''
-                + ", statusCode=" + statusCode + ", message=" + getMessage() + ", causeInfo=" + causeInfo()
-                + ", responseHeaders=" + responseHeaders + ", requestHeaders=" + requestHeaders + '}';
+        return getClass().getSimpleName() + "{" + "error=" + cosmosError + ", resourceAddress='"
+                   + resourceAddress + '\'' + ", statusCode=" + statusCode + ", message=" + getMessage()
+                   + ", causeInfo=" + causeInfo() + ", responseHeaders=" + responseHeaders + ", requestHeaders="
+                   + requestHeaders + '}';
     }
 
     String innerErrorMessage() {
@@ -268,5 +273,9 @@ public class CosmosClientException extends Exception {
             return String.format("[class: %s, message: %s]", cause.getClass(), cause.getMessage());
         }
         return null;
+    }
+
+    public void setResourceAddress(String resourceAddress) {
+        this.resourceAddress = resourceAddress;
     }
 }

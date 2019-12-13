@@ -133,7 +133,7 @@ public class DatabaseAccount extends Resource {
     ConsistencyPolicy getConsistencyPolicy() {
         if (this.consistencyPolicy == null) {
             this.consistencyPolicy = super.getObject(Constants.Properties.USER_CONSISTENCY_POLICY,
-                    ConsistencyPolicy.class);
+                ConsistencyPolicy.class);
 
             if (this.consistencyPolicy == null) {
                 this.consistencyPolicy = new ConsistencyPolicy();
@@ -150,7 +150,7 @@ public class DatabaseAccount extends Resource {
     ReplicationPolicy getReplicationPolicy() {
         if (this.replicationPolicy == null) {
             this.replicationPolicy = super.getObject(Constants.Properties.USER_REPLICATION_POLICY,
-                    ReplicationPolicy.class);
+                ReplicationPolicy.class);
 
             if (this.replicationPolicy == null) {
                 this.replicationPolicy = new ReplicationPolicy();
@@ -168,7 +168,7 @@ public class DatabaseAccount extends Resource {
     ReplicationPolicy getSystemReplicationPolicy() {
         if (this.systemReplicationPolicy == null) {
             this.systemReplicationPolicy = super.getObject(Constants.Properties.SYSTEM_REPLICATION_POLICY,
-                    ReplicationPolicy.class);
+                ReplicationPolicy.class);
 
             if (this.systemReplicationPolicy == null) {
                 this.systemReplicationPolicy = new ReplicationPolicy();
@@ -186,13 +186,13 @@ public class DatabaseAccount extends Resource {
     Map<String, Object> getQueryEngineConfiguration() {
         if (this.queryEngineConfiguration == null) {
             String queryEngineConfigurationJsonString = super.getObject(Constants.Properties.QUERY_ENGINE_CONFIGURATION,
-                    String.class);
+                String.class);
             if (StringUtils.isNotEmpty(queryEngineConfigurationJsonString)) {
                 TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
                 };
                 try {
                     this.queryEngineConfiguration = Utils.getSimpleObjectMapper()
-                            .readValue(queryEngineConfigurationJsonString, typeRef);
+                                                        .readValue(queryEngineConfigurationJsonString, typeRef);
                 } catch (IOException e) {
                     throw new IllegalArgumentException(e);
                 }

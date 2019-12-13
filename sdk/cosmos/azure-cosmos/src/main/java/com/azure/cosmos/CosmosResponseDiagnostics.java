@@ -26,6 +26,7 @@ public class CosmosResponseDiagnostics {
 
     /**
      * Retrieves Response Diagnostic String
+     *
      * @return Response Diagnostic String
      */
     @Override
@@ -35,6 +36,7 @@ public class CosmosResponseDiagnostics {
 
     /**
      * Retrieves latency related to the completion of the request
+     *
      * @return request completion latency
      */
     public Duration getRequestLatency() {

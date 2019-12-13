@@ -29,8 +29,10 @@ public class DocumentQueryExecutionContextFactory {
 
     private final static int PageSizeFactorForTop = 5;
 
-    private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(IDocumentQueryClient client, SqlQuerySpec query,
-                                                                                 ResourceType resourceTypeEnum, String resourceLink) {
+    private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(IDocumentQueryClient client,
+                                                                                 SqlQuerySpec query,
+                                                                                 ResourceType resourceTypeEnum,
+                                                                                 String resourceLink) {
 
         RxCollectionCache collectionCache = client.getCollectionCache();
 
@@ -67,7 +69,7 @@ public class DocumentQueryExecutionContextFactory {
         Flux<ProxyDocumentQueryExecutionContext<T>> proxyQueryExecutionContext =
                 collectionObs.flatMap(collectionValueHolder -> {
 
-                    if (collectionValueHolder.v != null && feedOptions != null && feedOptions.partitionKey() != null && feedOptions.partitionKey().equals(PartitionKey.None)) {
+                    if (collectionValueHolder.v != null && feedOptions != null && feedOptions.partitionKey() != null && feedOptions.partitionKey().equals(PartitionKey.NONE)) {
                         feedOptions.partitionKey(BridgeInternal.getPartitionKey(BridgeInternal.getNonePartitionKey(collectionValueHolder.v.getPartitionKey())));
                     }
                     return ProxyDocumentQueryExecutionContext.createAsync(

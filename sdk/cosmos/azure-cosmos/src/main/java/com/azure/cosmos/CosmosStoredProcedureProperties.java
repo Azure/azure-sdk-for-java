@@ -13,7 +13,6 @@ public class CosmosStoredProcedureProperties extends Resource {
 
     /**
      * Constructor.
-     *
      */
     public CosmosStoredProcedureProperties() {
         super();
@@ -21,10 +20,11 @@ public class CosmosStoredProcedureProperties extends Resource {
 
     /**
      * Sets the id
+     *
      * @param id the name of the resource.
      * @return return the Cosmos stored procedure properties with id set
      */
-    public CosmosStoredProcedureProperties setId(String id){
+    public CosmosStoredProcedureProperties setId(String id) {
         super.setId(id);
         return this;
     }
@@ -74,6 +74,7 @@ public class CosmosStoredProcedureProperties extends Resource {
 
 
     static List<CosmosStoredProcedureProperties> getFromV2Results(List<StoredProcedure> results) {
-        return results.stream().map(sproc -> new CosmosStoredProcedureProperties(sproc.toJson())).collect(Collectors.toList());
+        return results.stream().map(sproc -> new CosmosStoredProcedureProperties(sproc.toJson()))
+                   .collect(Collectors.toList());
     }
 }

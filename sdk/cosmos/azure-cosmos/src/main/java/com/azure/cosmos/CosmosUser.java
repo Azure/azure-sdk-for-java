@@ -64,5 +64,4 @@ public class CosmosUser {
         return database.mapUserResponseAndBlock(asyncUser.delete());
     }
 
-
 }

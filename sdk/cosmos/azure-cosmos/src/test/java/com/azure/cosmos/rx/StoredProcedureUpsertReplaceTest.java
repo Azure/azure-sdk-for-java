@@ -84,7 +84,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         String result = null;
 
         CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
-        options.setPartitionKey(PartitionKey.None);
+        options.setPartitionKey(PartitionKey.NONE);
         result = storedProcedure.execute(null, options).block().getResponseAsString();
 
         assertThat(result).isEqualTo("\"0123456789\"");

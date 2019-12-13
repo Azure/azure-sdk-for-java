@@ -11,7 +11,6 @@ import java.util.List;
  * Represents the Connection policy associated with a DocumentClient in the Azure Cosmos DB database service.
  */
 public final class ConnectionPolicy {
-
     private static final int DEFAULT_REQUEST_TIMEOUT_IN_MILLIS = 60 * 1000;
     // defaultMediaRequestTimeout is based upon the blob client timeout and the
     // retry policy.
@@ -20,9 +19,9 @@ public final class ConnectionPolicy {
 
     private static final int DEFAULT_MAX_POOL_SIZE = 1000;
 
-    private static ConnectionPolicy default_policy = null;
+    private static ConnectionPolicy defaultPolicy = null;
     private int requestTimeoutInMillis;
-    private int mediaRequestTimeoutInMillis;
+    private final int mediaRequestTimeoutInMillis;
     private ConnectionMode connectionMode;
     private int maxPoolSize;
     private int idleConnectionTimeoutInMillis;
@@ -54,10 +53,10 @@ public final class ConnectionPolicy {
      * @return the default connection policy.
      */
     public static ConnectionPolicy getDefaultPolicy() {
-        if (ConnectionPolicy.default_policy == null) {
-            ConnectionPolicy.default_policy = new ConnectionPolicy();
+        if (ConnectionPolicy.defaultPolicy == null) {
+            ConnectionPolicy.defaultPolicy = new ConnectionPolicy();
         }
-        return ConnectionPolicy.default_policy;
+        return ConnectionPolicy.defaultPolicy;
     }
 
     /**
@@ -158,7 +157,7 @@ public final class ConnectionPolicy {
      * sets the value of the user-agent suffix.
      *
      * @param userAgentSuffix The value to be appended to the user-agent header, this is
-     *                        used for monitoring purposes.
+     * used for monitoring purposes.
      * @return the ConnectionPolicy.
      */
     public ConnectionPolicy setUserAgentSuffix(String userAgentSuffix) {
@@ -185,6 +184,7 @@ public final class ConnectionPolicy {
      *
      * @param retryOptions the RetryOptions instance.
      * @return the ConnectionPolicy.
+     * @throws IllegalArgumentException thrown if an error occurs
      */
     public ConnectionPolicy setRetryOptions(RetryOptions retryOptions) {
         if (retryOptions == null) {
@@ -222,14 +222,15 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the flag to enable writes on any locations (regions) for geo-replicated database accounts in the Azure Cosmos DB service.
-     *
+     * Gets the flag to enable writes on any locations (regions) for geo-replicated database accounts in the Azure
+     * Cosmos DB service.
+     * <p>
      * When the value of this property is true, the SDK will direct write operations to
      * available writable locations of geo-replicated database account. Writable locations
      * are ordered by PreferredLocations property. Setting the property value
      * to true has no effect until EnableMultipleWriteLocations in DatabaseAccount
      * is also set to true.
-     *
+     * <p>
      * DEFAULT value is false indicating that writes are only directed to
      * first region in PreferredLocations property.
      *
@@ -241,9 +242,9 @@ public final class ConnectionPolicy {
 
     /**
      * Gets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
-     *
+     * <p>
      * DEFAULT value is null.
-     *
+     * <p>
      * If this property is not set, the default is true for all Consistency Levels other than Bounded Staleness,
      * The default is false for Bounded Staleness.
      * 1. {@link #enableEndpointDiscovery} is true
@@ -256,18 +257,20 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Sets the flag to enable writes on any locations (regions) for geo-replicated database accounts in the Azure Cosmos DB service.
-     *
+     * Sets the flag to enable writes on any locations (regions) for geo-replicated database accounts in the Azure
+     * Cosmos DB service.
+     * <p>
      * When the value of this property is true, the SDK will direct write operations to
      * available writable locations of geo-replicated database account. Writable locations
      * are ordered by PreferredLocations property. Setting the property value
      * to true has no effect until EnableMultipleWriteLocations in DatabaseAccount
      * is also set to true.
-     *
+     * <p>
      * DEFAULT value is false indicating that writes are only directed to
      * first region in PreferredLocations property.
      *
-     * @param usingMultipleWriteLocations flag to enable writes on any locations (regions) for geo-replicated database accounts.
+     * @param usingMultipleWriteLocations flag to enable writes on any locations (regions) for geo-replicated
+     * database accounts.
      * @return the ConnectionPolicy.
      */
     public ConnectionPolicy setUsingMultipleWriteLocations(boolean usingMultipleWriteLocations) {
@@ -277,15 +280,16 @@ public final class ConnectionPolicy {
 
     /**
      * Sets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
-     *
+     * <p>
      * DEFAULT value is null.
-     *
+     * <p>
      * If this property is not set, the default is true for all Consistency Levels other than Bounded Staleness,
      * The default is false for Bounded Staleness.
      * 1. {@link #enableEndpointDiscovery} is true
      * 2. the Azure Cosmos DB account has more than one region
      *
-     * @param enableReadRequestsFallback flag to enable reads to go to multiple regions configured on an account of Azure Cosmos DB service.
+     * @param enableReadRequestsFallback flag to enable reads to go to multiple regions configured on an account of
+     * Azure Cosmos DB service.
      * @return the ConnectionPolicy.
      */
     public ConnectionPolicy setEnableReadRequestsFallback(Boolean enableReadRequestsFallback) {
@@ -332,6 +336,7 @@ public final class ConnectionPolicy {
     /**
      * This will create the InetSocketAddress for proxy server,
      * all the requests to cosmoDB will route from this address.
+     *
      * @param proxyHost The proxy server host.
      * @param proxyPort The proxy server port.
      * @return the ConnectionPolicy.
@@ -343,18 +348,18 @@ public final class ConnectionPolicy {
 
     @Override
     public String toString() {
-        return "ConnectionPolicy{" +
-                "requestTimeoutInMillis=" + requestTimeoutInMillis +
-                ", mediaRequestTimeoutInMillis=" + mediaRequestTimeoutInMillis +
-                ", connectionMode=" + connectionMode +
-                ", maxPoolSize=" + maxPoolSize +
-                ", idleConnectionTimeoutInMillis=" + idleConnectionTimeoutInMillis +
-                ", userAgentSuffix='" + userAgentSuffix + '\'' +
-                ", retryOptions=" + retryOptions +
-                ", enableEndpointDiscovery=" + enableEndpointDiscovery +
-                ", preferredLocations=" + preferredLocations +
-                ", usingMultipleWriteLocations=" + usingMultipleWriteLocations +
-                ", inetSocketProxyAddress=" + inetSocketProxyAddress +
-                '}';
+        return "ConnectionPolicy{"
+                   + "requestTimeoutInMillis=" + requestTimeoutInMillis
+                   + ", mediaRequestTimeoutInMillis=" + mediaRequestTimeoutInMillis
+                   + ", connectionMode=" + connectionMode
+                   + ", maxPoolSize=" + maxPoolSize
+                   + ", idleConnectionTimeoutInMillis=" + idleConnectionTimeoutInMillis
+                   + ", userAgentSuffix='" + userAgentSuffix + '\''
+                   + ", retryOptions=" + retryOptions
+                   + ", enableEndpointDiscovery=" + enableEndpointDiscovery
+                   + ", preferredLocations=" + preferredLocations
+                   + ", usingMultipleWriteLocations=" + usingMultipleWriteLocations
+                   + ", inetSocketProxyAddress=" + inetSocketProxyAddress
+                   + '}';
     }
 }

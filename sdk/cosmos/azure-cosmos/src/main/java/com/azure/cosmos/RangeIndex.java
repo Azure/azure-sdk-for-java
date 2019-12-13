@@ -15,13 +15,7 @@ public final class RangeIndex extends Index {
      * Initializes a new instance of the RangeIndex class with specified DataType.
      * <p>
      * Here is an example to instantiate RangeIndex class passing in the DataType:
-     * <pre>
-     * {@code
-     *
-     * RangeIndex rangeIndex = new RangeIndex(DataType.NUMBER);
-     *
-     * }
-     * </pre>
+     * {@code RangeIndex rangeIndex = new RangeIndex(DataType.NUMBER);}
      *
      * @param dataType the data type.
      */
@@ -32,15 +26,10 @@ public final class RangeIndex extends Index {
 
     /**
      * Initializes a new instance of the RangeIndex class with specified DataType and precision.
-     * <pre>
-     * {@code
+     * {@code RangeIndex rangeIndex = new RangeIndex(DataType.NUMBER, -1);}
      *
-     * RangeIndex rangeIndex = new RangeIndex(DataType.NUMBER, -1);
-     *
-     * }
-     * </pre>
-     * @param dataType   the data type of the RangeIndex
-     * @param precision  the precision of the RangeIndex
+     * @param dataType the data type of the RangeIndex
+     * @param precision the precision of the RangeIndex
      */
     public RangeIndex(DataType dataType, int precision) {
         super(IndexKind.RANGE);
@@ -70,7 +59,8 @@ public final class RangeIndex extends Index {
         try {
             result = DataType.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.DATA_TYPE)));
         } catch (IllegalArgumentException e) {
-            this.getLogger().warn("INVALID index dataType value {}.", super.getString(Constants.Properties.DATA_TYPE));
+            this.getLogger().warn("INVALID index dataType value {}.",
+                super.getString(Constants.Properties.DATA_TYPE));
         }
         return result;
     }

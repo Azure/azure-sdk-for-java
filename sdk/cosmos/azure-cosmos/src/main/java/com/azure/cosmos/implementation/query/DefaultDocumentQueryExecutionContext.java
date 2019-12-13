@@ -76,7 +76,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     }
 
     protected PartitionKeyInternal getPartitionKeyInternal() {
-        return this.feedOptions.partitionKey() == null ? null : feedOptions.partitionKey().getInternalPartitionKey();
+        return this.feedOptions.partitionKey() == null ? null : BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey());
     }
 
     @Override

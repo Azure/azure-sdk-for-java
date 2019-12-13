@@ -15,7 +15,8 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
         super(response.resourceResponseWrapper, response.getProperties());
         this.responseWrapper = response;
         if (responseWrapper.getContainer() != null) {
-            this.container = new CosmosContainer(responseWrapper.getContainer().getId(), database, responseWrapper.getContainer());
+            this.container = new CosmosContainer(responseWrapper.getContainer().getId(), database,
+                responseWrapper.getContainer());
         } else {
             // Delete will have null container client in response
             this.container = null;

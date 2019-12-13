@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 /**
  * Encapsulates options that can be specified for a request issued to cosmos database.
  */
-public class CosmosDatabaseRequestOptions{
+public class CosmosDatabaseRequestOptions {
     private Integer offerThroughput;
     private AccessCondition accessCondition;
 
