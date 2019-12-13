@@ -56,12 +56,9 @@ public final class TextAnalyticsAsyncClient {
         this.serviceVersion = serviceVersion;
         this.clientOptions = clientOptions;
     }
-
-
+    
     TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion) {
-        this.service = service;
-        this.serviceVersion = serviceVersion;
-        this.clientOptions = null;
+        this(service, serviceVersion, null);
     }
 
     /**
