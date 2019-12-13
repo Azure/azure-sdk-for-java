@@ -239,6 +239,11 @@ jobs:
         displayName: 'Publish Report Artifacts'
         artifact: reports
 
+      - publish: $(System.DefaultWorkingDirectory)
+        condition: failed()
+        displayName: 'Capture repo state for analysis'
+        artifact: repository
+
   - job: 'Test'
     condition: ne(variables['Skip.Test'], 'true')
 
