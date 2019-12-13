@@ -39,7 +39,7 @@ public class OperationDisplayInfo {
     private String resource;
 
     /**
-     * Get the description value.
+     * Get the description of the operation.
      *
      * @return the description value
      */
@@ -48,7 +48,7 @@ public class OperationDisplayInfo {
     }
 
     /**
-     * Set the description value.
+     * Set the description of the operation.
      *
      * @param description the description value to set
      * @return the OperationDisplayInfo object itself.
@@ -59,7 +59,7 @@ public class OperationDisplayInfo {
     }
 
     /**
-     * Get the operation value.
+     * Get the action that users can perform, based on their permission level.
      *
      * @return the operation value
      */
@@ -68,7 +68,7 @@ public class OperationDisplayInfo {
     }
 
     /**
-     * Set the operation value.
+     * Set the action that users can perform, based on their permission level.
      *
      * @param operation the operation value to set
      * @return the OperationDisplayInfo object itself.
@@ -79,7 +79,7 @@ public class OperationDisplayInfo {
     }
 
     /**
-     * Get the provider value.
+     * Get service provider: Microsoft Cognitive Services.
      *
      * @return the provider value
      */
@@ -88,7 +88,7 @@ public class OperationDisplayInfo {
     }
 
     /**
-     * Set the provider value.
+     * Set service provider: Microsoft Cognitive Services.
      *
      * @param provider the provider value to set
      * @return the OperationDisplayInfo object itself.
@@ -99,7 +99,7 @@ public class OperationDisplayInfo {
     }
 
     /**
-     * Get the resource value.
+     * Get resource on which the operation is performed.
      *
      * @return the resource value
      */
@@ -108,7 +108,7 @@ public class OperationDisplayInfo {
     }
 
     /**
-     * Set the resource value.
+     * Set resource on which the operation is performed.
      *
      * @param resource the resource value to set
      * @return the OperationDisplayInfo object itself.
