@@ -25,8 +25,8 @@ public class ManagedIdentityCredentialLiveTest {
     @Test
     public void testMSIEndpointWithSystemAssigned() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT));
-        org.junit.Assume.assumeFalse(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeTrue(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
 
         IdentityClient client = new IdentityClientBuilder().build();
         StepVerifier.create(client.authenticateToManagedIdentityEndpoint(
@@ -40,8 +40,8 @@ public class ManagedIdentityCredentialLiveTest {
     @Test
     public void testMSIEndpointWithSystemAssignedAccessKeyVault() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT));
-        org.junit.Assume.assumeFalse(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeTrue(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
 
@@ -59,8 +59,8 @@ public class ManagedIdentityCredentialLiveTest {
     @Test
     public void testMSIEndpointWithUserAssigned() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT));
-        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         IdentityClient client = new IdentityClientBuilder()
             .clientId(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
@@ -76,8 +76,8 @@ public class ManagedIdentityCredentialLiveTest {
     @Test
     public void testMSIEndpointWithUserAssignedAccessKeyVault() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT));
-        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
             .clientId(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
@@ -98,7 +98,7 @@ public class ManagedIdentityCredentialLiveTest {
     public void testIMDSEndpointWithSystemAssigned() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
         org.junit.Assume.assumeTrue(checkIMDSAvailable());
-        org.junit.Assume.assumeFalse(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeTrue(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
 
         IdentityClient client = new IdentityClientBuilder().build();
         StepVerifier.create(client.authenticateToIMDSEndpoint(
@@ -111,7 +111,7 @@ public class ManagedIdentityCredentialLiveTest {
     public void testIMDSEndpointWithSystemAssignedAccessKeyVault() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
         org.junit.Assume.assumeTrue(checkIMDSAvailable());
-        org.junit.Assume.assumeFalse(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeTrue(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
 
@@ -130,7 +130,7 @@ public class ManagedIdentityCredentialLiveTest {
     public void testIMDSEndpointWithUserAssigned() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
         org.junit.Assume.assumeTrue(checkIMDSAvailable());
-        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         IdentityClient client = new IdentityClientBuilder()
             .clientId(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
@@ -145,7 +145,7 @@ public class ManagedIdentityCredentialLiveTest {
     public void testIMDSEndpointWithUserAssignedAccessKeyVault() throws Exception {
         Configuration configuration = Configuration.getGlobalConfiguration();
         org.junit.Assume.assumeTrue(checkIMDSAvailable());
-        org.junit.Assume.assumeTrue(configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
             .clientId(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
