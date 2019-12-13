@@ -61,6 +61,29 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
+      - pwsh: >
+          $baseName = "t" + [guid]::NewGuid().ToString('n').Substring(0,16)
+          Write-Host "##vso[task.setvariable variable=BaseName;]$baseName"
+
+      - pwsh: >
+          eng/New-TestResources.ps1
+            -BaseName $(BaseName)
+            -ServiceDirectory ${{ parameters.ServiceDirectory }}
+            -TestApplicationId $env:TEST_APPLICATION_ID
+            -TestApplicationSecret $env:TEST_APPLICATION_SECRET
+            -TenantId $env:TENANT_ID
+            -ProvisionerApplicationId $env:PROVISIONER_APPLICATION_ID
+            -ProvisionerApplicationSecret $env:PROVISIONER_APPLICATION_SECRET
+            -DeleteAfterHours 24
+            -Location uswest2
+          env:
+            TEST_APPLICATION_ID: $(aad-azure-sdk-test-client-id)
+            TEST_APPLICATION_SECRET: $(aad-azure-sdk-test-client-secret)
+            TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+            PROVISIONER_APPLICATION_ID: $(provisioner-aad-id)
+            PROVISIONER_APPLICATION_SECRET: $(provisioner-aad-secret)
+          displayName: Provision Test Resources
+
       - ${{ parameters.PreRunSteps }}
 
       - task: Maven@3
@@ -71,6 +94,21 @@ jobs:
         env: ${{ parameters.EnvVars }}
 
       - ${{ parameters.PostRunSteps }}
+
+      - pwsh: >
+          eng/Remove-TestResources.ps1
+            -BaseName $(BaseName)
+            -ServiceDirectory ${{ parameters.ServiceDirectory }}
+            -TenantId $env:TENANT_ID
+            -ProvisionerApplicationId $env:PROVISIONER_APPLICATION_ID
+            -ProvisionerApplicationSecret $env:PROVISIONER_APPLICATION_SECRET
+          env:
+            TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+            PROVISIONER_APPLICATION_ID: $(provisioner-aad-id)
+            PROVISIONER_APPLICATION_SECRET: $(provisioner-aad-secret)
+          displayName: Remove Test Resources
+          condition: succeededOrFailed()
+
 
       - task: PublishTestResults@2
         condition: always()
