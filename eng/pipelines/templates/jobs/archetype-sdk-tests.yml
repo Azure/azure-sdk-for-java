@@ -61,9 +61,10 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - pwsh: >
+      - pwsh: |
           $baseName = "t" + [guid]::NewGuid().ToString('n').Substring(0,16)
           Write-Host "##vso[task.setvariable variable=BaseName;]$baseName"
+        displayName: Generate $(BaseName)
 
       - pwsh: >
           eng/New-TestResources.ps1
