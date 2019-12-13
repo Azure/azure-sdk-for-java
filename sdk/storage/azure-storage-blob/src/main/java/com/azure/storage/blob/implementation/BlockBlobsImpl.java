@@ -26,13 +26,13 @@ import com.azure.storage.blob.implementation.models.BlockBlobsGetBlockListRespon
 import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockResponse;
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadResponse;
-import com.azure.storage.blob.implementation.models.CpkScopeInfo;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CpkScopeInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import java.net.URL;
 import java.nio.ByteBuffer;
