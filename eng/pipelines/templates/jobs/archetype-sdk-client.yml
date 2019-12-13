@@ -102,7 +102,7 @@ jobs:
         artifact: '$(ArtifactName)'
 
       - publish: $(System.DefaultWorkingDirectory)
-        condition: failed()
+        condition: and(eq(variables['CaptureRepositoryOnFailure'], 'true'), failed())
         displayName: 'Capture repo state for analysis'
         artifact: repository
 
