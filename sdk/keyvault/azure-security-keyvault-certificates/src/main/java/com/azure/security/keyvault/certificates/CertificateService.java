@@ -73,6 +73,18 @@ interface CertificateService {
                                                                  @HeaderParam("Content-Type") String type,
                                                                  Context context);
 
+    @Get("certificates/{certificate-name}/pending")
+    @ExpectedResponses({200, 403})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Mono<Response<CertificateOperation>> getCreateCertificateOperation(@HostParam("url") String url,
+                                                                 @PathParam("certificate-name") String certificateName,
+                                                                 @QueryParam("api-version") String apiVersion,
+                                                                 @HeaderParam("accept-language") String acceptLanguage,
+                                                                 @HeaderParam("Content-Type") String type,
+                                                                 Context context);
+
     @Patch("certificates/{certificate-name}/pending")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)

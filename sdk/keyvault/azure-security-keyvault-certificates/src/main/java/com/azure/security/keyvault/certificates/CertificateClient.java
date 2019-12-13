@@ -89,7 +89,7 @@ public final class CertificateClient {
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, boolean isEnabled, Map<String, String> tags) {
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
         return  client.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
     }
 
@@ -492,7 +492,7 @@ public final class CertificateClient {
      * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} for all the certificates in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
+    public PagedIterable<CertificateProperties> listPropertiesOfCertificates(Boolean includePending, Context context) {
         return new PagedIterable<>(client.listPropertiesOfCertificates(includePending, context));
     }
 
@@ -1005,6 +1005,44 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName, Context context) {
         return client.deleteCertificateOperationWithResponse(certificateName, context).block();
+    }
+    /**
+     * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Triggers certificate creation and then cancels the certificate creation operation in the Azure Key Vault. Subscribes to the call and prints out the
+     * updated certificate operation details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#string}
+     *
+     * @param certificateName The name of the certificate which is in the process of being created.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when the {@code name} is empty string.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation cancelled certificate operation}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateOperation cancelCertificateOperation(String certificateName) {
+        return cancelCertificateOperationWithResponse(certificateName, Context.NONE).getValue();
+    }
+
+    /**
+     * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Triggers certificate creation and then cancels the certificate creation operation in the Azure Key Vault. Subscribes to the call and prints out the
+     * updated certificate operation details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperationWithResponse#string}
+     *
+     * @param certificateName The name of the certificate which is in the process of being created.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when the {@code name} is empty string.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation cancelled certificate operation}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CertificateOperation> cancelCertificateOperationWithResponse(String certificateName, Context context) {
+        return client.cancelCertificateOperationWithResponse(certificateName, context).block();
     }
 
     /**

@@ -606,6 +606,18 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscribe(certificateOperation -> System.out.printf("Deleted Certificate operation last status %s",
                 certificateOperation.getStatus()));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperation#string
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperation#string
+        certificateAsyncClient.cancelCertificateOperation("certificateName")
+            .subscribe(certificateOperation -> System.out.printf("Certificate operation status %s",
+                certificateOperation.getStatus()));
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperation#string
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperationWithResponse#string
+        certificateAsyncClient.cancelCertificateOperationWithResponse("certificateName")
+            .subscribe(certificateOperationResponse -> System.out.printf("Certificate operation status %s",
+                certificateOperationResponse.getValue().getStatus()));
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperationWithResponse#string
     }
 
     /**

@@ -361,6 +361,17 @@ public final class CertificatePolicy {
     }
 
     /**
+     * Set the subject Name.
+     *
+     * @param subject the subject Name to set
+     * @return the updated CertificatePolicy object itself.
+     */
+    public CertificatePolicy setSubject(final String subject) {
+        this.subject = subject;
+        return this;
+    }
+
+    /**
      * Set the validity in months.
      *
      * @param validityInMonths the validityInMonths value to set

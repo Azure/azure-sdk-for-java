@@ -116,10 +116,10 @@ public final class CertificateAsyncClient {
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
-    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, boolean isEnabled, Map<String, String> tags) {
+    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
         return new PollerFlux<>(Duration.ofSeconds(1),
                 activationOperation(certificateName, policy, isEnabled, tags),
-                createPollOperation(certificateName),
+                createCertificateOperationPollOperation(certificateName),
                 cancelOperation(certificateName),
                 fetchResultOperation(certificateName));
     }
@@ -167,6 +167,29 @@ public final class CertificateAsyncClient {
      */
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
         return beginCreateCertificate(certificateName, policy, true, null);
+    }
+
+    /*
+       Polling operation to poll on create certificate operation status.
+     */
+    private Function<PollingContext<CertificateOperation>, Mono<PollResponse<CertificateOperation>>> createCertificateOperationPollOperation(String certificateName) {
+        return (pollingContext) -> {
+
+            try {
+                return withContext(context -> service.getCreateCertificateOperation(vaultUrl, certificateName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+                    .flatMap(response -> {
+                        if (response.getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
+                            return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.fromString("FORBIDDEN", true),
+                                pollingContext.getLatestResponse().getValue())));
+                        } else {
+                            return processCertificateOperationResponse(response);
+                        }
+                    }));
+                } catch (HttpResponseException e) {
+                logger.logExceptionAsError(e);
+                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            }
+        };
     }
 
     /*
@@ -754,7 +777,7 @@ public final class CertificateAsyncClient {
      * @return A {@link PagedFlux} containing {@link CertificateProperties certificate} for all the certificates in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending) {
+    public PagedFlux<CertificateProperties> listPropertiesOfCertificates(Boolean includePending) {
         try {
             return new PagedFlux<>(() -> withContext(context -> listCertificatesFirstPage(includePending, context)),
                 continuationToken -> withContext(context -> listCertificatesNextPage(continuationToken, context)));
@@ -1606,6 +1629,52 @@ public final class CertificateAsyncClient {
             .doOnRequest(ignored -> logger.info("Cancelling certificate operation - {}",  certificateName))
             .doOnSuccess(response -> logger.info("Cancelled the certificate operation - {}", response.getValue().getStatus()))
             .doOnError(error -> logger.warning("Failed to cancel the certificate operation - {}", certificateName, error));
+    }
+
+    /**
+     * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Triggers certificate creation and then cancels the certificate creation operation in the Azure Key Vault. Prints out the
+     * updated certificate operation details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperation#string}
+     *
+     * @param certificateName The name of the certificate which is in the process of being created.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException when the {@code name} is empty string.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation cancelled certificate operation}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CertificateOperation> cancelCertificateOperation(String certificateName) {
+        try {
+            return withContext(context -> cancelCertificateOperationWithResponse(certificateName, context)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Triggers certificate creation and then cancels the certificate creation operation in the Azure Key Vault. Prints out the
+     * updated certificate operation details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperationWithResponse#string}
+     *
+     * @param certificateName The name of the certificate which is in the process of being created.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException when the {@code name} is empty string.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation cancelled certificate operation}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CertificateOperation>> cancelCertificateOperationWithResponse(String certificateName) {
+        try {
+            return withContext(context -> cancelCertificateOperationWithResponse(certificateName, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**

@@ -18,6 +18,11 @@ import java.util.Map;
 public class CertificateProperties {
 
     /**
+     * URL for the Azure KeyVault service.
+     */
+    private String vaultUrl;
+
+    /**
      * Determines whether the object is enabled.
      */
     private Boolean enabled;
@@ -142,6 +147,16 @@ public class CertificateProperties {
     }
 
     /**
+     * Get the URL for the Azure KeyVault service.
+     *
+     * @return the value of the URL for the Azure KeyVault service.
+     */
+    public String getVaultUrl() {
+        unpackId(this.id);
+        return this.vaultUrl;
+    }
+
+    /**
      * Set the tags to be associated with the certificate.
      *
      * @param tags The tags to set
@@ -237,6 +252,7 @@ public class CertificateProperties {
             try {
                 URL url = new URL(id);
                 String[] tokens = url.getPath().split("/");
+                this.vaultUrl = (tokens.length >= 1 ? tokens[1] : null);
                 this.name = (tokens.length >= 3 ? tokens[2] : null);
                 this.version = (tokens.length >= 4 ? tokens[3] : null);
             } catch (MalformedURLException e) {

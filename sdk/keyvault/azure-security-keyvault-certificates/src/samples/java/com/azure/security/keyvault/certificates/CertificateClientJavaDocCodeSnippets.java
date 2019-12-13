@@ -586,6 +586,18 @@ public final class CertificateClientJavaDocCodeSnippets {
         System.out.printf("Deleted Certificate Operation's last status %s",
             deletedCertificateOperationWithResponse.getValue().getStatus());
         // END: com.azure.security.keyvault.certificates.CertificateClient.deleteCertificateOperation#string
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#string
+        CertificateOperation certificateOperation = certificateClient
+            .cancelCertificateOperation("certificateName");
+        System.out.printf("Certificate Operation status %s", certificateOperation.getStatus());
+        // END: com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#string
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperationWithResponse#string
+        Response<CertificateOperation> certificateOperationWithResponse = certificateClient
+            .cancelCertificateOperationWithResponse("certificateName", new Context(key1, value1));
+        System.out.printf("Certificate Operation status %s", certificateOperationWithResponse.getValue().getStatus());
+        // END: com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperationWithResponse#string
     }
 
     /**

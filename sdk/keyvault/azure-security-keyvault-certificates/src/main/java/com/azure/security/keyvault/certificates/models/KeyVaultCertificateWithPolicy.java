@@ -46,15 +46,4 @@ public final class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
     public CertificatePolicy getCertificatePolicy() {
         return this.certificatePolicy;
     }
-
-    /**
-     * Set the certificate policy of the certificate
-     *
-     * @param certificatePolicy the policy to set.
-     * @return the certificateWithPolicy object itself.
-     */
-    public KeyVaultCertificateWithPolicy setCertificatePolicy(CertificatePolicy certificatePolicy) {
-        this.certificatePolicy = certificatePolicy;
-        return this;
-    }
 }
