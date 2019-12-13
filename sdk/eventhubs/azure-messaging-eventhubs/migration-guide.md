@@ -16,10 +16,9 @@ For users new to the Java SDK for Event Hubs, please see the [README for azure-m
   - [Receiving events](#receiving-events)
   - [Minor renames](#minor-renames)
 - [Migration samples](#migration-samples)
-  - [Migrating code from `EventHubClient` to `EventHubProducerClient` for sending events](#migrating-code-from--eventhubclient--to--eventhubproducerclient--for-sending-events)
-  - [Migrating code from `EventHubClient` to `EventHubConsumerClient` for receiving events](#migrating-code-from--eventhubclient--to--eventhubconsumerclient--for-receiving-events)
-  - [Migrating code from `EventProcessorHost` to `EventHubConsumerClient` for receiving events](#migrating-code-from--eventprocessorhost--to--eventhubconsumerclient--for-receiving-events)
-
+  - [Migrating from `PartitionSender` or `EventHubClient` to `EventHubProducerAsyncClient` for sending events](#migrating-from-partitionsender-or-eventhubclient-to-eventhubproducerasyncclient-for-sending-events)
+  - [Migrating code from `PartitionReceiver` to `EventHubConsumerClient` for receiving events](#migrating-code-from-partitionreceiver-to-eventhubconsumerclient-for-receiving-events)
+  - [Migrating code from `EventProcessorHost` to `EventHubConsumerClient` for receiving events](#migrating-code-from-eventprocessorhost-to-eventhubconsumerclient-for-receiving-events)
 ## Prerequisites
 Java Development Kit (JDK) with version 8 or above
 
@@ -100,20 +99,23 @@ to load balance events between all the partitions. The behaviour is determined w
 
 ## Migration samples
 
-* [Sending events](#migrating-code-from-eventhubclient-to-eventhubproducerclient-for-sending-events)
-* [Receiving events](#migrating-code-from-eventhubclient-to-eventhubconsumerclient-for-receiving-events)
+* [Sending events](#migrating-from-partitionsender-or-eventhubclient-to-eventhubproducerasyncclient-for-sending-events)
+* [Receiving events](#migrating-code-from-partitionreceiver-to-eventhubconsumerclient-for-receiving-events)
 * [Receiving events with checkpointing](#migrating-code-from-eventprocessorhost-to-eventhubconsumerclient-for-receiving-events)
 
-### Migrating from `PartitionSender` or `EventHubClient` to `EventHubProducerClient` for sending events
+### Migrating from `PartitionSender` or `EventHubClient` to `EventHubProducerAsyncClient` for sending events
 In v3, there were multiple options on how to publish events to an Event Hub.
 
 In v5, this has been consolidated into a more efficient `send(EventDataBatch)` method. Batching merges information from
 multiple events into a single sent message, reducing the amount of network communication needed vs sending events one at
 a time.
 
+The code below assumes all events fit into a single batch. For a more complete example, see sample: [Publishing events
+to specific partition][PublishEventsToSpecificPartition].
+
 So in v3:
 ```java
-EventHubClient client = EventHubClient.createFromConnectionString("connection-string",
+EventHubClient client = EventHubClient.createFromConnectionString("connection-string-for-an-event-hub",
     Executors.newScheduledThreadPool(4)).get();
 
 List<EventData> events = Arrays.asList(EventData.create("foo".getBytes()), EventData.create("bar".getBytes()));
@@ -123,6 +125,8 @@ CompletableFuture<Void> sendFuture = client.createPartitionSender("my-partition-
         EventDataBatch batch = sender.createBatch();
         for (EventData event : events) {
             try {
+                // Assuming all events fit into a single batch. This returns false if it does not.
+                // If that is the case, we'll send the full batch then create another one to continue adding events to.
                 batch.tryAdd(event);
             } catch (PayloadSizeExceededException e) {
                 System.err.println("Event is too large for batch. Exception: " + e);
@@ -136,53 +140,28 @@ sendFuture.get();
 
 In v5:
 ```java
-const producer = new EventHubProducerClient(connectionString);
+List<EventData> events = Arrays.asList(EventData.create("foo".getBytes()), EventData.create("bar".getBytes()));
 
-const eventsToSend = [
-  // events go here
-];
+EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+    .connectionString("connection-string-for-an-event-hub")
+    .buildAsyncProducerClient();
 
-let batch = await producer.createBatch();
-let i = 0;
+CreateBatchOptions options = new CreateBatchOptions()
+    .setPartitionId("my-partition-id");
 
-while (i < eventsToSend.length) {
-  // messages can fail to be added to the batch if they exceed the maximum size configured for
-  // the EventHub.
-  const isAdded = batch.tryAdd(eventsToSend[i]);
+Mono<Void> sendOperation = producer.createBatch(options).flatMap(batch -> {
+    for (EventData event : data) {
+        // Assuming all events fit into a single batch. This returns false if it does not.
+        // If that is the case, we'll send the full batch then create another one to continue adding events to.
+        batch.tryAdd(event);
+    }
+    return producer.send(batch);
+});
 
-  if (isAdded) {
-    console.log(`Added event number ${i} to the batch`);
-    ++i;
-    continue;
-  }
-
-  if (batch.count === 0) {
-    // If we can't add it and the batch is empty that means the message we're trying to send
-    // is too large, even when it would be the _only_ message in the batch.
-    //
-    // At this point you'll need to decide if you're okay with skipping this message entirely
-    // or find some way to shrink it.
-    console.log(`Message was too large and can't be sent until it's made smaller. Skipping...`);
-    ++i;
-    continue;
-  }
-
-  // otherwise this just signals a good spot to send our batch
-  console.log(`Batch is full - sending ${batch.count} messages as a single batch.`);
-  await producer.sendBatch(batch);
-
-  // and create a new one to house the next set of messages
-  batch = await producer.createBatch();
-}
-
-// send any remaining messages, if any.
-if (batch.count > 0) {
-  console.log(`Sending remaining ${batch.count} messages as a single batch.`)
-  await producer.sendBatch(batch);
-}
+sendOperation.block();
 ```
 
-### Migrating code from `EventHubClient` to `EventHubConsumerClient` for receiving events
+### Migrating code from `PartitionReceiver` to `EventHubConsumerClient` for receiving events
 
 In V2, event handlers were passed as positional arguments to `receive`.
 
