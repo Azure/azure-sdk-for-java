@@ -139,14 +139,14 @@ public class IdentityClient {
                     }
                     output.append(line);
                 }
-            String outputString = output.toString();
-            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(outputString, Map.class,
+            String tokenString = output.toString();
+            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(tokenString, Map.class,
                         SerializerEncoding.JSON);
             String accessToken = objectMap.get("accessToken");
             String time = objectMap.get("expiresOn");
-            String a = time.substring(0, time.indexOf("."));
-            String t = String.join("T", a.split(" "));
-            OffsetDateTime expiresOn = LocalDateTime.parse(t, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            String timeToSecond = time.substring(0, time.indexOf("."));
+            String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
+            OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
                         .atOffset(ZoneOffset.UTC);
             token = new AccessToken(accessToken, expiresOn);
             } catch (Exception e) {
