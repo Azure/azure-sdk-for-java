@@ -11,46 +11,25 @@ package com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementat
 import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccount;
 import rx.Observable;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountCreateParameters;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ProvisioningState;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountProperties;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Sku;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Kind;
-import rx.functions.Func1;
 
 class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveServicesAccount, CognitiveServicesAccountInner, CognitiveServicesAccountImpl, CognitiveServicesManager> implements CognitiveServicesAccount, CognitiveServicesAccount.Definition, CognitiveServicesAccount.Update {
-    private CognitiveServicesAccountCreateParameters createParameter;
     CognitiveServicesAccountImpl(String name, CognitiveServicesAccountInner inner, CognitiveServicesManager manager) {
         super(name, inner, manager);
-        this.createParameter = new CognitiveServicesAccountCreateParameters();
     }
 
     @Override
     public Observable<CognitiveServicesAccount> createResourceAsync() {
         AccountsInner client = this.manager().inner().accounts();
-        this.createParameter.withLocation(inner().location());
-        this.createParameter.withTags(inner().getTags());
-        return client.createAsync(this.resourceGroupName(), this.name(), this.createParameter)
-            .map(new Func1<CognitiveServicesAccountInner, CognitiveServicesAccountInner>() {
-               @Override
-               public CognitiveServicesAccountInner call(CognitiveServicesAccountInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
+        return client.createAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<CognitiveServicesAccount> updateResourceAsync() {
         AccountsInner client = this.manager().inner().accounts();
-        return client.updateAsync(this.resourceGroupName(), this.name())
-            .map(new Func1<CognitiveServicesAccountInner, CognitiveServicesAccountInner>() {
-               @Override
-               public CognitiveServicesAccountInner call(CognitiveServicesAccountInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
+        return client.updateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
@@ -65,23 +44,10 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
         return this.inner().id() == null;
     }
 
-    private void resetCreateUpdateParameters() {
-        this.createParameter = new CognitiveServicesAccountCreateParameters();
-    }
-
-    @Override
-    public String endpoint() {
-        return this.inner().endpoint();
-    }
 
     @Override
     public String etag() {
         return this.inner().etag();
-    }
-
-    @Override
-    public String internalId() {
-        return this.inner().internalId();
     }
 
     @Override
@@ -90,8 +56,8 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     }
 
     @Override
-    public ProvisioningState provisioningState() {
-        return this.inner().provisioningState();
+    public CognitiveServicesAccountProperties properties() {
+        return this.inner().properties();
     }
 
     @Override
@@ -100,20 +66,20 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     }
 
     @Override
-    public CognitiveServicesAccountImpl withKind(Kind kind) {
-        this.createParameter.withKind(kind);
+    public CognitiveServicesAccountImpl withKind(String kind) {
+        this.inner().withKind(kind);
         return this;
     }
 
     @Override
-    public CognitiveServicesAccountImpl withProperties(Object properties) {
-        this.createParameter.withProperties(properties);
+    public CognitiveServicesAccountImpl withProperties(CognitiveServicesAccountProperties properties) {
+        this.inner().withProperties(properties);
         return this;
     }
 
     @Override
     public CognitiveServicesAccountImpl withSku(Sku sku) {
-        this.createParameter.withSku(sku);
+        this.inner().withSku(sku);
         return this;
     }
 

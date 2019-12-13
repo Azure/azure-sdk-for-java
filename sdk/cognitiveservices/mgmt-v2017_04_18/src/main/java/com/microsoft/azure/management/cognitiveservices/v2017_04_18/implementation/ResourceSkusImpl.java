@@ -28,41 +28,22 @@ class ResourceSkusImpl extends WrapperImpl<ResourceSkusInner> implements Resourc
         return this.manager;
     }
 
-    private Observable<Page<ResourceSkuInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ResourceSkusInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ResourceSkuInner>, Observable<Page<ResourceSkuInner>>>() {
-            @Override
-            public Observable<Page<ResourceSkuInner>> call(Page<ResourceSkuInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ResourceSku> listAsync() {
         ResourceSkusInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<ResourceSkuInner>, Observable<Page<ResourceSkuInner>>>() {
-            @Override
-            public Observable<Page<ResourceSkuInner>> call(Page<ResourceSkuInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ResourceSkuInner>, Iterable<ResourceSkuInner>>() {
             @Override
             public Iterable<ResourceSkuInner> call(Page<ResourceSkuInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ResourceSkuInner, ResourceSku>() {
             @Override
             public ResourceSku call(ResourceSkuInner inner) {
                 return new ResourceSkuImpl(inner, manager());
             }
-       });
+        });
     }
 
 }

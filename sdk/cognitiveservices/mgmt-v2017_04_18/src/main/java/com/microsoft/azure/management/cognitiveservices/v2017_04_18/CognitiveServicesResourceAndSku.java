@@ -27,7 +27,7 @@ public class CognitiveServicesResourceAndSku {
     private Sku sku;
 
     /**
-     * Get the resourceType value.
+     * Get resource Namespace and Type.
      *
      * @return the resourceType value
      */
@@ -36,7 +36,7 @@ public class CognitiveServicesResourceAndSku {
     }
 
     /**
-     * Set the resourceType value.
+     * Set resource Namespace and Type.
      *
      * @param resourceType the resourceType value to set
      * @return the CognitiveServicesResourceAndSku object itself.
@@ -47,7 +47,7 @@ public class CognitiveServicesResourceAndSku {
     }
 
     /**
-     * Get the sku value.
+     * Get the SKU of Cognitive Services account.
      *
      * @return the sku value
      */
@@ -56,7 +56,7 @@ public class CognitiveServicesResourceAndSku {
     }
 
     /**
-     * Set the sku value.
+     * Set the SKU of Cognitive Services account.
      *
      * @param sku the sku value to set
      * @return the CognitiveServicesResourceAndSku object itself.
