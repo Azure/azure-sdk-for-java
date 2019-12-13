@@ -176,7 +176,8 @@ class VirtualMachineScaleSetsImpl extends GroupableResourcesCoreImpl<VirtualMach
             public Iterable<UpgradeOperationHistoricalStatusInfoInner> call(Page<UpgradeOperationHistoricalStatusInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<UpgradeOperationHistoricalStatusInfoInner, UpgradeOperationHistoricalStatusInfo>() {
+        })
+        .map(new Func1<UpgradeOperationHistoricalStatusInfoInner, UpgradeOperationHistoricalStatusInfo>() {
             @Override
             public UpgradeOperationHistoricalStatusInfo call(UpgradeOperationHistoricalStatusInfoInner inner) {
                 return new UpgradeOperationHistoricalStatusInfoImpl(inner, manager());
