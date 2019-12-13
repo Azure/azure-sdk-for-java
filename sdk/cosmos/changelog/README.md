@@ -7,7 +7,7 @@
 - Vulnerability through dependency in the SDK: https://github.com/Azure/azure-sdk-for-java/issues/6433
 - CosmosSyncScripts null pointer exception in azure-cosmos: https://github.com/Azure/azure-sdk-for-java/issues/6281
 - Default consistency level parsing for Bounded Staleness and Consistent Prefix: https://github.com/Azure/azure-sdk-for-java/issues/6707
-- Null Value Holder change: https://github.com/Azure/azure-sdk-for-java/issues/6307
+- Collection cache improvements: https://github.com/Azure/azure-sdk-for-java/issues/6307
 
 ### 3.4.0
 - Added QueryPlan
