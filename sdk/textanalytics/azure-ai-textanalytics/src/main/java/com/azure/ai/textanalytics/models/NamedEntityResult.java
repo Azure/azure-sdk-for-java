@@ -10,10 +10,18 @@ import java.util.List;
 /**
  * The NamedEntityResult model.
  */
+// TODO (shawn): Should be @Immutable, but will produce spotbug/checkstyle error
 @Fluent
 public final class NamedEntityResult extends DocumentResult {
-    private List<NamedEntity> namedEntities;
+    private final List<NamedEntity> namedEntities;
 
+    // TODO(shawn): not public modifier
+    public NamedEntityResult(String id, Error error, boolean isError) {
+        super(id, error, isError);
+        namedEntities = null;
+    }
+
+    // TODO(shawn): not public modifier
     public NamedEntityResult(String id, TextDocumentStatistics textDocumentStatistics,
                              List<NamedEntity> namedEntities) {
         super(id, textDocumentStatistics);
@@ -22,10 +30,5 @@ public final class NamedEntityResult extends DocumentResult {
 
     public List<NamedEntity> getNamedEntities() {
         return namedEntities;
-    }
-
-    NamedEntityResult setNamedEntities(List<NamedEntity> namedEntities) {
-        this.namedEntities = namedEntities;
-        return this;
     }
 }

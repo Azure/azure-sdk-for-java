@@ -11,9 +11,18 @@ import java.util.List;
 /**
  * The LinkedEntityResult model.
  */
+// TODO (shawn): Should be @Immutable, but will produce spotbug/checkstyle error
 @Fluent
 public final class LinkedEntityResult extends DocumentResult {
     private final List<LinkedEntity> linkedEntities;
+
+    // TODO(shawn): not public modifier
+    public LinkedEntityResult(String id, Error error, boolean isError) {
+        super(id, error, isError);
+        linkedEntities = null;
+    }
+
+    // TODO(shawn): not public modifier
 
     /**
      * LinkedEntityResult model constructor

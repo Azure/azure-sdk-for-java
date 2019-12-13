@@ -40,24 +40,24 @@ public final class TextBatchStatistics {
     private long transactionCount;
 
     /**
-     * Get the documentsCount property: Number of documents submitted in the
+     * Get the documentCount property: Number of documents submitted in the
      * request.
      *
-     * @return the documentsCount value.
+     * @return the documentCount value.
      */
     public int getDocumentCount() {
         return this.documentCount;
     }
 
     /**
-     * Set the documentsCount property: Number of documents submitted in the
+     * Set the documentCount property: Number of documents submitted in the
      * request.
      *
-     * @param documentsCount the documentsCount value to set.
-     * @return the DocumentBatchStatistics object itself.
+     * @param documentCount the documentCount value to set.
+     * @return the TextBatchStatistics object itself.
      */
-    public TextBatchStatistics setDocumentCount(int documentsCount) {
-        this.documentCount = documentsCount;
+    public TextBatchStatistics setDocumentCount(int documentCount) {
+        this.documentCount = documentCount;
         return this;
     }
 
@@ -76,7 +76,7 @@ public final class TextBatchStatistics {
      * excludes empty, over-size limit or non-supported languages documents.
      *
      * @param validDocumentCount the validDocumentCount value to set.
-     * @return the DocumentBatchStatistics object itself.
+     * @return the TextBatchStatistics object itself.
      */
     public TextBatchStatistics setValidDocumentCount(int validDocumentCount) {
         this.validDocumentCount = validDocumentCount;
@@ -100,7 +100,7 @@ public final class TextBatchStatistics {
      * documents.
      *
      * @param erroneousDocumentCount the erroneousDocumentCount value to set.
-     * @return the DocumentBatchStatistics object itself.
+     * @return the TextBatchStatistics object itself.
      */
     public TextBatchStatistics setErroneousDocumentCount(int erroneousDocumentCount) {
         this.erroneousDocumentCount = erroneousDocumentCount;
@@ -108,21 +108,21 @@ public final class TextBatchStatistics {
     }
 
     /**
-     * Get the transactionsCount property: Number of transactions for the
+     * Get the transactionCount property: Number of transactions for the
      * request.
      *
-     * @return the transactionsCount value.
+     * @return the transactionCount value.
      */
     public long getTransactionCount() {
         return this.transactionCount;
     }
 
     /**
-     * Set the transactionsCount property: Number of transactions for the
+     * Set the transactionCount property: Number of transactions for the
      * request.
      *
-     * @param transactionCount the transactionsCount value to set.
-     * @return the DocumentBatchStatistics object itself.
+     * @param transactionCount the transactionCount value to set.
+     * @return the TextBatchStatistics object itself.
      */
     public TextBatchStatistics setTransactionCount(long transactionCount) {
         this.transactionCount = transactionCount;

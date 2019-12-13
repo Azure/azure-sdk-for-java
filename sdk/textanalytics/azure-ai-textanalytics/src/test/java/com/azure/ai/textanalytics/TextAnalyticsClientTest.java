@@ -129,4 +129,37 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 HttpResponseException.class, 400);
         });
     }
+
+    @Test
+    public void recognizeEntitiesForSimpleInput() {
+    }
+
+    @Test
+    public void recognizeEntitiesForEmptyText() {
+
+    }
+
+    @Test
+    public void recognizeEntitiesForFaultyText() {
+
+    }
+
+    @Test
+    public void recognizeEntitiesForBatchInput() {
+
+    }
+
+    @Test
+    public void recognizeEntitiesForBatchInputShowStatistics() {
+    }
+
+    @Test
+    public void recognizeEntitiesForBatchStringInput() {
+
+    }
+
+    @Test
+    public void recognizeEntitiesForBatchListCountryHint() {
+
+    }
 }

@@ -39,7 +39,7 @@ public final class DocumentSentiment {
      * sentiment class.
      */
     @JsonProperty(value = "documentScores", required = true)
-    private Object documentScores;
+    private SentimentConfidenceScorePerLabel documentScores;
 
     /*
      * Sentence level sentiment analysis.
@@ -117,7 +117,7 @@ public final class DocumentSentiment {
      *
      * @return the documentScores value.
      */
-    public Object getDocumentScores() {
+    public SentimentConfidenceScorePerLabel getDocumentScores() {
         return this.documentScores;
     }
 
@@ -128,7 +128,7 @@ public final class DocumentSentiment {
      * @param documentScores the documentScores value to set.
      * @return the DocumentSentiment object itself.
      */
-    public DocumentSentiment setDocumentScores(Object documentScores) {
+    public DocumentSentiment setDocumentScores(SentimentConfidenceScorePerLabel documentScores) {
         this.documentScores = documentScores;
         return this;
     }

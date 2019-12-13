@@ -131,4 +131,45 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 400));
         });
     }
+
+    @Test
+    public void recognizeEntitiesForSimpleInput() {
+        DetectedLanguage primaryLanguage = new DetectedLanguage().setName("English").setIso6391Name("en").setScore(1.0);
+
+    }
+
+    @Test
+    public void recognizeEntitiesForEmptyText() {
+
+    }
+
+    @Test
+    public void recognizeEntitiesForFaultyText() {
+
+    }
+
+    @Test
+    public void recognizeEntitiesForBatchInput() {
+
+    }
+
+    @Test
+    public void recognizeEntitiesForBatchInputShowStatistics() {
+//        recognizeEntitiesShowStatisticsRunner((inputs, options) -> {
+//            StepVerifier.create(client.recognizeBatchEntitiesWithResponse(inputs, options))
+//                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchNamedEntityResult(),
+//                    "Named Entity"))
+//                .verifyComplete();
+//        });
+    }
+
+    @Test
+    public void recognizeEntitiesForBatchStringInput() {
+
+    }
+
+    @Test
+    public void recognizeEntitiesForBatchListCountryHint() {
+
+    }
 }

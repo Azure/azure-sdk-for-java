@@ -25,7 +25,7 @@ public final class SentenceSentiment {
      * classes.
      */
     @JsonProperty(value = "sentenceScores", required = true)
-    private Object sentenceScores;
+    private SentimentConfidenceScorePerLabel sentenceScores;
 
     /*
      * The sentence offset from the start of the document.
@@ -73,7 +73,7 @@ public final class SentenceSentiment {
      *
      * @return the sentenceScores value.
      */
-    public Object getSentenceScores() {
+    public SentimentConfidenceScorePerLabel getSentenceScores() {
         return this.sentenceScores;
     }
 
@@ -84,7 +84,7 @@ public final class SentenceSentiment {
      * @param sentenceScores the sentenceScores value to set.
      * @return the SentenceSentiment object itself.
      */
-    public SentenceSentiment setSentenceScores(Object sentenceScores) {
+    public SentenceSentiment setSentenceScores(SentimentConfidenceScorePerLabel sentenceScores) {
         this.sentenceScores = sentenceScores;
         return this;
     }
