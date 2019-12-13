@@ -62,7 +62,7 @@ jobs:
 
     steps:
       - pwsh: |
-          Install-Module -Name Az -AllowClobber -Scope AllUsers
+          Install-Module -Name Az -AllowClobber -Scope AllUsers -Force
         displayName: Install Az Module
 
       - pwsh: |
