@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
@@ -11,9 +11,16 @@ import java.util.List;
 /**
  * The LinkedEntityResult model.
  */
-@Fluent
+@Immutable
 public final class LinkedEntityResult extends DocumentResult {
-    private final List<LinkedEntity> linkedEntities;
+    private List<LinkedEntity> linkedEntities;
+
+    // TODO(shawn): not public modifier
+    public LinkedEntityResult(String id, Error error, boolean isError) {
+        super(id, error, isError);
+    }
+
+    // TODO(shawn): not public modifier
 
     /**
      * LinkedEntityResult model constructor

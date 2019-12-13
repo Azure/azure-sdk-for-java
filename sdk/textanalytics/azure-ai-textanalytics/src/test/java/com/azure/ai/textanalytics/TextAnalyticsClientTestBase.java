@@ -8,8 +8,11 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.Error;
+import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.NamedEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextBatchStatistics;
+import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -104,6 +107,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         return Objects.requireNonNull(client);
     }
 
+    // Detect Language
     @Test
     public abstract void detectSingleTextLanguage();
 
@@ -138,13 +142,37 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     void detectLanguageDuplicateIdRunner(BiConsumer<List<DetectLanguageInput>,
-                                                          TextAnalyticsRequestOptions> testRunner) {
+        TextAnalyticsRequestOptions> testRunner) {
         final List<DetectLanguageInput> detectLanguageInputs = Arrays.asList(
             new DetectLanguageInput("0", "This is written in English", "US"),
             new DetectLanguageInput("0", "Este es un document escrito en Español.")
         );
 
         testRunner.accept(detectLanguageInputs, setTextAnalyticsRequestOptions());
+    }
+
+    static void detectLanguagesCountryHintRunner(BiConsumer<List<String>, String> testRunner) {
+        final List<String> inputs = new ArrayList<>(Arrays.asList(
+            "This is written in English", "Este es un document escrito en Español.", "~@!~:)"));
+
+        testRunner.accept(inputs, "US");
+    }
+
+    static void detectLanguageStringInputRunner(Consumer<List<String>> testRunner) {
+        final List<String> inputs = new ArrayList<>(Arrays.asList(
+            "This is written in English", "Este es un document escrito en Español.", "~@!~:)"));
+
+        testRunner.accept(inputs);
+    }
+
+    static void detectLanguageRunner(Consumer<List<DetectLanguageInput>> testRunner) {
+        final List<DetectLanguageInput> detectLanguageInputs = Arrays.asList(
+            new DetectLanguageInput("0", "This is written in English", "US"),
+            new DetectLanguageInput("1", "Este es un document escrito en Español."),
+            new DetectLanguageInput("2", "~@!~:)", "US")
+        );
+
+        testRunner.accept(detectLanguageInputs);
     }
 
     static DocumentResultCollection<DetectLanguageResult> getExpectedBatchDetectedLanguages() {
@@ -172,33 +200,70 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         return new DocumentResultCollection<>(detectLanguageResultList, "2019-10-01", textBatchStatistics);
     }
 
-    static void detectLanguagesCountryHintRunner(BiConsumer<List<String>, String> testRunner) {
-        final List<String> inputs = new ArrayList<>(Arrays.asList(
-            "This is written in English", "Este es un document escrito en Español.", "~@!~:)"));
+    // Named Entities
+    @Test
+    public abstract void recognizeEntitiesForSimpleInput();
 
-        testRunner.accept(inputs, "US");
+    @Test
+    public abstract void recognizeEntitiesForEmptyText();
+
+    @Test
+    public abstract void recognizeEntitiesForFaultyText();
+
+    @Test
+    public abstract void recognizeEntitiesForBatchInput();
+
+    @Test
+    public abstract void recognizeEntitiesForBatchInputShowStatistics();
+
+    void recognizeEntitiesShowStatisticsRunner(BiConsumer<List<TextDocumentInput>,
+        TextAnalyticsRequestOptions> testRunner) {
+        final List<TextDocumentInput> detectLanguageInputs = Arrays.asList(
+            new TextDocumentInput("1", "Satya Nadella is the CEO of Microsoft", "en"),
+            new TextDocumentInput("2", "Elon Musk is the CEO of SpaceX and Tesla.", "en"),
+            new TextDocumentInput("2", "~@!~:)", "en")
+            // add error document => empty text
+        );
+
+        testRunner.accept(detectLanguageInputs, setTextAnalyticsRequestOptions());
     }
 
-    static void detectLanguageStringInputRunner(Consumer<List<String>> testRunner) {
-        final List<String> inputs = new ArrayList<>(Arrays.asList(
-            "This is written in English", "Este es un document escrito en Español.", "~@!~:)"));
+    @Test
+    public abstract void recognizeEntitiesForBatchStringInput();
 
-        testRunner.accept(inputs);
+    @Test
+    public abstract void recognizeEntitiesForBatchListCountryHint();
+
+    static DocumentResultCollection<NamedEntityResult> getExpectedBatchNamedEntityResult() {
+        NamedEntity namedEntity1 = new NamedEntity()
+            .setType("English").setText("Satya Nadella is the CEO of Microsoft").setSubtype("").setLength(1).setOffset(1).setScore(1.0);
+        NamedEntity namedEntity2 = new NamedEntity()
+            .setType("English").setText("").setSubtype("Elon Musk is the CEO of SpaceX and Tesla.").setLength(1).setOffset(1).setScore(1.0);
+        NamedEntity namedEntity3 = new NamedEntity()
+            .setType("English").setText("").setSubtype("").setLength(1).setOffset(1).setScore(1.0);
+        List<NamedEntity> namedEntityList1 = new ArrayList<>(Collections.singletonList(namedEntity1));
+        List<NamedEntity> namedEntityList2 = new ArrayList<>(Collections.singletonList(namedEntity2));
+        List<NamedEntity> namedEntityList3 = new ArrayList<>(Collections.singletonList(namedEntity3));
+
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(26).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(39).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics().setCharacterCount(6).setTransactionCount(1);
+
+        NamedEntityResult namedEntityResult1 = new NamedEntityResult("0", textDocumentStatistics1, namedEntityList1);
+        NamedEntityResult namedEntityResult2 = new NamedEntityResult("1", textDocumentStatistics2, namedEntityList2);
+        NamedEntityResult namedEntityResult3 = new NamedEntityResult("2", textDocumentStatistics3, namedEntityList3);
+
+        TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(3)
+            .setErroneousDocumentCount(0).setTransactionCount(3).setValidDocumentCount(3);
+        List<NamedEntityResult> detectLanguageResultList = new ArrayList<>(
+            Arrays.asList(namedEntityResult1, namedEntityResult2, namedEntityResult3));
+
+        return new DocumentResultCollection<>(detectLanguageResultList, "2019-10-01", textBatchStatistics);
     }
 
     private TextAnalyticsRequestOptions setTextAnalyticsRequestOptions() {
         this.showStatistics = true;
         return new TextAnalyticsRequestOptions().setShowStatistics(true);
-    }
-
-    static void detectLanguageRunner(Consumer<List<DetectLanguageInput>> testRunner) {
-        final List<DetectLanguageInput> detectLanguageInputs = Arrays.asList(
-            new DetectLanguageInput("0", "This is written in English", "US"),
-            new DetectLanguageInput("1", "Este es un document escrito en Español."),
-            new DetectLanguageInput("2", "~@!~:)", "US")
-        );
-
-        testRunner.accept(detectLanguageInputs);
     }
 
     String getEndPoint() {

@@ -3,17 +3,24 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Fluent;
+
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * The NamedEntityResult model.
  */
-@Fluent
+@Immutable
 public final class NamedEntityResult extends DocumentResult {
     private List<NamedEntity> namedEntities;
 
+    // TODO(shawn): not public modifier
+    public NamedEntityResult(String id, Error error, boolean isError) {
+        super(id, error, isError);
+    }
+
+    // TODO(shawn): not public modifier
     public NamedEntityResult(String id, TextDocumentStatistics textDocumentStatistics,
                              List<NamedEntity> namedEntities) {
         super(id, textDocumentStatistics);
@@ -22,10 +29,5 @@ public final class NamedEntityResult extends DocumentResult {
 
     public List<NamedEntity> getNamedEntities() {
         return namedEntities;
-    }
-
-    NamedEntityResult setNamedEntities(List<NamedEntity> namedEntities) {
-        this.namedEntities = namedEntities;
-        return this;
     }
 }

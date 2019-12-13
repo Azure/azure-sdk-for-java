@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.models.Error;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,5 +129,38 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             assertRestException(() -> client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE),
                 HttpResponseException.class, 400);
         });
+    }
+
+    @Test
+    public void recognizeEntitiesForSimpleInput() {
+    }
+
+    @Test
+    public void recognizeEntitiesForEmptyText() {
+
+    }
+
+    @Test
+    public void recognizeEntitiesForFaultyText() {
+
+    }
+
+    @Test
+    public void recognizeEntitiesForBatchInput() {
+
+    }
+
+    @Test
+    public void recognizeEntitiesForBatchInputShowStatistics() {
+    }
+
+    @Test
+    public void recognizeEntitiesForBatchStringInput() {
+
+    }
+
+    @Test
+    public void recognizeEntitiesForBatchListCountryHint() {
+
     }
 }

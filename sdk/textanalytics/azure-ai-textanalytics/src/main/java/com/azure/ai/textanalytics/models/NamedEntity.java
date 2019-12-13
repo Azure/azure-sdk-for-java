@@ -63,7 +63,7 @@ public final class NamedEntity {
      * @param text the text value to set.
      * @return the NamedEntity object itself.
      */
-    NamedEntity setText(String text) {
+    public NamedEntity setText(String text) {
         this.text = text;
         return this;
     }
@@ -83,7 +83,7 @@ public final class NamedEntity {
      * @param type the type value to set.
      * @return the NamedEntity object itself.
      */
-    NamedEntity setType(String type) {
+    public NamedEntity setType(String type) {
         this.type = type;
         return this;
     }
@@ -105,7 +105,7 @@ public final class NamedEntity {
      * @param subtype the subtype value to set.
      * @return the NamedEntity object itself.
      */
-    NamedEntity setSubtype(String subtype) {
+    public NamedEntity setSubtype(String subtype) {
         this.subtype = subtype;
         return this;
     }
@@ -127,7 +127,7 @@ public final class NamedEntity {
      * @param offset the offset value to set.
      * @return the NamedEntity object itself.
      */
-    NamedEntity setOffset(int offset) {
+    public NamedEntity setOffset(int offset) {
         this.offset = offset;
         return this;
     }
@@ -149,7 +149,7 @@ public final class NamedEntity {
      * @param length the length value to set.
      * @return the NamedEntity object itself.
      */
-    NamedEntity setLength(int length) {
+    public NamedEntity setLength(int length) {
         this.length = length;
         return this;
     }
@@ -171,7 +171,7 @@ public final class NamedEntity {
      * @param score the score value to set.
      * @return the NamedEntity object itself.
      */
-    NamedEntity setScore(double score) {
+    public NamedEntity setScore(double score) {
         this.score = score;
         return this;
     }

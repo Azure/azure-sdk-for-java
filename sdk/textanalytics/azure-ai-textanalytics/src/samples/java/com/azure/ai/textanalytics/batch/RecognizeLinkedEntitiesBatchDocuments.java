@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.models.LinkedEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 
 import java.util.Arrays;
@@ -20,17 +21,19 @@ public class RecognizeLinkedEntitiesBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+//            .subscriptionKey("subscription-key")
+//            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY"))
+            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
             .buildClient();
 
         // The texts that need be analysed.
         List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("1", "Old Faithful is a geyser at Yellowstone Park.", "US"),
-            new TextDocumentInput("2", "Mount Shasta has lenticular clouds.", "US")
+            new TextDocumentInput("1", "Old Faithful is a geyser at Yellowstone Park.", "en"),
+            new TextDocumentInput("2", "Mount Shasta has lenticular clouds.", "en")
         );
 
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
         final DocumentResultCollection<LinkedEntityResult> detectedBatchResult = client.recognizeBatchLinkedEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
 

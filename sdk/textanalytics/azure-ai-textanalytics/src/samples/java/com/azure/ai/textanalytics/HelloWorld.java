@@ -20,7 +20,7 @@ public class HelloWorld {
         // The text that need be analysed.
         String text = "hello world";
 
-        final DetectLanguageResult detectLanguageResult = client.detectLanguage(text, "US");
+        final DetectLanguageResult detectLanguageResult = client.detectLanguage(text, "en");
         final DetectedLanguage detectedDocumentLanguage = detectLanguageResult.getPrimaryLanguage();
         System.out.printf("Detected Primary Language: %s, ISO 6391 Name: %s, Score: %s%n",
             detectedDocumentLanguage.getName(),

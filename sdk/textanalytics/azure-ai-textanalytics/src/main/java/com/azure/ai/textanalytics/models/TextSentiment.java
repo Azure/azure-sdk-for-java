@@ -30,7 +30,7 @@ public class TextSentiment {
         return length;
     }
 
-    TextSentiment setLength(String length) {
+    public TextSentiment setLength(String length) {
         this.length = length;
         return this;
     }
@@ -39,7 +39,7 @@ public class TextSentiment {
         return negativeScore;
     }
 
-    TextSentiment setNegativeScore(double negativeScore) {
+    public TextSentiment setNegativeScore(double negativeScore) {
         this.negativeScore = negativeScore;
         return this;
     }
@@ -48,7 +48,7 @@ public class TextSentiment {
         return neutralScore;
     }
 
-    TextSentiment setNeutralScore(double neutralScore) {
+    public TextSentiment setNeutralScore(double neutralScore) {
         this.neutralScore = neutralScore;
         return this;
     }
@@ -57,7 +57,7 @@ public class TextSentiment {
         return positiveScore;
     }
 
-    TextSentiment setPositiveScore(double positiveScore) {
+    public TextSentiment setPositiveScore(double positiveScore) {
         this.positiveScore = positiveScore;
         return this;
     }
@@ -66,7 +66,7 @@ public class TextSentiment {
         return offset;
     }
 
-    TextSentiment setOffset(int offset) {
+    public TextSentiment setOffset(int offset) {
         this.offset = offset;
         return this;
     }
@@ -75,7 +75,7 @@ public class TextSentiment {
         return textSentimentClass;
     }
 
-    TextSentiment setTextSentimentClass(TextSentimentClass textSentimentClass) {
+    public TextSentiment setTextSentimentClass(TextSentimentClass textSentimentClass) {
         this.textSentimentClass = textSentimentClass;
         return this;
     }

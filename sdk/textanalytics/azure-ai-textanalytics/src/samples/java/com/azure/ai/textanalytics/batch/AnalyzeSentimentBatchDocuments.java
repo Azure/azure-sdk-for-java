@@ -31,7 +31,7 @@ public class AnalyzeSentimentBatchDocuments {
             new TextDocumentInput("2", "The restaurant had amazing gnocci.", "US")
         );
 
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("1.0");
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
         DocumentResultCollection<TextSentimentResult> detectedBatchResult = client.analyzeBatchSentimentWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
 
