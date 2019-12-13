@@ -40,10 +40,10 @@ public class AnalyzeSentimentBatchDocuments {
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
-            batchStatistics.getDocumentsCount(),
-            batchStatistics.getErroneousDocumentsCount(),
-            batchStatistics.getTransactionsCount(),
-            batchStatistics.getValidDocumentsCount());
+            batchStatistics.getDocumentCount(),
+            batchStatistics.getErroneousDocumentCount(),
+            batchStatistics.getTransactionCount(),
+            batchStatistics.getValidDocumentCount());
 
         // Detecting sentiment for each of document from a batch of documents
         detectedBatchResult.stream().forEach(result -> {

@@ -39,10 +39,10 @@ public class RecognizePIIBatchDocuments {
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
-            batchStatistics.getDocumentsCount(),
-            batchStatistics.getErroneousDocumentsCount(),
-            batchStatistics.getTransactionsCount(),
-            batchStatistics.getValidDocumentsCount());
+            batchStatistics.getDocumentCount(),
+            batchStatistics.getErroneousDocumentCount(),
+            batchStatistics.getTransactionCount(),
+            batchStatistics.getValidDocumentCount());
 
 
         // Detecting pii entities from a batch of documents

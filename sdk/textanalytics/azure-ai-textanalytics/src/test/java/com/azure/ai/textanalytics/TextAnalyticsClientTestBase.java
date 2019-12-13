@@ -194,7 +194,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, detectedLanguage2, detectedLanguageList2);
         DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, detectedLanguage3, detectedLanguageList3);
 
-        TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentsCount(3).setErroneousDocumentsCount(0).setTransactionsCount(3).setValidDocumentsCount(3);
+        TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(3).setErroneousDocumentCount(0).setTransactionCount(3).setValidDocumentCount(3);
         List<DetectLanguageResult> detectLanguageResultList = new ArrayList<>(Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3));
 
         return new DocumentResultCollection<>(detectLanguageResultList, "2019-10-01", textBatchStatistics);
@@ -253,8 +253,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         NamedEntityResult namedEntityResult2 = new NamedEntityResult("1", textDocumentStatistics2, namedEntityList2);
         NamedEntityResult namedEntityResult3 = new NamedEntityResult("2", textDocumentStatistics3, namedEntityList3);
 
-        TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentsCount(3)
-            .setErroneousDocumentsCount(0).setTransactionsCount(3).setValidDocumentsCount(3);
+        TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(3)
+            .setErroneousDocumentCount(0).setTransactionCount(3).setValidDocumentCount(3);
         List<NamedEntityResult> detectLanguageResultList = new ArrayList<>(
             Arrays.asList(namedEntityResult1, namedEntityResult2, namedEntityResult3));
 
@@ -341,10 +341,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      */
     private static void validateBatchStatistics(TextBatchStatistics expectedStatistics,
                                                 TextBatchStatistics actualStatistics) {
-        assertEquals(expectedStatistics.getDocumentsCount(), actualStatistics.getDocumentsCount());
-        assertEquals(expectedStatistics.getErroneousDocumentsCount(), actualStatistics.getErroneousDocumentsCount());
-        assertEquals(expectedStatistics.getValidDocumentsCount(), actualStatistics.getValidDocumentsCount());
-        assertEquals(expectedStatistics.getTransactionsCount(), actualStatistics.getTransactionsCount());
+        assertEquals(expectedStatistics.getDocumentCount(), actualStatistics.getDocumentCount());
+        assertEquals(expectedStatistics.getErroneousDocumentCount(), actualStatistics.getErroneousDocumentCount());
+        assertEquals(expectedStatistics.getValidDocumentCount(), actualStatistics.getValidDocumentCount());
+        assertEquals(expectedStatistics.getTransactionCount(), actualStatistics.getTransactionCount());
     }
 
     /**
