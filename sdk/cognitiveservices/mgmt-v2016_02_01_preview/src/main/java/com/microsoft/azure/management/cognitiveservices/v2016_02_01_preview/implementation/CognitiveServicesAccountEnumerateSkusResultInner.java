@@ -23,7 +23,7 @@ public class CognitiveServicesAccountEnumerateSkusResultInner {
     private List<CognitiveServicesResourceAndSku> value;
 
     /**
-     * Get the value value.
+     * Get gets the list of Cognitive Services accounts and their properties.
      *
      * @return the value value
      */

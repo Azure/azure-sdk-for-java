@@ -53,7 +53,7 @@ public class CognitiveServicesAccountInner extends Resource {
     private Sku sku;
 
     /**
-     * Get the etag value.
+     * Get entity Tag.
      *
      * @return the etag value
      */
@@ -62,7 +62,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Set the etag value.
+     * Set entity Tag.
      *
      * @param etag the etag value to set
      * @return the CognitiveServicesAccountInner object itself.
@@ -73,7 +73,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Get the kind value.
+     * Get type of cognitive service account.
      *
      * @return the kind value
      */
@@ -82,7 +82,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Set the kind value.
+     * Set type of cognitive service account.
      *
      * @param kind the kind value to set
      * @return the CognitiveServicesAccountInner object itself.
@@ -93,7 +93,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get gets the status of the cognitive services account at the time the operation was called. Possible values include: 'Creating', 'ResolvingDNS', 'Succeeded', 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -102,7 +102,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Get the endpoint value.
+     * Get endpoint of the created account.
      *
      * @return the endpoint value
      */
@@ -111,7 +111,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Set the endpoint value.
+     * Set endpoint of the created account.
      *
      * @param endpoint the endpoint value to set
      * @return the CognitiveServicesAccountInner object itself.

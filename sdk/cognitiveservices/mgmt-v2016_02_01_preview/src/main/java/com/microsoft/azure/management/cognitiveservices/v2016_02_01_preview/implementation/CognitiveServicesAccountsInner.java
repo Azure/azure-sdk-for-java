@@ -730,7 +730,7 @@ public class CognitiveServicesAccountsInner implements InnerSupportsGet<Cognitiv
      * Lists the account keys for the specified Cognitive Services account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param accountName The name of the cognitive services account within the specified resource group. Congitive Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param accountName The name of the cognitive services account within the specified resource group. Cognitive Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -744,7 +744,7 @@ public class CognitiveServicesAccountsInner implements InnerSupportsGet<Cognitiv
      * Lists the account keys for the specified Cognitive Services account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param accountName The name of the cognitive services account within the specified resource group. Congitive Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param accountName The name of the cognitive services account within the specified resource group. Cognitive Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -757,7 +757,7 @@ public class CognitiveServicesAccountsInner implements InnerSupportsGet<Cognitiv
      * Lists the account keys for the specified Cognitive Services account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param accountName The name of the cognitive services account within the specified resource group. Congitive Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param accountName The name of the cognitive services account within the specified resource group. Cognitive Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountKeysInner object
      */
@@ -774,7 +774,7 @@ public class CognitiveServicesAccountsInner implements InnerSupportsGet<Cognitiv
      * Lists the account keys for the specified Cognitive Services account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param accountName The name of the cognitive services account within the specified resource group. Congitive Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param accountName The name of the cognitive services account within the specified resource group. Cognitive Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountKeysInner object
      */
