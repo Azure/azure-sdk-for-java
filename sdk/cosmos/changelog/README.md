@@ -1,5 +1,20 @@
 ## Changelog
 
+### 3.4.1
+- Changefeed bug fixes (includes all the bug fixes released in 3.3.3) 
+- Disaster Recovery related bug fixes
+- Exception when Cosmos DB HTTP response header is larger than 8192 bytes: https://github.com/Azure/azure-sdk-for-java/issues/6069
+- Vulnerability through dependency in the SDK v3.4.0: https://github.com/Azure/azure-sdk-for-java/issues/6433
+- CosmosSyncScripts null pointer exception in azure-cosmos: https://github.com/Azure/azure-sdk-for-java/issues/6281
+- Default consistency level parsing for Bounded Staleness and Consistent Prefix: https://github.com/Azure/azure-sdk-for-java/issues/6707
+- Null Value Holder change: https://github.com/Azure/azure-sdk-for-java/issues/6307
+
+### 3.4.0
+- Added QueryPlan
+- Added OffsetLimit support
+- ChangeFeedProcessor; fixes and extra logging related to the creations of the lease documents.
+- Port consistency policy bug fix (see Azure/azure-cosmosdb-java#196)
+
 ### 3.3.3
 - ChangeFeedProcessor; added a "catch all" exception handler that keeps the loop which checks and acquires available leases alive until the user stops the change feed processor.
 
