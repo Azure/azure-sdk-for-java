@@ -493,7 +493,7 @@ public final class CertificateClient {
      * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} for all the certificates in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateProperties> listPropertiesOfCertificates(Boolean includePending, Context context) {
+    public PagedIterable<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
         return new PagedIterable<>(client.listPropertiesOfCertificates(includePending, context));
     }
 
@@ -532,7 +532,7 @@ public final class CertificateClient {
      * @return A {@link PagedIterable} containing all of the {@link DeletedCertificate deleted certificates} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedCertificate> listDeletedCertificates(Boolean includePending, Context context) {
+    public PagedIterable<DeletedCertificate> listDeletedCertificates(boolean includePending, Context context) {
         return new PagedIterable<>(client.listDeletedCertificates(includePending, context));
     }
 

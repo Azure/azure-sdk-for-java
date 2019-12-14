@@ -762,7 +762,7 @@ public final class CertificateAsyncClient {
      * @return A {@link PagedFlux} containing {@link CertificateProperties certificate} for all the certificates in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CertificateProperties> listPropertiesOfCertificates(Boolean includePending) {
+    public PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending) {
         try {
             return new PagedFlux<>(() -> withContext(context -> listCertificatesFirstPage(includePending, context)),
                 continuationToken -> withContext(context -> listCertificatesNextPage(continuationToken, context)));
@@ -794,7 +794,7 @@ public final class CertificateAsyncClient {
         }
     }
 
-    PagedFlux<CertificateProperties> listPropertiesOfCertificates(Boolean includePending, Context context) {
+    PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
         return new PagedFlux<>(
             () -> listCertificatesFirstPage(includePending, context),
             continuationToken -> listCertificatesNextPage(continuationToken, context));
@@ -821,7 +821,7 @@ public final class CertificateAsyncClient {
     /*
      * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
      */
-    private Mono<PagedResponse<CertificateProperties>> listCertificatesFirstPage(Boolean includePending, Context context) {
+    private Mono<PagedResponse<CertificateProperties>> listCertificatesFirstPage(boolean includePending, Context context) {
         try {
             return service
                 .getCertificates(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, includePending, API_VERSION, ACCEPT_LANGUAGE,
@@ -875,7 +875,7 @@ public final class CertificateAsyncClient {
      * @return A {@link PagedFlux} containing all of the {@link DeletedCertificate deleted certificates} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeletedCertificate> listDeletedCertificates(Boolean includePending) {
+    public PagedFlux<DeletedCertificate> listDeletedCertificates(boolean includePending) {
         try {
             return new PagedFlux<>(
                 () -> withContext(context -> listDeletedCertificatesFirstPage(includePending, context)),
@@ -917,7 +917,7 @@ public final class CertificateAsyncClient {
     /*
      * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
      */
-    private Mono<PagedResponse<DeletedCertificate>> listDeletedCertificatesFirstPage(Boolean includePending, Context context) {
+    private Mono<PagedResponse<DeletedCertificate>> listDeletedCertificatesFirstPage(boolean includePending, Context context) {
         try {
             return service.getDeletedCertificates(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, includePending, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Listing deleted certificates"))
