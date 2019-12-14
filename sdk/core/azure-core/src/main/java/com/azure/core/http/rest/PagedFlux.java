@@ -22,7 +22,7 @@ import java.util.function.Supplier;
  * <p><strong>Code sample</strong></p>
  * {@codesnippet com.azure.core.http.rest.pagedflux.items}
  *
- * <p>To process one page at a time, use {@link #byPage} method as shown below </p>
+ * <p>To process one page at a time, use {@link #byPage()} method as shown below </p>
  * <p><strong>Code sample</strong></p>
  * {@codesnippet com.azure.core.http.rest.pagedflux.pages}
  *
@@ -106,8 +106,14 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      */
     @Deprecated
     public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
-        return new PagedFlux<S>((PageRetrieverProvider<PagedResponse<S>>) () -> c -> byPage(c)
-            .map(mapPagedResponse(mapper)));
+        PageRetrieverProvider<PagedResponse<S>> provider = () -> continuationToken -> {
+            Flux<PagedResponse<T>> flux = (continuationToken == null)
+                ? byPage()
+                : byPage(continuationToken);
+            return flux
+                .map(mapPagedResponse(mapper));
+        };
+        return new PagedFlux<>(provider);
     }
 
     private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
