@@ -146,7 +146,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy getCertificate(String certificateName) {
-        return client.getCertificate(certificateName).block();
+        return getCertificateWithResponse(certificateName, Context.NONE).getValue();
     }
 
     /**
@@ -155,16 +155,17 @@ public final class CertificateClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String-Context}
      *
      * @param certificateName The name of the certificate to retrieve, cannot be null
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultCertificateWithPolicy certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificateWithPolicy> getCertificateWithResponse(String certificateName) {
-        return client.getCertificateWithResponse(certificateName).block();
+    public Response<KeyVaultCertificateWithPolicy> getCertificateWithResponse(String certificateName, Context context) {
+        return client.getCertificateWithResponse(certificateName, "", context).block();
     }
 
     /**

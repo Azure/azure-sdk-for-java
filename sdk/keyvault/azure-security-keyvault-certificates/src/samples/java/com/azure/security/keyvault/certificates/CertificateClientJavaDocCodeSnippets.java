@@ -82,24 +82,24 @@ public final class CertificateClientJavaDocCodeSnippets {
         CertificateClient certificateClient = getCertificateClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getCertificate#String
         KeyVaultCertificateWithPolicy certificate = certificateClient.getCertificate("certificateName");
-        System.out.printf("Recevied certificate with name %s and version %s and secret id",
+        System.out.printf("Received certificate with name %s and version %s and secret id",
             certificate.getProperties().getName(),
             certificate.getProperties().getVersion(), certificate.getSecretId());
         // END: com.azure.security.keyvault.certificates.CertificateClient.getCertificate#String
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String-Context
         Response<KeyVaultCertificateWithPolicy> certificateWithResponse = certificateClient
-            .getCertificateWithResponse("certificateName");
-        System.out.printf("Recevied certificate with name %s and version %s and secret id",
+            .getCertificateWithResponse("certificateName", new Context(key1, value1));
+        System.out.printf("Received certificate with name %s and version %s and secret id",
             certificateWithResponse.getValue().getProperties().getName(),
             certificateWithResponse.getValue().getProperties().getVersion(), certificate.getSecretId());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String
+        // END: com.azure.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String-Context
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getCertificateVersionWithResponse#String-String-Context
         Response<KeyVaultCertificate> returnedCertificateWithResponse = certificateClient
             .getCertificateVersionWithResponse("certificateName", "certificateVersion",
                 new Context(key1, value1));
-        System.out.printf("Recevied certificate with name %s and version %s and secret id",
+        System.out.printf("Received certificate with name %s and version %s and secret id",
             returnedCertificateWithResponse.getValue().getProperties().getName(),
             returnedCertificateWithResponse.getValue().getProperties().getVersion(),
             returnedCertificateWithResponse.getValue().getSecretId());
@@ -108,7 +108,7 @@ public final class CertificateClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getCertificateVersion#String-String
         KeyVaultCertificate returnedCertificate = certificateClient.getCertificateVersion("certificateName",
             "certificateVersion");
-        System.out.printf("Recevied certificate with name %s and version %s and secret id",
+        System.out.printf("Received certificate with name %s and version %s and secret id",
             returnedCertificate.getProperties().getName(), returnedCertificate.getProperties().getVersion(),
             returnedCertificate.getSecretId());
         // END: com.azure.security.keyvault.certificates.CertificateClient.getCertificateVersion#String-String
