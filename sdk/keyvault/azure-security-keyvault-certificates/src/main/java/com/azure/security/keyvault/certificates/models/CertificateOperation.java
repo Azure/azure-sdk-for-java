@@ -6,12 +6,25 @@ package com.azure.security.keyvault.certificates.models;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
 
 /**
  * A certificate operation is returned in case of long running service requests.
  */
 public final class CertificateOperation {
+
+    /**
+     * URL for the Azure KeyVault service.
+     */
+    private String vaultUrl;
+
+    /**
+     * The Certificate name.
+     */
+    private String name;
+
     /**
      * The certificate id.
      */
@@ -177,10 +190,45 @@ public final class CertificateOperation {
         return this.requestId;
     }
 
+    /**
+     * Get the URL for the Azure KeyVault service.
+     *
+     * @return the value of the URL for the Azure KeyVault service.
+     */
+    public String getVaultUrl() {
+        unpackId(this.id);
+        return this.vaultUrl;
+    }
+
+    /**
+     * Get the certificate name.
+     *
+     * @return the name of the certificate.
+     */
+    public String getName() {
+        unpackId(this.id);
+        return this.name;
+    }
+
     @JsonProperty("issuer")
     private void unpackIssuerParameters(Map<String, Object> issuerParameters) {
         issuerName = (String) issuerParameters.get("name");
         certificateType =  (String) issuerParameters.get("cty");
         certificateTransparency = issuerParameters.get("cert_transparency") != null ? (Boolean) issuerParameters.get("cert_transparency") : false;
+    }
+
+    @JsonProperty(value = "id")
+    void unpackId(String id) {
+        if (id != null && id.length() > 0) {
+            this.id = id;
+            try {
+                URL url = new URL(id);
+                String[] tokens = url.getPath().split("/");
+                this.vaultUrl = (tokens.length >= 1 ? tokens[1] : null);
+                this.name = (tokens.length >= 3 ? tokens[2] : null);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
