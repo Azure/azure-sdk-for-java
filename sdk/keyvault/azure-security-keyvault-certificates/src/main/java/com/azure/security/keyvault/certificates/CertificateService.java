@@ -73,18 +73,6 @@ interface CertificateService {
                                                                  @HeaderParam("Content-Type") String type,
                                                                  Context context);
 
-    @Get("certificates/{certificate-name}/pending")
-    @ExpectedResponses({200, 403})
-    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
-    @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<CertificateOperation>> getCreateCertificateOperation(@HostParam("url") String url,
-                                                                 @PathParam("certificate-name") String certificateName,
-                                                                 @QueryParam("api-version") String apiVersion,
-                                                                 @HeaderParam("accept-language") String acceptLanguage,
-                                                                 @HeaderParam("Content-Type") String type,
-                                                                 Context context);
-
     @Patch("certificates/{certificate-name}/pending")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
@@ -123,8 +111,7 @@ interface CertificateService {
                                                        Context context);
 
     @Get("certificates/{certificate-name}/{certificate-version}")
-    @ExpectedResponses({200, 404})
-    @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+    @ExpectedResponses({200, 404, 403})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<KeyVaultCertificateWithPolicy>> getCertificatePoller(@HostParam("url") String url,
                                                        @PathParam("certificate-name") String certificateName,
@@ -209,7 +196,7 @@ interface CertificateService {
                                                    Context context);
 
     @Get("deletedcertificates/{certificate-name}")
-    @ExpectedResponses({200, 404})
+    @ExpectedResponses({200, 403, 404})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<DeletedCertificate>> getDeletedCertificatePoller(@HostParam("url") String url,
                                                              @PathParam("certificate-name") String certificateName,
@@ -443,14 +430,4 @@ interface CertificateService {
                                                            @BodyParam("application/json") CertificatePolicyRequest certificatePolicyRequest,
                                                            @HeaderParam("Content-Type") String type,
                                                            Context context);
-
-    @Get("certificates/{certificate-name}/pending")
-    @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<CertificateOperation>> getPendingCertificateSigningRequest(@HostParam("url") String url,
-                                                              @QueryParam("api-version") String apiVersion,
-                                                              @HeaderParam("accept-language") String acceptLanguage,
-                                                              @PathParam("certificate-name") String certificateName,
-                                                              @HeaderParam("Content-Type") String type,
-                                                              Context context);
 }

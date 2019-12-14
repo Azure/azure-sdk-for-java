@@ -119,7 +119,7 @@ public final class CertificateAsyncClient {
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
         return new PollerFlux<>(Duration.ofSeconds(1),
                 activationOperation(certificateName, policy, isEnabled, tags),
-                createCertificateOperationPollOperation(certificateName),
+                createPollOperation(certificateName),
                 cancelOperation(certificateName),
                 fetchResultOperation(certificateName));
     }
@@ -167,29 +167,6 @@ public final class CertificateAsyncClient {
      */
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
         return beginCreateCertificate(certificateName, policy, true, null);
-    }
-
-    /*
-       Polling operation to poll on create certificate operation status.
-     */
-    private Function<PollingContext<CertificateOperation>, Mono<PollResponse<CertificateOperation>>> createCertificateOperationPollOperation(String certificateName) {
-        return (pollingContext) -> {
-
-            try {
-                return withContext(context -> service.getCreateCertificateOperation(vaultUrl, certificateName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-                    .flatMap(response -> {
-                        if (response.getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
-                            return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.fromString("FORBIDDEN", true),
-                                pollingContext.getLatestResponse().getValue())));
-                        } else {
-                            return processCertificateOperationResponse(response);
-                        }
-                    }));
-                } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
-            }
-        };
     }
 
     /*
@@ -468,6 +445,10 @@ public final class CertificateAsyncClient {
                         return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                             pollingContext.getLatestResponse().getValue())));
                     }
+                    if (deletedCertificateResponse.getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
+                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.fromString("FORBIDDEN", true),
+                            pollingContext.getLatestResponse().getValue())));
+                    }
                     return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deletedCertificateResponse.getValue())));
                 }))
                 // This means either vault has soft-delete disabled or permission is not granted for the get deleted certificate operation.
@@ -625,7 +606,7 @@ public final class CertificateAsyncClient {
     }
 
     /*
-    Polling operation to poll on create delete certificate operation status.
+    Polling operation to poll on create recover certificate operation status.
     */
     private Function<PollingContext<KeyVaultCertificateWithPolicy>, Mono<PollResponse<KeyVaultCertificateWithPolicy>>> createRecoverPollOperation(String keyName) {
         return pollingContext ->
@@ -633,6 +614,10 @@ public final class CertificateAsyncClient {
                 .flatMap(certificateResponse -> {
                     if (certificateResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                            pollingContext.getLatestResponse().getValue())));
+                    }
+                    if (certificateResponse.getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
+                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.fromString("FORBIDDEN", true),
                             pollingContext.getLatestResponse().getValue())));
                     }
                     return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
