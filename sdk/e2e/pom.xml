@@ -6,7 +6,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-e2e</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-e2e;current} -->
 
   <name>Microsoft Azure client library end to end tests and samples</name>
   <description>This module contains end to end tests and samples for Microsoft Azure client libraries.</description>
