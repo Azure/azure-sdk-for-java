@@ -101,10 +101,6 @@ jobs:
         displayName: 'Publish Artifacts $(ArtifactName)'
         artifact: '$(ArtifactName)'
 
-      - publish: $(System.DefaultWorkingDirectory)
-        condition: and(eq(variables['CaptureRepositoryOnFailure'], 'true'), failed())
-        displayName: 'Capture repo state for analysis'
-        artifact: repository
 
   - job: 'Analyze'
     condition: ne(variables['Skip.Analyze'], 'true')
@@ -290,7 +286,7 @@ jobs:
           goals: ${{ parameters.TestGoals }}
 
       - task: PublishTestResults@2
-        condition: always()
+        condition: succeededOrFailed()
         inputs:
           mergeTestResults: true
           testRunTitle: '$(OSName) on Java $(JavaVersion)'

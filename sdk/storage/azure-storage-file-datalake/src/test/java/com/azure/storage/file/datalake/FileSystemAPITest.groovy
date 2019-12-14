@@ -4,13 +4,17 @@ import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.Utility
+import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
+import java.time.temporal.Temporal
+import java.time.temporal.TemporalUnit
 
 class FileSystemAPITest extends APISpec {
 
@@ -34,7 +38,7 @@ class FileSystemAPITest extends APISpec {
         then:
         fsc.getProperties()
 
-        notThrown(DataLakeStorageException)
+        notThrown(Exception)
     }
 
     @Unroll
@@ -87,9 +91,9 @@ class FileSystemAPITest extends APISpec {
         fsc.create()
 
         then:
-        def e = thrown(DataLakeStorageException)
+        def e = thrown(BlobStorageException)
         e.getResponse().getStatusCode() == 409
-        e.getErrorCode() == BlobErrorCode.CONTAINER_ALREADY_EXISTS.toString()
+        e.getErrorCode() == BlobErrorCode.CONTAINER_ALREADY_EXISTS
         e.getServiceMessage().contains("The specified container already exists.")
     }
 
@@ -126,7 +130,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getPropertiesWithResponse("garbage", null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
     }
 
     def "Get properties error"() {
@@ -137,7 +141,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getProperties()
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
     }
 
     def "Set metadata"() {
@@ -218,7 +222,7 @@ class FileSystemAPITest extends APISpec {
         fsc.setMetadataWithResponse(null, drc, null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | leaseID
@@ -255,7 +259,7 @@ class FileSystemAPITest extends APISpec {
         fsc.setMetadata(null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
     }
 
     def "Delete"() {
@@ -277,9 +281,9 @@ class FileSystemAPITest extends APISpec {
         fsc.getProperties()
 
         then:
-        def e = thrown(DataLakeStorageException)
+        def e = thrown(BlobStorageException)
         e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.CONTAINER_NOT_FOUND.toString()
+        e.getErrorCode() == BlobErrorCode.CONTAINER_NOT_FOUND
         e.getServiceMessage().contains("The specified container does not exist.")
     }
 
@@ -315,7 +319,7 @@ class FileSystemAPITest extends APISpec {
         fsc.deleteWithResponse(drc, null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | leaseID
@@ -351,7 +355,7 @@ class FileSystemAPITest extends APISpec {
         fsc.delete()
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
     }
 
     def "Create file min"() {
@@ -359,7 +363,7 @@ class FileSystemAPITest extends APISpec {
         fsc.createFile(generatePathName())
 
         then:
-        notThrown(DataLakeStorageException)
+        notThrown(StorageErrorException)
     }
 
     def "Create file defaults"() {
@@ -378,7 +382,7 @@ class FileSystemAPITest extends APISpec {
             Context.NONE)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
     }
 
     @Unroll
@@ -479,7 +483,7 @@ class FileSystemAPITest extends APISpec {
         fsc.createFileWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -514,9 +518,9 @@ class FileSystemAPITest extends APISpec {
         client.getPropertiesWithResponse(null, null, null)
 
         then:
-        def e = thrown(DataLakeStorageException)
+        def e = thrown(BlobStorageException)
         e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
 //        e.getServiceMessage().contains("The specified blob does not exist.")
     }
 
@@ -565,7 +569,7 @@ class FileSystemAPITest extends APISpec {
         fsc.deleteFileWithResponse(pathName, drc, null, null).getStatusCode()
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -582,7 +586,7 @@ class FileSystemAPITest extends APISpec {
         dir.create()
 
         then:
-        notThrown(DataLakeStorageException)
+        notThrown(StorageErrorException)
     }
 
     def "Create dir defaults"() {
@@ -601,7 +605,7 @@ class FileSystemAPITest extends APISpec {
             Context.NONE)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(Exception)
     }
 
     @Unroll
@@ -706,7 +710,7 @@ class FileSystemAPITest extends APISpec {
         fsc.createDirectoryWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(Exception)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -748,9 +752,9 @@ class FileSystemAPITest extends APISpec {
         client.getPropertiesWithResponse(null, null, null)
 
         then:
-        def e = thrown(DataLakeStorageException)
+        def e = thrown(BlobStorageException)
         e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
 //        e.getServiceMessage().contains("The specified blob does not exist.")
     }
 
@@ -799,7 +803,7 @@ class FileSystemAPITest extends APISpec {
         fsc.deleteDirectoryWithResponse(pathName, false, drc, null, null).getStatusCode()
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1044,7 +1048,7 @@ class FileSystemAPITest extends APISpec {
         fsc.setAccessPolicyWithResponse(null, null, cac, null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | leaseID
@@ -1078,7 +1082,7 @@ class FileSystemAPITest extends APISpec {
         fsc.setAccessPolicy(null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
     }
 
     def "Get access policy"() {
@@ -1115,7 +1119,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getAccessPolicyWithResponse(garbageLeaseID, null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
     }
 
     def "Get access policy error"() {
@@ -1126,7 +1130,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getAccessPolicy()
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
     }
 
     def "Builder bearer token validation"() {

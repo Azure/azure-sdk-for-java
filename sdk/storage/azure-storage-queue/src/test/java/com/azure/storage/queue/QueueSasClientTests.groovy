@@ -23,7 +23,7 @@ class QueueSasClientTests extends APISpec {
 
     def setup() {
         primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
-        sasClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 50))
+        sasClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 10))
         sasClient.create()
         resp = sasClient.sendMessage("test")
     }
@@ -37,7 +37,7 @@ class QueueSasClientTests extends APISpec {
                 .setIpMax("255.255.255.255"))
     }
 
-    def "QueueSAS enqueue with perm"() {
+    def "Test QueueSAS enqueue dequeue with permissions"() {
         setup:
         def permissions = new QueueSasPermission()
             .setReadPermission(true)
@@ -68,7 +68,7 @@ class QueueSasClientTests extends APISpec {
         thrown(QueueStorageException)
     }
 
-    def "QueueSAS update with perm"() {
+    def "Test QueueSAS update delete with permissions"() {
         setup:
         def permissions = new QueueSasPermission()
             .setReadPermission(true)
@@ -100,7 +100,7 @@ class QueueSasClientTests extends APISpec {
     }
 
     // NOTE: Serializer for set access policy keeps milliseconds
-    def "QueueSAS enqueue with id"() {
+    def "Test QueueSAS enqueue dequeue with identifier"() {
         setup:
 
         def permissions = new QueueSasPermission()
@@ -140,7 +140,7 @@ class QueueSasClientTests extends APISpec {
         "sastest" == dequeueMsgIterIdentifier.next().getMessageText()
     }
 
-    def "AccountSAS create queue"() {
+    def "Test Account QueueServiceSAS create queue delete queue"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
@@ -161,20 +161,19 @@ class QueueSasClientTests extends APISpec {
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()
-        def queueName = testResourceName.randomName(methodName, 50)
-        sc.createQueue(queueName)
+        sc.createQueue("queue")
 
         then:
         notThrown(QueueStorageException)
 
         when:
-        sc.deleteQueue(queueName)
+        sc.deleteQueue("queue")
 
         then:
         notThrown(QueueStorageException)
     }
 
-    def "AccountSAS list queues"() {
+    def "Test Account QueueServiceSAS list queues"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()

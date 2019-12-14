@@ -42,6 +42,9 @@ class APISpec extends Specification {
     TestMode testMode = getTestMode()
     String connectionString
 
+    // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
+    static boolean enableDebugging = false
+
     /**
      * Setup the QueueServiceClient and QueueClient common used for the API tests.
      */
@@ -53,7 +56,7 @@ class APISpec extends Specification {
         logger.info("Test Mode: {}, Name: {}", testMode, methodName)
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode, interceptorManager.getRecordedData())
-        if (getTestMode() != TestMode.PLAYBACK) {
+        if (getTestMode() == TestMode.RECORD) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;" +
@@ -67,7 +70,7 @@ class APISpec extends Specification {
     def cleanup() {
 
         interceptorManager.close()
-        if (getTestMode() != TestMode.PLAYBACK) {
+        if (getTestMode() == TestMode.RECORD) {
             QueueServiceClient cleanupQueueServiceClient = new QueueServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
@@ -106,7 +109,7 @@ class APISpec extends Specification {
         String accountName
         String accountKey
 
-        if (testMode != TestMode.PLAYBACK) {
+        if (testMode == TestMode.RECORD) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -123,25 +126,32 @@ class APISpec extends Specification {
     }
 
     def queueServiceBuilderHelper(final InterceptorManager interceptorManager) {
-        QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
         if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+            return new QueueServiceClientBuilder()
+                .connectionString(connectionString)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(getHttpClient())
+        } else {
+            return new QueueServiceClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(interceptorManager.getPlaybackClient())
         }
-        return builder
-            .connectionString(connectionString)
-            .httpClient(getHttpClient())
     }
 
     def queueBuilderHelper(final InterceptorManager interceptorManager) {
         def queueName = testResourceName.randomName("queue", 16)
-        QueueClientBuilder builder = new QueueClientBuilder()
         if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+            return new QueueClientBuilder()
+                .connectionString(connectionString)
+                .queueName(queueName)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(getHttpClient())
+        } else {
+            return new QueueClientBuilder()
+                .connectionString(connectionString)
+                .queueName(queueName)
+                .httpClient(interceptorManager.getPlaybackClient())
         }
-        return builder
-            .connectionString(connectionString)
-            .queueName(queueName)
-            .httpClient(getHttpClient())
     }
 
     QueueServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
@@ -196,7 +206,7 @@ class APISpec extends Specification {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
+        if (testMode == TestMode.RECORD) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {

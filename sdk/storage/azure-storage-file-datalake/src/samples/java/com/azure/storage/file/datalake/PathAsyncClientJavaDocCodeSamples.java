@@ -38,12 +38,6 @@ public class PathAsyncClientJavaDocCodeSamples {
             System.out.printf("Last Modified Time:%s", response.getLastModified()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.create
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.create#boolean
-        boolean overwrite = true;
-        client.create(overwrite).subscribe(response ->
-            System.out.printf("Last Modified Time:%s", response.getLastModified()));
-        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.create#boolean
-
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
@@ -128,24 +122,6 @@ public class PathAsyncClientJavaDocCodeSamples {
             response -> System.out.printf("Creation Time: %s, Size: %d%n", response.getValue().getCreationTime(),
                 response.getValue().getFileSize()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions
-    }
-
-    /**
-     * Code snippet for {@link DataLakePathAsyncClient#exists()}
-     */
-    public void existsCodeSnippet() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.exists
-        client.exists().subscribe(response -> System.out.printf("Exists? %b%n", response));
-        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.exists
-    }
-
-    /**
-     * Code snippet for {@link DataLakePathAsyncClient#existsWithResponse()}
-     */
-    public void existsWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse
-        client.existsWithResponse().subscribe(response -> System.out.printf("Exists? %b%n", response.getValue()));
-        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse
     }
 
     /**

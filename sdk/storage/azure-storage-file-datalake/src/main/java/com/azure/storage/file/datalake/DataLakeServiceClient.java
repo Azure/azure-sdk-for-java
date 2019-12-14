@@ -10,11 +10,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
@@ -24,7 +22,6 @@ import com.azure.storage.file.datalake.models.UserDelegationKey;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
-
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link DataLakeServiceClientBuilder}. This class
@@ -40,7 +37,6 @@ import java.util.Map;
 @ServiceClient(builder = DataLakeServiceClientBuilder.class)
 public class DataLakeServiceClient {
 
-    private final ClientLogger logger = new ClientLogger(DataLakeServiceClient.class);
     private final DataLakeServiceAsyncClient dataLakeServiceAsyncClient;
     private final BlobServiceClient blobServiceClient;
 
@@ -173,6 +169,7 @@ public class DataLakeServiceClient {
         return dataLakeServiceAsyncClient.getAccountUrl();
     }
 
+    // TODO (gapra) : Change return type
     /**
      * Returns a lazy loaded list of file systems in this account. The returned {@link PagedIterable} can be consumed
      * while new items are automatically retrieved as needed. For more information, see the <a
@@ -202,9 +199,8 @@ public class DataLakeServiceClient {
      * @return The list of file systems.
      */
     public PagedIterable<FileSystemItem> listFileSystems(ListFileSystemsOptions options, Duration timeout) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blobServiceClient.listBlobContainers(Transforms.toListBlobContainersOptions(options), timeout)
-            .mapPage(Transforms::toFileSystemItem), logger);
+        return blobServiceClient.listBlobContainers(Transforms.toListBlobContainersOptions(options), timeout)
+            .mapPage(Transforms::toFileSystemItem);
     }
 
     /**
@@ -239,11 +235,9 @@ public class DataLakeServiceClient {
      */
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() -> {
-            Response<com.azure.storage.blob.models.UserDelegationKey> response = blobServiceClient
-                .getUserDelegationKeyWithResponse(start, expiry, timeout, context);
-            return new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue()));
-        }, logger);
+        Response<com.azure.storage.blob.models.UserDelegationKey> response = blobServiceClient
+            .getUserDelegationKeyWithResponse(start, expiry, timeout, context);
+        return new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue()));
     }
 
     /**

@@ -49,11 +49,6 @@ public class PathClientJavaDocCodeSamples {
         System.out.printf("Last Modified Time:%s", client.create().getLastModified());
         // END: com.azure.storage.file.datalake.DataLakePathClient.create
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.create#boolean
-        boolean overwrite = true;
-        System.out.printf("Last Modified Time:%s", client.create(true).getLastModified());
-        // END: com.azure.storage.file.datalake.DataLakePathClient.create#boolean
-
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
@@ -142,24 +137,6 @@ public class PathClientJavaDocCodeSamples {
         System.out.printf("Creation Time: %s, Size: %d%n", response.getValue().getCreationTime(),
             response.getValue().getFileSize());
         // END: com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#DataLakeRequestConditions-Duration-Context
-    }
-
-    /**
-     * Code snippets for {@link DataLakePathClient#exists()}
-     */
-    public void existsCodeSnippet() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.exists
-        System.out.printf("Exists? %b%n", client.exists());
-        // END: com.azure.storage.file.datalake.DataLakePathClient.exists
-    }
-
-    /**
-     * Code snippet for {@link DataLakePathClient#existsWithResponse(Duration, Context)}
-     */
-    public void existsWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.existsWithResponse#Duration-Context
-        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, new Context(key2, value2)).getValue());
-        // END: com.azure.storage.file.datalake.DataLakePathClient.existsWithResponse#Duration-Context
     }
 
     /**

@@ -159,10 +159,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>
-                    -Xlint:unchecked
-                    -warn:-unused
-                  </compilerArgument>
+                  <compilerArgument>-Xlint:unchecked</compilerArgument>
                 </configuration>
               </execution>
               <execution>
@@ -173,10 +170,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>
-                    -Xlint:unchecked
-                    -warn:-unused
-                  </compilerArgument>
+                  <compilerArgument>-Xlint:unchecked</compilerArgument>
                 </configuration>
               </execution>
             </executions>
@@ -228,10 +222,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>
-                    -Xlint:unchecked
-                    -warn:-unused
-                  </compilerArgument>
+                  <compilerArgument>-Xlint:unchecked</compilerArgument>
                   <release>8</release>
                 </configuration>
               </execution>
@@ -243,10 +234,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>
-                    -Xlint:unchecked
-                    -warn:-unused
-                  </compilerArgument>
+                  <compilerArgument>-Xlint:unchecked</compilerArgument>
                   <release>8</release>
                 </configuration>
               </execution>

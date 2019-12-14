@@ -291,9 +291,8 @@ class FileSASTests extends APISpec {
             .sasToken(sasWithId)
             .buildClient()
 
-        def dirName = testResourceName.randomName(methodName, 60)
-        client1.createDirectory(dirName)
-        client1.deleteDirectory(dirName)
+        client1.createDirectory("dir")
+        client1.deleteDirectory("dir")
 
         def sasWithPermissions = new ShareServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -307,9 +306,8 @@ class FileSASTests extends APISpec {
             .sasToken(sasWithPermissions)
             .buildClient()
 
-        def dirName2 = testResourceName.randomName(methodName, 60)
-        client2.createDirectory(dirName2)
-        client2.deleteDirectory(dirName2)
+        client2.createDirectory("dir")
+        client2.deleteDirectory("dir")
 
         then:
         notThrown(ShareStorageException)
@@ -347,9 +345,8 @@ class FileSASTests extends APISpec {
         scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()
-        def shareName = testResourceName.randomName(methodName, 60)
-        sc.createShare(shareName)
-        sc.deleteShare(shareName)
+        sc.createShare("create")
+        sc.deleteShare("create")
 
         then:
         notThrown(ShareStorageException)

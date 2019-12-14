@@ -2,8 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
@@ -13,9 +19,6 @@ import com.azure.data.appconfiguration.implementation.ConfigurationClientCredent
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import java.lang.reflect.Field;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -31,13 +34,8 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public abstract class ConfigurationClientTestBase extends TestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
@@ -286,8 +284,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         tags.put("tag2", "value2");
 
         final SettingSelector selector = new SettingSelector()
-            .setLabelFilter("*-second*")
-            .setKeyFilter(keyPrefix + "-fetch-*")
+            .setLabels("*-second*")
+            .setKeys(keyPrefix + "-fetch-*")
             .setFields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
 
         List<ConfigurationSetting> settings = new ArrayList<>(numberToCreate);
@@ -380,17 +378,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Disabled("This test exists to clean up resources missed due to 429s.")
     @Test
     public abstract void deleteAllSettings();
-
-    @Test
-    public abstract void addHeadersFromContextPolicyTest();
-
-    void addHeadersFromContextPolicyRunner(Consumer<ConfigurationSetting> testRunner) {
-        final String key = getKey();
-        final String value = "newValue";
-
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().setKey(key).setValue(value);
-        testRunner.accept(newConfiguration);
-    }
 
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.
@@ -564,38 +551,5 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             }
         }
         return true;
-    }
-
-    /**
-     * Helper method that sets up HttpHeaders
-     *
-     * @return the http headers
-     */
-    static HttpHeaders getCustomizedHeaders() {
-        final String headerOne = "my-header1";
-        final String headerTwo = "my-header2";
-        final String headerThree = "my-header3";
-
-        final String headerOneValue = "my-header1-value";
-        final String headerTwoValue = "my-header2-value";
-        final String headerThreeValue = "my-header3-value";
-
-        final HttpHeaders headers = new HttpHeaders();
-        headers.put(headerOne, headerOneValue);
-        headers.put(headerTwo, headerTwoValue);
-        headers.put(headerThree, headerThreeValue);
-
-        return headers;
-    }
-
-    /**
-     * Helper method that check if the {@code headerContainer} contains {@code headers}.
-     *
-     * @param headers the headers that been checked
-     * @param headerContainer The headers container that check if the {@code headers} exist in it.
-     */
-    static void assertContainsHeaders(HttpHeaders headers, HttpHeaders headerContainer) {
-        headers.stream().forEach(httpHeader ->
-            assertEquals(headerContainer.getValue(httpHeader.getName()), httpHeader.getValue()));
     }
 }

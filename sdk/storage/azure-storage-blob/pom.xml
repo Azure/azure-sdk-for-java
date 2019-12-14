@@ -175,7 +175,6 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgs>-warn:-unused</compilerArgs>
                 </configuration>
               </execution>
               <execution>
@@ -186,7 +185,6 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgs>-warn:-unused</compilerArgs>
                 </configuration>
               </execution>
             </executions>
@@ -237,7 +235,6 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgs>-warn:-unused</compilerArgs>
                   <release>8</release>
                 </configuration>
               </execution>
@@ -249,7 +246,6 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgs>-warn:-unused</compilerArgs>
                   <release>8</release>
                 </configuration>
               </execution>

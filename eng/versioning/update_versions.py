@@ -23,7 +23,7 @@
 # necessary here, since our README.md files don't contain externaly dependency versions, there's no point in scanning files
 # that shouldn't require changes.
 #    python eng/versioning/update_versions.py --ut external_dependency --sr
-#
+# 
 # The script must be run at the root of azure-sdk-for-java.
 
 import argparse
@@ -54,16 +54,16 @@ def update_versions(version_map, target_file):
                 if match:
                     module_name, version_type = match.group(1), match.group(2)
                     repl_thisline = True
-                else:
-                    match = version_update_start_marker.search(line)
-                    if match:
-                        module_name, version_type = match.group(1), match.group(2)
-                        repl_open, repl_thisline = True, True
-                    else:
-                        match = version_update_end_marker.search(line)
-                        if match:
+                else:	
+                    match = version_update_start_marker.search(line)	
+                    if match:	
+                        module_name, version_type = match.group(1), match.group(2)	
+                        repl_open, repl_thisline = True, True	
+                    else:	
+                        match = version_update_end_marker.search(line)	
+                        if match:	
                             repl_open, repl_thisline = False, False
-
+                
                 if repl_thisline:
                     # If the module isn't found then just continue. This can
                     # happen if we're going through and replacing only library
@@ -121,7 +121,7 @@ def load_version_map_from_file(the_file, version_map):
 def display_version_info(version_map):
     for value in version_map.values():
         print(value)
-
+    
 def update_versions_all(update_type, build_type, target_file, skip_readme):
     version_map = {}
     # Load the version and/or external dependency file for the given UpdateType
@@ -145,10 +145,10 @@ def update_versions_all(update_type, build_type, target_file, skip_readme):
         for root, _, files in os.walk("."):
             for file_name in files:
                 file_path = root + os.sep + file_name
-                if (file_name.endswith('.md') and not skip_readme) or (file_name.startswith('pom.') and file_name.endswith('.xml')):
+                if (file_name == 'README.md' and not skip_readme) or (file_name.startswith('pom.') and file_name.endswith('.xml')):
                     update_versions(version_map, file_path)
 
-    # This is a temporary stop gap to deal with versions hard coded in java files.
+    # This is a temporary stop gap to deal with versions hard coded in java files. 
     # Everything within the begin/end tags below can be deleted once
     # https://github.com/Azure/azure-sdk-for-java/issues/3141 has been fixed.
     # version_*_java_files.txt

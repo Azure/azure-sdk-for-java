@@ -196,7 +196,7 @@ public final class RestProxy implements InvocationHandler {
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        String spanName = String.format("%s.%s", interfaceParser.getServiceName(), method.getName());
+        String spanName = String.format("Azure.%s/%s", interfaceParser.getServiceName(), method.getName());
         context = TracerProxy.setSpanName(spanName, context);
         return TracerProxy.start(spanName, context);
     }
@@ -232,7 +232,7 @@ public final class RestProxy implements InvocationHandler {
             // segment in the host.
             if (path != null && !path.isEmpty() && !path.equals("/")) {
                 String hostPath = urlBuilder.getPath();
-                if (hostPath == null || hostPath.isEmpty() || hostPath.equals("/") || path.contains("://")) {
+                if (hostPath == null || hostPath.isEmpty() || hostPath.equals("/")) {
                     urlBuilder.setPath(path);
                 } else {
                     urlBuilder.setPath(hostPath + "/" + path);

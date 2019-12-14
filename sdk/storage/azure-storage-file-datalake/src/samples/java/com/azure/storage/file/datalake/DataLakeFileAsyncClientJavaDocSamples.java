@@ -136,12 +136,6 @@ public class DataLakeFileAsyncClientJavaDocSamples {
             System.out.println("Flush data completed"));
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long-boolean
-        boolean overwrite = true;
-        client.flush(position, overwrite).subscribe(response ->
-            System.out.println("Flush data completed"));
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long-boolean
-
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions
         FileRange range = new FileRange(1024, 2048L);
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);

@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -22,15 +23,11 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.util.context.Context;
 
 import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClientTest.class);
@@ -66,7 +63,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @Override
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
-        client.listConfigurationSettings(new SettingSelector().setKeyFilter(keyPrefix + "*"))
+        client.listConfigurationSettings(new SettingSelector().setKeys(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
                     Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.setReadOnlyWithResponse(configurationSetting, false) : Mono.empty();
@@ -450,11 +447,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(expected, response))
             .verifyComplete();
 
-        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeyFilter(key).setLabelFilter(label)))
+        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeys(key).setLabels(label)))
             .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
             .verifyComplete();
 
-        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeyFilter(key)))
+        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeys(key)))
             .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
             .verifyComplete();
     }
@@ -479,7 +476,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeyFilter(key + "," + key2)))
+            StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeys(key, key2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .verifyComplete();
@@ -509,7 +506,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeyFilter(key).setLabelFilter(label + "," + label2)))
+            StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeys(key).setLabels(label, label2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .verifyComplete();
@@ -564,13 +561,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
         // Gets all versions of this value so we can get the one we want at that particular date.
-        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).collectList().block();
+        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeys(keyName)).collectList().block();
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
 
         // We want to fetch the configuration setting when we first updated its value.
-        SettingSelector options = new SettingSelector().setKeyFilter(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
+        SettingSelector options = new SettingSelector().setKeys(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
         StepVerifier.create(client.listConfigurationSettings(options))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .verifyComplete();
@@ -599,14 +596,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
         // Get all revisions for a key, they are listed in descending order.
-        StepVerifier.create(client.listRevisions(new SettingSelector().setKeyFilter(keyName)))
+        StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(keyName)))
                 .assertNext(response -> assertConfigurationEquals(updated2, response))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .assertNext(response -> assertConfigurationEquals(original, response))
                 .verifyComplete();
 
         // Verifies that we can select specific fields.
-        StepVerifier.create(client.listRevisions(new SettingSelector().setKeyFilter(keyName).setFields(SettingFields.KEY, SettingFields.ETAG)))
+        StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(keyName).setFields(SettingFields.KEY, SettingFields.ETAG)))
                 .assertNext(response -> validateListRevisions(updated2, response))
                 .assertNext(response -> validateListRevisions(updated, response))
                 .assertNext(response -> validateListRevisions(original, response))
@@ -640,7 +637,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(testInput.get(3), response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listRevisions(new SettingSelector().setKeyFilter(key + "," + key2)))
+            StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(key, key2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
@@ -679,7 +676,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(testInput.get(3), response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listRevisions(new SettingSelector().setKeyFilter(key).setLabelFilter(label + "," + label2)))
+            StepVerifier.create(client.listRevisions(new SettingSelector().setKeys(key).setLabels(label, label2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
@@ -712,14 +709,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
         // Gets all versions of this value.
-        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).collectList().block();
+        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeys(keyName)).collectList().block();
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
 
         // We want to fetch all the revisions that existed up and including when the first revision was created.
         // Revisions are returned in descending order from creation date.
-        SettingSelector options = new SettingSelector().setKeyFilter(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
+        SettingSelector options = new SettingSelector().setKeys(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
         StepVerifier.create(client.listRevisions(options))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .assertNext(response -> assertConfigurationEquals(original, response))
@@ -743,7 +740,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             results.add(client.setConfigurationSettingWithResponse(setting, false));
         }
 
-        SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
+        SettingSelector filter = new SettingSelector().setKeys(keyPrefix).setLabels(labelPrefix);
 
         Flux.merge(results).blockLast();
         StepVerifier.create(client.listRevisions(filter))
@@ -766,7 +763,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             results.add(client.setConfigurationSettingWithResponse(setting, false));
         }
 
-        SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
+        SettingSelector filter = new SettingSelector().setKeys(keyPrefix).setLabels(labelPrefix);
 
         Flux.merge(results).blockLast();
 
@@ -796,7 +793,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             results.add(client.setConfigurationSettingWithResponse(setting, false));
         }
 
-        SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
+        SettingSelector filter = new SettingSelector().setKeys(keyPrefix).setLabels(labelPrefix);
 
         Flux.merge(results).blockLast();
 
@@ -827,7 +824,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             results.add(client.setConfigurationSettingWithResponse(setting, false));
         }
 
-        SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix + "-*").setLabelFilter(labelPrefix);
+        SettingSelector filter = new SettingSelector().setKeys(keyPrefix + "-*").setLabels(labelPrefix);
 
         Flux.merge(results).blockLast();
         StepVerifier.create(client.listConfigurationSettings(filter))
@@ -866,24 +863,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @Test
     @Disabled
     public void deleteAllSettings() {
-        client.listConfigurationSettings(new SettingSelector().setKeyFilter("*"))
+        client.listConfigurationSettings(new SettingSelector().setKeys("*"))
             .flatMap(configurationSetting -> {
                 logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
                 return client.deleteConfigurationSettingWithResponse(configurationSetting, false);
             }).blockLast();
-    }
-
-    @Test
-    public void addHeadersFromContextPolicyTest() {
-        final HttpHeaders headers = getCustomizedHeaders();
-        addHeadersFromContextPolicyRunner(expected ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected)
-                .subscriberContext(Context.of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)))
-                .assertNext(response -> {
-                    final HttpHeaders requestHeaders = response.getRequest().getHeaders();
-                    assertContainsHeaders(headers, requestHeaders);
-                })
-                .verifyComplete());
     }
 }
 

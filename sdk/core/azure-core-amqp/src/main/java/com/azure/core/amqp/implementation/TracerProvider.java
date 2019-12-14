@@ -115,7 +115,7 @@ public class TracerProvider {
     }
 
     private String getSpanName(ProcessKind processKind) {
-        String spanName = "EventHubs.";
+        String spanName = "Azure.eventhubs.";
         switch (processKind) {
             case SEND:
                 spanName += "send";

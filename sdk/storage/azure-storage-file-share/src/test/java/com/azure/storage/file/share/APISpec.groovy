@@ -16,7 +16,6 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
-import org.junit.jupiter.api.Test
 import spock.lang.Specification
 
 import java.time.Duration
@@ -58,7 +57,7 @@ class APISpec extends Specification {
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
-        if (getTestMode() != TestMode.PLAYBACK) {
+        if (getTestMode() == TestMode.RECORD) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
@@ -71,7 +70,7 @@ class APISpec extends Specification {
      */
     def cleanup() {
         interceptorManager.close()
-        if (getTestMode() != TestMode.PLAYBACK) {
+        if (getTestMode() == TestMode.RECORD) {
             ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
@@ -86,7 +85,7 @@ class APISpec extends Specification {
         String accountName
         String accountKey
 
-        if (testMode != TestMode.PLAYBACK) {
+        if (testMode == TestMode.RECORD) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -128,21 +127,18 @@ class APISpec extends Specification {
     }
 
     static boolean liveMode() {
-        return testMode == TestMode.LIVE
+        return testMode == TestMode.RECORD
     }
 
     def fileServiceBuilderHelper(final InterceptorManager interceptorManager) {
-        ShareServiceClientBuilder shareServiceClientBuilder = new ShareServiceClientBuilder();
-        if (testMode != TestMode.PLAYBACK) {
-            if (testMode == TestMode.RECORD) {
-                shareServiceClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
-            }
-            return shareServiceClientBuilder
+        if (testMode == TestMode.RECORD) {
+            return new ShareServiceClientBuilder()
                 .connectionString(connectionString)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
-            return shareServiceClientBuilder
+            return new ShareServiceClientBuilder()
                 .connectionString(connectionString)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
@@ -159,7 +155,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (!liveMode()) {
+        if (liveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -184,17 +180,15 @@ class APISpec extends Specification {
     }
 
     def shareBuilderHelper(final InterceptorManager interceptorManager, final String shareName) {
-        ShareClientBuilder builder = new ShareClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
-            if (testMode == TestMode.RECORD) {
-                builder.addPolicy(interceptorManager.getRecordPolicy())
-            }
-            return builder.connectionString(connectionString)
+        if (testMode == TestMode.RECORD) {
+            return new ShareClientBuilder()
+                .connectionString(connectionString)
                 .shareName(shareName)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
-            return builder
+            return new ShareClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .httpClient(interceptorManager.getPlaybackClient())
@@ -202,18 +196,17 @@ class APISpec extends Specification {
     }
 
     def directoryBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String directoryPath) {
-        ShareFileClientBuilder builder = new ShareFileClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
-            if (testMode == TestMode.RECORD) {
-                builder.addPolicy(interceptorManager.getRecordPolicy())
-            }
-            return builder.connectionString(connectionString)
+        if (testMode == TestMode.RECORD) {
+            return new ShareFileClientBuilder()
+                .connectionString(connectionString)
                 .shareName(shareName)
                 .resourcePath(directoryPath)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
-            return builder.connectionString(connectionString)
+            return new ShareFileClientBuilder()
+                .connectionString(connectionString)
                 .shareName(shareName)
                 .resourcePath(directoryPath)
                 .httpClient(interceptorManager.getPlaybackClient())
@@ -221,19 +214,16 @@ class APISpec extends Specification {
     }
 
     def fileBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String filePath) {
-        ShareFileClientBuilder builder = new ShareFileClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
-            if (testMode == TestMode.RECORD) {
-                builder.addPolicy(interceptorManager.getRecordPolicy())
-            }
-            return builder
+        if (testMode == TestMode.RECORD) {
+            return new ShareFileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .resourcePath(filePath)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
-            return builder
+            return new ShareFileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .resourcePath(filePath)
@@ -273,7 +263,7 @@ class APISpec extends Specification {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
+        if (testMode == TestMode.RECORD) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {

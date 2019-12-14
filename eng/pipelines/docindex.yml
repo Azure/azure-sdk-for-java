@@ -160,7 +160,7 @@ jobs:
                 if ($mgmtArr.Count -gt 0) 
                 {
                     Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# Management Libraries"
-                    foreach($lib in $mgmtArr) 
+                    foreach($lib in $clientArr) 
                     {
                         Write-Output "Write $($lib) to $($Dir.Name).md"
                         Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $lib"

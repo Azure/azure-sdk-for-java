@@ -40,7 +40,6 @@ import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.lang.Timeout
 
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
@@ -48,10 +47,8 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
-import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 
-@Timeout(value = 5, unit = TimeUnit.MINUTES)
 class APISpec extends Specification {
     @Shared
     ClientLogger logger = new ClientLogger(APISpec.class)
@@ -144,8 +141,6 @@ class APISpec extends Specification {
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
-        // The property is to limit flapMap buffer size of concurrency
-        // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
     }
@@ -159,9 +154,10 @@ class APISpec extends Specification {
         this.testName = fullTestName.substring(0, substringIndex)
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
-
+        // The property is to limit flapMap buffer size of concurrency
+        // in case the upload or download open too many connections.
         // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) != null
+        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
@@ -210,14 +206,14 @@ class APISpec extends Specification {
     }
 
     static boolean liveMode() {
-        return setupTestMode() == TestMode.LIVE
+        return setupTestMode() == TestMode.RECORD
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
+        if (testMode == TestMode.RECORD) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -246,8 +242,8 @@ class APISpec extends Specification {
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
 
-        if (testMode != TestMode.PLAYBACK) {
-            if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD) {
+            if (recordLiveMode) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -294,7 +290,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -314,7 +310,7 @@ class APISpec extends Specification {
             .endpoint(endpoint)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -327,7 +323,7 @@ class APISpec extends Specification {
             .blobName(blobName)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -345,7 +341,7 @@ class APISpec extends Specification {
             .snapshot(snapshotId)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -361,7 +357,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -374,7 +370,7 @@ class APISpec extends Specification {
             .blobName(blobName)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -390,7 +386,7 @@ class APISpec extends Specification {
             builder.sasToken(sasToken)
         }
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -399,7 +395,7 @@ class APISpec extends Specification {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
+        if (testMode == TestMode.RECORD) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
@@ -732,7 +728,7 @@ class APISpec extends Specification {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (testMode != TestMode.PLAYBACK) {
+        if (testMode == TestMode.RECORD) {
             sleep(milliseconds)
         }
     }

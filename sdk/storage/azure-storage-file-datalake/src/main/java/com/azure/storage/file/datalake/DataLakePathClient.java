@@ -11,13 +11,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -112,7 +110,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Creates a resource. By default this method will not overwrite an existing path.
+     * Creates a resource.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -125,30 +123,7 @@ public class DataLakePathClient {
      * @return Information about the created resource.
      */
     public PathInfo create() {
-        return create(false);
-    }
-
-    /**
-     * Creates a resource.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.create#boolean}
-     *
-     * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
-     * Docs</a></p>
-     *
-     * @param overwrite Whether or not to overwrite, should data exist on the path.
-     *
-     * @return Information about the created resource.
-     */
-    public PathInfo create(boolean overwrite) {
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
-        if (!overwrite) {
-            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-        }
-        return createWithResponse(null, null, null, null, requestConditions, null, Context.NONE).getValue();
+        return createWithResponse(null, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -217,9 +192,8 @@ public class DataLakePathClient {
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
-                timeout, context), logger);
+        return blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
+            timeout, context);
     }
 
     /**
@@ -258,9 +232,8 @@ public class DataLakePathClient {
      */
     public Response<Void> setHttpHeadersWithResponse(PathHttpHeaders headers,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
-                Transforms.toBlobRequestConditions(requestConditions), timeout, context), logger);
+        return blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
+            Transforms.toBlobRequestConditions(requestConditions), timeout, context);
     }
 
     /**
@@ -427,40 +400,9 @@ public class DataLakePathClient {
      */
     public Response<PathProperties> getPropertiesWithResponse(DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() -> {
-            Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
-                Transforms.toBlobRequestConditions(requestConditions), timeout, context);
-            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
-        }, logger);
-    }
-
-    /**
-     * Gets if the path this client represents exists in the cloud.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.exists}
-     *
-     * @return true if the path exists, false if it doesn't
-     */
-    public Boolean exists() {
-        return existsWithResponse(null, Context.NONE).getValue();
-    }
-
-    /**
-     * Gets if the path this client represents exists in the cloud.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.existsWithResponse#Duration-Context}
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return true if the path exists, false if it doesn't
-     */
-    public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blockBlobClient.existsWithResponse(timeout, context), logger);
+        Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
+            Transforms.toBlobRequestConditions(requestConditions), timeout, context);
+        return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
     }
 
     /**

@@ -1,11 +1,5 @@
 # Change Log azure-storage-file-datalake
 
-## Version XX.X.X-beta.X (XXXX-XX-XX)
-- Added SAS generation methods on clients to improve discoverability and convenience of sas.
-- Mapped StorageErrorException and BlobStorageException to DataLakeStorageException.
-- Added support for exists method on FileClients and DirectoryClients
-- Added support for no overwrite by default on min create method on FileClients and DirectoryClients and flush method on FileClients 
-
 ## Version 12.0.0-beta.7 (2019-12-04)
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md) 

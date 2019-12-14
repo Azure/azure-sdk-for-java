@@ -178,7 +178,7 @@ public class ConfigurationClientCredentials {
 
         CredentialInformation(String connectionString) {
             if (CoreUtils.isNullOrEmpty(connectionString)) {
-                throw new IllegalArgumentException("'connectionString' cannot be null or empty.");
+                throw new IllegalArgumentException(connectionString);
             }
 
             String[] args = connectionString.split(";");

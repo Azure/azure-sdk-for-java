@@ -7,14 +7,13 @@ messages on queue client with tracing instrumentation.
 Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and **[Zipkin Exporter][zipkin_exporter]** as exporter.
 
 ### Adding dependencies to your project:
-
 [//]: # ({x-version-update-start;com.azure:azure-storage-queue;current})
 ```xml
 <!-- Add Storage Queue dependency -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.1.0</version>
+  <version>12.1.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -24,11 +23,10 @@ Sample uses **[opencensus-impl][opencensus_impl]** as implementation package and
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opencensus</artifactId>
-  <version>1.0.0-beta.5</version>
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
 ```xml
 <!-- Add opencensus-impl and opencensus-zipkin-exporter to your project -->
 <dependency>

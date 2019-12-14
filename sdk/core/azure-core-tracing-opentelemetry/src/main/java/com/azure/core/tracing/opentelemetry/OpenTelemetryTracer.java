@@ -191,10 +191,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             Builder spanBuilder = getSpanBuilder(spanName, context);
             span = spanBuilder.setSpanKind(Span.Kind.SERVER).startSpan();
         }
-        if (span.isRecording()) {
-            // If span is sampled in, add additional request attributes
-            addSpanRequestAttributes(span, context, spanName);
-        }
         return context.addData(PARENT_SPAN_KEY, span).addData("scope", TRACER.withSpan(span));
     }
 
@@ -247,14 +243,15 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     /**
      * Extracts the component name from the given span name.
      *
-     * @param spanName The spanName containing the component name i.e spanName = "EventHubs.send"
+     * @param spanName The spanName containing the component name i.e spanName = "Azure.eventhubs.send"
      * @return The component name contained in the context i.e "eventhubs"
      */
     private static String parseComponentValue(String spanName) {
         if (spanName != null && !spanName.isEmpty()) {
+            int componentNameStartIndex = spanName.indexOf(".");
             int componentNameEndIndex = spanName.lastIndexOf(".");
-            if (componentNameEndIndex != -1) {
-                return spanName.substring(0, componentNameEndIndex);
+            if (componentNameStartIndex != -1 && componentNameEndIndex != -1) {
+                return spanName.substring(componentNameStartIndex + 1, componentNameEndIndex);
             }
         }
         return "";

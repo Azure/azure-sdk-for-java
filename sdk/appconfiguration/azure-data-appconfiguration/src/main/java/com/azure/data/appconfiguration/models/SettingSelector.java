@@ -4,8 +4,8 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
+import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,8 +15,8 @@ import java.time.format.DateTimeFormatter;
  *
  * <ul>
  * <li>
- * Providing {@link #getLabelFilter() labelFilter} will filter {@link ConfigurationSetting ConfigurationSettings} that
- * match any label name in conjunction with the keys that are passed in to the service request.
+ * Providing {@link #getLabels() labels} will filter {@link ConfigurationSetting ConfigurationSettings} that match any
+ * label name in conjunction with the keys that are passed in to the service request.
  * </li>
  * <li>
  * Providing {@link #getAcceptDateTime() acceptDateTime} will return the representation of matching {@link
@@ -32,8 +32,8 @@ import java.time.format.DateTimeFormatter;
  */
 @Fluent
 public class SettingSelector {
-    private String keyFilter;
-    private String labelFilter;
+    private String[] keys;
+    private String[] labels;
     private SettingFields[] fields;
     private String acceptDatetime;
 
@@ -49,18 +49,17 @@ public class SettingSelector {
      *
      * <p>
      * Examples:
-     * <ul>
-     * <li>If {@code keyFilter = "*"}, settings with any key are returned.</li>
-     * <li>If {@code keyFilter = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
-     * <li>If {@code keyFilter = "abc*"}, settings with a key starting with "abc" are returned.</li>
-     * <li>If {@code keyFilter = "*abc*"}, settings with a key containing "abc" are returned.</li>
-     * <li>If {@code keyFilter = "abc,def"}, settings with a key equal to "abc" or "def" are returned.</li>
-     * </ul>
+     * <ol>
+     * <li>If keys = "*", settings with any key are returned.</li>
+     * <li>If keys = "abc1234", settings with a key equal to "abc1234" are returned.</li>
+     * <li>If keys = "abc*", settings with a key starting with "abc" are returned.</li>
+     * <li>If keys = "*abc*", settings with a key containing "abc" are returned.</li>
+     * </ol>
      *
      * @return The expressions to filter ConfigurationSetting keys on.
      */
-    public String getKeyFilter() {
-        return keyFilter;
+    public String[] getKeys() {
+        return keys == null ? new String[0] : CoreUtils.clone(keys);
     }
 
     /**
@@ -69,18 +68,18 @@ public class SettingSelector {
      * <p>
      * Examples:
      * <ul>
-     * <li>If {@code keyFilter = "*"}, settings with any key are returned.</li>
-     * <li>If {@code keyFilter = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
-     * <li>If {@code keyFilter = "abc*"}, settings with a key starting with "abc" are returned.</li>
-     * <li>If {@code keyFilter = "*abc*"}, settings with a key containing "abc" are returned.</li>
-     * <li>If {@code keyFilter = "abc,def"}, settings with a key equal to "abc" or "def" are returned.</li>
+     * <li>If {@code keys = "*"}, settings with any key are returned.</li>
+     * <li>If {@code keys = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
+     * <li>If {@code keys = "abc*"}, settings with a key starting with "abc" are returned.</li>
+     * <li>If {@code keys = "*abc*"}, settings with a key containing "abc" are returned.</li>
+     * <li>If {@code keys = "abc,def"}, settings with a key equal to "abc" or "def" are returned.</li>
      * </ul>
      *
-     * @param keyFilter The expressions to filter ConfigurationSetting keys on.
+     * @param keys The expressions to filter ConfigurationSetting keys on.
      * @return The updated SettingSelector object
      */
-    public SettingSelector setKeyFilter(String keyFilter) {
-        this.keyFilter = keyFilter;
+    public SettingSelector setKeys(String... keys) {
+        this.keys = keys;
         return this;
     }
 
@@ -94,42 +93,42 @@ public class SettingSelector {
      * <p>
      * Examples:
      * <ul>
-     * <li>If {@code labelFilter = "*"}, settings with any label are returned.</li>
-     * <li>If {@code labelFilter = "\0"}, settings without any label are returned.</li>
-     * <li>If {@code labelFilter = ""}, settings without any label are returned.</li>
-     * <li>If {@code labelFilter = null}, settings without any label are returned.</li>
-     * <li>If {@code labelFilter = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
-     * <li>If {@code labelFilter = "abc*"}, settings with a label starting with "abc" are returned.</li>
-     * <li>If {@code labelFilter = "*abc*"}, settings with a label containing "abc" are returned.</li>
-     * <li>If {@code labelFilter = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
+     * <li>If {@code labels = "*"}, settings with any label are returned.</li>
+     * <li>If {@code labels = "\0"}, settings without any label are returned.</li>
+     * <li>If {@code labels = ""}, settings without any label are returned.</li>
+     * <li>If {@code labels = null}, settings without any label are returned.</li>
+     * <li>If {@code labels = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
+     * <li>If {@code labels = "abc*"}, settings with a label starting with "abc" are returned.</li>
+     * <li>If {@code labels = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     * <li>If {@code labels = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
      * </ul>
      *
      * @return labels The labels used to filter GET requests from the service.
      */
-    public String getLabelFilter() {
-        return labelFilter;
+    public String[] getLabels() {
+        return labels == null ? new String[0] : CoreUtils.clone(labels);
     }
 
     /**
-     * Sets the expression to filter {@link ConfigurationSetting#getLabel() labels} on for the request.
+     * Sets the query to match {@link ConfigurationSetting#getLabel() labels} in the service.
      *
      * <p>
      * Examples:
      * <ul>
-     * <li>If {@code labelFilter = "*"}, settings with any label are returned.</li>
-     * <li>If {@code labelFilter = "\0"}, settings without any label are returned. (This is the default label.)</li>
-     * <li>If {@code labelFilter = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
-     * <li>If {@code labelFilter = "abc*"}, settings with a label starting with "abc" are returned.</li>
-     * <li>If {@code labelFilter = "*abc*"}, settings with a label containing "abc" are returned.</li>
-     * <li>If {@code labelFilter = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
+     * <li>If {@code labels = "*"}, settings with any label are returned.</li>
+     * <li>If {@code labels = "\0"}, settings without any label are returned. (This is the default label.)</li>
+     * <li>If {@code labels = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
+     * <li>If {@code labels = "abc*"}, settings with a label starting with "abc" are returned.</li>
+     * <li>If {@code labels = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     * <li>If {@code labels = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
      * </ul>
      *
-     * @param labelFilter The expressions to filter ConfigurationSetting labels on. If the provided value is
-     * {@code null} or {@code ""}, all ConfigurationSettings will be returned regardless of their label.
+     * @param labels The ConfigurationSetting labels to match. If the provided value is {@code null} or {@code ""}, all
+     * ConfigurationSettings will be returned regardless of their label.
      * @return SettingSelector The updated SettingSelector object.
      */
-    public SettingSelector setLabelFilter(String labelFilter) {
-        this.labelFilter = labelFilter;
+    public SettingSelector setLabels(String... labels) {
+        this.labels = labels;
         return this;
     }
 
@@ -188,7 +187,10 @@ public class SettingSelector {
             fields = CoreUtils.arrayToString(this.fields, SettingFields::toStringMapper);
         }
 
-        return String.format("SettingSelector(keyFilter=%s, labelFilter=%s, acceptDateTime=%s, fields=%s)",
-            this.keyFilter, this.labelFilter, this.acceptDatetime, fields);
+        return String.format("SettingSelector(keys=%s, labels=%s, acceptDateTime=%s, fields=%s)",
+            CoreUtils.arrayToString(this.keys, key -> key),
+            CoreUtils.arrayToString(this.labels, label -> label),
+            this.acceptDatetime,
+            fields);
     }
 }

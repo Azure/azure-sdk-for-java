@@ -5,7 +5,9 @@ import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobStorageException
 
+import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
 
@@ -39,7 +41,7 @@ class FileAPITest extends APISpec {
         fc.create()
 
         then:
-        notThrown(DataLakeStorageException)
+        notThrown(StorageErrorException)
     }
 
     def "Create defaults"() {
@@ -63,33 +65,7 @@ class FileAPITest extends APISpec {
             Context.NONE)
 
         then:
-        thrown(DataLakeStorageException)
-    }
-
-    def "Create overwrite"() {
-        when:
-        fc = fsc.getFileClient(generatePathName())
-        fc.create()
-
-        // Try to create the resource again
-        fc.create(false)
-
-        then:
-        thrown(DataLakeStorageException)
-    }
-
-    def "Exists"() {
-        when:
-        fc = fsc.getFileClient(generatePathName())
-        fc.create()
-
-        then:
-        fc.exists()
-    }
-
-    def "Does not exist"() {
-        expect:
-        !fsc.getFileClient(generatePathName()).exists()
+        thrown(StorageErrorException)
     }
 
     @Unroll
@@ -185,7 +161,7 @@ class FileAPITest extends APISpec {
         fc.createWithResponse(null, null, null, null, drc, null, Context.NONE)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -216,9 +192,9 @@ class FileAPITest extends APISpec {
         fc.getPropertiesWithResponse(null, null, null)
 
         then:
-        def e = thrown(DataLakeStorageException)
+        def e = thrown(BlobStorageException)
         e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
+        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
 //        e.getServiceMessage().contains("The specified blob does not exist.")
     }
 
@@ -263,7 +239,7 @@ class FileAPITest extends APISpec {
         fc.deleteWithResponse(drc, null, null).getStatusCode()
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -279,7 +255,7 @@ class FileAPITest extends APISpec {
         def resp = fc.setPermissions(permissions, group, owner)
 
         then:
-        notThrown(DataLakeStorageException)
+        notThrown(StorageErrorException)
         resp.getETag()
         resp.getLastModified()
     }
@@ -330,7 +306,7 @@ class FileAPITest extends APISpec {
         fc.setPermissionsWithResponse(permissions, group, owner, drc, null, Context.NONE).getStatusCode() == 200
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -349,7 +325,7 @@ class FileAPITest extends APISpec {
         fc.setPermissionsWithResponse(permissions, group, owner, null, null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
     }
 
     def "Set ACL min"() {
@@ -357,7 +333,7 @@ class FileAPITest extends APISpec {
         def resp = fc.setAccessControlList(pathAccessControlEntries, group, owner)
 
         then:
-        notThrown(DataLakeStorageException)
+        notThrown(StorageErrorException)
         resp.getETag()
         resp.getLastModified()
     }
@@ -408,7 +384,7 @@ class FileAPITest extends APISpec {
         fc.setAccessControlListWithResponse(pathAccessControlEntries, group, owner, drc, null, Context.NONE).getStatusCode() == 200
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -427,7 +403,7 @@ class FileAPITest extends APISpec {
         fc.setAccessControlList(pathAccessControlEntries, group, owner)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
     }
 
     def "Get access control min"() {
@@ -435,7 +411,7 @@ class FileAPITest extends APISpec {
         PathAccessControl pac = fc.getAccessControl()
 
         then:
-        notThrown(DataLakeStorageException)
+        notThrown(StorageErrorException)
         pac.getAccessControlList()
         pac.getPermissions()
         pac.getOwner()
@@ -494,7 +470,7 @@ class FileAPITest extends APISpec {
         fc.getAccessControlWithResponse(false, drc, null, null).getStatusCode() == 200
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -586,7 +562,7 @@ class FileAPITest extends APISpec {
         fc.getPropertiesWithResponse(drc, null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -605,7 +581,7 @@ class FileAPITest extends APISpec {
         fc.getProperties()
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
     }
 
     def "Set HTTP headers null"() {
@@ -701,7 +677,7 @@ class FileAPITest extends APISpec {
         fc.setHttpHeadersWithResponse(null, drc, null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -720,7 +696,7 @@ class FileAPITest extends APISpec {
         fc.setHttpHeaders(null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
     }
 
     def "Set metadata min"() {
@@ -798,7 +774,7 @@ class FileAPITest extends APISpec {
         fc.setMetadataWithResponse(null, drc, null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -817,7 +793,7 @@ class FileAPITest extends APISpec {
         fc.setMetadata(null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
     }
 
     def "Read all null"() {
@@ -868,7 +844,7 @@ class FileAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        notThrown(DataLakeStorageException)
+        notThrown(BlobStorageException)
         result.length == 0
     }
 
@@ -986,7 +962,7 @@ class FileAPITest extends APISpec {
         fc.readWithResponse(new ByteArrayOutputStream(), null, null, drc, false, null, null).getStatusCode()
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1034,13 +1010,13 @@ class FileAPITest extends APISpec {
         renamedClient.getProperties()
 
         then:
-        notThrown(DataLakeStorageException)
+        notThrown(StorageErrorException)
 
         when:
         fc.getProperties()
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(BlobStorageException)
     }
 
     def "Rename error"() {
@@ -1051,7 +1027,7 @@ class FileAPITest extends APISpec {
         fc.renameWithResponse(generatePathName(), null, null, null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
     }
 
     @Unroll
@@ -1098,7 +1074,7 @@ class FileAPITest extends APISpec {
         fc.renameWithResponse(generatePathName(), drc, null, null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1156,7 +1132,7 @@ class FileAPITest extends APISpec {
         fc.renameWithResponse(pathName, null, drc, null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1172,7 +1148,7 @@ class FileAPITest extends APISpec {
         fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
 
         then:
-        notThrown(DataLakeStorageException)
+        notThrown(StorageErrorException)
     }
 
     def "Append data"() {
@@ -1226,7 +1202,7 @@ class FileAPITest extends APISpec {
         fc.append(new ByteArrayInputStream(new byte[0]), 0, 0)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
     }
 
     def "Append data null body"() {
@@ -1255,7 +1231,7 @@ class FileAPITest extends APISpec {
         fc.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, garbageLeaseID, null, null)
 
         then:
-        def e = thrown(DataLakeStorageException)
+        def e = thrown(StorageErrorException)
         e.getResponse().getStatusCode() == 412
     }
 
@@ -1267,7 +1243,7 @@ class FileAPITest extends APISpec {
         fc.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, null, null, null)
 
         then:
-        def e = thrown(DataLakeStorageException)
+        def e = thrown(StorageErrorException)
         e.getResponse().getStatusCode() == 404
     }
 
@@ -1277,7 +1253,7 @@ class FileAPITest extends APISpec {
         fc.flush(defaultDataSize)
 
         then:
-        notThrown(DataLakeStorageException)
+        notThrown(StorageErrorException)
     }
 
     def "Flush close"() {
@@ -1288,7 +1264,7 @@ class FileAPITest extends APISpec {
         fc.flushWithResponse(defaultDataSize, false, true, null, null, null, null)
 
         then:
-        notThrown(DataLakeStorageException)
+        notThrown(StorageErrorException)
     }
 
     def "Flush retain uncommitted data "() {
@@ -1299,7 +1275,7 @@ class FileAPITest extends APISpec {
         fc.flushWithResponse(defaultDataSize, true, false, null, null, null, null)
 
         then:
-        notThrown(DataLakeStorageException)
+        notThrown(StorageErrorException)
     }
 
     def "Flush IA"() {
@@ -1310,7 +1286,7 @@ class FileAPITest extends APISpec {
         fc.flushWithResponse(4, false, false, null, null, null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
     }
 
     @Unroll
@@ -1390,7 +1366,7 @@ class FileAPITest extends APISpec {
         when:
         fc.flushWithResponse(defaultDataSize, false, false, null, drc, null, null)
         then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1409,19 +1385,7 @@ class FileAPITest extends APISpec {
         fc.flush(1)
 
         then:
-        thrown(DataLakeStorageException)
-    }
-
-    def "Flush data overwrite"() {
-        when:
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        // Attempt to write data without overwrite enabled
-        fc.flush(defaultDataSize, false)
-
-        then:
-        thrown(DataLakeStorageException)
+        thrown(StorageErrorException)
     }
 
     def "Get File Name and Build Client"() {

@@ -19,7 +19,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
-import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
@@ -257,7 +256,6 @@ public class DataLakeServiceAsyncClient {
     public PagedFlux<FileSystemItem> listFileSystems(ListFileSystemsOptions options) {
         try {
             return blobServiceAsyncClient.listBlobContainers(Transforms.toListBlobContainersOptions(options))
-//                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex))
                 .mapPage(Transforms::toFileSystemItem);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
@@ -280,7 +278,8 @@ public class DataLakeServiceAsyncClient {
      */
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         try {
-            return this.getUserDelegationKeyWithResponse(start, expiry).flatMap(FluxUtil::toMono);
+            return blobServiceAsyncClient.getUserDelegationKey(start, expiry)
+                .map(Transforms::toDataLakeUserDelegationKey);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -304,9 +303,7 @@ public class DataLakeServiceAsyncClient {
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
         try {
-            return blobServiceAsyncClient.getUserDelegationKeyWithResponse(start, expiry)
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-                .map(response ->
+            return blobServiceAsyncClient.getUserDelegationKeyWithResponse(start, expiry).map(response ->
                 new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

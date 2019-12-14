@@ -30,8 +30,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
@@ -142,8 +140,7 @@ class PartitionPumpManager {
         eventHubConsumer.receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
             .subscribe(partitionEvent -> {
                 EventData eventData = partitionEvent.getData();
-                Context processSpanContext = startProcessTracingSpan(eventData, eventHubConsumer.getEventHubName(),
-                    eventHubConsumer.getFullyQualifiedNamespace());
+                Context processSpanContext = startProcessTracingSpan(eventData);
                 if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
                     eventData.addContext(SPAN_CONTEXT_KEY, processSpanContext);
                 }
@@ -202,19 +199,15 @@ class PartitionPumpManager {
     }
 
     /*
-     * Starts a new process tracing span and attaches the returned context to the EventData object for users.
+     * Starts a new process tracing span and attached context the EventData object for users.
      */
-    private Context startProcessTracingSpan(EventData eventData, String eventHubName, String fullyQualifiedNamespace) {
+    private Context startProcessTracingSpan(EventData eventData) {
         Object diagnosticId = eventData.getProperties().get(DIAGNOSTIC_ID_KEY);
         if (diagnosticId == null || !tracerProvider.isEnabled()) {
             return Context.NONE;
         }
-
         Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
-        Context entityContext = spanContext.addData(ENTITY_PATH_KEY, eventHubName);
-
-        return tracerProvider.startSpan(entityContext.addData(HOST_NAME_KEY, fullyQualifiedNamespace),
-            ProcessKind.PROCESS);
+        return tracerProvider.startSpan(spanContext, ProcessKind.PROCESS);
     }
 
     /*
