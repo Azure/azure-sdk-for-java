@@ -30,6 +30,7 @@ public class ManagedIdentityCredentialLiveTest {
     public void testMSIEndpointWithSystemAssigned() throws Exception {
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT));
         org.junit.Assume.assumeTrue(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
         IdentityClient client = new IdentityClientBuilder().build();
         StepVerifier.create(client.authenticateToManagedIdentityEndpoint(
@@ -63,6 +64,7 @@ public class ManagedIdentityCredentialLiveTest {
     public void testMSIEndpointWithUserAssigned() throws Exception {
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT));
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
         IdentityClient client = new IdentityClientBuilder()
             .clientId(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
@@ -100,6 +102,7 @@ public class ManagedIdentityCredentialLiveTest {
     public void testIMDSEndpointWithSystemAssigned() throws Exception {
         org.junit.Assume.assumeTrue(checkIMDSAvailable());
         org.junit.Assume.assumeTrue(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
         IdentityClient client = new IdentityClientBuilder().build();
         StepVerifier.create(client.authenticateToIMDSEndpoint(
@@ -131,6 +134,7 @@ public class ManagedIdentityCredentialLiveTest {
     public void testIMDSEndpointWithUserAssigned() throws Exception {
         org.junit.Assume.assumeTrue(checkIMDSAvailable());
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
         IdentityClient client = new IdentityClientBuilder()
             .clientId(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
