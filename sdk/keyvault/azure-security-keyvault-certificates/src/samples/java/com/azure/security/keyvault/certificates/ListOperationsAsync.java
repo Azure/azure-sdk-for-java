@@ -100,7 +100,7 @@ public class ListOperationsAsync {
         Thread.sleep(5000);
 
         // Let's set certificate contacts on the Key vault.
-        CertificateContact oontactToAdd = new CertificateContact("user", "useremail@exmaple.com");
+        CertificateContact oontactToAdd = new CertificateContact().setName("user").setEmail("useremail@exmaple.com");
         certificateAsyncClient.setContacts(Arrays.asList(oontactToAdd)).subscribe(contact ->
             System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmail())
         );

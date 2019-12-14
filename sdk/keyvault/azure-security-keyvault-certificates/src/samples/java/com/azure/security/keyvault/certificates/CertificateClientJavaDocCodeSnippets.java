@@ -170,8 +170,8 @@ public final class CertificateClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.createIssuer#CertificateIssuer
         CertificateIssuer issuerToCreate = new CertificateIssuer("myissuer", "myProvider")
             .setAccountId("testAccount")
-            .setAdministratorContacts(Arrays.asList(new AdministratorContact("test", "name",
-                "test@example.com")));
+            .setAdministratorContacts(Arrays.asList(new AdministratorContact().setFirstName("test").setLastName("name")
+                .setEmail("test@example.com")));
         CertificateIssuer returnedIssuer = certificateClient.createIssuer(issuerToCreate);
         System.out.printf("Created Issuer with name %s provider %s", returnedIssuer.getName(),
             returnedIssuer.getProvider());
@@ -180,8 +180,8 @@ public final class CertificateClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#CertificateIssuer-Context
         CertificateIssuer issuer = new CertificateIssuer("issuerName", "myProvider")
             .setAccountId("testAccount")
-            .setAdministratorContacts(Arrays.asList(new AdministratorContact("test", "name",
-                "test@example.com")));
+            .setAdministratorContacts(Arrays.asList(new AdministratorContact().setFirstName("test").setLastName("name")
+                .setEmail("test@example.com")));
         Response<CertificateIssuer> issuerResponse = certificateClient.createIssuerWithResponse(issuer,
             new Context(key1, value1));
         System.out.printf("Created Issuer with name %s provider %s", issuerResponse.getValue().getName(),
@@ -523,7 +523,7 @@ public final class CertificateClientJavaDocCodeSnippets {
     public void contactsOperationsCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.setContacts#contacts
-        CertificateContact contactToAdd = new CertificateContact("user", "useremail@exmaple.com");
+        CertificateContact contactToAdd = new CertificateContact().setName("user").setEmail("useremail@exmaple.com");
         for (CertificateContact contact : certificateClient.setContacts(Arrays.asList(contactToAdd))) {
             System.out.printf("Added contact with name %s and email %s to key vault", contact.getName(),
                 contact.getEmail());
@@ -531,7 +531,7 @@ public final class CertificateClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.certificates.CertificateClient.setContacts#contacts
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.setContacts#contacts-context
-        CertificateContact sampleContact = new CertificateContact("user", "useremail@exmaple.com");
+        CertificateContact sampleContact = new CertificateContact().setName("user").setEmail("useremail@exmaple.com");
         for (CertificateContact contact : certificateClient.setContacts(Arrays.asList(sampleContact),
             new Context(key1, value1))) {
             System.out.printf("Added contact with name %s and email %s to key vault", contact.getName(),

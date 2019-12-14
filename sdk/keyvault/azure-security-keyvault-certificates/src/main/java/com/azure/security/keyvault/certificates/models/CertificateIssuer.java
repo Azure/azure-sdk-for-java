@@ -85,6 +85,15 @@ public final class CertificateIssuer {
         this.provider = provider;
     }
 
+    /**
+     * Creates an instance of the issuer.
+     *
+     * @param name The name of the issuer.
+     */
+    public CertificateIssuer(String name) {
+        this.name = name;
+    }
+
     CertificateIssuer() { }
 
     /**
@@ -240,7 +249,7 @@ public final class CertificateIssuer {
             String lastName = map.containsKey("last_name") ? map.get("last_name") : "";
             String email = map.containsKey("email") ? map.get("email") : "";
             String phone = map.containsKey("phone") ? map.get("phone") : "";
-            output.add(new AdministratorContact(firstName, lastName, email, phone));
+            output.add(new AdministratorContact().setFirstName(firstName).setLastName(lastName).setEmail(email).setPhone(phone));
         }
         return  output;
     }

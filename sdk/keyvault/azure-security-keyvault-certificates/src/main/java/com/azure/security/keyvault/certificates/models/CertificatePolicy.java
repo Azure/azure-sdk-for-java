@@ -405,17 +405,6 @@ public final class CertificatePolicy {
     }
 
     /**
-     * Set the issuer name.
-     *
-     * @param issuerName the issuer name to set
-     * @return the updated CertificatePolicy object itself.
-     */
-    public CertificatePolicy setIssuerName(String issuerName) {
-        this.issuerName = issuerName;
-        return this;
-    }
-
-    /**
      * Set the certificate type to request from the issuer.
      *
      * @param certificateType the certificateType to request from issuer.

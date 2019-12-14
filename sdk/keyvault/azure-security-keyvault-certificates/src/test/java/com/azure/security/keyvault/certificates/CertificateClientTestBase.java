@@ -350,7 +350,7 @@ public abstract class CertificateClientTestBase extends TestBase {
 
 
     CertificateContact setupContact() {
-        return new CertificateContact("name", "first.last@gmail.com", "2323-31232");
+        return new CertificateContact().setName("name").setEmail("first.last@gmail.com").setPhone("2323-31232");
     }
 
     Boolean validateContact(CertificateContact expected, CertificateContact actual) {
@@ -408,7 +408,7 @@ public abstract class CertificateClientTestBase extends TestBase {
 
     CertificateIssuer setupIssuer(String issuerName) {
         return new CertificateIssuer(issuerName, "Test")
-            .setAdministratorContacts(Arrays.asList(new AdministratorContact("first", "last", "first.last@hotmail.com", "12345")))
+            .setAdministratorContacts(Arrays.asList(new AdministratorContact().setFirstName("first").setLastName("last").setEmail("first.last@hotmail.com").setPhone("12345")))
             .setAccountId("issuerAccountId")
             .setEnabled(true)
             .setOrganizationId("orgId")

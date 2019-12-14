@@ -570,8 +570,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     public void contactsOperationsCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts
-        CertificateContact oontactToAdd = new CertificateContact("user", "useremail@exmaple.com");
-        certificateAsyncClient.setContacts(Arrays.asList(oontactToAdd)).subscribe(contact ->
+        CertificateContact contactToAdd = new CertificateContact().setName("user").setEmail("useremail@exmaple.com");
+        certificateAsyncClient.setContacts(Arrays.asList(contactToAdd)).subscribe(contact ->
             System.out.printf("Contact name %s and email %s", contact.getName(), contact.getEmail())
         );
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts
