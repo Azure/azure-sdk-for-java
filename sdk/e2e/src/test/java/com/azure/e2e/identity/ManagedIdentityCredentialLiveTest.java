@@ -21,17 +21,17 @@ import java.net.URLEncoder;
 public class ManagedIdentityCredentialLiveTest {
     private static final String AZURE_VAULT_URL = "AZURE_VAULT_URL";
     private static final String VAULT_SECRET_NAME = "secret";
+    private static final Configuration CONFIGURATION = Configuration.getGlobalConfiguration().clone();
 
     @Test
     public void testMSIEndpointWithSystemAssigned() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_MSI_ENDPOINT));
-        org.junit.Assume.assumeTrue(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeTrue(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
 
         IdentityClient client = new IdentityClientBuilder().build();
         StepVerifier.create(client.authenticateToManagedIdentityEndpoint(
-            configuration.get(Configuration.PROPERTY_MSI_ENDPOINT),
-            configuration.get(Configuration.PROPERTY_MSI_SECRET),
+            CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
+            CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default")))
             .expectNextMatches(accessToken -> accessToken != null && accessToken.getToken() != null)
             .verifyComplete();
@@ -39,15 +39,14 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testMSIEndpointWithSystemAssignedAccessKeyVault() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_MSI_ENDPOINT));
-        org.junit.Assume.assumeTrue(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeTrue(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
 
         SecretClient client = new SecretClientBuilder()
             .credential(credential)
-            .vaultUrl(configuration.get(AZURE_VAULT_URL))
+            .vaultUrl(CONFIGURATION.get(AZURE_VAULT_URL))
             .buildClient();
 
         KeyVaultSecret secret = client.getSecret(VAULT_SECRET_NAME);
@@ -58,16 +57,15 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testMSIEndpointWithUserAssigned() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_MSI_ENDPOINT));
-        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         IdentityClient client = new IdentityClientBuilder()
-            .clientId(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
+            .clientId(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
             .build();
         StepVerifier.create(client.authenticateToManagedIdentityEndpoint(
-            configuration.get(Configuration.PROPERTY_MSI_ENDPOINT),
-            configuration.get(Configuration.PROPERTY_MSI_SECRET),
+            CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
+            CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default")))
             .expectNextMatches(accessToken -> accessToken != null && accessToken.getToken() != null)
             .verifyComplete();
@@ -75,17 +73,16 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testMSIEndpointWithUserAssignedAccessKeyVault() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_MSI_ENDPOINT));
-        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
-            .clientId(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
+            .clientId(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
             .build();
 
         SecretClient client = new SecretClientBuilder()
             .credential(credential)
-            .vaultUrl(configuration.get(AZURE_VAULT_URL))
+            .vaultUrl(CONFIGURATION.get(AZURE_VAULT_URL))
             .buildClient();
 
         KeyVaultSecret secret = client.getSecret(VAULT_SECRET_NAME);
@@ -96,9 +93,8 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testIMDSEndpointWithSystemAssigned() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
         org.junit.Assume.assumeTrue(checkIMDSAvailable());
-        org.junit.Assume.assumeTrue(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
+        org.junit.Assume.assumeTrue(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
 
         IdentityClient client = new IdentityClientBuilder().build();
         StepVerifier.create(client.authenticateToIMDSEndpoint(
@@ -109,15 +105,14 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testIMDSEndpointWithSystemAssignedAccessKeyVault() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
         org.junit.Assume.assumeTrue(checkIMDSAvailable());
-        org.junit.Assume.assumeTrue(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
+        org.junit.Assume.assumeTrue(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
 
         SecretClient client = new SecretClientBuilder()
             .credential(credential)
-            .vaultUrl(configuration.get(AZURE_VAULT_URL))
+            .vaultUrl(CONFIGURATION.get(AZURE_VAULT_URL))
             .buildClient();
 
         KeyVaultSecret secret = client.getSecret(VAULT_SECRET_NAME);
@@ -128,12 +123,11 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testIMDSEndpointWithUserAssigned() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
         org.junit.Assume.assumeTrue(checkIMDSAvailable());
-        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         IdentityClient client = new IdentityClientBuilder()
-            .clientId(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
+            .clientId(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
             .build();
         StepVerifier.create(client.authenticateToIMDSEndpoint(
             new TokenRequestContext().addScopes("https://management.azure.com/.default")))
@@ -143,17 +137,16 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testIMDSEndpointWithUserAssignedAccessKeyVault() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
         org.junit.Assume.assumeTrue(checkIMDSAvailable());
-        org.junit.Assume.assumeNotNull(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
-            .clientId(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
+            .clientId(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
             .build();
 
         SecretClient client = new SecretClientBuilder()
             .credential(credential)
-            .vaultUrl(configuration.get(AZURE_VAULT_URL))
+            .vaultUrl(CONFIGURATION.get(AZURE_VAULT_URL))
             .buildClient();
 
         KeyVaultSecret secret = client.getSecret(VAULT_SECRET_NAME);
