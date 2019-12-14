@@ -63,8 +63,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     private boolean showStatistics = false;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
-
-    static final String LANGUAGE_API = "Language";
+    enum TestEndpoint {
+        LANGUAGE,
+    }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         TokenCredential credential = null;
@@ -281,7 +282,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param testApi the API to test.
      */
     <T> void validateBatchResult(DocumentResultCollection<T> actualResult,
-                                 DocumentResultCollection<T> expectedResult, String testApi) {
+                                 DocumentResultCollection<T> expectedResult, TestEndpoint testApi) {
         // assert batch result
         assertEquals(expectedResult.getModelVersion(), actualResult.getModelVersion());
         if (this.showStatistics) {
@@ -304,9 +305,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param testApi the API to test.
      */
     private <T> void validateDocuments(DocumentResultCollection<T> expectedResult,
-                                       DocumentResultCollection<T> actualResult, String testApi) {
+                                       DocumentResultCollection<T> actualResult, TestEndpoint testApi) {
         switch (testApi) {
-            case LANGUAGE_API:
+            case LANGUAGE:
                 final List<DetectLanguageResult> expectedResultList = expectedResult.stream()
                     .filter(element -> element instanceof DetectLanguageResult)
                     .map(element -> (DetectLanguageResult) element)

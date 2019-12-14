@@ -36,7 +36,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchInputShowStatistics() {
         detectLanguageShowStatisticsRunner((inputs, options) -> validateBatchResult(
             client.detectBatchLanguagesWithResponse(inputs, options, Context.NONE).getValue(),
-            getExpectedBatchDetectedLanguages(), "Language"));
+            getExpectedBatchDetectedLanguages(), TestEndpoint.LANGUAGE));
     }
 
     /**
@@ -45,7 +45,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguagesBatchInput() {
         detectLanguageRunner((inputs) -> validateBatchResult(client.detectBatchLanguages(inputs),
-            getExpectedBatchDetectedLanguages(), "Language"));
+            getExpectedBatchDetectedLanguages(), TestEndpoint.LANGUAGE));
     }
 
     /**
@@ -55,7 +55,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchListCountryHint() {
         detectLanguagesCountryHintRunner((inputs, countryHint) -> validateBatchResult(
             client.detectLanguagesWithResponse(inputs, countryHint, Context.NONE).getValue(),
-            getExpectedBatchDetectedLanguages(), "Language"));
+            getExpectedBatchDetectedLanguages(), TestEndpoint.LANGUAGE));
     }
 
     /**
@@ -64,7 +64,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguagesBatchStringInput() {
         detectLanguageStringInputRunner((inputs) -> validateBatchResult(client.detectLanguages(inputs),
-            getExpectedBatchDetectedLanguages(), "Language"));
+            getExpectedBatchDetectedLanguages(), TestEndpoint.LANGUAGE));
     }
 
     /**

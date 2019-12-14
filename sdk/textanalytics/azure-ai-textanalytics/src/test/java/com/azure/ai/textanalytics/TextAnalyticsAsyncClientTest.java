@@ -33,7 +33,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchInputShowStatistics() {
         detectLanguageShowStatisticsRunner((inputs, options) -> {
             StepVerifier.create(client.detectBatchLanguagesWithResponse(inputs, options))
-                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchDetectedLanguages(), LANGUAGE_API))
+                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchDetectedLanguages(), TestEndpoint.LANGUAGE))
                 .verifyComplete();
         });
     }
@@ -45,7 +45,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchInput() {
         detectLanguageRunner((inputs) -> {
             StepVerifier.create(client.detectBatchLanguages(inputs))
-                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), LANGUAGE_API))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), TestEndpoint.LANGUAGE))
                 .verifyComplete();
         });
     }
@@ -57,7 +57,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchListCountryHint() {
         detectLanguagesCountryHintRunner((inputs, countryHint) -> {
             StepVerifier.create(client.detectLanguagesWithResponse(inputs, countryHint))
-                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchDetectedLanguages(), LANGUAGE_API))
+                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchDetectedLanguages(), TestEndpoint.LANGUAGE))
                 .verifyComplete();
         });
     }
@@ -69,7 +69,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchStringInput() {
         detectLanguageStringInputRunner((inputs) -> {
             StepVerifier.create(client.detectLanguages(inputs))
-                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), LANGUAGE_API))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), TestEndpoint.LANGUAGE))
                 .verifyComplete();
         });
     }
