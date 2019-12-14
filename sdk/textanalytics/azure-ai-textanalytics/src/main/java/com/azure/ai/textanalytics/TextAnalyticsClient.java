@@ -73,8 +73,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DetectLanguageResult> detectLanguageWithResponse(
-        String text, String countryHint, Context context) {
+    public Response<DetectLanguageResult> detectLanguageWithResponse(String text, String countryHint, Context context) {
         return client.detectLanguageWithResponse(text, countryHint, context).block();
     }
 

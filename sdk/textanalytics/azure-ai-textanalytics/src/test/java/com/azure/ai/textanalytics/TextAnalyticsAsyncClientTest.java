@@ -10,7 +10,6 @@ import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Override
     protected void beforeTest() {
         client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
-            .endpoint(getEndPoint())
+            .endpoint(getEndpoint())
             .pipeline(httpPipeline)
             .buildAsyncClient());
     }
@@ -34,7 +33,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchInputShowStatistics() {
         detectLanguageShowStatisticsRunner((inputs, options) -> {
             StepVerifier.create(client.detectBatchLanguagesWithResponse(inputs, options))
-                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchDetectedLanguages(), "Language"))
+                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchDetectedLanguages(), LANGUAGE_API))
                 .verifyComplete();
         });
     }
@@ -46,7 +45,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchInput() {
         detectLanguageRunner((inputs) -> {
             StepVerifier.create(client.detectBatchLanguages(inputs))
-                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), LANGUAGE_API))
                 .verifyComplete();
         });
     }
@@ -58,7 +57,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchListCountryHint() {
         detectLanguagesCountryHintRunner((inputs, countryHint) -> {
             StepVerifier.create(client.detectLanguagesWithResponse(inputs, countryHint))
-                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchDetectedLanguages(), "Language"))
+                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchDetectedLanguages(), LANGUAGE_API))
                 .verifyComplete();
         });
     }
@@ -70,7 +69,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchStringInput() {
         detectLanguageStringInputRunner((inputs) -> {
             StepVerifier.create(client.detectLanguages(inputs))
-                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), "Language"))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchDetectedLanguages(), LANGUAGE_API))
                 .verifyComplete();
         });
     }
@@ -81,7 +80,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectSingleTextLanguage() {
         DetectedLanguage primaryLanguage = new DetectedLanguage().setName("English").setIso6391Name("en").setScore(1.0);
-        List<DetectedLanguage> expectedLanguageList = new ArrayList<>(Arrays.asList(primaryLanguage));
+        List<DetectedLanguage> expectedLanguageList = Arrays.asList(primaryLanguage);
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
             .assertNext(response -> validateDetectedLanguages(expectedLanguageList, response.getDetectedLanguages()))
             .verifyComplete();

@@ -39,6 +39,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -57,12 +58,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
-
     final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     private boolean showStatistics = false;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
+
+    static final String LANGUAGE_API = "Language";
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         TokenCredential credential = null;
@@ -152,15 +154,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     static void detectLanguagesCountryHintRunner(BiConsumer<List<String>, String> testRunner) {
-        final List<String> inputs = new ArrayList<>(Arrays.asList(
-            "This is written in English", "Este es un document escrito en Español.", "~@!~:)"));
+        final List<String> inputs = Arrays.asList(
+            "This is written in English", "Este es un document escrito en Español.", "~@!~:)");
 
         testRunner.accept(inputs, "US");
     }
 
     static void detectLanguageStringInputRunner(Consumer<List<String>> testRunner) {
-        final List<String> inputs = new ArrayList<>(Arrays.asList(
-            "This is written in English", "Este es un document escrito en Español.", "~@!~:)"));
+        final List<String> inputs = Arrays.asList(
+            "This is written in English", "Este es un document escrito en Español.", "~@!~:)");
 
         testRunner.accept(inputs);
     }
@@ -182,20 +184,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             .setScore(1.0);
         DetectedLanguage detectedLanguage3 = new DetectedLanguage().setName("(Unknown)").setIso6391Name("(Unknown)")
             .setScore(0.0);
-        List<DetectedLanguage> detectedLanguageList1 = new ArrayList<>(Collections.singletonList(detectedLanguage1));
-        List<DetectedLanguage> detectedLanguageList2 = new ArrayList<>(Collections.singletonList(detectedLanguage2));
-        List<DetectedLanguage> detectedLanguageList3 = new ArrayList<>(Collections.singletonList(detectedLanguage3));
+        List<DetectedLanguage> detectedLanguageList1 = Collections.singletonList(detectedLanguage1);
+        List<DetectedLanguage> detectedLanguageList2 = Collections.singletonList(detectedLanguage2);
+        List<DetectedLanguage> detectedLanguageList3 = Collections.singletonList(detectedLanguage3);
 
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(26).setTransactionCount(1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(39).setTransactionCount(1);
         TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics().setCharacterCount(6).setTransactionCount(1);
 
-        DetectLanguageResult detectLanguageResult1 = new DetectLanguageResult("0", textDocumentStatistics1, detectedLanguage1, detectedLanguageList1);
-        DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, detectedLanguage2, detectedLanguageList2);
-        DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, detectedLanguage3, detectedLanguageList3);
+        DetectLanguageResult detectLanguageResult1 = new DetectLanguageResult("0", textDocumentStatistics1, null, detectedLanguage1, detectedLanguageList1);
+        DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, null, detectedLanguage2, detectedLanguageList2);
+        DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, null, detectedLanguage3, detectedLanguageList3);
 
         TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(3).setErroneousDocumentCount(0).setTransactionCount(3).setValidDocumentCount(3);
-        List<DetectLanguageResult> detectLanguageResultList = new ArrayList<>(Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3));
+        List<DetectLanguageResult> detectLanguageResultList = Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3);
 
         return new DocumentResultCollection<>(detectLanguageResultList, "2019-10-01", textBatchStatistics);
     }
@@ -241,17 +243,17 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             .setType("English").setText("").setSubtype("Elon Musk is the CEO of SpaceX and Tesla.").setLength(1).setOffset(1).setScore(1.0);
         NamedEntity namedEntity3 = new NamedEntity()
             .setType("English").setText("").setSubtype("").setLength(1).setOffset(1).setScore(1.0);
-        List<NamedEntity> namedEntityList1 = new ArrayList<>(Collections.singletonList(namedEntity1));
-        List<NamedEntity> namedEntityList2 = new ArrayList<>(Collections.singletonList(namedEntity2));
-        List<NamedEntity> namedEntityList3 = new ArrayList<>(Collections.singletonList(namedEntity3));
+        List<NamedEntity> namedEntityList1 = Collections.singletonList(namedEntity1);
+        List<NamedEntity> namedEntityList2 = Collections.singletonList(namedEntity2);
+        List<NamedEntity> namedEntityList3 = Collections.singletonList(namedEntity3);
 
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(26).setTransactionCount(1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(39).setTransactionCount(1);
         TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics().setCharacterCount(6).setTransactionCount(1);
 
-        NamedEntityResult namedEntityResult1 = new NamedEntityResult("0", textDocumentStatistics1, namedEntityList1);
-        NamedEntityResult namedEntityResult2 = new NamedEntityResult("1", textDocumentStatistics2, namedEntityList2);
-        NamedEntityResult namedEntityResult3 = new NamedEntityResult("2", textDocumentStatistics3, namedEntityList3);
+        NamedEntityResult namedEntityResult1 = new NamedEntityResult("0", textDocumentStatistics1, null, namedEntityList1);
+        NamedEntityResult namedEntityResult2 = new NamedEntityResult("1", textDocumentStatistics2, null, namedEntityList2);
+        NamedEntityResult namedEntityResult3 = new NamedEntityResult("2", textDocumentStatistics3, null, namedEntityList3);
 
         TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(3)
             .setErroneousDocumentCount(0).setTransactionCount(3).setValidDocumentCount(3);
@@ -266,7 +268,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         return new TextAnalyticsRequestOptions().setShowStatistics(true);
     }
 
-    String getEndPoint() {
+    String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "http://localhost:8080"
             : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
@@ -304,7 +306,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private <T> void validateDocuments(DocumentResultCollection<T> expectedResult,
                                        DocumentResultCollection<T> actualResult, String testApi) {
         switch (testApi) {
-            case "Language":
+            case LANGUAGE_API:
                 final List<DetectLanguageResult> expectedResultList = expectedResult.stream()
                     .filter(element -> element instanceof DetectLanguageResult)
                     .map(element -> (DetectLanguageResult) element)
@@ -329,7 +331,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 });
                 break;
             default:
-                break;
+                throw new IllegalArgumentException(String.format("Unsupported testApi : '%s'.", testApi));
         }
     }
 
@@ -391,24 +393,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      */
     static void validateDetectedLanguages(List<DetectedLanguage> expectedLanguageList,
                                           List<DetectedLanguage> actualLanguageList) {
+        assertEquals(expectedLanguageList.size(), actualLanguageList.size());
+        expectedLanguageList.sort(Comparator.comparing(DetectedLanguage::getName));
+        actualLanguageList.sort(Comparator.comparing(DetectedLanguage::getName));
+
         for (int i = 0; i < expectedLanguageList.size(); i++) {
             DetectedLanguage expectedDetectedLanguage = expectedLanguageList.get(i);
             DetectedLanguage actualDetectedLanguage = actualLanguageList.get(i);
             validatePrimaryLanguage(expectedDetectedLanguage, actualDetectedLanguage);
-        }
-    }
-
-    /**
-     * Helper method to verify that a command throws an IllegalArgumentException.
-     *
-     * @param exceptionThrower Command that should throw the exception
-     */
-    static <T> void assertRunnableThrowsException(Runnable exceptionThrower, Class<T> exception) {
-        try {
-            exceptionThrower.run();
-            fail();
-        } catch (Exception ex) {
-            assertEquals(exception, ex.getClass());
         }
     }
 

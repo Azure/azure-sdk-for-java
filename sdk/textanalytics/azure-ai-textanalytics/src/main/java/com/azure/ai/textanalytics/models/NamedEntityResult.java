@@ -15,16 +15,9 @@ import java.util.List;
 public final class NamedEntityResult extends DocumentResult {
     private final List<NamedEntity> namedEntities;
 
-    // TODO(shawn): not public modifier
-    public NamedEntityResult(String id, Error error, boolean isError) {
-        super(id, error, isError);
-        namedEntities = null;
-    }
-
-    // TODO(shawn): not public modifier
-    public NamedEntityResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public NamedEntityResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
                              List<NamedEntity> namedEntities) {
-        super(id, textDocumentStatistics);
+        super(id, textDocumentStatistics, error);
         this.namedEntities = namedEntities;
     }
 

@@ -10,12 +10,12 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
@@ -24,7 +24,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Override
     protected void beforeTest() {
         client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
-            .endpoint(getEndPoint())
+            .endpoint(getEndpoint())
             .pipeline(httpPipeline)
             .buildClient());
     }
@@ -73,7 +73,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectSingleTextLanguage() {
         DetectedLanguage primaryLanguage = new DetectedLanguage().setName("English").setIso6391Name("en").setScore(1.0);
-        List<DetectedLanguage> expectedLanguageList = new ArrayList<>(Arrays.asList(primaryLanguage));
+        List<DetectedLanguage> expectedLanguageList = Arrays.asList(primaryLanguage);
         validateDetectedLanguages(
             client.detectLanguage("This is a test English Text").getDetectedLanguages(), expectedLanguageList);
     }
@@ -83,8 +83,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguagesNullInput() {
-        assertRunnableThrowsException(() -> client.detectBatchLanguagesWithResponse(null, null,
-            Context.NONE).getValue(), HttpResponseException.class);
+        assertThrows(HttpResponseException.class, () -> client.detectBatchLanguagesWithResponse(null, null,
+            Context.NONE).getValue());
     }
 
     /**

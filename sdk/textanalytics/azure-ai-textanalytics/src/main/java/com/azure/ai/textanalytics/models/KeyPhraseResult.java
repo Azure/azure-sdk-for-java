@@ -15,14 +15,9 @@ import java.util.List;
 public final class KeyPhraseResult extends DocumentResult {
     private List<String> keyPhrases;
 
-    // TODO(shawn): not public modifier
-    public KeyPhraseResult(String id, Error error, boolean isError) {
-        super(id, error, isError);
-        keyPhrases = null;
-    }
-
-    public KeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, List<String> keyPhrases) {
-        super(id, textDocumentStatistics);
+    public KeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
+        List<String> keyPhrases) {
+        super(id, textDocumentStatistics, error);
         this.keyPhrases = keyPhrases;
     }
 

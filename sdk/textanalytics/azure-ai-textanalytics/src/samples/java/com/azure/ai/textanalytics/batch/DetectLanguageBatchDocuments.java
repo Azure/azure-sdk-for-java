@@ -57,8 +57,9 @@ public class DetectLanguageBatchDocuments {
                 System.out.printf("Other detected Languages: %s, ISO 6391 Name: %s, Score: %s.%n",
                     detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(),
-                    detectedLanguage.getScore()));
-        });
+                    detectedLanguage.getScore());
+            }
+        }
     }
 
 }

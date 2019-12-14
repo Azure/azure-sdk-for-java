@@ -14,17 +14,10 @@ public class DocumentResult {
     private final Error error;
     private final boolean isError;
 
-    DocumentResult(final String id, final Error error, final boolean isError) {
+    DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics, final Error error) {
         this.id = id;
         this.error = error;
-        this.isError = isError;
-        this.textDocumentStatistics = null;
-    }
-
-    DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics) {
-        this.id = id;
-        this.error = null;
-        this.isError = false;
+        this.isError = error != null ? true : false;
         this.textDocumentStatistics = textDocumentStatistics;
     }
 
