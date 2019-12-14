@@ -113,7 +113,6 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
         } else if (configuration.getOperationType() == Configuration.Operation.QueryInClauseParallel) {
 
             ReadMyWriteWorkflow.QueryBuilder queryBuilder = new ReadMyWriteWorkflow.QueryBuilder();
-            options.setEnableCrossPartitionQuery(true);
             options.setMaxDegreeOfParallelism(200);
             List<SqlParameter> parameters = new ArrayList<>();
             int j = 0;

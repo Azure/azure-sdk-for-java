@@ -111,8 +111,7 @@ public class DocumentQueryExecutionContextFactory {
                                       && feedOptions.partitionKey() != null
                                       && feedOptions.partitionKey() != PartitionKey.NONE) {
                                   PartitionKeyInternal internalPartitionKey =
-                                      feedOptions.partitionKey()
-                                          .getInternalPartitionKey();
+                                      BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey());
                                   Range<String> range = Range
                                                             .getPointRange(internalPartitionKey
                                                                                .getEffectivePartitionKeyString(internalPartitionKey,
