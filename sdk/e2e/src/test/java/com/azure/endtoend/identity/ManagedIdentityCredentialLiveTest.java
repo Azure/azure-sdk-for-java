@@ -1,4 +1,7 @@
-package com.azure.e2e.identity;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.endtoend.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
@@ -41,6 +44,7 @@ public class ManagedIdentityCredentialLiveTest {
     public void testMSIEndpointWithSystemAssignedAccessKeyVault() throws Exception {
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT));
         org.junit.Assume.assumeTrue(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
 
@@ -75,6 +79,7 @@ public class ManagedIdentityCredentialLiveTest {
     public void testMSIEndpointWithUserAssignedAccessKeyVault() throws Exception {
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT));
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
             .clientId(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
@@ -107,6 +112,7 @@ public class ManagedIdentityCredentialLiveTest {
     public void testIMDSEndpointWithSystemAssignedAccessKeyVault() throws Exception {
         org.junit.Assume.assumeTrue(checkIMDSAvailable());
         org.junit.Assume.assumeTrue(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
 
@@ -139,6 +145,7 @@ public class ManagedIdentityCredentialLiveTest {
     public void testIMDSEndpointWithUserAssignedAccessKeyVault() throws Exception {
         org.junit.Assume.assumeTrue(checkIMDSAvailable());
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
             .clientId(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
