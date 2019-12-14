@@ -70,7 +70,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     public void readFeedDocumentsStartFromBeginning() {
         setupReadFeedDocuments();
 
-        changeFeedProcessor = ChangeFeedProcessor.Builder()
+        changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
             .setHostName(hostName)
             .setHandleChanges(docs -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
@@ -126,7 +126,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readFeedDocumentsStartFromCustomDate() {
-        ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.Builder()
+        ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
             .setHostName(hostName)
             .setHandleChanges(docs -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
@@ -195,7 +195,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         final String ownerSecond = "Owner_Second";
         final String leasePrefix = "TEST";
 
-        ChangeFeedProcessor changeFeedProcessorFirst = ChangeFeedProcessor.Builder()
+        ChangeFeedProcessor changeFeedProcessorFirst = ChangeFeedProcessor.changeFeedProcessorBuilder()
             .setHostName(ownerFirst)
             .setHandleChanges(docs -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
@@ -208,7 +208,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             )
             .build();
 
-        ChangeFeedProcessor changeFeedProcessorSecond = ChangeFeedProcessor.Builder()
+        ChangeFeedProcessor changeFeedProcessorSecond = ChangeFeedProcessor.changeFeedProcessorBuilder()
             .setHostName(ownerSecond)
             .setHandleChanges(docs -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);

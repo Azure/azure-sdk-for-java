@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
  */
 public class PartitionKey {
 
-    private PartitionKeyInternal internalPartitionKey;
+    private final PartitionKeyInternal internalPartitionKey;
 
     PartitionKey(PartitionKeyInternal partitionKeyInternal) {
         this.internalPartitionKey = partitionKeyInternal;
@@ -25,7 +25,7 @@ public class PartitionKey {
      */
     @SuppressWarnings("serial")
     public PartitionKey(final Object key) {
-        this.internalPartitionKey = PartitionKeyInternal.fromObjectArray(new Object[] { key }, true);
+        this.internalPartitionKey = PartitionKeyInternal.fromObjectArray(new Object[] {key}, true);
     }
 
     /**
@@ -39,7 +39,7 @@ public class PartitionKey {
         return new PartitionKey(PartitionKeyInternal.fromJsonString(jsonString));
     }
 
-    public static PartitionKey None = new PartitionKey(PartitionKeyInternal.None);
+    public static final PartitionKey NONE = new PartitionKey(PartitionKeyInternal.None);
 
     /**
      * Serialize the PartitionKey object to a JSON string.
@@ -51,14 +51,14 @@ public class PartitionKey {
     }
 
     // TODO: make private
-    public PartitionKeyInternal getInternalPartitionKey() {
+    PartitionKeyInternal getInternalPartitionKey() {
         return internalPartitionKey;
     }
 
     /**
      * Overrides the Equal operator for object comparisons between two instances of
      * {@link PartitionKey}
-     * 
+     *
      * @param other The object to compare with.
      * @return True if two object instance are considered equal.
      */
@@ -75,4 +75,10 @@ public class PartitionKey {
         PartitionKey otherKey = Utils.as(other, PartitionKey.class);
         return otherKey != null && this.internalPartitionKey.equals(otherKey.internalPartitionKey);
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
 }

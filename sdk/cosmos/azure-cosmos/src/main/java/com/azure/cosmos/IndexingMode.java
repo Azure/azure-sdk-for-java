@@ -32,9 +32,9 @@ public enum IndexingMode {
      * the entire collection.
      */
     NONE;
-    
+
     @Override
     public String toString() {
-        return WordUtils.capitalizeFully(this.name());        
+        return WordUtils.capitalizeFully(this.name());
     }
 }

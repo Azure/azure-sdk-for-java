@@ -9,7 +9,7 @@ package com.azure.cosmos;
 public enum SerializationFormattingPolicy {
 
     /**
-     *  No additional formatting required.
+     * No additional formatting required.
      */
     NONE,
 

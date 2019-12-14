@@ -22,7 +22,7 @@ import java.util.List;
  * against the service.
  */
 @ServiceClient(
-    builder=CosmosClientBuilder.class,
+    builder = CosmosClientBuilder.class,
     isAsync = true)
 public class CosmosAsyncClient implements AutoCloseable {
 
@@ -38,41 +38,43 @@ public class CosmosAsyncClient implements AutoCloseable {
     private final CosmosKeyCredential cosmosKeyCredential;
 
 
-     CosmosAsyncClient(CosmosClientBuilder builder) {
-         this.configs = builder.configs();
-         this.serviceEndpoint = builder.getEndpoint();
-         this.keyOrResourceToken = builder.getKey();
-         this.connectionPolicy = builder.getConnectionPolicy();
-         this.desiredConsistencyLevel = builder.getConsistencyLevel();
-         this.permissions = builder.getPermissions();
-         this.tokenResolver = builder.getTokenResolver();
-         this.cosmosKeyCredential = builder.getCosmosKeyCredential();
-         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
-             .withServiceEndpoint(this.serviceEndpoint)
-             .withMasterKeyOrResourceToken(this.keyOrResourceToken)
-             .withConnectionPolicy(this.connectionPolicy)
-             .withConsistencyLevel(this.desiredConsistencyLevel)
-             .withConfigs(this.configs)
-             .withTokenResolver(this.tokenResolver)
-             .withCosmosKeyCredential(this.cosmosKeyCredential)
-             .build();
+    CosmosAsyncClient(CosmosClientBuilder builder) {
+        this.configs = builder.configs();
+        this.serviceEndpoint = builder.getEndpoint();
+        this.keyOrResourceToken = builder.getKey();
+        this.connectionPolicy = builder.getConnectionPolicy();
+        this.desiredConsistencyLevel = builder.getConsistencyLevel();
+        this.permissions = builder.getPermissions();
+        this.tokenResolver = builder.getTokenResolver();
+        this.cosmosKeyCredential = builder.getCosmosKeyCredential();
+        this.asyncDocumentClient = new AsyncDocumentClient.Builder()
+                                       .withServiceEndpoint(this.serviceEndpoint)
+                                       .withMasterKeyOrResourceToken(this.keyOrResourceToken)
+                                       .withConnectionPolicy(this.connectionPolicy)
+                                       .withConsistencyLevel(this.desiredConsistencyLevel)
+                                       .withConfigs(this.configs)
+                                       .withTokenResolver(this.tokenResolver)
+                                       .withCosmosKeyCredential(this.cosmosKeyCredential)
+                                       .build();
     }
 
+    /**
+     * Instantiate the cosmos client builder to build cosmos client
+     *
+     * @return {@link CosmosClientBuilder}
+     */
+    public static CosmosClientBuilder cosmosClientBuilder() {
+        return new CosmosClientBuilder();
+    }
+    
     AsyncDocumentClient getContextClient() {
         return this.asyncDocumentClient;
     }
 
     /**
-     * Instantiate the cosmos client builder to buildAsyncClient cosmos client
-     * @return {@link CosmosClientBuilder}
-     */
-    public static CosmosClientBuilder builder(){
-         return new CosmosClientBuilder();
-    }
-
-    /**
      * Monitor Cosmos client performance and resource utilization using the specified meter registry
-     * @param registry  meter registry to use for performance monitoring
+     *
+     * @param registry meter registry to use for performance monitoring
      */
     static void setMonitorTelemetry(MeterRegistry registry) {
         RntbdMetrics.add(registry);
@@ -80,6 +82,7 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Get the service endpoint
+     *
      * @return the service endpoint
      */
     String getServiceEndpoint() {
@@ -88,6 +91,7 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Gets the key or resource token
+     *
      * @return get the key or resource token
      */
     String getKeyOrResourceToken() {
@@ -96,6 +100,7 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Get the connection policy
+     *
      * @return {@link ConnectionPolicy}
      */
     ConnectionPolicy getConnectionPolicy() {
@@ -104,6 +109,7 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Gets the consistency level
+     *
      * @return the (@link ConsistencyLevel)
      */
     ConsistencyLevel getDesiredConsistencyLevel() {
@@ -112,18 +118,20 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Gets the permission list
+     *
      * @return the permission list
      */
     List<Permission> getPermissions() {
         return permissions;
     }
 
-    AsyncDocumentClient getDocClientWrapper(){
+    AsyncDocumentClient getDocClientWrapper() {
         return asyncDocumentClient;
     }
 
     /**
      * Gets the configs
+     *
      * @return the configs
      */
     Configs getConfigs() {
@@ -132,6 +140,7 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Gets the token resolver
+     *
      * @return the token resolver
      */
     TokenResolver getTokenResolver() {
@@ -140,6 +149,7 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Gets the cosmos key credential
+     *
      * @return cosmos key credential
      */
     CosmosKeyCredential cosmosKeyCredential() {
@@ -148,9 +158,10 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * CREATE a Database if it does not already exist on the service
-     *
+     * <p>
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the
      * created or existing database.
+     *
      * @param databaseSettings CosmosDatabaseProperties
      * @return a {@link Mono} containing the cosmos database response with the created or existing database or
      * an error.
@@ -163,6 +174,7 @@ public class CosmosAsyncClient implements AutoCloseable {
      * CREATE a Database if it does not already exist on the service
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the
      * created or existing database.
+     *
      * @param id the id of the database
      * @return a {@link Mono} containing the cosmos database response with the created or existing database or
      * an error
@@ -171,13 +183,14 @@ public class CosmosAsyncClient implements AutoCloseable {
         return createDatabaseIfNotExistsInternal(getDatabase(id));
     }
 
-    private Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExistsInternal(CosmosAsyncDatabase database){
+    private Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExistsInternal(CosmosAsyncDatabase database) {
         return database.read().onErrorResume(exception -> {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
             if (unwrappedException instanceof CosmosClientException) {
                 final CosmosClientException cosmosClientException = (CosmosClientException) unwrappedException;
                 if (cosmosClientException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                    return createDatabase(new CosmosDatabaseProperties(database.getId()), new CosmosDatabaseRequestOptions());
+                    return createDatabase(new CosmosDatabaseProperties(database.getId()),
+                        new CosmosDatabaseRequestOptions());
                 }
             }
             return Mono.error(unwrappedException);
@@ -186,10 +199,10 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Creates a database.
-     *
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
-     *      created database.
+     * created database.
      * In case of failure the {@link Mono} will error.
      *
      * @param databaseSettings {@link CosmosDatabaseProperties}
@@ -203,16 +216,18 @@ public class CosmosAsyncClient implements AutoCloseable {
         }
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
-        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions()).map(databaseResourceResponse ->
-                new CosmosAsyncDatabaseResponse(databaseResourceResponse, this)).single();
+        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions())
+                   .map(databaseResourceResponse -> new CosmosAsyncDatabaseResponse(databaseResourceResponse,
+                       this))
+                   .single();
     }
 
     /**
      * Creates a database.
-     *
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
-     *      created database.
+     * created database.
      * In case of failure the {@link Mono} will error.
      *
      * @param databaseSettings {@link CosmosDatabaseProperties}
@@ -224,10 +239,10 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Creates a database.
-     *
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
-     *      created database.
+     * created database.
      * In case of failure the {@link Mono} will error.
      *
      * @param id id of the database
@@ -239,10 +254,10 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Creates a database.
-     *
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
-     *      created database.
+     * created database.
      * In case of failure the {@link Mono} will error.
      *
      * @param databaseSettings {@link CosmosDatabaseProperties}
@@ -259,16 +274,18 @@ public class CosmosAsyncClient implements AutoCloseable {
         options.setOfferThroughput(throughput);
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
-        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions()).map(databaseResourceResponse ->
-                new CosmosAsyncDatabaseResponse(databaseResourceResponse, this)).single();
+        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions())
+                   .map(databaseResourceResponse -> new CosmosAsyncDatabaseResponse(databaseResourceResponse,
+                       this))
+                   .single();
     }
 
     /**
      * Creates a database.
-     *
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
-     *      created database.
+     * created database.
      * In case of failure the {@link Mono} will error.
      *
      * @param databaseSettings {@link CosmosDatabaseProperties}
@@ -283,10 +300,10 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Creates a database.
-     *
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
-     *      created database.
+     * created database.
      * In case of failure the {@link Mono} will error.
      *
      * @param id id of the database
@@ -301,7 +318,7 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Reads all databases.
-     *
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Flux} will contain one or several feed response of the read databases.
      * In case of failure the {@link Flux} will error.
@@ -311,13 +328,15 @@ public class CosmosAsyncClient implements AutoCloseable {
      */
     public Flux<FeedResponse<CosmosDatabaseProperties>> readAllDatabases(FeedOptions options) {
         return getDocClientWrapper().readDatabases(options)
-                                    .map(response-> BridgeInternal.createFeedResponse(CosmosDatabaseProperties.getFromV2Results(response.getResults()),
-                        response.getResponseHeaders()));
+                   .map(response -> 
+                            BridgeInternal.createFeedResponse(
+                                CosmosDatabaseProperties.getFromV2Results(response.getResults()),
+                                response.getResponseHeaders()));
     }
 
     /**
      * Reads all databases.
-     *
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Flux} will contain one or several feed response of the read databases.
      * In case of failure the {@link Flux} will error.
@@ -331,35 +350,35 @@ public class CosmosAsyncClient implements AutoCloseable {
 
     /**
      * Query for databases.
-     *
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Flux} will contain one or several feed response of the read databases.
      * In case of failure the {@link Flux} will error.
      *
-     * @param query   the query.
+     * @param query the query.
      * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(String query, FeedOptions options){
+    public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(String query, FeedOptions options) {
         return queryDatabases(new SqlQuerySpec(query), options);
     }
 
     /**
      * Query for databases.
-     *
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Flux} will contain one or several feed response of the read databases.
      * In case of failure the {@link Flux} will error.
      *
-     * @param querySpec     the SQL query specification.
-     * @param options       the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @param querySpec the SQL query specification.
+     * @param options the feed options.
+     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options){
+    public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
         return getDocClientWrapper().queryDatabases(querySpec, options)
-                                    .map(response-> BridgeInternal.createFeedResponse(
-                        CosmosDatabaseProperties.getFromV2Results(response.getResults()),
-                        response.getResponseHeaders()));
+                   .map(response -> BridgeInternal.createFeedResponse(
+                       CosmosDatabaseProperties.getFromV2Results(response.getResults()),
+                       response.getResponseHeaders()));
     }
 
     public Mono<DatabaseAccount> readDatabaseAccount() {

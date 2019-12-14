@@ -7,20 +7,26 @@ import com.azure.cosmos.implementation.UserDefinedFunction;
 
 public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<CosmosUserDefinedFunctionProperties> {
 
-    private CosmosUserDefinedFunctionProperties cosmosUserDefinedFunctionProperties;
-    private CosmosAsyncUserDefinedFunction cosmosUserDefinedFunction;
+    private final CosmosUserDefinedFunctionProperties cosmosUserDefinedFunctionProperties;
+    private final CosmosAsyncUserDefinedFunction cosmosUserDefinedFunction;
 
-    CosmosAsyncUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response, CosmosAsyncContainer container) {
+    CosmosAsyncUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response,
+                                           CosmosAsyncContainer container) {
         super(response);
-        if(response.getResource() != null) {
+        if (response.getResource() != null) {
             super.setProperties(new CosmosUserDefinedFunctionProperties(response));
             cosmosUserDefinedFunctionProperties = new CosmosUserDefinedFunctionProperties(response);
-            cosmosUserDefinedFunction = new CosmosAsyncUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId(), container);
+            cosmosUserDefinedFunction =
+                new CosmosAsyncUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId(), container);
+        } else {
+            cosmosUserDefinedFunctionProperties = null;
+            cosmosUserDefinedFunction = null;
         }
     }
 
     /**
      * Gets the cosmos getUser defined function getProperties
+     *
      * @return the cosmos getUser defined function getProperties
      */
     public CosmosUserDefinedFunctionProperties getProperties() {
@@ -29,6 +35,7 @@ public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<Cosmo
 
     /**
      * Gets the cosmos user defined function object
+     *
      * @return the cosmos user defined function object
      */
     public CosmosAsyncUserDefinedFunction getUserDefinedFunction() {

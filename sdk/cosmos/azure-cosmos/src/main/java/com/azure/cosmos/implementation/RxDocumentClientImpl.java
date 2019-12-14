@@ -157,7 +157,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 PartitionKey partitionKey = permission.getResourcePartitionKey();
                 partitionKeyAndResourceTokenPairs.add(new PartitionKeyAndResourceTokenPair(
-                        partitionKey != null ? partitionKey.getInternalPartitionKey() : PartitionKeyInternal.Empty,
+                        partitionKey != null ? BridgeInternal.getPartitionKeyInternal(partitionKey) : PartitionKeyInternal.Empty,
                         permission.getToken()));
                 logger.debug("Initializing resource token map  , with map key [{}] , partition key [{}] and resource token",
                         pathInfo.resourceIdOrFullName, partitionKey != null ? partitionKey.toString() : null, permission.getToken());
@@ -879,10 +879,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
 
         PartitionKeyInternal partitionKeyInternal = null;
-        if (options != null && options.getPartitionKey() != null && options.getPartitionKey().equals(PartitionKey.None)){
+        if (options != null && options.getPartitionKey() != null && options.getPartitionKey().equals(PartitionKey.NONE)){
             partitionKeyInternal = BridgeInternal.getNonePartitionKey(partitionKeyDefinition);
         } else if (options != null && options.getPartitionKey() != null) {
-            partitionKeyInternal = options.getPartitionKey().getInternalPartitionKey();
+            partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(options.getPartitionKey());
         } else if (partitionKeyDefinition == null || partitionKeyDefinition.getPaths().size() == 0) {
             // For backward compatibility, if collection doesn't have partition key defined, we assume all documents
             // have empty value for it and user doesn't need to specify it explicitly.

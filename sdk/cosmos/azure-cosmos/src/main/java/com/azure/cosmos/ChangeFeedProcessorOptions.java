@@ -9,10 +9,10 @@ import java.time.OffsetDateTime;
  * Specifies the options associated with {@link ChangeFeedProcessor}.
  */
 public class ChangeFeedProcessorOptions {
-    private static Duration DefaultRenewInterval =  Duration.ofMillis(0).plusSeconds(17);
-    private static Duration DefaultAcquireInterval = Duration.ofMillis(0).plusSeconds(13);
-    private static Duration DefaultExpirationInterval = Duration.ofMillis(0).plusSeconds(60);
-    private static Duration DefaultFeedPollDelay = Duration.ofMillis(0).plusSeconds(5);
+    private static final Duration DEFAULT_RENEW_INTERVAL = Duration.ofMillis(0).plusSeconds(17);
+    private static final Duration DEFAULT_ACQUIRE_INTERVAL = Duration.ofMillis(0).plusSeconds(13);
+    private static final Duration DEFAULT_EXPIRATION_INTERVAL = Duration.ofMillis(0).plusSeconds(60);
+    private static final Duration DEFAULT_FEED_POLL_DELAY = Duration.ofMillis(0).plusSeconds(5);
 
     private Duration leaseRenewInterval;
     private Duration leaseAcquireInterval;
@@ -31,10 +31,10 @@ public class ChangeFeedProcessorOptions {
     public ChangeFeedProcessorOptions() {
         this.maxItemCount = 100;
         this.startFromBeginning = false;
-        this.leaseRenewInterval = DefaultRenewInterval;
-        this.leaseAcquireInterval = DefaultAcquireInterval;
-        this.leaseExpirationInterval = DefaultExpirationInterval;
-        this.feedPollDelay = DefaultFeedPollDelay;
+        this.leaseRenewInterval = DEFAULT_RENEW_INTERVAL;
+        this.leaseAcquireInterval = DEFAULT_ACQUIRE_INTERVAL;
+        this.leaseExpirationInterval = DEFAULT_EXPIRATION_INTERVAL;
+        this.feedPollDelay = DEFAULT_FEED_POLL_DELAY;
         this.maxScaleCount = 0; // unlimited
     }
 
@@ -50,7 +50,8 @@ public class ChangeFeedProcessorOptions {
     /**
      * Sets the renew interval for all leases for partitions currently held by {@link ChangeFeedProcessor} instance.
      *
-     * @param leaseRenewInterval the renew interval for all leases for partitions currently held by {@link ChangeFeedProcessor} instance.
+     * @param leaseRenewInterval the renew interval for all leases for partitions currently held by
+     * {@link ChangeFeedProcessor} instance.
      * @return the current ChangeFeedProcessorOptions instance.
      */
     public ChangeFeedProcessorOptions setLeaseRenewInterval(Duration leaseRenewInterval) {
@@ -61,7 +62,8 @@ public class ChangeFeedProcessorOptions {
     /**
      * Gets the interval to kick off a task to compute if partitions are distributed evenly among known host instances.
      *
-     * @return the interval to kick off a task to compute if partitions are distributed evenly among known host instances.
+     * @return the interval to kick off a task to compute if partitions are distributed evenly among known host 
+     * instances.
      */
     public Duration getLeaseAcquireInterval() {
         return this.leaseAcquireInterval;
@@ -69,7 +71,9 @@ public class ChangeFeedProcessorOptions {
 
     /**
      * Sets he interval to kick off a task to compute if partitions are distributed evenly among known host instances.
-     * @param leaseAcquireInterval he interval to kick off a task to compute if partitions are distributed evenly among known host instances.
+     *
+     * @param leaseAcquireInterval he interval to kick off a task to compute if partitions are distributed evenly 
+     * among known host instances.
      * @return the current ChangeFeedProcessorOptions instance.
      */
     public ChangeFeedProcessorOptions setLeaseAcquireInterval(Duration leaseAcquireInterval) {
@@ -117,7 +121,8 @@ public class ChangeFeedProcessorOptions {
     /**
      * Sets the delay in between polling a partition for new changes on the feed, after all current changes are drained.
      *
-     * @param feedPollDelay the delay in between polling a partition for new changes on the feed, after all current changes are drained.
+     * @param feedPollDelay the delay in between polling a partition for new changes on the feed, after all current 
+     * changes are drained.
      * @return the current ChangeFeedProcessorOptions instance.
      */
     public ChangeFeedProcessorOptions setFeedPollDelay(Duration feedPollDelay) {
@@ -129,7 +134,7 @@ public class ChangeFeedProcessorOptions {
      * Gets a prefix to be used as part of the lease ID.
      * <p>
      * This can be used to support multiple instances of {@link ChangeFeedProcessor} instances pointing at the same
-     *   feed while using the same auxiliary collection.
+     * feed while using the same auxiliary collection.
      *
      * @return a prefix to be used as part of the lease ID.
      */
@@ -172,7 +177,7 @@ public class ChangeFeedProcessorOptions {
      * Gets the start request continuation token to start looking for changes after.
      * <p>
      * This is only used when lease store is not initialized and is ignored if a lease for partition exists and
-     *   has continuation token. If this is specified, both StartTime and StartFromBeginning are ignored.
+     * has continuation token. If this is specified, both StartTime and StartFromBeginning are ignored.
      *
      * @return the start request continuation token to start looking for changes after.
      */
@@ -184,13 +189,13 @@ public class ChangeFeedProcessorOptions {
      * Sets the start request continuation token to start looking for changes after.
      * <p>
      * This is only used when lease store is not initialized and is ignored if a lease for partition exists and
-     *   has continuation token. If this is specified, both StartTime and StartFromBeginning are ignored.
+     * has continuation token. If this is specified, both StartTime and StartFromBeginning are ignored.
      *
      * @param startContinuation the start request continuation token to start looking for changes after.
      * @return the current ChangeFeedProcessorOptions instance.
      */
     public ChangeFeedProcessorOptions setStartContinuation(String startContinuation) {
-        this.startContinuation= startContinuation;
+        this.startContinuation = startContinuation;
         return this;
     }
 
@@ -198,8 +203,8 @@ public class ChangeFeedProcessorOptions {
      * Gets the time (exclusive) to start looking for changes after.
      * <p>
      * This is only used when:
-     *   (1) Lease store is not initialized and is ignored if a lease for partition exists and has continuation token.
-     *   (2) StartContinuation is not specified.
+     * (1) Lease store is not initialized and is ignored if a lease for partition exists and has continuation token.
+     * (2) StartContinuation is not specified.
      * If this is specified, StartFromBeginning is ignored.
      *
      * @return the time (exclusive) to start looking for changes after.
@@ -212,8 +217,8 @@ public class ChangeFeedProcessorOptions {
      * Sets the time (exclusive) to start looking for changes after (UTC time).
      * <p>
      * This is only used when:
-     *   (1) Lease store is not initialized and is ignored if a lease for partition exists and has continuation token.
-     *   (2) StartContinuation is not specified.
+     * (1) Lease store is not initialized and is ignored if a lease for partition exists and has continuation token.
+     * (2) StartContinuation is not specified.
      * If this is specified, StartFromBeginning is ignored.
      *
      * @param startTime the time (exclusive) to start looking for changes after.
@@ -226,12 +231,12 @@ public class ChangeFeedProcessorOptions {
 
     /**
      * Gets a value indicating whether change feed in the Azure Cosmos DB service should start from beginning (true)
-     *   or from current (false). By default it's start from current (false).
+     * or from current (false). By default it's start from current (false).
      * <p>
      * This is only used when:
-     *   (1) Lease store is not initialized and is ignored if a lease for partition exists and has continuation token.
-     *   (2) StartContinuation is not specified.
-     *   (3) StartTime is not specified.
+     * (1) Lease store is not initialized and is ignored if a lease for partition exists and has continuation token.
+     * (2) StartContinuation is not specified.
+     * (3) StartTime is not specified.
      *
      * @return a value indicating whether change feed in the Azure Cosmos DB service should start from.
      */
@@ -243,9 +248,9 @@ public class ChangeFeedProcessorOptions {
      * Sets a value indicating whether change feed in the Azure Cosmos DB service should start from beginning.
      * <p>
      * This is only used when:
-     *   (1) Lease store is not initialized and is ignored if a lease for partition exists and has continuation token.
-     *   (2) StartContinuation is not specified.
-     *   (3) StartTime is not specified.
+     * (1) Lease store is not initialized and is ignored if a lease for partition exists and has continuation token.
+     * (2) StartContinuation is not specified.
+     * (3) StartTime is not specified.
      *
      * @param startFromBeginning Indicates to start from beginning if true
      * @return the current ChangeFeedProcessorOptions instance.
@@ -259,7 +264,7 @@ public class ChangeFeedProcessorOptions {
      * Gets the minimum partition count for the host.
      * <p>
      * This can be used to increase the number of partitions for the host and thus override equal distribution (which
-     *   is the default) of leases between hosts.
+     * is the default) of leases between hosts.
      *
      * @return the minimum scale count for the host.
      */
@@ -271,7 +276,7 @@ public class ChangeFeedProcessorOptions {
      * Sets the minimum partition count for the host.
      * <p>
      * This can be used to increase the number of partitions for the host and thus override equal distribution (which
-     *   is the default) of leases between hosts.
+     * is the default) of leases between hosts.
      *
      * @param minScaleCount the minimum partition count for the host.
      * @return the current ChangeFeedProcessorOptions instance.
@@ -285,7 +290,7 @@ public class ChangeFeedProcessorOptions {
      * Gets the maximum number of partitions the host can serve.
      * <p>
      * This can be used property to limit the number of partitions for the host and thus override equal distribution
-     *  (which is the default) of leases between hosts. DEFAULT is 0 (unlimited).
+     * (which is the default) of leases between hosts. DEFAULT is 0 (unlimited).
      *
      * @return the maximum number of partitions the host can serve.
      */
@@ -306,9 +311,10 @@ public class ChangeFeedProcessorOptions {
 
     /**
      * Gets a value indicating whether on start of the host all existing leases should be deleted and the host
-     *   should start from scratch.
+     * should start from scratch.
      *
-     * @return a value indicating whether on start of the host all existing leases should be deleted and the host should start from scratch.
+     * @return a value indicating whether on start of the host all existing leases should be deleted and the host 
+     * should start from scratch.
      */
     public boolean getDiscardExistingLeases() {
         return this.discardExistingLeases;
@@ -316,7 +322,7 @@ public class ChangeFeedProcessorOptions {
 
     /**
      * Sets a value indicating whether on start of the host all existing leases should be deleted and the host
-     *   should start from scratch.
+     * should start from scratch.
      *
      * @param discardExistingLeases Indicates whether to discard all existing leases if true
      * @return the current ChangeFeedProcessorOptions instance.

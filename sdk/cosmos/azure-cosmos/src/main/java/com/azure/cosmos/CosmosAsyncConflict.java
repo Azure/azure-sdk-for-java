@@ -11,13 +11,13 @@ import reactor.core.publisher.Mono;
  */
 public class CosmosAsyncConflict {
 
-    private CosmosAsyncContainer container;
+    private final CosmosAsyncContainer container;
     private String id;
 
     /**
      * Constructor
-     * 
-     * @param id        the conflict id
+     *
+     * @param id the conflict id
      * @param container the container
      */
     CosmosAsyncConflict(String id, CosmosAsyncContainer container) {
@@ -27,7 +27,7 @@ public class CosmosAsyncConflict {
 
     /**
      * Get the id of the {@link CosmosAsyncConflict}
-     * 
+     *
      * @return the id of the {@link CosmosAsyncConflict}
      */
     public String getId() {
@@ -36,7 +36,7 @@ public class CosmosAsyncConflict {
 
     /**
      * Set the id of the {@link CosmosAsyncConflict}
-     * 
+     *
      * @param id the id of the {@link CosmosAsyncConflict}
      * @return the same {@link CosmosAsyncConflict} that had the id set
      */
@@ -54,7 +54,7 @@ public class CosmosAsyncConflict {
      *
      * @param options the request options.
      * @return a {@link Mono} containing the single resource response with the read
-     *         conflict or an error.
+     * conflict or an error.
      */
     public Mono<CosmosAsyncConflictResponse> read(CosmosConflictRequestOptions options) {
         if (options == null) {
@@ -62,7 +62,7 @@ public class CosmosAsyncConflict {
         }
         RequestOptions requestOptions = options.toRequestOptions();
         return this.container.getDatabase().getDocClientWrapper().readConflict(getLink(), requestOptions)
-                .map(response -> new CosmosAsyncConflictResponse(response, container)).single();
+                   .map(response -> new CosmosAsyncConflictResponse(response, container)).single();
 
     }
 
@@ -75,7 +75,7 @@ public class CosmosAsyncConflict {
      *
      * @param options the feed options.
      * @return a {@link Mono} containing one or several feed response pages of the
-     *         read conflicts or an error.
+     * read conflicts or an error.
      */
     public Mono<CosmosAsyncConflictResponse> delete(CosmosConflictRequestOptions options) {
         if (options == null) {
@@ -83,22 +83,22 @@ public class CosmosAsyncConflict {
         }
         RequestOptions requestOptions = options.toRequestOptions();
         return this.container.getDatabase().getDocClientWrapper().deleteConflict(getLink(), requestOptions)
-                .map(response -> new CosmosAsyncConflictResponse(response, container)).single();
+                   .map(response -> new CosmosAsyncConflictResponse(response, container)).single();
     }
 
-    String URIPathSegment() {
+    String getURIPathSegment() {
         return Paths.CONFLICTS_PATH_SEGMENT;
     }
 
-    String parentLink() {
+    String getParentLink() {
         return this.container.getLink();
     }
 
     String getLink() {
         StringBuilder builder = new StringBuilder();
-        builder.append(parentLink());
+        builder.append(getParentLink());
         builder.append("/");
-        builder.append(URIPathSegment());
+        builder.append(getURIPathSegment());
         builder.append("/");
         builder.append(getId());
         return builder.toString();

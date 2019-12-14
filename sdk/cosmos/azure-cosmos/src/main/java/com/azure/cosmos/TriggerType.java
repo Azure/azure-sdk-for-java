@@ -33,9 +33,9 @@ public enum TriggerType {
     public int getValue() {
         return value;
     }
-    
+
     @Override
     public String toString() {
-        return WordUtils.capitalizeFully(this.name());        
-    }    
+        return WordUtils.capitalizeFully(this.name());
+    }
 }

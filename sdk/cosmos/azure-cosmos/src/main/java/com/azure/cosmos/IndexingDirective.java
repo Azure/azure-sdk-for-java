@@ -27,6 +27,6 @@ public enum IndexingDirective {
 
     @Override
     public String toString() {
-        return WordUtils.capitalizeFully(this.name());        
+        return WordUtils.capitalizeFully(this.name());
     }
 }

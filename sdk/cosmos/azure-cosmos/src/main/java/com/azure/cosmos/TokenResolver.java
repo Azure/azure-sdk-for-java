@@ -18,12 +18,14 @@ public interface TokenResolver {
 
     /**
      * This method will consume the request information and based on that it will generate the authorization token.
+     *
      * @param properties the user properties.
      * @param requestVerb Request verb i.e. GET, POST, PUT etc.
      * @param resourceIdOrFullName ResourceID or resource full name.
      * @param resourceType Resource type i.e. Database, DocumentCollection, Document etc.
      * @return The authorization token.
      */
-    public String getAuthorizationToken(String requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object> properties);
+    String getAuthorizationToken(String requestVerb, String resourceIdOrFullName,
+                                        CosmosResourceType resourceType, Map<String, Object> properties);
 
 }

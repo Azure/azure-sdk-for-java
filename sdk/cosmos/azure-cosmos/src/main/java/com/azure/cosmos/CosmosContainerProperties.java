@@ -25,7 +25,8 @@ public class CosmosContainerProperties extends Resource {
     private PartitionKeyDefinition partitionKeyDefinition;
 
     /**
-     * Constructor 
+     * Constructor
+     *
      * @param id id of the Container
      * @param partitionKeyPath partition key path
      */
@@ -40,6 +41,7 @@ public class CosmosContainerProperties extends Resource {
 
     /**
      * Constructor
+     *
      * @param id id of the container
      * @param partitionKeyDefinition the {@link PartitionKeyDefinition}
      */
@@ -51,13 +53,13 @@ public class CosmosContainerProperties extends Resource {
     CosmosContainerProperties(ResourceResponse<DocumentCollection> response) {
         super(response.getResource().toJson());
     }
-    
+
     // Converting document collection to CosmosContainerProperties
-    CosmosContainerProperties(DocumentCollection collection){
+    CosmosContainerProperties(DocumentCollection collection) {
         super(collection.toJson());
     }
-    
-    static List<CosmosContainerProperties> getFromV2Results(List<DocumentCollection> results){
+
+    static List<CosmosContainerProperties> getFromV2Results(List<DocumentCollection> results) {
         return results.stream().map(CosmosContainerProperties::new).collect(Collectors.toList());
     }
 
@@ -83,6 +85,7 @@ public class CosmosContainerProperties extends Resource {
      *
      * @param indexingPolicy {@link IndexingPolicy} the indexing policy
      * @return the CosmosContainerProperties.
+     * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setIndexingPolicy(IndexingPolicy indexingPolicy) {
         if (indexingPolicy == null) {
@@ -95,7 +98,7 @@ public class CosmosContainerProperties extends Resource {
 
     /**
      * Gets the containers unique key policy
-     * 
+     *
      * @return the unique key policy
      */
     public UniqueKeyPolicy getUniqueKeyPolicy() {
@@ -114,9 +117,10 @@ public class CosmosContainerProperties extends Resource {
 
     /**
      * Sets the Containers unique key policy
-     * 
+     *
      * @param uniqueKeyPolicy the unique key policy
      * @return the CosmosContainerProperties.
+     * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
         if (uniqueKeyPolicy == null) {
@@ -137,7 +141,8 @@ public class CosmosContainerProperties extends Resource {
         if (this.partitionKeyDefinition == null) {
 
             if (super.has(Constants.Properties.PARTITION_KEY)) {
-                this.partitionKeyDefinition = super.getObject(Constants.Properties.PARTITION_KEY, PartitionKeyDefinition.class);
+                this.partitionKeyDefinition = super.getObject(Constants.Properties.PARTITION_KEY,
+                    PartitionKeyDefinition.class);
             } else {
                 this.partitionKeyDefinition = new PartitionKeyDefinition();
             }
@@ -151,16 +156,18 @@ public class CosmosContainerProperties extends Resource {
      *
      * @param partitionKeyDefinition the partition key definition.
      * @return the CosmosContainerProperties.
+     * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         if (partitionKeyDefinition == null) {
-            throw new IllegalArgumentException("partitionKeyDefinition cannot be null.");
+            throw new IllegalArgumentException(
+                "partitionKeyDefinition cannot be null.");
         }
 
         this.partitionKeyDefinition = partitionKeyDefinition;
         return this;
     }
-    
+
     /**
      * Gets the conflictResolutionPolicy that is used for resolving conflicting writes
      * on documents in different regions, in a collection in the Azure Cosmos DB service.
@@ -177,17 +184,19 @@ public class CosmosContainerProperties extends Resource {
      *
      * @param value ConflictResolutionPolicy to be used.
      * @return the CosmosContainerProperties.
+     * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setConflictResolutionPolicy(ConflictResolutionPolicy value) {
         if (value == null) {
-            throw new IllegalArgumentException("CONFLICT_RESOLUTION_POLICY cannot be null.");
+            throw new IllegalArgumentException(
+                "CONFLICT_RESOLUTION_POLICY cannot be null.");
         }
 
         super.set(Constants.Properties.CONFLICT_RESOLUTION_POLICY, value);
         return this;
     }
 
-    DocumentCollection getV2Collection(){
+    DocumentCollection getV2Collection() {
         DocumentCollection collection = new DocumentCollection(this.toJson());
         collection.setPartitionKey(this.getPartitionKeyDefinition());
         collection.setIndexingPolicy(this.getIndexingPolicy());

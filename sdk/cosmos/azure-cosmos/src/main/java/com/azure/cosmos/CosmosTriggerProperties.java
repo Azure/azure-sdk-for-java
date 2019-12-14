@@ -15,7 +15,7 @@ public class CosmosTriggerProperties extends Resource {
     /**
      * Constructor
      */
-    public CosmosTriggerProperties(){
+    public CosmosTriggerProperties() {
         super();
     }
 
@@ -24,7 +24,7 @@ public class CosmosTriggerProperties extends Resource {
      *
      * @param jsonString the json string that represents the trigger properties.
      */
-    CosmosTriggerProperties(String jsonString){
+    CosmosTriggerProperties(String jsonString) {
         super(jsonString);
     }
 
@@ -72,10 +72,11 @@ public class CosmosTriggerProperties extends Resource {
         TriggerType result = TriggerType.PRE;
         try {
             result = TriggerType.valueOf(
-                    StringUtils.upperCase(super.getString(Constants.Properties.TRIGGER_TYPE)));
+                StringUtils.upperCase(super.getString(Constants.Properties.TRIGGER_TYPE)));
         } catch (IllegalArgumentException e) {
             // ignore the exception and return the default
-            this.getLogger().warn("INVALID triggerType value {}.", super.getString(Constants.Properties.TRIGGER_TYPE));
+            this.getLogger()
+                .warn("INVALID triggerType value {}.", super.getString(Constants.Properties.TRIGGER_TYPE));
         }
         return result;
     }
@@ -100,10 +101,11 @@ public class CosmosTriggerProperties extends Resource {
         TriggerOperation result = TriggerOperation.CREATE;
         try {
             result = TriggerOperation.valueOf(
-                    StringUtils.upperCase(super.getString(Constants.Properties.TRIGGER_OPERATION)));
+                StringUtils.upperCase(super.getString(Constants.Properties.TRIGGER_OPERATION)));
         } catch (IllegalArgumentException e) {
             // ignore the exception and return the default
-            this.getLogger().warn("INVALID triggerOperation value {}.", super.getString(Constants.Properties.TRIGGER_OPERATION));
+            this.getLogger().warn("INVALID triggerOperation value {}.",
+                super.getString(Constants.Properties.TRIGGER_OPERATION));
         }
         return result;
     }
@@ -120,6 +122,7 @@ public class CosmosTriggerProperties extends Resource {
     }
 
     static List<CosmosTriggerProperties> getFromV2Results(List<Trigger> results) {
-        return results.stream().map(trigger -> new CosmosTriggerProperties(trigger.toJson())).collect(Collectors.toList());
+        return results.stream().map(trigger -> new CosmosTriggerProperties(trigger.toJson()))
+                   .collect(Collectors.toList());
     }
 }

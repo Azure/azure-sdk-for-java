@@ -15,13 +15,7 @@ final class SpatialIndex extends Index {
      * Initializes a new instance of the SpatialIndex class.
      * <p>
      * Here is an example to instantiate SpatialIndex class passing in the DataType
-     * <pre>
-     * {@code
-     *
-     * SpatialIndex spatialIndex = new SpatialIndex(DataType.POINT);
-     *
-     * }
-     * </pre>
+     * <pre>{@code SpatialIndex spatialIndex = new SpatialIndex(DataType.POINT);}</pre>
      *
      * @param dataType specifies the target data type for the index path specification.
      */
@@ -52,7 +46,8 @@ final class SpatialIndex extends Index {
         try {
             result = DataType.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.DATA_TYPE)));
         } catch (IllegalArgumentException e) {
-            this.getLogger().warn("INVALID index dataType value {}.", super.getString(Constants.Properties.DATA_TYPE));
+            this.getLogger().warn("INVALID index dataType value {}.",
+                super.getString(Constants.Properties.DATA_TYPE));
         }
         return result;
     }

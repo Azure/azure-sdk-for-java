@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
 public class CosmosPermissionProperties extends Resource {
 
     public static List<CosmosPermissionProperties> getFromV2Results(List<Permission> results) {
-        return results.stream().map(permission -> new CosmosPermissionProperties(permission.toJson())).collect(Collectors.toList());
+        return results.stream().map(permission -> new CosmosPermissionProperties(permission.toJson()))
+                   .collect(Collectors.toList());
     }
 
     /**
@@ -80,7 +81,7 @@ public class CosmosPermissionProperties extends Resource {
      */
     public CosmosPermissionProperties setPermissionMode(PermissionMode permissionMode) {
         this.set(Constants.Properties.PERMISSION_MODE,
-                permissionMode.toString().toLowerCase());
+            permissionMode.toString().toLowerCase());
         return this;
     }
 

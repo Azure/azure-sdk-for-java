@@ -18,7 +18,8 @@ public class CosmosUserDefinedFunction {
      * @param container the container
      * @param userDefinedFunction the user defined function
      */
-    CosmosUserDefinedFunction(String id, CosmosContainer container, CosmosAsyncUserDefinedFunction userDefinedFunction) {
+    CosmosUserDefinedFunction(String id, CosmosContainer container,
+                              CosmosAsyncUserDefinedFunction userDefinedFunction) {
 
         this.id = id;
         this.container = container;
@@ -51,8 +52,8 @@ public class CosmosUserDefinedFunction {
      * @return the cosmos sync user defined function response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserDefinedFunctionResponse replace(CosmosUserDefinedFunctionProperties udfSettings)
-            throws CosmosClientException {
+    public CosmosUserDefinedFunctionResponse replace(CosmosUserDefinedFunctionProperties udfSettings) throws
+        CosmosClientException {
         return container.getScripts().mapUDFResponseAndBlock(userDefinedFunction.replace(udfSettings));
     }
 

@@ -208,7 +208,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
                 .getResource();
 
         RequestOptions options = new RequestOptions();
-        options.setPartitionKey(PartitionKey.None);
+        options.setPartitionKey(PartitionKey.NONE);
         // READ the created document
         Flux<ResourceResponse<Document>> readDocumentObservable = client
                 .readDocument(getDocumentLink(createdDocument), null);

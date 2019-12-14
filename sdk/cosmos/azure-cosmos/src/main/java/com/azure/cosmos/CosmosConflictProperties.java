@@ -48,6 +48,7 @@ public class CosmosConflictProperties extends Resource {
 
     /**
      * Gets the resource ID for the conflict in the Azure Cosmos DB service.
+     *
      * @return resource Id for the conflict.
      */
     String getSourceResourceId() {
@@ -56,9 +57,11 @@ public class CosmosConflictProperties extends Resource {
 
     /**
      * Gets the conflicting resource in the Azure Cosmos DB service.
+     *
      * @param <T> the type of the object.
      * @param klass The returned type of conflicting resource.
      * @return The conflicting resource.
+     * @throws IllegalStateException thrown if an error occurs
      */
     public <T extends Resource> T getResource(Class<T> klass) {
         String resourceAsString = super.getString(Constants.Properties.CONTENT);
@@ -67,7 +70,7 @@ public class CosmosConflictProperties extends Resource {
             try {
                 return klass.getConstructor(String.class).newInstance(resourceAsString);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 throw new IllegalStateException("Failed to instantiate class object.", e);
             }
         } else {
@@ -77,6 +80,6 @@ public class CosmosConflictProperties extends Resource {
 
     static List<CosmosConflictProperties> getFromV2Results(List<Conflict> results) {
         return results.stream().map(conflict -> new CosmosConflictProperties(conflict.toJson()))
-                .collect(Collectors.toList());
+                   .collect(Collectors.toList());
     }
 }
