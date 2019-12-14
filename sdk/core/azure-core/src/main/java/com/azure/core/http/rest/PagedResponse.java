@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.core.http.rest;
 
+import com.azure.core.util.IterableStream;
+
 import java.io.Closeable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +24,9 @@ public interface PagedResponse<T> extends Page<T>, Response<List<T>>, Closeable 
      * @return The items in the page.
      */
     default List<T> getValue() {
-        return this.getElements().stream().collect(Collectors.toList());
+        IterableStream<T> iterableStream = this.getElements();
+        return iterableStream == null
+            ? null
+            : iterableStream.stream().collect(Collectors.toList());
     }
 }

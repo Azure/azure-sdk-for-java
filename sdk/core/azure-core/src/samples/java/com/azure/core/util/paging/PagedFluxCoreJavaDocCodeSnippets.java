@@ -6,7 +6,6 @@ package com.azure.core.util.paging;
 import com.azure.core.util.IterableStream;
 import reactor.core.publisher.Flux;
 
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 

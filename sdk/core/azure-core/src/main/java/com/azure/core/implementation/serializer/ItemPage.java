@@ -32,7 +32,9 @@ class ItemPage<T> implements Page<T> {
 
     @Override
     public IterableStream<T> getElements() {
-        return new IterableStream<T>(items);
+        return items == null
+            ? null
+            : new IterableStream<T>(items);
     }
 
     @Override

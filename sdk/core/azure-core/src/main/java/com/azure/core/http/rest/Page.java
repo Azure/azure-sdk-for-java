@@ -3,6 +3,7 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public interface Page<T> extends ContinuablePage<String, T> {
      */
     @Deprecated
     default List<T> getItems() {
-        return this.getElements().stream().collect(Collectors.toList());
+        IterableStream<T> iterableStream = this.getElements();
+        return iterableStream == null
+            ? null
+            : this.getElements().stream().collect(Collectors.toList());
     }
 }

@@ -106,7 +106,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      */
     @Deprecated
     public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
-        return new PagedFlux<S>((PageRetrieverProvider<PagedResponse<S>>) () -> c -> byPage()
+        return new PagedFlux<S>((PageRetrieverProvider<PagedResponse<S>>) () -> c -> byPage(c)
             .map(mapPagedResponse(mapper)));
     }
 

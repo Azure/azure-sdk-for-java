@@ -3,6 +3,7 @@
 
 package com.azure.core.util.paging;
 
+import com.azure.core.util.IterableStream;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -123,7 +124,12 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
     @Override
     public void subscribe(CoreSubscriber<? super T> coreSubscriber) {
         byPage()
-            .flatMap(page -> Flux.fromIterable(page.getElements()))
+            .flatMap(page -> {
+                IterableStream<T> iterableStream = page.getElements();
+                return iterableStream == null
+                    ? Flux.empty()
+                    : Flux.fromIterable(page.getElements());
+            })
             .subscribe(coreSubscriber);
     }
 
