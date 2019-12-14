@@ -8,6 +8,7 @@ For users new to the Java SDK for Event Hubs, please see the [README for azure-m
 
 ## Table of contents
 
+- [Table of contents](#table-of-contents)
 - [Prerequisites](#prerequisites)
 - [Updated Maven dependencies](#updated-maven-dependencies)
 - [General changes](#general-changes)
@@ -16,7 +17,9 @@ For users new to the Java SDK for Event Hubs, please see the [README for azure-m
   - [Receiving events](#receiving-events)
   - [Minor renames](#minor-renames)
 - [Migration samples](#migration-samples)
-  - [Migrating code from `PartitionSender` or `EventHubClient` to `EventHubProducerAsyncClient` for sending events](#migrating-code-from-partitionsender-or-eventhubclient-to-eventhubproducerasyncclient-for-sending-events)
+  - [Migrating code from `PartitionSender` to `EventHubProducerAsyncClient` for sending events to a partition](#migrating-code-from-partitionsender-to-eventhubproducerasyncclient-for-sending-events-to-a-partition)
+  - [Migrating code from `EventHubClient` to `EventHubProducerAsyncClient` for sending events using automatic routing](#migrating-code-from-eventhubclient-to-eventhubproducerasyncclient-for-sending-events-using-automatic-routing)
+  - [Migrating code from `EventHubClient` to `EventHubProducerAsyncClient` for sending events with partition key](#migrating-code-from-eventhubclient-to-eventhubproducerasyncclient-for-sending-events-with-partition-key)
   - [Migrating code from `PartitionReceiver` to `EventHubConsumerAsyncClient` for receiving events in batches](#migrating-code-from-partitionreceiver-to-eventhubconsumerasyncclient-for-receiving-events-in-batches)
   - [Migrating code from `EventProcessorHost` to `EventProcessorClient` for receiving events](#migrating-code-from-eventprocessorhost-to-eventprocessorclient-for-receiving-events)
 
@@ -71,7 +74,7 @@ Creation of producers or consumers is done through either [EventHubClientBuilder
 |---|---|---|
 | `EventHubClient.createFromConnectionString()` | `var builder = new EventHubClientBuilder().connectionString();`<br/>then either `builder.buildProducerAsyncClient();` or<br/>`builder.consumerGroup().buildConsumerAsyncClient();` | [Publishing events][PublishEventsWithCustomMetadata], [Consuming events][ConsumeEvents] |
 | `EventHubClient.createWithAzureActiveDirectory()` | `var builder = new EventHubClientBuilder().tokenCredential();`<br/>then either `builder.buildProducerAsyncClient();` or<br/>`builder.consumerGroup().buildConsumerAsyncClient();` | [Publishing events with Azure AD][PublishEventsWithAzureIdentity] |
-| `EventProcessorHost.EventProcessorHostBuilder.newBuilder()` | `new EventProcessorClientBuilder().buildEventProcessorClient()` | [EventProcessorClient with Blob storage][EventProcessorClientInstantiation] |
+| `EventProcessorHost.EventProcessorHostBuilder`<br/>`.newBuilder()` | `new EventProcessorClientBuilder().buildEventProcessorClient()` | [EventProcessorClient with Blob storage][EventProcessorClientInstantiation] |
 
 ### Sending events
 
@@ -100,33 +103,35 @@ to load balance events between all the partitions. The behaviour is determined w
 
 ## Migration samples
 
-- [Migrating code from `PartitionSender` or `EventHubClient` to `EventHubProducerAsyncClient` for sending events](#migrating-code-from-partitionsender-or-eventhubclient-to-eventhubproducerasyncclient-for-sending-events)
+- [Migrating code from `PartitionSender` to `EventHubProducerAsyncClient` for sending events to a partition](#migrating-code-from-partitionsender-to-eventhubproducerasyncclient-for-sending-events-to-a-partition)
+- [Migrating code from `EventHubClient` to `EventHubProducerAsyncClient` for sending events using automatic routing](#migrating-code-from-eventhubclient-to-eventhubproducerasyncclient-for-sending-events-using-automatic-routing)
+- [Migrating code from `EventHubClient` to `EventHubProducerAsyncClient` for sending events with partition key](#migrating-code-from-eventhubclient-to-eventhubproducerasyncclient-for-sending-events-with-partition-key)
 - [Migrating code from `PartitionReceiver` to `EventHubConsumerAsyncClient` for receiving events in batches](#migrating-code-from-partitionreceiver-to-eventhubconsumerasyncclient-for-receiving-events-in-batches)
 - [Migrating code from `EventProcessorHost` to `EventProcessorClient` for receiving events](#migrating-code-from-eventprocessorhost-to-eventprocessorclient-for-receiving-events)
 
-### Migrating code from `PartitionSender` or `EventHubClient` to `EventHubProducerAsyncClient` for sending events
-In v3, there were multiple options on how to publish events to an Event Hub.
+### Migrating code from `PartitionSender` to `EventHubProducerAsyncClient` for sending events to a partition
+
+In v3, events could be published to a single partition using `PartitionSender`.
 
 In v5, this has been consolidated into a more efficient `send(EventDataBatch)` method. Batching merges information from
 multiple events into a single sent message, reducing the amount of network communication needed vs sending events one at
-a time.
+a time. Events are published to a specific partition [`CreateBatchOptions.setPartitionId()`][CreateBatchOptions] is set
+before calling `createBatch(CreateBatchOptions)`.
 
 The code below assumes all events fit into a single batch. For a more complete example, see sample: [Publishing events
 to specific partition][PublishEventsToSpecificPartition].
 
 So in v3:
 ```java
-EventHubClient client = EventHubClient.createFromConnectionStringSync("connection-string-for-an-event-hub",
-    Executors.newScheduledThreadPool(4));
-
-List<EventData> events = Arrays.asList(EventData.create("foo".getBytes()), EventData.create("bar".getBytes()));
+EventHubClient client = EventHubClient.createFromConnectionStringSync(
+    "connection-string-for-an-event-hub", Executors.newScheduledThreadPool(4));
+List<EventData> events = Arrays.asList(EventData.create("foo".getBytes()));
 
 CompletableFuture<Void> sendFuture = client.createPartitionSender("my-partition-id")
     .thenCompose(producer -> {
         EventDataBatch batch = producer.createBatch();
         // Assuming all events fit into a single batch. This returns false if it does not.
-        // If it returns false, we send the batch, create another one, and continue to
-        // add events to it.
+        // If it returns false, we send the batch, create another, and continue to add events.
         for (EventData event : events) {
             try {
                 batch.tryAdd(event);
@@ -143,7 +148,7 @@ sendFuture.get();
 
 In v5:
 ```java
-List<EventData> events = Arrays.asList(EventData.create("foo".getBytes()), EventData.create("bar".getBytes()));
+List<EventData> events = Arrays.asList(EventData.create("foo".getBytes()));
 
 EventHubProducerAsyncClient producer = new EventHubClientBuilder()
     .connectionString("connection-string-for-an-event-hub")
@@ -153,10 +158,9 @@ CreateBatchOptions options = new CreateBatchOptions()
     .setPartitionId("my-partition-id");
 
 Mono<Void> sendOperation = producer.createBatch(options).flatMap(batch -> {
-    for (EventData event : data) {
+    for (EventData event : events) {
         // Assuming all events fit into a single batch. This returns false if it does not.
-        // If it returns false, we send the batch, create another one, and continue to
-        // add events to it.
+        // If it returns false, we send the batch, create another, and continue to add events.
         try {
             batch.tryAdd(event);
         } catch (AmqpException e) {
@@ -167,6 +171,94 @@ Mono<Void> sendOperation = producer.createBatch(options).flatMap(batch -> {
 });
 
 sendOperation.block();
+```
+
+### Migrating code from `EventHubClient` to `EventHubProducerAsyncClient` for sending events using automatic routing
+
+In v3, events could be published to an Event Hub that allowed the service to automatically route events to an available partition.
+
+In v5, this has been consolidated into a more efficient `send(EventDataBatch)` method. Batching merges information from
+multiple events into a single sent message, reducing the amount of network communication needed vs sending events one at
+a time. Automatic routing occurs when an `EventDataBatch` is created using `createBatch()`.
+
+So in v3:
+```java
+EventHubClient client = EventHubClient.createFromConnectionStringSync(
+    "connection-string-for-an-event-hub", Executors.newScheduledThreadPool(4));
+List<EventData> events = Arrays.asList(EventData.create("foo".getBytes()));
+
+EventDataBatch batch = client.createBatch();
+for (EventData event : events) {
+    // Assuming all events fit into a single batch. This returns false if it does not.
+    // If it returns false, we send the batch, create another, and continue to add events.
+    try {
+        batch.tryAdd(event);
+    } catch (PayloadSizeExceededException e) {
+        System.err.println("Event is larger than maximum allowed size. Exception: " + e);
+    }
+}
+
+client.send(batch).get();
+```
+
+In v5:
+```java
+List<EventData> events = Arrays.asList(EventData.create("foo".getBytes()));
+
+EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+    .connectionString("connection-string-for-an-event-hub")
+    .buildAsyncProducerClient();
+
+Mono<Void> sendOperation = producer.createBatch().flatMap(batch -> {
+    for (EventData event : events) {
+        // Assuming all events fit into a single batch. This returns false if it does not.
+        // If it returns false, we send the batch, create another, and continue to add events.
+        try {
+            batch.tryAdd(event);
+        } catch (AmqpException e) {
+            System.err.println("Event is larger than maximum allowed size. Exception: " + e);
+        }
+    }
+    return producer.send(batch);
+});
+
+sendOperation.block();
+```
+
+### Migrating code from `EventHubClient` to `EventHubProducerAsyncClient` for sending events with partition key
+
+In v3, events could be published with a partition key.
+
+In v5, this has been consolidated into a more efficient `send(EventDataBatch)` method. Batching merges information from
+multiple events into a single sent message, reducing the amount of network communication needed vs sending events one at
+a time. Events are published with a partition key when [`CreateBatchOptions.setPartitionKey()`][CreateBatchOptions] is
+set before calling `createBatch(CreateBatchOptions)`.
+
+So in v3:
+```java
+EventHubClient client = EventHubClient.createFromConnectionStringSync(
+    "connection-string-for-an-event-hub", 
+    Executors.newScheduledThreadPool(5));
+
+BatchOptions batchOptions = new BatchOptions().with(options -> options.partitionKey = "a-key");
+EventDataBatch batch = client.createBatch(batchOptions);
+
+// Fill batch with events then send it.
+client.send(batch).get();
+```
+
+In v5:
+```java
+EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+    .connectionString("connection-string-for-an-event-hub")
+    .buildAsyncProducerClient();
+
+CreateBatchOptions options = new CreateBatchOptions()
+    .setPartitionKey("a-key");
+EventDataBatch batch = producer.createBatch(options).block();
+
+// Fill batch with events then send it.
+producer.send(batch).block();
 ```
 
 ### Migrating code from `PartitionReceiver` to `EventHubConsumerAsyncClient` for receiving events in batches
