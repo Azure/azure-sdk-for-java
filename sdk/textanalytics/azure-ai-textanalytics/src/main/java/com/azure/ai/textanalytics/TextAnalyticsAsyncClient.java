@@ -42,6 +42,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -335,16 +336,16 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<NamedEntityResult>> recognizeEntitiesWithResponse(String text, String language, Context context) {
-        List<TextDocumentInput> documentInputs = new ArrayList<>();
-        // TODO (shawn): update/validate inputs and id assigning
-        documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
-        return recognizeBatchEntitiesWithResponse(documentInputs, null, context).flatMap(response -> {
-            Iterator<NamedEntityResult> responseItem = response.getValue().iterator();
-            if (responseItem.hasNext()) {
-                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-            }
-            return monoError(logger, new RuntimeException("Unable to recognize entities for the provided text."));
-        });
+        return recognizeBatchEntitiesWithResponse(
+            Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
+                .flatMap(response -> {
+                    Iterator<NamedEntityResult> responseItem = response.getValue().iterator();
+                    if (responseItem.hasNext()) {
+                        return Mono.just(new SimpleResponse<>(response, responseItem.next()));
+                    }
+                    return monoError(logger,
+                        new RuntimeException("Unable to recognize entities for the provided text."));
+                });
     }
 
     /**
@@ -491,16 +492,16 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<NamedEntityResult>> recognizePiiEntitiesWithResponse(String text, String language, Context context) {
-        List<TextDocumentInput> documentInputs = new ArrayList<>();
-        // TODO (shawn): update/validate inputs and id assigning
-        documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
-        return recognizeBatchPiiEntitiesWithResponse(documentInputs, null, context).flatMap(response -> {
-            Iterator<NamedEntityResult> responseItem = response.getValue().iterator();
-            if (responseItem.hasNext()) {
-                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-            }
-            return monoError(logger, new RuntimeException("Unable to recognize PII entities for the provided text."));
-        });
+        return recognizeBatchPiiEntitiesWithResponse(
+            Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
+                .flatMap(response -> {
+                    Iterator<NamedEntityResult> responseItem = response.getValue().iterator();
+                    if (responseItem.hasNext()) {
+                        return Mono.just(new SimpleResponse<>(response, responseItem.next()));
+                    }
+                    return monoError(logger,
+                        new RuntimeException("Unable to recognize PII entities for the provided text."));
+                });
     }
 
     /**
@@ -620,17 +621,16 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<LinkedEntityResult>> recognizeLinkedEntitiesWithResponse(String text, String language,
                                                                            Context context) {
-        List<TextDocumentInput> documentInputs = new ArrayList<>();
-        // TODO (shawn): update/validate inputs and id assigning
-        documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
-        return recognizeBatchLinkedEntitiesWithResponse(documentInputs, null, context).flatMap(response -> {
-            Iterator<LinkedEntityResult> responseItem = response.getValue().iterator();
-            if (responseItem.hasNext()) {
-                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-            }
-            return monoError(logger,
-                new RuntimeException("Unable to recognize linked entities for the provided text."));
-        });
+        return recognizeBatchLinkedEntitiesWithResponse(
+            Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
+                .flatMap(response -> {
+                    Iterator<LinkedEntityResult> responseItem = response.getValue().iterator();
+                    if (responseItem.hasNext()) {
+                        return Mono.just(new SimpleResponse<>(response, responseItem.next()));
+                    }
+                    return monoError(logger,
+                        new RuntimeException("Unable to recognize linked entities for the provided text."));
+                });
     }
 
     /**
@@ -777,16 +777,16 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<KeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language, Context context) {
-        List<TextDocumentInput> documentInputs = new ArrayList<>();
-        // TODO (savaity): should this be a random number generator?
-        documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
-        return extractBatchKeyPhrasesWithResponse(documentInputs, null, context).flatMap(response -> {
-            Iterator<KeyPhraseResult> responseItem = response.getValue().iterator();
-            if (responseItem.hasNext()) {
-                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-            }
-            return monoError(logger, new RuntimeException("Unable to extract key phrases for the provided text."));
-        });
+        return extractBatchKeyPhrasesWithResponse(
+            Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
+                .flatMap(response -> {
+                    Iterator<KeyPhraseResult> responseItem = response.getValue().iterator();
+                    if (responseItem.hasNext()) {
+                        return Mono.just(new SimpleResponse<>(response, responseItem.next()));
+                    }
+                    return monoError(logger,
+                        new RuntimeException("Unable to extract key phrases for the provided text."));
+                });
     }
 
     /**
@@ -933,16 +933,16 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<TextSentimentResult>> analyzeSentimentWithResponse(String text, String language, Context context) {
-        List<TextDocumentInput> documentInputs = new ArrayList<>();
-        documentInputs.add(new TextDocumentInput(Integer.toString(0), text, language));
-        // TODO (savaity): should this be a random number generator?
-        return analyzeBatchSentimentWithResponse(documentInputs, null, context).flatMap(response -> {
-            Iterator<TextSentimentResult> responseItem = response.getValue().iterator();
-            if (responseItem.hasNext()) {
-                return Mono.just(new SimpleResponse<>(response, responseItem.next()));
-            }
-            return monoError(logger, new RuntimeException("Unable to analyze sentiment for the provided text."));
-        });
+        return analyzeBatchSentimentWithResponse(
+            Arrays.asList(new TextDocumentInput(Integer.toString(0), text, language)), null, context)
+                .flatMap(response -> {
+                    Iterator<TextSentimentResult> responseItem = response.getValue().iterator();
+                    if (responseItem.hasNext()) {
+                        return Mono.just(new SimpleResponse<>(response, responseItem.next()));
+                    }
+                    return monoError(logger,
+                        new RuntimeException("Unable to analyze sentiment for the provided text."));
+                });
     }
 
     /**
