@@ -15,7 +15,6 @@ import io.netty.channel.ChannelHandlerContext;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
-import java.math.BigDecimal;
 import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -122,18 +121,17 @@ public final class RntbdRequestArgs {
         return RntbdObjectMapper.toString(this);
     }
 
-    public void traceOperation(final Logger logger, final ChannelHandlerContext context, final String operationName, final Object... args) {
+    public void traceOperation(
+        final Logger logger, final ChannelHandlerContext context, final String operationName, final Object... args) {
 
-        checkNotNull(logger, "logger");
+        checkNotNull(logger, "expected non-null logger");
 
         if (logger.isTraceEnabled()) {
-            final BigDecimal lifetime = BigDecimal.valueOf(this.lifetime.elapsed().toNanos(), 6);
-            logger.trace("{},{},\"{}({})\",\"{}\",\"{}\"", this.timeCreated, lifetime, operationName,
-                Stream.of(args).map(arg ->
-                    arg == null ? "null" : arg.toString()).collect(Collectors.joining(",")
-                ),
-                this, context
-            );
+            logger.trace("{},{},\"{}({})\",\"{}\",\"{}\"", this.timeCreated, this.lifetime.elapsed(), operationName,
+                Stream.of(args)
+                    .map(arg -> arg == null ? "null" : arg.toString())
+                    .collect(Collectors.joining(",")),
+                this, context);
         }
     }
 

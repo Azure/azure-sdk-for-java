@@ -13,8 +13,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.google.common.base.Strings.lenientFormat;
-
 public final class RntbdRequestTimer implements AutoCloseable {
 
     private static final long TIMER_RESOLUTION_IN_NANOS = 100_000_000L; // 100 ms
@@ -22,17 +20,17 @@ public final class RntbdRequestTimer implements AutoCloseable {
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestTimer.class);
     private final AtomicBoolean closed = new AtomicBoolean();
 
-    private final long requestTimeout;
+    private final long requestTimeoutInNanos;
     private final HashedWheelTimer timer;
 
     public RntbdRequestTimer(final long requestTimeoutInNanos) {
         // HashedWheelTimer code inspection shows that timeout tasks expire within two timer resolution units
         this.timer = new HashedWheelTimer(TIMER_RESOLUTION_IN_NANOS, TimeUnit.NANOSECONDS);
-        this.requestTimeout = requestTimeoutInNanos;
+        this.requestTimeoutInNanos = requestTimeoutInNanos;
     }
 
     public long getRequestTimeout(final TimeUnit unit) {
-        return unit.convert(requestTimeout, TimeUnit.NANOSECONDS);
+        return unit.convert(this.requestTimeoutInNanos, TimeUnit.NANOSECONDS);
     }
 
     @Override
@@ -59,6 +57,6 @@ public final class RntbdRequestTimer implements AutoCloseable {
     }
 
     public Timeout newTimeout(final TimerTask task) {
-        return this.timer.newTimeout(task, this.requestTimeout, TimeUnit.NANOSECONDS);
+        return this.timer.newTimeout(task, this.requestTimeoutInNanos, TimeUnit.NANOSECONDS);
     }
 }
