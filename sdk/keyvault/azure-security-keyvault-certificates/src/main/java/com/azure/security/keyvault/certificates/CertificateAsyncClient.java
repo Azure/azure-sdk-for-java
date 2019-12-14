@@ -1710,7 +1710,7 @@ public final class CertificateAsyncClient {
         CertificateImportParameters parameters = new CertificateImportParameters()
             .base64EncodedCertificate(Base64.getEncoder().encodeToString(importCertificateOptions.getCertificate()))
             .certificateAttributes(new CertificateRequestAttributes(importCertificateOptions))
-            .certificatePolicy(importCertificateOptions.getCertificatePolicy())
+            .certificatePolicy(importCertificateOptions.getPolicy())
             .password(importCertificateOptions.getPassword())
             .tags(importCertificateOptions.getTags());
 
