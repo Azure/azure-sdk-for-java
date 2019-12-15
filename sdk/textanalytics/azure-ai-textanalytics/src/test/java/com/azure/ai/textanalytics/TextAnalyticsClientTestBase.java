@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
-    private static final String TEXT_ANALYTICS_PROPERTIES = "azure-textanalytics.properties";
+    private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
