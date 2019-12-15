@@ -174,6 +174,11 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
                 Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
             })
             .verifyComplete();
+    }
+
+    @Test
+    public void canResetIndexerAndGetIndexerStatusWithResponse() {
+        Indexer indexer = createTestDataSourceAndIndexer();
 
         client.resetIndexerWithResponse(indexer.getName(), generateRequestOptions()).block();
         StepVerifier.create(client.getIndexerStatusWithResponse(indexer.getName(), generateRequestOptions()))
@@ -450,6 +455,20 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     }
 
     @Test
+    public void canCreateAndDeleteIndexerWithResponse() {
+        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
+        indexer.setDataSourceName(SQL_DATASOURCE_NAME);
+        client.createIndexer(indexer).block();
+
+        client.deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), new RequestOptions()).block();
+        StepVerifier
+            .create(client.indexerExistsWithResponse(indexer.getName(), new RequestOptions()))
+            .assertNext(res -> Assert.assertFalse(res.getValue()))
+            .verifyComplete();
+    }
+
+    @Test
     public void deleteIndexerIsIdempotent() {
         // Create Datasource
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
@@ -634,6 +653,11 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         StepVerifier.create(client.indexerExists(indexer.getName()))
             .expectNext(true)
             .verifyComplete();
+    }
+
+    @Test
+    public void existsReturnsTrueForExistingIndexerWithResponse() {
+        Indexer indexer = createTestDataSourceAndIndexer();
 
         StepVerifier
             .create(client.indexerExistsWithResponse(indexer.getName(), generateRequestOptions()))

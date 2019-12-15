@@ -1,52 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk42d587477345.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk648082576d20.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "19298f22-d759-4002-ab56-3dcaacf0c633",
+      "request-id" : "27ec679a-004b-45f7-99c0-71059dbbd685",
       "StatusCode" : "201",
-      "Date" : "Mon, 02 Dec 2019 22:50:41 GMT",
+      "Date" : "Sun, 15 Dec 2019 08:57:35 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7777A0EEBDFC2\"",
-      "elapsed-time" : "58",
+      "ETag" : "W/\"0x8D7813CD48EAC2C\"",
+      "elapsed-time" : "111",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "1158",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk42d587477345.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7777A0EEBDFC2\\\"\",\"name\":\"image-analysis-key-phrase-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.ImageAnalysisSkill\",\"name\":\"myimage\",\"description\":\"Tested image analysis skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"visualFeatures\":[\"categories\",\"tags\",\"description\",\"faces\",\"imageType\",\"color\"],\"details\":[\"celebrities\",\"landmarks\"],\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"description\",\"targetName\":\"mydescription\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"maxKeyPhraseCount\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mydescription/*/Tags/*\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk648082576d20.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7813CD48EAC2C\\\"\",\"name\":\"image-analysis-key-phrase-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.ImageAnalysisSkill\",\"name\":\"myimage\",\"description\":\"Tested image analysis skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"visualFeatures\":[\"categories\",\"tags\",\"description\",\"faces\",\"imageType\",\"color\"],\"details\":[\"celebrities\",\"landmarks\"],\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"description\",\"targetName\":\"mydescription\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"maxKeyPhraseCount\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mydescription/*/Tags/*\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk42d587477345.search-dogfood.windows-int.net/skillsets('image-analysis-key-phrase-skillset')?api-version=2019-05-06"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://azs-sdk42d587477345.search-dogfood.windows-int.net/skillsets?api-version=2019-05-06",
-    "Headers" : {
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "b3ca1d65-eea2-4b5c-8161-a55b7b2bb823",
-      "StatusCode" : "201",
-      "Date" : "Mon, 02 Dec 2019 22:50:41 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7777A0EFECF6F\"",
-      "elapsed-time" : "43",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "1159",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk42d587477345.search-dogfood.windows-int.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7777A0EFECF6F\\\"\",\"name\":\"image-analysis-key-phrase-skillset2\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.ImageAnalysisSkill\",\"name\":\"myimage\",\"description\":\"Tested image analysis skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"visualFeatures\":[\"categories\",\"tags\",\"description\",\"faces\",\"imageType\",\"color\"],\"details\":[\"celebrities\",\"landmarks\"],\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"description\",\"targetName\":\"mydescription\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"maxKeyPhraseCount\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mydescription/*/Tags/*\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk42d587477345.search-dogfood.windows-int.net/skillsets('image-analysis-key-phrase-skillset2')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk648082576d20.search-dogfood.windows-int.net/skillsets('image-analysis-key-phrase-skillset')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

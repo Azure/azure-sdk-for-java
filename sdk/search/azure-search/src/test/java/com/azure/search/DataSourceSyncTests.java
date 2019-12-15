@@ -63,7 +63,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
     }
 
     @Test
-    public void createAndListDataSources() {
+    public void canCreateAndListDataSources() {
         DataSource dataSource1 = createTestBlobDataSource(null);
         DataSource dataSource2 = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
 
@@ -76,9 +76,20 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         Assert.assertEquals(2, resultList.size());
         Assert.assertEquals(dataSource1.getName(), resultList.get(0).getName());
         Assert.assertEquals(dataSource2.getName(), resultList.get(1).getName());
+    }
 
-        results = client.listDataSources("name", generateRequestOptions(), Context.NONE);
-        resultList = results.stream().collect(Collectors.toList());
+    @Test
+    public void canCreateAndListDataSourcesWithResponse() {
+        DataSource dataSource1 = createTestBlobDataSource(null);
+        DataSource dataSource2 = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
+
+        client.createOrUpdateDataSourceWithResponse(
+            dataSource1, new AccessCondition(), new RequestOptions(), Context.NONE);
+        client.createOrUpdateDataSourceWithResponse(
+            dataSource2, new AccessCondition(), new RequestOptions(), Context.NONE);
+
+        PagedIterable<DataSource> results = client.listDataSources("name", new RequestOptions(), Context.NONE);
+        List<DataSource> resultList = results.stream().collect(Collectors.toList());
 
         Assert.assertEquals(2, resultList.size());
         Assert.assertEquals(dataSource1.getName(), resultList.get(0).getName());
@@ -240,7 +251,15 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         client.createOrUpdateDataSource(dataSource);
 
         Assert.assertTrue(client.dataSourceExists(dataSource.getName()));
-        Assert.assertTrue(client.dataSourceExistsWithResponse(dataSource.getName(), generateRequestOptions(), Context.NONE).getValue());
+    }
+
+    @Test
+    public void existsReturnsTrueForExistingDatasourceWithResponse() {
+        DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
+        client.createOrUpdateDataSource(dataSource);
+
+        Assert.assertTrue(client.dataSourceExistsWithResponse(dataSource.getName(), generateRequestOptions(),
+            Context.NONE).getValue());
     }
 
     @Test
@@ -303,7 +322,8 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         DataSource actualDataSource = client.getDataSource(dataSourceName);
         assertDataSourcesEqual(expectedDataSource, actualDataSource);
 
-        actualDataSource = client.getDataSourceWithResponse(dataSourceName, generateRequestOptions(), Context.NONE).getValue();
+        actualDataSource = client.getDataSourceWithResponse(dataSourceName, generateRequestOptions(), Context.NONE)
+            .getValue();
         assertDataSourcesEqual(expectedDataSource, actualDataSource);
 
         client.deleteDataSource(dataSourceName);
@@ -317,25 +337,6 @@ public class DataSourceSyncTests extends DataSourceTestBase {
             HttpResponseStatus.NOT_FOUND,
             "No data source with the name 'thisdatasourcedoesnotexist' was found in service"
         );
-    }
-
-    @Test
-    public void canUpdateConnectionData() {
-        // Note: since connection string is not returned when queried from the service, actually saving the
-        // datasource, retrieving it and verifying the change, won't work.
-        // Hence, we only validate that the properties on the local items can change.
-
-        // Create an initial dataSource
-        DataSource initial = createTestBlobDataSource(null);
-        Assert.assertEquals(initial.getCredentials().getConnectionString(),
-            FAKE_STORAGE_CONNECTION_STRING);
-
-        // tweak the connection string and verify it was changed
-        String newConnString =
-            "DefaultEndpointsProtocol=https;AccountName=NotaRealYetDifferentAccount;AccountKey=AnotherFakeKey;";
-        initial.setCredentials(new DataSourceCredentials().setConnectionString(newConnString));
-
-        Assert.assertEquals(initial.getCredentials().getConnectionString(), newConnString);
     }
 
     @Override

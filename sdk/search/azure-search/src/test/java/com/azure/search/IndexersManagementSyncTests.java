@@ -237,6 +237,11 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         IndexerExecutionInfo indexerStatus = client.getIndexerStatus(indexer.getName());
         Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
         Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
+    }
+
+    @Test
+    public void canResetIndexerAndGetIndexerStatusWithResponse() {
+        Indexer indexer = createTestDataSourceAndIndexer();
 
         client.resetIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
         IndexerExecutionInfo indexerStatusResponse = client.getIndexerStatusWithResponse(indexer.getName(),
@@ -264,7 +269,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 
-    @Override
+    @Test
     public void canRunIndexerAndGetIndexerStatus() {
         // When an indexer is created, the execution info may not be available immediately. Hence, a
         // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
@@ -433,6 +438,18 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         client.deleteIndexer(indexer.getName());
         Assert.assertFalse(client.indexerExists(indexer.getName()));
+    }
+
+    @Test
+    public void canCreateAndDeleteIndexerWithResponse() {
+        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
+        indexer.setDataSourceName(SQL_DATASOURCE_NAME);
+        client.createIndexerWithResponse(indexer, new RequestOptions(), Context.NONE);
+
+        client.deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), new RequestOptions(), Context.NONE);
+        Assert.assertFalse(client.indexerExistsWithResponse(indexer.getName(), new RequestOptions(), Context.NONE)
+            .getValue());
     }
 
     @Test
@@ -618,7 +635,14 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Indexer indexer = createTestDataSourceAndIndexer();
 
         Assert.assertTrue(client.indexerExists(indexer.getName()));
-        Assert.assertTrue(client.indexerExistsWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE).getValue());
+    }
+
+    @Test
+    public void existsReturnsTrueForExistingIndexerWithResponse() {
+        Indexer indexer = createTestDataSourceAndIndexer();
+
+        Assert.assertTrue(
+            client.indexerExistsWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
     @Test

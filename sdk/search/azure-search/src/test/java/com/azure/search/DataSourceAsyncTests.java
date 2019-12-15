@@ -66,7 +66,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     }
 
     @Test
-    public void createAndListDataSources() {
+    public void canCreateAndListDataSources() {
         DataSource dataSource1 = createTestBlobDataSource(null);
         DataSource dataSource2 = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
 
@@ -83,8 +83,17 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
                 Assert.assertEquals(dataSource2.getName(), result.get(1).getName());
             })
             .verifyComplete();
+    }
 
-        results = client.listDataSources("name", generateRequestOptions());
+    @Test
+    public void canCreateAndListDataSourcesWithResponse() {
+        DataSource dataSource1 = createTestBlobDataSource(null);
+        DataSource dataSource2 = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
+
+        client.createOrUpdateDataSourceWithResponse(dataSource1, new AccessCondition(), new RequestOptions()).block();
+        client.createOrUpdateDataSourceWithResponse(dataSource2, new AccessCondition(), new RequestOptions()).block();
+
+        PagedFlux<DataSource> results = client.listDataSources("name", new RequestOptions());
 
         StepVerifier
             .create(results.collectList())
@@ -250,6 +259,12 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             .create(client.dataSourceExists(dataSource.getName()))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
+    }
+
+    @Test
+    public void existsReturnsTrueForExistingDatasourceWithResponse() {
+        DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
+        client.createOrUpdateDataSource(dataSource).block();
 
         StepVerifier
             .create(client.dataSourceExistsWithResponse(dataSource.getName(), generateRequestOptions()))
@@ -347,24 +362,6 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
             HttpResponseStatus.NOT_FOUND,
             "No data source with the name 'thisdatasourcedoesnotexist' was found in service"
         );
-    }
-
-    @Test
-    public void canUpdateConnectionData() {
-        // Note: since connection string is not returned when queried from the service, actually saving the
-        // datasource, retrieving it and verifying the change, won't work.
-        // Hence, we only validate that the properties on the local items can change.
-
-        // Create an initial datasource
-        DataSource initial = createTestBlobDataSource(null);
-        Assert.assertEquals(initial.getCredentials().getConnectionString(), FAKE_STORAGE_CONNECTION_STRING);
-
-        // tweak the connection string and verify it was changed
-        String newConnString =
-            "DefaultEndpointsProtocol=https;AccountName=NotaRealYetDifferentAccount;AccountKey=AnotherFakeKey;";
-        initial.setCredentials(new DataSourceCredentials().setConnectionString(newConnString));
-
-        Assert.assertEquals(initial.getCredentials().getConnectionString(), newConnString);
     }
 
     @Override

@@ -80,10 +80,14 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .create(client.createSkillset(expectedSkillset))
             .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset))
             .verifyComplete();
+    }
+
+    @Test
+    public void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhraseWithResponse() {
+        Skillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
 
         StepVerifier
-            .create(client.createSkillsetWithResponse(expectedSkillset.setName("image-analysis-key-phrase-skillset2"),
-                generateRequestOptions()))
+            .create(client.createSkillsetWithResponse(expectedSkillset, generateRequestOptions()))
             .assertNext(actualSkillset -> assertSkillsetsEqual(expectedSkillset, actualSkillset.getValue()))
             .verifyComplete();
     }
@@ -246,6 +250,12 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .create(client.getSkillset(expected.getName()))
             .assertNext(actual -> assertSkillsetsEqual(expected, actual))
             .verifyComplete();
+    }
+
+    @Test
+    public void getOcrSkillsetReturnsCorrectDefinitionWithResponse() {
+        Skillset expected = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
+        client.createSkillset(expected).block();
 
         StepVerifier
             .create(client.getSkillsetWithResponse(expected.getName(), generateRequestOptions()))
@@ -445,10 +455,15 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .create(client.createOrUpdateSkillset(expected))
             .assertNext(res -> assertSkillsetsEqual(expected, res))
             .verifyComplete();
+    }
+
+    @Test
+    public void createOrUpdateCreatesWhenSkillsetDoesNotExistWithResponse() {
+        Skillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED, false);
 
         StepVerifier
-            .create(client.createOrUpdateSkillsetWithResponse(expected.setName("testskillset2"), new AccessCondition(),
-                    generateRequestOptions()))
+            .create(client.createOrUpdateSkillsetWithResponse(expected, new AccessCondition(),
+                generateRequestOptions()))
             .assertNext(res -> Assert.assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode()))
             .verifyComplete();
     }
@@ -481,13 +496,18 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     @Test
     public void existsReturnsTrueForExistingSkillset() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
-
         client.createSkillset(skillset).block();
 
         StepVerifier
             .create(client.skillsetExists(skillset.getName()))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
+    }
+
+    @Test
+    public void existsReturnsTrueForExistingSkillsetWithResponse() {
+        Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
+        client.createSkillset(skillset).block();
 
         StepVerifier
             .create(client.skillsetExistsWithResponse(skillset.getName(), generateRequestOptions()))

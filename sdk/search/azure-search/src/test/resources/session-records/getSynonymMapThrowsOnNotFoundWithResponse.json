@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdka9374857acfd.search-dogfood.windows-int.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkafd7693758f2.search-dogfood.windows-int.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "5b33a0a0-1c44-464a-89dd-819fe1fe5216",
+      "request-id" : "0b4bb28d-414d-46eb-9944-04fe1bc80b85",
       "StatusCode" : "404",
-      "Date" : "Sun, 15 Dec 2019 09:28:34 GMT",
+      "Date" : "Sun, 15 Dec 2019 09:35:05 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "8",
+      "elapsed-time" : "32",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "135",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'azs-sdka9374857acfd'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'azs-sdkafd7693758f2'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

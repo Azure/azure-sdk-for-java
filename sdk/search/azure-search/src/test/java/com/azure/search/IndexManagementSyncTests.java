@@ -75,10 +75,17 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     @Test
     public void createIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
+
         Index createdIndex = client.createIndex(index);
         assertIndexesEqual(index, createdIndex);
+    }
 
-        Response<Index> createIndexResponse = client.createIndexWithResponse(index.setName("hotel2"), generateRequestOptions(), Context.NONE);
+    @Test
+    public void createIndexReturnsCorrectDefinitionWithResponse() {
+        Index index = createTestIndex();
+
+        Response<Index> createIndexResponse = client.createIndexWithResponse(index.setName("hotel2"),
+            generateRequestOptions(), Context.NONE);
         assertIndexesEqual(index, createIndexResponse.getValue());
     }
 
@@ -133,10 +140,18 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     public void getIndexReturnsCorrectDefinition() {
         Index index = createTestIndex();
         client.createIndex(index);
+
         Index createdIndex = client.getIndex(index.getName());
         assertIndexesEqual(index, createdIndex);
+    }
 
-        Response<Index> getIndexResponse = client.getIndexWithResponse(index.getName(), generateRequestOptions(), Context.NONE);
+    @Test
+    public void getIndexReturnsCorrectDefinitionWithResponse() {
+        Index index = createTestIndex();
+        client.createIndex(index);
+
+        Response<Index> getIndexResponse = client.getIndexWithResponse(index.getName(), generateRequestOptions(),
+            Context.NONE);
         assertIndexesEqual(index, getIndexResponse.getValue());
     }
 
@@ -155,6 +170,13 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         client.createIndex(index);
 
         Assert.assertTrue(client.indexExists(index.getName()));
+    }
+
+    @Test
+    public void existsReturnsTrueForExistingIndexWithResponse() {
+        Index index = createTestIndex();
+        client.createIndex(index);
+
         Assert.assertTrue(client.indexExistsWithResponse(index.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
@@ -419,6 +441,21 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index actual = client.createOrUpdateIndex(expected);
         assertIndexesEqual(expected, actual);
 
+        actual = client.createOrUpdateIndex(expected.setName("hotel1"));
+        assertIndexesEqual(expected, actual);
+
+        Index res = client.createOrUpdateIndex(expected.setName("hotel2"));
+        Assert.assertEquals(expected.getName(), res.getName());
+    }
+
+    @Test
+    public void createOrUpdateIndexCreatesWhenIndexDoesNotExistWithResponse() {
+        Index expected = createTestIndex();
+
+        Index actual = client.createOrUpdateIndexWithResponse(expected, false, new AccessCondition(),
+            generateRequestOptions(), Context.NONE).getValue();
+        assertIndexesEqual(expected, actual);
+
         actual = client.createOrUpdateIndexWithResponse(expected.setName("hotel1"),
             false, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
         assertIndexesEqual(expected, actual);
@@ -490,12 +527,16 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         IndexGetStatisticsResult indexStatistics = client.getIndexStatistics(index.getName());
         Assert.assertEquals(0, indexStatistics.getDocumentCount());
         Assert.assertEquals(0, indexStatistics.getStorageSize());
+    }
+
+    @Test
+    public void canCreateAndGetIndexStatsWithResponse() {
+        Index index = createTestIndex();
+        client.createOrUpdateIndex(index);
 
         Response<IndexGetStatisticsResult> indexStatisticsResponse = client.getIndexStatisticsWithResponse(index.getName(),
             generateRequestOptions(), Context.NONE);
         Assert.assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
         Assert.assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
-
-
     }
 }

@@ -1,43 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk0e51906945b2.search-dogfood.windows-int.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkdcc695978e69.search-dogfood.windows-int.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "db9e6a3f-20fa-4943-bf27-e6ee50ab75c8",
+      "request-id" : "e5926f25-a358-43cc-aaa8-dc9373b9be69",
       "StatusCode" : "404",
-      "Date" : "Mon, 02 Dec 2019 22:53:52 GMT",
+      "Date" : "Sun, 15 Dec 2019 09:34:57 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "26",
+      "elapsed-time" : "28",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "135",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'azs-sdk0e51906945b2'.\"}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://azs-sdk0e51906945b2.search-dogfood.windows-int.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06",
-    "Headers" : { },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "3bed00ba-2a20-40b4-94cb-8f9dcd97c0fd",
-      "StatusCode" : "404",
-      "Date" : "Mon, 02 Dec 2019 22:53:52 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "elapsed-time" : "5",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "135",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'azs-sdk0e51906945b2'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'azs-sdkdcc695978e69'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"

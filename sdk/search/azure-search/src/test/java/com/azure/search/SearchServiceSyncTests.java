@@ -17,8 +17,13 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
 
         ServiceStatistics serviceStatistics = serviceClient.getServiceStatistics();
         assertReflectionEquals(serviceStatistics, getExpectedServiceStatistics(), IGNORE_DEFAULTS);
+    }
 
-        serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(), Context.NONE).getValue();
+    @Test
+    public void getServiceStatsReturnsCorrectDefinitionWithResponse() {
+        SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
+
+        ServiceStatistics serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(), Context.NONE).getValue();
         assertReflectionEquals(serviceStatistics, getExpectedServiceStatistics(), IGNORE_DEFAULTS);
     }
 }
