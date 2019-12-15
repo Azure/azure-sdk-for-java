@@ -14,18 +14,18 @@ import java.util.function.Supplier;
 /**
  * The default implementation of {@link ContinuablePagedFlux}.
  *
- * This type is a Flux provides the ability to operate on pages of type {@link ContinuablePage}
+ * This type is a Flux that provides the ability to operate on pages of type {@link ContinuablePage}
  * and individual items in such pages. This type supports user-provided continuation tokens,
  * allowing for restarting from a previously-retrieved continuation token.
  *
- * The constructor takes a Page Retriever provider, that when called should return {@link PageRetriever}.
- * The provider is called for each Subscription to this Flux. Given provider is called per Subscription,
- * the provider implementation can create one or more objects to store any state and Page Retriever
- * can capture and use those objects. This indirectly associate the state objects to the Subscription.
- * The Page Retriever can get called multiple times in serial fashion, each time after the completion
- * of the Flux returned by the previous invocation. The final completion signal will be send to
- * the Subscriber when the last Page emitted by the Flux returned by the Page Retriever has {@code null}
- * continuation token.
+ * The type is backed by the Page Retriever provider provided in it's constructor. The provider is
+ * expected to return {@link PageRetriever} when called. The provider is invoked for each Subscription
+ * to this Flux. Given provider is called per Subscription, the provider implementation can create
+ * one or more objects to store any state and Page Retriever can capture and use those objects.
+ * This indirectly associate the state objects to the Subscription. The Page Retriever can get called
+ * multiple times in serial fashion, each time after the completion of the Flux returned by the previous
+ * invocation. The final completion signal will be send to the Subscriber when the last Page emitted by
+ * the Flux returned by the Page Retriever has {@code null} continuation token.
  *
  * <p><strong>Extending PagedFluxCore for Custom Continuation Token support</strong></p>
  * {@codesnippet com.azure.core.util.paging.pagedfluxcore.continuationtoken}
@@ -57,6 +57,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}.
      * @param defaultPageSize the default preferred page size
+     * @throws IllegalArgumentException if defaultPageSize is not greater than zero
      */
     protected ContinuablePagedFluxCore(Supplier<PageRetriever<C, P>> pageRetrieverProvider, int defaultPageSize) {
         this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,

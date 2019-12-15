@@ -89,16 +89,15 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     }
 
     /**
-     * Creates an instance of {@link PagedFlux} backed by a Page Retriever Function Supplier.
-     * When invoked supplier should provide Page Retriever Function which accepts continuation token.
-     * The provider will be called for each Subscription to the PagedFlux instance. The Page Retriever
-     * Function can get called multiple times in serial fashion, each time after the completion of the Flux
-     * returned from the previous invocation. The final completion signal will be send to the Subscriber
-     * when the last Page emitted by the Flux returned by Page Continuation Function has {@code null}
-     * continuation token.
+     * Creates an instance of {@link PagedFlux} backed by a Page Retriever Supplier (provider).
+     * When invoked provider should return {@link PageRetriever}. The provider will be called for each
+     * Subscription to the PagedFlux instance. The Page Retriever can get called multiple times in serial
+     * fashion, each time after the completion of the Flux returned from the previous invocation.
+     * The final completion signal will be send to the Subscriber when the last Page emitted by the Flux
+     * returned by Page Retriever has {@code null} continuation token.
      *
      * The provider is useful mainly in two scenarios:
-     * 1. To manage state across multiple call to Page Retrieval Function within the same Subscription
+     * 1. To manage state across multiple call to Page Retrieval within the same Subscription
      * 2. To decorate a PagedFlux to produce new PagedFlux
      *
      * <p><strong>Decoration sample</strong></p>

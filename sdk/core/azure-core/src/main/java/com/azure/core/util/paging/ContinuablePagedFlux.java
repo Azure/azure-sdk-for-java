@@ -19,32 +19,31 @@ import reactor.core.publisher.Flux;
  */
 public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>> extends Flux<T> {
     /**
-     * @return a Flux that emits stream of {@link ContinuablePage} in this Paged Flux.
+     * @return a Flux of {@link ContinuablePage} in this Paged Flux.
      */
     public abstract Flux<P> byPage();
     /**
-     * Get a Flux that emits stream of {@link ContinuablePage} identified by the given
-     * continuation token.
+     * Get a Flux {@link ContinuablePage} identified by the given continuation token.
      *
      * @param continuationToken the continuation token
      * @return a Flux of {@link ContinuablePage}
      */
     public abstract Flux<P> byPage(C continuationToken);
     /**
-     * Get a Flux that emits stream of {@link ContinuablePage} in this Paged Flux,
-     * with each page containing number of elements equal to the preferred page size.
-     * Service may or may not honor the page size preference hence client MUST be
-     * prepared to handle pages with different page size.
+     * Get a Flux of {@link ContinuablePage} in this Paged Flux, with each page containing
+     * number of elements equal to the preferred page size. Service may or may not honor
+     * the page size preference hence client MUST be prepared to handle pages with different
+     * page size.
      *
      * @param preferredPageSize the preferred page size
      * @return a Flux of {@link ContinuablePage}
      */
     public abstract Flux<P> byPage(int preferredPageSize);
     /**
-     * Get a Flux that emits stream of {@link ContinuablePage} identified by the given
-     * continuation token and each page containing number of elements equal to the preferred
-     * page size. Service may or may not honor the page size preference hence client
-     * MUST be prepared to handle pages with different page size.
+     * Get a Flux of {@link ContinuablePage} identified by the given continuation token, with each
+     * page containing number of elements equal to the preferred page size. Service may or may not
+     * honor the page size preference hence client MUST be prepared to handle pages with different
+     * page size.
      *
      * @param continuationToken the continuation token
      * @param preferredPageSize the preferred page size
