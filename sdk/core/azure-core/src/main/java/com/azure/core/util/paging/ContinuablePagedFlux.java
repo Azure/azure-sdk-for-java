@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux;
  * continuation tokens, allowing for restarting from a previously-retrieved continuation token.
  *
  * @param <C> the type of continuation token
- * @param <T> the type of items in the page
+ * @param <T> the type of elements in the page
  * @param <P> the type of page
  *
  * @see Flux
@@ -30,4 +30,25 @@ public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>
      * @return a Flux of {@link ContinuablePage}
      */
     public abstract Flux<P> byPage(C continuationToken);
+    /**
+     * Get a Flux that emits stream of {@link ContinuablePage} in this Paged Flux,
+     * with each page containing number of elements equal to the preferred page size.
+     * Service may or may not honor the page size preference hence client MUST be
+     * prepared to handle pages with different page size.
+     *
+     * @param preferredPageSize the preferred page size
+     * @return a Flux of {@link ContinuablePage}
+     */
+    public abstract Flux<P> byPage(int preferredPageSize);
+    /**
+     * Get a Flux that emits stream of {@link ContinuablePage} identified by the given
+     * continuation token and each page containing number of elements equal to the preferred
+     * page size. Service may or may not honor the page size preference hence client
+     * MUST be prepared to handle pages with different page size.
+     *
+     * @param continuationToken the continuation token
+     * @param preferredPageSize the preferred page size
+     * @return a Flux of {@link ContinuablePage}
+     */
+    public abstract Flux<P> byPage(C continuationToken, int preferredPageSize);
 }

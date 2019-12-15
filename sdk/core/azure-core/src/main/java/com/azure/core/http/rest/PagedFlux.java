@@ -7,6 +7,7 @@ import com.azure.core.http.HttpRequest;
 
 import java.util.stream.Collectors;
 
+import com.azure.core.util.paging.PageRetriever;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -64,27 +65,26 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      */
     public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
                      Function<String, Mono<PagedResponse<T>>> nextPageRetriever) {
-        this(() -> continuationToken -> continuationToken == null
+        this(() -> (continuationToken, pageSize) -> continuationToken == null
             ? firstPageRetriever.get().flux()
             : nextPageRetriever.apply(continuationToken).flux(), true);
     }
-
 
     /**
      * PRIVATE CONSTRUCTOR. SEE BELOW NOTES.
      *
      * Create PagedFlux backed by Page Retriever Function Supplier.
      *
-     * @param provider the Page Retrieval Function Provider
+     * @param provider the Page Retrieval Provider
      * @param ignored param is ignored, exists in signature only to avoid conflict with first ctr
      */
     // NOTES: Proposal for azure-core-v2:
     //
     // 1. Remove the first ctr "PagedFlux(Supplier<Mono<PagedResponse<T>>>)".
-    // 2. Add a new ctr        "PagedFlux(Supplier<Function<String, Flux<PagedResponse<T>>>>)".
+    // 2. Add a new ctr        "PagedFlux(Supplier<PageRetriever<String, PagedResponse<T>>>)".
     // 3. Remove the factory method "PagedFlux::create" and this PRIVATE ctr in favour of #2.
     //
-    private PagedFlux(Supplier<Function<String, Flux<PagedResponse<T>>>> provider, boolean ignored) {
+    private PagedFlux(Supplier<PageRetriever<String, PagedResponse<T>>> provider, boolean ignored) {
         super(provider, ignored);
     }
 
@@ -104,11 +104,11 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * <p><strong>Decoration sample</strong></p>
      * {@codesnippet com.azure.core.http.rest.pagedflux.create.decoration}
      *
-     * @param provider the Page Retrieval Function Provider
+     * @param provider the Page Retrieval Provider
      * @param <T> The type of items in a {@link PagedResponse}
      * @return PagedFlux backed by the Page Retriever Function Supplier
      */
-    public static <T> PagedFlux<T> create(Supplier<Function<String, Flux<PagedResponse<T>>>> provider) {
+    public static <T> PagedFlux<T> create(Supplier<PageRetriever<String, PagedResponse<T>>> provider) {
         return new PagedFlux<>(provider, true);
     }
 
@@ -123,7 +123,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      */
     @Deprecated
     public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
-        Supplier<Function<String, Flux<PagedResponse<S>>>> provider = () -> continuationToken -> {
+        Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<T>> flux = (continuationToken == null)
                 ? byPage()
                 : byPage(continuationToken);

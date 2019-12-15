@@ -3,6 +3,7 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.util.paging.PageRetriever;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.BaseSubscriber;
@@ -163,24 +164,33 @@ public final class PagedFluxJavaDocCodeSnippets {
                 intResponse.getContinuationToken(),
                 null);
 
-        final Supplier<Function<String, Flux<PagedResponse<String>>>> provider = () -> continuationToken -> {
-            Flux<PagedResponse<Integer>> flux = (continuationToken == null)
-                ? intPagedFlux.byPage()
-                : intPagedFlux.byPage(continuationToken);
-            return flux.map(responseMapper);
+        final Supplier<PageRetriever<String, PagedResponse<String>>> provider = new Supplier<>() {
+            @Override
+            public PageRetriever<String, PagedResponse<String>> get() {
+                return (continuationToken, pageSize) -> {
+                    Flux<PagedResponse<Integer>> flux = (continuationToken == null)
+                        ? intPagedFlux.byPage()
+                        : intPagedFlux.byPage(continuationToken);
+                    return flux.map(responseMapper);
+                };
+            }
         };
         PagedFlux<String> strPagedFlux = PagedFlux.create(provider);
 
         // Create a PagedFlux from a PagedFlux with all exceptions mapped to a specific exception.
         final PagedFlux<Integer> pagedFlux = createAnInstance();
-        final Supplier<Function<String, Flux<PagedResponse<Integer>>>> eprovider = () -> continuationToken -> {
-            Flux<PagedResponse<Integer>> flux = (continuationToken == null)
-                ? pagedFlux.byPage()
-                : pagedFlux.byPage(continuationToken);
-            return flux.onErrorMap(t -> new PaginationException(t));
+        final Supplier<PageRetriever<String, PagedResponse<Integer>>> eprovider = new Supplier<>() {
+            @Override
+            public PageRetriever<String, PagedResponse<Integer>> get() {
+                return (continuationToken, pageSize) -> {
+                    Flux<PagedResponse<Integer>> flux = (continuationToken == null)
+                        ? pagedFlux.byPage()
+                        : pagedFlux.byPage(continuationToken);
+                    return flux.onErrorMap(t -> new PaginationException(t));
+                };
+            }
         };
         final PagedFlux<Integer> exceptionMappedPagedFlux = PagedFlux.create(eprovider);
-
         // END: com.azure.core.http.rest.pagedflux.create.decoration
     }
 

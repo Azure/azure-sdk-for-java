@@ -4,6 +4,7 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.util.paging.ContinuablePagedFluxCore;
+import com.azure.core.util.paging.PageRetriever;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -66,7 +67,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever,
                          Function<String, Mono<P>> nextPageRetriever) {
-        this(() -> continuationToken -> continuationToken == null
+        this(() -> (continuationToken, pageSize) -> continuationToken == null
             ? firstPageRetriever.get().flux()
             : nextPageRetriever.apply(continuationToken).flux(), true);
     }
@@ -77,10 +78,10 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      *
      * Create PagedFlux backed by Page Retriever Function Supplier.
      *
-     * @param provider the Page Retrieval Function Provider
+     * @param provider the Page Retrieval Provider
      * @param ignored ignored
      */
-    PagedFluxBase(Supplier<Function<String, Flux<P>>> provider, boolean ignored) {
+    public PagedFluxBase(Supplier<PageRetriever<String, P>> provider, boolean ignored) {
         super(provider);
     }
 

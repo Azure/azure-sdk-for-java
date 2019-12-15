@@ -6,7 +6,6 @@ package com.azure.core.util.paging;
 import com.azure.core.util.IterableStream;
 import reactor.core.publisher.Flux;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -68,21 +67,16 @@ public class PagedFluxCoreJavaDocCodeSnippets {
         }
         FileShareServiceClient client = null; // Initialize client
 
-        Supplier<Function<FileContinuationToken, Flux<FilePage>>> pageRetrieverProvider
-            = new Supplier<Function<FileContinuationToken, Flux<FilePage>>>() {
+        Supplier<PageRetriever<FileContinuationToken, FilePage>> pageRetrieverProvider
+            = new Supplier<>() {
                 @Override
-                public Function<FileContinuationToken, Flux<FilePage>> get() {
-                    return new Function<FileContinuationToken, Flux<FilePage>>() {
-                        @Override
-                        public Flux<FilePage> apply(FileContinuationToken token) {
-                            return client.getFilePages(token);
-                        }
-                    };
+                public PageRetriever<FileContinuationToken, FilePage> get() {
+                    return (continuationToken, pageSize) -> client.getFilePages(continuationToken);
                 }
             };
 
         class FilePagedFlux extends ContinuablePagedFluxCore<FileContinuationToken, File, FilePage> {
-            FilePagedFlux(Supplier<Function<FileContinuationToken, Flux<FilePage>>>
+            FilePagedFlux(Supplier<PageRetriever<FileContinuationToken, FilePage>>
                                      pageRetrieverProvider) {
                 super(pageRetrieverProvider);
             }

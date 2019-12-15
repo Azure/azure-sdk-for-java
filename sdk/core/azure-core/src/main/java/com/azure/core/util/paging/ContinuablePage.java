@@ -10,7 +10,7 @@ import com.azure.core.util.IterableStream;
  * of one or more pages.
  *
  * @param <C> Type of the continuation token
- * @param <T> Type of the items in the page
+ * @param <T> Type of the elements in the page
  *
  * @see ContinuablePagedFlux
  */
