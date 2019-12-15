@@ -3,7 +3,7 @@
 
 package com.azure.search.test.environment.setup;
 
-import com.azure.search.ApiKeyCredentials;
+import com.azure.search.SearchApiKeyCredential;
 import com.azure.search.SearchServiceClient;
 import com.azure.search.SearchServiceClientBuilder;
 import com.azure.search.models.Index;
@@ -45,7 +45,7 @@ public class SearchIndexService {
         if (searchServiceClient == null) {
             searchServiceClient = new SearchServiceClientBuilder()
                 .endpoint(endpoint)
-                .credential(new ApiKeyCredentials(apiAdminKey))
+                .credential(new SearchApiKeyCredential(apiAdminKey))
                 .buildClient();
         }
         addIndexes();

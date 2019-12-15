@@ -30,6 +30,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
     private SearchIndexClient client;
 
+    @SuppressWarnings("unchecked")
     private List<Map<String, Object>> uploadDocuments() throws Exception {
         Reader docsData = new InputStreamReader(
             getClass().getClassLoader().getResourceAsStream(GeoPointTests.DATA_JSON_HOTELS));

@@ -28,7 +28,7 @@ public class CreateSkillsetExample {
     public static void main(String[] args) {
         SearchServiceClient searchServiceClient = new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(ADMIN_KEY))
+            .credential(new SearchApiKeyCredential(ADMIN_KEY))
             .buildClient();
 
         createOcrSkillset(searchServiceClient);

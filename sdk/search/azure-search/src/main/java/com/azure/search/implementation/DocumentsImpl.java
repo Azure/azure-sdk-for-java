@@ -5,10 +5,6 @@
 // regenerated.
 
 package com.azure.search.implementation;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.Document;
 
 import com.azure.core.annotation.BodyParam;
@@ -23,8 +19,13 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.CollectionFormat;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.search.models.IndexBatch;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
@@ -32,7 +33,6 @@ import com.azure.search.models.AutocompleteResult;
 import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.DocumentSearchResult;
 import com.azure.search.models.DocumentSuggestResult;
-import com.azure.search.models.IndexBatch;
 import com.azure.search.models.QueryType;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchMode;

@@ -24,11 +24,9 @@ public class CreateIndexerExample {
      * From the Azure portal, get your Azure Cognitive Search service URL and API key,
      * and set the values of these environment variables:
      */
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
+    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
 
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
-    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration()
-        .get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
 
     private static final String INDEX_NAME = "hotels-sample-index";
     private static final String DATA_SOURCE_NAME = "hotels-sample";
@@ -37,7 +35,7 @@ public class CreateIndexerExample {
     public static void main(String[] args) {
         SearchServiceAsyncClient searchServiceClient = new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(ADMIN_KEY))
+            .credential(new SearchApiKeyCredential(ADMIN_KEY))
             .buildAsyncClient();
 
         createOrUpdateIndexer(searchServiceClient);

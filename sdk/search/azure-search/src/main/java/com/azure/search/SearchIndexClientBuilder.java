@@ -5,13 +5,19 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,24 +36,25 @@ import java.util.List;
  * </p>
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
-public class SearchIndexClientBuilder {
+public class SearchIndexClientBuilder extends SearchClientBuilder {
 
-    private ApiKeyCredentials apiKeyCredentials;
-    private String apiVersion;
-    private String endpoint;
+    // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
+    // request was sent.
+    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
+
     private String indexName;
-    private HttpClient httpClient;
-    private final List<HttpPipelinePolicy> policies;
-
+    private final HttpHeaders headers;
+    private RetryPolicy retryPolicy;
     private final ClientLogger logger = new ClientLogger(SearchIndexClientBuilder.class);
 
     /**
      * Default Constructor
      */
     public SearchIndexClientBuilder() {
-        apiVersion = "2019-05-06";
-        policies = new ArrayList<>();
-        httpClient = HttpClient.createDefault();
+        init();
+        headers = new HttpHeaders()
+            .put(ECHO_REQUEST_ID_HEADER, "true");
+
     }
 
     /**
@@ -56,9 +63,18 @@ public class SearchIndexClientBuilder {
      * @param apiVersion api version
      * @return the updated SearchIndexClientBuilder object
      */
-    public SearchIndexClientBuilder apiVersion(String apiVersion) {
+    public SearchIndexClientBuilder apiVersion(SearchServiceVersion apiVersion) {
         this.apiVersion = apiVersion;
         return this;
+    }
+
+    /**
+     *  Returns the list of policies configured for this builder.
+     *
+     *  @return List of HttpPipelinePolicy
+     *  */
+    public List<HttpPipelinePolicy> getPolicies() {
+        return this.policies;
     }
 
     /**
@@ -98,16 +114,29 @@ public class SearchIndexClientBuilder {
     /**
      * Sets the api key to use for request authentication.
      *
-     * @param apiKeyCredentials api key for request authentication
+     * @param searchApiKeyCredential api key for request authentication
      * @return the updated SearchIndexClientBuilder object
      * @throws IllegalArgumentException when the api key is empty
      * @throws IllegalArgumentException when the api key is empty
      */
-    public SearchIndexClientBuilder credential(ApiKeyCredentials apiKeyCredentials) {
-        if (apiKeyCredentials == null || StringUtils.isBlank(apiKeyCredentials.getApiKey())) {
+    public SearchIndexClientBuilder credential(SearchApiKeyCredential searchApiKeyCredential) {
+        if (searchApiKeyCredential == null || StringUtils.isBlank(searchApiKeyCredential.getApiKey())) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Empty apiKeyCredentials"));
         }
-        this.apiKeyCredentials = apiKeyCredentials;
+        this.searchApiKeyCredential = searchApiKeyCredential;
+        return this;
+    }
+
+    /**
+     * Sets the configuration store that is used during construction of the service client.
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    public SearchIndexClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
         return this;
     }
 
@@ -123,6 +152,33 @@ public class SearchIndexClientBuilder {
     }
 
     /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     * <p>
+     * The default retry policy will be used if not provided {@link SearchIndexClientBuilder#buildAsyncClient()}
+     * to build {@link SearchServiceAsyncClient} or {@link SearchServiceClient}.
+     *
+     * @param retryPolicy RetryPolicy applied to each request.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    public SearchIndexClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the logging configuration for HTTP requests and responses.
+     *
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     *
+     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    public SearchIndexClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+        httpLogOptions = logOptions;
+        return this;
+    }
+
+    /**
      * @return a {@link SearchIndexClient} created from the configurations in this builder.
      */
     public SearchIndexClient buildClient() {
@@ -133,15 +189,16 @@ public class SearchIndexClientBuilder {
      * @return a {@link SearchIndexAsyncClient} created from the configurations in this builder.
      */
     public SearchIndexAsyncClient buildAsyncClient() {
-        if (apiKeyCredentials != null) {
-            this.policies.add(new SearchApiKeyPipelinePolicy(apiKeyCredentials));
-        }
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .build();
+        policies.add(new AddHeadersPolicy(headers));
+        // We need to add RequestId and override the default header, with the one
+        // That the service expects, in order to capture the request ids.
+        policies.add(new RequestIdPolicy("client-request-id"));
+        policies.add(new AddDatePolicy());
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        return new SearchIndexAsyncClient(endpoint, indexName, apiVersion, pipeline);
+        return new SearchIndexAsyncClient(endpoint, indexName, apiVersion, prepareForBuildClient());
     }
 }

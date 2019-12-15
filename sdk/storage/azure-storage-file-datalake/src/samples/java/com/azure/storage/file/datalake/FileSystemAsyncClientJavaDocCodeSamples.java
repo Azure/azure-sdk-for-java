@@ -10,6 +10,9 @@ import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PublicAccessType;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
+import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -30,6 +33,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
     private String leaseId = "leaseId";
     private String proposedId = "proposedId";
     private int leaseDuration = (int) Duration.ofSeconds(30).getSeconds();
+    private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
      * Code snippet for {@link DataLakeFileSystemAsyncClient#getFileAsyncClient(String)}
@@ -333,6 +337,32 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
             .subscribe(response ->
                 System.out.printf("Set access policy completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemAsyncClient#generateUserDelegationSas(DataLakeServiceSasSignatureValues, UserDelegationKey)}
+     * and {@link DataLakeFileSystemAsyncClient#generateSas(DataLakeServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        FileSystemSasPermission permission = new FileSystemSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        FileSystemSasPermission myPermission = new FileSystemSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey
     }
 
 }

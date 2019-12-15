@@ -20,14 +20,14 @@ public class DataSources {
     /**
      * Creates a new DataSource to connect to an Azure SQL database.
      *
-     * @param name The name of the datasource.
+     * @param name The name of the data source.
      * @param sqlConnectionString The connection string for the Azure SQL database.
      * @param tableOrViewName The name of the table or view from which to read rows.
-     * @param description Optional. Description of the datasource.
-     * @param changeDetectionPolicy The change detection policy for the datasource.
+     * @param description Optional. Description of the data source.
+     * @param changeDetectionPolicy The change detection policy for the data source.
      * Note that only high watermark change detection
      * is allowed for Azure SQL when deletion detection is enabled.
-     * @param deletionDetectionPolicy Optional. The data deletion detection policy for the datasource.
+     * @param deletionDetectionPolicy Optional. The data deletion detection policy for the data source.
      * @return A new DataSource instance.
      */
     public static DataSource azureSql(
@@ -48,18 +48,33 @@ public class DataSources {
     }
 
     /**
+     * Creates a new DataSource to connect to an Azure SQL database.
+     *
+     * @param name The name of the data source.
+     * @param sqlConnectionString The connection string for the Azure SQL database.
+     * @param tableOrViewName The name of the table or view from which to read rows.
+     * @return A new DataSource instance.
+     */
+    public static DataSource azureSql(
+        String name,
+        String sqlConnectionString,
+        String tableOrViewName) {
+        return DataSources.azureSql(name, sqlConnectionString, tableOrViewName, null, null, null);
+    }
+
+    /**
      * Creates a new DataSource to connect to an Azure Blob container.
      *
-     * @param name The name of the datasource.
+     * @param name The name of the data source.
      * @param storageConnectionString The connection string for the Azure Storage account.
      * It must follow this format: "DefaultEndpointsProtocol=https;AccountName=[your storage account];
      * AccountKey=[your account key];" Note that HTTPS is required.
      * @param containerName The name of the container from which to read blobs.
-     * @param pathPrefix Optional. If specified, the datasource will include only blobs
+     * @param pathPrefix Optional. If specified, the data source will include only blobs
      * with names starting with this prefix. This is useful when blobs are
      * organized into "virtual folders", for example.
-     * @param deletionDetectionPolicy Optional. The data deletion detection policy for the datasource.
-     * @param description Optional. Description of the datasource.
+     * @param description Optional. Description of the data source
+     * @param deletionDetectionPolicy Optional. The data deletion detection policy for the data source
      * @return A new Azure Blob DataSource instance.
      */
     public static DataSource azureBlobStorage(
@@ -67,8 +82,8 @@ public class DataSources {
         String storageConnectionString,
         String containerName,
         String pathPrefix,
-        DataDeletionDetectionPolicy deletionDetectionPolicy,
-        String description) {
+        String description,
+        DataDeletionDetectionPolicy deletionDetectionPolicy) {
         return new DataSource()
             .setName(name)
             .setType(DataSourceType.AZURE_BLOB)
@@ -82,17 +97,34 @@ public class DataSources {
     }
 
     /**
+     * Creates a new DataSource to connect to an Azure Blob container.
+     *
+     * @param name The name of the data source.
+     * @param storageConnectionString The connection string for the Azure Storage account.
+     * It must follow this format: "DefaultEndpointsProtocol=https;AccountName=[your storage account];
+     * AccountKey=[your account key];" Note that HTTPS is required.
+     * @param containerName The name of the container from which to read blobs.
+     * @return A new Azure Blob DataSource instance.
+     */
+    public static DataSource azureBlobStorage(
+        String name,
+        String storageConnectionString,
+        String containerName) {
+        return DataSources.azureBlobStorage(name, storageConnectionString, containerName, null, null, null);
+    }
+
+    /**
      * Creates a new DataSource to connect to an Azure Table.
      *
-     * @param name The name of the datasource.
+     * @param name The name of the data source.
      * @param storageConnectionString The connection string for the Azure Storage account.
      * It must follow this format: "DefaultEndpointsProtocol=https;
      * AccountName=[your storage account];AccountKey=[your account key];"
      * Note that HTTPS is required.
      * @param tableName The name of the Azure table from which to read rows.
      * @param query Optional. A query that is applied to the table when reading rows.
-     * @param deletionDetectionPolicy Optional. The data deletion detection policy for the datasource.
-     * @param description Optional. Description of the datasource.
+     * @param description Optional. Description of the data source
+     * @param deletionDetectionPolicy Optional. The data deletion detection policy for the data source.
      * @return A new DataSource instance.
      * @throws IllegalArgumentException if name, tableName or storageConnectionString are null or empty.
      */
@@ -101,8 +133,8 @@ public class DataSources {
         String storageConnectionString,
         String tableName,
         String query,
-        DataDeletionDetectionPolicy deletionDetectionPolicy,
-        String description) {
+        String description,
+        DataDeletionDetectionPolicy deletionDetectionPolicy) {
         if (StringUtils.isEmpty(name)) {
             throw new IllegalArgumentException("name cannot be null or empty");
         }
@@ -124,44 +156,62 @@ public class DataSources {
             .setDataDeletionDetectionPolicy(deletionDetectionPolicy);
     }
 
+    /**
+     * Creates a new DataSource to connect to an Azure Table.
+     *
+     * @param name The name of the data source.
+     * @param storageConnectionString The connection string for the Azure Storage account.
+     * It must follow this format: "DefaultEndpointsProtocol=https;
+     * AccountName=[your storage account];AccountKey=[your account key];"
+     * Note that HTTPS is required.
+     * @param tableName The name of the Azure table from which to read rows.
+     * @return A new DataSource instance.
+     * @throws IllegalArgumentException if name, tableName or storageConnectionString are null or empty.
+     */
+    public static DataSource azureTableStorage(
+        String name,
+        String storageConnectionString,
+        String tableName) {
+        return DataSources.azureTableStorage(name, storageConnectionString, tableName, null, null, null);
+    }
+
      /**
-     * Creates a new DataSource to connect to a CosmosDb database.
+     * Creates a new DataSource to connect to a Cosmos database.
      *
      * @param name The name of the datasource.
-     * @param cosmosDbConnectionString The connection string for the CosmosDb database. It must follow this format:
+     * @param cosmosConnectionString The connection string for the Cosmos database. It must follow this format:
      * AccountName|AccountEndpoint=[your account name or endpoint];
      * AccountKey=[your account key];Database=[your database name]"
      * @param collectionName The name of the collection from which to read documents.
      * @param query Optional. A query that is applied to the collection when reading documents.
      * @param useChangeDetection Optional. Indicates whether to use change detection when indexing. Default is true.
-     * @param deletionDetectionPolicy Optional. The data deletion detection policy for the datasource.
-     * @param description Optional. Description of the datasource.
+     * @param description Optional. Description of the data source
+     * @param deletionDetectionPolicy Optional. The data deletion detection policy for the data source.
      * @return A new DataSource instance.
-     * @throws IllegalArgumentException if name, collectionName or cosmosDbConnectionString are null or empty.
+     * @throws IllegalArgumentException if name, collectionName or cosmosConnectionString are null or empty.
      */
-    public static DataSource cosmosDb(
+    public static DataSource cosmos(
         String name,
-        String cosmosDbConnectionString,
+        String cosmosConnectionString,
         String collectionName,
         String query,
         Boolean useChangeDetection,
-
-        DataDeletionDetectionPolicy deletionDetectionPolicy,
-        String description) {
+        String description,
+        DataDeletionDetectionPolicy deletionDetectionPolicy) {
         if (StringUtils.isEmpty(name)) {
             throw new IllegalArgumentException("name cannot be null or empty");
         }
         if (StringUtils.isEmpty(collectionName)) {
             throw new IllegalArgumentException("collectionName cannot be null or empty");
         }
-        if (StringUtils.isEmpty(cosmosDbConnectionString)) {
-            throw new IllegalArgumentException("cosmosDbConnectionString cannot be null or empty");
+        if (StringUtils.isEmpty(cosmosConnectionString)) {
+            throw new IllegalArgumentException("cosmosConnectionString cannot be null or empty");
         }
         return new DataSource()
             .setName(name)
-            .setType(DataSourceType.COSMOS_DB)
+            .setType(DataSourceType.COSMOS)
             .setCredentials(new DataSourceCredentials()
-                .setConnectionString(cosmosDbConnectionString))
+                .setConnectionString(cosmosConnectionString))
             .setContainer(new DataContainer()
                 .setName(collectionName)
                 .setQuery(query))
@@ -171,5 +221,44 @@ public class DataSources {
                 useChangeDetection
                     ? new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts")
                     : null);
+    }
+
+    /**
+     * Creates a new DataSource to connect to a CosmosDb database with change detection set to true
+     *
+     * @param name The name of the data source.
+     * @param cosmosDbConnectionString The connection string for the CosmosDb database. It must follow this format:
+     * AccountName|AccountEndpoint=[your account name or endpoint];
+     * AccountKey=[your account key];Database=[your database name]"
+     * @param collectionName The name of the collection from which to read documents
+     * @param useChangeDetection Optional. Indicates whether to use change detection when indexing. Default is true.
+     * @return A new DataSource instance.
+     * @throws IllegalArgumentException if name, collectionName or cosmosDbConnectionString are null or empty.
+     */
+    public static DataSource cosmos(
+        String name,
+        String cosmosDbConnectionString,
+        String collectionName,
+        Boolean useChangeDetection) {
+        return DataSources.cosmos(
+            name, cosmosDbConnectionString, collectionName, null, useChangeDetection, null, null);
+    }
+
+    /**
+     * Creates a new DataSource to connect to a CosmosDb database with change detection set to true
+     *
+     * @param name The name of the data source.
+     * @param cosmosDbConnectionString The connection string for the CosmosDb database. It must follow this format:
+     * AccountName|AccountEndpoint=[your account name or endpoint];
+     * AccountKey=[your account key];Database=[your database name]"
+     * @param collectionName The name of the collection from which to read documents
+     * @return A new DataSource instance.
+     * @throws IllegalArgumentException if name, collectionName or cosmosDbConnectionString are null or empty.
+     */
+    public static DataSource cosmos(
+        String name,
+        String cosmosDbConnectionString,
+        String collectionName) {
+        return DataSources.cosmos(name, cosmosDbConnectionString, collectionName, null, true, null, null);
     }
 }

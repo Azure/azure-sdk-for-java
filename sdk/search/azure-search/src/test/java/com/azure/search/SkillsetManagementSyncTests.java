@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
-import com.azure.search.models.DefaultCognitiveServices;
+import com.azure.search.models.DefaultCognitiveServicesAccount;
 import com.azure.search.models.EntityCategory;
 import com.azure.search.models.InputFieldMappingEntry;
 import com.azure.search.models.KeyPhraseExtractionSkill;
@@ -311,7 +311,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
         result.forEach(res -> {
             Assert.assertNotNull(res.getName());
-            Assert.assertNull(res.getCognitiveServices());
+            Assert.assertNull(res.getCognitiveServicesAccount());
             Assert.assertNull(res.getDescription());
             Assert.assertNull(res.getSkills());
             Assert.assertNull(res.getETag());
@@ -424,7 +424,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset createdSkillset = client.createSkillset(skillset);
 
         // update skills
-        createdSkillset.setCognitiveServices(new DefaultCognitiveServices().setDescription("description"));
+        createdSkillset.setCognitiveServicesAccount(new DefaultCognitiveServicesAccount().setDescription("description"));
 
         assertSkillsetsEqual(createdSkillset, client.createOrUpdateSkillset(createdSkillset));
     }

@@ -4,9 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -23,8 +21,8 @@ import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.DocumentIndexResult;
-import com.azure.search.models.IndexAction;
-import com.azure.search.models.IndexActionType;
+import com.azure.search.implementation.models.IndexAction;
+import com.azure.search.implementation.models.IndexActionType;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
@@ -37,11 +35,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
-import com.azure.core.http.rest.PagedResponseBase;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -59,7 +55,7 @@ public class SearchIndexAsyncClient {
     /**
      * Search REST API Version
      */
-    private final String apiVersion;
+    private final SearchServiceVersion apiVersion;
 
     /**
      * The endpoint for the Azure Cognitive Search service.
@@ -89,14 +85,15 @@ public class SearchIndexAsyncClient {
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      */
-    SearchIndexAsyncClient(String endpoint, String indexName, String apiVersion, HttpPipeline httpPipeline) {
+    SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion apiVersion,
+        HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
 
         if (StringUtils.isBlank(indexName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid indexName"));
         }
-        if (StringUtils.isBlank(apiVersion)) {
+        if (apiVersion == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid apiVersion"));
         }
         if (httpPipeline == null) {
@@ -112,7 +109,7 @@ public class SearchIndexAsyncClient {
             .searchServiceName(parts.serviceName)
             .indexName(indexName)
             .searchDnsSuffix(parts.dnsSuffix)
-            .apiVersion(apiVersion)
+            .apiVersion(apiVersion.getVersion())
             .pipeline(httpPipeline)
             .serializer(SERIALIZER)
             .build();
@@ -251,7 +248,7 @@ public class SearchIndexAsyncClient {
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
+    public SearchServiceVersion getApiVersion() {
         return this.apiVersion;
     }
 
@@ -485,7 +482,8 @@ public class SearchIndexAsyncClient {
      * @param suggesterName suggester name
      * @return auto complete result.
      */
-    public PagedFlux<AutocompleteItem> autocomplete(String searchText, String suggesterName) {
+    public PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(
+        String searchText, String suggesterName) {
         return this.autocomplete(searchText, suggesterName, null, null);
     }
 
@@ -499,44 +497,35 @@ public class SearchIndexAsyncClient {
      * Contains the tracking ID sent with the request to help with debugging
      * @return auto complete result.
      */
-    public PagedFlux<AutocompleteItem> autocomplete(String searchText,
+    public PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
                                                     String suggesterName,
                                                     AutocompleteOptions autocompleteOptions,
                                                     RequestOptions requestOptions) {
-        return new PagedFlux<>(
-            () -> withContext(context -> this.autocompleteWithResponse(searchText,
-                suggesterName, autocompleteOptions, requestOptions, context)),
+        AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
+            searchText, suggesterName, autocompleteOptions);
+        return new PagedFluxBase<>(
+            () -> withContext(context -> this.autocompleteFirst(requestOptions, autocompleteRequest, context)),
             nextLink -> Mono.empty());
     }
 
-    PagedFlux<AutocompleteItem> autocomplete(String searchText,
+    PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
                                              String suggesterName,
                                              AutocompleteOptions autocompleteOptions,
                                              RequestOptions requestOptions,
                                              Context context) {
-        return new PagedFlux<>(
-            () -> this.autocompleteWithResponse(searchText,
-                suggesterName, autocompleteOptions, requestOptions, context),
+        AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
+            searchText, suggesterName, autocompleteOptions);
+        return new PagedFluxBase<>(
+            () -> this.autocompleteFirst(requestOptions, autocompleteRequest, context),
             nextLink -> Mono.empty());
     }
 
-    private Mono<PagedResponse<AutocompleteItem>> autocompleteWithResponse(String searchText,
-                                                                           String suggesterName,
-                                                                           AutocompleteOptions autocompleteOptions,
-                                                                           RequestOptions requestOptions,
-                                                                           Context context) {
-        AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
-            suggesterName, autocompleteOptions);
+    private Mono<AutocompletePagedResponse> autocompleteFirst(RequestOptions requestOptions,
+                                                    AutocompleteRequest autocompleteRequest,
+                                                    Context context) {
         return restClient.documents()
             .autocompletePostWithRestResponseAsync(autocompleteRequest, requestOptions, context)
-            .map(response -> new PagedResponseBase<>(
-                response.getRequest(),
-                response.getStatusCode(),
-                response.getHeaders(),
-                response.getValue().getResults(),
-                null,
-                deserializeHeaders(response.getHeaders()))
-            );
+            .map(AutocompletePagedResponse::new);
     }
 
     /**
@@ -743,11 +732,5 @@ public class SearchIndexAsyncClient {
             .setActionType(actionType)
             .setDocument(d)));
         return batch;
-    }
-
-    private static String deserializeHeaders(HttpHeaders headers) {
-        return headers.toMap().entrySet().stream().map((entry) ->
-            entry.getKey() + "," + entry.getValue()
-        ).collect(Collectors.joining(","));
     }
 }

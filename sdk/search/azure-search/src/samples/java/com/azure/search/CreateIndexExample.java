@@ -15,16 +15,16 @@ public class CreateIndexExample {
      * From the Azure portal, get your Azure Cognitive Search service name and API key and
      * populate ADMIN_KEY and SEARCH_SERVICE_NAME.
      */
-    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
-    private static final String SEARCH_SERVICE_NAME = "<Your Search Service Name>";
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
+    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
+
 
     public static void main(String[] args) {
-        String endpoint = String.format("https://%s.%s", SEARCH_SERVICE_NAME, "search.windows.net"); // search.windows.net is the default DNS SUFFIX
-        ApiKeyCredentials apiKeyCredentials = new ApiKeyCredentials(ADMIN_KEY);
+        SearchApiKeyCredential searchApiKeyCredential = new SearchApiKeyCredential(ADMIN_KEY);
 
         SearchServiceClient client = new SearchServiceClientBuilder()
-            .endpoint(endpoint)
-            .credential(apiKeyCredentials)
+            .endpoint(ENDPOINT)
+            .credential(searchApiKeyCredential)
             .buildClient();
 
         Index newIndex = new Index()

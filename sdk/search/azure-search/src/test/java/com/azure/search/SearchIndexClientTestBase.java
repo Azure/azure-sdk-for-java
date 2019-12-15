@@ -96,7 +96,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
                 .endpoint(endpoint)
                 .indexName(indexName)
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .credential(apiKeyCredentials)
+                .credential(searchApiKeyCredential)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
                 .addPolicy(new HttpLoggingPolicy(
@@ -116,7 +116,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
                 searchServiceHotelsIndex = new SearchIndexService(
                     HOTELS_TESTS_INDEX_DATA_JSON,
                     endpoint,
-                    apiKeyCredentials.getApiKey());
+                    searchApiKeyCredential.getApiKey());
                 searchServiceHotelsIndex.initialize();
 
             } catch (Exception e) {
@@ -131,7 +131,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
             SearchIndexService searchIndexService = new SearchIndexService(
                 jsonFile,
                 endpoint,
-                apiKeyCredentials.getApiKey());
+                searchApiKeyCredential.getApiKey());
             try {
                 searchIndexService.initialize();
             } catch (IOException e) {

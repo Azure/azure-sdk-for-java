@@ -33,7 +33,7 @@ public class SearchSuggestionExample {
     public static void main(String[] args) {
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(API_KEY))
+            .credential(new SearchApiKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
 

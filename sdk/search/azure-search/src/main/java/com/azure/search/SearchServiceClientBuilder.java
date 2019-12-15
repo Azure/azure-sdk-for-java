@@ -4,14 +4,12 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
@@ -28,22 +26,14 @@ import java.util.List;
  * </p>
  */
 @ServiceClientBuilder(serviceClients = {SearchServiceClient.class, SearchServiceAsyncClient.class})
-public class SearchServiceClientBuilder {
-    private ApiKeyCredentials apiKeyCredentials;
-    private String apiVersion;
-    private String endpoint;
-    private HttpClient httpClient;
-    private final List<HttpPipelinePolicy> policies;
-
+public class SearchServiceClientBuilder extends SearchClientBuilder {
     private final ClientLogger logger = new ClientLogger(SearchServiceClientBuilder.class);
 
     /**
      * Default Constructor
      */
     public SearchServiceClientBuilder() {
-        apiVersion = "2019-05-06";
-        policies = new ArrayList<>();
-        httpClient = HttpClient.createDefault();
+        init();
     }
 
     /**
@@ -52,7 +42,7 @@ public class SearchServiceClientBuilder {
      * @param apiVersion api version
      * @return the updated SearchServiceClientBuilder object
      */
-    public SearchServiceClientBuilder apiVersion(String apiVersion) {
+    public SearchServiceClientBuilder apiVersion(SearchServiceVersion apiVersion) {
         this.apiVersion = apiVersion;
         return this;
     }
@@ -82,15 +72,15 @@ public class SearchServiceClientBuilder {
     /**
      * Sets the api key to use for request authentication.
      *
-     * @param apiKeyCredentials api key for request authentication
+     * @param searchApiKeyCredential api key for request authentication
      * @return the updated SearchServiceClientBuilder object
      * @throws IllegalArgumentException when the api key is empty
      */
-    public SearchServiceClientBuilder credential(ApiKeyCredentials apiKeyCredentials) {
-        if (apiKeyCredentials == null || StringUtils.isBlank(apiKeyCredentials.getApiKey())) {
+    public SearchServiceClientBuilder credential(SearchApiKeyCredential searchApiKeyCredential) {
+        if (searchApiKeyCredential == null || StringUtils.isBlank(searchApiKeyCredential.getApiKey())) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Empty apiKeyCredentials"));
         }
-        this.apiKeyCredentials = apiKeyCredentials;
+        this.searchApiKeyCredential = searchApiKeyCredential;
         return this;
     }
 
@@ -106,6 +96,33 @@ public class SearchServiceClientBuilder {
     }
 
     /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    public SearchServiceClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the logging configuration for HTTP requests and responses.
+     *
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     *
+     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    public SearchServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+        httpLogOptions = logOptions;
+        return this;
+    }
+
+    /**
      * @return a {@link SearchServiceClient} created from the configurations in this builder.
      */
     public SearchServiceClient buildClient() {
@@ -116,15 +133,6 @@ public class SearchServiceClientBuilder {
      * @return a {@link SearchIndexAsyncClient} created from the configurations in this builder.
      */
     public SearchServiceAsyncClient buildAsyncClient() {
-        if (apiKeyCredentials != null) {
-            this.policies.add(new SearchApiKeyPipelinePolicy(apiKeyCredentials));
-        }
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .build();
-
-        return new SearchServiceAsyncClient(endpoint, apiVersion, pipeline);
+        return new SearchServiceAsyncClient(endpoint, apiVersion, prepareForBuildClient());
     }
 }

@@ -91,8 +91,8 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
             FAKE_STORAGE_CONNECTION_STRING,
             "fakecontainer",
             "/fakefolder/",
-            deletionDetectionPolicy,
-            FAKE_DESCRIPTION
+            FAKE_DESCRIPTION,
+            deletionDetectionPolicy
         );
     }
 
@@ -102,23 +102,23 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
             FAKE_STORAGE_CONNECTION_STRING,
             "faketable",
             "fake query",
-            deletionDetectionPolicy,
-            FAKE_DESCRIPTION
+            FAKE_DESCRIPTION,
+            deletionDetectionPolicy
         );
     }
 
-    DataSource createTestCosmosDbDataSource(
+    DataSource createTestCosmosDataSource(
         DataDeletionDetectionPolicy deletionDetectionPolicy,
         boolean useChangeDetection) {
 
-        return DataSources.cosmosDb(
+        return DataSources.cosmos(
             "azs-java-test-cosmos",
             FAKE_COSMOS_CONNECTION_STRING,
             "faketable",
             "SELECT ... FROM x where x._ts > @HighWaterMark",
             useChangeDetection,
-            deletionDetectionPolicy,
-            FAKE_DESCRIPTION
+            FAKE_DESCRIPTION,
+            deletionDetectionPolicy
         );
     }
 

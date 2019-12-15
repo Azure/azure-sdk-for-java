@@ -35,8 +35,8 @@ public class RefineSearchCapabilitiesExample {
      * From the Azure portal, get your Azure Cognitive Search service URL and API admin key,
      * and set the values of these environment variables:
      */
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
-    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_API_KEY");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
+    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
 
     private static final String INDEX_NAME = "hotels-sample-index";
     private static final String INDEXER_NAME = "hotels-sample-indexer";
@@ -140,14 +140,14 @@ public class RefineSearchCapabilitiesExample {
     private static SearchServiceClient createServiceClient() {
         return new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(ADMIN_KEY))
+            .credential(new SearchApiKeyCredential(ADMIN_KEY))
             .buildClient();
     }
 
     private static SearchIndexClient createIndexClient() {
         return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(ADMIN_KEY))
+            .credential(new SearchApiKeyCredential(ADMIN_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
     }

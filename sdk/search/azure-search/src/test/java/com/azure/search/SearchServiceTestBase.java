@@ -92,7 +92,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     private String searchServiceName;
     private String searchDnsSuffix;
     protected String endpoint;
-    ApiKeyCredentials apiKeyCredentials;
+    SearchApiKeyCredential searchApiKeyCredential;
     SearchIndexService searchServiceHotelsIndex;
 
     private static String testEnvironment;
@@ -127,7 +127,7 @@ public abstract class SearchServiceTestBase extends TestBase {
             azureSearchResources.createService();
 
             searchServiceName = azureSearchResources.getSearchServiceName();
-            apiKeyCredentials = new ApiKeyCredentials(azureSearchResources.getSearchAdminKey());
+            searchApiKeyCredential = new SearchApiKeyCredential(azureSearchResources.getSearchAdminKey());
         }
         endpoint = String.format("https://%s.%s", searchServiceName, searchDnsSuffix);
         jsonApi.configureTimezone();
@@ -140,7 +140,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     }
 
     protected SearchServiceClientBuilder getSearchServiceClientBuilder() {
-        return getSearchServiceClientBuilderWithHttpPipelinePolicies(Collections.EMPTY_LIST);
+        return getSearchServiceClientBuilderWithHttpPipelinePolicies(null);
     }
 
     /**
@@ -157,7 +157,7 @@ public abstract class SearchServiceTestBase extends TestBase {
         if (!interceptorManager.isPlaybackMode()) {
             addPolicies(builder, policies);
             builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .credential(apiKeyCredentials)
+                .credential(searchApiKeyCredential)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
                 .addPolicy(new HttpLoggingPolicy(
@@ -514,10 +514,10 @@ public abstract class SearchServiceTestBase extends TestBase {
             storageConnString,
             blobContainerDatasourceName,
             "/",
+            "real live blob",
             new SoftDeleteColumnDeletionDetectionPolicy()
                 .setSoftDeleteColumnName("fieldName")
-                .setSoftDeleteMarkerValue("someValue"),
-            "real live blob"
+                .setSoftDeleteMarkerValue("someValue")
         );
     }
 
@@ -563,7 +563,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                 .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
                 .indexName(indexName)
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .credential(apiKeyCredentials)
+                .credential(searchApiKeyCredential)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
                 .addPolicy(new HttpLoggingPolicy(

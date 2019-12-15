@@ -36,7 +36,7 @@ public class SearchOptionsAsyncExample {
     public static void main(String[] args) {
         SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new ApiKeyCredentials(API_KEY))
+            .credential(new SearchApiKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
             .buildAsyncClient();
 

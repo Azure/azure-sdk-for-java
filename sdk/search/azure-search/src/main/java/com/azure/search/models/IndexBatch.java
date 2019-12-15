@@ -3,12 +3,14 @@
 package com.azure.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.Document;
+import com.azure.search.implementation.models.IndexAction;
+import com.azure.search.implementation.models.IndexActionType;
+import com.azure.search.implementation.models.IndexBatchImpl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * TODO: add class desc
@@ -86,14 +88,15 @@ public class IndexBatch<T> extends IndexBatchImpl<T> {
      * @param keyValues The keys of the documents to delete.
      * @return IndexBatch with the desired actions added.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public IndexBatch<T> addDeleteAction(String keyName, Iterable<String> keyValues) {
         for (String val : keyValues) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put(keyName, val);
-            this.getActions().add(new IndexAction()
+            Document doc = new Document();
+            doc.put(keyName, val);
+            IndexAction indexAction = new IndexAction()
                 .setActionType(IndexActionType.DELETE)
-                .setDocument(map));
+                .setDocument(doc);
+            this.getActions().add(indexAction);
         }
         return this;
     }

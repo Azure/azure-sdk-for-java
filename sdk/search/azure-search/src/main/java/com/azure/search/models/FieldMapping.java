@@ -7,6 +7,7 @@
 package com.azure.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.implementation.models.FieldMappingFunction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
