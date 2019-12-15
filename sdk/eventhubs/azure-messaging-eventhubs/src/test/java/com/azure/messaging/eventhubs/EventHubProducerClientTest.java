@@ -169,7 +169,7 @@ public class EventHubProducerClientTest {
                 return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
             }
         );
-        when(tracer1.getSharedSpanBuilder(eq("Azure.eventhubs.send"), any())).thenAnswer(
+        when(tracer1.getSharedSpanBuilder(eq("EventHubs.send"), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_BUILDER_KEY, "value");
@@ -217,7 +217,7 @@ public class EventHubProducerClientTest {
             }
         );
 
-        when(tracer1.getSharedSpanBuilder(eq("Azure.eventhubs.send"), any())).thenAnswer(
+        when(tracer1.getSharedSpanBuilder(eq("EventHubs.send"), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_BUILDER_KEY, "value");
@@ -230,7 +230,7 @@ public class EventHubProducerClientTest {
         //Assert
         verify(tracer1, times(1)).start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, never()).start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, never()).addLink(any());
+        verify(tracer1, times(1)).addLink(any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 

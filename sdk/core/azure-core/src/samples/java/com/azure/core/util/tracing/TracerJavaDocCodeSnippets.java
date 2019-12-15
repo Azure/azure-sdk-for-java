@@ -176,7 +176,8 @@ public class TracerJavaDocCodeSnippets {
         }
 
         @Override
-        public Context getSharedSpanBuilder(String spanName, Context context) { return null;
+        public Context getSharedSpanBuilder(String spanName, Context context) {
+            return null;
         }
     }
 }

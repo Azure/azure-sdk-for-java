@@ -219,5 +219,8 @@ public interface Tracer {
      * @return The updated {@link Context} object containing the span builder.
      * @throws NullPointerException if {@code context} or {@code spanName} is {@code null}.
      */
-    Context getSharedSpanBuilder(String spanName, Context context);
+    default Context getSharedSpanBuilder(String spanName, Context context) {
+        // no-op
+        return Context.NONE;
+    }
 }
