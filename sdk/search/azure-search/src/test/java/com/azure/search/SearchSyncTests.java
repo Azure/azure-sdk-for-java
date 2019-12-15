@@ -157,6 +157,7 @@ public class SearchSyncTests extends SearchTestBase {
         Assert.assertNull(secondPage.getContinuationToken());
     }
 
+    @Disabled
     @Test
     public void canSearchStaticallyTypedDocuments() throws IOException {
         createHotelIndex();

@@ -392,6 +392,7 @@ public class SearchAsyncTests extends SearchTestBase {
         Assert.assertTrue(compareResults(actualResults, hotels));
     }
 
+    @Disabled
     @Test
     public void canSearchStaticallyTypedDocuments() throws IOException {
         createHotelIndex();
