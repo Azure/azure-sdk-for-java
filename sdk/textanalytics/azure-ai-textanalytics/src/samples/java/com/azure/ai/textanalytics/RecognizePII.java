@@ -17,7 +17,7 @@ public class RecognizePII {
 
         client.recognizePiiEntities(text).getNamedEntities().forEach(
             entity -> System.out.printf(
-                "Recognized PII NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.\n",
+                "Recognized PII NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
                 entity.getText(),
                 entity.getType(),
                 entity.getSubtype(),

@@ -32,10 +32,10 @@ public class RecognizePIIBatchDocuments {
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
         final DocumentResultCollection<NamedEntityResult> detectedBatchResult = client.recognizeBatchPiiEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s\n", detectedBatchResult.getModelVersion());
+        System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.\n",
+        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionCount(),
@@ -45,7 +45,7 @@ public class RecognizePIIBatchDocuments {
         // Detecting pii entities from a batch of documents
         detectedBatchResult.stream().forEach(piiEntityDocumentResult ->
             piiEntityDocumentResult.getNamedEntities().forEach(entity ->
-                System.out.printf("Recognized Personal Identifiable Info NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.\n",
+                System.out.printf("Recognized Personal Identifiable Info NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
                     entity.getText(),
                     entity.getType(),
                     entity.getSubtype(),

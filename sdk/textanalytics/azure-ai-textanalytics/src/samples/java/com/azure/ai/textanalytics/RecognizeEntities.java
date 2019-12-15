@@ -17,7 +17,7 @@ public class RecognizeEntities {
 
         client.recognizeEntities(text).getNamedEntities().forEach(
             entity -> System.out.printf(
-                "Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.\n",
+                "Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
                 entity.getText(),
                 entity.getType(),
                 entity.getSubtype(),

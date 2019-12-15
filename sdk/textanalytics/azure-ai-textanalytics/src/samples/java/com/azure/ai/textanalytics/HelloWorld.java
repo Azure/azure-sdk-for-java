@@ -22,14 +22,14 @@ public class HelloWorld {
 
         final DetectLanguageResult detectLanguageResult = client.detectLanguage(text, "US");
         final DetectedLanguage detectedDocumentLanguage = detectLanguageResult.getPrimaryLanguage();
-        System.out.printf("Detected Primary Language: %s, ISO 6391 Name: %s, Score: %s.\n",
+        System.out.printf("Detected Primary Language: %s, ISO 6391 Name: %s, Score: %s.%n",
             detectedDocumentLanguage.getName(),
             detectedDocumentLanguage.getIso6391Name(),
             detectedDocumentLanguage.getScore());
 
         final List<DetectedLanguage> detectedLanguages = detectLanguageResult.getDetectedLanguages();
         detectedLanguages.forEach(detectedLanguage ->
-            System.out.printf("Other detected languages: %s, ISO 6391 Name: %s, Score: %s.\n",
+            System.out.printf("Other detected languages: %s, ISO 6391 Name: %s, Score: %s.%n",
             detectedLanguage.getName(),
             detectedLanguage.getIso6391Name(),
             detectedLanguage.getScore()));

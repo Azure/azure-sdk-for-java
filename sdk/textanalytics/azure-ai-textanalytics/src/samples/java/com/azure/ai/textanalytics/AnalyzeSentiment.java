@@ -24,7 +24,7 @@ public class AnalyzeSentiment {
 
         final TextSentiment documentSentiment = sentimentResult.getDocumentSentiment();
         System.out.printf(
-            "Recognized TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.\n",
+            "Recognized TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.%n",
             documentSentiment.getTextSentimentClass(),
             documentSentiment.getPositiveScore(),
             documentSentiment.getNeutralScore(),
@@ -32,7 +32,7 @@ public class AnalyzeSentiment {
 
         final List<TextSentiment> sentiments = sentimentResult.getSentenceSentiments();
         sentiments.forEach(textSentiment -> System.out.printf(
-            "Recognized Sentence TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.\n",
+            "Recognized Sentence TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.%n",
             textSentiment.getTextSentimentClass(),
             textSentiment.getPositiveScore(),
             textSentiment.getNeutralScore(),

@@ -33,10 +33,10 @@ public class AnalyzeSentimentBatchDocuments {
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
         DocumentResultCollection<TextSentimentResult> detectedBatchResult = client.analyzeBatchSentimentWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s\n", detectedBatchResult.getModelVersion());
+        System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s\n",
+        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionCount(),
@@ -45,7 +45,7 @@ public class AnalyzeSentimentBatchDocuments {
         // Detecting sentiment for each of document from a batch of documents
         detectedBatchResult.stream().forEach(result -> {
             final TextSentiment documentSentiment = result.getDocumentSentiment();
-            System.out.printf("Recognized document sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s\n",
+            System.out.printf("Recognized document sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s.%n",
                 documentSentiment.getTextSentimentClass(),
                 documentSentiment.getPositiveScore(),
                 documentSentiment.getNeutralScore(),
@@ -54,7 +54,7 @@ public class AnalyzeSentimentBatchDocuments {
                 documentSentiment.getOffset());
 
             result.getSentenceSentiments().forEach(sentenceSentiment ->
-                System.out.printf("Recognized sentence sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s\n",
+                System.out.printf("Recognized sentence sentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s. Length of sentence: %s, Offset of sentence: %s.%n",
                     sentenceSentiment.getTextSentimentClass(),
                     sentenceSentiment.getPositiveScore(),
                     sentenceSentiment.getNeutralScore(),

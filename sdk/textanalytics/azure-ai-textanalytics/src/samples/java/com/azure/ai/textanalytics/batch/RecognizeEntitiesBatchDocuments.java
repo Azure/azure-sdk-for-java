@@ -32,10 +32,10 @@ public class RecognizeEntitiesBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
         final DocumentResultCollection<NamedEntityResult> detectedBatchResult =
             client.recognizeBatchEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s\n", detectedBatchResult.getModelVersion());
+        System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.\n",
+        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionCount(),
@@ -44,7 +44,7 @@ public class RecognizeEntitiesBatchDocuments {
         // Detecting entities for each of document from a batch of documents
         detectedBatchResult.forEach(detectedEntityResult ->
             detectedEntityResult.getNamedEntities().forEach(entity ->
-                System.out.printf("Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.\n",
+                System.out.printf("Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
                     entity.getText(),
                     entity.getType(),
                     entity.getSubtype(),

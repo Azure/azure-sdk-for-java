@@ -32,10 +32,10 @@ public class RecognizeKeyPhrasesBatchDocuments {
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
         final DocumentResultCollection<KeyPhraseResult> detectedBatchResult = client.extractBatchKeyPhrasesWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s\n", detectedBatchResult.getModelVersion());
+        System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.\n",
+        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionCount(),
@@ -44,6 +44,6 @@ public class RecognizeKeyPhrasesBatchDocuments {
         // Detecting key phrase for each of document from a batch of documents
         detectedBatchResult.stream().forEach(keyPhraseResult ->
             keyPhraseResult.getKeyPhrases().forEach(keyPhrases ->
-                System.out.printf("Recognized Phrases: %s.\n", keyPhrases)));
+                System.out.printf("Recognized Phrases: %s.%n", keyPhrases)));
     }
 }

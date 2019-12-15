@@ -20,7 +20,7 @@ public class HelloWorldAsync {
         client.detectLanguage(text).subscribe(
             result -> {
                 final DetectedLanguage primaryLanguage = result.getPrimaryLanguage();
-                System.out.printf("Detected Language: %s, ISO 6391 Name: %s, Score: %s.\n",
+                System.out.printf("Detected Language: %s, ISO 6391 Name: %s, Score: %s.%n",
                     primaryLanguage.getName(), primaryLanguage.getIso6391Name(), primaryLanguage.getScore());
             },
             error -> System.err.println("There was an error detecting language of the text." + error),

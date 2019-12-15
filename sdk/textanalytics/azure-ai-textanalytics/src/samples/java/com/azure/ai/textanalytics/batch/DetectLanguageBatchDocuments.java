@@ -33,10 +33,10 @@ public class DetectLanguageBatchDocuments {
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
         final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = client.detectBatchLanguagesWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s\n", detectedBatchResult.getModelVersion());
+        System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-        System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.\n",
+        System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionCount(),
@@ -47,14 +47,14 @@ public class DetectLanguageBatchDocuments {
         detectedBatchResult.stream().forEach(result -> {
             //TODO (shawn): There is null pointer exception on detectedPrimaryLanguage
             final DetectedLanguage detectedPrimaryLanguage = result.getPrimaryLanguage();
-            System.out.printf("Detected primary Language for Document: %s, %s, ISO 6391 Name: %s, Score: %s.\n",
+            System.out.printf("Detected primary Language for Document: %s, %s, ISO 6391 Name: %s, Score: %s.%n",
                 result.getId(),
                 detectedPrimaryLanguage.getName(),
                 detectedPrimaryLanguage.getIso6391Name(),
                 detectedPrimaryLanguage.getScore());
 
             result.getDetectedLanguages().forEach(detectedLanguage ->
-                System.out.printf("Other detected Languages: %s, ISO 6391 Name: %s, Score: %s.\n",
+                System.out.printf("Other detected Languages: %s, ISO 6391 Name: %s, Score: %s.%n",
                     detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(),
                     detectedLanguage.getScore()));

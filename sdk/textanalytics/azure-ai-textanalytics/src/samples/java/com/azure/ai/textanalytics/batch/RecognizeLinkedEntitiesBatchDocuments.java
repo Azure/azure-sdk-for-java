@@ -32,10 +32,10 @@ public class RecognizeLinkedEntitiesBatchDocuments {
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
         final DocumentResultCollection<LinkedEntityResult> detectedBatchResult = client.recognizeBatchLinkedEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s\n", detectedBatchResult.getModelVersion());
+        System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.\n",
+        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionCount(),
@@ -44,7 +44,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
         // Detecting language from a batch of documents
         detectedBatchResult.forEach(linkedEntityDocumentResult ->
             linkedEntityDocumentResult.getLinkedEntities().stream().forEach(linkedEntity ->
-                System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s.\n",
+                System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s.%n",
                     linkedEntity.getName(), linkedEntity.getUri(), linkedEntity.getDataSource())));
     }
 }
