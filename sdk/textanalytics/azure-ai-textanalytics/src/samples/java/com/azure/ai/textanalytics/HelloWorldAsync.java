@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 
 public class HelloWorldAsync {
@@ -21,10 +20,10 @@ public class HelloWorldAsync {
         client.detectLanguage(text).subscribe(
             result -> {
                 final DetectedLanguage primaryLanguage = result.getPrimaryLanguage();
-                System.out.printf("Detected Language: %s, ISO 6391 Name: %s, Score: %s",
+                System.out.printf("Detected Language: %s, ISO 6391 Name: %s, Score: %s.\n",
                     primaryLanguage.getName(), primaryLanguage.getIso6391Name(), primaryLanguage.getScore());
             },
-            error -> System.err.println("There was an error detecting language of the text" + error),
+            error -> System.err.println("There was an error detecting language of the text." + error),
             () -> System.out.println("Language detected."));
     }
 }

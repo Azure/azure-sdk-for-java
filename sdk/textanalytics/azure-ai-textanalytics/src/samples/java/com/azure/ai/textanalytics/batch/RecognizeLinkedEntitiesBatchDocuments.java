@@ -10,7 +10,6 @@ import com.azure.ai.textanalytics.models.LinkedEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 
 import java.util.Arrays;
@@ -21,10 +20,8 @@ public class RecognizeLinkedEntitiesBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-//            .subscriptionKey("subscription-key")
-//            .endpoint("https://servicename.cognitiveservices.azure.com/")
-            .subscriptionKey(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY"))
-            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
+            .subscriptionKey("subscription-key")
+            .endpoint("https://servicename.cognitiveservices.azure.com/")
             .buildClient();
 
         // The texts that need be analysed.
@@ -35,10 +32,10 @@ public class RecognizeLinkedEntitiesBatchDocuments {
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
         final DocumentResultCollection<LinkedEntityResult> detectedBatchResult = client.recognizeBatchLinkedEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s", detectedBatchResult.getModelVersion());
+        System.out.printf("Model version: %s\n", detectedBatchResult.getModelVersion());
 
         final TextBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s",
+        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.\n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getErroneousDocumentCount(),
             batchStatistics.getTransactionCount(),
@@ -47,7 +44,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
         // Detecting language from a batch of documents
         detectedBatchResult.forEach(linkedEntityDocumentResult ->
             linkedEntityDocumentResult.getLinkedEntities().stream().forEach(linkedEntity ->
-                System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s",
+                System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s.\n",
                     linkedEntity.getName(), linkedEntity.getUri(), linkedEntity.getDataSource())));
     }
 }

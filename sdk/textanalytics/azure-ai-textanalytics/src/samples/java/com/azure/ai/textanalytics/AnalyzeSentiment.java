@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentResult;
-import com.azure.core.util.Configuration;
 
 import java.util.List;
 
@@ -14,10 +13,8 @@ public class AnalyzeSentiment {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-//            .subscriptionKey("subscription-key")
-//            .endpoint("https://servicename.cognitiveservices.azure.com/")
-            .subscriptionKey(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY"))
-            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
+            .subscriptionKey("subscription-key")
+            .endpoint("https://servicename.cognitiveservices.azure.com/")
             .buildClient();
 
         // The text that need be analysed.
@@ -27,7 +24,7 @@ public class AnalyzeSentiment {
 
         final TextSentiment documentSentiment = sentimentResult.getDocumentSentiment();
         System.out.printf(
-            "Recognized TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.",
+            "Recognized TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.\n",
             documentSentiment.getTextSentimentClass(),
             documentSentiment.getPositiveScore(),
             documentSentiment.getNeutralScore(),
@@ -35,7 +32,7 @@ public class AnalyzeSentiment {
 
         final List<TextSentiment> sentiments = sentimentResult.getSentenceSentiments();
         sentiments.forEach(textSentiment -> System.out.printf(
-            "Recognized Sentence TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.",
+            "Recognized Sentence TextSentiment: %s, Positive Score: %s, Neutral Score: %s, Negative Score: %s.\n",
             textSentiment.getTextSentimentClass(),
             textSentiment.getPositiveScore(),
             textSentiment.getNeutralScore(),

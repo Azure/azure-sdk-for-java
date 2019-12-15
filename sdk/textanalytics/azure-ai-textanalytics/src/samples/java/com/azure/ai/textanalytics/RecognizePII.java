@@ -3,17 +3,13 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.core.util.Configuration;
-
 public class RecognizePII {
 
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-//            .subscriptionKey("subscription-key")
-//            .endpoint("https://servicename.cognitiveservices.azure.com/")
-            .subscriptionKey(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY"))
-            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
+            .subscriptionKey("subscription-key")
+            .endpoint("https://servicename.cognitiveservices.azure.com/")
             .buildClient();
 
         // The text that need be analysed.
@@ -21,7 +17,7 @@ public class RecognizePII {
 
         client.recognizePiiEntities(text).getNamedEntities().forEach(
             entity -> System.out.printf(
-                "Recognized PII NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s",
+                "Recognized PII NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.\n",
                 entity.getText(),
                 entity.getType(),
                 entity.getSubtype(),

@@ -3,24 +3,20 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.core.util.Configuration;
-
 public class RecognizeLinkedEntities {
 
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-//            .subscriptionKey("subscription-key")
-//            .endpoint("https://servicename.cognitiveservices.azure.com/")
-            .subscriptionKey(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY"))
-            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
+            .subscriptionKey("subscription-key")
+            .endpoint("https://servicename.cognitiveservices.azure.com/")
             .buildClient();
 
         // The text that need be analysed.
-        String text = "Old Faithful is a geyser at Yellowstone Park";
+        String text = "Old Faithful is a geyser at Yellowstone Park.";
 
         client.recognizeLinkedEntities(text).getLinkedEntities().forEach(
-            linkedEntity -> System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s",
+            linkedEntity -> System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s.\n",
                 linkedEntity.getName(),
                 linkedEntity.getUri(),
                 linkedEntity.getDataSource()));
