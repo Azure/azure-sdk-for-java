@@ -80,24 +80,63 @@ public class Sample {
     }
 
     private static void doClientWork() {
-        EventHubProducerClient producer = new EventHubClientBuilder()
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(CONNECTION_STRING)
-            .buildProducer();
-
-        final int count = 2;
-        final byte[] body = "Hello World!".getBytes(UTF_8);
+            .buildAsyncProducerClient();
         
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
         try (final Scope scope = TRACER.withSpan(span)) {
-            final Context traceContext = new Context(PARENT_SPAN_KEY, span);
-            final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
-                final EventData data = new EventData(body, traceContext);
-                return Flux.just(data);
-            });
-            producer.send(testData.toIterable(1));
-        } finally {
+            String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
+            
+            final byte[] body = "EventData Sample 1".getBytes(UTF_8);
+            final byte[] body2 = "EventData Sample 2".getBytes(UTF_8);
+
+            // We will publish three events based on simple sentences.
+            Flux<EventData> data = Flux.just(
+                new EventData(body).addContext(PARENT_SPAN_KEY, TRACER.getCurrentSpan()),
+                new EventData(body2).addContext(PARENT_SPAN_KEY, TRACER.getCurrentSpan()));
+
+            // Create a batch to send the events.
+            final CreateBatchOptions options = new CreateBatchOptions()
+                .setPartitionId(firstPartition)
+                .setMaximumSizeInBytes(256);
+
+            final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
+                producer.createBatch(options).block());
+            
+            data.flatMap(event -> {
+                final EventDataBatch batch = currentBatch.get();
+                if (batch.tryAdd(event)) {
+                    return Mono.empty();
+                }
+
+                // The batch is full, so we create a new batch and send the batch. Mono.when completes when both operations
+                // have completed.
+                return Mono.when(
+                        producer.send(batch),
+                        producer.createBatch(options).map(newBatch -> {
+                            currentBatch.set(newBatch);
+
+                            // Add that event that we couldn't before.
+                            if (!newBatch.tryAdd(event)) {
+                                throw Exceptions.propagate(new IllegalArgumentException(String.format(
+                                        "Event is too large for an empty batch. Max size: %s. Event: %s",
+                                        newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
+                            }
+
+                            return newBatch;
+                        }));
+            }).then()
+                    .doFinally(signal -> {
+                        final EventDataBatch batch = currentBatch.getAndSet(null);
+                        if (batch != null) {
+                            producer.send(batch).block(OPERATION_TIMEOUT);
+                        }
+                    })
+                    .subscribe(unused -> System.out.println("Complete"),
+                            error -> System.out.println("Error sending events: " + error),
+                            () -> System.out.println("Completed sending events."));
             span.end();
-            producer.close();
         }
     }
 }

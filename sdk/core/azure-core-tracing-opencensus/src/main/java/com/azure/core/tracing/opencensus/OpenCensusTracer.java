@@ -183,9 +183,8 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
 
     @Override
     public Context getSharedSpanBuilder(String spanName, Context context) {
-        logger.logExceptionAsError(
+        throw logger.logExceptionAsError(
                 new UnsupportedOperationException("This operation is not supported in OpenCensus"));
-        return Context.NONE;
         // Remove OpenCensus support for tracing in https://github.com/Azure/azure-sdk-for-java/issues/6781
     }
 
