@@ -6,11 +6,17 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.Error;
+import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.LinkedEntityResult;
+import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.NamedEntityResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -131,35 +137,180 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
-    public void recognizeEntitiesForSimpleInput() {
+    public void recognizeEntitiesForTextInput() {
+        NamedEntity namedEntity1 = new NamedEntity().setText("Seattle").setType("Location").setOffset(26).setLength(7).setScore(0.80624294281005859);
+        NamedEntity namedEntity2 = new NamedEntity().setText("last week").setType("DateTime").setSubtype("DateRange").setOffset(34).setLength(9).setScore(0.8);
+        NamedEntityResult namedEntityResultList = new NamedEntityResult("0", null, null, Arrays.asList(namedEntity1, namedEntity2));
+        validateNamedEntities(namedEntityResultList.getNamedEntities(),
+            client.recognizeEntities("I had a wonderful trip to Seattle last week.").getNamedEntities());
     }
 
     @Test
     public void recognizeEntitiesForEmptyText() {
-
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        validateErrorDocument(expectedError, client.recognizeEntities("").getError());
     }
 
     @Test
     public void recognizeEntitiesForFaultyText() {
-
+        // TODO: (savaity) confirm with service team.
     }
 
     @Test
     public void recognizeEntitiesForBatchInput() {
-
+        recognizeBatchNamedEntityRunner((inputs) -> validateBatchResult(client.recognizeBatchEntities(inputs),
+            getExpectedBatchNamedEntities(), TestEndpoint.NAMED_ENTITY));
     }
 
     @Test
     public void recognizeEntitiesForBatchInputShowStatistics() {
+        recognizeBatchNamedEntitiesShowStatsRunner((inputs, options) ->
+            validateBatchResult(client.recognizeBatchEntitiesWithResponse(inputs, options, Context.NONE).getValue(),
+                getExpectedBatchNamedEntities(), TestEndpoint.NAMED_ENTITY));
+    }
+
+    @Test
+    public void recognizePiiEntitiesForTextInput() {
+        NamedEntity namedEntity1 = new NamedEntity().setText("859-98-0987").setType("U.S. Social Security Number (SSN)").setSubtype("").setOffset(28).setLength(11).setScore(0.65);
+        NamedEntityResult namedEntityResultList = new NamedEntityResult("0", null, null, Collections.singletonList(namedEntity1));
+        validateNamedEntities(namedEntityResultList.getNamedEntities(),
+            client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.").getNamedEntities());
+    }
+
+    @Test
+    public void recognizePiiEntitiesForEmptyText() {
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        validateErrorDocument(expectedError, client.recognizePiiEntities("").getError());
+
+    }
+
+    @Test
+    public void recognizePiiEntitiesForFaultyText() {
+        // TODO: (savaity) confirm with service team.
+    }
+
+    @Test
+    public void recognizePiiEntitiesForBatchInput() {
+        recognizeBatchPiiRunner((inputs) ->
+            validateBatchResult(client.recognizeBatchPiiEntities(inputs),
+                getExpectedBatchPiiEntities(), TestEndpoint.NAMED_ENTITY));
+    }
+
+    @Test
+    public void recognizePiiEntitiesForBatchInputShowStatistics() {
+        recognizeBatchPiiEntitiesShowStatsRunner((inputs, options) ->
+            validateBatchResult(client.recognizeBatchPiiEntitiesWithResponse(inputs, options, Context.NONE).getValue(),
+                getExpectedBatchPiiEntities(), TestEndpoint.NAMED_ENTITY));
+    }
+
+    @Test
+    public void recognizePiiEntitiesForBatchStringInput() {
+        recognizePiiStringInputRunner((inputs) ->
+            validateBatchResult(client.recognizePiiEntities(inputs),
+                getExpectedBatchPiiEntities(), TestEndpoint.NAMED_ENTITY));
+    }
+
+    @Test
+    public void recognizePiiEntitiesForListLanguageHint() {
+        recognizePiiLanguageHintRunner((inputs, language) ->
+            validateBatchResult(client.recognizePiiEntitiesWithResponse(inputs, language, Context.NONE).getValue(),
+                getExpectedBatchPiiEntities(), TestEndpoint.NAMED_ENTITY));
     }
 
     @Test
     public void recognizeEntitiesForBatchStringInput() {
+        recognizeNamedEntityStringInputRunner((inputs) ->
+            validateBatchResult(client.recognizeEntities(inputs),
+                getExpectedBatchNamedEntities(), TestEndpoint.NAMED_ENTITY));
+    }
+
+    @Test
+    public void recognizeEntitiesForListLanguageHint() {
+        recognizeNamedEntitiesLanguageHintRunner((inputs, language) ->
+            validateBatchResult(client.recognizeEntitiesWithResponse(inputs, language, Context.NONE).getValue(),
+                getExpectedBatchNamedEntities(), TestEndpoint.NAMED_ENTITY));
+    }
+
+    @Test
+    public void recognizeLinkedEntitiesForTextInput() {
+        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch().setText("Seattle").setLength(7).setOffset(26).setScore(0.11472424095537814);
+        LinkedEntity linkedEntity1 = new LinkedEntity().setName("Seattle").setUrl("https://en.wikipedia.org/wiki/Seattle").setDataSource("Wikipedia").setLinkedEntityMatches(Collections.singletonList(linkedEntityMatch1)).setLanguage("en").setId("Seattle");
+        LinkedEntityResult linkedEntityResultList = new LinkedEntityResult("0", null, null, Collections.singletonList(linkedEntity1));
+
+        validateLinkedEntities(linkedEntityResultList.getLinkedEntities(), client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.").getLinkedEntities());
+    }
+
+    @Test
+    public void recognizeLinkedEntitiesForEmptyText() {
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        validateErrorDocument(expectedError, client.recognizeLinkedEntities("").getError());
+    }
+
+    @Override
+    public void recognizeLinkedEntitiesForFaultyText() {
 
     }
 
     @Test
-    public void recognizeEntitiesForBatchListCountryHint() {
+    public void recognizeLinkedEntitiesForBatchInput() {
+        recognizeBatchLinkedEntityRunner((inputs) ->
+            validateBatchResult(client.recognizeBatchLinkedEntities(inputs),
+                getExpectedBatchLinkedEntities(), TestEndpoint.LINKED_ENTITY));
+    }
+
+    @Test
+    public void recognizeLinkedEntitiesForBatchInputShowStatistics() {
+        recognizeBatchLinkedEntitiesShowStatsRunner((inputs, options) ->
+            validateBatchResult(client.recognizeBatchLinkedEntitiesWithResponse(inputs, options, Context.NONE).getValue(),
+                getExpectedBatchLinkedEntities(), TestEndpoint.LINKED_ENTITY));
+    }
+
+    @Test
+    public void recognizeLinkedEntitiesForBatchStringInput() {
+        recognizeLinkedStringInputRunner((inputs) ->
+            validateBatchResult(client.recognizeLinkedEntities(inputs),
+                getExpectedBatchLinkedEntities(), TestEndpoint.LINKED_ENTITY));
+    }
+
+    @Test
+    public void recognizeLinkedEntitiesForListLanguageHint() {
+        recognizeLinkedLanguageHintRunner((inputs, language) ->
+            validateBatchResult(client.recognizeLinkedEntitiesWithResponse(inputs, language, Context.NONE).getValue(),
+                getExpectedBatchLinkedEntities(), TestEndpoint.LINKED_ENTITY));
+    }
+
+    @Override
+    public void recognizeKeyPhrasesForTextInput() {
+
+    }
+
+    @Override
+    public void recognizeKeyPhrasesForEmptyText() {
+
+    }
+
+    @Override
+    public void recognizeKeyPhrasesForFaultyText() {
+
+    }
+
+    @Override
+    public void recognizeKeyPhrasesForBatchInput() {
+
+    }
+
+    @Override
+    public void recognizeKeyPhrasesForBatchInputShowStatistics() {
+
+    }
+
+    @Override
+    public void recognizeKeyPhrasesForBatchStringInput() {
+
+    }
+
+    @Override
+    public void recognizeKeyPhrasesForListLanguageHint() {
 
     }
 }

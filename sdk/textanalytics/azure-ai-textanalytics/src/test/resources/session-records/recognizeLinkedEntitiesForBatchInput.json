@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com//text/analytics/v3.0-preview.1/entities/linking",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "fe6a5ef7-1a68-4dea-b143-4c8ec0a9e515",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "11",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2",
+      "apim-request-id" : "1b81b9ed-c144-4e02-9a9f-416564871d13",
+      "x-aml-ta-request-id" : "72840251-1158-4a4c-a946-76cbaeb91a2f",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":0,\"length\":9,\"score\":0.15927483173469081}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"https://en.wikipedia.org/wiki/Microsoft\",\"dataSource\":\"Wikipedia\"},{\"name\":\"Application programming interface\",\"matches\":[{\"text\":\"API's\",\"offset\":61,\"length\":5,\"score\":0.62952832290627114}],\"language\":\"en\",\"id\":\"Application programming interface\",\"url\":\"https://en.wikipedia.org/wiki/Application_programming_interface\",\"dataSource\":\"Wikipedia\"}]},{\"id\":\"1\",\"entities\":[{\"name\":\"ABA routing transit number\",\"matches\":[{\"text\":\"ABA number\",\"offset\":5,\"length\":10,\"score\":0.61596770524356326}],\"language\":\"en\",\"id\":\"ABA routing transit number\",\"url\":\"https://en.wikipedia.org/wiki/ABA_routing_transit_number\",\"dataSource\":\"Wikipedia\"}]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
+      "Date" : "Sun, 15 Dec 2019 05:36:20 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
