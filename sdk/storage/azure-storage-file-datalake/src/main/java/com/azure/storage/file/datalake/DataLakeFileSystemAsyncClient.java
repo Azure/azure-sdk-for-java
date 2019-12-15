@@ -22,6 +22,7 @@ import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuild
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.Path;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
@@ -241,7 +242,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            return blobContainerAsyncClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType));
+            return blobContainerAsyncClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -283,7 +285,8 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<Void>> deleteWithResponse(DataLakeRequestConditions requestConditions) {
         try {
             return blobContainerAsyncClient.deleteWithResponse(
-                Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -322,6 +325,7 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<FileSystemProperties>> getPropertiesWithResponse(String leaseId) {
         try {
             return blobContainerAsyncClient.getPropertiesWithResponse(leaseId)
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response -> new SimpleResponse<>(response,
                     Transforms.toFileSystemProperties(response.getValue())));
         } catch (RuntimeException ex) {
@@ -368,7 +372,8 @@ public class DataLakeFileSystemAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             return blobContainerAsyncClient.setMetadataWithResponse(metadata,
-                Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -664,7 +669,8 @@ public class DataLakeFileSystemAsyncClient {
         List<DataLakeSignedIdentifier> identifiers, DataLakeRequestConditions requestConditions) {
         try {
             return blobContainerAsyncClient.setAccessPolicyWithResponse(Transforms.toBlobPublicAccessType(accessType),
-                Transforms.toBlobIdentifierList(identifiers), Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobIdentifierList(identifiers), Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -704,6 +710,7 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<FileSystemAccessPolicies>> getAccessPolicyWithResponse(String leaseId) {
         try {
             return blobContainerAsyncClient.getAccessPolicyWithResponse(leaseId)
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response -> new SimpleResponse<>(response,
                 Transforms.toFileSystemAccessPolicies(response.getValue())));
         } catch (RuntimeException ex) {

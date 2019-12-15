@@ -3,17 +3,44 @@ parameters:
   EnvVars: {}
   MaxParallel: 0
   Matrix:
-    Win2016:
+    Linux - Java 8:
+      OSName: 'Linux'
+      OSVmImage: 'ubuntu-16.04'
+      JavaVersion: '1.8'
+      DisplayName: 'Linux - Java 8'
+    macOS - Java 8:
+      OSName: 'macOS'
+      OSVmImage: 'macOS-10.13'
+      JavaVersion: '1.8'
+      DisplayName: 'macOS - Java 8'
+    Windows - Java 8:
+      OSName: 'Windows'
       OSVmImage: 'windows-2019'
-      DisplayName: 'Run Live tests'
+      JavaVersion: '1.8'
+      DisplayName: 'Windows - Java 8'
+    Linux - Java 11:
+      OSName: 'Linux'
+      OSVmImage: 'ubuntu-16.04'
+      JavaVersion: '1.11'
+      DisplayName: 'Linux - Java 11'
+    macOS - Java 11:
+      OSName: 'macOS'
+      OSVmImage: 'macOS-10.13'
+      JavaVersion: '1.11'
+      DisplayName: 'macOS - Java 11'
+    Windows - Java 11:
+      OSName: 'Windows'
+      OSVmImage: 'windows-2019'
+      JavaVersion: '1.11'
+      DisplayName: 'Windows - Java 11'
   PreRunSteps: []
   TestName: LiveTest
   TimeoutInMinutes: 60
   TestStepMavenInputs:
-    options: '--batch-mode -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3 --settings eng/settings.xml'
-    mavenOptions: '-Xmx3072m -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+    options: '-Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3 $(DefaultOptions)'
+    mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
+    jdkVersionOption: '$(JavaVersion)'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
     goals: 'test'
@@ -43,7 +70,7 @@ jobs:
         env: ${{ parameters.EnvVars }}
 
       - task: PublishTestResults@2
-        condition: succeededOrFailed()
+        condition: always()
         inputs:
           mergeTestResults: true
           testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(DisplayName)'

@@ -17,7 +17,7 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.storage.file.datalake.implementation.models.ServicesListFileSystemsResponse;
-import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -55,7 +55,7 @@ public final class ServicesImpl {
     private interface ServicesService {
         @Get("")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ServicesListFileSystemsResponse> listFileSystems(@HostParam("url") String url, @QueryParam("resource") String resource, @QueryParam("prefix") String prefix, @QueryParam("continuation") String continuation, @QueryParam("maxResults") Integer maxResults, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
     }
 
