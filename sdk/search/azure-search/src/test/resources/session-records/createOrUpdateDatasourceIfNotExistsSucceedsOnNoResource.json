@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdkb9659059c309.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdka1126992e223.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "a0431759-ab6b-4530-a6e9-65935a3224e5",
+      "request-id" : "87c63825-144f-45bb-b779-9d90e3cc9fef",
       "StatusCode" : "201",
-      "Date" : "Mon, 02 Dec 2019 21:55:09 GMT",
+      "Date" : "Sun, 15 Dec 2019 12:28:11 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D777724D1C527A\"",
-      "elapsed-time" : "64",
+      "ETag" : "W/\"0x8D7815A3FDC43FB\"",
+      "elapsed-time" : "53",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "410",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkb9659059c309.search-dogfood.windows-int.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D777724D1C527A\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
+      "Content-Length" : "398",
+      "Body" : "{\"@odata.context\":\"https://azs-sdka1126992e223.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D7815A3FDC43FB\\\"\",\"name\":\"azs-java-test-blob\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdkb9659059c309.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06"
+      "Location" : "https://azs-sdka1126992e223.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06"
     },
     "Exception" : null
   } ],

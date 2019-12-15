@@ -136,7 +136,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         assertHttpResponseException(
             () -> client.createOrUpdateDataSource(dataSource),
             HttpResponseStatus.BAD_REQUEST,
-            "Data source type '' is not supported"
+            "Data source type 'thistypedoesnotexist' is not supported"
         );
     }
 

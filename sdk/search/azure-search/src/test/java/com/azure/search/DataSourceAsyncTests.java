@@ -280,7 +280,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
         assertHttpResponseExceptionAsync(
             client.createOrUpdateDataSource(dataSource),
             HttpResponseStatus.BAD_REQUEST,
-            "Data source type '' is not supported"
+            "Data source type 'thistypedoesnotexist' is not supported"
         );
     }
 
