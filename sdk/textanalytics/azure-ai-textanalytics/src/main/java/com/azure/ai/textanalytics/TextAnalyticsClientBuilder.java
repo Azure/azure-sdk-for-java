@@ -117,61 +117,54 @@ public final class TextAnalyticsClientBuilder {
      */
     public TextAnalyticsAsyncClient buildAsyncClient() {
         // Global Env configuration store
-        Configuration buildConfiguration = (configuration == null)
+        final Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone() : configuration;
         // Service Version
-        TextAnalyticsServiceVersion serviceVersion =
+        final TextAnalyticsServiceVersion serviceVersion =
             version != null ? version : TextAnalyticsServiceVersion.getLatest();
 
-        // endpoint cannot be null, which is required in request authentication
+        // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
 
-        // Http pipeline is already defined, skip rest of customized pipeline process
-        if (httpPipeline != null) {
-            TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
-                .endpoint(endpoint)
-                .pipeline(httpPipeline)
+        // Create a default Pipeline if it is not given
+        if (httpPipeline == null) {
+            // Closest to API goes first, closest to wire goes last.
+            final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+            // Authentications
+            if (tokenCredential != null) {
+                // User token based policy
+                policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+            } else if (subscriptionKey != null) {
+                headers.put(OCP_APIM_SUBSCRIPTION_KEY, subscriptionKey);
+            } else {
+                // Throw exception that credential and tokenCredential cannot be null
+                logger.logExceptionAsError(
+                    new IllegalArgumentException("Missing credential information while building a client."));
+            }
+
+            policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+                buildConfiguration));
+            policies.add(new RequestIdPolicy());
+            policies.add(new AddHeadersPolicy(headers));
+            policies.add(new AddDatePolicy());
+
+            HttpPolicyProviders.addBeforeRetryPolicies(policies);
+            policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
+            policies.addAll(this.policies);
+            HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+            policies.add(new HttpLoggingPolicy(httpLogOptions));
+
+            httpPipeline = new HttpPipelineBuilder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(httpClient)
                 .build();
-            return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion);
         }
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        if (tokenCredential != null) {
-            // User token based policy
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
-        } else if (subscriptionKey != null) {
-            headers.put(OCP_APIM_SUBSCRIPTION_KEY, subscriptionKey);
-        } else {
-            // Throw exception that credential and tokenCredential cannot be null
-            logger.logExceptionAsError(
-                new IllegalArgumentException("Missing credential information while building a client."));
-        }
-
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddHeadersPolicy(headers));
-        policies.add(new AddDatePolicy());
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
-        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
-
-        policies.addAll(this.policies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-
-        // customized pipeline
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-
-        TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
+        final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
             .endpoint(endpoint)
-            .pipeline(pipeline)
+            .pipeline(httpPipeline)
             .build();
 
         return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion);
