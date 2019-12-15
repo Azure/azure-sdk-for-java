@@ -16,7 +16,7 @@ import com.azure.core.util.IterableStream;
  */
 public interface ContinuablePage<C, T> {
     /**
-     * @return a iterable stream of elements in the page.
+     * @return an iterable stream of elements in the page.
      */
     IterableStream<T> getElements();
 

@@ -83,13 +83,13 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
         return Flux.defer(() -> {
             final Function<C, Flux<P>> pageRetriever = provider.get();
             final ContinuationState<C> state = new ContinuationState<>(continuationToken);
-            return concatPagedFlux(state, pageRetriever);
+            return concatFluxOfPage(state, pageRetriever);
         });
     }
 
     /**
-     * Get a Flux of {@link ContinuablePage} created by concat-ing Flux instances returned
-     * Page Retriever Function calls. The first Flux of {@link ContinuablePage} is identified
+     * Get a Flux of {@link ContinuablePage} created by concat-ing child Flux instances returned
+     * Page Retriever Function calls. The first child Flux of {@link ContinuablePage} is identified
      * by the continuation-token in the state.
      *
      * @param state the state to be used across multiple Page Retriever Function calls
@@ -99,8 +99,8 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      * @param <P> The {@link ContinuablePage} holding items of type {@code T}
      * @return a Flux of {@link ContinuablePage}
      */
-    private static <C, T, P extends ContinuablePage<C, T>> Flux<P> concatPagedFlux(ContinuationState<C> state,
-                                                                                   Function<C, Flux<P>> pageRetriever) {
+    private static <C, T, P extends ContinuablePage<C, T>>
+        Flux<P> concatFluxOfPage(ContinuationState<C> state, Function<C, Flux<P>> pageRetriever) {
         if (state.isDone()) {
             return Flux.empty();
         } else {
@@ -110,7 +110,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
                     return Mono.empty();
                 }))
                 .doOnNext(page -> state.setLastContinuationToken(page.getContinuationToken()))
-                .concatWith(Flux.defer(() -> concatPagedFlux(state, pageRetriever)));
+                .concatWith(Flux.defer(() -> concatFluxOfPage(state, pageRetriever)));
         }
     }
 

@@ -36,7 +36,9 @@ import java.util.function.Supplier;
  * @see PagedResponse
  * @see Page
  * @see Flux
+ * @deprecated use {@link ContinuablePagedFluxCore}.
  */
+@Deprecated
 public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePagedFluxCore<String, T, P> {
     /**
      * Creates an instance of {@link PagedFluxBase} that consists of only a single page.
@@ -64,27 +66,21 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever,
                          Function<String, Mono<P>> nextPageRetriever) {
-        this(new PageRetrieverProvider<P>() {
-            @Override
-            public Function<String, Flux<P>> get() {
-                return continuationToken -> continuationToken == null
-                    ? firstPageRetriever.get().flux()
-                    : nextPageRetriever.apply(continuationToken).flux();
-            }
-        });
+        this(() -> continuationToken -> continuationToken == null
+            ? firstPageRetriever.get().flux()
+            : nextPageRetriever.apply(continuationToken).flux(), true);
     }
 
     /**
-     * Creates an instance of {@link PagedFluxBase}. The constructor takes a provider, that when called should
-     * provides Page Retriever Function which accepts continuation token. The provider will be called for
-     * each Subscription to the PagedFlux instance. The Page Retriever Function can get called multiple
-     * times in serial fashion, each time after the completion of the Flux returned from the previous
-     * invocation. The final completion signal will be send to the Subscriber when the last Page emitted
-     * by the Flux returned by Page Continuation Function has {@code null} continuation token.
+     * PACKAGE INTERNAL CONSTRUCTOR, exists only to support the PRIVATE PagedFlux.ctr(Supplier, boolean)
+     * use case.
      *
-     * @param provider the Page Retrieval Provider
+     * Create PagedFlux backed by Page Retriever Function Supplier.
+     *
+     * @param provider the Page Retrieval Function Provider
+     * @param ignored ignored
      */
-    public PagedFluxBase(PageRetrieverProvider<P> provider) {
+    PagedFluxBase(Supplier<Function<String, Flux<P>>> provider, boolean ignored) {
         super(provider);
     }
 

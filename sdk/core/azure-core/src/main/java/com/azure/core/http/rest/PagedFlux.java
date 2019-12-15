@@ -64,35 +64,52 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      */
     public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
                      Function<String, Mono<PagedResponse<T>>> nextPageRetriever) {
-        this(new PageRetrieverProvider<PagedResponse<T>>() {
-            @Override
-            public Function<String, Flux<PagedResponse<T>>> get() {
-                return continuationToken -> continuationToken == null
-                    ? firstPageRetriever.get().flux()
-                    : nextPageRetriever.apply(continuationToken).flux();
-            }
-        });
+        this(() -> continuationToken -> continuationToken == null
+            ? firstPageRetriever.get().flux()
+            : nextPageRetriever.apply(continuationToken).flux(), true);
+    }
+
+
+    /**
+     * PRIVATE CONSTRUCTOR. SEE BELOW NOTES.
+     *
+     * Create PagedFlux backed by Page Retriever Function Supplier.
+     *
+     * @param provider the Page Retrieval Function Provider
+     * @param ignored param is ignored, exists in signature only to avoid conflict with first ctr
+     */
+    // NOTES: Proposal for azure-core-v2:
+    //
+    // 1. Remove the first ctr "PagedFlux(Supplier<Mono<PagedResponse<T>>>)".
+    // 2. Add a new ctr        "PagedFlux(Supplier<Function<String, Flux<PagedResponse<T>>>>)".
+    // 3. Remove the factory method "PagedFlux::create" and this PRIVATE ctr in favour of #2.
+    //
+    private PagedFlux(Supplier<Function<String, Flux<PagedResponse<T>>>> provider, boolean ignored) {
+        super(provider, ignored);
     }
 
     /**
-     * Creates an instance of {@link PagedFlux}. The constructor takes a provider, that when called should
-     * provide Page Retriever Function which accepts continuation token. The provider will be called for
-     * each Subscription to the PagedFlux instance. The Page Retriever Function can get called multiple
-     * times in serial fashion, each time after the completion of the Flux returned from the previous
-     * invocation. The final completion signal will be send to the Subscriber when the last Page emitted
-     * by the Flux returned by Page Continuation Function has {@code null} continuation token.
+     * Creates an instance of {@link PagedFlux} backed by a Page Retriever Function Supplier.
+     * When invoked supplier should provide Page Retriever Function which accepts continuation token.
+     * The provider will be called for each Subscription to the PagedFlux instance. The Page Retriever
+     * Function can get called multiple times in serial fashion, each time after the completion of the Flux
+     * returned from the previous invocation. The final completion signal will be send to the Subscriber
+     * when the last Page emitted by the Flux returned by Page Continuation Function has {@code null}
+     * continuation token.
      *
      * The provider is useful mainly in two scenarios:
      * 1. To manage state across multiple call to Page Retrieval Function within the same Subscription
      * 2. To decorate a PagedFlux to produce new PagedFlux
      *
      * <p><strong>Decoration sample</strong></p>
-     * {@codesnippet com.azure.core.http.rest.pagedflux.ctr.decoration}
+     * {@codesnippet com.azure.core.http.rest.pagedflux.create.decoration}
      *
-     * @param provider the Page Retrieval Provider
+     * @param provider the Page Retrieval Function Provider
+     * @param <T> The type of items in a {@link PagedResponse}
+     * @return PagedFlux backed by the Page Retriever Function Supplier
      */
-    public PagedFlux(PageRetrieverProvider<PagedResponse<T>> provider) {
-        super(provider);
+    public static <T> PagedFlux<T> create(Supplier<Function<String, Flux<PagedResponse<T>>>> provider) {
+        return new PagedFlux<>(provider, true);
     }
 
     /**
@@ -102,18 +119,18 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * @param mapper The mapper function to convert from type T to type S.
      * @param <S> The mapped type.
      * @return A PagedFlux of type S.
-     * @deprecated refer the decoration samples for PagedFlux constructor that takes provider
+     * @deprecated refer the decoration samples for {@link PagedFlux#create(Supplier)}.
      */
     @Deprecated
     public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
-        PageRetrieverProvider<PagedResponse<S>> provider = () -> continuationToken -> {
+        Supplier<Function<String, Flux<PagedResponse<S>>>> provider = () -> continuationToken -> {
             Flux<PagedResponse<T>> flux = (continuationToken == null)
                 ? byPage()
                 : byPage(continuationToken);
             return flux
                 .map(mapPagedResponse(mapper));
         };
-        return new PagedFlux<>(provider);
+        return PagedFlux.create(provider);
     }
 
     private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
