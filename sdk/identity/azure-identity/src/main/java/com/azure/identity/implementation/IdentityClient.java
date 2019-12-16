@@ -23,7 +23,6 @@ import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.awt.Desktop;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -279,14 +278,17 @@ public class IdentityClient {
         return AuthorizationCodeListener.create(port)
             .flatMap(server -> {
                 URI redirectUri;
-                URI browserUri;
+                String browserUri;
                 try {
                     redirectUri = new URI(String.format("http://localhost:%s", port));
                     browserUri =
-                        new URI(String.format("%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&prompt"
+                        String.format("%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&prompt"
                                 + "=select_account&client_id=%s&redirect_uri=%s&state=%s&scope=%s",
-                            authorityUrl, clientId, redirectUri.toString(), UUID.randomUUID(), String.join(" ",
-                                request.getScopes())));
+                            authorityUrl,
+                            clientId,
+                            redirectUri.toString(),
+                            UUID.randomUUID(),
+                            String.join(" ", request.getScopes()));
                 } catch (URISyntaxException e) {
                     return server.dispose().then(Mono.error(e));
                 }
@@ -294,7 +296,7 @@ public class IdentityClient {
                 return server.listen()
                     .mergeWith(Mono.<String>fromRunnable(() -> {
                         try {
-                            Desktop.getDesktop().browse(browserUri);
+                            openUrl(browserUri);
                         } catch (IOException e) {
                             throw logger.logExceptionAsError(new IllegalStateException(e));
                         }
@@ -486,6 +488,23 @@ public class IdentityClient {
             case HTTP:
             default:
                 return new Proxy(Type.HTTP, options.getAddress());
+        }
+    }
+
+    private void openUrl(String url) throws IOException {
+        Runtime rt = Runtime.getRuntime();
+
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+        } else if (os.contains("mac")) {
+            rt.exec("open " + url);
+        } else if (os.contains("nix") || os.contains("nux")) {
+            rt.exec("xdg-open " + url);
+        } else {
+            logger.error("Unable to open web browser on current device - operating system is reported as {}, " +
+                             "which is not currently supported. Please file an issue at " +
+                             "http://www.github.com/azure/azure-sdk-for-java.", os);
         }
     }
 }
