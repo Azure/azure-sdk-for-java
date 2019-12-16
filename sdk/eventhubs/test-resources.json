@@ -5,9 +5,17 @@
         "baseName": {
             "type": "String"
         },
-        "endpointSuffix": {
+        "storageEndpointSuffix": {
             "type": "string",
             "defaultValue": "core.windows.net"
+        },
+        "eventHubName": {
+            "type": "string",
+            "defaultValue": "javaeventhub"
+        },
+        "eventHubNamespaceHostNameSuffix": {
+            "type": "string",
+            "defaultValue": "servicebus.windows.net"
         }
     },
     "variables": {
@@ -18,13 +26,13 @@
         "premiumAccountName": "[concat('prem', parameters('baseName'))]",
         "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
         "location": "[resourceGroup().location]",
-        "eventHubName": "[concat(parameters('baseName'), '/', 'javaEventHub')]"
+        "eventHubNameSpaceName": "[parameters('baseName')]"
     },
     "resources": [
         {
             "type": "Microsoft.EventHub/namespaces",
             "apiVersion": "[variables('eventHubsApiVersion')]",
-            "name": "[parameters('baseName')]",
+            "name": "[variables('eventHubNameSpaceName')]",
             "location": "[variables('location')]",
             "sku": {
                 "name": "Standard",
@@ -79,10 +87,10 @@
         {
             "apiVersion": "[variables('eventHubsApiVersion')]",
             "type": "Microsoft.EventHub/namespaces/eventhubs",
-            "name": "[variables('eventHubName')]",
+            "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
             "location": "[variables('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('baseName'))]"
+                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNameSpaceName'))]"
             ],
             "properties": {
                 "messageRetentionInDays": 7,
@@ -224,6 +232,14 @@
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('baseName'), 'RootManageSharedAccessKey'), variables('eventHubsApiVersion')).primaryConnectionString]"
         },
+        "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME": {
+            "type": "string",
+            "value": "[concat(variables('eventHubNameSpaceName'), '.', parameters('eventHubNamespaceHostNameSuffix'))]"
+        },
+        "AZURE_EVENTHUBS_EVENT_HUB_NAME": {
+            "type": "string",
+            "value": "[parameters('eventHubName')]"
+        },
         "PRIMARY_STORAGE_ACCOUNT_NAME": {
             "type": "string",
             "value": "[variables('primaryAccountName')]"
@@ -275,15 +291,15 @@
 
         "AZURE_STORAGE_BLOB_CONNECTION_STRING": {
             "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
         },
         "AZURE_STORAGE_FILE_CONNECTION_STRING": {
             "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
         },
         "AZURE_STORAGE_QUEUE_CONNECTION_STRING": {
             "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
         }
 
     }
