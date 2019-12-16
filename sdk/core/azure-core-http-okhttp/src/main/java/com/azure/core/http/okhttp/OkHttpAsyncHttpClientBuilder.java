@@ -3,19 +3,23 @@
 
 package com.azure.core.http.okhttp;
 
+import com.azure.core.http.AuthorizationChallengeHandler;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
+import okhttp3.Challenge;
 import okhttp3.ConnectionPool;
-import okhttp3.Credentials;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+
 import java.net.Proxy;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Builder to configure and build an implementation of {@link HttpClient} for OkHttp.
@@ -151,8 +155,8 @@ public class OkHttpAsyncHttpClientBuilder {
      */
     public HttpClient build() {
         OkHttpClient.Builder httpClientBuilder = this.okHttpClient == null
-                ? new OkHttpClient.Builder()
-                : this.okHttpClient.newBuilder();
+            ? new OkHttpClient.Builder()
+            : this.okHttpClient.newBuilder();
         //
         for (Interceptor interceptor : this.networkInterceptors) {
             httpClientBuilder = httpClientBuilder.addNetworkInterceptor(interceptor);
@@ -186,26 +190,53 @@ public class OkHttpAsyncHttpClientBuilder {
                     break;
                 default:
                     throw logger.logExceptionAsError(new IllegalStateException(
-                            String.format("Unknown Proxy type '%s' in use. Not configuring OkHttp proxy.",
-                                    proxyOptions.getType())));
+                        String.format("Unknown Proxy type '%s' in use. Not configuring OkHttp proxy.",
+                            proxyOptions.getType())));
             }
             Proxy proxy = new Proxy(proxyType, this.proxyOptions.getAddress());
             httpClientBuilder = httpClientBuilder.proxy(proxy);
             if (proxyOptions.getUsername() != null) {
+                AuthorizationChallengeHandler challengeHandler =
+                    new AuthorizationChallengeHandler(proxyOptions.getUsername(), proxyOptions.getPassword());
+
                 httpClientBuilder = httpClientBuilder.proxyAuthenticator((route, response) -> {
-                    // By default azure-core supports only Basic authentication at the moment.
-                    // If user need other scheme such as Digest then they can use 'configuration'
-                    // to get access to the underlying builder and can set 'proxyAuthenticator'.
-                    // In future when we ever support Digest in core-level then we can look at
-                    // response.challenges and get the scheme from there.
-                    String credential = Credentials.basic(proxyOptions.getUsername(),
-                            proxyOptions.getPassword());
+                    List<Challenge> basicChallenges = response.challenges().stream()
+                        .filter(challenge -> "Basic".equalsIgnoreCase(challenge.scheme()))
+                        .collect(Collectors.toList());
+
+                    List<Challenge> digestChallenges = response.challenges().stream()
+                        .filter(challenge -> "Digest".equalsIgnoreCase(challenge.scheme()))
+                        .collect(Collectors.toList());
+
+                    String authorizationHeader;
+                    if (basicChallenges.size() == 0 && digestChallenges.size() == 0) {
+                        // Received a challenge that we don't know how to handle, just exist.
+                        return null;
+                    } else {
+                        String digestAuthorizationHeader = null;
+                        if (digestChallenges.size() > 0) {
+                            digestAuthorizationHeader = AuthorizationChallengeHandler.digest(proxyOptions.getUsername(),
+                                proxyOptions.getPassword(), response.request().method(),
+                                response.request().url().toString(), digestChallenges.stream()
+                                    .map(Challenge::authParams)
+                                    .map(HttpHeaders::new)
+                                    .collect(Collectors.toList()));
+                        }
+
+                        if (digestAuthorizationHeader == null && basicChallenges.size() > 0) {
+                            authorizationHeader = AuthorizationChallengeHandler.basic(proxyOptions.getUsername(),
+                                proxyOptions.getPassword());
+                        } else {
+                            authorizationHeader = digestAuthorizationHeader;
+                        }
+                    }
+
                     return response.request().newBuilder()
-                            .header("Proxy-Authorization", credential)
-                            .build();
+                        .header("Proxy-Authorization", authorizationHeader)
+                        .build();
                 });
             }
         }
-        return new OkHttpAsyncHttpClient(httpClientBuilder.build());
+        return new OkHttpAsyncHttpClient(httpClientBuilder.build(), challengeHandler);
     }
 }
