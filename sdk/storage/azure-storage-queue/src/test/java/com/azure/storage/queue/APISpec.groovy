@@ -4,12 +4,18 @@
 package com.azure.storage.queue
 
 import com.azure.core.http.HttpClient
+import com.azure.core.http.ProxyOptions
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.Context
 import com.azure.core.util.logging.ClientLogger
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import spock.lang.Specification
 
@@ -28,25 +34,26 @@ class APISpec extends Specification {
     QueueServiceAsyncClient primaryQueueServiceAsyncClient
 
 
+    static def PRIMARY_STORAGE = "AZURE_STORAGE_QUEUE_"
+    protected static StorageSharedKeyCredential primaryCredential
+
     // Test name for test method name.
     String methodName
     TestMode testMode = getTestMode()
     String connectionString
 
-    // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = false
-
     /**
      * Setup the QueueServiceClient and QueueClient common used for the API tests.
      */
     def setup() {
+        primaryCredential = getCredential(PRIMARY_STORAGE)
         String testName = refactorName(specificationContext.currentIteration.getName())
         String className = specificationContext.getCurrentSpec().getName()
         methodName = className + testName
         logger.info("Test Mode: {}, Name: {}", testMode, methodName)
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode, interceptorManager.getRecordedData())
-        if (getTestMode() == TestMode.RECORD) {
+        if (getTestMode() != TestMode.PLAYBACK) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;" +
@@ -60,7 +67,7 @@ class APISpec extends Specification {
     def cleanup() {
 
         interceptorManager.close()
-        if (getTestMode() == TestMode.RECORD) {
+        if (getTestMode() != TestMode.PLAYBACK) {
             QueueServiceClient cleanupQueueServiceClient = new QueueServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
@@ -95,34 +102,83 @@ class APISpec extends Specification {
         return TestMode.PLAYBACK
     }
 
-    def queueServiceBuilderHelper(final InterceptorManager interceptorManager) {
-        if (testMode == TestMode.RECORD) {
-            return new QueueServiceClientBuilder()
-                .connectionString(connectionString)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(getHttpClient())
+    private StorageSharedKeyCredential getCredential(String accountType) {
+        String accountName
+        String accountKey
+
+        if (testMode != TestMode.PLAYBACK) {
+            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
+            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
-            return new QueueServiceClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(interceptorManager.getPlaybackClient())
+            accountName = "azstoragesdkaccount"
+            accountKey = "astorageaccountkey"
         }
+
+        if (accountName == null || accountKey == null) {
+            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
+            return null
+        }
+
+        return new StorageSharedKeyCredential(accountName, accountKey)
+    }
+
+    def queueServiceBuilderHelper(final InterceptorManager interceptorManager) {
+        QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+        return builder
+            .connectionString(connectionString)
+            .httpClient(getHttpClient())
     }
 
     def queueBuilderHelper(final InterceptorManager interceptorManager) {
         def queueName = testResourceName.randomName("queue", 16)
+        QueueClientBuilder builder = new QueueClientBuilder()
         if (testMode == TestMode.RECORD) {
-            return new QueueClientBuilder()
-                .connectionString(connectionString)
-                .queueName(queueName)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(getHttpClient())
-        } else {
-            return new QueueClientBuilder()
-                .connectionString(connectionString)
-                .queueName(queueName)
-                .httpClient(interceptorManager.getPlaybackClient())
+            builder.addPolicy(interceptorManager.getRecordPolicy())
         }
+        return builder
+            .connectionString(connectionString)
+            .queueName(queueName)
+            .httpClient(getHttpClient())
     }
+
+    QueueServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
+                                                      HttpPipelinePolicy... policies) {
+        QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        return builder
+    }
+
+    QueueClientBuilder getQueueClientBuilder(String endpoint) {
+        QueueClientBuilder builder = new QueueClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder
+    }
+
 
     private def refactorName(String text) {
         def fullName = text.split(" ").collect { it.capitalize() }.join("")
@@ -138,8 +194,19 @@ class APISpec extends Specification {
         return testResourceName.now()
     }
 
-    static HttpClient getHttpClient() {
-        return HttpClient.createDefault()
+    HttpClient getHttpClient() {
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
+        if (testMode != TestMode.PLAYBACK) {
+            builder.wiretap(true)
+
+            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+            }
+
+            return builder.build()
+        } else {
+            return interceptorManager.getPlaybackClient()
+        }
     }
 
     def sleepIfLive(long milliseconds) {

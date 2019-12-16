@@ -230,14 +230,14 @@ public class EventHubProducerAsyncClientTest {
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
-        when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(PARENT_SPAN_KEY, "value");
             }
         );
 
-        when(tracer1.start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
@@ -250,9 +250,9 @@ public class EventHubProducerAsyncClientTest {
 
         // Assert
         verify(tracer1, times(1))
-            .start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
+            .start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, times(2))
-            .start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
+            .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(3)).end(eq("success"), isNull(), any());
     }
 
@@ -287,7 +287,7 @@ public class EventHubProducerAsyncClientTest {
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
-        when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(PARENT_SPAN_KEY, "value");
@@ -299,8 +299,8 @@ public class EventHubProducerAsyncClientTest {
 
         //Assert
         verify(tracer1, times(1))
-            .start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
-        verify(tracer1, never()).start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
+            .start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
+        verify(tracer1, never()).start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, never()).addLink(any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
@@ -404,7 +404,7 @@ public class EventHubProducerAsyncClientTest {
             eq(retryOptions.getTryTimeout()), any()))
             .thenReturn(Mono.just(link));
 
-        when(tracer1.start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
@@ -419,7 +419,7 @@ public class EventHubProducerAsyncClientTest {
             .verifyComplete();
 
         verify(tracer1, times(1))
-            .start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.MESSAGE));
+            .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 

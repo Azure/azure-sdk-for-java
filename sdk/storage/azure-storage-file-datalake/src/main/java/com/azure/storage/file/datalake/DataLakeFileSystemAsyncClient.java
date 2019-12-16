@@ -15,12 +15,14 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.Path;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
@@ -29,9 +31,12 @@ import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -237,7 +242,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            return blobContainerAsyncClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType));
+            return blobContainerAsyncClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -279,7 +285,8 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<Void>> deleteWithResponse(DataLakeRequestConditions requestConditions) {
         try {
             return blobContainerAsyncClient.deleteWithResponse(
-                Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -318,6 +325,7 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<FileSystemProperties>> getPropertiesWithResponse(String leaseId) {
         try {
             return blobContainerAsyncClient.getPropertiesWithResponse(leaseId)
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response -> new SimpleResponse<>(response,
                     Transforms.toFileSystemProperties(response.getValue())));
         } catch (RuntimeException ex) {
@@ -364,7 +372,8 @@ public class DataLakeFileSystemAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             return blobContainerAsyncClient.setMetadataWithResponse(metadata,
-                Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -660,7 +669,8 @@ public class DataLakeFileSystemAsyncClient {
         List<DataLakeSignedIdentifier> identifiers, DataLakeRequestConditions requestConditions) {
         try {
             return blobContainerAsyncClient.setAccessPolicyWithResponse(Transforms.toBlobPublicAccessType(accessType),
-                Transforms.toBlobIdentifierList(identifiers), Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobIdentifierList(identifiers), Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -700,6 +710,7 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<FileSystemAccessPolicies>> getAccessPolicyWithResponse(String leaseId) {
         try {
             return blobContainerAsyncClient.getAccessPolicyWithResponse(leaseId)
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response -> new SimpleResponse<>(response,
                 Transforms.toFileSystemAccessPolicies(response.getValue())));
         } catch (RuntimeException ex) {
@@ -709,5 +720,46 @@ public class DataLakeFileSystemAsyncClient {
 
     BlobContainerAsyncClient getBlobContainerAsyncClient() {
         return blobContainerAsyncClient;
+    }
+
+    /**
+     * Generates a user delegation SAS for the file system using the specified
+     * {@link DataLakeServiceSasSignatureValues}.
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a user delegation SAS.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see DataLakeServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how
+     * to get a user delegation key.
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return blobContainerAsyncClient.generateUserDelegationSas(
+            Transforms.toBlobSasValues(dataLakeServiceSasSignatureValues),
+            Transforms.toBlobUserDelegationKey(userDelegationKey));
+    }
+
+    /**
+     * Generates a service SAS for the file system using the specified {@link DataLakeServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues) {
+        return blobContainerAsyncClient.generateSas(Transforms.toBlobSasValues(dataLakeServiceSasSignatureValues));
     }
 }

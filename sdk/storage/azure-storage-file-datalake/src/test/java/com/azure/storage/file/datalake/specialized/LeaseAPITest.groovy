@@ -4,9 +4,9 @@
 package com.azure.storage.file.datalake.specialized
 
 import com.azure.core.http.RequestConditions
-import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.file.datalake.APISpec
 import com.azure.storage.file.datalake.DataLakeFileClient
+import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.LeaseDurationType
 import com.azure.storage.file.datalake.models.LeaseStateType
 import spock.lang.Unroll
@@ -63,7 +63,7 @@ class LeaseAPITest extends APISpec {
         leaseClient.acquireLease(duration)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         duration | _
@@ -112,7 +112,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc).acquireLeaseWithResponse(-1, mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified        | unmodified      | match               | noneMatch
@@ -130,7 +130,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc).acquireLease(20)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Renew file lease"() {
@@ -201,7 +201,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc, leaseID).renewLeaseWithResponse(mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified        | unmodified      | match               | noneMatch
@@ -219,7 +219,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc, "id").renewLease()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Release file lease"() {
@@ -282,7 +282,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc, leaseID).releaseLeaseWithResponse(mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified        | unmodified      | match               | noneMatch
@@ -300,7 +300,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc, "id").releaseLease()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     @Unroll
@@ -375,7 +375,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc).breakLeaseWithResponse(null, mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified        | unmodified      | match               | noneMatch
@@ -393,7 +393,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc).breakLease()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Change file lease"() {
@@ -458,7 +458,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified        | unmodified      | match               | noneMatch
@@ -476,7 +476,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fc, "id").changeLease("id")
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
 
@@ -515,7 +515,7 @@ class LeaseAPITest extends APISpec {
         leaseClient.acquireLease(duration)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         duration | _
@@ -554,7 +554,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc).acquireLeaseWithResponse(-1, mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified        | unmodified
@@ -570,7 +570,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc).acquireLease(50)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Renew file system lease"() {
@@ -620,7 +620,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc, leaseID).renewLeaseWithResponse(mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified        | unmodified
@@ -637,7 +637,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc, APISpec.receivedEtag).renewLeaseWithResponse(mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         match                | noneMatch
@@ -653,7 +653,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc, "id").renewLease()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Release file system lease"() {
@@ -701,7 +701,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc, leaseID).releaseLeaseWithResponse(mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified        | unmodified
@@ -718,7 +718,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc, APISpec.receivedLeaseID).releaseLeaseWithResponse(mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         match                | noneMatch
@@ -734,7 +734,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc, "id").releaseLease()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     @Unroll
@@ -797,7 +797,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc).breakLeaseWithResponse(null, mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified        | unmodified
@@ -814,7 +814,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc).breakLeaseWithResponse(null, mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         match                | noneMatch
@@ -830,7 +830,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc).breakLease()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "Change file system lease"() {
@@ -879,7 +879,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         modified        | unmodified
@@ -896,7 +896,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc, APISpec.receivedLeaseID).changeLeaseWithResponse(APISpec.garbageLeaseID, mac, null, null)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
 
         where:
         match                | noneMatch
@@ -912,6 +912,6 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(fsc, "id").changeLease("id")
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 }

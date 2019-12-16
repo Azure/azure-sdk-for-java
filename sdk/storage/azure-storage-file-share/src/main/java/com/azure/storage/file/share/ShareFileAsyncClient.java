@@ -19,6 +19,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders;
@@ -32,6 +33,7 @@ import com.azure.storage.file.share.implementation.models.FilesSetMetadataRespon
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
+import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
@@ -45,6 +47,7 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1327,6 +1330,33 @@ public class ShareFileAsyncClient {
      */
     public String getAccountName() {
         return this.accountName;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return azureFileStorageClient.getHttpPipeline();
+    }
+
+    /**
+     * Generates a service SAS for the file using the specified {@link ShareServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.generateSas#ShareServiceSasSignatureValues}
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
     }
 
     private Response<ShareFileInfo> createFileInfoResponse(final FilesCreateResponse response) {

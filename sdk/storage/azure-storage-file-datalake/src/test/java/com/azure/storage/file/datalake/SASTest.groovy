@@ -3,14 +3,14 @@
 
 package com.azure.storage.file.datalake
 
-import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.implementation.util.BlobSasImplUtil
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.implementation.StorageImplUtils
 import com.azure.storage.common.sas.*
-import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
+import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.FileRange
+import com.azure.storage.file.datalake.models.PathProperties
 import com.azure.storage.file.datalake.models.UserDelegationKey
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission
@@ -22,6 +22,17 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 class SASTest extends APISpec {
+
+    DataLakeFileClient sasClient
+    String pathName
+
+    def setup() {
+        pathName = generatePathName()
+        sasClient = getFileClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
+        sasClient.create()
+        sasClient.append(defaultInputStream.get(), 0, defaultDataSize)
+        sasClient.flush(defaultDataSize)
+    }
 
     @Unroll
     def "File range"() {
@@ -54,48 +65,51 @@ class SASTest extends APISpec {
         0      | -1
     }
 
+    DataLakeServiceSasSignatureValues generateValues(PathSasPermission permission) {
+        return new DataLakeServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
+            .setStartTime(getUTCNow().minusDays(1))
+            .setProtocol(SasProtocol.HTTPS_HTTP)
+            .setSasIpRange(new SasIpRange()
+                .setIpMin("0.0.0.0")
+                .setIpMax("255.255.255.255"))
+            .setCacheControl("cache")
+            .setContentDisposition("disposition")
+            .setContentEncoding("encoding")
+            .setContentLanguage("language")
+            .setContentType("type")
+    }
+
+    def validateSasProperties(PathProperties properties) {
+        boolean ret = true
+        ret &= properties.getCacheControl() == "cache"
+        ret &= properties.getContentDisposition() == "disposition"
+        ret &= properties.getContentEncoding() == "encoding"
+        ret &= properties.getContentLanguage() == "language"
+        return ret
+    }
+
+    UserDelegationKey getUserDelegationInfo() {
+        def key = getOAuthServiceClient().getUserDelegationKey(getUTCNow().minusDays(1), getUTCNow().plusDays(1))
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+        return key
+    }
+
     def "serviceSASSignatureValues network test file"() {
         setup:
-        def pathName = generatePathName()
-        def fc = getFileClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
-        fc.create()
-        fc.append(defaultInputStream.get(), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
-
         def permissions = new PathSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
             .setAddPermission(true)
-        def startTime = getUTCNow().minusDays(1)
-        def expiryTime = getUTCNow().plusDays(1)
-        def ipRange = new SasIpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255")
-        def sasProtocol = SasProtocol.HTTPS_HTTP
-        def cacheControl = "cache"
-        def contentDisposition = "disposition"
-        def contentEncoding = "encoding"
-        def contentLanguage = "language"
-        def contentType = "type"
+
+        def sasValues = generateValues(permissions)
 
         when:
-        def sas = new DataLakeServiceSasSignatureValues()
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .setStartTime(startTime)
-            .setProtocol(sasProtocol)
-            .setSasIpRange(ipRange)
-            .setCacheControl(cacheControl)
-            .setContentDisposition(contentDisposition)
-            .setContentEncoding(contentEncoding)
-            .setContentLanguage(contentLanguage)
-            .setContentType(contentType)
-            .setPathName(fc.getFilePath())
-            .setFileSystemName(fc.getFileSystemName())
-            .generateSasQueryParameters(primaryCredential)
-            .encode()
+        def sas = sasClient.generateSas(sasValues)
 
         def client = getFileClient(sas, fsc.getFileSystemUrl(), pathName)
 
@@ -104,15 +118,11 @@ class SASTest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == defaultText
-        properties.getCacheControl() == "cache"
-        properties.getContentDisposition() == "disposition"
-        properties.getContentEncoding() == "encoding"
-        properties.getContentLanguage() == "language"
-        notThrown(BlobStorageException)
+        os.toString() == new String(defaultData.array())
+        validateSasProperties(properties)
+        notThrown(DataLakeStorageException)
     }
 
-    // Set Access Policy on File System not implemented yet
     def "serviceSASSignatureValues network test file system"() {
         setup:
         def identifier = new DataLakeSignedIdentifier()
@@ -134,38 +144,28 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sasWithId = new DataLakeServiceSasSignatureValues()
-            .setIdentifier(identifier.getId())
-            .setFileSystemName(fsc.getFileSystemName())
-            .generateSasQueryParameters(primaryCredential)
-            .encode()
+        def sasValues = new DataLakeServiceSasSignatureValues(identifier.getId())
+        def sasWithId = fsc.generateSas(sasValues)
 
         def client1 = getFileSystemClient(sasWithId, fsc.getFileSystemUrl())
 
+        // Wait 30 seconds as it may take time for the access policy to take effect.
+        sleepIfLive(30000)
+
         client1.listPaths().iterator().hasNext()
 
-        def sasWithPermissions = new DataLakeServiceSasSignatureValues()
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .setFileSystemName(fsc.getFileSystemName())
-            .generateSasQueryParameters(primaryCredential)
-            .encode()
+        sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+        def sasWithPermissions = fsc.generateSas(sasValues)
         def client2 = getFileSystemClient(sasWithPermissions, fsc.getFileSystemUrl())
 
         client2.listPaths().iterator().hasNext()
 
         then:
-        notThrown(BlobStorageException)
+        notThrown(DataLakeStorageException)
     }
 
     def "serviceSASSignatureValues network test file user delegation"() {
         setup:
-        def pathName = generatePathName()
-        def fc = fsc.getFileClient(pathName)
-        fc.create()
-        fc.append(defaultInputStream.get(), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
-
         def permissions = new PathSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
@@ -173,49 +173,11 @@ class SASTest extends APISpec {
             .setDeletePermission(true)
             .setAddPermission(true)
 
-        def startTime = getUTCNow().minusDays(1)
-        def expiryTime = getUTCNow().plusDays(1)
-
-        def ipRange = new SasIpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255")
-
-        def sasProtocol = SasProtocol.HTTPS_HTTP
-        def cacheControl = "cache"
-        def contentDisposition = "disposition"
-        def contentEncoding = "encoding"
-        def contentLanguage = "language"
-        def contentType = "type"
-
-        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
-
-        def keyOid = getConfigValue(key.getSignedObjectId())
-        key.setSignedObjectId(keyOid)
-
-        def keyTid = getConfigValue(key.getSignedTenantId())
-        key.setSignedTenantId(keyTid)
-        when:
-        def sas = new DataLakeServiceSasSignatureValues()
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .setStartTime(startTime)
-            .setProtocol(sasProtocol)
-            .setSasIpRange(ipRange)
-            .setCacheControl(cacheControl)
-            .setContentDisposition(contentDisposition)
-            .setContentEncoding(contentEncoding)
-            .setContentLanguage(contentLanguage)
-            .setContentType(contentType)
-            .setFileSystemName(fsc.getFileSystemName())
-            .setPathName(fc.getFilePath())
-            .setVersion(key.getSignedVersion())
-            .generateSasQueryParameters(key, primaryCredential.getAccountName())
-            .encode()
-
-        then:
-        sas != null
+        def sasValues = generateValues(permissions)
 
         when:
+        def sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo())
+
         def client = getFileClient(sas, fsc.getFileSystemUrl(), pathName)
 
         def os = new ByteArrayOutputStream()
@@ -223,12 +185,9 @@ class SASTest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == defaultText
-        properties.getCacheControl() == "cache"
-        properties.getContentDisposition() == "disposition"
-        properties.getContentEncoding() == "encoding"
-        properties.getContentLanguage() == "language"
-        notThrown(BlobStorageException)
+        os.toString() == new String(defaultData.array())
+        validateSasProperties(properties)
+        notThrown(DataLakeStorageException)
     }
 
     def "serviceSASSignatureValues network test file system user delegation"() {
@@ -250,19 +209,16 @@ class SASTest extends APISpec {
 
         def keyTid = getConfigValue(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
+
         when:
-        def sasWithPermissions = new DataLakeServiceSasSignatureValues()
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .setFileSystemName(fsc.getFileSystemName())
-            .generateSasQueryParameters(key, primaryCredential.getAccountName())
-            .encode()
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+        def sasWithPermissions = fsc.generateUserDelegationSas(sasValues, key)
 
         def client = getFileSystemClient(sasWithPermissions, fsc.getFileSystemUrl())
         client.listPaths().iterator().hasNext()
 
         then:
-        notThrown(BlobStorageException)
+        notThrown(DataLakeStorageException)
     }
 
     def "accountSAS network test file read"() {
@@ -284,13 +240,8 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = new AccountSasSignatureValues()
-            .setServices(service.toString())
-            .setResourceTypes(resourceType.toString())
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(primaryCredential)
-            .encode()
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
         def client = getFileClient(sas, fsc.getFileSystemUrl(), pathName).getBlockBlobClient()
         def os = new ByteArrayOutputStream()
         client.download(os)
@@ -316,18 +267,13 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = new AccountSasSignatureValues()
-            .setServices(service.toString())
-            .setResourceTypes(resourceType.toString())
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(primaryCredential)
-            .encode()
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
         def client = getFileClient(sas, fsc.getFileSystemUrl(), pathName)
         client.delete()
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
     }
 
     def "accountSAS network create file system fails"() {
@@ -344,18 +290,13 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = new AccountSasSignatureValues()
-            .setServices(service.toString())
-            .setResourceTypes(resourceType.toString())
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(primaryCredential)
-            .encode()
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
         def sc = getServiceClient(sas, primaryDataLakeServiceClient.getAccountUrl())
         sc.createFileSystem(generateFileSystemName())
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "accountSAS network create file system succeeds"() {
@@ -372,18 +313,46 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = new AccountSasSignatureValues()
-            .setServices(service.toString())
-            .setResourceTypes(resourceType.toString())
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(primaryCredential)
-            .encode()
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
         def sc = getServiceClient(sas, primaryDataLakeServiceClient.getAccountUrl())
         sc.createFileSystem(generateFileSystemName())
 
         then:
-        notThrown(BlobStorageException)
+        notThrown(DataLakeStorageException)
+    }
+
+    def "accountSAS network account sas token on endpoint"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
+        def fileSystemName = generateFileSystemName()
+        def pathName = generatePathName()
+
+        when:
+        def sc = getServiceClientBuilder(null, primaryDataLakeServiceClient.getAccountUrl() + "?" + sas, null).buildClient()
+        sc.createFileSystem(fileSystemName)
+
+        def fsc = getFileSystemClientBuilder(primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "?" + sas).buildClient()
+        fsc.listPaths()
+
+        def fc = getFileClient(primaryCredential, primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "/" + pathName + "?" + sas)
+
+        fc.create()
+
+        then:
+        notThrown(DataLakeStorageException)
     }
 
     /*
@@ -393,21 +362,26 @@ class SASTest extends APISpec {
      */
 
     @Unroll
-    def "serviceSasSignatures string to sign"() {
+    def "sas impl util string to sign"() {
         when:
-        def v = new DataLakeServiceSasSignatureValues()
+        def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
+
         def p = new PathSasPermission()
+        p.setReadPermission(true)
+
+        def v
+        if (identifier != null) {
+            v = new DataLakeServiceSasSignatureValues(identifier)
+        } else {
+            v = new DataLakeServiceSasSignatureValues(e, p)
+        }
         def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
 
-        p.setReadPermission(true)
         v.setPermissions(p)
 
         v.setStartTime(startTime)
-        def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
         v.setExpiryTime(e)
 
-        v.setFileSystemName("fileSystemName")
-            .setPathName("pathName")
         if (ipRange != null) {
             def ipR = new SasIpRange()
             ipR.setIpMin("ip")
@@ -421,9 +395,12 @@ class SASTest extends APISpec {
             .setContentLanguage(language)
             .setContentType(type)
 
-        def token = v.generateSasQueryParameters(primaryCredential)
+        def util = new BlobSasImplUtil(Transforms.toBlobSasValues(v), "fileSystemName", "pathName", null)
+        util.ensureState()
+        def sasToken = util.stringToSign(util.getCanonicalName(primaryCredential.getAccountName()))
+
         then:
-        token.getSignature() == primaryCredential.computeHmac256(expected)
+        sasToken == expected
 
         /*
         We don't test the blob or containerName properties because canonicalized resource is always added as at least
@@ -445,21 +422,22 @@ class SASTest extends APISpec {
     }
 
     @Unroll
-    def "serviceSasSignatures string to sign user delegation key"() {
+    def "sas impl util string to sign user delegation key"() {
         when:
-        def v = new DataLakeServiceSasSignatureValues()
-        def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
+        def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
 
         def p = new PathSasPermission()
+        p.setReadPermission(true)
+
+        def v = new DataLakeServiceSasSignatureValues(e, p)
+        def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
+
         p.setReadPermission(true)
         v.setPermissions(p)
 
         v.setStartTime(startTime)
-        def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
         v.setExpiryTime(e)
 
-        v.setFileSystemName("fileSystemName")
-            .setPathName("pathName")
         if (ipRange != null) {
             def ipR = new SasIpRange()
             ipR.setIpMin("ip")
@@ -479,10 +457,13 @@ class SASTest extends APISpec {
             .setSignedService(keyService)
             .setSignedVersion(keyVersion)
             .setValue(keyValue)
-        def token = v.generateSasQueryParameters(key, primaryCredential.getAccountName())
+
+        def util = new BlobSasImplUtil(Transforms.toBlobSasValues(v), "fileSystemName", "pathName", null)
+        util.ensureState()
+        def sasToken = util.stringToSign(Transforms.toBlobUserDelegationKey(key), util.getCanonicalName(primaryCredential.getAccountName()))
 
         then:
-        token.getSignature() == StorageImplUtils.computeHMac256(key.getValue(), expected)
+        sasToken == expected
 
         /*
         We test string to sign functionality directly related to user delegation sas specific parameters
