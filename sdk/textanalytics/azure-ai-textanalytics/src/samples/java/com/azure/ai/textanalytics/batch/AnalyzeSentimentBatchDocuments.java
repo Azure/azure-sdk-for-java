@@ -11,6 +11,7 @@ import com.azure.ai.textanalytics.models.TextBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentResult;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 
 import java.util.Arrays;
@@ -21,14 +22,16 @@ public class AnalyzeSentimentBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("subscription-key")
-            .endpoint("https://servicename.cognitiveservices.azure.com/")
+//            .subscriptionKey("subscription-key")
+//            .endpoint("https://servicename.cognitiveservices.azure.com/")
+            .subscriptionKey(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY"))
+            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
             .buildClient();
 
         // The texts that need be analysed.
         List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("1", "The hotel was dark and unclean.", "en"),
-            new TextDocumentInput("2", "The restaurant had amazing gnocchi.", "en")
+            new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi.", "en"),
+            new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.", "en")
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
@@ -60,8 +63,8 @@ public class AnalyzeSentimentBatchDocuments {
                     sentenceSentiment.getNeutralScore(),
                     sentenceSentiment.getNegativeScore(),
                     sentenceSentiment.getLength(),
-                    sentenceSentiment.getOffset());
-            }
-        }
+                    sentenceSentiment.getOffset()));
+
+        });
     }
 }

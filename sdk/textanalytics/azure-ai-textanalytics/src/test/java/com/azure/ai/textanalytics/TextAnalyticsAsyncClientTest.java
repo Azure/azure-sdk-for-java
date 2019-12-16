@@ -10,8 +10,8 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.LinkedEntityResult;
 import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.NamedEntityResult;
-import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentimentResult;
+import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
@@ -362,14 +362,20 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Sentiment
     @Test
     public void analyseSentimentForTextInput() {
-        DetectedLanguage primaryLanguage = new DetectedLanguage().setName("English").setIso6391Name("en").setScore(1.0);
-        List<DetectedLanguage> expectedLanguageList = new ArrayList<>(Arrays.asList(primaryLanguage));
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .assertNext(response -> validateDetectedLanguages(expectedLanguageList, response.getDetectedLanguages()))
+
+        final TextSentiment expectedDocumentSentiment = new TextSentiment()
+            .setTextSentimentClass(TextSentimentClass.MIXED).setLength(66).setOffset(0);
+        final List<TextSentiment> expectedSentiments = Arrays.asList(
+           new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(0),
+           new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(32)
+        );
+
+        StepVerifier.create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))
+            .assertNext(response -> {
+                validateAnalysedSentiment(expectedDocumentSentiment, response.getDocumentSentiment());
+                validateAnalysedSentenceSentiment(expectedSentiments, response.getSentenceSentiments());
+            })
             .verifyComplete();
-
-        new TextSentimentResult();
-
     }
 
     @Test

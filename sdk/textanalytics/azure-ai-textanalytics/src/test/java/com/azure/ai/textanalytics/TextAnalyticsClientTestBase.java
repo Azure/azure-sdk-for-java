@@ -18,6 +18,8 @@ import com.azure.ai.textanalytics.models.TextBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.TextSentimentClass;
+import com.azure.ai.textanalytics.models.TextSentimentResult;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -69,8 +71,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private boolean showStatistics = false;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
 
+    static final String MODEL_VERSION = "2019-10-01";
+    static final int ZERO = 0;
+
     enum TestEndpoint {
-        LANGUAGE, NAMED_ENTITY, LINKED_ENTITY
+        LANGUAGE, NAMED_ENTITY, LINKED_ENTITY, SENTIMENT
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
@@ -173,6 +178,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
         testRunner.accept(inputs, "en");
     }
+
     static void detectLanguageStringInputRunner(Consumer<List<String>> testRunner) {
         final List<String> inputs = Arrays.asList(
             "This is written in English", "Este es un document escrito en Español.", "~@!~:)");
@@ -211,6 +217,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
         testRunner.accept(inputs, "en");
     }
+
     static void recognizePiiStringInputRunner(Consumer<List<String>> testRunner) {
         final List<String> inputs = Arrays.asList(
             "Microsoft employee with ssn 859-98-0987 is using our awesome API's.",
@@ -257,6 +264,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
         testRunner.accept(inputs, "en");
     }
+
     static void recognizeLinkedStringInputRunner(Consumer<List<String>> testRunner) {
         final List<String> inputs = Arrays.asList(
             "Microsoft employee with ssn 859-98-0987 is using our awesome API's.",
@@ -294,7 +302,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(3).setErroneousDocumentCount(0).setTransactionCount(3).setValidDocumentCount(3);
         List<DetectLanguageResult> detectLanguageResultList = Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3);
 
-        return new DocumentResultCollection<>(detectLanguageResultList, "2019-10-01", textBatchStatistics);
+        return new DocumentResultCollection<>(detectLanguageResultList, MODEL_VERSION, textBatchStatistics);
     }
 
     static DocumentResultCollection<NamedEntityResult> getExpectedBatchNamedEntities() {
@@ -314,7 +322,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
         List<NamedEntityResult> namedEntityResultList = Arrays.asList(namedEntityResult1, namedEntityResult2);
 
-        return new DocumentResultCollection<>(namedEntityResultList, "2019-10-01", textBatchStatistics);
+        return new DocumentResultCollection<>(namedEntityResultList, MODEL_VERSION, textBatchStatistics);
     }
 
     static DocumentResultCollection<NamedEntityResult> getExpectedBatchPiiEntities() {
@@ -333,7 +341,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
         List<NamedEntityResult> namedEntityResultList = Arrays.asList(namedEntityResult1, namedEntityResult2);
 
-        return new DocumentResultCollection<>(namedEntityResultList, "2019-10-01", textBatchStatistics);
+        return new DocumentResultCollection<>(namedEntityResultList, MODEL_VERSION, textBatchStatistics);
     }
 
     static DocumentResultCollection<LinkedEntityResult> getExpectedBatchLinkedEntities() {
@@ -355,7 +363,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
         List<LinkedEntityResult> linkedEntityResultList = Arrays.asList(linkedEntityResult1, linkedEntityResult2);
 
-        return new DocumentResultCollection<>(linkedEntityResultList, "2019-10-01", textBatchStatistics);
+        return new DocumentResultCollection<>(linkedEntityResultList, MODEL_VERSION, textBatchStatistics);
     }
 
     // Named Entities
@@ -487,7 +495,50 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     static void analyseBatchSentimentRunner(Consumer<List<TextDocumentInput>> testRunner) {
+        final List<TextDocumentInput> inputs = Arrays.asList(
+            new TextDocumentInput("0", "The hotel was dark and unclean."),
+            new TextDocumentInput("1", "The restaurant had amazing gnocchi.")
+        );
 
+        testRunner.accept(inputs);
+    }
+
+    void analyseBatchSentimentShowStatsRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
+        final List<TextDocumentInput> textDocumentInputs = Arrays.asList(
+            new TextDocumentInput("0", "The hotel was dark and unclean. The restaurant had amazing gnocchi."),
+            new TextDocumentInput("1", "The restaurant had amazing gnocchi. The hotel was dark and unclean.")
+        );
+        testRunner.accept(textDocumentInputs, setTextAnalyticsRequestOptions());
+    }
+
+    static DocumentResultCollection<TextSentimentResult> getExpectedBatchTextSentiment() {
+        // TODO (shawn): verified character count
+        final TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(0)
+            .setTransactionCount(1);
+        final TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(0)
+            .setTransactionCount(1);
+
+        final TextSentimentResult textSentimentResult1 = new TextSentimentResult("0", textDocumentStatistics1,
+            null,
+            new TextSentiment().setTextSentimentClass(TextSentimentClass.MIXED).setLength(66).setOffset(ZERO),
+            Arrays.asList(
+                new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(0),
+                new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(31)
+            ));
+
+        final TextSentimentResult textSentimentResult2 = new TextSentimentResult("1", textDocumentStatistics2,
+            null,
+            new TextSentiment().setTextSentimentClass(TextSentimentClass.MIXED).setLength(66).setOffset(ZERO),
+            Arrays.asList(
+                new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(0),
+                new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(36)
+            ));
+
+        return new DocumentResultCollection<>(Arrays.asList(textSentimentResult1, textSentimentResult2),
+            MODEL_VERSION,
+            new TextBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0)
+                .setTransactionCount(2).setValidDocumentCount(2));
     }
 
     private TextAnalyticsRequestOptions setTextAnalyticsRequestOptions() {
@@ -602,6 +653,39 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                         validateNamedEntities(expectedItem.getNamedEntities(), actualItem.getNamedEntities());
                     }
                 });
+                break;
+            case SENTIMENT:
+                final List<TextSentimentResult> expectedSentimentResults = expectedResult.stream()
+                    .filter(element -> element instanceof TextSentimentResult)
+                    .map(element -> (TextSentimentResult) element)
+                    .collect(Collectors.toList());
+
+                final List<TextSentimentResult> actualSentimentResults = actualResult.stream()
+                    .filter(element -> element instanceof TextSentimentResult)
+                    .map(element -> (TextSentimentResult) element)
+                    .collect(Collectors.toList());
+
+                expectedSentimentResults.sort(Comparator.comparing(TextSentimentResult::getId));
+                actualSentimentResults.sort(Comparator.comparing(TextSentimentResult::getId));
+                final int actualSize = actualSentimentResults.size();
+                final int expectedSize = expectedSentimentResults.size();
+                assertEquals(expectedSize, actualSize);
+
+                for (int i = 0; i < actualSize; i++) {
+                    final TextSentimentResult actualSentimentResult = actualSentimentResults.get(i);
+                    final TextSentimentResult expectedSentimentResult = expectedSentimentResults.get(i);
+
+                    if (actualSentimentResult.getError() == null) {
+                        if (this.showStatistics) {
+                            validateDocumentStatistics(expectedSentimentResult.getStatistics(), actualSentimentResult.getStatistics());
+                        }
+                        validateAnalysedSentiment(expectedSentimentResult.getDocumentSentiment(), actualSentimentResult.getDocumentSentiment());
+                        validateAnalysedSentenceSentiment(expectedSentimentResult.getSentenceSentiments(), actualSentimentResult.getSentenceSentiments());
+                    } else {
+                        validateErrorDocument(actualSentimentResult.getError(), actualSentimentResult.getError());
+                    }
+                }
+
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unsupported testApi : '%s'.", testApi));
@@ -764,16 +848,32 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate the list of named entities.
+     * Helper method to validate the list of sentence sentiment. Can't really validate score numbers because it
+     * frequently changed by background model computation.
      *
-     * @param expectedSentimentList analyzed sentiment returned by the service.
-     * @param actualSentimentList analyzed sentiment returned by the API.
+     * @param expectedSentimentList a list of analyzed sentence sentiment returned by the service.
+     * @param actualSentimentList a list of analyzed sentence sentiment returned by the API.
      */
-    static void validAnalyzedSentiment(List<TextSentiment> expectedSentimentList,
-                                       List<TextSentiment> actualSentimentList) {
+    static void validateAnalysedSentenceSentiment(List<TextSentiment> expectedSentimentList,
+        List<TextSentiment> actualSentimentList) {
 
         assertEquals(expectedSentimentList.size(), actualSentimentList.size());
-        expectedSentimentList.sort(Comparator.comparing(TextSentiment::getTextSentimentClass));
+        for (int i = 0; i < expectedSentimentList.size(); i++) {
+            validateAnalysedSentiment(expectedSentimentList.get(i), actualSentimentList.get(i));
+        }
+    }
+
+    /**
+     * Helper method to validate one pair of analysed sentiments. Can't really validate score numbers because it
+     * frequently changed by background model computation.
+     *
+     * @param expectedSentiment analyzed document sentiment returned by the service.
+     * @param actualSentiment analyzed document sentiment returned by the API.
+     */
+    static void validateAnalysedSentiment(TextSentiment expectedSentiment, TextSentiment actualSentiment) {
+        assertEquals(expectedSentiment.getLength(), actualSentiment.getLength());
+        assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
+        assertEquals(expectedSentiment.getTextSentimentClass(), actualSentiment.getTextSentimentClass());
     }
 
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType,

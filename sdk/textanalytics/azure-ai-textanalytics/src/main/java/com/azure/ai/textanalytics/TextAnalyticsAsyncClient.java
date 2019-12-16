@@ -944,12 +944,15 @@ public final class TextAnalyticsAsyncClient {
             return null;
         }
         //TODO (shawn): calculate max length
-        documentSentimentText.setLength("MAX_LENGTH").setOffset(0).setTextSentimentClass(documentSentimentClass);
+        documentSentimentText.setTextSentimentClass(documentSentimentClass);
         setTextSentimentScore(documentSentiment.getDocumentScores(), documentSentimentClass, documentSentimentText);
 
         // Sentence text sentiment
         final List<TextSentiment> sentenceSentimentTexts =
             convertToSentenceSentiments(documentSentiment.getSentences());
+
+        documentSentimentText.setLength(sentenceSentimentTexts.stream().mapToInt(TextSentiment::getLength).sum());
+        documentSentimentText.setOffset(0);
 
         return new TextSentimentResult(documentSentiment.getId(), documentSentiment.getStatistics(), null,
             documentSentimentText, sentenceSentimentTexts);
@@ -959,8 +962,8 @@ public final class TextAnalyticsAsyncClient {
         final List<TextSentiment> sentenceSentimentCollection = new ArrayList<>();
         sentenceSentiments.stream().forEach(sentenceSentiment -> {
             final TextSentiment singleSentenceSentiment = new TextSentiment();
-            singleSentenceSentiment.setLength(Integer.toString(sentenceSentiment.getLength()));
-            singleSentenceSentiment.setLength(Integer.toString(sentenceSentiment.getOffset()));
+            singleSentenceSentiment.setLength(sentenceSentiment.getLength());
+            singleSentenceSentiment.setOffset(sentenceSentiment.getOffset());
             final TextSentimentClass sentimentClass = convertToTextSentimentClass(sentenceSentiment.getSentiment());
             setTextSentimentScore(sentenceSentiment.getSentenceScores(), sentimentClass, singleSentenceSentiment);
             singleSentenceSentiment.setTextSentimentClass(sentimentClass);
