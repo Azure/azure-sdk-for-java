@@ -23,7 +23,16 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ElasticPoolInner extends Resource {
     /**
-     * The sku property.
+     * The elastic pool SKU.
+     *
+     * The list of SKUs may vary by region and support offer. To determine the
+     * SKUs (including the SKU name, tier/edition, family, and capacity) that
+     * are available to your subscription in an Azure region, use the
+     * `Capabilities_ListByLocation` REST API or the following command:
+     *
+     * ```azurecli
+     * az sql elastic-pool list-editions -l &lt;location&gt; -o table
+     * ````.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
@@ -76,7 +85,11 @@ public class ElasticPoolInner extends Resource {
     private ElasticPoolLicenseType licenseType;
 
     /**
-     * Get the sku value.
+     * Get the elastic pool SKU.
+     The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or the following command:
+     ```azurecli
+     az sql elastic-pool list-editions -l &lt;location&gt; -o table
+     ````.
      *
      * @return the sku value
      */
@@ -85,7 +98,11 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set the elastic pool SKU.
+     The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or the following command:
+     ```azurecli
+     az sql elastic-pool list-editions -l &lt;location&gt; -o table
+     ````.
      *
      * @param sku the sku value to set
      * @return the ElasticPoolInner object itself.

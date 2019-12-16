@@ -64,10 +64,14 @@ class ManagedInstanceKeysImpl extends WrapperImpl<ManagedInstanceKeysInner> impl
     public Observable<ManagedInstanceKey> getAsync(String resourceGroupName, String managedInstanceName, String keyName) {
         ManagedInstanceKeysInner client = this.inner();
         return client.getAsync(resourceGroupName, managedInstanceName, keyName)
-        .map(new Func1<ManagedInstanceKeyInner, ManagedInstanceKey>() {
+        .flatMap(new Func1<ManagedInstanceKeyInner, Observable<ManagedInstanceKey>>() {
             @Override
-            public ManagedInstanceKey call(ManagedInstanceKeyInner inner) {
-                return wrapModel(inner);
+            public Observable<ManagedInstanceKey> call(ManagedInstanceKeyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ManagedInstanceKey)wrapModel(inner));
+                }
             }
        });
     }
