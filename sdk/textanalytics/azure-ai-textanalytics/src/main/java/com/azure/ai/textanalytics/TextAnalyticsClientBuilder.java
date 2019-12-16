@@ -208,7 +208,7 @@ public final class TextAnalyticsClientBuilder {
      * @throws NullPointerException If {@code subscriptionKey} is {@code null}.
      */
     public TextAnalyticsClientBuilder subscriptionKey(String subscriptionKey) {
-        Objects.requireNonNull(subscriptionKey);
+        Objects.requireNonNull(subscriptionKey, "'subscriptionKey' cannot be null.");
 
         this.subscriptionKey = subscriptionKey;
 

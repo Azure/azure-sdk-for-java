@@ -1242,5 +1242,6 @@
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
+    <module>sdk/e2e</module>
   </modules>
 </project>

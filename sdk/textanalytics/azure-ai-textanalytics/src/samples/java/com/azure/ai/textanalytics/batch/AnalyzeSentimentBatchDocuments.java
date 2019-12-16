@@ -28,7 +28,7 @@ public class AnalyzeSentimentBatchDocuments {
         // The texts that need be analysed.
         List<TextDocumentInput> inputs = Arrays.asList(
             new TextDocumentInput("1", "The hotel was dark and unclean.", "en"),
-            new TextDocumentInput("2", "The restaurant had amazing gnocci.", "en")
+            new TextDocumentInput("2", "The restaurant had amazing gnocchi.", "en")
         );
 
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
@@ -60,7 +60,8 @@ public class AnalyzeSentimentBatchDocuments {
                     sentenceSentiment.getNeutralScore(),
                     sentenceSentiment.getNegativeScore(),
                     sentenceSentiment.getLength(),
-                    sentenceSentiment.getOffset()));
-        });
+                    sentenceSentiment.getOffset());
+            }
+        }
     }
 }

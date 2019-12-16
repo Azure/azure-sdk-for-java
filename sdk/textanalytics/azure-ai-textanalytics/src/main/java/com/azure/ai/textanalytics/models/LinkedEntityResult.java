@@ -16,24 +16,17 @@ import java.util.List;
 public final class LinkedEntityResult extends DocumentResult {
     private final List<LinkedEntity> linkedEntities;
 
-    // TODO(shawn): not public modifier
-    public LinkedEntityResult(String id, Error error, boolean isError) {
-        super(id, error, isError);
-        linkedEntities = null;
-    }
-
-    // TODO(shawn): not public modifier
-
     /**
      * LinkedEntityResult model constructor
      *
      * @param id document id
      * @param textDocumentStatistics text document statistics
+     * @param error the document error.
      * @param linkedEntities a list of linked entities
      */
-    public LinkedEntityResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public LinkedEntityResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
                               List<LinkedEntity> linkedEntities) {
-        super(id, textDocumentStatistics);
+        super(id, textDocumentStatistics, error);
         this.linkedEntities = linkedEntities;
     }
 

@@ -46,7 +46,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -117,9 +119,8 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
-        List<DetectLanguageInput> languageInputs = new ArrayList<>();
-        languageInputs.add(new DetectLanguageInput(Integer.toString(0), text, countryHint));
-        // TODO (savaity):should this be a random number generator?
+        List<DetectLanguageInput> languageInputs = Arrays.asList(
+            new DetectLanguageInput(Integer.toString(0), text, countryHint));
         return detectBatchLanguagesWithResponse(languageInputs, null, context).flatMap(response -> {
             Iterator<DetectLanguageResult> responseItem = response.getValue().iterator();
             if (responseItem.hasNext()) {
@@ -163,44 +164,11 @@ public final class TextAnalyticsAsyncClient {
     }
 
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> inputs,
-                                                                                               String countryHint,
-                                                                                               Context context) {
-        List<DetectLanguageInput> languageInputs = getLanguageInputList(inputs, countryHint);
-        return detectBatchLanguagesWithResponse(languageInputs, null, context);
-    }
+        String countryHint, Context context) {
+        List<DetectLanguageInput> detectLanguageInputs = mapByIndex(inputs, (index, value) ->
+            new DetectLanguageInput(index, value, countryHint));
 
-    /**
-     * Helper method to convert text list input to LanguageInput.
-     *
-     * @param inputs the list of user provided texts.
-     * @param countryHint the countryHint provided by user for texts.
-     *
-     * @return the LanguageInput list objects to provide the service.
-     */
-    private static List<DetectLanguageInput> getLanguageInputList(List<String> inputs, String countryHint) {
-        List<DetectLanguageInput> languageInputs = new ArrayList<>();
-        // TODO (savaity):update/validate inputs and id assigning
-        for (int i = 0; i < inputs.size(); i++) {
-            languageInputs.add(new DetectLanguageInput(Integer.toString(i), inputs.get(i), countryHint));
-        }
-        return languageInputs;
-    }
-
-    /**
-     * Helper method to convert text list input to TextDocumentInput.
-     *
-     * @param inputs the list of user provided texts.
-     * @param language the language provided by user for texts.
-     *
-     * @return the TextDocumentInput list objects to provide the service.
-     */
-    private static List<TextDocumentInput> getDocumentInputList(List<String> inputs, String language) {
-        List<TextDocumentInput> textDocumentInputs = new ArrayList<>();
-        // TODO (savaity):update/validate inputs and id assigning
-        for (int i = 0; i < inputs.size(); i++) {
-            textDocumentInputs.add(new TextDocumentInput(Integer.toString(i), inputs.get(i), language));
-        }
-        return textDocumentInputs;
+        return detectBatchLanguagesWithResponse(detectLanguageInputs, null, context);
     }
 
     /**
@@ -249,58 +217,6 @@ public final class TextAnalyticsAsyncClient {
             .doOnSuccess(response -> logger.info("A batch of detected language output - {}", languageBatchInput))
             .doOnError(error -> logger.warning("Failed to detected languages - {}", languageBatchInput))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
-    }
-
-    /**
-     * Helper method to convert the service response of {@link LanguageResult} to {@link DocumentResultCollection}.
-     *
-     * @param languageResult the {@link LanguageResult} returned by the service.
-     * @return the {@link DocumentResultCollection} of {@link DetectLanguageResult} to be returned by the SDK.
-     */
-    private DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(
-        final LanguageResult languageResult) {
-        return new DocumentResultCollection<>(getDocumentLanguages(languageResult), languageResult.getModelVersion(),
-            languageResult.getStatistics());
-    }
-
-    /**
-     * Helper method to get a combined list of error documents and valid documents.
-     *
-     * @param languageResult the {@link LanguageResult} containing both the error and document list.
-     * @return the combined error and document list.
-     */
-    private static List<DetectLanguageResult> getDocumentLanguages(final LanguageResult languageResult) {
-        Stream<DetectLanguageResult> validDocumentList = languageResult.getDocuments().stream()
-            .map(TextAnalyticsAsyncClient::convertToDetectLanguageResult);
-        Stream<DetectLanguageResult> errorDocumentList = languageResult.getErrors().stream()
-            .map(TextAnalyticsAsyncClient::convertToErrorDetectLanguageResult);
-
-        return Stream.concat(validDocumentList, errorDocumentList).collect(Collectors.toList());
-    }
-
-    /**
-     * Helper method to create a {@link DetectLanguageResult} for an error document.
-     *
-     * @param errorDocument The error-ed document.
-     * @return A {@link DetectLanguageResult} equivalent for the error-ed document.
-     */
-    private static DetectLanguageResult convertToErrorDetectLanguageResult(final DocumentError errorDocument) {
-        Error serviceError = errorDocument.getError();
-        Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
-            .setTarget(serviceError.getTarget());
-        return new DetectLanguageResult(errorDocument.getId(), error, true);
-    }
-
-    /**
-     * Helper method to create a {@link DetectLanguageResult} for a valid document.
-     *
-     * @param documentLanguage The valid document.
-     * @return A {@link DetectLanguageResult} equivalent for the document.
-     */
-    private static DetectLanguageResult convertToDetectLanguageResult(final DocumentLanguage documentLanguage) {
-        // TODO (savaity): confirm the primary language support from service
-        return new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(),
-            documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages());
     }
 
     // Named Entity
@@ -383,7 +299,8 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizeEntitiesWithResponse(List<String> inputs,
                                                                                               String language,
                                                                                               Context context) {
-        List<TextDocumentInput> documentInputs = getDocumentInputList(inputs, language);
+        List<TextDocumentInput> documentInputs = mapByIndex(inputs, (index, value) ->
+            new TextDocumentInput(index, value, language));
         return recognizeBatchEntitiesWithResponse(documentInputs, null, context);
     }
 
@@ -430,33 +347,6 @@ public final class TextAnalyticsAsyncClient {
             .doOnSuccess(response -> logger.info("A batch of named entities output - {}", batchInput))
             .doOnError(error -> logger.warning("Failed to named entities - {}", batchInput))
             .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
-    }
-
-    private DocumentResultCollection<NamedEntityResult> toDocumentResultCollection(
-        final EntitiesResult entitiesResult) {
-        return new DocumentResultCollection<>(getDocumentNamedEntities(entitiesResult),
-            entitiesResult.getModelVersion(), entitiesResult.getStatistics());
-    }
-
-    private List<NamedEntityResult> getDocumentNamedEntities(final EntitiesResult entitiesResult) {
-        Stream<NamedEntityResult> validDocumentList = entitiesResult.getDocuments().stream()
-            .map(this::convertToNamedEntityResult);
-        Stream<NamedEntityResult> errorDocumentList = entitiesResult.getErrors().stream()
-            .map(this::convertToErrorNamedEntityResult);
-
-        return Stream.concat(validDocumentList, errorDocumentList).collect(Collectors.toList());
-    }
-
-    private NamedEntityResult convertToNamedEntityResult(final DocumentEntities documentEntities) {
-        return new NamedEntityResult(documentEntities.getId(), documentEntities.getStatistics(),
-            documentEntities.getEntities());
-    }
-
-    private NamedEntityResult convertToErrorNamedEntityResult(final DocumentError documentError) {
-        final Error serviceError = documentError.getError();
-        final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
-            .setTarget(serviceError.getTarget());
-        return new NamedEntityResult(documentError.getId(), error, true);
     }
 
     // PII Entity
@@ -539,10 +429,10 @@ public final class TextAnalyticsAsyncClient {
     Mono<Response<DocumentResultCollection<NamedEntityResult>>> recognizePiiEntitiesWithResponse(List<String> inputs,
                                                                                                  String language,
                                                                                                  Context context) {
-        List<TextDocumentInput> documentInputs = getDocumentInputList(inputs, language);
+        List<TextDocumentInput> documentInputs = mapByIndex(inputs, (index, value) ->
+            new TextDocumentInput(index, value, language));
         return recognizeBatchPiiEntitiesWithResponse(documentInputs, null, context);
     }
-
     /**
      * TODO (shawn): add doc
      *
@@ -667,7 +557,8 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<LinkedEntityResult>>> recognizeLinkedEntitiesWithResponse(
         List<String> inputs, String language, Context context) {
-        List<TextDocumentInput> documentInputs = getDocumentInputList(inputs, language);
+        List<TextDocumentInput> documentInputs = mapByIndex(inputs, (index, value) ->
+            new TextDocumentInput(index, value, language));
         return recognizeBatchLinkedEntitiesWithResponse(documentInputs, null, context);
     }
 
@@ -734,14 +625,14 @@ public final class TextAnalyticsAsyncClient {
 
     private LinkedEntityResult convertToLinkedEntityResult(final DocumentLinkedEntities documentLinkedEntities) {
         return new LinkedEntityResult(documentLinkedEntities.getId(), documentLinkedEntities.getStatistics(),
-            documentLinkedEntities.getEntities());
+            null, documentLinkedEntities.getEntities());
     }
 
     private LinkedEntityResult convertToErrorLinkedEntityResult(final DocumentError documentError) {
         final Error serviceError = documentError.getError();
         final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
             .setTarget(serviceError.getTarget());
-        return new LinkedEntityResult(documentError.getId(), error, true);
+        return new LinkedEntityResult(documentError.getId(), null, error, null);
     }
 
     // Key Phrases
@@ -823,7 +714,8 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<KeyPhraseResult>>> extractKeyPhrasesWithResponse(
         List<String> inputs, String language, Context context) {
-        List<TextDocumentInput> documentInputs = getDocumentInputList(inputs, language);
+        List<TextDocumentInput> documentInputs = mapByIndex(inputs, (index, value) ->
+            new TextDocumentInput(index, value, language));
         return extractBatchKeyPhrasesWithResponse(documentInputs, null, context);
     }
 
@@ -889,7 +781,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     private KeyPhraseResult convertToKeyPhraseResult(final DocumentKeyPhrases documentKeyPhrases) {
-        return new KeyPhraseResult(documentKeyPhrases.getId(), documentKeyPhrases.getStatistics(),
+        return new KeyPhraseResult(documentKeyPhrases.getId(), documentKeyPhrases.getStatistics(), null,
             documentKeyPhrases.getKeyPhrases());
     }
 
@@ -897,7 +789,7 @@ public final class TextAnalyticsAsyncClient {
         final Error serviceError = documentError.getError();
         final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
             .setTarget(serviceError.getTarget());
-        return new KeyPhraseResult(documentError.getId(), error, true);
+        return new KeyPhraseResult(documentError.getId(), null, error, null);
     }
 
     // Sentiment
@@ -979,7 +871,8 @@ public final class TextAnalyticsAsyncClient {
 
     Mono<Response<DocumentResultCollection<TextSentimentResult>>> analyzeSentimentWithResponse(
         List<String> inputs, String language, Context context) {
-        List<TextDocumentInput> documentInputs = getDocumentInputList(inputs, language);
+        List<TextDocumentInput> documentInputs = mapByIndex(inputs, (index, value) ->
+            new TextDocumentInput(index, value, language));
         return analyzeBatchSentimentWithResponse(documentInputs, null, context);
     }
 
@@ -1030,7 +923,7 @@ public final class TextAnalyticsAsyncClient {
 
     private DocumentResultCollection<TextSentimentResult> toDocumentResultCollection(
         final SentimentResponse sentimentResponse) {
-        return new DocumentResultCollection<TextSentimentResult>(getDocumentTextSentiment(sentimentResponse),
+        return new DocumentResultCollection<>(getDocumentTextSentiment(sentimentResponse),
             sentimentResponse.getModelVersion(), sentimentResponse.getStatistics());
     }
 
@@ -1058,7 +951,7 @@ public final class TextAnalyticsAsyncClient {
         final List<TextSentiment> sentenceSentimentTexts =
             convertToSentenceSentiments(documentSentiment.getSentences());
 
-        return new TextSentimentResult(documentSentiment.getId(), documentSentiment.getStatistics(),
+        return new TextSentimentResult(documentSentiment.getId(), documentSentiment.getStatistics(), null,
             documentSentimentText, sentenceSentimentTexts);
     }
 
@@ -1121,6 +1014,70 @@ public final class TextAnalyticsAsyncClient {
         final Error serviceError = documentError.getError();
         final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
             .setTarget(serviceError.getTarget());
-        return new TextSentimentResult(documentError.getId(), error, true);
+        return new TextSentimentResult(documentError.getId(), null, error, null,
+            null);
+    }
+
+    /**
+     * Helper method to convert the service response of {@link LanguageResult} to {@link DocumentResultCollection}.
+     *
+     * @param languageResult the {@link LanguageResult} returned by the service.
+     * @return the {@link DocumentResultCollection} of {@link DetectLanguageResult} to be returned by the SDK.
+     */
+    private DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(
+        final LanguageResult languageResult) {
+        return new DocumentResultCollection<>(getDocumentLanguages(languageResult), languageResult.getModelVersion(),
+            languageResult.getStatistics());
+    }
+
+    /**
+     * Helper method to get a combined list of error documents and valid documents.
+     *
+     * @param languageResult the {@link LanguageResult} containing both the error and document list.
+     * @return the combined error and document list.
+     */
+    private static List<DetectLanguageResult> getDocumentLanguages(final LanguageResult languageResult) {
+        List<DetectLanguageResult> validDocumentList = new ArrayList<>();
+        for (DocumentLanguage documentLanguage: languageResult.getDocuments()) {
+            validDocumentList.add(new DetectLanguageResult(documentLanguage.getId(), documentLanguage.getStatistics(),
+                null, documentLanguage.getDetectedLanguages().get(0), documentLanguage.getDetectedLanguages()));
+        }
+        List<DetectLanguageResult> errorDocumentList = new ArrayList<>();
+        for (DocumentError documentError: languageResult.getErrors()) {
+            Error serviceError = documentError.getError();
+            Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
+                .setTarget(serviceError.getTarget());
+            errorDocumentList.add(new DetectLanguageResult(documentError.getId(), null, error, null,
+                null));
+        }
+        return Stream.concat(validDocumentList.stream(), errorDocumentList.stream()).collect(Collectors.toList());
+    }
+
+    private DocumentResultCollection<NamedEntityResult> toDocumentResultCollection(
+        final EntitiesResult entitiesResult) {
+        return new DocumentResultCollection<>(getDocumentNamedEntities(entitiesResult),
+            entitiesResult.getModelVersion(), entitiesResult.getStatistics());
+    }
+
+    private List<NamedEntityResult> getDocumentNamedEntities(final EntitiesResult entitiesResult) {
+        List<NamedEntityResult> validDocumentList = new ArrayList<>();
+        for (DocumentEntities documentEntities: entitiesResult.getDocuments()) {
+            validDocumentList.add(new NamedEntityResult(documentEntities.getId(), documentEntities.getStatistics(),
+                null, documentEntities.getEntities()));
+        }
+        List<NamedEntityResult> errorDocumentList = new ArrayList<>();
+        for (DocumentError documentError: entitiesResult.getErrors()) {
+            final Error serviceError = documentError.getError();
+            final Error error = new Error().setCode(serviceError.getCode()).setMessage(serviceError.getMessage())
+                .setTarget(serviceError.getTarget());
+            errorDocumentList.add(new NamedEntityResult(documentError.getId(), null, error, null));
+        }
+        return Stream.concat(validDocumentList.stream(), errorDocumentList.stream()).collect(Collectors.toList());
+    }
+
+    private static <T> List<T> mapByIndex(List<String> inputs, BiFunction<String, String, T> mappingFunction) {
+        return IntStream.range(0, inputs.size())
+            .mapToObj(index -> mappingFunction.apply(String.valueOf(index), inputs.get(index)))
+            .collect(Collectors.toList());
     }
 }

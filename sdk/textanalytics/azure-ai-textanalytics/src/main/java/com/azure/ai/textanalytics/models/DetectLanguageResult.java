@@ -12,14 +12,10 @@ import java.util.List;
 public final class DetectLanguageResult extends DocumentResult {
     private DetectedLanguage primaryLanguage;
     private List<DetectedLanguage> detectedLanguages;
-    // TODO(savaity): not public modifier
-    public DetectLanguageResult(String id, Error error, boolean isError) {
-        super(id, error, isError);
-    }
-    // TODO(savaity): not public modifier
-    public DetectLanguageResult(String id, TextDocumentStatistics textDocumentStatistics,
+
+    public DetectLanguageResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
                                 DetectedLanguage primaryLanguage, List<DetectedLanguage> detectedLanguages) {
-        super(id, textDocumentStatistics);
+        super(id, textDocumentStatistics, error);
         this.primaryLanguage = primaryLanguage;
         this.detectedLanguages = detectedLanguages;
     }

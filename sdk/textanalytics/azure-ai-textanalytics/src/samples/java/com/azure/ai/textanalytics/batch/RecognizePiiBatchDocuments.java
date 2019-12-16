@@ -15,7 +15,7 @@ import com.azure.core.util.Context;
 import java.util.Arrays;
 import java.util.List;
 
-public class RecognizePIIBatchDocuments {
+public class RecognizePiiBatchDocuments {
 
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.

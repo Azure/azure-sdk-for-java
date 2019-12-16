@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics.models;
 
-
 import com.azure.core.annotation.Fluent;
 
 import java.util.List;
@@ -17,16 +16,9 @@ public final class TextSentimentResult extends DocumentResult {
     private final TextSentiment documentSentiment;
     private final List<TextSentiment> sentenceSentiments;
 
-    // TODO(shawn): not public modifier
-    public TextSentimentResult(String id, Error error, boolean isError) {
-        super(id, error, isError);
-        documentSentiment = null;
-        sentenceSentiments = null;
-    }
-
-    public TextSentimentResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public TextSentimentResult(String id, TextDocumentStatistics textDocumentStatistics, Error error,
         TextSentiment documentSentiment, List<TextSentiment> sentenceSentiments) {
-        super(id, textDocumentStatistics);
+        super(id, textDocumentStatistics, error);
         this.documentSentiment = documentSentiment;
         this.sentenceSentiments = sentenceSentiments;
     }

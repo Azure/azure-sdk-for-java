@@ -68,7 +68,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_language_batch]: java/com/azure/cs/textanalytics/batch/DetectLanguageBatchDocuments.java
 [sample_entities_batch]: java/com/azure/cs/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
 [sample_health_care_entities_batch]: java/com/azure/cs/textanalytics/batch/RecognizeHealthCareEntitiesBatchDocuments.java
-[sample_pii_entities_batch]: java/com/azure/cs/textanalytics/batch/RecognizePIIBatchDocuments.java
+[sample_pii_entities_batch]: java/com/azure/cs/textanalytics/batch/RecognizePiiBatchDocuments.java
 [sample_linked_entities_batch]: java/com/azure/cs/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
 [sample_key_phrases_batch]: java/com/azure/cs/textanalytics/batch/RecognizeKeyPhrasesBatchDocuments.java
 [sample_sentiment_batch]: java/com/azure/cs/textanalytics/batch/DetectSentimentBatchDocuments.java

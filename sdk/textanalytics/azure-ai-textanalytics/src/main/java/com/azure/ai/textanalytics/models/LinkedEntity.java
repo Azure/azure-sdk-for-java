@@ -64,7 +64,7 @@ public final class LinkedEntity {
      * @param name the name value to set.
      * @return the LinkedEntity object itself.
      */
-    LinkedEntity setName(String name) {
+    public LinkedEntity setName(String name) {
         this.name = name;
         return this;
     }
@@ -86,7 +86,7 @@ public final class LinkedEntity {
      * @param linkedEntityMatches the linkedEntityMatches value to set.
      * @return the LinkedEntity object itself.
      */
-    LinkedEntity setLinkedEntityMatches(List<LinkedEntityMatch> linkedEntityMatches) {
+    public LinkedEntity setLinkedEntityMatches(List<LinkedEntityMatch> linkedEntityMatches) {
         this.linkedEntityMatches = linkedEntityMatches;
         return this;
     }
@@ -106,7 +106,7 @@ public final class LinkedEntity {
      * @param language the language value to set.
      * @return the LinkedEntity object itself.
      */
-    LinkedEntity setLanguage(String language) {
+    public LinkedEntity setLanguage(String language) {
         this.language = language;
         return this;
     }
@@ -128,7 +128,7 @@ public final class LinkedEntity {
      * @param id the id value to set.
      * @return the LinkedEntity object itself.
      */
-    LinkedEntity setId(String id) {
+    public LinkedEntity setId(String id) {
         this.id = id;
         return this;
     }
@@ -148,7 +148,7 @@ public final class LinkedEntity {
      * @param url the url value to set.
      * @return the LinkedEntity object itself.
      */
-    LinkedEntity setUrl(String url) {
+    public LinkedEntity setUrl(String url) {
         this.url = url;
         return this;
     }
@@ -170,7 +170,7 @@ public final class LinkedEntity {
      * @param dataSource the dataSource value to set.
      * @return the LinkedEntity object itself.
      */
-    LinkedEntity setDataSource(String dataSource) {
+    public LinkedEntity setDataSource(String dataSource) {
         this.dataSource = dataSource;
         return this;
     }

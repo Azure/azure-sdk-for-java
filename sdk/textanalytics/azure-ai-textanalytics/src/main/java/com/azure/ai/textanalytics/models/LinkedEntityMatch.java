@@ -54,7 +54,7 @@ public final class LinkedEntityMatch {
      * @param score the score value to set.
      * @return the LinkedEntityMatch object itself.
      */
-    LinkedEntityMatch setScore(double score) {
+    public LinkedEntityMatch setScore(double score) {
         this.score = score;
         return this;
     }
@@ -74,7 +74,7 @@ public final class LinkedEntityMatch {
      * @param text the text value to set.
      * @return the LinkedEntityMatch object itself.
      */
-    LinkedEntityMatch setText(String text) {
+    public LinkedEntityMatch setText(String text) {
         this.text = text;
         return this;
     }
@@ -96,7 +96,7 @@ public final class LinkedEntityMatch {
      * @param offset the offset value to set.
      * @return the LinkedEntityMatch object itself.
      */
-    LinkedEntityMatch setOffset(int offset) {
+    public LinkedEntityMatch setOffset(int offset) {
         this.offset = offset;
         return this;
     }
@@ -118,7 +118,7 @@ public final class LinkedEntityMatch {
      * @param length the length value to set.
      * @return the LinkedEntityMatch object itself.
      */
-    LinkedEntityMatch setLength(int length) {
+    public LinkedEntityMatch setLength(int length) {
         this.length = length;
         return this;
     }
