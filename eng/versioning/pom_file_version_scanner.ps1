@@ -241,6 +241,8 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         return
     }
 
+    Write-Output "processing pomFile=$($pomFile)"
+
     if ($PomFilesIgnoreParent -contains $pomFile)
     {
         $xmlPomFile = New-Object xml
