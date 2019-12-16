@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,6 +17,8 @@ import java.util.Map;
  * Represents base properties of a certificate.
  */
 public class CertificateProperties {
+
+    private final ClientLogger logger = new ClientLogger(CertificateProperties.class);
 
     /**
      * URL for the Azure KeyVault service.
@@ -251,11 +254,11 @@ public class CertificateProperties {
             try {
                 URL url = new URL(id);
                 String[] tokens = url.getPath().split("/");
-                this.vaultUrl = (tokens.length >= 1 ? tokens[1] : null);
+                this.vaultUrl = (tokens.length >= 2 ? tokens[1] : null);
                 this.name = (tokens.length >= 3 ? tokens[2] : null);
                 this.version = (tokens.length >= 4 ? tokens[3] : null);
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
             }
         }
     }

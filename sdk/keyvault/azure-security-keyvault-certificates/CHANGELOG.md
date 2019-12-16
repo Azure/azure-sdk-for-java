@@ -1,8 +1,8 @@
 # Release History
 ## 4.0.0-beta.7 (2019-12-17)
-- `beginDeleteCertificate` and `beginRecoverDeletedCertificate` polling operation to be `SUCCESSFULLY_COMPLETED` on 403.
+- `beginDeleteCertificate` and `beginRecoverDeletedCertificate` methods now return a poll response with a status of SUCCESSFULLY_COMPLETED when service returns 403 status.
 - `CertificateClient.createIssuer` and `CertificateAsyncClient.createIssuer` now require a `CertificateIssuer` with both a name and provider.
-- Removed `setProperties` from `KeyVaultCertificate` model.
+- Removed constructor overload for `CertificateIssuer(String name, String provider)` from `CertificateIssuer` model.
 - Removed `AdministratorContact` constructor overloads and introduced setters for all parameters.
 - Removed `CertificateContact` constructor overloads and introduced setters for all parameters.
 
