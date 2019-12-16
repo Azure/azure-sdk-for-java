@@ -8,6 +8,7 @@ import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IDocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -18,6 +19,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import reactor.core.publisher.Flux;
+import reactor.util.concurrent.Queues;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -304,7 +306,14 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 .map(DocumentProducer::produceAsync)
                 // Merge results from all partitions.
                 .collect(Collectors.toList());
-        return Flux.concat(obs).compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker()));
+
+        int fluxConcurrency = fluxSequentialMergeConcurrency(feedOptions, obs.size());
+        int fluxPrefetch = fluxSequentialMergePrefetch(feedOptions, obs.size(), maxPageSize, fluxConcurrency);
+
+        logger.debug("ParallelQuery: flux mergeSequential" +
+                         " concurrency {}, prefetch {}", fluxConcurrency, fluxPrefetch);
+        return Flux.mergeSequential(obs, fluxConcurrency, fluxPrefetch)
+            .compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker()));
     }
 
     @Override
@@ -336,5 +345,27 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 initialPageSize,
                 initialContinuationToken,
                 top);
+    }
+
+    private int fluxSequentialMergeConcurrency(FeedOptions options, int numberOfPartitions) {
+        int parallelism = options.getMaxDegreeOfParallelism();
+        if (parallelism < 0) {
+            parallelism = Configs.getCPUCnt();
+        } else if (parallelism == 0) {
+            parallelism = 1;
+        }
+
+        return Math.min(numberOfPartitions, parallelism);
+    }
+
+    private int fluxSequentialMergePrefetch(FeedOptions options, int numberOfPartitions, int pageSize, int fluxConcurrency) {
+        int maxBufferedItemCount = options.getMaxBufferedItemCount();
+
+        if (maxBufferedItemCount <= 0) {
+            maxBufferedItemCount = Math.min(Configs.getCPUCnt() * numberOfPartitions * pageSize, 100_000);
+        }
+
+        int fluxPrefetch = Math.max(maxBufferedItemCount / (Math.max(fluxConcurrency * pageSize, 1)), 1);
+        return Math.min(fluxPrefetch, Queues.XS_BUFFER_SIZE);
     }
 }
