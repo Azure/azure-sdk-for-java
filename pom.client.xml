@@ -1227,6 +1227,7 @@
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opencensus</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
+    <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
     <module>sdk/identity/azure-identity</module>
@@ -1241,6 +1242,5 @@
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
-    <module>sdk/e2e</module>
   </modules>
 </project>
