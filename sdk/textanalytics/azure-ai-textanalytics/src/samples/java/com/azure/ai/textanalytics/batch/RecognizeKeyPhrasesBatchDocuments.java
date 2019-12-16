@@ -42,8 +42,10 @@ public class RecognizeKeyPhrasesBatchDocuments {
             batchStatistics.getValidDocumentCount());
 
         // Detecting key phrase for each of document from a batch of documents
-        detectedBatchResult.stream().forEach(keyPhraseResult ->
-            keyPhraseResult.getKeyPhrases().forEach(keyPhrases ->
-                System.out.printf("Recognized Phrases: %s.%n", keyPhrases)));
+        for (KeyPhraseResult keyPhraseResult: detectedBatchResult) {
+            for (String keyPhrases : keyPhraseResult.getKeyPhrases()) {
+                System.out.printf("Recognized Phrases: %s.%n", keyPhrases);
+            }
+        }
     }
 }
