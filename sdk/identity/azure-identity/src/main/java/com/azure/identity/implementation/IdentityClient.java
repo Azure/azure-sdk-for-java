@@ -502,9 +502,7 @@ public class IdentityClient {
         } else if (os.contains("nix") || os.contains("nux")) {
             rt.exec("xdg-open " + url);
         } else {
-            logger.error("Unable to open web browser on current device - operating system is reported as {}, " +
-                             "which is not currently supported. Please file an issue at " +
-                             "http://www.github.com/azure/azure-sdk-for-java.", os);
+            logger.error("Browser could not be opened - please open {} in a browser on this device.", url);
         }
     }
 }
