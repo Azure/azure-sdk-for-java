@@ -43,12 +43,6 @@ class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
     }
 
     @Override
-    public Completable upgradeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName) {
-        DatabasesInner client = this.inner();
-        return client.upgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName).toCompletable();
-    }
-
-    @Override
     public Observable<Database> listByElasticPoolAsync(final String resourceGroupName, final String serverName, final String elasticPoolName) {
         DatabasesInner client = this.inner();
         return client.listByElasticPoolAsync(resourceGroupName, serverName, elasticPoolName)
@@ -91,6 +85,12 @@ class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
     }
 
     @Override
+    public Completable upgradeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName) {
+        DatabasesInner client = this.inner();
+        return client.upgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName).toCompletable();
+    }
+
+    @Override
     public Completable renameAsync(String resourceGroupName, String serverName, String databaseName, String id) {
         DatabasesInner client = this.inner();
         return client.renameAsync(resourceGroupName, serverName, databaseName, id).toCompletable();
@@ -118,10 +118,14 @@ class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
     public Observable<Database> getAsync(String resourceGroupName, String serverName, String databaseName) {
         DatabasesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName)
-        .map(new Func1<DatabaseInner, Database>() {
+        .flatMap(new Func1<DatabaseInner, Observable<Database>>() {
             @Override
-            public Database call(DatabaseInner inner) {
-                return wrapModel(inner);
+            public Observable<Database> call(DatabaseInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Database)wrapModel(inner));
+                }
             }
        });
     }
