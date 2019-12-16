@@ -42,15 +42,16 @@ public class RecognizeEntitiesBatchDocuments {
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
-        // Detecting entities for each of document from a batch of documents
-        detectedBatchResult.forEach(detectedEntityResult ->
-            detectedEntityResult.getNamedEntities().forEach(entity ->
+        for (NamedEntityResult namedEntityResult : detectedBatchResult) {
+            for (NamedEntity entity : namedEntityResult.getNamedEntities()) {
                 System.out.printf("Recognized NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
                     entity.getText(),
                     entity.getType(),
                     entity.getSubtype(),
                     entity.getOffset(),
                     entity.getLength(),
-                    entity.getScore())));
+                    entity.getScore());
+            }
+        }
     }
 }

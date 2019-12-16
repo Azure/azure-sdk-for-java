@@ -3,6 +3,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+
 import java.util.List;
 
 /**
