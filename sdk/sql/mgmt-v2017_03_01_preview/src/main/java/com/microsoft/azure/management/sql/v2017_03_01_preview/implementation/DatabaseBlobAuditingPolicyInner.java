@@ -37,7 +37,7 @@ public class DatabaseBlobAuditingPolicyInner extends ProxyResource {
     /**
      * Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). If state is Enabled,
-     * storageEndpoint is required.
+     * storageEndpoint or isAzureMonitorTargetEnabled is required.
      */
     @JsonProperty(value = "properties.storageEndpoint")
     private String storageEndpoint;
@@ -170,6 +170,15 @@ public class DatabaseBlobAuditingPolicyInner extends ProxyResource {
     private Boolean isAzureMonitorTargetEnabled;
 
     /**
+     * Specifies the amount of time in milliseconds that can elapse before
+     * audit actions are forced to be processed.
+     * The default minimum value is 1000 (1 second). The maximum is
+     * 2,147,483,647.
+     */
+    @JsonProperty(value = "properties.queueDelayMs")
+    private Integer queueDelayMs;
+
+    /**
      * Get resource kind.
      *
      * @return the kind value
@@ -199,7 +208,7 @@ public class DatabaseBlobAuditingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint is required.
+     * Get specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is required.
      *
      * @return the storageEndpoint value
      */
@@ -208,7 +217,7 @@ public class DatabaseBlobAuditingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint is required.
+     * Set specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is required.
      *
      * @param storageEndpoint the storageEndpoint value to set
      * @return the DatabaseBlobAuditingPolicyInner object itself.
@@ -437,6 +446,28 @@ public class DatabaseBlobAuditingPolicyInner extends ProxyResource {
      */
     public DatabaseBlobAuditingPolicyInner withIsAzureMonitorTargetEnabled(Boolean isAzureMonitorTargetEnabled) {
         this.isAzureMonitorTargetEnabled = isAzureMonitorTargetEnabled;
+        return this;
+    }
+
+    /**
+     * Get specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed.
+     The default minimum value is 1000 (1 second). The maximum is 2,147,483,647.
+     *
+     * @return the queueDelayMs value
+     */
+    public Integer queueDelayMs() {
+        return this.queueDelayMs;
+    }
+
+    /**
+     * Set specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed.
+     The default minimum value is 1000 (1 second). The maximum is 2,147,483,647.
+     *
+     * @param queueDelayMs the queueDelayMs value to set
+     * @return the DatabaseBlobAuditingPolicyInner object itself.
+     */
+    public DatabaseBlobAuditingPolicyInner withQueueDelayMs(Integer queueDelayMs) {
+        this.queueDelayMs = queueDelayMs;
         return this;
     }
 
