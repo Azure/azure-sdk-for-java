@@ -88,10 +88,14 @@ class FailoverGroupsImpl extends WrapperImpl<FailoverGroupsInner> implements Fai
     public Observable<FailoverGroup> getAsync(String resourceGroupName, String serverName, String failoverGroupName) {
         FailoverGroupsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, failoverGroupName)
-        .map(new Func1<FailoverGroupInner, FailoverGroup>() {
+        .flatMap(new Func1<FailoverGroupInner, Observable<FailoverGroup>>() {
             @Override
-            public FailoverGroup call(FailoverGroupInner inner) {
-                return wrapModel(inner);
+            public Observable<FailoverGroup> call(FailoverGroupInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((FailoverGroup)wrapModel(inner));
+                }
             }
        });
     }
