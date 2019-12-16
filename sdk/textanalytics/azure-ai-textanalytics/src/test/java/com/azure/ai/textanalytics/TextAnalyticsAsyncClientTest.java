@@ -360,51 +360,84 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
 
     // Sentiment
+    /**
+     * Test analyzing sentiment for a string input.
+     */
     @Test
     public void analyseSentimentForTextInput() {
-
         final TextSentiment expectedDocumentSentiment = new TextSentiment()
-            .setTextSentimentClass(TextSentimentClass.MIXED).setLength(66).setOffset(0);
-        final List<TextSentiment> expectedSentiments = Arrays.asList(
-           new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(0),
-           new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(32)
+            .setTextSentimentClass(TextSentimentClass.MIXED).setLength(66).setOffset(0)
+            .setNegativeScore(0.00019).setNeutralScore(0.5).setPositiveScore(0.4);
+        final List<TextSentiment> expectedSentenceSentiments = Arrays.asList(
+           new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(0).setNegativeScore(0.99),
+           new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(32).setPositiveScore(0.99)
         );
 
         StepVerifier.create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))
             .assertNext(response -> {
                 validateAnalysedSentiment(expectedDocumentSentiment, response.getDocumentSentiment());
-                validateAnalysedSentenceSentiment(expectedSentiments, response.getSentenceSentiments());
+                validateAnalysedSentenceSentiment(expectedSentenceSentiments, response.getSentenceSentiments());
             })
             .verifyComplete();
     }
 
+    /**
+     * Verifies that an error document is returned for a empty text input.
+     */
     @Test
     public void analyseSentimentForEmptyText() {
-
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        StepVerifier.create(client.analyzeSentiment(""))
+            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
+            .verifyComplete();
     }
 
     @Test
     public void analyseSentimentForFaultyText() {
-
+        // TODO (shawn): add this case later
     }
 
-    @Test
-    public void analyseSentimentForBatchInput() {
-
-    }
-
-    @Test
-    public void analyseSentimentForBatchInputShowStatistics() {
-
-    }
-
+    /**
+     * Test analyzing sentiment for a list of string input.
+     */
     @Test
     public void analyseSentimentForBatchStringInput() {
-
+        analyseSentimentStringInputRunner(inputs ->
+            StepVerifier.create(client.analyzeSentiment(inputs))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchTextSentiment(), TestEndpoint.SENTIMENT))
+                .verifyComplete());
     }
 
+    /**
+     * Test analyzing sentiment for a list of string input with language hint.
+     */
     @Test
     public void analyseSentimentForListLanguageHint() {
+        analyseSentimentLanguageHintRunner((inputs, language) ->
+            StepVerifier.create(client.analyzeSentimentWithResponse(inputs, language))
+                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchTextSentiment(), TestEndpoint.SENTIMENT))
+                .verifyComplete());
+    }
 
+    /**
+     * Test analyzing sentiment for batch input.
+     */
+    @Test
+    public void analyseSentimentForBatchInput() {
+        analyseBatchSentimentRunner(inputs ->
+            StepVerifier.create(client.analyzeBatchSentiment(inputs))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchTextSentiment(), TestEndpoint.SENTIMENT))
+                .verifyComplete());
+    }
+
+    /**
+     * Verify that we can get statistics on the collection result when given a batch input with options.
+     */
+    @Test
+    public void analyseSentimentForBatchInputShowStatistics() {
+        analyseBatchSentimentShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.analyzeBatchSentimentWithResponse(inputs, options))
+                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchTextSentiment(), TestEndpoint.SENTIMENT))
+                .verifyComplete());
     }
 }

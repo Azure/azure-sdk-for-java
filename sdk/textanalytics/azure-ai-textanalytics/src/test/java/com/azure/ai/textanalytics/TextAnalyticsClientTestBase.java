@@ -478,29 +478,19 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     public abstract void analyseSentimentForListLanguageHint();
 
     static void analyseSentimentLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
-        final List<String> inputs = Arrays.asList(
-            "The hotel was dark and unclean."
-        );
-
-        testRunner.accept(inputs, "en");
+        testRunner.accept(getSentimentInput(), "en");
     }
 
     static void analyseSentimentStringInputRunner(Consumer<List<String>> testRunner) {
-        final List<String> inputs = Arrays.asList(
-            "The hotel was dark and unclean.",
-            "The restaurant had amazing gnocchi."
-        );
-
-        testRunner.accept(inputs);
+        testRunner.accept(getSentimentInput());
     }
 
     static void analyseBatchSentimentRunner(Consumer<List<TextDocumentInput>> testRunner) {
-        final List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("0", "The hotel was dark and unclean."),
-            new TextDocumentInput("1", "The restaurant had amazing gnocchi.")
-        );
-
-        testRunner.accept(inputs);
+        final List<String> sentimentInputs = getSentimentInput();
+        testRunner.accept(Arrays.asList(
+            new TextDocumentInput("0", sentimentInputs.get(0)),
+            new TextDocumentInput("1", sentimentInputs.get(1))
+        ));
     }
 
     void analyseBatchSentimentShowStatsRunner(
@@ -513,26 +503,33 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     static DocumentResultCollection<TextSentimentResult> getExpectedBatchTextSentiment() {
-        // TODO (shawn): verified character count
-        final TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(0)
+        final TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(67)
             .setTransactionCount(1);
-        final TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(0)
+        final TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(67)
             .setTransactionCount(1);
+
+        final TextSentiment expectedDocumentSentiment = new TextSentiment()
+            .setTextSentimentClass(TextSentimentClass.MIXED).setLength(66).setOffset(ZERO)
+            .setNegativeScore(0.00019).setNeutralScore(0.5).setPositiveScore(0.4);
 
         final TextSentimentResult textSentimentResult1 = new TextSentimentResult("0", textDocumentStatistics1,
             null,
-            new TextSentiment().setTextSentimentClass(TextSentimentClass.MIXED).setLength(66).setOffset(ZERO),
+           expectedDocumentSentiment,
             Arrays.asList(
-                new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(0),
-                new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(31)
+                new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(0)
+                    .setNegativeScore(0.99),
+                new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(32)
+                    .setPositiveScore(0.99)
             ));
 
         final TextSentimentResult textSentimentResult2 = new TextSentimentResult("1", textDocumentStatistics2,
             null,
-            new TextSentiment().setTextSentimentClass(TextSentimentClass.MIXED).setLength(66).setOffset(ZERO),
+            expectedDocumentSentiment,
             Arrays.asList(
-                new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(0),
+                new TextSentiment().setTextSentimentClass(TextSentimentClass.POSITIVE).setLength(35).setOffset(0)
+                    .setPositiveScore(0.99),
                 new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(36)
+                    .setNegativeScore(0.99)
             ));
 
         return new DocumentResultCollection<>(Arrays.asList(textSentimentResult1, textSentimentResult2),
@@ -544,6 +541,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private TextAnalyticsRequestOptions setTextAnalyticsRequestOptions() {
         this.showStatistics = true;
         return new TextAnalyticsRequestOptions().setShowStatistics(true);
+    }
+
+    static List<String> getSentimentInput() {
+        return Arrays.asList("The hotel was dark and unclean. The restaurant had amazing gnocchi.",
+        "The restaurant had amazing gnocchi. The hotel was dark and unclean.");
     }
 
     String getEndpoint() {
@@ -874,6 +876,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedSentiment.getLength(), actualSentiment.getLength());
         assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
         assertEquals(expectedSentiment.getTextSentimentClass(), actualSentiment.getTextSentimentClass());
+
+        assertEquals(expectedSentiment.getNegativeScore() > 0, actualSentiment.getNegativeScore() > 0);
+        assertEquals(expectedSentiment.getNeutralScore() > 0, actualSentiment.getNeutralScore() > 0);
+        assertEquals(expectedSentiment.getPositiveScore() > 0, actualSentiment.getPositiveScore() > 0);
     }
 
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType,
