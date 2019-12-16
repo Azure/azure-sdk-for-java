@@ -44,16 +44,15 @@ public class DetectLanguageBatchDocuments {
 
 
         // Detecting languages for a document from a batch of documents
-        detectedBatchResult.stream().forEach(result -> {
-            //TODO (shawn): There is null pointer exception on detectedPrimaryLanguage
-            final DetectedLanguage detectedPrimaryLanguage = result.getPrimaryLanguage();
+
+        for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
+            final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
             System.out.printf("Detected primary Language for Document: %s, %s, ISO 6391 Name: %s, Score: %s.%n",
-                result.getId(),
+                detectLanguageResult.getId(),
                 detectedPrimaryLanguage.getName(),
                 detectedPrimaryLanguage.getIso6391Name(),
                 detectedPrimaryLanguage.getScore());
-
-            result.getDetectedLanguages().forEach(detectedLanguage ->
+            for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
                 System.out.printf("Other detected Languages: %s, ISO 6391 Name: %s, Score: %s.%n",
                     detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(),
@@ -61,5 +60,4 @@ public class DetectLanguageBatchDocuments {
             }
         }
     }
-
 }
