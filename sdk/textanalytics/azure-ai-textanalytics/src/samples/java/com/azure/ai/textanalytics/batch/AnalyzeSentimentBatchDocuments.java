@@ -11,7 +11,6 @@ import com.azure.ai.textanalytics.models.TextBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentResult;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 
 import java.util.Arrays;
@@ -22,10 +21,8 @@ public class AnalyzeSentimentBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-//            .subscriptionKey("subscription-key")
-//            .endpoint("https://servicename.cognitiveservices.azure.com/")
-            .subscriptionKey(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY"))
-            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
+            .subscriptionKey("subscription-key")
+            .endpoint("https://servicename.cognitiveservices.azure.com/")
             .buildClient();
 
         // The texts that need be analysed.
@@ -62,8 +59,8 @@ public class AnalyzeSentimentBatchDocuments {
                     sentenceSentiment.getNeutralScore(),
                     sentenceSentiment.getNegativeScore(),
                     sentenceSentiment.getLength(),
-                    sentenceSentiment.getOffset()));
-
-        });
+                    sentenceSentiment.getOffset());
+            }
+        }
     }
 }

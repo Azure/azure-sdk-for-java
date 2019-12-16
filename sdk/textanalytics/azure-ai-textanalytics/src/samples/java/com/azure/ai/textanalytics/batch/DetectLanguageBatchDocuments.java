@@ -42,9 +42,7 @@ public class DetectLanguageBatchDocuments {
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
-
         // Detecting languages for a document from a batch of documents
-
         for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
             final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
             System.out.printf("Detected primary Language for Document: %s, %s, ISO 6391 Name: %s, Score: %s.%n",
@@ -56,8 +54,8 @@ public class DetectLanguageBatchDocuments {
                 System.out.printf("Other detected Languages: %s, ISO 6391 Name: %s, Score: %s.%n",
                     detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(),
-                    detectedLanguage.getScore()));
-
-        });
+                    detectedLanguage.getScore());
+            }
+        }
     }
 }
