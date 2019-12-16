@@ -437,9 +437,9 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(BlobBatchStorageException)
+        thrown(UnsupportedOperationException)
 
         where:
-        i << (1..100)
+        i << (1..20)
     }
 }

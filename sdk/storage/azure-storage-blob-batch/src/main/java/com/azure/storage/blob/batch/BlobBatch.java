@@ -8,12 +8,10 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.UrlBuilder;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -22,24 +20,16 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
-import reactor.core.Disposable;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
 import java.net.MalformedURLException;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class allows for batching of multiple Azure Storage operations in a single request via {@link
@@ -55,17 +45,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class BlobBatch {
     private static final String X_MS_VERSION = "x-ms-version";
-    private static final String BATCH_REQUEST_CONTENT_ID = "Batch-Request-Content-Id";
     private static final String BATCH_REQUEST_URL_PATH = "Batch-Request-Url-Path";
-    private static final String CONTENT_ID = "Content-Id";
-    private static final String BATCH_BOUNDARY_TEMPLATE = "batch_%s";
-    private static final String REQUEST_CONTENT_TYPE_TEMPLATE = "multipart/mixed; boundary=%s";
-    private static final String BATCH_OPERATION_CONTENT_TYPE = "Content-Type: application/http";
-    private static final String BATCH_OPERATION_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding: binary";
-    private static final String BATCH_OPERATION_CONTENT_ID_TEMPLATE = "Content-ID: %d";
-    private static final String HTTP_VERSION = "HTTP/1.1";
-    private static final String OPERATION_TEMPLATE = "%s %s %s";
-    private static final String HEADER_TEMPLATE = "%s: %s";
+    private static final String BATCH_OPERATION_RESPONSE = "Batch-Operation-Response";
+    private static final String BATCH_OPERATION_INFO = "Batch-Operation-Info";
     private static final String PATH_TEMPLATE = "%s/%s";
 
     /*
@@ -79,23 +61,12 @@ public final class BlobBatch {
 
     private final BlobAsyncClient blobAsyncClient;
 
-    private final Deque<Mono<? extends Response<?>>> batchOperationQueue;
-    private final List<ByteBuffer> batchRequest;
-    private final Map<Integer, BlobBatchOperationResponse<?>> batchMapping;
-
-    private final AtomicInteger contentId;
-    private final String batchBoundary;
-    private final String contentType;
-
+    private Deque<BlobBatchOperation<?>> batchOperationQueue;
     private BlobBatchType batchType;
 
     BlobBatch(String accountUrl, HttpPipeline pipeline) {
-        this.contentId = new AtomicInteger();
-        this.batchBoundary = String.format(BATCH_BOUNDARY_TEMPLATE, UUID.randomUUID());
-        this.contentType = String.format(REQUEST_CONTENT_TYPE_TEMPLATE, batchBoundary);
-
         boolean batchHeadersPolicySet = false;
-        HttpPipelineBuilder batchPipelineBuilder = new HttpPipelineBuilder().httpClient(this::setupBatchOperation);
+        HttpPipelineBuilder batchPipelineBuilder = new HttpPipelineBuilder();
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
             HttpPipelinePolicy policy = pipeline.getPolicy(i);
 
@@ -112,6 +83,8 @@ public final class BlobBatch {
             batchPipelineBuilder.policies(this::cleanseHeaders, this::setRequestUrl);
         }
 
+        batchPipelineBuilder.policies(this::buildBatchOperation);
+
         this.blobAsyncClient = new BlobClientBuilder()
             .endpoint(accountUrl)
             .blobName("")
@@ -119,8 +92,6 @@ public final class BlobBatch {
             .buildAsyncClient();
 
         this.batchOperationQueue = new ConcurrentLinkedDeque<>();
-        this.batchRequest = new ArrayList<>();
-        this.batchMapping = new ConcurrentHashMap<>();
     }
 
     /**
@@ -287,12 +258,9 @@ public final class BlobBatch {
 
     private <T> Response<T> createBatchOperation(Mono<Response<T>> response, String urlPath,
         int... expectedStatusCodes) {
-        int id = contentId.getAndIncrement();
-        batchOperationQueue.add(response
-            .subscriberContext(Context.of(BATCH_REQUEST_CONTENT_ID, id, BATCH_REQUEST_URL_PATH, urlPath)));
-
         BlobBatchOperationResponse<T> batchOperationResponse = new BlobBatchOperationResponse<>(expectedStatusCodes);
-        batchMapping.put(id, batchOperationResponse);
+        batchOperationQueue.add(new BlobBatchOperation<>(batchOperationResponse, response, urlPath));
+
         return batchOperationResponse;
     }
 
@@ -309,49 +277,30 @@ public final class BlobBatch {
         }
     }
 
-    Flux<ByteBuffer> getBody() {
+    Mono<BlobBatchOperationInfo> prepareBlobBatchSubmission() {
         if (batchOperationQueue.isEmpty()) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException("Empty batch requests aren't allowed."));
+            return Mono.error(new UnsupportedOperationException("Empty batch requests aren't allowed."));
         }
 
-        // 'flatMap' the requests to trigger them to run through the pipeline.
-        Disposable disposable = Flux.fromStream(batchOperationQueue.stream())
-            .flatMap(batchOperation -> batchOperation)
-            .subscribe();
+        BlobBatchOperationInfo operationInfo = new BlobBatchOperationInfo();
+        Deque<BlobBatchOperation<?>> operations = batchOperationQueue;
 
-        /* Wait until the 'Flux' is disposed of (aka complete) instead of blocking as this will prevent Reactor from
-         * throwing an exception if this was ran in a Reactor thread.
-         */
-        while (!disposable.isDisposed()) {
-            // This is used as opposed to block as it won't trigger an exception if ran in a Reactor thread.
-        }
+        // Begin a new batch.
+        batchOperationQueue = new ConcurrentLinkedDeque<>();
 
-        this.batchRequest.add(ByteBuffer.wrap(
-            String.format("--%s--%s", batchBoundary, BlobBatchHelper.HTTP_NEWLINE).getBytes(StandardCharsets.UTF_8)));
-
-        return Flux.fromIterable(batchRequest);
-    }
-
-    long getContentLength() {
-        long contentLength = 0;
-
-        for (ByteBuffer request : batchRequest) {
-            contentLength += request.remaining();
-        }
-
-        return contentLength;
-    }
-
-    String getContentType() {
-        return contentType;
-    }
-
-    BlobBatchOperationResponse<?> getBatchRequest(int contentId) {
-        return batchMapping.get(contentId);
-    }
-
-    int getOperationCount() {
-        return batchMapping.size();
+        return Flux.generate(sink -> {
+            if (operations.isEmpty()) {
+                operationInfo.finalizeBatchOperations();
+                sink.complete();
+            } else {
+                BlobBatchOperation<?> batchOperation = operations.pop();
+                sink.next(batchOperation.getResponse()
+                    .subscriberContext(Context.of(BATCH_REQUEST_URL_PATH, batchOperation.getRequestUrlPath(),
+                        BATCH_OPERATION_RESPONSE, batchOperation.getBatchOperationResponse(),
+                        BATCH_OPERATION_INFO, operationInfo))
+                    .subscribe());
+            }
+        }).then(Mono.just(operationInfo));
     }
 
     /*
@@ -368,9 +317,6 @@ public final class BlobBatch {
         headers.entrySet().removeIf(header -> header.getValue() == null);
 
         context.getHttpRequest().setHeaders(new HttpHeaders(headers));
-
-        // Add the "Content-Id" header which allows this request to be mapped to the response.
-        context.getHttpRequest().setHeader(CONTENT_ID, context.getData(BATCH_REQUEST_CONTENT_ID).get().toString());
 
         return next.process();
     }
@@ -396,38 +342,12 @@ public final class BlobBatch {
      * This will "send" the batch operation request when triggered, it simply acts as a way to build and write the
      * batch operation into the overall request and then returns nothing as the response.
      */
-    private Mono<HttpResponse> setupBatchOperation(HttpRequest request) {
-        return Mono.fromRunnable(() -> {
-            int contentId = Integer.parseInt(request.getHeaders().remove(CONTENT_ID).getValue());
+    private Mono<HttpResponse> buildBatchOperation(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        BlobBatchOperationInfo operationInfo = (BlobBatchOperationInfo) context.getData(BATCH_OPERATION_INFO).get();
+        BlobBatchOperationResponse<?> batchOperationResponse =
+            (BlobBatchOperationResponse<?>) context.getData(BATCH_OPERATION_RESPONSE).get();
+        operationInfo.addBatchOperation(batchOperationResponse, context.getHttpRequest());
 
-            StringBuilder batchRequestBuilder = new StringBuilder();
-            appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
-            appendWithNewline(batchRequestBuilder, BATCH_OPERATION_CONTENT_TYPE);
-            appendWithNewline(batchRequestBuilder, BATCH_OPERATION_CONTENT_TRANSFER_ENCODING);
-            appendWithNewline(batchRequestBuilder, String.format(BATCH_OPERATION_CONTENT_ID_TEMPLATE, contentId));
-            batchRequestBuilder.append(BlobBatchHelper.HTTP_NEWLINE);
-
-            String method = request.getHttpMethod().toString();
-            String urlPath = request.getUrl().getPath();
-            String urlQuery = request.getUrl().getQuery();
-            if (!CoreUtils.isNullOrEmpty(urlQuery)) {
-                urlPath = urlPath + "?" + urlQuery;
-            }
-            appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
-
-            request.getHeaders().stream()
-                .filter(header -> !X_MS_VERSION.equalsIgnoreCase(header.getName()))
-                .forEach(header -> appendWithNewline(batchRequestBuilder,
-                    String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
-
-            batchRequestBuilder.append(BlobBatchHelper.HTTP_NEWLINE);
-
-            batchRequest.add(ByteBuffer.wrap(batchRequestBuilder.toString().getBytes(StandardCharsets.UTF_8)));
-            batchMapping.get(contentId).setRequest(request);
-        });
-    }
-
-    private void appendWithNewline(StringBuilder stringBuilder, String value) {
-        stringBuilder.append(value).append(BlobBatchHelper.HTTP_NEWLINE);
+        return Mono.empty();
     }
 }
