@@ -256,10 +256,9 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      */
     private static String parseComponentValue(String spanName) {
         if (spanName != null && spanName.length() > 0) {
-            int componentNameStartIndex = spanName.indexOf(".");
             int componentNameEndIndex = spanName.lastIndexOf(".");
-            if (componentNameStartIndex != -1 && componentNameEndIndex != -1) {
-                return spanName.substring(componentNameStartIndex + 1, componentNameEndIndex);
+            if (componentNameEndIndex != -1) {
+                return spanName.substring(0, componentNameEndIndex);
             }
         }
         return "";
