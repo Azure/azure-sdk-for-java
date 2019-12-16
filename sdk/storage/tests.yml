@@ -4,11 +4,11 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       Matrix:
-          Windows - Java 11:
-              OSName: 'Windows'
-              OSVmImage: 'windows-2019'
-              JavaVersion: '1.11'
-              DisplayName: 'Windows - Java 11'
+        Windows - Java 8:
+            OSName: 'Windows'
+            OSVmImage: 'windows-2019'
+            JavaVersion: '1.8'
+            DisplayName: 'Windows - Java 8'
       ServiceDirectory: storage
       EnvVars:
         AZURE_TEST_MODE: LIVE
