@@ -10,11 +10,7 @@
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-arm-parent</artifactId>
     <version>1.2.0</version>
-<<<<<<< HEAD
-    <relativePath>../../pom.management.xml</relativePath>
-=======
     <relativePath>../../parents/azure-arm-parent</relativePath>
->>>>>>> Repoint profile parents.
   </parent>
   <artifactId>azure-profile-parent</artifactId>
   <version>1.0.0-beta</version>
