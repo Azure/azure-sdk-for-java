@@ -196,7 +196,7 @@ public final class RestProxy implements InvocationHandler {
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        String spanName = String.format("Azure.%s/%s", interfaceParser.getServiceName(), method.getName());
+        String spanName = String.format("%s.%s", interfaceParser.getServiceName(), method.getName());
         context = TracerProxy.setSpanName(spanName, context);
         return TracerProxy.start(spanName, context);
     }

@@ -78,7 +78,7 @@ public final class ConfigurationClientBuilder {
     private static final String ACCEPT_HEADER = "Accept";
     private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
     // This is properties file's name.
-    private static final String APP_CONFIG_PROPERTIES = "azure-appconfig.properties";
+    private static final String APP_CONFIG_PROPERTIES = "azure-data-appconfiguration.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);

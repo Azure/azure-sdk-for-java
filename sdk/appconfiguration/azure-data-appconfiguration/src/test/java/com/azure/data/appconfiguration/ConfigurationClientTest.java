@@ -67,7 +67,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @Override
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
-        client.listConfigurationSettings(new SettingSelector().setKeys(keyPrefix + "*")).forEach(configurationSetting -> {
+        client.listConfigurationSettings(new SettingSelector().setKeyFilter(keyPrefix + "*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
             if (configurationSetting.isReadOnly()) {
                 client.setReadOnlyWithResponse(configurationSetting, false, Context.NONE);
@@ -386,8 +386,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue(value).setLabel(label);
 
         assertConfigurationEquals(expected, client.setConfigurationSettingWithResponse(expected, false, Context.NONE).getValue());
-        assertConfigurationEquals(expected, client.listConfigurationSettings(new SettingSelector().setKeys(key).setLabels(label)).iterator().next());
-        assertConfigurationEquals(expected, client.listConfigurationSettings(new SettingSelector().setKeys(key)).iterator().next());
+        assertConfigurationEquals(expected, client.listConfigurationSettings(new SettingSelector().setKeyFilter(key).setLabelFilter(label)).iterator().next());
+        assertConfigurationEquals(expected, client.listConfigurationSettings(new SettingSelector().setKeyFilter(key)).iterator().next());
     }
 
     /**
@@ -403,7 +403,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(setting, client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue());
             assertConfigurationEquals(setting2, client.addConfigurationSettingWithResponse(setting2, Context.NONE).getValue());
 
-            return client.listConfigurationSettings(new SettingSelector().setKeys(key, key2));
+            return client.listConfigurationSettings(new SettingSelector().setKeyFilter(key + "," + key2));
         });
     }
 
@@ -421,7 +421,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(setting, client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue());
             assertConfigurationEquals(setting2, client.addConfigurationSettingWithResponse(setting2, Context.NONE).getValue());
 
-            return client.listConfigurationSettings(new SettingSelector().setKeys(key).setLabels(label, label2));
+            return client.listConfigurationSettings(new SettingSelector().setKeyFilter(key).setLabelFilter(label + "," + label2));
         });
     }
 
@@ -458,13 +458,13 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         // Gets all versions of this value so we can get the one we want at that particular date.
-        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeys(keyName)).stream().collect(Collectors.toList());
+        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).stream().collect(Collectors.toList());
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
 
         // We want to fetch the configuration setting when we first updated its value.
-        SettingSelector options = new SettingSelector().setKeys(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
+        SettingSelector options = new SettingSelector().setKeyFilter(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
         assertConfigurationEquals(updated, (client.listConfigurationSettings(options).stream().collect(Collectors.toList())).get(0));
     }
 
@@ -485,13 +485,13 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertConfigurationEquals(updated2, client.setConfigurationSettingWithResponse(updated2, false, Context.NONE).getValue());
 
         // Get all revisions for a key, they are listed in descending order.
-        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeys(keyName)).stream().collect(Collectors.toList());
+        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).stream().collect(Collectors.toList());
         assertConfigurationEquals(updated2, revisions.get(0));
         assertConfigurationEquals(updated, revisions.get(1));
         assertConfigurationEquals(original, revisions.get(2));
 
         // Verifies that we can select specific fields.
-        revisions = client.listRevisions(new SettingSelector().setKeys(keyName).setFields(SettingFields.KEY, SettingFields.ETAG)).stream().collect(Collectors.toList());
+        revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName).setFields(SettingFields.KEY, SettingFields.ETAG)).stream().collect(Collectors.toList());
         validateListRevisions(updated2, revisions.get(0));
         validateListRevisions(updated, revisions.get(1));
         validateListRevisions(original, revisions.get(2));
@@ -511,7 +511,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(testInput.get(2), client.addConfigurationSettingWithResponse(testInput.get(2), Context.NONE).getValue());
             assertConfigurationEquals(testInput.get(3), client.setConfigurationSettingWithResponse(testInput.get(3), false, Context.NONE).getValue());
 
-            return client.listRevisions(new SettingSelector().setKeys(key, key2));
+            return client.listRevisions(new SettingSelector().setKeyFilter(key + "," + key2));
         });
     }
 
@@ -530,7 +530,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(testInput.get(2), client.addConfigurationSettingWithResponse(testInput.get(2), Context.NONE).getValue());
             assertConfigurationEquals(testInput.get(3), client.setConfigurationSettingWithResponse(testInput.get(3), false, Context.NONE).getValue());
 
-            return client.listRevisions(new SettingSelector().setKeys(key).setLabels(label, label2));
+            return client.listRevisions(new SettingSelector().setKeyFilter(key).setLabelFilter(label + "," + label2));
         });
     }
 
@@ -556,14 +556,14 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         // Gets all versions of this value.
-        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeys(keyName)).stream().collect(Collectors.toList());
+        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).stream().collect(Collectors.toList());
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
 
         // We want to fetch all the revisions that existed up and including when the first revision was created.
         // Revisions are returned in descending order from creation date.
-        SettingSelector options = new SettingSelector().setKeys(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
+        SettingSelector options = new SettingSelector().setKeyFilter(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
         revisions = client.listRevisions(options).stream().collect(Collectors.toList());
         assertConfigurationEquals(updated, revisions.get(0));
         assertConfigurationEquals(original, revisions.get(1));
@@ -580,7 +580,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix), false, Context.NONE).getValue();
         }
 
-        SettingSelector filter = new SettingSelector().setKeys(keyPrefix).setLabels(labelPrefix);
+        SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
         assertEquals(numberExpected, client.listRevisions(filter).stream().collect(Collectors.toList()).size());
     }
 
@@ -595,7 +595,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix), false, Context.NONE).getValue();
         }
 
-        SettingSelector filter = new SettingSelector().setKeys(keyPrefix).setLabels(labelPrefix);
+        SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
         PagedIterable<ConfigurationSetting> configurationSettingPagedIterable = client.listRevisions(filter);
         assertEquals(numberExpected, configurationSettingPagedIterable.stream().collect(Collectors.toList()).size());
 
@@ -613,7 +613,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix), false, Context.NONE).getValue();
         }
 
-        SettingSelector filter = new SettingSelector().setKeys(keyPrefix).setLabels(labelPrefix);
+        SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
 
         PagedIterable<ConfigurationSetting> configurationSettingPagedIterable = client.listRevisions(filter);
         List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
@@ -638,7 +638,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         for (int value = 0; value < numberExpected; value++) {
             client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix), false, Context.NONE).getValue();
         }
-        SettingSelector filter = new SettingSelector().setKeys(keyPrefix + "-*").setLabels(labelPrefix);
+        SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix + "-*").setLabelFilter(labelPrefix);
 
         assertEquals(numberExpected, client.listConfigurationSettings(filter).stream().count());
     }
@@ -667,7 +667,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @Disabled
     public void deleteAllSettings() {
 
-        client.listConfigurationSettings(new SettingSelector().setKeys("*")).forEach(configurationSetting -> {
+        client.listConfigurationSettings(new SettingSelector().setKeyFilter("*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
             client.deleteConfigurationSettingWithResponse(configurationSetting, false, Context.NONE).getValue();
         });

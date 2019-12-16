@@ -49,6 +49,11 @@ public class PathClientJavaDocCodeSamples {
         System.out.printf("Last Modified Time:%s", client.create().getLastModified());
         // END: com.azure.storage.file.datalake.DataLakePathClient.create
 
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.create#boolean
+        boolean overwrite = true;
+        System.out.printf("Last Modified Time:%s", client.create(true).getLastModified());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.create#boolean
+
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentLanguage("en-US")
