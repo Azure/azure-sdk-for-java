@@ -54,10 +54,14 @@ class RestorableDroppedDatabasesImpl extends WrapperImpl<RestorableDroppedDataba
     public Observable<RestorableDroppedDatabase> getAsync(String resourceGroupName, String serverName, String restorableDroppededDatabaseId) {
         RestorableDroppedDatabasesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, restorableDroppededDatabaseId)
-        .map(new Func1<RestorableDroppedDatabaseInner, RestorableDroppedDatabase>() {
+        .flatMap(new Func1<RestorableDroppedDatabaseInner, Observable<RestorableDroppedDatabase>>() {
             @Override
-            public RestorableDroppedDatabase call(RestorableDroppedDatabaseInner inner) {
-                return wrapModel(inner);
+            public Observable<RestorableDroppedDatabase> call(RestorableDroppedDatabaseInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RestorableDroppedDatabase)wrapModel(inner));
+                }
             }
        });
     }

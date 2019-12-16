@@ -57,10 +57,14 @@ class DatabaseTableAuditingPoliciesImpl extends WrapperImpl<DatabaseTableAuditin
     public Observable<DatabaseTableAuditingPolicy> getAsync(String resourceGroupName, String serverName, String databaseName) {
         DatabaseTableAuditingPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName)
-        .map(new Func1<DatabaseTableAuditingPolicyInner, DatabaseTableAuditingPolicy>() {
+        .flatMap(new Func1<DatabaseTableAuditingPolicyInner, Observable<DatabaseTableAuditingPolicy>>() {
             @Override
-            public DatabaseTableAuditingPolicy call(DatabaseTableAuditingPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<DatabaseTableAuditingPolicy> call(DatabaseTableAuditingPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DatabaseTableAuditingPolicy)wrapModel(inner));
+                }
             }
        });
     }
