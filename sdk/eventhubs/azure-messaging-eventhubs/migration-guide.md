@@ -22,6 +22,7 @@ For users new to the Java SDK for Event Hubs, please see the [README for azure-m
   - [Migrating code from `EventHubClient` to `EventHubProducerAsyncClient` for sending events with partition key](#migrating-code-from-eventhubclient-to-eventhubproducerasyncclient-for-sending-events-with-partition-key)
   - [Migrating code from `PartitionReceiver` to `EventHubConsumerAsyncClient` for receiving events in batches](#migrating-code-from-partitionreceiver-to-eventhubconsumerasyncclient-for-receiving-events-in-batches)
   - [Migrating code from `EventProcessorHost` to `EventProcessorClient` for receiving events](#migrating-code-from-eventprocessorhost-to-eventprocessorclient-for-receiving-events)
+- [Additional samples](#additional-samples)
 
 ## Prerequisites
 Java Development Kit (JDK) with version 8 or above
@@ -237,7 +238,7 @@ set before calling `createBatch(CreateBatchOptions)`.
 So in v3:
 ```java
 EventHubClient client = EventHubClient.createFromConnectionStringSync(
-    "connection-string-for-an-event-hub", 
+    "connection-string-for-an-event-hub",
     Executors.newScheduledThreadPool(5));
 
 BatchOptions batchOptions = new BatchOptions().with(options -> options.partitionKey = "a-key");
@@ -415,6 +416,12 @@ private static void onEvent(EventContext eventContext) {
     System.out.println("Contents: " + new String(event.getBody(), StandardCharsets.UTF_8));
 }
 ```
+
+## Additional samples
+
+More examples can be found at:
+- [Event Hubs samples](../azure-messaging-eventhubs/src/samples/README.md)
+- [Event Hubs Azure Storage checkpoint store samples](../azure-messaging-eventhubs-checkpointstore-blob/src/samples/README.md)
 
 <!-- Links -->
 [azure-eventhubs-eph]: https://search.maven.org/artifact/com.microsoft.azure/azure-eventhubs-eph
