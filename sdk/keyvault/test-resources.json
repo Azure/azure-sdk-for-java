@@ -9,6 +9,12 @@
             "defaultValue": "azure-sdk-java-key-vault",
             "type": "String"
         },
+        "tenant_id": {
+            "type": "String"
+        },
+        "test_app_id": {
+            "type": "String"
+        },
         "endpointSuffix": {
             "defaultValue": "vault.azure.net",
             "type": "String"
@@ -16,20 +22,48 @@
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "endpointValue": "[concat('https://',parameters('baseName'), '-', parameters('vaults_azure_sdk_java_key_vault_name'), '.', parameters('endpointSuffix'))]"
+        "azureKeyVaultUrl": "[format('https://{0}.{1}', parameters('baseName'), parameters('endpointSuffix'))]"
     },
     "resources": [
         {
             "type": "Microsoft.KeyVault/vaults",
             "apiVersion": "2016-10-01",
-            "name": "[parameters('vaults_azure_sdk_java_key_vault_name')]",
-            "location": "[resourceGroup().location]"
+            "name": "[parameters('baseName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "standard"
+                },
+                "tenantId": "[parameters('tenant_id')]",
+                "accessPolicies": [
+                    {
+                        "tenantId": "[parameters('tenant_id')]",
+                        "objectId": "[parameters('test_app_id')]",
+                        "permissions": {
+                            "keys": [
+                                "all"
+                            ],
+                            "secrets": [
+                                "all"
+                            ],
+                            "certificates": [
+                                "all"
+                            ]
+                        }
+                    }
+                ],
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false,
+                "enableSoftDelete": true
+            }
         }
     ],
     "outputs": {
         "AZURE_KEYVAULT_ENDPOINT": {
             "type": "string",
-            "value":  "[ parameters('endpointValue')]"
+            "value": "[variables('azureKeyVaultUrl')]"
         }
     }
 }
