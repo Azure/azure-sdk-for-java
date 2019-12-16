@@ -18,6 +18,7 @@ public class AppendBlobItem {
     private final byte[] contentMd5;
     private final boolean isServerEncrypted;
     private final String encryptionKeySha256;
+    private final String encryptionScope;
     private final String blobAppendOffset;
     private final Integer blobCommittedBlockCount;
 
@@ -31,7 +32,9 @@ public class AppendBlobItem {
      * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
      * @param blobAppendOffset The offset at which the block was committed to the block blob.
      * @param blobCommittedBlockCount The number of committed blocks in the block blob.
+     * @deprecated Please use the overload.
      */
+    @Deprecated
     public AppendBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final boolean isServerEncrypted, final String encryptionKeySha256, final String blobAppendOffset,
         final Integer blobCommittedBlockCount) {
@@ -40,6 +43,32 @@ public class AppendBlobItem {
         this.contentMd5 = CoreUtils.clone(contentMd5);
         this.isServerEncrypted = isServerEncrypted;
         this.encryptionKeySha256 = encryptionKeySha256;
+        this.encryptionScope = null;
+        this.blobAppendOffset = blobAppendOffset;
+        this.blobCommittedBlockCount = blobCommittedBlockCount;
+    }
+
+    /**
+     * Constructs an {@link AppendBlobItem}.
+     *
+     * @param eTag ETag of the append blob.
+     * @param lastModified Last modified time of the append blob.
+     * @param contentMd5 Content MD5 of the append blob.
+     * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
+     * @param encryptionKeySha256 The encryption key used to encrypt the append blob.
+     * @param encryptionScope The encryption scope used to encrypt the append blob.
+     * @param blobAppendOffset The offset at which the block was committed to the append blob.
+     * @param blobCommittedBlockCount The number of committed blocks in the append blob.
+     */
+    public AppendBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
+        final boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
+        final String blobAppendOffset, final Integer blobCommittedBlockCount) {
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.contentMd5 = CoreUtils.clone(contentMd5);
+        this.isServerEncrypted = isServerEncrypted;
+        this.encryptionKeySha256 = encryptionKeySha256;
+        this.encryptionScope = encryptionScope;
         this.blobAppendOffset = blobAppendOffset;
         this.blobCommittedBlockCount = blobCommittedBlockCount;
     }
@@ -70,6 +99,13 @@ public class AppendBlobItem {
      */
     public String getEncryptionKeySha256() {
         return encryptionKeySha256;
+    }
+
+    /**
+     * @return the encryption scope that was used to encrypt the append blob
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
     }
 
     /**

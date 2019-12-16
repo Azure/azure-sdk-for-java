@@ -1,5 +1,9 @@
 # Change Log azure-storage-blob
 
+## Version XX.X.X (XXXX-XX-XX)
+- Added support for encryption scopes service, container and blob builders now accept an encryption scope parameter and
+service and container builders accept a BlobContainerEncryptionScope parameter.
+
 ## Version 12.1.0 (2019-12-04)
 This package's
 This package's

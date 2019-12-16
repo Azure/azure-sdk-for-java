@@ -19,10 +19,13 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
+import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CpkScopeInfo;
+import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -69,7 +72,10 @@ public final class BlobServiceAsyncClient {
 
     private final String accountName;
     private final BlobServiceVersion serviceVersion;
-    private final CpkInfo customerProvidedKey;
+    private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
+    private final EncryptionScope encryptionScope; // only used to pass down to blob clients
+    private final BlobContainerEncryptionScope blobContainerEncryptionScope; // only used to pass down to container
+    // clients
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
@@ -80,9 +86,12 @@ public final class BlobServiceAsyncClient {
      * @param accountName The storage account name.
      * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
-        CpkInfo customerProvidedKey) {
+        CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
+        BlobContainerEncryptionScope blobContainerEncryptionScope) {
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -92,6 +101,8 @@ public final class BlobServiceAsyncClient {
 
         this.accountName = accountName;
         this.customerProvidedKey = customerProvidedKey;
+        this.encryptionScope = encryptionScope;
+        this.blobContainerEncryptionScope = blobContainerEncryptionScope;
     }
 
     /**
@@ -114,7 +125,7 @@ public final class BlobServiceAsyncClient {
 
         return new BlobContainerAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getAccountUrl(), containerName).toString(), getServiceVersion(),
-            getAccountName(), containerName, customerProvidedKey);
+            getAccountName(), containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 
     /**
