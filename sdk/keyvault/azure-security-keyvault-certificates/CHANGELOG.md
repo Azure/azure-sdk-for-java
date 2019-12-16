@@ -1,6 +1,12 @@
 # Release History
+## 4.0.0-beta.7 (2019-12-17)
+- `beginDeleteCertificate` and `beginRecoverDeletedCertificate` polling operation to be `SUCCESSFULLY_COMPLETED` on 403.
+- `CertificateClient.createIssuer` and `CertificateAsyncClient.createIssuer` now require a `CertificateIssuer` with both a name and provider.
+- Removed `setProperties` from `KeyVaultCertificate` model.
+- Removed `AdministratorContact` constructor overloads and introduced setters for all parameters.
+- Removed `CertificateContact` constructor overloads and introduced setters for all parameters.
 
-## 4.0.0-beta.7 (Unreleased)
+For details on the Azure SDK for Java (December 2019 beta) release refer to the [release announcement](https://aka.ms/azure-sdk-beta7-java).
 
 ## 4.0.0-beta.6 (2019-12-04)
 For details on the Azure SDK for Java (November 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).

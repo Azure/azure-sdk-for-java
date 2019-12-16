@@ -152,7 +152,6 @@ public class CertificateProperties {
      * @return the value of the URL for the Azure KeyVault service.
      */
     public String getVaultUrl() {
-        unpackId(this.id);
         return this.vaultUrl;
     }
 

@@ -382,6 +382,18 @@ public class CertificateClientTest extends CertificateClientTestBase {
     }
 
     @Test
+    public void createIssuerEmptyName() {
+        assertRestException(() -> client.createIssuer(new CertificateIssuer("", "")),
+            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
+    }
+
+    @Test
+    public void createIssuerNullProvider() {
+        assertRestException(() -> client.createIssuer(new CertificateIssuer("", null)),
+            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
+    }
+
+    @Test
     public void createIssuerNull() {
         assertRunnableThrowsException(() -> client.createIssuer(null), NullPointerException.class);
     }

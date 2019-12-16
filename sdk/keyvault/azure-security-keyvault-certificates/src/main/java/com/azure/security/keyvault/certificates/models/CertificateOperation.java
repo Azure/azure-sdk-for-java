@@ -196,7 +196,6 @@ public final class CertificateOperation {
      * @return the value of the URL for the Azure KeyVault service.
      */
     public String getVaultUrl() {
-        unpackId(this.id);
         return this.vaultUrl;
     }
 
@@ -206,7 +205,6 @@ public final class CertificateOperation {
      * @return the name of the certificate.
      */
     public String getName() {
-        unpackId(this.id);
         return this.name;
     }
 

@@ -99,7 +99,7 @@ public final class AdministratorContact {
     /**
      * Set the contact of the admin.
      * @param phone the enabled status to set
-     * @return the AdministratorContact object itself.
+     * @return the updated AdministratorContact object itself.
      */
     public AdministratorContact setPhone(String phone) {
         this.phone = phone;

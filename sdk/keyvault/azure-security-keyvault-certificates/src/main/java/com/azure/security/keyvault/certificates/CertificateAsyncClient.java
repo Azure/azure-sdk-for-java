@@ -446,7 +446,7 @@ public final class CertificateAsyncClient {
                             pollingContext.getLatestResponse().getValue())));
                     }
                     if (deletedCertificateResponse.getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.fromString("FORBIDDEN", true),
+                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                             pollingContext.getLatestResponse().getValue())));
                     }
                     return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deletedCertificateResponse.getValue())));
@@ -617,7 +617,7 @@ public final class CertificateAsyncClient {
                             pollingContext.getLatestResponse().getValue())));
                     }
                     if (certificateResponse.getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.fromString("FORBIDDEN", true),
+                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                             pollingContext.getLatestResponse().getValue())));
                     }
                     return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
@@ -1192,7 +1192,8 @@ public final class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuerWithResponse#CertificateIssuer}
      *
-     * @param issuer The configuration of the certificate issuer to be created.
+     * @param issuer The configuration of the certificate issuer to be created. Use
+     * {@link CertificateIssuer#CertificateIssuer(String, String)} to initialize the issuer object
      * @throws ResourceModifiedException when invalid certificate issuer {@code issuer} configuration is provided.
      * @throws HttpResponseException when a certificate issuer with {@link CertificateIssuer#getName() name} is empty string.
      * @return A {@link Mono} containing  a {@link Response} whose {@link Response#getValue() value} contains the created {@link CertificateIssuer certificate issuer}.
@@ -1395,7 +1396,8 @@ public final class CertificateAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#CertificateIssuer}
      *
-     * @param issuer The {@link CertificateIssuer issuer} with updated properties.
+     * @param issuer The {@link CertificateIssuer issuer} with updated properties. Use
+     * {@link CertificateIssuer#CertificateIssuer(String)} to initialize the issuer object
      * @throws NullPointerException if {@code issuer} is {@code null}.
      * @throws ResourceNotFoundException when a certificate issuer with {@link CertificateIssuer#getName() name} doesn't exist in the key vault.
      * @throws HttpResponseException if {@link CertificateIssuer#getName() name} is empty string.
