@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.Error;
+import com.azure.ai.textanalytics.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.LinkedEntityResult;
@@ -68,7 +69,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
 
     enum TestEndpoint {
-        LANGUAGE, NAMED_ENTITY, LINKED_ENTITY
+        LANGUAGE, NAMED_ENTITY, LINKED_ENTITY, KEY_PHRASES
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
@@ -136,6 +137,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     public abstract void detectLanguagesBatchListCountryHint();
 
+    // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {
         final List<DetectLanguageInput> detectLanguageInputs = Arrays.asList(
@@ -165,22 +167,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(inputs, "en");
     }
 
-    static void recognizeNamedEntitiesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
-        final List<String> inputs = Arrays.asList(
-            "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
-
-        testRunner.accept(inputs, "en");
-    }
     static void detectLanguageStringInputRunner(Consumer<List<String>> testRunner) {
         final List<String> inputs = Arrays.asList(
             "This is written in English", "Este es un document escrito en Español.", "~@!~:)");
-
-        testRunner.accept(inputs);
-    }
-
-    static void recognizeNamedEntityStringInputRunner(Consumer<List<String>> testRunner) {
-        final List<String> inputs = Arrays.asList(
-            "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
         testRunner.accept(inputs);
     }
@@ -195,12 +184,38 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(detectLanguageInputs);
     }
 
+    // Named Entity runner
+
+    static void recognizeNamedEntityStringInputRunner(Consumer<List<String>> testRunner) {
+        final List<String> inputs = Arrays.asList(
+            "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
+
+        testRunner.accept(inputs);
+    }
+
+    static void recognizeNamedEntitiesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
+        final List<String> inputs = Arrays.asList(
+            "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
+
+        testRunner.accept(inputs, "en");
+    }
+
     static void recognizeBatchNamedEntityRunner(Consumer<List<TextDocumentInput>> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = Arrays.asList(
             new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
             new TextDocumentInput("1", "I work at Microsoft."));
         testRunner.accept(textDocumentInputs);
     }
+
+    void recognizeBatchNamedEntitiesShowStatsRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
+        final List<TextDocumentInput> textDocumentInputs = Arrays.asList(
+            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
+            new TextDocumentInput("1", "I work at Microsoft."));
+        testRunner.accept(textDocumentInputs, setTextAnalyticsRequestOptions());
+    }
+
+    // Pii Entity runner
 
     static void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         final List<String> inputs = Arrays.asList(
@@ -209,6 +224,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
         testRunner.accept(inputs, "en");
     }
+
     static void recognizePiiStringInputRunner(Consumer<List<String>> testRunner) {
         final List<String> inputs = Arrays.asList(
             "Microsoft employee with ssn 859-98-0987 is using our awesome API's.",
@@ -232,13 +248,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(textDocumentInputs, setTextAnalyticsRequestOptions());
     }
 
-    void recognizeBatchNamedEntitiesShowStatsRunner(
-        BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
-        final List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
-            new TextDocumentInput("1", "I work at Microsoft."));
-        testRunner.accept(textDocumentInputs, setTextAnalyticsRequestOptions());
-    }
+    // Linked Entity runner
 
     void recognizeBatchLinkedEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
@@ -255,6 +265,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
         testRunner.accept(inputs, "en");
     }
+
     static void recognizeLinkedStringInputRunner(Consumer<List<String>> testRunner) {
         final List<String> inputs = Arrays.asList(
             "Microsoft employee with ssn 859-98-0987 is using our awesome API's.",
@@ -264,6 +275,39 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     static void recognizeBatchLinkedEntityRunner(Consumer<List<TextDocumentInput>> testRunner) {
+        final List<TextDocumentInput> textDocumentInputs = Arrays.asList(
+            new TextDocumentInput("0", "Microsoft employee with ssn 859-98-0987 is using our awesome API's."),
+            new TextDocumentInput("1", "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check."));
+        testRunner.accept(textDocumentInputs);
+    }
+
+    // Key Phrases runner
+
+    void recognizeBatchKeyPhrasesShowStatsRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
+        final List<TextDocumentInput> textDocumentInputs = Arrays.asList(
+            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
+            new TextDocumentInput("1", "I work at Microsoft."));
+        testRunner.accept(textDocumentInputs, setTextAnalyticsRequestOptions());
+    }
+
+    static void recognizeKeyPhrasesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
+        final List<String> inputs = Arrays.asList(
+            "Microsoft employee with ssn 859-98-0987 is using our awesome API's.",
+            "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check.");
+
+        testRunner.accept(inputs, "en");
+    }
+
+    static void recognizeKeyPhrasesStringInputRunner(Consumer<List<String>> testRunner) {
+        final List<String> inputs = Arrays.asList(
+            "Microsoft employee with ssn 859-98-0987 is using our awesome API's.",
+            "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check.");
+
+        testRunner.accept(inputs);
+    }
+
+    static void recognizeBatchKeyPhrasesRunner(Consumer<List<TextDocumentInput>> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = Arrays.asList(
             new TextDocumentInput("0", "Microsoft employee with ssn 859-98-0987 is using our awesome API's."),
             new TextDocumentInput("1", "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check."));
@@ -356,6 +400,22 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         return new DocumentResultCollection<>(linkedEntityResultList, "2019-10-01", textBatchStatistics);
     }
 
+    static DocumentResultCollection<KeyPhraseResult> getExpectedBatchKeyPhrases() {
+        List<String> keyPhrasesList1 = Arrays.asList("input text", "world");
+        List<String> keyPhrasesList2 = Arrays.asList("monde");
+
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(49).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(21).setTransactionCount(1);
+
+        KeyPhraseResult keyPhraseResult1 = new KeyPhraseResult("0", textDocumentStatistics1, null, keyPhrasesList1);
+        KeyPhraseResult keyPhraseResult2 = new KeyPhraseResult("1", textDocumentStatistics2, null, keyPhrasesList2);
+
+        TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
+        List<KeyPhraseResult> keyPhraseResultList = Arrays.asList(keyPhraseResult1, keyPhraseResult2);
+
+        return new DocumentResultCollection<>(keyPhraseResultList, "2019-10-01", textBatchStatistics);
+    }
+
     // Named Entities
     @Test
     public abstract void recognizeEntitiesForTextInput();
@@ -372,6 +432,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     public abstract void recognizeEntitiesForBatchInputShowStatistics();
 
+    @Test
+    public abstract void recognizeEntitiesForBatchStringInput();
+
+    @Test
+    public abstract void recognizeEntitiesForListLanguageHint();
+
+    // Pii Entities
     @Test
     public abstract void recognizePiiEntitiesForTextInput();
 
@@ -393,12 +460,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     public abstract void recognizePiiEntitiesForListLanguageHint();
 
-    @Test
-    public abstract void recognizeEntitiesForBatchStringInput();
-
-    @Test
-    public abstract void recognizeEntitiesForListLanguageHint();
-
+    // Linked Entities
     @Test
     public abstract void recognizeLinkedEntitiesForTextInput();
 
@@ -420,7 +482,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     public abstract void recognizeLinkedEntitiesForListLanguageHint();
 
-
+    // Key Phrases
 
     @Test
     public abstract void recognizeKeyPhrasesForTextInput();
@@ -442,8 +504,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     public abstract void recognizeKeyPhrasesForListLanguageHint();
-
-
 
     private TextAnalyticsRequestOptions setTextAnalyticsRequestOptions() {
         this.showStatistics = true;
@@ -536,25 +596,47 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 });
                 break;
             case LINKED_ENTITY:
-                final List<NamedEntityResult> linkedEntityResults = expectedResult.stream()
-                    .filter(element -> element instanceof NamedEntityResult)
-                    .map(element -> (NamedEntityResult) element)
+                final List<LinkedEntityResult> linkedEntityResults = expectedResult.stream()
+                    .filter(element -> element instanceof LinkedEntityResult)
+                    .map(element -> (LinkedEntityResult) element)
                     .collect(Collectors.toList());
 
-                final List<NamedEntityResult> actualLinkedEntityResults = actualResult.stream()
-                    .filter(element -> element instanceof NamedEntityResult)
-                    .map(element -> (NamedEntityResult) element)
+                final List<LinkedEntityResult> actualLinkedEntityResults = actualResult.stream()
+                    .filter(element -> element instanceof LinkedEntityResult)
+                    .map(element -> (LinkedEntityResult) element)
                     .collect(Collectors.toList());
                 assertEquals(linkedEntityResults.size(), actualLinkedEntityResults.size());
 
                 actualLinkedEntityResults.forEach(actualItem -> {
-                    Optional<NamedEntityResult> optionalExpectedItem = linkedEntityResults.stream().filter(
+                    Optional<LinkedEntityResult> optionalExpectedItem = linkedEntityResults.stream().filter(
                         expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId())).findFirst();
                     assertTrue(optionalExpectedItem.isPresent());
-                    NamedEntityResult expectedItem = optionalExpectedItem.get();
+                    LinkedEntityResult expectedItem = optionalExpectedItem.get();
                     if (actualItem.getError() == null && this.showStatistics) {
                         validateDocumentStatistics(expectedItem.getStatistics(), actualItem.getStatistics());
-                        validateNamedEntities(expectedItem.getNamedEntities(), actualItem.getNamedEntities());
+                        validateLinkedEntities(expectedItem.getLinkedEntities(), actualItem.getLinkedEntities());
+                    }
+                });
+            case KEY_PHRASES:
+                final List<KeyPhraseResult> keyPhraseResults = expectedResult.stream()
+                    .filter(element -> element instanceof KeyPhraseResult)
+                    .map(element -> (KeyPhraseResult) element)
+                    .collect(Collectors.toList());
+
+                final List<KeyPhraseResult> actualKeyPhraseResults = actualResult.stream()
+                    .filter(element -> element instanceof KeyPhraseResult)
+                    .map(element -> (KeyPhraseResult) element)
+                    .collect(Collectors.toList());
+                assertEquals(keyPhraseResults.size(), actualKeyPhraseResults.size());
+
+                actualKeyPhraseResults.forEach(actualItem -> {
+                    Optional<KeyPhraseResult> optionalExpectedItem = keyPhraseResults.stream().filter(
+                        expectedEachItem -> actualItem.getId().equals(expectedEachItem.getId())).findFirst();
+                    assertTrue(optionalExpectedItem.isPresent());
+                    KeyPhraseResult expectedItem = optionalExpectedItem.get();
+                    if (actualItem.getError() == null && this.showStatistics) {
+                        validateDocumentStatistics(expectedItem.getStatistics(), actualItem.getStatistics());
+                        validateKeyPhrases(expectedItem.getKeyPhrases(), actualItem.getKeyPhrases());
                     }
                 });
                 break;
@@ -577,6 +659,34 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedStatistics.getTransactionCount(), actualStatistics.getTransactionCount());
     }
 
+
+    /**
+     * Helper method to verify TextDocumentStatistics.
+     *
+     * @param expected the expected value for TextDocumentStatistics.
+     * @param actual the value returned by API.
+     */
+    private static void validateDocumentStatistics(TextDocumentStatistics expected, TextDocumentStatistics actual) {
+        assertEquals(expected.getCharacterCount(), actual.getCharacterCount());
+        assertEquals(expected.getTransactionCount(), actual.getTransactionCount());
+    }
+
+    private static void validateLinkedEntityMatches(List<LinkedEntityMatch> expectedLinkedEntityMatches,
+        List<LinkedEntityMatch> actualLinkedEntityMatches1) {
+        assertEquals(expectedLinkedEntityMatches.size(), actualLinkedEntityMatches1.size());
+        expectedLinkedEntityMatches.sort(Comparator.comparing(LinkedEntityMatch::getText));
+        actualLinkedEntityMatches1.sort(Comparator.comparing(LinkedEntityMatch::getText));
+
+        for (int i = 0; i < expectedLinkedEntityMatches.size(); i++) {
+            LinkedEntityMatch expectedLinkedEntity = expectedLinkedEntityMatches.get(i);
+            LinkedEntityMatch actualLinkedEntity = actualLinkedEntityMatches1.get(i);
+            assertEquals(expectedLinkedEntity.getLength(), actualLinkedEntity.getLength());
+            assertEquals(expectedLinkedEntity.getOffset(), actualLinkedEntity.getOffset());
+            assertEquals(expectedLinkedEntity.getScore(), actualLinkedEntity.getScore());
+            assertEquals(expectedLinkedEntity.getText(), actualLinkedEntity.getText());
+        }
+    }
+
     /**
      * Helper method to verify the error document.
      *
@@ -588,17 +698,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedError.getMessage(), actualError.getMessage());
         assertEquals(expectedError.getTarget(), actualError.getTarget());
         assertEquals(expectedError.getInnererror(), actualError.getInnererror());
-    }
-
-    /**
-     * Helper method to verify TextDocumentStatistics.
-     *
-     * @param expected the expected value for TextDocumentStatistics.
-     * @param actual the value returned by API.
-     */
-    private static void validateDocumentStatistics(TextDocumentStatistics expected, TextDocumentStatistics actual) {
-        assertEquals(expected.getCharacterCount(), actual.getCharacterCount());
-        assertEquals(expected.getTransactionCount(), actual.getTransactionCount());
     }
 
     /**
@@ -665,18 +764,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         validateLinkedEntityMatches(expectedLinkedEntity.getLinkedEntityMatches(), actualLinkedEntity.getLinkedEntityMatches());
     }
 
-    private static void validateLinkedEntityMatches(List<LinkedEntityMatch> expectedLinkedEntityMatches, List<LinkedEntityMatch> actualLinkedEntityMatches1) {
-        assertEquals(expectedLinkedEntityMatches.size(), actualLinkedEntityMatches1.size());
-        expectedLinkedEntityMatches.sort(Comparator.comparing(LinkedEntityMatch::getText));
-        actualLinkedEntityMatches1.sort(Comparator.comparing(LinkedEntityMatch::getText));
 
-        for (int i = 0; i < expectedLinkedEntityMatches.size(); i++) {
-            LinkedEntityMatch expectedLinkedEntity = expectedLinkedEntityMatches.get(i);
-            LinkedEntityMatch actualLinkedEntity = actualLinkedEntityMatches1.get(i);
-            assertEquals(expectedLinkedEntity.getLength(), actualLinkedEntity.getLength());
-            assertEquals(expectedLinkedEntity.getOffset(), actualLinkedEntity.getOffset());
-            assertEquals(expectedLinkedEntity.getScore(), actualLinkedEntity.getScore());
-            assertEquals(expectedLinkedEntity.getText(), actualLinkedEntity.getText());
+    void validateKeyPhrases(List<String> expectedKeyPhrases, List<String> actualKeyPhrases) {
+        assertEquals(expectedKeyPhrases.size(), actualKeyPhrases.size());
+        Collections.sort(expectedKeyPhrases);
+        Collections.sort(actualKeyPhrases);
+
+        for (int i = 0; i < expectedKeyPhrases.size(); i++) {
+            assertEquals(expectedKeyPhrases.get(i), actualKeyPhrases.get(i));
         }
     }
 
@@ -717,6 +812,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             validateLinkedEntity(expectedLinkedEntity, actualLinkedEntity);
         }
     }
+
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType,
         int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());

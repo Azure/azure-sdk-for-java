@@ -32,6 +32,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             .buildAsyncClient());
     }
 
+    // Detected Languages
     /**
      * Verify that we can get statistics on the collection result when given a batch input with options.
      */
@@ -197,6 +198,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    // Linked Entities
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
         LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch().setText("Seattle").setLength(7).setOffset(26).setScore(0.11472424095537814);
@@ -255,41 +257,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchLinkedEntities(), TestEndpoint.NAMED_ENTITY))
                 .verifyComplete();
         });
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForTextInput() {
-
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForEmptyText() {
-
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForFaultyText() {
-
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForBatchInput() {
-
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForBatchInputShowStatistics() {
-
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForBatchStringInput() {
-
-    }
-
-    @Override
-    public void recognizeKeyPhrasesForListLanguageHint() {
-
     }
 
     // Pii Entities
@@ -353,4 +320,64 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     // Key Phrases
+    @Test
+    public void recognizeKeyPhrasesForTextInput() {
+        List<String> keyPhrasesList1 = Arrays.asList("monde");
+        StepVerifier.create(client.extractKeyPhrasesWithResponse("Bonjour tout le monde.", "fr"))
+            .assertNext(response -> validateKeyPhrases(keyPhrasesList1, response.getValue().getKeyPhrases()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void recognizeKeyPhrasesForEmptyText() {
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        StepVerifier.create(client.extractKeyPhrases(""))
+            .assertNext(response -> validateErrorDocument(expectedError, response.getError()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void recognizeKeyPhrasesForFaultyText() {
+        StepVerifier.create(client.extractKeyPhrases("!@#%%"))
+            .assertNext(response -> assertEquals(response.getKeyPhrases().size(), 0))
+            .verifyComplete();
+    }
+
+    @Test
+    public void recognizeKeyPhrasesForBatchInput() {
+        recognizeBatchKeyPhrasesRunner((inputs) -> {
+            StepVerifier.create(client.extractBatchKeyPhrases(inputs))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
+                .verifyComplete();
+        });
+
+    }
+
+    @Test
+    public void recognizeKeyPhrasesForBatchInputShowStatistics() {
+        recognizeBatchKeyPhrasesShowStatsRunner((inputs, options) -> {
+            StepVerifier.create(client.extractBatchKeyPhrasesWithResponse(inputs, options))
+                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
+                .verifyComplete();
+        });
+    }
+
+    @Test
+    public void recognizeKeyPhrasesForBatchStringInput() {
+        recognizeKeyPhrasesStringInputRunner((inputs) -> {
+            StepVerifier.create(client.extractKeyPhrases(inputs))
+                .assertNext(response -> validateBatchResult(response, getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
+                .verifyComplete();
+        });
+    }
+
+    @Test
+    public void recognizeKeyPhrasesForListLanguageHint() {
+        recognizeKeyPhrasesLanguageHintRunner((inputs, language) -> {
+            StepVerifier.create(client.extractKeyPhrasesWithResponse(inputs, language))
+                .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
+                .verifyComplete();
+        });
+
+    }
 }

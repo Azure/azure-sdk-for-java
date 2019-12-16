@@ -27,7 +27,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     private TextAnalyticsClient client;
 
-    @Override
+    @Test
     protected void beforeTest() {
         client = clientSetup(httpPipeline -> new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint())
@@ -246,7 +246,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         validateErrorDocument(expectedError, client.recognizeLinkedEntities("").getError());
     }
 
-    @Override
+    @Test
     public void recognizeLinkedEntitiesForFaultyText() {
 
     }
@@ -279,38 +279,50 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 getExpectedBatchLinkedEntities(), TestEndpoint.LINKED_ENTITY));
     }
 
-    @Override
+    @Test
     public void recognizeKeyPhrasesForTextInput() {
-
+        List<String> keyPhrasesList1 = Arrays.asList("monde");
+        validateKeyPhrases(keyPhrasesList1,
+            client.extractKeyPhrasesWithResponse("Bonjour tout le monde.", "fr", Context.NONE)
+                .getValue().getKeyPhrases());
     }
 
-    @Override
+    @Test
     public void recognizeKeyPhrasesForEmptyText() {
-
+        Error expectedError = new Error().setCode("InvalidArgument").setMessage("Invalid document in request.");
+        validateErrorDocument(expectedError, client.extractKeyPhrases("").getError());
     }
 
-    @Override
+    @Test
     public void recognizeKeyPhrasesForFaultyText() {
 
     }
 
-    @Override
+    @Test
     public void recognizeKeyPhrasesForBatchInput() {
-
+        recognizeBatchLinkedEntityRunner((inputs) ->
+            validateBatchResult(client.extractBatchKeyPhrases(inputs),
+                getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));
     }
 
-    @Override
+    @Test
     public void recognizeKeyPhrasesForBatchInputShowStatistics() {
-
+        recognizeBatchKeyPhrasesShowStatsRunner((inputs, options) ->
+            validateBatchResult(client.extractBatchKeyPhrasesWithResponse(inputs, options, Context.NONE).getValue(),
+                getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));
     }
 
-    @Override
+    @Test
     public void recognizeKeyPhrasesForBatchStringInput() {
-
+        recognizeKeyPhrasesStringInputRunner((inputs) ->
+            validateBatchResult(client.extractKeyPhrases(inputs),
+                getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));
     }
 
-    @Override
+    @Test
     public void recognizeKeyPhrasesForListLanguageHint() {
-
+        recognizeKeyPhrasesLanguageHintRunner((inputs, language) ->
+            validateBatchResult(client.extractKeyPhrasesWithResponse(inputs, language, Context.NONE).getValue(),
+                getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));
     }
 }
