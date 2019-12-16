@@ -38,7 +38,7 @@ Dependencies for Event Hubs has been updated to:
     <version>5.0.0-beta.6</version>
   </dependency>
 
-  <!-- Contains Azure Blob Storage checkpoint store when using EventProcessorClient -->
+  <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
   <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
@@ -50,14 +50,14 @@ Dependencies for Event Hubs has been updated to:
 ## General changes
 
 In the interest of simplifying the API surface, we've made three clients, each with an asynchronous and synchronous
-variant. One client for sending events, `EventHubProducerAsyncClient`, and two for receiving events.
-`EventProcessorClient` is the production level consumer and `EventHubConsumerAsyncClient` for exploration and
+variant. One client is for producing events, `EventHubProducerAsyncClient`, while two are intended for reading events.
+`EventProcessorClient` is the production-level consumer and `EventHubConsumerAsyncClient` for exploration and
 lower-level control of `EventData` consumption.
 
-[EventProcessorClient][EventProcessorClient] supports checkpointing and load balancing through a plugin model.
-Currently, only Azure Blob storage is supported through
+[EventProcessorClient][EventProcessorClient] supports checkpointing and load balancing using a plugin model.
+Currently, only Azure Storage Blobs is supported through
 [azure-messaging-eventhubs-checkpointstore-blob][azure-messaging-eventhubs-checkpointstore-blob], but support for other
-durable storage (i.e. Cosmos DB, Redis) can be added in the future.
+durable storage (i.e. Cosmos DB, Redis) may be added in the future.
 
 | Operation | Asynchronous client | Synchronous client |
 |---|---|---|
@@ -75,7 +75,7 @@ Creation of producers or consumers is done through either [EventHubClientBuilder
 |---|---|---|
 | `EventHubClient.createFromConnectionString()` | `var builder = new EventHubClientBuilder().connectionString();`<br/>then either `builder.buildProducerAsyncClient();` or<br/>`builder.consumerGroup().buildConsumerAsyncClient();` | [Publishing events][PublishEventsWithCustomMetadata], [Consuming events][ConsumeEvents] |
 | `EventHubClient.createWithAzureActiveDirectory()` | `var builder = new EventHubClientBuilder().tokenCredential();`<br/>then either `builder.buildProducerAsyncClient();` or<br/>`builder.consumerGroup().buildConsumerAsyncClient();` | [Publishing events with Azure AD][PublishEventsWithAzureIdentity] |
-| `EventProcessorHost.EventProcessorHostBuilder`<br/>`.newBuilder()` | `new EventProcessorClientBuilder().buildEventProcessorClient()` | [EventProcessorClient with Blob storage][EventProcessorClientInstantiation] |
+| `EventProcessorHost.EventProcessorHostBuilder`<br/>`.newBuilder()` | `new EventProcessorClientBuilder().buildEventProcessorClient()` | [EventProcessorClient with Azure Storage Blobs][EventProcessorClientInstantiation] |
 
 ### Sending events
 
@@ -326,7 +326,7 @@ begin consuming events.
 
 In v5, `EventProcessorClient` allows you to do the same and includes a plugin model, so other durable stores can be used
 if desired. The development model is made simpler by registering functions that would be invoked for each event. To use
-Azure Blob storage for checkpointing, include
+Azure Storage Blobs for checkpointing, include
 [azure-messaging-eventhubs-checkpointstore-blob][azure-messaging-eventhubs-checkpointstore-blob] as a dependency.
 
 The following code in v3:
