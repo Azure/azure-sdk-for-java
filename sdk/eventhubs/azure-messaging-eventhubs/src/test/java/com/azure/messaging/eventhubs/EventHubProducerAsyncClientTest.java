@@ -44,6 +44,7 @@ import java.util.List;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
@@ -244,6 +245,13 @@ public class EventHubProducerAsyncClientTest {
             }
         );
 
+        when(tracer1.getSharedSpanBuilder(eq("EventHubs.send"), any())).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_BUILDER_KEY, "value");
+            }
+        );
+
         // Act
         StepVerifier.create(asyncProducer.send(testData, sendOptions))
             .verifyComplete();
@@ -294,6 +302,13 @@ public class EventHubProducerAsyncClientTest {
             }
         );
 
+        when(tracer1.getSharedSpanBuilder(eq("EventHubs.send"), any())).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_BUILDER_KEY, "value");
+            }
+        );
+
         //Act
         StepVerifier.create(asyncProducer.send(testData, sendOptions)).verifyComplete();
 
@@ -301,7 +316,7 @@ public class EventHubProducerAsyncClientTest {
         verify(tracer1, times(1))
             .start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, never()).start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, never()).addLink(any());
+        verify(tracer1, times(2)).addLink(any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
