@@ -10,6 +10,8 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.LinkedEntityResult;
 import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.NamedEntityResult;
+import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.TextSentimentResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
@@ -352,5 +354,51 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+
     // Key Phrases
+
+
+
+    // Sentiment
+    @Test
+    public void analyseSentimentForTextInput() {
+        DetectedLanguage primaryLanguage = new DetectedLanguage().setName("English").setIso6391Name("en").setScore(1.0);
+        List<DetectedLanguage> expectedLanguageList = new ArrayList<>(Arrays.asList(primaryLanguage));
+        StepVerifier.create(client.detectLanguage("This is a test English Text"))
+            .assertNext(response -> validateDetectedLanguages(expectedLanguageList, response.getDetectedLanguages()))
+            .verifyComplete();
+
+        new TextSentimentResult();
+
+    }
+
+    @Test
+    public void analyseSentimentForEmptyText() {
+
+    }
+
+    @Test
+    public void analyseSentimentForFaultyText() {
+
+    }
+
+    @Test
+    public void analyseSentimentForBatchInput() {
+
+    }
+
+    @Test
+    public void analyseSentimentForBatchInputShowStatistics() {
+
+    }
+
+    @Test
+    public void analyseSentimentForBatchStringInput() {
+
+    }
+
+    @Test
+    public void analyseSentimentForListLanguageHint() {
+
+    }
 }

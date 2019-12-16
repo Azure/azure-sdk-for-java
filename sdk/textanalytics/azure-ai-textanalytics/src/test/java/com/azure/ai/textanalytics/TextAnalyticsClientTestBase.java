@@ -17,6 +17,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
+import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -61,6 +62,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
+
     final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
@@ -445,6 +447,49 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
 
 
+    // Sentiment
+    @Test
+    public abstract void analyseSentimentForTextInput();
+
+    @Test
+    public abstract void analyseSentimentForEmptyText();
+
+    @Test
+    public abstract void analyseSentimentForFaultyText();
+
+    @Test
+    public abstract void analyseSentimentForBatchInput();
+
+    @Test
+    public abstract void analyseSentimentForBatchInputShowStatistics();
+
+    @Test
+    public abstract void analyseSentimentForBatchStringInput();
+
+    @Test
+    public abstract void analyseSentimentForListLanguageHint();
+
+    static void analyseSentimentLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
+        final List<String> inputs = Arrays.asList(
+            "The hotel was dark and unclean."
+        );
+
+        testRunner.accept(inputs, "en");
+    }
+
+    static void analyseSentimentStringInputRunner(Consumer<List<String>> testRunner) {
+        final List<String> inputs = Arrays.asList(
+            "The hotel was dark and unclean.",
+            "The restaurant had amazing gnocchi."
+        );
+
+        testRunner.accept(inputs);
+    }
+
+    static void analyseBatchSentimentRunner(Consumer<List<TextDocumentInput>> testRunner) {
+
+    }
+
     private TextAnalyticsRequestOptions setTextAnalyticsRequestOptions() {
         this.showStatistics = true;
         return new TextAnalyticsRequestOptions().setShowStatistics(true);
@@ -717,6 +762,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             validateLinkedEntity(expectedLinkedEntity, actualLinkedEntity);
         }
     }
+
+    /**
+     * Helper method to validate the list of named entities.
+     *
+     * @param expectedSentimentList analyzed sentiment returned by the service.
+     * @param actualSentimentList analyzed sentiment returned by the API.
+     */
+    static void validAnalyzedSentiment(List<TextSentiment> expectedSentimentList,
+                                       List<TextSentiment> actualSentimentList) {
+
+        assertEquals(expectedSentimentList.size(), actualSentimentList.size());
+        expectedSentimentList.sort(Comparator.comparing(TextSentiment::getTextSentimentClass));
+    }
+
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType,
         int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());

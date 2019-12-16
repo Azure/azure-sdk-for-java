@@ -313,4 +313,40 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeKeyPhrasesForListLanguageHint() {
 
     }
+
+    // Sentiment
+    @Test
+    public void analyseSentimentForTextInput() {
+
+    }
+
+    @Test
+    public void analyseSentimentForEmptyText() {
+
+    }
+
+    @Test
+    public void analyseSentimentForFaultyText() {
+
+    }
+
+    @Test
+    public void analyseSentimentForBatchInput() {
+
+    }
+
+    @Test
+    public void analyseSentimentForBatchInputShowStatistics() {
+
+    }
+
+    @Test
+    public void analyseSentimentForBatchStringInput() {
+
+    }
+
+    @Test
+    public void analyseSentimentForListLanguageHint() {
+
+    }
 }
