@@ -60,6 +60,7 @@ public class Sample {
     private static final Logger LOGGER = getLogger("Sample");
     private static  final Tracer TRACER;
     private static final TracerSdkFactory TRACER_SDK_FACTORY;
+    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     static {
         TRACER_SDK_FACTORY = configureOpenTelemetryAndLoggingExporter();
@@ -102,7 +103,7 @@ public class Sample {
                 .setMaximumSizeInBytes(256);
 
             final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
-                producer.createBatch(options).block());
+                producer.createBatch(options).block(OPERATION_TIMEOUT));
             
             data.flatMap(event -> {
                 final EventDataBatch batch = currentBatch.get();
@@ -135,8 +136,11 @@ public class Sample {
                     })
                     .subscribe(unused -> System.out.println("Complete"),
                             error -> System.out.println("Error sending events: " + error),
-                            () -> System.out.println("Completed sending events."));
-            span.end();
+                            () -> {
+                                span.end();
+                                producer.close();
+                                System.out.println("Completed sending events.");
+                            });
         }
     }
 }
