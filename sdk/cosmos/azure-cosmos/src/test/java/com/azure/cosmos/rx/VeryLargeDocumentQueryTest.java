@@ -65,7 +65,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
                         return true;
                     })
                     .expectComplete()
-                    .verify(Duration.ofMillis(subscriberValidationTimeout));
+                    .verify(Duration.ofMillis(2 * TIMEOUT)); // TODO: Doubling timeout. Remove after increasing perf.
     }
 
     private void createLargeDocument() {
