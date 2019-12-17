@@ -21,7 +21,7 @@ import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.DocumentIndexResult;
-import com.azure.search.implementation.models.IndexAction;
+import com.azure.search.models.IndexAction;
 import com.azure.search.implementation.models.IndexActionType;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.RequestOptions;
@@ -476,7 +476,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
+     * Autocomplete incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
      * @param searchText search text
      * @param suggesterName suggester name
@@ -488,7 +488,7 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
+     * Autocomplete incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
      * @param searchText search text
      * @param suggesterName suggester name
@@ -569,7 +569,7 @@ public class SearchIndexAsyncClient {
 
         // Extract the value of top and skip from @search.nextPageParameters in SearchPagedResponse
         ObjectMapper objectMapper = new ObjectMapper();
-        SearchRequest nextPageRequest = null;
+        SearchRequest nextPageRequest;
         try {
             nextPageRequest = objectMapper.readValue(nextPageParameters, SearchRequest.class);
         } catch (JsonProcessingException e) {

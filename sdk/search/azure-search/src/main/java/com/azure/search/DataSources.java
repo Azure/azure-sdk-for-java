@@ -178,7 +178,7 @@ public class DataSources {
      /**
      * Creates a new DataSource to connect to a Cosmos database.
      *
-     * @param name The name of the datasource.
+     * @param name The name of the data source.
      * @param cosmosConnectionString The connection string for the Cosmos database. It must follow this format:
      * AccountName|AccountEndpoint=[your account name or endpoint];
      * AccountKey=[your account key];Database=[your database name]"

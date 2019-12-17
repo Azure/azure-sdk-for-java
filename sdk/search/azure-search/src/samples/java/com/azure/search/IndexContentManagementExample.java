@@ -24,7 +24,7 @@ public class IndexContentManagementExample {
      * and set the values of these environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
-    private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
+    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
 
     private static final String INDEX_NAME = "hotels-sample-index";
 
@@ -40,7 +40,7 @@ public class IndexContentManagementExample {
     private static void basicIndexing() {
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(API_KEY))
+            .credential(new SearchApiKeyCredential(ADMIN_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
 
@@ -60,7 +60,7 @@ public class IndexContentManagementExample {
     private static void advancedIndexing() {
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(API_KEY))
+            .credential(new SearchApiKeyCredential(ADMIN_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
 

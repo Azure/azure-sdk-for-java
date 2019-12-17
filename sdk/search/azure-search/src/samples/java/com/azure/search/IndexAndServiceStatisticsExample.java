@@ -42,7 +42,7 @@ public class IndexAndServiceStatisticsExample {
      * populate ADMIN_KEY and SEARCH_SERVICE_NAME.
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
-    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
+    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
 
     public static void main(String[] args) {
         SearchServiceClient client = createClient();
