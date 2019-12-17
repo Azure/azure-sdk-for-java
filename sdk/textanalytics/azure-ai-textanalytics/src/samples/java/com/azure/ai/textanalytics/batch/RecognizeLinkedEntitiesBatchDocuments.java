@@ -8,6 +8,8 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityResult;
+import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.NamedEntityResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -42,12 +44,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
-        // Detecting language from a batch of documents
-        detectedBatchResult.forEach(linkedEntityDocumentResult ->
-            linkedEntityDocumentResult.getLinkedEntities().stream().forEach(linkedEntity ->
-                System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s.%n",
-                    linkedEntity.getName(), linkedEntity.getUri(), linkedEntity.getDataSource())));
-
+        // Detecting linked entities from a batch of documents
         for (LinkedEntityResult linkedEntityDocumentResult : detectedBatchResult) {
             for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getLinkedEntities()) {
                 System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s%n",

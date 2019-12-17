@@ -308,21 +308,21 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeKeyPhrasesForBatchInputShowStatistics() {
-        recognizeBatchKeyPhrasesShowStatsRunner((inputs, options) ->
+        extractBatchKeyPhrasesShowStatsRunner((inputs, options) ->
             validateBatchResult(client.extractBatchKeyPhrasesWithResponse(inputs, options, Context.NONE).getValue(),
                 getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));
     }
 
     @Test
     public void recognizeKeyPhrasesForBatchStringInput() {
-        recognizeKeyPhrasesStringInputRunner((inputs) ->
+        extractKeyPhrasesStringInputRunner((inputs) ->
             validateBatchResult(client.extractKeyPhrases(inputs),
                 getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));
     }
 
     @Test
     public void recognizeKeyPhrasesForListLanguageHint() {
-        recognizeKeyPhrasesLanguageHintRunner((inputs, language) ->
+        extractKeyPhrasesLanguageHintRunner((inputs, language) ->
             validateBatchResult(client.extractKeyPhrasesWithResponse(inputs, language, Context.NONE).getValue(),
                 getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES));
     }

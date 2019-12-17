@@ -87,6 +87,7 @@ public final class TextAnalyticsClient {
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} containing the {@link DetectLanguageResult detected language} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
@@ -116,6 +117,7 @@ public final class TextAnalyticsClient {
      * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO 3166-1
      * alpha-2. Defaults to "US" if not specified.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
      * {@link DetectLanguageResult detected languages} with their numeric scores.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -130,6 +132,7 @@ public final class TextAnalyticsClient {
      * Detects Language for a batch of input.
      *
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     *
      * @return A {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -145,6 +148,7 @@ public final class TextAnalyticsClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
      * {@link DetectLanguageResult detected languages}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -160,7 +164,6 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of general named entities in the provided text.
      * For a list of supported entity types, check: https://aka.ms/taner
-     * For a list of enabled languages, check: https://aka.ms/talangs
      *
      * @param text the text to recognize entities for.
      * @return the {@link NamedEntityResult named entity} of the text.
@@ -207,6 +210,7 @@ public final class TextAnalyticsClient {
      * @param textInputs A list of texts to recognize entities for.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
      * {@link NamedEntityResult named entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -221,6 +225,7 @@ public final class TextAnalyticsClient {
      * Returns a list of general named entities for the provided list of text inputs.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
+     *
      * @return A {@link DocumentResultCollection batch} of the {@link NamedEntityResult named entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -236,6 +241,7 @@ public final class TextAnalyticsClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * {@link DocumentResultCollection batch} of {@link NamedEntityResult named entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -247,7 +253,6 @@ public final class TextAnalyticsClient {
     }
 
     // PII Entities
-
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text.
      * For the list of supported entity types, check https://aka.ms/tanerpii.
@@ -255,6 +260,7 @@ public final class TextAnalyticsClient {
      *
      * @param text the text to recognize pii entities for.
      * @return A {@link NamedEntityResult PII entity} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -271,6 +277,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} whose {@link Response#getValue() value} has the {@link NamedEntityResult named entity}
      * of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -286,6 +293,7 @@ public final class TextAnalyticsClient {
      * See https://aka.ms/talangs for the list of enabled languages.
      *
      * @param textInputs A list of text to recognize pii entities for.
+     *
      * @return A {@link DocumentResultCollection batch} of the {@link NamedEntityResult named entity} of the text.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -303,6 +311,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
      * {@link NamedEntityResult named entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -319,6 +328,7 @@ public final class TextAnalyticsClient {
      * See https://aka.ms/talangs for the list of enabled languages.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize pii entities for.
+     *
      * @return A {@link DocumentResultCollection batch} of the {@link NamedEntityResult named entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -336,6 +346,7 @@ public final class TextAnalyticsClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * {@link DocumentResultCollection batch} of {@link NamedEntityResult named entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -353,6 +364,7 @@ public final class TextAnalyticsClient {
      * See https://aka.ms/talangs for supported languages in Text Analytics API.
      *
      * @param text the text to recognize linked entities for.
+     *
      * @return A {@link LinkedEntityResult linked entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
@@ -369,6 +381,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} whose {@link Response#getValue() value} has the
      * {@link LinkedEntityResult named entity} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -401,6 +414,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
      * {@link LinkedEntityResult linked entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -416,6 +430,7 @@ public final class TextAnalyticsClient {
      * See https://aka.ms/talangs for supported languages in Text Analytics API.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
+     *
      * @return A {@link DocumentResultCollection batch} of the {@link LinkedEntityResult linked entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -433,6 +448,7 @@ public final class TextAnalyticsClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * {@link DocumentResultCollection batch} of {@link LinkedEntityResult linked entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -449,6 +465,7 @@ public final class TextAnalyticsClient {
      * Returns a list of strings denoting the key phrases in the input text.
      *
      * @param text the text to be analyzed.
+     *
      * @return A {@link KeyPhraseResult key phrases} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
@@ -465,6 +482,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} whose {@link Response#getValue() value} has the {@link KeyPhraseResult key phrases}
      * of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -479,6 +497,7 @@ public final class TextAnalyticsClient {
      *
      * @param textInputs A list of text to be analyzed.
      * @return A {@link DocumentResultCollection batch} of the {@link KeyPhraseResult key phrases} of the text.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -494,6 +513,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
      * {@link KeyPhraseResult key phrases}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -508,6 +528,7 @@ public final class TextAnalyticsClient {
      * Returns a list of strings denoting the key phrases in the input text.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
+     *
      * @return A {@link DocumentResultCollection batch} of the {@link KeyPhraseResult key phrases}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -524,6 +545,7 @@ public final class TextAnalyticsClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * {@link DocumentResultCollection batch} of {@link KeyPhraseResult key phrases}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -535,13 +557,13 @@ public final class TextAnalyticsClient {
     }
 
     // Sentiment
-
     /**
      * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
      * (Positive, Negative, and Neutral) for the document and each sentence within i
      *
      * @param text the text to be analyzed.
      * @return the {@link TextSentimentResult text sentiments} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -557,6 +579,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} containing the {@link TextSentimentResult text sentiments} of the text.
      * @throws NullPointerException if {@code text} is {@code null}.
      */
@@ -589,6 +612,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
      * {@link TextSentimentResult text sentiments} with their numeric scores.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -604,6 +628,7 @@ public final class TextAnalyticsClient {
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
+     *
      * @return A {@link DocumentResultCollection batch} of {@link TextSentimentResult text sentiments}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -620,6 +645,7 @@ public final class TextAnalyticsClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
      * {@link TextSentimentResult text sentiments}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
