@@ -14,6 +14,7 @@ import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -340,6 +341,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             .verifyComplete();
     }
 
+    @Disabled
     @Test
     public void recognizeKeyPhrasesForFaultyText() {
         StepVerifier.create(client.extractKeyPhrases("!@#%%"))

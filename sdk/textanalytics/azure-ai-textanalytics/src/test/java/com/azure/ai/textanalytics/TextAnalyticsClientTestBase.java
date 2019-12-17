@@ -389,14 +389,27 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch().setText("Seattle").setLength(7).setOffset(26).setScore(0.11472424095537814);
         LinkedEntityMatch linkedEntityMatch2 = new LinkedEntityMatch().setText("Microsoft").setLength(9).setOffset(10).setScore(0.18693659716732069);
 
-        LinkedEntity linkedEntity1 = new LinkedEntity().setName("Seattle").setUrl("https://en.wikipedia.org/wiki/Seattle").setDataSource("Wikipedia").setLinkedEntityMatches(Collections.singletonList(linkedEntityMatch1));
-        LinkedEntity linkedEntity2 = new LinkedEntity().setName("Microsoft").setUrl("https://en.wikipedia.org/wiki/Microsoft").setDataSource("Wikipedia").setLinkedEntityMatches(Collections.singletonList(linkedEntityMatch2));
+        LinkedEntity linkedEntity1 = new LinkedEntity()
+            .setId("Seattle")
+            .setName("Seattle")
+            .setLanguage("en")
+            .setUrl("https://en.wikipedia.org/wiki/Seattle")
+            .setDataSource("Wikipedia")
+            .setLinkedEntityMatches(Collections.singletonList(linkedEntityMatch1));
+
+        LinkedEntity linkedEntity2 = new LinkedEntity()
+            .setId("Microsoft")
+            .setName("Microsoft")
+            .setLanguage("en")
+            .setUrl("https://en.wikipedia.org/wiki/Microsoft")
+            .setDataSource("Wikipedia")
+            .setLinkedEntityMatches(Collections.singletonList(linkedEntityMatch2));
 
         List<LinkedEntity> linkedEntityList1 = Collections.singletonList(linkedEntity1);
         List<LinkedEntity> linkedEntityList2 = Collections.singletonList(linkedEntity2);
 
-        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(67).setTransactionCount(1);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(105).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(44).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(20).setTransactionCount(1);
 
         LinkedEntityResult linkedEntityResult1 = new LinkedEntityResult("0", textDocumentStatistics1, null, linkedEntityList1);
         LinkedEntityResult linkedEntityResult2 = new LinkedEntityResult("1", textDocumentStatistics2, null, linkedEntityList2);
@@ -408,11 +421,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     static DocumentResultCollection<KeyPhraseResult> getExpectedBatchKeyPhrases() {
-        List<String> keyPhrasesList1 = Arrays.asList("input text", "world");
-        List<String> keyPhrasesList2 = Arrays.asList("monde");
+        List<String> keyPhrasesList1 = Arrays.asList("wonderful trip", "Seattle", "week");
+        List<String> keyPhrasesList2 = Arrays.asList("Microsoft");
 
-        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(49).setTransactionCount(1);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(21).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics().setCharacterCount(44).setTransactionCount(1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics().setCharacterCount(20).setTransactionCount(1);
 
         KeyPhraseResult keyPhraseResult1 = new KeyPhraseResult("0", textDocumentStatistics1, null, keyPhrasesList1);
         KeyPhraseResult keyPhraseResult2 = new KeyPhraseResult("1", textDocumentStatistics2, null, keyPhrasesList2);
@@ -420,7 +433,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextBatchStatistics textBatchStatistics = new TextBatchStatistics().setDocumentCount(2).setErroneousDocumentCount(0).setTransactionCount(2).setValidDocumentCount(2);
         List<KeyPhraseResult> keyPhraseResultList = Arrays.asList(keyPhraseResult1, keyPhraseResult2);
 
-        return new DocumentResultCollection<>(keyPhraseResultList, "2019-10-01", textBatchStatistics);
+        return new DocumentResultCollection<>(keyPhraseResultList, MODEL_VERSION, textBatchStatistics);
     }
 
     // Named Entities

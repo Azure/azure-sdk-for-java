@@ -13,6 +13,7 @@ import com.azure.ai.textanalytics.models.NamedEntity;
 import com.azure.ai.textanalytics.models.NamedEntityResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -292,6 +293,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         validateErrorDocument(expectedError, client.extractKeyPhrases("").getError());
     }
 
+    @Disabled
     @Test
     public void recognizeKeyPhrasesForFaultyText() {
 
