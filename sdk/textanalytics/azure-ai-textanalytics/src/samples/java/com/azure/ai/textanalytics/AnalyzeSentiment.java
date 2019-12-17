@@ -8,8 +8,15 @@ import com.azure.ai.textanalytics.models.TextSentimentResult;
 
 import java.util.List;
 
+/**
+ * Sample demonstrate how to analyze sentiment of a text input.
+ */
 public class AnalyzeSentiment {
-
+    /**
+     * Main method to invoke this demo about how to analyze sentiment of a text input.
+     *
+     * @param args Unused arguments to the program.
+     */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()

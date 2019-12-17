@@ -3,8 +3,15 @@
 
 package com.azure.ai.textanalytics;
 
-public class RecognizePII {
-
+/**
+ * Sample demonstrate how to recognize PII(personal information identification) entities of a text input.
+ */
+public class RecognizePii {
+    /**
+     * Main method to invoke this demo about how to analyze sentiment of a text input.
+     *
+     * @param args Unused arguments to the program.
+     */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()

@@ -3,8 +3,15 @@
 
 package com.azure.ai.textanalytics;
 
+/**
+ * Sample demonstrate how to recognize entities of a text input.
+ */
 public class RecognizeEntities {
-
+    /**
+     * Main method to invoke this demo about how to recognize entities of a text input.
+     *
+     * @param args Unused arguments to the program.
+     */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()

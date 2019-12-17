@@ -56,7 +56,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Text Analytics.
- * Operations allow by the client to detect language, recognize entities, recognize pii entities,
+ * Operations allow by the client to detect language, recognize entities, recognize PII entities,
  * recognize linked entities, and analyze sentiment for a text input or a list of text input.
  *
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>

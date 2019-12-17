@@ -16,8 +16,15 @@ import com.azure.core.util.Context;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Sample demonstrate how to recognize linked entities of a batch of text inputs.
+ */
 public class RecognizeLinkedEntitiesBatchDocuments {
-
+    /**
+     * Main method to invoke this demo about how to recognize linked entities of a batch of text inputs.
+     *
+     * @param args Unused arguments to the program.
+     */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()

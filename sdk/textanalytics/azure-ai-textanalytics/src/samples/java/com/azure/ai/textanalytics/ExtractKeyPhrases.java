@@ -3,8 +3,15 @@
 
 package com.azure.ai.textanalytics;
 
-public class RecognizeKeyPhrases {
-
+/**
+ * Sample demonstrate how to analyze key phrases of a text input.
+ */
+public class ExtractKeyPhrases {
+    /**
+     * Main method to invoke this demo about how to extract key phrases of a text input.
+     *
+     * @param args Unused arguments to the program.
+     */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()

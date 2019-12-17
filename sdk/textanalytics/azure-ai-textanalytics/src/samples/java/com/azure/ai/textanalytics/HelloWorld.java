@@ -8,8 +8,15 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 
 import java.util.List;
 
+/**
+ * Sample demonstrate how to detect language of a text input.
+ */
 public class HelloWorld {
-
+    /**
+     * Main method to invoke this demo about how to detect language of a text input.
+     *
+     * @param args Unused arguments to the program.
+     */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
