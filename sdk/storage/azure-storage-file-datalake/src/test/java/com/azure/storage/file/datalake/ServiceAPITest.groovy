@@ -24,7 +24,7 @@ class ServiceAPITest extends APISpec {
     def "List file systems"() {
         when:
         def response =
-            primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setPrefix(fileSystemPrefix + testName), null)
+            primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setPrefix(fileSystemName), null)
 
         then:
         for (FileSystemItem c : response) {
@@ -51,7 +51,7 @@ class ServiceAPITest extends APISpec {
     def "List file systems marker"() {
         setup:
         for (int i = 0; i < 10; i++) {
-            primaryDataLakeServiceClient.createFileSystem(generateFileSystemName())
+            primaryDataLakeServiceClient.createFileSystem(fileSystemName + i)
         }
 
         def listResponse = primaryDataLakeServiceClient.listFileSystems().iterator()

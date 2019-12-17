@@ -1,15 +1,20 @@
 package com.azure.storage.file.datalake.specialized
 
+import com.azure.core.test.TestMode
 import com.azure.storage.file.datalake.APISpec
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient
+import com.azure.storage.file.datalake.DataLakeFileSystemClient
 import com.azure.storage.file.datalake.models.DataLakeStorageException
+import com.azure.storage.file.datalake.models.FileSystemItem
+import com.azure.storage.file.datalake.models.LeaseStateType
+import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import reactor.test.StepVerifier
+
+import java.time.Duration
 
 class LeaseAsyncErrorMappingTest extends APISpec {
     private DataLakeFileAsyncClient createPathAsyncClient() {
-        def fac = getServiceAsyncClient(primaryCredential)
-            .createFileSystem(generateFileSystemName()).block()
-            .getFileAsyncClient(generatePathName())
+        def fac = fscAsync.getFileAsyncClient(generatePathName())
         return fac
     }
 

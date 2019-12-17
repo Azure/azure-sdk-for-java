@@ -34,6 +34,10 @@ class SASTest extends APISpec {
         sasClient.flush(defaultDataSize)
     }
 
+    def cleanup() {
+        fsc.delete()
+    }
+
     @Unroll
     def "File range"() {
         expect:
@@ -316,10 +320,14 @@ class SASTest extends APISpec {
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
         def sc = getServiceClient(sas, primaryDataLakeServiceClient.getAccountUrl())
-        sc.createFileSystem(generateFileSystemName())
+        def sasFileSystemName = generateFileSystemName()
+        sc.createFileSystem(sasFileSystemName)
 
         then:
         notThrown(DataLakeStorageException)
+
+        cleanup:
+        primaryDataLakeServiceClient.deleteFileSystem(sasFileSystemName)
     }
 
     def "accountSAS network account sas token on endpoint"() {

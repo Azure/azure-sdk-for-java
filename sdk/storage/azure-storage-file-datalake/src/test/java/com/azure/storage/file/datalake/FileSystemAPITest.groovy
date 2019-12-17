@@ -13,7 +13,6 @@ import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 class FileSystemAPITest extends APISpec {
-
     def "Create all null"() {
         setup:
         // Overwrite the existing fsc, which has already been created
@@ -25,6 +24,9 @@ class FileSystemAPITest extends APISpec {
         then:
         response.getStatusCode() == 201
         validateBasicHeaders(response.getHeaders())
+
+        cleanup:
+        fsc.delete()
     }
 
     def "Create min"() {
@@ -35,6 +37,9 @@ class FileSystemAPITest extends APISpec {
         fsc.getProperties()
 
         notThrown(DataLakeStorageException)
+
+        cleanup:
+        fsc.delete()
     }
 
     @Unroll
@@ -56,6 +61,9 @@ class FileSystemAPITest extends APISpec {
         then:
         response.getValue().getMetadata() == metadata
 
+        cleanup:
+        fsc.delete()
+
         where:
         key1  | value1 | key2   | value2
         null  | null   | null   | null
@@ -74,6 +82,9 @@ class FileSystemAPITest extends APISpec {
 
         then:
         access == publicAccess
+
+        cleanup:
+        fsc.delete()
 
         where:
         publicAccess               | _
@@ -154,6 +165,9 @@ class FileSystemAPITest extends APISpec {
         response.getStatusCode() == 200
         validateBasicHeaders(response.getHeaders())
         fsc.getPropertiesWithResponse(null, null, null).getValue().getMetadata().size() == 0
+
+        cleanup:
+        fsc.delete()
     }
 
     def "Set metadata min"() {
