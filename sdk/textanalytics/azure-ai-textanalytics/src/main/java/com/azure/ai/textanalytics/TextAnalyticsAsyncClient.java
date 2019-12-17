@@ -212,7 +212,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguages(List<DetectLanguageInput> textInputs) {
+    public Mono<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguages(
+        List<DetectLanguageInput> textInputs) {
         return detectBatchLanguagesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
@@ -352,7 +353,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<NamedEntityResult>> recognizeBatchEntities(List<TextDocumentInput> textInputs) {
+    public Mono<DocumentResultCollection<NamedEntityResult>> recognizeBatchEntities(
+        List<TextDocumentInput> textInputs) {
         return recognizeBatchEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
@@ -453,7 +455,8 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<NamedEntityResult>> recognizePiiEntities(List<String> textInputs) {
-        return recognizePiiEntitiesWithResponse(textInputs, clientOptions.getDefaultLanguage()).flatMap(FluxUtil::toMono);
+        return recognizePiiEntitiesWithResponse(textInputs, clientOptions.getDefaultLanguage())
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -498,7 +501,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<NamedEntityResult>> recognizeBatchPiiEntities(List<TextDocumentInput> textInputs) {
+    public Mono<DocumentResultCollection<NamedEntityResult>> recognizeBatchPiiEntities(
+        List<TextDocumentInput> textInputs) {
         return recognizeBatchPiiEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
@@ -977,7 +981,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<TextSentimentResult>> analyzeBatchSentiment(List<TextDocumentInput> textInputs) {
+    public Mono<DocumentResultCollection<TextSentimentResult>> analyzeBatchSentiment(
+        List<TextDocumentInput> textInputs) {
         return analyzeBatchSentimentWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
     }
 
