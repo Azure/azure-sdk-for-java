@@ -144,6 +144,9 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
+        if (testMode == TestMode.PLAYBACK) {
+            return
+        }
         def options = new ListFileSystemsOptions().setPrefix(fileSystemName)
         for (FileSystemItem fileSystem : primaryDataLakeServiceClient.listFileSystems(options, Duration.ofSeconds(120))) {
             DataLakeFileSystemClient fileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(fileSystem.getName())

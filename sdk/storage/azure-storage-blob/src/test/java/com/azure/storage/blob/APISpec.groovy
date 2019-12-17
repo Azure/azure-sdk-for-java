@@ -175,6 +175,9 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
+        if (testMode == TestMode.PLAYBACK) {
+            return
+        }
         def options = new ListBlobContainersOptions().setPrefix(containerName)
         for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
             BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
