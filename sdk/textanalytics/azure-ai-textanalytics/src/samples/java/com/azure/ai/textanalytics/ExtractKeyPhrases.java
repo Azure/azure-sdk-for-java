@@ -22,7 +22,8 @@ public class ExtractKeyPhrases {
         // The text that need be analysed.
         String text = "My cat might need to see a veterinarian.";
 
-        client.extractKeyPhrases(text).getKeyPhrases().forEach(
-            phrase -> System.out.printf("Recognized Phrases: %s.%n", phrase));
+        for(String keyPhrase : client.extractKeyPhrases(text).getKeyPhrases()) {
+            System.out.printf("Recognized Phrases: %s.%n", keyPhrase);
+        }
     }
 }

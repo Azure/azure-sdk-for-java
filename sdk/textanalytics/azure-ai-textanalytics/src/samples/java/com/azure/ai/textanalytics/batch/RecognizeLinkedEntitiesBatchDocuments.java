@@ -49,12 +49,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
-        // Detecting language from a batch of documents
-        detectedBatchResult.forEach(linkedEntityDocumentResult ->
-            linkedEntityDocumentResult.getLinkedEntities().forEach(linkedEntity ->
-                System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s.%n",
-                    linkedEntity.getName(), linkedEntity.getUri(), linkedEntity.getDataSource())));
-
+        // Detecting linked entities from a batch of documents
         for (LinkedEntityResult linkedEntityDocumentResult : detectedBatchResult) {
             for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getLinkedEntities()) {
                 System.out.printf("Recognized Linked NamedEntity: %s, URL: %s, Data Source: %s%n",

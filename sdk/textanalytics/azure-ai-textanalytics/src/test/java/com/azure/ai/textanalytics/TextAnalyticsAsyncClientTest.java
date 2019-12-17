@@ -14,7 +14,6 @@ import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -164,6 +163,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Override
     public void recognizeEntitiesForFaultyText() {
         // TODO: (savaity) confirm with service team this returns no error-ed document, no exception but empty documents and error list.
+        StepVerifier.create(client.recognizeEntities("!@#%%"))
+            .assertNext(response -> assertEquals(response.getNamedEntities().size(), 0))
+            .verifyComplete();
     }
 
     @Test
@@ -224,7 +226,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForFaultyText() {
-
+        StepVerifier.create(client.recognizeLinkedEntities("!@#%%"))
+            .assertNext(response -> assertEquals(response.getLinkedEntities().size(), 0))
+            .verifyComplete();
     }
 
     @Test
@@ -285,6 +289,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Override
     public void recognizePiiEntitiesForFaultyText() {
         // TODO: (savaity) confirm with service team this returns no error-ed document, no exception but empty documents and error list.
+        StepVerifier.create(client.recognizePiiEntities("!@#%%"))
+            .assertNext(response -> assertEquals(response.getNamedEntities().size(), 0))
+            .verifyComplete();
     }
 
     @Test
@@ -341,7 +348,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             .verifyComplete();
     }
 
-    @Disabled
     @Test
     public void recognizeKeyPhrasesForFaultyText() {
         StepVerifier.create(client.extractKeyPhrases("!@#%%"))
@@ -351,7 +357,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeKeyPhrasesForBatchInput() {
-        recognizeBatchKeyPhrasesRunner((inputs) -> {
+        extractBatchKeyPhrasesRunner((inputs) -> {
             StepVerifier.create(client.extractBatchKeyPhrases(inputs))
                 .assertNext(response -> validateBatchResult(response, getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
                 .verifyComplete();
@@ -361,7 +367,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeKeyPhrasesForBatchInputShowStatistics() {
-        recognizeBatchKeyPhrasesShowStatsRunner((inputs, options) -> {
+        extractBatchKeyPhrasesShowStatsRunner((inputs, options) -> {
             StepVerifier.create(client.extractBatchKeyPhrasesWithResponse(inputs, options))
                 .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
                 .verifyComplete();
@@ -370,7 +376,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeKeyPhrasesForBatchStringInput() {
-        recognizeKeyPhrasesStringInputRunner((inputs) -> {
+        extractKeyPhrasesStringInputRunner((inputs) -> {
             StepVerifier.create(client.extractKeyPhrases(inputs))
                 .assertNext(response -> validateBatchResult(response, getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
                 .verifyComplete();
@@ -379,7 +385,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeKeyPhrasesForListLanguageHint() {
-        recognizeKeyPhrasesLanguageHintRunner((inputs, language) -> {
+        extractKeyPhrasesLanguageHintRunner((inputs, language) -> {
             StepVerifier.create(client.extractKeyPhrasesWithResponse(inputs, language))
                 .assertNext(response -> validateBatchResult(response.getValue(), getExpectedBatchKeyPhrases(), TestEndpoint.KEY_PHRASES))
                 .verifyComplete();

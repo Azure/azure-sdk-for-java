@@ -17,7 +17,7 @@ public class DocumentResult {
     DocumentResult(final String id, final TextDocumentStatistics textDocumentStatistics, final Error error) {
         this.id = id;
         this.error = error;
-        this.isError = error != null ? true : false;
+        this.isError = error != null;
         this.textDocumentStatistics = textDocumentStatistics;
     }
 
