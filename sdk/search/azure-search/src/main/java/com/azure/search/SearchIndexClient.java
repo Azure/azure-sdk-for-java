@@ -321,7 +321,7 @@ public class SearchIndexClient {
     }
 
     /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
+     * Autocomplete incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
      * @param searchText search text
      * @param suggesterName suggester name
@@ -333,7 +333,7 @@ public class SearchIndexClient {
     }
 
     /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
+     * Autocomplete incomplete query terms based on input text and matching terms in the Azure Cognitive Search index.
      *
      * @param searchText search text
      * @param suggesterName suggester name

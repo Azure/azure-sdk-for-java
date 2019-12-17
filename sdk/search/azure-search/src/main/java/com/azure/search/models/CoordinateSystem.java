@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 @Fluent
 public class CoordinateSystem {
-    public static final String NAME_PROPERTY = "name";
+    private static final String NAME_PROPERTY = "name";
 
     @JsonProperty
     private String type;

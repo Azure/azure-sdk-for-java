@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.search.implementation.models.IndexAction;
+import com.azure.search.models.IndexAction;
 import com.azure.search.implementation.models.IndexActionType;
 import com.azure.search.models.IndexBatch;
 import org.junit.Assert;
