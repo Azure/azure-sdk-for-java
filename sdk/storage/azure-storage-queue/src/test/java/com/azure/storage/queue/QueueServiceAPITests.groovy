@@ -149,6 +149,7 @@ class QueueServiceAPITests extends APISpec {
 
     def "List empty queues"() {
         when:
+        System.out.println(methodName);
         primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
 
         then:

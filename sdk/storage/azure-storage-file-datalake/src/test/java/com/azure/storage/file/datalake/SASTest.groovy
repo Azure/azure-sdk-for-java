@@ -4,13 +4,11 @@
 package com.azure.storage.file.datalake
 
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
-import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.implementation.StorageImplUtils
 import com.azure.storage.common.sas.*
-import com.azure.storage.file.datalake.implementation.models.StorageErrorException
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
+import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.FileRange
 import com.azure.storage.file.datalake.models.PathProperties
 import com.azure.storage.file.datalake.models.UserDelegationKey
@@ -122,7 +120,7 @@ class SASTest extends APISpec {
         then:
         os.toString() == new String(defaultData.array())
         validateSasProperties(properties)
-        notThrown(BlobStorageException)
+        notThrown(DataLakeStorageException)
     }
 
     def "serviceSASSignatureValues network test file system"() {
@@ -163,7 +161,7 @@ class SASTest extends APISpec {
         client2.listPaths().iterator().hasNext()
 
         then:
-        notThrown(BlobStorageException)
+        notThrown(DataLakeStorageException)
     }
 
     def "serviceSASSignatureValues network test file user delegation"() {
@@ -189,7 +187,7 @@ class SASTest extends APISpec {
         then:
         os.toString() == new String(defaultData.array())
         validateSasProperties(properties)
-        notThrown(BlobStorageException)
+        notThrown(DataLakeStorageException)
     }
 
     def "serviceSASSignatureValues network test file system user delegation"() {
@@ -220,7 +218,7 @@ class SASTest extends APISpec {
         client.listPaths().iterator().hasNext()
 
         then:
-        notThrown(BlobStorageException)
+        notThrown(DataLakeStorageException)
     }
 
     def "accountSAS network test file read"() {
@@ -275,7 +273,7 @@ class SASTest extends APISpec {
         client.delete()
 
         then:
-        thrown(StorageErrorException)
+        thrown(DataLakeStorageException)
     }
 
     def "accountSAS network create file system fails"() {
@@ -298,7 +296,7 @@ class SASTest extends APISpec {
         sc.createFileSystem(generateFileSystemName())
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "accountSAS network create file system succeeds"() {
@@ -321,7 +319,7 @@ class SASTest extends APISpec {
         sc.createFileSystem(generateFileSystemName())
 
         then:
-        notThrown(BlobStorageException)
+        notThrown(DataLakeStorageException)
     }
 
     def "accountSAS network account sas token on endpoint"() {
@@ -354,7 +352,7 @@ class SASTest extends APISpec {
         fc.create()
 
         then:
-        notThrown(Exception)
+        notThrown(DataLakeStorageException)
     }
 
     /*

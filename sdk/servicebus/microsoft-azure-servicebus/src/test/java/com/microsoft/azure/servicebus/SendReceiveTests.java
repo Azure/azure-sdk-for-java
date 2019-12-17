@@ -83,11 +83,17 @@ public abstract class SendReceiveTests extends Tests {
             this.drainAllMessages();
         }
 
-        this.sender.close();
+        if (this.sender != null) {
+        	this.sender.close();
+        }
+        
         if (this.receiver != null) {
             this.receiver.close();
         }
-        this.factory.close();
+        
+        if (this.factory != null) {
+        	this.factory.close();
+        }        
 
         if (this.shouldCreateEntityForEveryTest()) {
             managementClient.deleteQueueAsync(this.entityName).get();
