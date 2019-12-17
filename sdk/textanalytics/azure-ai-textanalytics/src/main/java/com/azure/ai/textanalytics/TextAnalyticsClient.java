@@ -46,8 +46,8 @@ public final class TextAnalyticsClient {
      */
     TextAnalyticsClient(TextAnalyticsAsyncClient client) {
         this.client = client;
-        this.defaultCountryHint = client.clientOptions.getDefaultCountryHint();
-        this.defaultLanguage = client.clientOptions.getDefaultLanguage();
+        this.defaultCountryHint = client.getDefaultCountryHint();
+        this.defaultLanguage = client.getDefaultLanguage();
     }
 
     /**

@@ -69,10 +69,10 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = TextAnalyticsClientBuilder.class, isAsync = true)
 public final class TextAnalyticsAsyncClient {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsAsyncClient.class);
-
     private final TextAnalyticsClientImpl service;
     private final TextAnalyticsServiceVersion serviceVersion;
-    final TextAnalyticsClientOptions clientOptions;
+    private final String defaultCountryHint;
+    private final String defaultLanguage;
 
     /**
      * Create a {@code TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint.
@@ -89,7 +89,8 @@ public final class TextAnalyticsAsyncClient {
                              TextAnalyticsClientOptions clientOptions) {
         this.service = service;
         this.serviceVersion = serviceVersion;
-        this.clientOptions = clientOptions;
+        defaultCountryHint = clientOptions == null ? null : clientOptions.getDefaultCountryHint();
+        defaultLanguage =  clientOptions == null ? null : clientOptions.getDefaultLanguage();
     }
 
     /**
@@ -123,7 +124,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectLanguageResult> detectLanguage(String text) {
-        return detectLanguageWithResponse(text, clientOptions.getDefaultCountryHint()).flatMap(FluxUtil::toMono);
+        return detectLanguageWithResponse(text, defaultCountryHint).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -170,7 +171,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> textInputs) {
-        return detectLanguagesWithResponse(textInputs, clientOptions.getDefaultCountryHint()).flatMap(FluxUtil::toMono);
+        return detectLanguagesWithResponse(textInputs, defaultCountryHint).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -265,7 +266,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NamedEntityResult> recognizeEntities(String text) {
-        return recognizeEntitiesWithResponse(text, clientOptions.getDefaultLanguage()).flatMap(FluxUtil::toMono);
+        return recognizeEntitiesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -313,7 +314,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<NamedEntityResult>> recognizeEntities(List<String> textInputs) {
-        return recognizeEntitiesWithResponse(textInputs, clientOptions.getDefaultLanguage()).flatMap(FluxUtil::toMono);
+        return recognizeEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -405,7 +406,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NamedEntityResult> recognizePiiEntities(String text) {
-        return recognizePiiEntitiesWithResponse(text, clientOptions.getDefaultLanguage()).flatMap(FluxUtil::toMono);
+        return recognizePiiEntitiesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -455,7 +456,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<NamedEntityResult>> recognizePiiEntities(List<String> textInputs) {
-        return recognizePiiEntitiesWithResponse(textInputs, clientOptions.getDefaultLanguage())
+        return recognizePiiEntitiesWithResponse(textInputs, defaultLanguage)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -553,7 +554,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LinkedEntityResult> recognizeLinkedEntities(String text) {
-        return recognizeLinkedEntitiesWithResponse(text, clientOptions.getDefaultLanguage()).flatMap(FluxUtil::toMono);
+        return recognizeLinkedEntitiesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -603,7 +604,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<LinkedEntityResult>> recognizeLinkedEntities(List<String> textInputs) {
-        return recognizeLinkedEntitiesWithResponse(textInputs, clientOptions.getDefaultLanguage())
+        return recognizeLinkedEntitiesWithResponse(textInputs, defaultLanguage)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -723,7 +724,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyPhraseResult> extractKeyPhrases(String text) {
-        return extractKeyPhrasesWithResponse(text, clientOptions.getDefaultLanguage()).flatMap(FluxUtil::toMono);
+        return extractKeyPhrasesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -770,7 +771,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentResultCollection<KeyPhraseResult>> extractKeyPhrases(List<String> textInputs) {
-        return extractKeyPhrasesWithResponse(textInputs, clientOptions.getDefaultLanguage()).flatMap(FluxUtil::toMono);
+        return extractKeyPhrasesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -890,7 +891,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TextSentimentResult> analyzeSentiment(String text) {
-        return analyzeSentimentWithResponse(text, clientOptions.getDefaultLanguage()).flatMap(FluxUtil::toMono);
+        return analyzeSentimentWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1184,5 +1185,23 @@ public final class TextAnalyticsAsyncClient {
         return IntStream.range(0, textInputs.size())
             .mapToObj(index -> mappingFunction.apply(String.valueOf(index), textInputs.get(index)))
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Get default country hint code.
+     *
+     * @return the default country hint code
+     */
+    String getDefaultCountryHint() {
+        return defaultCountryHint;
+    }
+
+    /**
+     * Get default language when the builder is setup.
+     *
+     * @return the default language
+     */
+    String getDefaultLanguage() {
+        return defaultLanguage;
     }
 }

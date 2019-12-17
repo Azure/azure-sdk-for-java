@@ -233,11 +233,7 @@ public final class TextAnalyticsClientBuilder {
      */
     public TextAnalyticsClientBuilder subscriptionKey(String subscriptionKey) {
         Objects.requireNonNull(subscriptionKey, "'subscriptionKey' cannot be null.");
-
         this.subscriptionKey = subscriptionKey;
-
-        // Clear TokenCredential in favor of subscription key credential
-        this.tokenCredential = null;
         return this;
     }
 
@@ -249,12 +245,8 @@ public final class TextAnalyticsClientBuilder {
      * @throws NullPointerException If {@code tokenCredential} is {@code null}.
      */
     public TextAnalyticsClientBuilder credential(TokenCredential tokenCredential) {
-        // token credential can not be null value
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         this.tokenCredential = tokenCredential;
-
-        // Clear subscription key based credential in favor of TokenCredential
-        this.subscriptionKey = null;
         return this;
     }
 
