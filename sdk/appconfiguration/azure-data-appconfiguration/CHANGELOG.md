@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.8 (Unreleased)
 
-## 1.0.0-preview.7
+## 1.0.0-preview.7 (2019-11-26)
 For details on the Azure SDK for Java (November 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview7-java).
 
 - Added support for Azure Activity Directory authentication.
