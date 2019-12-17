@@ -7,18 +7,19 @@ package com.azure.ai.textanalytics;
  * Code snippet for {@link TextAnalyticsAsyncClient}
  */
 public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
-    private static final String subscriptionKey = null;
-    private static final String endpoint = null;
+    private static final String SUBSCRIPTION_KEY = null;
+    private static final String ENDPOINT = null;
 
     /**
      * Code snippet for creating a {@link TextAnalyticsAsyncClient}
      *
+     * @return The TextAnalyticsAsyncClient object
      */
     public TextAnalyticsAsyncClient createTextAnalyticsAsyncClient() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(subscriptionKey)
-            .endpoint(endpoint)
+            .subscriptionKey(SUBSCRIPTION_KEY)
+            .endpoint(ENDPOINT)
             .buildAsyncClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         return textAnalyticsAsyncClient;

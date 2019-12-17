@@ -573,7 +573,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
         final TextSentimentResult textSentimentResult1 = new TextSentimentResult("0", textDocumentStatistics1,
             null,
-           expectedDocumentSentiment,
+            expectedDocumentSentiment,
             Arrays.asList(
                 new TextSentiment().setTextSentimentClass(TextSentimentClass.NEGATIVE).setLength(31).setOffset(0)
                     .setNegativeScore(0.99),
@@ -714,6 +714,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                         validateLinkedEntities(expectedItem.getLinkedEntities(), actualItem.getLinkedEntities());
                     }
                 });
+                break;
             case KEY_PHRASES:
                 final List<KeyPhraseResult> keyPhraseResults = expectedResult.stream()
                     .filter(element -> element instanceof KeyPhraseResult)
