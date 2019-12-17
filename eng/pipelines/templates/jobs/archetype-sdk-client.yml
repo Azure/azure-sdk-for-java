@@ -289,7 +289,6 @@ jobs:
 
       - ${{ parameters.PreTestSteps }}
 
-      # JRSSTART
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:
@@ -310,14 +309,14 @@ jobs:
             echo "Invalid return code from set_versions.py, return code is $($LastExitCode)"
             exit 1
           }
-        displayName: 'Setup for source build'
+        displayName: 'Set versions for source build'
         condition: and(ne(variables['SdkType'], 'data'), eq(variables['TestFromSource'],'true'))
 
       - script: |
           python --version
           python eng/versioning/update_versions.py --update-type library --build-type client
         condition: eq(variables['ShouldRunSourceTests'],'true')
-        displayName: 'Setup for source build'
+        displayName: 'Update versions for source build'
 
       - task: Maven@3
         displayName: 'Run tests'
@@ -332,7 +331,7 @@ jobs:
           goals: ${{ parameters.TestGoals }}
         # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set) 
         # OR when ShouldRunSourceTests is true
-        condition: or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true'))
+        condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
