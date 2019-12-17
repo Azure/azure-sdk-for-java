@@ -62,7 +62,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
  * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation}
  *
- * <p>View {@link TextAnalyticsClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link TextAnalyticsClientBuilder} for additional ways to construct the client.</p>
  *
  * @see TextAnalyticsClientBuilder
  */
