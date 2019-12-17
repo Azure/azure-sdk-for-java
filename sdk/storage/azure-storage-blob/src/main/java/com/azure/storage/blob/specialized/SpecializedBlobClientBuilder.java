@@ -18,7 +18,6 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.CpkScopeInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.blob.models.PageRange;

@@ -23,7 +23,6 @@ import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.CpkScopeInfo;
 import com.azure.storage.blob.models.EncryptionScope;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
