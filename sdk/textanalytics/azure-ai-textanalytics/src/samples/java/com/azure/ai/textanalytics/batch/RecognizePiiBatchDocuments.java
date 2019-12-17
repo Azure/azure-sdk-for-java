@@ -42,7 +42,7 @@ public class RecognizePiiBatchDocuments {
             batchStatistics.getValidDocumentCount());
 
         // Detecting pii entities from a batch of documents
-        detectedBatchResult.stream().forEach(piiEntityDocumentResult ->
+        detectedBatchResult.forEach(piiEntityDocumentResult ->
             piiEntityDocumentResult.getNamedEntities().forEach(entity ->
                 System.out.printf("Recognized Personal Identifiable Info NamedEntity: %s, NamedEntity Type: %s, NamedEntity Subtype: %s, Offset: %s, Length: %s, Score: %s.%n",
                     entity.getText(),

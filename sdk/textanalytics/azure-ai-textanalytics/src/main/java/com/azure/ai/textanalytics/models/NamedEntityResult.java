@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * The NamedEntityResult model.
  */
-// TODO (shawn): Should be @Immutable, but will produce spotbug/checkstyle error
 @Fluent
 public final class NamedEntityResult extends DocumentResult {
     private final List<NamedEntity> namedEntities;

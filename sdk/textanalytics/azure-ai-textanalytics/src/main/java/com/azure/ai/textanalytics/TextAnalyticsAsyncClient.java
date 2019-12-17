@@ -1061,7 +1061,7 @@ public final class TextAnalyticsAsyncClient {
 
     private List<TextSentiment> convertToSentenceSentiments(final List<SentenceSentiment> sentenceSentiments) {
         final List<TextSentiment> sentenceSentimentCollection = new ArrayList<>();
-        sentenceSentiments.stream().forEach(sentenceSentiment -> {
+        sentenceSentiments.forEach(sentenceSentiment -> {
             final TextSentiment singleSentenceSentiment = new TextSentiment()
                 .setLength(sentenceSentiment.getLength())
                 .setOffset(sentenceSentiment.getOffset());
@@ -1071,8 +1071,6 @@ public final class TextAnalyticsAsyncClient {
 
             setTextSentimentScore(sentenceSentiment.getSentenceScores(), sentimentClass, singleSentenceSentiment);
 
-            // TODO (Shawn): warnings are missing
-            // sentenceSentiment.getWarnings();
             sentenceSentimentCollection.add(singleSentenceSentiment);
         });
         return sentenceSentimentCollection;

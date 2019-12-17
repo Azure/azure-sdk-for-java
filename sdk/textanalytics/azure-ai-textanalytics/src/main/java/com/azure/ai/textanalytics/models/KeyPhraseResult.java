@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * The KeyPhraseResult model.
  */
-// TODO (shawn): Should be @Immutable, but will produce spotbug/checkstyle error
 @Fluent
 public final class KeyPhraseResult extends DocumentResult {
     private List<String> keyPhrases;
