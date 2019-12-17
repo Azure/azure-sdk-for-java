@@ -6,6 +6,7 @@ package com.azure.core.implementation;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 
+import com.azure.core.util.logging.LogLevel;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;

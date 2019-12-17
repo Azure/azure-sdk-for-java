@@ -3,7 +3,6 @@
 
 package com.azure.core.util.logging;
 
-import com.azure.core.implementation.LogLevel;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.slf4j.Logger;

@@ -3,19 +3,23 @@
 
 package com.azure.core.util.logging;
 
-import com.azure.core.implementation.LogLevel;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSources;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -277,16 +281,21 @@ public class ClientLoggerTests {
         assertTrue(logValues.contains(runtimeException.getStackTrace()[0].toString()));
     }
 
-    @Test
-    public void canLogAtLevelTrue(){
-        setupLogLevel(2);
-        assertTrue(new ClientLogger(ClientLoggerTests.class).canLogAtLevel(LogLevel.ERROR));
+    @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
+    @CsvSource({"1, 1, true", "1, 2, true", "1, 3, true", "1, 4, true", "2, 1, false", "2, 5, false"})
+    public void canLogAtLevel(int logLevelToConfigure, int logLevelToValidate, boolean expected){
+        setupLogLevel(logLevelToConfigure);
+        LogLevel logLevel = convertToLogLevel(logLevelToValidate);
+        assertEquals(new ClientLogger(ClientLoggerTests.class).canLogAtLevel(logLevel), expected);
     }
 
-    @Test
-    public void canLogAtLevelFalse(){
-        setupLogLevel(2);
-        assertFalse(new ClientLogger(ClientLoggerTests.class).canLogAtLevel(LogLevel.VERBOSE));
+    private LogLevel convertToLogLevel(int logLevelStr) {
+        for (LogLevel level: LogLevel.values()) {
+            if (logLevelStr == level.toNumeric()) {
+                return level;
+            }
+        }
+        return null;
     }
 
     private String setupLogLevel(int logLevelToSet) {
