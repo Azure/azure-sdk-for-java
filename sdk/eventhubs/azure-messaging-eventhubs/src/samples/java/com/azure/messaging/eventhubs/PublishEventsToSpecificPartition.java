@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -14,8 +16,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to sent events to specific event hub by defining partition id using {@link
- * CreateBatchOptions#setPartitionId(String)}.
+ * Sample demonstrates how to:
+ *
+ * <ul>
+ * <li>Send events to specific event hub partition by defining partition id using
+ * {@link CreateBatchOptions#setPartitionId(String)}.</li>
+ * <li>Set a custom retry policy for Event Hub operations.</li>
+ * </ul>
  */
 public class PublishEventsToSpecificPartition {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
@@ -33,9 +40,16 @@ public class PublishEventsToSpecificPartition {
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
+        // Set some custom retry options other than the default set.
+        AmqpRetryOptions retryOptions = new AmqpRetryOptions()
+            .setDelay(Duration.ofSeconds(30))
+            .setMaxRetries(2)
+            .setMode(AmqpRetryMode.EXPONENTIAL);
+
         // Instantiate a client that will be used to call the service.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
+            .retry(retryOptions)
             .buildAsyncProducerClient();
 
         // To send our events, we need to know what partition to send it to. For the sake of this example, we take the
