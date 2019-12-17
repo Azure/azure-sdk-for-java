@@ -148,7 +148,6 @@ class APISpec extends Specification {
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
-        System.out.println(String.format("--------%s---------", testMode))
     }
 
     def setup() {
@@ -176,7 +175,7 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
+        def options = new ListBlobContainersOptions().setPrefix(containerName)
         for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
             BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 

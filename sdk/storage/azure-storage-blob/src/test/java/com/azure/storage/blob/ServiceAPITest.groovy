@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.test.TestMode
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
@@ -12,6 +13,7 @@ import com.azure.storage.blob.models.BlobMetrics
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.StaticWebsite
 
@@ -84,8 +86,9 @@ class ServiceAPITest extends APISpec {
 
     def "List containers marker"() {
         setup:
+        String containerNameForList = generateContainerName()
         for (int i = 0; i < 10; i++) {
-            primaryBlobServiceClient.createBlobContainer(generateContainerName())
+            primaryBlobServiceClient.createBlobContainer(containerNameForList + i.toString())
         }
 
         def listResponse = primaryBlobServiceClient.listBlobContainers().iterator()
@@ -94,6 +97,17 @@ class ServiceAPITest extends APISpec {
         expect:
         // Assert that the second segment is indeed after the first alphabetically
         firstContainerName < listResponse.next().getName()
+
+        cleanup:
+        if (testMode != TestMode.PLAYBACK) {
+            def options = new ListBlobContainersOptions().setPrefix(containerNameForList)
+            for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options,
+                Duration.ofSeconds(120))) {
+                BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(
+                    container.getName())
+                containerClient.delete()
+            }
+        }
     }
 
     def "List containers details"() {

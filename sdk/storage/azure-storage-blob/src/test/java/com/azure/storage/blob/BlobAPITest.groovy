@@ -1775,6 +1775,9 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+
+        cleanup:
+        cc.delete()
     }
 
     @Unroll

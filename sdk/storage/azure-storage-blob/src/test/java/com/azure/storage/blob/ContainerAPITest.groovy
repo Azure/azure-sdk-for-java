@@ -4,10 +4,12 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
+import com.azure.core.test.TestMode
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
+import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobProperties
@@ -19,6 +21,7 @@ import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
+import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
@@ -33,11 +36,25 @@ import java.time.ZoneId
 import java.util.stream.Collectors
 
 class ContainerAPITest extends APISpec {
+    String containerName
+
+    private void cleanupForContainers() {
+        if (testMode == TestMode.PLAYBACK) {
+            return
+        }
+        def options = new ListBlobContainersOptions().setPrefix(containerName)
+        for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options,
+            Duration.ofSeconds(120))) {
+            BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
+            containerClient.delete()
+        }
+    }
 
     def "Create all null"() {
         setup:
         // Overwrite the existing cc, which has already been created
-        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        containerName = generateContainerName()
+        cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
 
         when:
         def response = cc.createWithResponse(null, null, null, null)
@@ -45,20 +62,28 @@ class ContainerAPITest extends APISpec {
         then:
         response.getStatusCode() == 201
         validateBasicHeaders(response.getHeaders())
+
+        cleanup:
+        cleanupForContainers()
     }
 
     def "Create min"() {
         when:
-        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        containerName = generateContainerName()
+        def cc = primaryBlobServiceClient.createBlobContainer(containerName)
 
         then:
         cc.exists()
+
+        cleanup:
+        cleanupForContainers()
     }
 
     @Unroll
     def "Create metadata"() {
         setup:
-        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        containerName = generateContainerName()
+        cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
         def metadata = new HashMap<String, String>()
         if (key1 != null) {
             metadata.put(key1, value1)
@@ -74,6 +99,9 @@ class ContainerAPITest extends APISpec {
         then:
         response.getValue().getMetadata() == metadata
 
+        cleanup:
+        cleanupForContainers()
+
         where:
         key1      | value1    | key2       | value2
         null      | null      | null       | null
@@ -84,7 +112,8 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Create publicAccess"() {
         setup:
-        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        containerName = generateContainerName()
+        cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
 
         when:
         cc.createWithResponse(null, publicAccess, null, null)
@@ -92,6 +121,9 @@ class ContainerAPITest extends APISpec {
 
         then:
         access == publicAccess
+
+        cleanup:
+        cleanupForContainers()
 
         where:
         publicAccess               | _
@@ -160,7 +192,8 @@ class ContainerAPITest extends APISpec {
 
     def "Set metadata"() {
         setup:
-        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        containerName = generateContainerName()
+        cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
         def metadata = new HashMap<String, String>()
         metadata.put("key", "value")
         cc.createWithResponse(metadata, null, null, null)
@@ -172,6 +205,9 @@ class ContainerAPITest extends APISpec {
         response.getStatusCode() == 200
         validateBasicHeaders(response.getHeaders())
         cc.getPropertiesWithResponse(null, null, null).getValue().getMetadata().size() == 0
+
+        cleanup:
+        cleanupForContainers()
     }
 
     def "Set metadata min"() {
@@ -1350,10 +1386,14 @@ class ContainerAPITest extends APISpec {
 
     def "Get Container Name"() {
         given:
-        def containerName = generateContainerName()
+        containerName = generateContainerName()
         def newcc = primaryBlobServiceClient.getBlobContainerClient(containerName)
+
         expect:
         containerName == newcc.getBlobContainerName()
+
+        cleanup:
+        cleanupForContainers()
     }
 
     def "Builder cpk validation"() {

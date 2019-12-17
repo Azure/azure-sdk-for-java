@@ -408,6 +408,9 @@ class SASTest extends APISpec {
         properties.getContentEncoding() == "encoding"
         properties.getContentLanguage() == "language"
 
+        cleanup:
+        containerClient.delete()
+
     }
 
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
@@ -643,10 +646,13 @@ class SASTest extends APISpec {
             .generateSasQueryParameters(primaryCredential)
             .encode()
         def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
-        sc.createBlobContainer(generateContainerName())
+        def sasContainer = sc.createBlobContainer(generateContainerName())
 
         then:
         notThrown(BlobStorageException)
+
+        cleanup:
+        sasContainer.delete()
     }
 
     def "accountSAS network account sas token on endpoint"() {
@@ -686,6 +692,9 @@ class SASTest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
+
+        cleanup:
+        cc.delete()
     }
 
     /*
