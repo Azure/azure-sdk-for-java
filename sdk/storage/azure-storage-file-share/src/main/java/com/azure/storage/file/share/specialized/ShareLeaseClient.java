@@ -120,8 +120,6 @@ public final class ShareLeaseClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.breakLease}
-     *
-     * @return The remaining time in the broken lease in seconds.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void breakLease() {
@@ -168,7 +166,7 @@ public final class ShareLeaseClient {
      * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.changeLeaseWithResponse#String-Duration-Context}
      *
      * @param proposedId A new lease ID in a valid GUID format.
-     * param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The new lease ID.
      */

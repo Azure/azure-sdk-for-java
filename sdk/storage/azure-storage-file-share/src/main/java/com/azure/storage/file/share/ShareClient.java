@@ -750,7 +750,7 @@ public class ShareClient {
      *
      * <p>Delete the file "myfile"</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>

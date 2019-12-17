@@ -80,7 +80,7 @@ public final class ShareFileProperties {
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final String copyId,
         final String copyProgress, final String copySource, final CopyStatusType copyStatus,
         final Boolean isServerEncrypted, final FileSmbProperties smbProperties) {
-        this(eTag, lastModified, metadata,fileType, contentLength, contentType, contentMd5, contentEncoding,
+        this(eTag, lastModified, metadata, fileType, contentLength, contentType, contentMd5, contentEncoding,
             cacheControl, contentDisposition, null, null, null, copyCompletionTime, copyStatusDescription, copyId,
             copyProgress, copySource, copyStatus, isServerEncrypted, smbProperties);
     }
@@ -100,6 +100,9 @@ public final class ShareFileProperties {
      * @param cacheControl This header is returned if it was previously specified for the file.
      * @param contentDisposition The value that was specified for the x-ms-content-disposition header and specifies how
      * to process the response.
+     * @param leaseStatusType Status of the lease.
+     * @param leaseStateType State of the lease.
+     * @param leaseDurationType How long the lease has left.
      * @param copyCompletionTime Conclusion time of the last attempted Copy File operation where this file was the
      * destination file.
      * @param copyStatusDescription Appears when x-ms-copy-status is failed or pending. Describes cause of fatal or

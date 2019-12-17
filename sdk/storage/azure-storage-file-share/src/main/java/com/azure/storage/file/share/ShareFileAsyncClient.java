@@ -561,7 +561,8 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileProperties>> downloadToFileWithResponse(String downloadFilePath,
         ShareFileRange range, ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> downloadToFileWithResponse(downloadFilePath, range, requestConditions, context));
+            return withContext(context -> downloadToFileWithResponse(downloadFilePath, range, requestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -575,7 +576,8 @@ public class ShareFileAsyncClient {
     }
 
     private Mono<Response<ShareFileProperties>> downloadResponseInChunk(Response<ShareFileProperties> response,
-        AsynchronousFileChannel channel, ShareFileRange range, ShareRequestConditions requestConditions, Context context) {
+        AsynchronousFileChannel channel, ShareFileRange range, ShareRequestConditions requestConditions,
+        Context context) {
         return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new ShareFileRange(0, response.getValue()
             .getContentLength())))
             .map(currentRange -> {
@@ -694,7 +696,8 @@ public class ShareFileAsyncClient {
         String rangeString = range == null ? null : range.toString();
 
         return azureFileStorageClient.files()
-            .downloadWithRestResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5, requestConditions.getLeaseId(), context)
+            .downloadWithRestResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5,
+                requestConditions.getLeaseId(), context)
             .map(response -> new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue(), response.getDeserializedHeaders()));
     }
@@ -767,8 +770,8 @@ public class ShareFileAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(ShareRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        return azureFileStorageClient.files().deleteWithRestResponseAsync(shareName, filePath, null, requestConditions.getLeaseId(), context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return azureFileStorageClient.files().deleteWithRestResponseAsync(shareName, filePath, null,
+            requestConditions.getLeaseId(), context).map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -837,11 +840,12 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<Response<ShareFileProperties>> getPropertiesWithResponse(ShareRequestConditions requestConditions, Context context) {
+    Mono<Response<ShareFileProperties>> getPropertiesWithResponse(ShareRequestConditions requestConditions,
+        Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         return azureFileStorageClient.files()
-            .getPropertiesWithRestResponseAsync(shareName, filePath, snapshot, null, requestConditions.getLeaseId(), context)
-            .map(this::getPropertiesResponse);
+            .getPropertiesWithRestResponseAsync(shareName, filePath, snapshot, null, requestConditions.getLeaseId(),
+                context).map(this::getPropertiesResponse);
     }
 
     /**
@@ -946,14 +950,16 @@ public class ShareFileAsyncClient {
         FileSmbProperties smbProperties, String filePermission, ShareRequestConditions requestConditions) {
         try {
             return withContext(context ->
-                setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, requestConditions, context));
+                setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, requestConditions,
+                    context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<ShareFileInfo>> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, ShareRequestConditions requestConditions, Context context) {
+        FileSmbProperties smbProperties, String filePermission, ShareRequestConditions requestConditions,
+        Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
@@ -970,7 +976,8 @@ public class ShareFileAsyncClient {
 
         return azureFileStorageClient.files()
             .setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, newFileSize, filePermission, filePermissionKey, requestConditions.getLeaseId(), httpHeaders, context)
+                fileLastWriteTime, null, newFileSize, filePermission, filePermissionKey, requestConditions.getLeaseId(),
+                httpHeaders, context)
             .map(this::setPropertiesResponse);
     }
 
@@ -1053,7 +1060,8 @@ public class ShareFileAsyncClient {
      * @return A response containing the {@link ShareFileMetadataInfo file meta info} and status code
      * @throws ShareStorageException If the file doesn't exist or the metadata contains invalid keys
      */
-    public Mono<Response<ShareFileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, ShareRequestConditions requestConditions) {
+    public Mono<Response<ShareFileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata,
+        ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> setMetadataWithResponse(metadata, requestConditions, context));
         } catch (RuntimeException ex) {
@@ -1061,8 +1069,8 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<Response<ShareFileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, ShareRequestConditions requestConditions,
-        Context context) {
+    Mono<Response<ShareFileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata,
+        ShareRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         try {
             return azureFileStorageClient.files()
@@ -1333,10 +1341,12 @@ public class ShareFileAsyncClient {
      * @param length Specifies the number of bytes being cleared in the request body.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is
      * {@code null}
+     * @param requestConditions {@link ShareRequestConditions}
      * @return A response of {@link ShareFileUploadInfo file upload info} that only contains headers and response
      * status code.
      */
-    public Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset, ShareRequestConditions requestConditions) {
+    public Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset,
+        ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> clearRangeWithResponse(length, offset, requestConditions, context));
         } catch (RuntimeException ex) {
@@ -1344,8 +1354,8 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset, ShareRequestConditions requestConditions,
-        Context context) {
+    Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset,
+        ShareRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         ShareFileRange range = new ShareFileRange(offset, offset + length - 1);
         return azureFileStorageClient.files()
@@ -1489,13 +1499,15 @@ public class ShareFileAsyncClient {
         }
     }
 
-    PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range, ShareRequestConditions requestConditions, Duration timeout,
-        Context context) {
+    PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range,
+        ShareRequestConditions requestConditions, Duration timeout, Context context) {
+        ShareRequestConditions finalRequestConditions = requestConditions == null
+            ? new ShareRequestConditions() : requestConditions;
         String rangeString = range == null ? null : range.toString();
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
-                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, requestConditions.getLeaseId(), context),
-                timeout)
+                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString,
+                    finalRequestConditions.getLeaseId(), context),timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),

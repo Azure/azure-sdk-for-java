@@ -757,7 +757,8 @@ public class ShareDirectoryClient {
      */
     public Response<Void> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
-        Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteFileWithResponse(fileName, requestConditions, context);
+        Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteFileWithResponse(fileName, requestConditions,
+            context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

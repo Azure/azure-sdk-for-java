@@ -842,8 +842,8 @@ public class ShareAsyncClient {
         Map<String, String> metadata, ShareRequestConditions requestConditions, Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
-            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions, context)
-            .map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
+            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions,
+                context).map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 
     /**
@@ -967,7 +967,8 @@ public class ShareAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions, Context context) {
+    Mono<Response<Void>> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions,
+        Context context) {
         return getFileClient(fileName).deleteWithResponse(requestConditions, context);
     }
 

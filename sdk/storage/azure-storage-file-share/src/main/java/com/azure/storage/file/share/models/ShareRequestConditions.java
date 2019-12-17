@@ -4,9 +4,6 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.RequestConditions;
-
-import java.time.OffsetDateTime;
 
 /**
  * This class contains values which will restrict the successful operation of a variety of requests to the conditions
