@@ -1,4 +1,7 @@
 # Release History
+
+## 4.0.0-beta.7 (Unreleased)
+
 ## 4.0.0-beta.6 (2019-12-04)
 For details on the Azure SDK for Java (November 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
 
