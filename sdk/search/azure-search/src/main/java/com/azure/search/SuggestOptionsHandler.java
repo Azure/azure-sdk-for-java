@@ -6,7 +6,8 @@ package com.azure.search;
 import com.azure.search.models.SuggestOptions;
 
 /**
- * TODO: Add class description
+ * Ensure all suggest parameters are correct
+ * Use this whenever SuggestOptions are passed to the search service
  */
 class SuggestOptionsHandler {
 

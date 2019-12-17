@@ -4,6 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.search.models.DocumentSuggestResult;
@@ -12,7 +13,11 @@ import com.azure.search.models.SuggestResult;
 import java.util.stream.Collectors;
 
 /**
- * TODO: Add class description
+ * Represents an HTTP response from the suggest API request
+ * that contains a list of items deserialized into a {@link Page}.
+ * Each page contains additional information returned by the API request. In the Suggest API case
+ * the additional information is:
+ * coverage - coverage value.
  */
 public class SuggestPagedResponse extends PagedResponseBase<String, SuggestResult> {
 

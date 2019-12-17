@@ -4,6 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.search.models.DocumentSearchResult;
@@ -21,7 +22,12 @@ import java.util.stream.Collectors;
 
 
 /**
- * TODO: Add class description
+ * Represents an HTTP response from the search API request
+ * that contains a list of items deserialized into a {@link Page}.
+ * Each page contains additional information returned by the API request. In the Search API case
+ * the additional information is:
+ * count - number of total documents returned. Will be returned only if isIncludeTotalResultCount is set to true
+ * coverage - coverage value.
  */
 public class SearchPagedResponse extends PagedResponseBase<String, SearchResult> {
 
