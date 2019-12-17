@@ -294,18 +294,24 @@ jobs:
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
-        condition: and(eq(variables['SdkType'], 'client'), eq(variables['TestFromSource'],'true'))
+        condition: and(ne(variables['SdkType'], 'data'), eq(variables['TestFromSource'],'true'))
 
       - pwsh: |
           python --version
           python eng/versioning/set_versions.py --build-type client --pst
           if ($LastExitCode -eq 5678) {
             echo "##vso[task.setvariable variable=ShouldRunSourceTests]$true"
+            echo "Changes detected, return code from set_versions.py is $($LastExitCode)"
+            exit 0
+          } elseif ($LastExitCode -eq 0) {
+            echo "No changes detected, return code from set_versions.py is $($LastExitCode)"
+            exit 0
           } else {
-            echo "no changes detected, return code from set_versions.py was $(LastExitCode)"
+            echo "Invalid return code from set_versions.py, return code is $($LastExitCode)"
+            exit 1
           }
         displayName: 'Setup for source build'
-        condition: and(eq(variables['SdkType'], 'client'), eq(variables['TestFromSource'],'true'))
+        condition: and(ne(variables['SdkType'], 'data'), eq(variables['TestFromSource'],'true'))
 
       - script: |
           python --version
