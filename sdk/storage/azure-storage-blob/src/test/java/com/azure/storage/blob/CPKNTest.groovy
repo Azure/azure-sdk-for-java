@@ -35,8 +35,8 @@ class CPKNTest extends APISpec {
     BlobClientBase cpknExistingBlob
 
     def setup() {
-        scope1 = Configuration.getGlobalConfiguration().get("BLOB_ENCRYPTION_SCOPE_1")
-        scope2 = Configuration.getGlobalConfiguration().get("BLOB_ENCRYPTION_SCOPE_2")
+        scope1 = "gaprascope1" // I will change this to something generic and rerecord
+        scope2 = "gaprascope2" // I will change this to something generic and rerecord
         es = new EncryptionScope().setEncryptionScope(scope1)
         ces = new BlobContainerEncryptionScope().setDefaultEncryptionScope(scope2).setDenyEncryptionScopeOverride(true)
 
