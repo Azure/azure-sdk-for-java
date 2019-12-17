@@ -126,7 +126,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             certPoller.waitForCompletion();
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
             KeyVaultCertificateWithPolicy getCertificate = client.getCertificate(certificateName);
-            validatePolicy(certificate.getCertificatePolicy(), getCertificate.getCertificatePolicy());
+            validatePolicy(certificate.getPolicy(), getCertificate.getPolicy());
             deleteAndPurgeCertificate(certificateName);
         });
     }
@@ -271,7 +271,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             sleepInRecordMode(40000);
             KeyVaultCertificateWithPolicy restoredCertificate = client.restoreCertificateBackup(backupBytes);
             assertEquals(certificateName, restoredCertificate.getName());
-            validatePolicy(restoredCertificate.getCertificatePolicy(), createdCert.getCertificatePolicy());
+            validatePolicy(restoredCertificate.getPolicy(), createdCert.getPolicy());
             deleteAndPurgeCertificate(certificateName);
         });
     }
@@ -287,8 +287,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy reteievedCert = retrievePoller.getFinalResult();
             KeyVaultCertificateWithPolicy expectedCert = certPoller.getFinalResult();
             validateCertificate(expectedCert, reteievedCert);
-            validatePolicy(expectedCert.getCertificatePolicy(),
-                reteievedCert.getCertificatePolicy());
+            validatePolicy(expectedCert.getPolicy(),
+                reteievedCert.getPolicy());
             deleteAndPurgeCertificate(certName);
         });
     }
@@ -325,7 +325,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
                 client.beginCreateCertificate(certName, setupPolicy());
             certPoller.waitForCompletion();
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
-            validatePolicy(setupPolicy(), certificate.getCertificatePolicy());
+            validatePolicy(setupPolicy(), certificate.getPolicy());
             deleteAndPurgeCertificate(certName);
         });
     }
@@ -337,9 +337,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
                 client.beginCreateCertificate(certName, setupPolicy());
             certPoller.waitForCompletion();
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
-            certificate.getCertificatePolicy().setExportable(false);
-            CertificatePolicy policy = client.updateCertificatePolicy(certName, certificate.getCertificatePolicy());
-            validatePolicy(certificate.getCertificatePolicy(), policy);
+            certificate.getPolicy().setExportable(false);
+            CertificatePolicy policy = client.updateCertificatePolicy(certName, certificate.getPolicy());
+            validatePolicy(certificate.getPolicy(), policy);
             deleteAndPurgeCertificate(certName);
         });
     }
@@ -383,13 +383,13 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @Test
     public void createIssuerEmptyName() {
-        assertRestException(() -> client.createIssuer("", ""),
+        assertRestException(() -> client.createIssuer(new CertificateIssuer("", "")),
             HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @Test
     public void createIssuerNullProvider() {
-        assertRestException(() -> client.createIssuer("", null),
+        assertRestException(() -> client.createIssuer(new CertificateIssuer("", null)),
             HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
