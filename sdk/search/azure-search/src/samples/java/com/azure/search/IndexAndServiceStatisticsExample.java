@@ -50,7 +50,7 @@ public class IndexAndServiceStatisticsExample {
         getServiceStatistics(client);
     }
 
-    static void getServiceStatistics(SearchServiceClient client) {
+    private static void getServiceStatistics(SearchServiceClient client) {
         ServiceStatistics serviceStatistics = client.getServiceStatistics();
 
         System.out.println(":" + serviceStatistics);
@@ -62,45 +62,45 @@ public class IndexAndServiceStatisticsExample {
             e.printStackTrace();
         }
 
-        /** Output:
-         * {
-         *    "counters":{
-         *       "documentCount":{
-         *          "usage":5009,
-         *          "quota":null
-         *       },
-         *       "indexesCount":{
-         *          "usage":4,
-         *          "quota":50
-         *       },
-         *       "indexersCount":{
-         *          "usage":2,
-         *          "quota":50
-         *       },
-         *       "dataSourcesCount":{
-         *          "usage":2,
-         *          "quota":50
-         *       },
-         *       "storageSize":{
-         *          "usage":19551042,
-         *          "quota":26843545600
-         *       },
-         *       "synonymMaps":{
-         *          "usage":0,
-         *          "quota":5
-         *       }
-         *    },
-         *    "limits":{
-         *       "maxFieldsPerIndex":1000,
-         *       "maxFieldNestingDepthPerIndex":10,
-         *       "maxComplexCollectionFieldsPerIndex":40,
-         *       "maxComplexObjectsInCollectionsPerDocument":3000
-         *    }
-         * }
+        /* Output:
+          {
+             "counters":{
+                "documentCount":{
+                   "usage":5009,
+                   "quota":null
+                },
+                "indexesCount":{
+                   "usage":4,
+                   "quota":50
+                },
+                "indexersCount":{
+                   "usage":2,
+                   "quota":50
+                },
+                "dataSourcesCount":{
+                   "usage":2,
+                   "quota":50
+                },
+                "storageSize":{
+                   "usage":19551042,
+                   "quota":26843545600
+                },
+                "synonymMaps":{
+                   "usage":0,
+                   "quota":5
+                }
+             },
+             "limits":{
+                "maxFieldsPerIndex":1000,
+                "maxFieldNestingDepthPerIndex":10,
+                "maxComplexCollectionFieldsPerIndex":40,
+                "maxComplexObjectsInCollectionsPerDocument":3000
+             }
+          }
          */
     }
 
-    static void getIndexStatistics(SearchServiceClient client) {
+    private static void getIndexStatistics(SearchServiceClient client) {
         Index testIndex = createTestIndex();
         Index index = client.createOrUpdateIndex(testIndex);
         IndexGetStatisticsResult result = client.getIndexStatistics(index.getName());
@@ -120,8 +120,8 @@ public class IndexAndServiceStatisticsExample {
      *
      * @return an Index
      */
-    static Index createTestIndex() {
-        Map<String, Double> weights = new HashMap<String, Double>();
+    private static Index createTestIndex() {
+        Map<String, Double> weights = new HashMap<>();
         weights.put("Description", 1.5);
         weights.put("Category", 2.0);
         return new Index()
@@ -183,7 +183,7 @@ public class IndexAndServiceStatisticsExample {
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Tags")
-                    .setType(DataType.COLLECTION_EDM_STRING)
+                    .setType(DataType.Collection(DataType.EDM_STRING))
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.FALSE)
@@ -270,7 +270,7 @@ public class IndexAndServiceStatisticsExample {
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Rooms")
-                    .setType(DataType.COLLECTION_EDM_COMPLEX_TYPE)
+                    .setType(DataType.Collection(DataType.EDM_COMPLEX_TYPE))
                     .setFields(Arrays.asList(
                         new Field()
                             .setName("Description")
@@ -320,7 +320,7 @@ public class IndexAndServiceStatisticsExample {
                             .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("Tags")
-                            .setType(DataType.COLLECTION_EDM_STRING)
+                            .setType(DataType.Collection(DataType.EDM_STRING))
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.FALSE)

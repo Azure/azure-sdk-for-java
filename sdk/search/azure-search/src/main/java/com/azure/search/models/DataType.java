@@ -55,44 +55,14 @@ public final class DataType extends ExpandableStringEnum<DataType> {
     public static final DataType EDM_COMPLEX_TYPE = fromString("Edm.ComplexType");
 
     /**
-     * Static value Collection(Edm.String) for DataType.
+     * Returns a collection of a specific DataType
+     * @param dataType the corresponding DataType
+     * @return a Collection of the corresponding DataType
      */
-    public static final DataType COLLECTION_EDM_STRING = fromString("Collection(Edm.String)");
-
-    /**
-     * Static value Collection(Edm.Int32) for DataType.
-     */
-    public static final DataType COLLECTION_EDM_INT32 = fromString("Collection(Edm.Int32)");
-
-    /**
-     * Static value Collection(Edm.Int64) for DataType.
-     */
-    public static final DataType COLLECTION_EDM_INT64 = fromString("Collection(Edm.Int64)");
-
-    /**
-     * Static value Collection(Edm.Double) for DataType.
-     */
-    public static final DataType COLLECTION_EDM_DOUBLE = fromString("Collection(Edm.Double)");
-
-    /**
-     * Static value Collection(Edm.Boolean) for DataType.
-     */
-    public static final DataType COLLECTION_EDM_BOOLEAN = fromString("Collection(Edm.Boolean)");
-
-    /**
-     * Static value Collection(Edm.DateTimeOffset) for DataType.
-     */
-    public static final DataType COLLECTION_EDM_DATE_TIME_OFFSET = fromString("Collection(Edm.DateTimeOffset)");
-
-    /**
-     * Static value Collection(Edm.GeographyPoint) for DataType.
-     */
-    public static final DataType COLLECTION_EDM_GEOGRAPHY_POINT = fromString("Collection(Edm.GeographyPoint)");
-
-    /**
-     * Static value Collection(Edm.ComplexType) for DataType.
-     */
-    public static final DataType COLLECTION_EDM_COMPLEX_TYPE = fromString("Collection(Edm.ComplexType)");
+    @JsonCreator
+    public static DataType Collection(DataType dataType) {
+        return fromString(String.format("Collection(%s)", dataType.toString()));
+    }
 
     /**
      * Creates or finds a DataType from its string representation.

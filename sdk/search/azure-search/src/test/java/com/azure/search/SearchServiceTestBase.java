@@ -100,11 +100,6 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     private JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
 
-    @Override
-    public String getTestName() {
-        return testName.getMethodName();
-    }
-
     @Rule
     public TestName testName = new TestName();
 
@@ -149,8 +144,8 @@ public abstract class SearchServiceTestBase extends TestBase {
      * @param policies the additional HTTP pipeline policies
      * @return {@link SearchServiceClientBuilder}
      */
-    protected SearchServiceClientBuilder getSearchServiceClientBuilderWithHttpPipelinePolicies(
-            List<HttpPipelinePolicy> policies) {
+    SearchServiceClientBuilder getSearchServiceClientBuilderWithHttpPipelinePolicies(
+        List<HttpPipelinePolicy> policies) {
         SearchServiceClientBuilder builder = new SearchServiceClientBuilder()
             .endpoint(endpoint);
 
@@ -241,7 +236,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Tags")
-                    .setType(DataType.COLLECTION_EDM_STRING)
+                    .setType(DataType.Collection(DataType.EDM_STRING))
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.FALSE)
@@ -328,7 +323,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Rooms")
-                    .setType(DataType.COLLECTION_EDM_COMPLEX_TYPE)
+                    .setType(DataType.Collection(DataType.EDM_COMPLEX_TYPE))
                     .setFields(Arrays.asList(
                         new Field()
                             .setName("Description")
@@ -378,7 +373,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("Tags")
-                            .setType(DataType.COLLECTION_EDM_STRING)
+                            .setType(DataType.Collection(DataType.EDM_STRING))
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.FALSE)
