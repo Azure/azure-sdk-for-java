@@ -46,10 +46,10 @@ public class PublishEventsToSpecificPartition {
         String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
         // We will publish three events based on simple sentences.
-        Flux<EventData> data = Flux.just(
-            new EventData("EventData Sample 1".getBytes(UTF_8)),
-            new EventData("EventData Sample 2".getBytes(UTF_8)),
-            new EventData("EventData Sample 3".getBytes(UTF_8)));
+        Flux<EventData> events = Flux.just(
+            new EventData("This is the first event.".getBytes(UTF_8)),
+            new EventData("This is the second event.".getBytes(UTF_8)),
+            new EventData("This is the third event.".getBytes(UTF_8)));
 
         // Create a batch to send the events.
         final CreateBatchOptions options = new CreateBatchOptions()
@@ -60,7 +60,7 @@ public class PublishEventsToSpecificPartition {
         // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
         // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
         // are sent.
-        data.flatMap(event -> {
+        events.flatMap(event -> {
             final EventDataBatch batch = currentBatch.get();
             if (batch.tryAdd(event)) {
                 return Mono.empty();
