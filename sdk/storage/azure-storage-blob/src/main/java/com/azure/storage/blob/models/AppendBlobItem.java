@@ -32,20 +32,12 @@ public class AppendBlobItem {
      * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
      * @param blobAppendOffset The offset at which the block was committed to the block blob.
      * @param blobCommittedBlockCount The number of committed blocks in the block blob.
-     * @deprecated Please use the overload.
      */
-    @Deprecated
     public AppendBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final boolean isServerEncrypted, final String encryptionKeySha256, final String blobAppendOffset,
         final Integer blobCommittedBlockCount) {
-        this.eTag = eTag;
-        this.lastModified = lastModified;
-        this.contentMd5 = CoreUtils.clone(contentMd5);
-        this.isServerEncrypted = isServerEncrypted;
-        this.encryptionKeySha256 = encryptionKeySha256;
-        this.encryptionScope = null;
-        this.blobAppendOffset = blobAppendOffset;
-        this.blobCommittedBlockCount = blobCommittedBlockCount;
+        this(eTag, lastModified, contentMd5, isServerEncrypted, encryptionKeySha256, null, blobAppendOffset,
+            blobCommittedBlockCount);
     }
 
     /**

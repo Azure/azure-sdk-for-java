@@ -28,17 +28,10 @@ public class BlockBlobItem {
      * @param contentMd5 Content MD5 of the block blob.
      * @param isServerEncrypted Flag indicating if the block blob is encrypted on the server.
      * @param encryptionKeySha256 The encryption key used to encrypt the block blob.
-     * @deprecated Please use {@link #BlockBlobItem(String, OffsetDateTime, byte[], boolean, String, String)}
      */
-    @Deprecated
     public BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final boolean isServerEncrypted, final String encryptionKeySha256) {
-        this.eTag = eTag;
-        this.lastModified = lastModified;
-        this.contentMd5 = CoreUtils.clone(contentMd5);
-        this.isServerEncrypted = isServerEncrypted;
-        this.encryptionKeySha256 = encryptionKeySha256;
-        this.encryptionScope = null;
+        this(eTag, lastModified, contentMd5, isServerEncrypted, encryptionKeySha256, null);
     }
 
     /**

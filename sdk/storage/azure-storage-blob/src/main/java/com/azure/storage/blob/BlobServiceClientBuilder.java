@@ -97,7 +97,7 @@ public final class BlobServiceClientBuilder {
         }
 
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption"
+            throw logger.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
                 + "scope cannot both be set"));
         }
 

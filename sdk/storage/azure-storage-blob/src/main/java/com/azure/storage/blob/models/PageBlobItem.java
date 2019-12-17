@@ -30,18 +30,10 @@ public class PageBlobItem {
      * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
      * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
      * @param blobSequenceNumber The current sequence number for the page blob.
-     * @deprecated Please use {@link #PageBlobItem(String, OffsetDateTime, byte[], Boolean, String, String, Long)}
      */
-    @Deprecated
     public PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final Boolean isServerEncrypted, final String encryptionKeySha256, final Long blobSequenceNumber) {
-        this.eTag = eTag;
-        this.lastModified = lastModified;
-        this.contentMd5 = CoreUtils.clone(contentMd5);
-        this.isServerEncrypted = isServerEncrypted;
-        this.encryptionKeySha256 = encryptionKeySha256;
-        this.encryptionScope = null;
-        this.blobSequenceNumber = blobSequenceNumber;
+        this(eTag, lastModified, contentMd5, isServerEncrypted, encryptionKeySha256, null, blobSequenceNumber);
     }
 
     /**
