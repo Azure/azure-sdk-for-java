@@ -1284,4 +1284,14 @@ directive:
     $.EncryptionScope["x-ms-parameter-grouping"]["name"] = "encryption-scope";
 ```
 
+### BlobContainerEncryptionScope Boolean Fix
+``` yaml
+directive:
+- from: BlobContainerEncryptionScope.java
+  where: $
+  transform: >
+    return $.replace('private Boolean denyEncryptionScopeOverride;', 'private boolean denyEncryptionScopeOverride;').
+      replace('public Boolean isDenyEncryptionScopeOverride() {', 'public boolean isDenyEncryptionScopeOverride() {');
+```
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

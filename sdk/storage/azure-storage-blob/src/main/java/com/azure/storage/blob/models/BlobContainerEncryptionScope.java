@@ -27,7 +27,7 @@ public final class BlobContainerEncryptionScope {
      * container.
      */
     @JsonProperty(value = "denyEncryptionScopeOverride")
-    private Boolean denyEncryptionScopeOverride;
+    private boolean denyEncryptionScopeOverride;
 
     /**
      * Get the defaultEncryptionScope property: Optional.  Version 2019-02-02
@@ -60,7 +60,7 @@ public final class BlobContainerEncryptionScope {
      *
      * @return the denyEncryptionScopeOverride value.
      */
-    public Boolean isDenyEncryptionScopeOverride() {
+    public boolean isDenyEncryptionScopeOverride() {
         return this.denyEncryptionScopeOverride;
     }
 
